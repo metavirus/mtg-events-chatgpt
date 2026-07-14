@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Los Alamitos Commander Finder</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div>
+    <h1>Los Alamitos Commander Finder</h1>
+    <p>Research-backed store and event directory</p>
+  </div>
+  <div class="header-actions">
+    <label class="import-button">Import data folder files
+      <input id="fileImport" type="file" accept=".json" multiple hidden>
+    </label>
+  </div>
+</header>
+
+<nav>
+  <button class="tab active" data-tab="calendar">Calendar</button>
+  <button class="tab" data-tab="stores">Stores</button>
+  <button class="tab" data-tab="changes">Changes</button>
+</nav>
+
+<main>
+<section id="calendar" class="panel active">
+  <div class="toolbar">
+    <div class="segmented">
+      <button data-view="agenda" class="active">Agenda</button>
+      <button data-view="week">Week</button>
+      <button data-view="month">Month</button>
+    </div>
+    <div class="date-controls">
+      <button id="prev">←</button>
+      <button id="today">Today</button>
+      <button id="next">→</button>
+      <strong id="dateLabel"></strong>
+    </div>
+    <div class="filters">
+      <select id="storeFilter"><option value="">All stores</option></select>
+      <select id="confidenceFilter">
+        <option value="">All confidence levels</option>
+        <option value="high">High confidence</option>
+        <option value="medium">Medium confidence</option>
+        <option value="low">Low confidence</option>
+      </select>
+    </div>
+  </div>
+  <div id="calendarContent"></div>
+</section>
+
+<section id="stores" class="panel">
+  <div class="store-layout">
+    <aside id="storeList"></aside>
+    <article id="storeDetail"><p>Select a store.</p></article>
+  </div>
+</section>
+
+<section id="changes" class="panel">
+  <div id="changeList"></div>
+</section>
+</main>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-card">
+    <button id="modalClose" class="close">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

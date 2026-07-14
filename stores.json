@@ -1,0 +1,178 @@
+[
+  {
+    "id": "finch-sparrow",
+    "name": "Finch and Sparrow Games",
+    "city": "Signal Hill",
+    "address": "2699 E 28th St., Ste 406, Signal Hill, CA 90755",
+    "phone": "562-249-8172",
+    "website": "https://finchandsparrowgames.com/",
+    "eventsUrl": "https://finchandsparrow.tcgplayerpro.com/events",
+    "instagram": "https://www.instagram.com/finch_and_sparrow_games/",
+    "wpnPremium": true,
+    "distanceMiles": null,
+    "status": "open",
+    "lastVerified": "2026-07-13",
+    "researchStatus": "partial",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 2,
+      "communityContinuity": 4,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 4,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Strong Magic identity and established community. Public commentary suggests active Commander play, but also indicates that existing pods can make spontaneous integration uneven. This makes advance meetup coordination especially valuable.",
+    "sourceIds": [
+      "src-finch-site",
+      "src-finch-events",
+      "src-finch-community"
+    ]
+  },
+  {
+    "id": "collector-legion",
+    "name": "Collector Legion",
+    "city": "Lawndale",
+    "address": "4451 Redondo Beach Blvd., Lawndale, CA 90260",
+    "phone": "",
+    "website": "https://www.collectorlegion.com/",
+    "eventsUrl": "https://www.collectorlegion.com/",
+    "instagram": "",
+    "wpnPremium": null,
+    "distanceMiles": null,
+    "status": "open",
+    "lastVerified": "2026-07-13",
+    "researchStatus": "partial",
+    "assessment": {
+      "commanderActivity": 5,
+      "meetupAccessibility": 3,
+      "communityContinuity": 4,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 5,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Large organized-play footprint and substantial Magic inventory. Likely one of the strongest options for event volume. Size may help find compatible players, but it does not necessarily translate into an intimate or socially cohesive Commander environment.",
+    "sourceIds": [
+      "src-collector-site",
+      "src-collector-facebook",
+      "src-collector-community"
+    ]
+  },
+  {
+    "id": "tilted-gaming",
+    "name": "Tilted Gaming",
+    "city": "Cerritos",
+    "address": "15973 Piuma Ave., Cerritos, CA 90703",
+    "phone": "",
+    "website": "",
+    "eventsUrl": "https://locator.wizards.com/store/18067",
+    "instagram": "",
+    "wpnPremium": null,
+    "distanceMiles": null,
+    "status": "open",
+    "lastVerified": "2026-07-13",
+    "researchStatus": "partial",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 4,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "A nearby option with a clearly listed recurring casual Commander event. Proximity and predictable scheduling make it a high-priority field visit even though broader community evidence remains limited.",
+    "sourceIds": [
+      "src-tilted-wpn"
+    ]
+  },
+  {
+    "id": "jjs-collectibles",
+    "name": "JJ's Collectibles",
+    "city": "Garden Grove",
+    "address": "Garden Grove, CA 92845",
+    "phone": "",
+    "website": "",
+    "eventsUrl": "https://locator.wizards.com/store/18648",
+    "instagram": "",
+    "wpnPremium": null,
+    "distanceMiles": null,
+    "status": "open",
+    "lastVerified": "2026-07-13",
+    "researchStatus": "partial",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 4,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 4,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Tuesday Commander is explicitly framed as casual play across brackets with raffle prizing. That structure may be better for meeting new players than unstructured open tables.",
+    "sourceIds": [
+      "src-jjs-wpn",
+      "src-jjs-instagram"
+    ]
+  },
+  {
+    "id": "paper-heros-hb",
+    "name": "Paper Hero's Games \u2014 Huntington Beach",
+    "city": "Huntington Beach",
+    "address": "18502 Beach Blvd., Unit 120, Huntington Beach, CA 92648",
+    "phone": "661-459-0099",
+    "website": "https://paperherosgames.com/",
+    "eventsUrl": "https://paperherosgames4.crystalcommerce.com/",
+    "instagram": "",
+    "wpnPremium": null,
+    "distanceMiles": null,
+    "status": "open",
+    "lastVerified": "2026-07-13",
+    "researchStatus": "partial",
+    "assessment": {
+      "commanderActivity": 5,
+      "meetupAccessibility": 4,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "The store advertises Commander availability every night and has specific scheduled Commander events. Frequent play increases the chance of finding compatible players, but attendance patterns and pod facilitation still require field verification.",
+    "sourceIds": [
+      "src-phg-site",
+      "src-phg-events",
+      "src-phg-wpn"
+    ]
+  },
+  {
+    "id": "guild-house",
+    "name": "The Guild House",
+    "city": "Bellflower",
+    "address": "Bellflower, CA",
+    "phone": "",
+    "website": "https://www.theguildhousegames.com/",
+    "eventsUrl": "https://www.theguildhousegames.com/",
+    "instagram": "",
+    "wpnPremium": true,
+    "distanceMiles": null,
+    "status": "open",
+    "lastVerified": "2026-07-13",
+    "researchStatus": "partial",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 4,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 4,
+      "scheduleReliability": 2,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Frequently recommended by Long Beach-area players and described as a regional Magic destination. Current Commander scheduling still needs direct verification.",
+    "sourceIds": [
+      "src-guild-site",
+      "src-guild-community"
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "initial-seed",
+    "detectedAt": "2026-07-13T21:45:00-07:00",
+    "changeType": "initial",
+    "entityType": "dataset",
+    "entityId": "all",
+    "summary": "Initial verified seed dataset created.",
+    "reviewStatus": "accepted"
+  }
+]

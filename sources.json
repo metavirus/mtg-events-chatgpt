@@ -1,0 +1,100 @@
+[
+  {
+    "id": "src-finch-site",
+    "label": "Official store website",
+    "url": "https://finchandsparrowgames.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-finch-events",
+    "label": "Official TCGplayer Pro events page",
+    "url": "https://finchandsparrow.tcgplayerpro.com/events",
+    "type": "eventPlatform",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-finch-community",
+    "label": "Community discussion",
+    "url": "https://www.reddit.com/r/magicTCG/comments/1g3swxw/shop_and_commander_event_recommendations_for/",
+    "type": "community",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-collector-site",
+    "label": "Official store website",
+    "url": "https://www.collectorlegion.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-collector-facebook",
+    "label": "Official Facebook page",
+    "url": "https://www.facebook.com/collectorlegion/",
+    "type": "social",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-collector-community",
+    "label": "Community discussion",
+    "url": "https://www.reddit.com/r/magicTCG/comments/1g3swxw/shop_and_commander_event_recommendations_for/",
+    "type": "community",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-tilted-wpn",
+    "label": "Wizards Store & Event Locator",
+    "url": "https://locator.wizards.com/store/18067",
+    "type": "wpn",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-jjs-wpn",
+    "label": "Wizards Store & Event Locator",
+    "url": "https://locator.wizards.com/store/18648",
+    "type": "wpn",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-jjs-instagram",
+    "label": "Official Instagram evidence",
+    "url": "https://www.instagram.com/reel/DK8StygPKhr/",
+    "type": "social",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-phg-site",
+    "label": "Official store website",
+    "url": "https://paperherosgames.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-phg-events",
+    "label": "Official event storefront",
+    "url": "https://paperherosgames4.crystalcommerce.com/",
+    "type": "eventPlatform",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-phg-wpn",
+    "label": "Wizards event listing",
+    "url": "https://locator.wizards.com/event/10702761",
+    "type": "wpn",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-guild-site",
+    "label": "Official store website",
+    "url": "https://www.theguildhousegames.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-guild-community",
+    "label": "Long Beach community discussion",
+    "url": "https://www.reddit.com/r/longbeach/comments/1f5w7fp/looking_for_fellow_nerds/",
+    "type": "community",
+    "lastChecked": "2026-07-13"
+  }
+]

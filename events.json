@@ -1,0 +1,68 @@
+[
+  {
+    "id": "tilted-commanders-weekly",
+    "storeId": "tilted-gaming",
+    "title": "Tilted Commanders",
+    "format": "Commander",
+    "eventType": "casual",
+    "bracket": "unspecified",
+    "recurrence": {
+      "frequency": "weekly",
+      "dayOfWeek": 5,
+      "startTime": "18:00"
+    },
+    "startDate": "2026-07-24",
+    "endDate": null,
+    "entryFee": 5,
+    "currency": "USD",
+    "details": "Casual Commander; current Wizards listing states $5 entry.",
+    "sourceId": "src-tilted-wpn",
+    "lastVerified": "2026-07-13",
+    "confidence": "high",
+    "status": "active"
+  },
+  {
+    "id": "jjs-tuesday-edh",
+    "storeId": "jjs-collectibles",
+    "title": "Tuesday Night EDH",
+    "format": "Commander",
+    "eventType": "casual",
+    "bracket": "any",
+    "recurrence": {
+      "frequency": "weekly",
+      "dayOfWeek": 2,
+      "startTime": "18:30"
+    },
+    "startDate": "2026-07-14",
+    "endDate": null,
+    "entryFee": 5,
+    "currency": "USD",
+    "details": "Casual Commander across brackets; raffle prizing described in Wizards listing.",
+    "sourceId": "src-jjs-wpn",
+    "lastVerified": "2026-07-13",
+    "confidence": "high",
+    "status": "active"
+  },
+  {
+    "id": "phg-hb-thursday-commander",
+    "storeId": "paper-heros-hb",
+    "title": "Commander Night",
+    "format": "Commander",
+    "eventType": "casual",
+    "bracket": "all",
+    "recurrence": {
+      "frequency": "weekly",
+      "dayOfWeek": 4,
+      "startTime": "18:00"
+    },
+    "startDate": "2026-07-16",
+    "endDate": null,
+    "entryFee": 5,
+    "currency": "USD",
+    "details": "6:00\u201310:00 PM; proxy legal; advertised for all Commander players.",
+    "sourceId": "src-phg-events",
+    "lastVerified": "2026-07-13",
+    "confidence": "high",
+    "status": "active"
+  }
+]
