@@ -16,5 +16,14 @@
     "entityId": "wizards-locator",
     "summary": "Promoted 18 new stores and 32 recurring Commander events from the Wizards locator snapshot; 68 organizations remain in the review report.",
     "reviewStatus": "accepted"
+  },
+  {
+    "id": "wizards-outer-ring-reconciliation-2026-07-14",
+    "detectedAt": "2026-07-14T10:30:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "wizards-locator-outer-ring",
+    "summary": "Promoted 2 additional stores and 4 recurring Commander events from repeated Wizards listings in the 15–26 mile discovery ring.",
+    "reviewStatus": "accepted"
   }
 ]

@@ -56,6 +56,36 @@
     ]
   },
   {
+    "id": "jjs-collectibles",
+    "name": "JJ's Collectibles",
+    "city": "Garden Grove",
+    "address": "Garden Grove, CA 92845",
+    "phone": "",
+    "website": "",
+    "eventsUrl": "https://locator.wizards.com/store/18648",
+    "instagram": "",
+    "wpnPremium": null,
+    "distanceMiles": 2.55,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "partial",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 4,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 4,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Tuesday Commander is explicitly framed as casual play across brackets with raffle prizing. That structure may be better for meeting new players than unstructured open tables.",
+    "sourceIds": [
+      "src-jjs-wpn",
+      "src-jjs-instagram",
+      "src-wpn-18648"
+    ]
+  },
+  {
     "id": "joyful-toad-tcg",
     "name": "Joyful Toad TCG",
     "city": "Anaheim",
@@ -81,6 +111,37 @@
     "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
     "sourceIds": [
       "src-wpn-15985"
+    ]
+  },
+  {
+    "id": "finch-sparrow",
+    "name": "Finch and Sparrow Games",
+    "city": "Signal Hill",
+    "address": "2699 E 28th St., Ste 406, Signal Hill, CA 90755",
+    "phone": "562-249-8172",
+    "website": "https://finchandsparrowgames.com/",
+    "eventsUrl": "https://finchandsparrow.tcgplayerpro.com/events",
+    "instagram": "https://www.instagram.com/finch_and_sparrow_games/",
+    "wpnPremium": true,
+    "distanceMiles": 5.07,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "partial",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 2,
+      "communityContinuity": 4,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 4,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Strong Magic identity and established community. Public commentary suggests active Commander play, but also indicates that existing pods can make spontaneous integration uneven. This makes advance meetup coordination especially valuable.",
+    "sourceIds": [
+      "src-finch-site",
+      "src-finch-events",
+      "src-finch-community",
+      "src-wpn-6718"
     ]
   },
   {
@@ -533,6 +594,174 @@
     ]
   },
   {
+    "id": "tk-collectibles",
+    "name": "TK Collectibles",
+    "city": "Newport Beach",
+    "address": "3723 Birch St, Newport Beach, CA, 92660, United States",
+    "phone": "",
+    "website": "https://www.tiktok.com/@tk.tcg",
+    "eventsUrl": "https://locator.wizards.com/store/20168",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 15.03,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-20168"
+    ]
+  },
+  {
+    "id": "lost-planet",
+    "name": "Lost Planet",
+    "city": "Torrance",
+    "address": "2711 Plaza del Amo, Torrance, CA, 90501, United States",
+    "phone": "",
+    "website": "https://www.facebook.com/LostPlanetGames/",
+    "eventsUrl": "https://locator.wizards.com/store/18910",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 15.07,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-18910"
+    ]
+  },
+  {
+    "id": "lucky-seven-games",
+    "name": "Lucky Seven Games",
+    "city": "Placentia",
+    "address": "2001 E Orangethorpe Ave, Placentia, CA, 92870, United States",
+    "phone": "",
+    "website": "http://www.luckysevengames.com",
+    "eventsUrl": "https://locator.wizards.com/store/17840",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 15.16,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-17840"
+    ]
+  },
+  {
+    "id": "honey-pot-meadery",
+    "name": "Honey Pot Meadery",
+    "city": "Anaheim",
+    "address": "5120 E La Palma Ave, Anaheim, CA, 92807-2037, USA",
+    "phone": "",
+    "website": "https://www.honeypotmeadery.com/",
+    "eventsUrl": "https://locator.wizards.com/store/22306",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 15.79,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-22306"
+    ]
+  },
+  {
+    "id": "the-game-chest-del-amo-fashion-center",
+    "name": "The Game Chest - Del Amo Fashion Center",
+    "city": "Torrance",
+    "address": "21540 Hawthorne Blvd, Torrance, CA, 90503, United States",
+    "phone": "",
+    "website": "https://www.facebook.com/thegamechestDelamo",
+    "eventsUrl": "https://locator.wizards.com/store/9724",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 16.1,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-9724"
+    ]
+  },
+  {
+    "id": "card-arena",
+    "name": "Card Arena",
+    "city": "La Puente",
+    "address": "16350-C Valley Blvd La Puente, CA 91744 United States",
+    "phone": "",
+    "website": "",
+    "eventsUrl": "https://locator.wizards.com/store/6480",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 16.38,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-6480"
+    ]
+  },
+  {
     "id": "collector-legion",
     "name": "Collector Legion",
     "city": "Lawndale",
@@ -542,9 +771,9 @@
     "eventsUrl": "https://www.collectorlegion.com/",
     "instagram": "",
     "wpnPremium": null,
-    "distanceMiles": null,
+    "distanceMiles": 16.87,
     "status": "open",
-    "lastVerified": "2026-07-13",
+    "lastVerified": "2026-07-14",
     "researchStatus": "partial",
     "assessment": {
       "commanderActivity": 5,
@@ -559,68 +788,708 @@
     "sourceIds": [
       "src-collector-site",
       "src-collector-facebook",
-      "src-collector-community"
+      "src-collector-community",
+      "src-wpn-11405"
     ]
   },
   {
-    "id": "finch-sparrow",
-    "name": "Finch and Sparrow Games",
-    "city": "Signal Hill",
-    "address": "2699 E 28th St., Ste 406, Signal Hill, CA 90755",
-    "phone": "562-249-8172",
-    "website": "https://finchandsparrowgames.com/",
-    "eventsUrl": "https://finchandsparrow.tcgplayerpro.com/events",
-    "instagram": "https://www.instagram.com/finch_and_sparrow_games/",
-    "wpnPremium": true,
-    "distanceMiles": 5.07,
-    "status": "open",
-    "lastVerified": "2026-07-14",
-    "researchStatus": "partial",
-    "assessment": {
-      "commanderActivity": 4,
-      "meetupAccessibility": 2,
-      "communityContinuity": 4,
-      "newPlayerIntegration": 3,
-      "physicalEnvironment": 4,
-      "scheduleReliability": 3,
-      "homeGroupPotential": 4
-    },
-    "assessmentNotes": "Strong Magic identity and established community. Public commentary suggests active Commander play, but also indicates that existing pods can make spontaneous integration uneven. This makes advance meetup coordination especially valuable.",
-    "sourceIds": [
-      "src-finch-site",
-      "src-finch-events",
-      "src-finch-community",
-      "src-wpn-6718"
-    ]
-  },
-  {
-    "id": "jjs-collectibles",
-    "name": "JJ's Collectibles",
-    "city": "Garden Grove",
-    "address": "Garden Grove, CA 92845",
+    "id": "the-game-chest-promenade-on-the-peninsula",
+    "name": "The Game Chest - Promenade on the Peninsula",
+    "city": "Rolling Hills Estates",
+    "address": "550 Deep Valley Dr Unit 137, Rolling Hills Estates, CA, 90274, United States",
     "phone": "",
-    "website": "",
-    "eventsUrl": "https://locator.wizards.com/store/18648",
+    "website": "https://www.facebook.com/GameChestPromenade",
+    "eventsUrl": "https://locator.wizards.com/store/15729",
     "instagram": "",
-    "wpnPremium": null,
-    "distanceMiles": 2.55,
+    "wpnPremium": false,
+    "distanceMiles": 17.39,
     "status": "open",
     "lastVerified": "2026-07-14",
-    "researchStatus": "partial",
+    "researchStatus": "wizards-discovery",
     "assessment": {
-      "commanderActivity": 4,
-      "meetupAccessibility": 4,
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
       "communityContinuity": 3,
-      "newPlayerIntegration": 4,
+      "newPlayerIntegration": 3,
       "physicalEnvironment": 3,
       "scheduleReliability": 4,
-      "homeGroupPotential": 4
+      "homeGroupPotential": 3
     },
-    "assessmentNotes": "Tuesday Commander is explicitly framed as casual play across brackets with raffle prizing. That structure may be better for meeting new players than unstructured open tables.",
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
     "sourceIds": [
-      "src-jjs-wpn",
-      "src-jjs-instagram",
-      "src-wpn-18648"
+      "src-wpn-15729"
+    ]
+  },
+  {
+    "id": "b-y-o-games-llc",
+    "name": "B.Y.O.GAMES LLC",
+    "city": "Los Angeles",
+    "address": "3555 E 1st St, Los Angeles, CA, 90063-4141, United States",
+    "phone": "",
+    "website": "http://www.byogames.co/",
+    "eventsUrl": "https://locator.wizards.com/store/21934",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 17.47,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-21934"
+    ]
+  },
+  {
+    "id": "lvlup-gaming-tcg",
+    "name": "LVLUP GAMING TCG",
+    "city": "Los Angeles",
+    "address": "1356 E 41st St, Los Angeles, CA, 90011, US",
+    "phone": "",
+    "website": "https://lvlupgamingtcg.com/",
+    "eventsUrl": "https://locator.wizards.com/store/15152",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 17.48,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-15152"
+    ]
+  },
+  {
+    "id": "the-crimson-guild-south-el-monte",
+    "name": "The Crimson Guild - South El Monte",
+    "city": "South El Monte",
+    "address": "9661 Garvey Ave, South El Monte, CA, 91733, United States",
+    "phone": "",
+    "website": "http://magic.wizards.com",
+    "eventsUrl": "https://locator.wizards.com/store/18899",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 17.99,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-18899"
+    ]
+  },
+  {
+    "id": "games-for-meeple",
+    "name": "Games For Meeple",
+    "city": "Diamond Bar",
+    "address": "21308 Pathfinder Rd, Diamond Bar, CA, 91765, United States",
+    "phone": "",
+    "website": "https://www.gamesformeeple.com",
+    "eventsUrl": "https://locator.wizards.com/store/17911",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 18.22,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-17911"
+    ]
+  },
+  {
+    "id": "the-comic-bug",
+    "name": "The Comic Bug",
+    "city": "Manhattan Beach",
+    "address": "1807 Manhattan Beach Blvd Manhattan Beach, CA 90266 United States",
+    "phone": "",
+    "website": "http://thecomicbug.com/",
+    "eventsUrl": "https://locator.wizards.com/store/8432",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 18.6,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-8432"
+    ]
+  },
+  {
+    "id": "aki-collectibles",
+    "name": "Aki Collectibles",
+    "city": "San Gabriel",
+    "address": "432 E Valley Blvd, San Gabriel, CA, 91776, United States",
+    "phone": "",
+    "website": "http://wpn.wizards.com",
+    "eventsUrl": "https://locator.wizards.com/store/19392",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 19.16,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-19392"
+    ]
+  },
+  {
+    "id": "the-game-chest-irvine",
+    "name": "The Game Chest - Irvine ",
+    "city": "Irvine",
+    "address": "5365 A1 Alton Pkwy, Irvine, CA, 92618, United States",
+    "phone": "",
+    "website": "https://www.facebook.com/GameChestIrvineSpectrum/",
+    "eventsUrl": "https://locator.wizards.com/store/12524",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 19.25,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-12524"
+    ]
+  },
+  {
+    "id": "otaku-vault",
+    "name": "Otaku Vault",
+    "city": "Los Angeles",
+    "address": "330 E 2nd St, Los Angeles, CA, 90012, United States",
+    "phone": "",
+    "website": "https://otakuvault.la",
+    "eventsUrl": "https://locator.wizards.com/store/18939",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 19.52,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-18939"
+    ]
+  },
+  {
+    "id": "alamo-drafthouse-cinema-downtown-los-angeles",
+    "name": "Alamo Drafthouse Cinema Downtown Los Angeles",
+    "city": "Los Angeles",
+    "address": "700 W 7th St Ste. , Los Angeles, CA, 90017, United States",
+    "phone": "",
+    "website": "https://drafthouse.com/los-angeles/theater/downtown",
+    "eventsUrl": "https://locator.wizards.com/store/19738",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 20.03,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-19738"
+    ]
+  },
+  {
+    "id": "the-game-cellar",
+    "name": "The Game Cellar",
+    "city": "San Gabriel",
+    "address": "261 S San Gabriel Blvd, San Gabriel, CA, 91776, United States",
+    "phone": "",
+    "website": "https://thegamecellar.com//",
+    "eventsUrl": "https://locator.wizards.com/store/13567",
+    "instagram": "",
+    "wpnPremium": true,
+    "distanceMiles": 20.49,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-13567"
+    ]
+  },
+  {
+    "id": "gxgamers",
+    "name": "GXGAMERS",
+    "city": "Los Angeles",
+    "address": "1243 S Alvarado St, Los Angeles, CA, 90006-3824, USA",
+    "phone": "",
+    "website": "https://www.gxgamers.com/",
+    "eventsUrl": "https://locator.wizards.com/store/22276",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 20.81,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-22276"
+    ]
+  },
+  {
+    "id": "the-bullpen-2-0",
+    "name": "The Bullpen 2.0",
+    "city": "Los Angeles",
+    "address": "6234 West 87th Street, Los Angeles, CA, 90045, United States",
+    "phone": "",
+    "website": "http://magic.wizards.com",
+    "eventsUrl": "https://locator.wizards.com/store/9446",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 21.35,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-9446"
+    ]
+  },
+  {
+    "id": "turn-zero-games",
+    "name": "Turn Zero Games",
+    "city": "Los Angeles",
+    "address": "3959 Wilshire Blvd Ste A-9 Los Angeles, CA 90010 United States",
+    "phone": "",
+    "website": "www.turnzerogames.com",
+    "eventsUrl": "https://locator.wizards.com/store/8425",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 22.6,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-8425"
+    ]
+  },
+  {
+    "id": "coretcg",
+    "name": "CoreTCG",
+    "city": "Pasadena",
+    "address": "770 S Arroyo Pkwy Ste 110 Pasadena, CA 91105-3255 United States",
+    "phone": "",
+    "website": "www.coretcg.com",
+    "eventsUrl": "https://locator.wizards.com/store/11989",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 23.16,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-11989"
+    ]
+  },
+  {
+    "id": "dxn-provisions",
+    "name": "DXN Provisions",
+    "city": "Arcadia",
+    "address": "215 S 1st Ave Arcadia, CA 91006 United States",
+    "phone": "",
+    "website": "www.dxnprovisions.com",
+    "eventsUrl": "https://locator.wizards.com/store/13652",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 23.22,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-13652"
+    ]
+  },
+  {
+    "id": "revenge-of",
+    "name": "Revenge Of",
+    "city": "Los Angeles",
+    "address": "3420 Eagle Rock Blvd, Los Angeles, CA, 90065, United States",
+    "phone": "",
+    "website": "https://revengeof.com/",
+    "eventsUrl": "https://locator.wizards.com/store/15923",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 23.47,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-15923"
+    ]
+  },
+  {
+    "id": "next-gen-games",
+    "name": "Next-Gen Games",
+    "city": "Los Angeles",
+    "address": "5450 W Pico Blvd Ste 103 Los Angeles, CA 90019-3997 United States",
+    "phone": "",
+    "website": "http://www.nextgengames.la/",
+    "eventsUrl": "https://locator.wizards.com/store/9747",
+    "instagram": "",
+    "wpnPremium": true,
+    "distanceMiles": 23.57,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-9747"
+    ]
+  },
+  {
+    "id": "odyssey-games-pasadena",
+    "name": "Odyssey Games - Pasadena",
+    "city": "Pasadena",
+    "address": "1795 E Colorado Blvd Pasadena, CA 91106 United States",
+    "phone": "",
+    "website": "",
+    "eventsUrl": "https://locator.wizards.com/store/5693",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 23.82,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-5693"
+    ]
+  },
+  {
+    "id": "crown-city-games",
+    "name": "Crown City Games",
+    "city": "Pasadena",
+    "address": "42 E Colorado Blvd, Pasadena, CA, 91105, United States",
+    "phone": "",
+    "website": "https://www.crown-city-games.com",
+    "eventsUrl": "https://locator.wizards.com/store/19658",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 24.07,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-19658"
+    ]
+  },
+  {
+    "id": "comic-quest",
+    "name": "Comic Quest",
+    "city": "Lake Forest",
+    "address": "23811 Bridger Rd, Lake Forest, CA, 92630, United States",
+    "phone": "",
+    "website": "https://comicquest.org/",
+    "eventsUrl": "https://locator.wizards.com/store/6809",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 24.57,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-6809"
+    ]
+  },
+  {
+    "id": "kingslayer-games-lake-forest",
+    "name": "Kingslayer Games - Lake Forest",
+    "city": "Lake Forest",
+    "address": "23615 El Toro Rd, Lake Forest, CA, 92630, US",
+    "phone": "",
+    "website": "https://www.kingslayergames.com/",
+    "eventsUrl": "https://locator.wizards.com/store/15689",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 24.69,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-15689"
+    ]
+  },
+  {
+    "id": "it-s-gametime",
+    "name": "It's GameTime!",
+    "city": "Los Angeles",
+    "address": "3301 Motor Ave Los Angeles, CA 90034 United States",
+    "phone": "",
+    "website": "itsgametimela.com",
+    "eventsUrl": "https://locator.wizards.com/store/9054",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 24.89,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-9054"
+    ]
+  },
+  {
+    "id": "a-and-n-collectibles",
+    "name": "A & N Collectibles",
+    "city": "San Dimas",
+    "address": "105 W Arrow Hwy Ste 7 San Dimas, CA 91773 United States",
+    "phone": "",
+    "website": "",
+    "eventsUrl": "https://locator.wizards.com/store/10514",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 25.71,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-10514"
+    ]
+  },
+  {
+    "id": "magic-and-monsters",
+    "name": "Magic and Monsters",
+    "city": "Mission Viejo",
+    "address": "23854 Via Fabricante Ste B1 Mission Viejo, CA 92691 United States",
+    "phone": "",
+    "website": "http://www.magicandmonsters.com",
+    "eventsUrl": "https://locator.wizards.com/store/7807",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 25.93,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated explicit Wizards Store & Event Locator Commander listings in the 15–26 mile discovery ring. Needs follow-up verification against store-controlled sources and community reports.",
+    "sourceIds": [
+      "src-wpn-7807"
     ]
   },
   {

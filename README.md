@@ -1,5 +1,16 @@
 # Los Alamitos Commander Finder
 
+The durable product and research requirements are summarized in
+[`docs/PROJECT_CONTEXT.md`](docs/PROJECT_CONTEXT.md). Read that file before
+changing research logic, schemas, ranking, crawler behavior, or interface
+structure.
+
+The researched visual and interaction direction is documented in
+[`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md).
+
+The build is governed by [`docs/DATA_ARCHITECTURE.md`](docs/DATA_ARCHITECTURE.md)
+and [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md).
+
 A static browser application whose interface is separated from its data.
 
 This repository also contains a repeatable Wizards Store & Event Locator

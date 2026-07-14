@@ -21,27 +21,59 @@
   },
   "firstPassRule": "Promote repeated explicit Commander/EDH/cEDH recurring listings within 15 miles; leave one-offs, promo parties, non-explicit listings, and farther stores for later verification.",
   "promotedOrganizationIds": [
+    "5693",
+    "6480",
     "6718",
+    "6809",
     "6830",
+    "7807",
     "7819",
     "8283",
+    "8425",
+    "8432",
     "8579",
     "8707",
+    "9054",
     "9261",
     "9348",
+    "9446",
+    "9724",
+    "9747",
+    "10514",
+    "11405",
+    "11989",
+    "12524",
+    "13567",
+    "13652",
     "14480",
+    "15152",
+    "15689",
+    "15729",
+    "15923",
     "15985",
     "16787",
     "17086",
     "17690",
+    "17840",
     "17882",
+    "17911",
     "18067",
     "18376",
     "18648",
     "18731",
+    "18899",
+    "18910",
+    "18939",
+    "19392",
     "19606",
+    "19658",
+    "19738",
+    "20168",
     "20273",
-    "20379"
+    "20379",
+    "21934",
+    "22276",
+    "22306"
   ],
   "newStoreCount": 18,
   "newEventCount": 32,
@@ -894,8 +926,8 @@
           "sampleEventId": "10887477"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "18910",
@@ -931,8 +963,8 @@
           "sampleEventId": "10910981"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "17840",
@@ -968,8 +1000,8 @@
           "sampleEventId": "11326302"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "22306",
@@ -992,8 +1024,8 @@
           "sampleEventId": "11294168"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "9724",
@@ -1016,8 +1048,8 @@
           "sampleEventId": "11046604"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "6480",
@@ -1040,8 +1072,8 @@
           "sampleEventId": "11015702"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "20150",
@@ -1088,8 +1120,8 @@
           "sampleEventId": "11081181"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "15729",
@@ -1112,8 +1144,8 @@
           "sampleEventId": "11064393"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "21934",
@@ -1149,8 +1181,8 @@
           "sampleEventId": "11136929"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "15152",
@@ -1186,8 +1218,8 @@
           "sampleEventId": "11148206"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "21645",
@@ -1234,8 +1266,8 @@
           "sampleEventId": "11282286"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "17911",
@@ -1271,8 +1303,8 @@
           "sampleEventId": "11339940"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "8432",
@@ -1295,8 +1327,8 @@
           "sampleEventId": "10894115"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "19392",
@@ -1319,8 +1351,8 @@
           "sampleEventId": "11243064"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "12524",
@@ -1343,8 +1375,8 @@
           "sampleEventId": "11339680"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "18939",
@@ -1367,8 +1399,8 @@
           "sampleEventId": "11365775"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "19738",
@@ -1391,8 +1423,8 @@
           "sampleEventId": "11180506"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "13567",
@@ -1480,8 +1512,8 @@
           "sampleEventId": "11321216"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "22276",
@@ -1530,8 +1562,8 @@
           "sampleEventId": "11292619"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "9446",
@@ -1554,8 +1586,8 @@
           "sampleEventId": "11305760"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "8425",
@@ -1578,8 +1610,8 @@
           "sampleEventId": "11355745"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "18474",
@@ -1626,8 +1658,8 @@
           "sampleEventId": "11058992"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "13652",
@@ -1650,8 +1682,8 @@
           "sampleEventId": "10809725"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "15923",
@@ -1674,8 +1706,8 @@
           "sampleEventId": "10977303"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "9747",
@@ -1711,8 +1743,8 @@
           "sampleEventId": "10875304"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "5693",
@@ -1748,8 +1780,8 @@
           "sampleEventId": "11237759"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "19658",
@@ -1798,8 +1830,8 @@
           "sampleEventId": "10926781"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "6809",
@@ -1822,8 +1854,8 @@
           "sampleEventId": "11205675"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "15689",
@@ -1846,8 +1878,8 @@
           "sampleEventId": "11277074"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "22419",
@@ -1894,8 +1926,8 @@
           "sampleEventId": "11366059"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "10514",
@@ -1944,8 +1976,8 @@
           "sampleEventId": "10942056"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     },
     {
       "organizationId": "20710",
@@ -1992,12 +2024,20 @@
           "sampleEventId": "10954254"
         }
       ],
-      "decision": "review-later",
-      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+      "decision": "promoted-second-pass",
+      "reason": "Repeated explicit Commander/EDH/cEDH Wizards listings in the 15–26 mile discovery ring; promoted as provisional Wizards-discovery records."
     }
   ],
   "mergeNotes": [
     "Finch and Sparrow Games WPN listing was merged into existing store id finch-sparrow.",
     "JJ's Collectibles WPN listing was merged into existing store id jjs-collectibles."
-  ]
+  ],
+  "secondPass": {
+    "rule": "Promote repeated explicit Commander/EDH/cEDH listings from more than 15 through 26 miles; retain one-offs and farther listings for review.",
+    "maxDistanceMiles": 26.0,
+    "organizationCount": 32,
+    "newStoreCount": 31,
+    "newEventCount": 49,
+    "reviewedAt": "2026-07-14T10:30:00-07:00"
+  }
 }

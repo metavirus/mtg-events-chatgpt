@@ -98,9 +98,79 @@
     "lastChecked": "2026-07-13"
   },
   {
+    "id": "src-wpn-10514",
+    "label": "Wizards Store & Event Locator — A & N Collectibles",
+    "url": "https://locator.wizards.com/store/10514",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-11405",
+    "label": "Wizards Store & Event Locator — Collector Legion",
+    "url": "https://locator.wizards.com/store/11405",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-11989",
+    "label": "Wizards Store & Event Locator — CoreTCG",
+    "url": "https://locator.wizards.com/store/11989",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-12524",
+    "label": "Wizards Store & Event Locator — The Game Chest - Irvine ",
+    "url": "https://locator.wizards.com/store/12524",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-13567",
+    "label": "Wizards Store & Event Locator — The Game Cellar",
+    "url": "https://locator.wizards.com/store/13567",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-13652",
+    "label": "Wizards Store & Event Locator — DXN Provisions",
+    "url": "https://locator.wizards.com/store/13652",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
     "id": "src-wpn-14480",
     "label": "Wizards Store & Event Locator - Requiem: Coffee, Tea, and Fantasy",
     "url": "https://locator.wizards.com/store/14480",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-15152",
+    "label": "Wizards Store & Event Locator — LVLUP GAMING TCG",
+    "url": "https://locator.wizards.com/store/15152",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-15689",
+    "label": "Wizards Store & Event Locator — Kingslayer Games - Lake Forest",
+    "url": "https://locator.wizards.com/store/15689",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-15729",
+    "label": "Wizards Store & Event Locator — The Game Chest - Promenade on the Peninsula",
+    "url": "https://locator.wizards.com/store/15729",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-15923",
+    "label": "Wizards Store & Event Locator — Revenge Of",
+    "url": "https://locator.wizards.com/store/15923",
     "type": "wpn",
     "lastChecked": "2026-07-14"
   },
@@ -133,9 +203,23 @@
     "lastChecked": "2026-07-14"
   },
   {
+    "id": "src-wpn-17840",
+    "label": "Wizards Store & Event Locator — Lucky Seven Games",
+    "url": "https://locator.wizards.com/store/17840",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
     "id": "src-wpn-17882",
     "label": "Wizards Store & Event Locator - Tweedy Cards and Gaming",
     "url": "https://locator.wizards.com/store/17882",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-17911",
+    "label": "Wizards Store & Event Locator — Games For Meeple",
+    "url": "https://locator.wizards.com/store/17911",
     "type": "wpn",
     "lastChecked": "2026-07-14"
   },
@@ -168,9 +252,58 @@
     "lastChecked": "2026-07-14"
   },
   {
+    "id": "src-wpn-18899",
+    "label": "Wizards Store & Event Locator — The Crimson Guild - South El Monte",
+    "url": "https://locator.wizards.com/store/18899",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-18910",
+    "label": "Wizards Store & Event Locator — Lost Planet",
+    "url": "https://locator.wizards.com/store/18910",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-18939",
+    "label": "Wizards Store & Event Locator — Otaku Vault",
+    "url": "https://locator.wizards.com/store/18939",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-19392",
+    "label": "Wizards Store & Event Locator — Aki Collectibles",
+    "url": "https://locator.wizards.com/store/19392",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
     "id": "src-wpn-19606",
     "label": "Wizards Store & Event Locator - Guildhall - Whittier",
     "url": "https://locator.wizards.com/store/19606",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-19658",
+    "label": "Wizards Store & Event Locator — Crown City Games",
+    "url": "https://locator.wizards.com/store/19658",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-19738",
+    "label": "Wizards Store & Event Locator — Alamo Drafthouse Cinema Downtown Los Angeles",
+    "url": "https://locator.wizards.com/store/19738",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-20168",
+    "label": "Wizards Store & Event Locator — TK Collectibles",
+    "url": "https://locator.wizards.com/store/20168",
     "type": "wpn",
     "lastChecked": "2026-07-14"
   },
@@ -189,6 +322,41 @@
     "lastChecked": "2026-07-14"
   },
   {
+    "id": "src-wpn-21934",
+    "label": "Wizards Store & Event Locator — B.Y.O.GAMES LLC",
+    "url": "https://locator.wizards.com/store/21934",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-22276",
+    "label": "Wizards Store & Event Locator — GXGAMERS",
+    "url": "https://locator.wizards.com/store/22276",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-22306",
+    "label": "Wizards Store & Event Locator — Honey Pot Meadery",
+    "url": "https://locator.wizards.com/store/22306",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-5693",
+    "label": "Wizards Store & Event Locator — Odyssey Games - Pasadena",
+    "url": "https://locator.wizards.com/store/5693",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-6480",
+    "label": "Wizards Store & Event Locator — Card Arena",
+    "url": "https://locator.wizards.com/store/6480",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
     "id": "src-wpn-6718",
     "label": "Wizards Store & Event Locator - Finch and Sparrow Games",
     "url": "https://locator.wizards.com/store/6718",
@@ -196,9 +364,23 @@
     "lastChecked": "2026-07-14"
   },
   {
+    "id": "src-wpn-6809",
+    "label": "Wizards Store & Event Locator — Comic Quest",
+    "url": "https://locator.wizards.com/store/6809",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
     "id": "src-wpn-6830",
     "label": "Wizards Store & Event Locator - Spellhold Games",
     "url": "https://locator.wizards.com/store/6830",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-7807",
+    "label": "Wizards Store & Event Locator — Magic and Monsters",
+    "url": "https://locator.wizards.com/store/7807",
     "type": "wpn",
     "lastChecked": "2026-07-14"
   },
@@ -217,6 +399,20 @@
     "lastChecked": "2026-07-14"
   },
   {
+    "id": "src-wpn-8425",
+    "label": "Wizards Store & Event Locator — Turn Zero Games",
+    "url": "https://locator.wizards.com/store/8425",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-8432",
+    "label": "Wizards Store & Event Locator — The Comic Bug",
+    "url": "https://locator.wizards.com/store/8432",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
     "id": "src-wpn-8579",
     "label": "Wizards Store & Event Locator - Shuffle and Cut Games - La Habra",
     "url": "https://locator.wizards.com/store/8579",
@@ -231,6 +427,13 @@
     "lastChecked": "2026-07-14"
   },
   {
+    "id": "src-wpn-9054",
+    "label": "Wizards Store & Event Locator — It's GameTime!",
+    "url": "https://locator.wizards.com/store/9054",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
     "id": "src-wpn-9261",
     "label": "Wizards Store & Event Locator - Alakazam Comics",
     "url": "https://locator.wizards.com/store/9261",
@@ -241,6 +444,27 @@
     "id": "src-wpn-9348",
     "label": "Wizards Store & Event Locator - Krazy Nick's Games",
     "url": "https://locator.wizards.com/store/9348",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-9446",
+    "label": "Wizards Store & Event Locator — The Bullpen 2.0",
+    "url": "https://locator.wizards.com/store/9446",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-9724",
+    "label": "Wizards Store & Event Locator — The Game Chest - Del Amo Fashion Center",
+    "url": "https://locator.wizards.com/store/9724",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-9747",
+    "label": "Wizards Store & Event Locator — Next-Gen Games",
+    "url": "https://locator.wizards.com/store/9747",
     "type": "wpn",
     "lastChecked": "2026-07-14"
   }
