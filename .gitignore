@@ -1,5 +1,6 @@
 work/
 outputs/
+.gh-config/
 .venv/
 .vendor/
 __pycache__/

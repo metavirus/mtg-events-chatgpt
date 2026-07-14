@@ -1,0 +1,2003 @@
+{
+  "generatedAt": "2026-07-14T15:30:00-07:00",
+  "wizardsSnapshot": {
+    "retrievedAt": "2026-07-14T14:24:14.443128+00:00",
+    "publicOrigin": {
+      "label": "Los Alamitos, CA",
+      "latitude": 33.8031,
+      "longitude": -118.0726
+    },
+    "queryOrigin": {
+      "latitude": 33.8031,
+      "longitude": -118.0726
+    },
+    "radiusMiles": 26.0,
+    "startDate": null,
+    "endDate": null,
+    "allEventCount": 1231,
+    "commanderCandidateCount": 669,
+    "organizationCount": 77,
+    "privacyNote": "No home street address is stored. The default query uses a public Los Alamitos centroid and a discovery buffer."
+  },
+  "firstPassRule": "Promote repeated explicit Commander/EDH/cEDH recurring listings within 15 miles; leave one-offs, promo parties, non-explicit listings, and farther stores for later verification.",
+  "promotedOrganizationIds": [
+    "6718",
+    "6830",
+    "7819",
+    "8283",
+    "8579",
+    "8707",
+    "9261",
+    "9348",
+    "14480",
+    "15985",
+    "16787",
+    "17086",
+    "17690",
+    "17882",
+    "18067",
+    "18376",
+    "18648",
+    "18731",
+    "19606",
+    "20273",
+    "20379"
+  ],
+  "newStoreCount": 18,
+  "newEventCount": 32,
+  "organizations": [
+    {
+      "organizationId": "20379",
+      "name": "Collectors Lounge - Cypress",
+      "distanceMiles": 2.21,
+      "address": "9975 Walker St, Cypress, CA, 90630, United States",
+      "website": "http://www.collectorslounge.us",
+      "candidateRecurringEvents": [
+        {
+          "title": "Saturday Optimized Commander",
+          "count": 2,
+          "dayOfWeek": 6,
+          "startTime": "17:30",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-07-25",
+          "entryFee": 10.0,
+          "currency": "USD",
+          "capacity": 30,
+          "description": "Entry includes random magic pack No Restrictions. Raffles At The End Of Three Rounds for Promos + Mtg Product.",
+          "sampleEventId": "11248825"
+        },
+        {
+          "title": "Friday Night Casual Commander",
+          "count": 2,
+          "dayOfWeek": 5,
+          "startTime": "18:30",
+          "firstDate": "2026-07-24",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 10.0,
+          "currency": "USD",
+          "capacity": 50,
+          "description": "Entry includes random magic pack Raffles For Promos & MTG Product at the end of the night.",
+          "sampleEventId": "11248820"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "17690",
+      "name": "Hobby Overflow",
+      "distanceMiles": 2.36,
+      "address": "4760 Lincoln Ave, Cypress, CA, 90630, US",
+      "website": "https://www.instagram.com/hobbyoverflow/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Hobby Overflow casual commander",
+          "count": 8,
+          "dayOfWeek": 4,
+          "startTime": "22:00",
+          "firstDate": "2026-07-16",
+          "lastObservedDate": "2026-09-03",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Hobby Overflow casual commander",
+          "sampleEventId": "11193139"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "18648",
+      "name": "JJ's Collectibles",
+      "distanceMiles": 2.55,
+      "address": "11893 Valley View St, Garden Grove, CA, 92845, US",
+      "website": "http://wpn.wizards.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander Tuesday. at JJs!",
+          "count": 5,
+          "dayOfWeek": 2,
+          "startTime": "19:00",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-08-11",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 54,
+          "description": "Join us for Tuesday night EDH here at JJ's! Play some casuall games of commander of any bracket and meet and join a community of amazing people who love to play Magic! $5 entry and raffle prizing for each round.",
+          "sampleEventId": "11040942"
+        },
+        {
+          "title": "Casual Thursday Commander!",
+          "count": 1,
+          "dayOfWeek": 4,
+          "startTime": "19:00",
+          "firstDate": "2026-07-16",
+          "lastObservedDate": "2026-07-16",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 54,
+          "description": "Come join casual commander on Thursdays at JJs Collectibles! Bring your favorite bracket two deck! Raffles at the end! See you soon, Magic!",
+          "sampleEventId": "11389518"
+        },
+        {
+          "title": "Saturday Night Commander!",
+          "count": 1,
+          "dayOfWeek": 6,
+          "startTime": "19:00",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-07-18",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 54,
+          "description": "Join us for Saturday night commander here at JJ's! Wind down and play some casual games of commander. Meet and join a community of amazing people who love to play Magic! New players always welcome! Free entry and raffles at the end of the night!",
+          "sampleEventId": "10832593"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "19079",
+      "name": "Akh Trading Card Co",
+      "distanceMiles": 2.85,
+      "address": "12832 Valley View St, Garden Grove, CA, 92845, United States",
+      "website": "https://akhtradingcardco.com/",
+      "candidateRecurringEvents": [],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "20776",
+      "name": "GameStop - 1691 - Cypress Center",
+      "distanceMiles": 3.45,
+      "address": "6863 Katella Ave, Cypress, CA, 90630, US",
+      "website": "https://www.gamestop.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "GameStop Magic Meetup - Commander",
+          "count": 1,
+          "dayOfWeek": 6,
+          "startTime": "18:00",
+          "firstDate": "2026-07-25",
+          "lastObservedDate": "2026-07-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Join us at your local GameStop for a casual commander event!",
+          "sampleEventId": "11387232"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "15985",
+      "name": "Joyful Toad TCG",
+      "distanceMiles": 4.59,
+      "address": "3150 W Lincoln Ave, Anaheim, CA, 92801, US",
+      "website": "https://www.facebook.com/JoyfulToadTCG/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Night",
+          "count": 6,
+          "dayOfWeek": 1,
+          "startTime": "19:00",
+          "firstDate": "2026-07-20",
+          "lastObservedDate": "2026-08-24",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Chill Commander Night",
+          "sampleEventId": "11345133"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "9269",
+      "name": "Atomic Comics",
+      "distanceMiles": 4.91,
+      "address": "11414 Artesia Blvd Artesia, CA 90701-3846 United States",
+      "website": null,
+      "candidateRecurringEvents": [],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "6718",
+      "name": "Finch and Sparrow Games",
+      "distanceMiles": 5.07,
+      "address": "2699 E 28th St. Ste 406 Signal Hill, CA 90755 United States",
+      "website": "www.finchandsparrowgames.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Nite!!",
+          "count": 13,
+          "dayOfWeek": 4,
+          "startTime": "19:00",
+          "firstDate": "2026-07-16",
+          "lastObservedDate": "2026-10-08",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 54,
+          "description": "Join us for Commander Night and enjoy a fun, casual evening of Magic: The Gathering! Entry is $5. Bring your favorite Commander deck, meet up with friends, and play in a relaxed, welcoming environment. At the end of the night, we’ll raffle off prizes to participants — everyone has a chance to win! Come hang out, sling some spells, and enjoy the game.",
+          "sampleEventId": "11203644"
+        },
+        {
+          "title": "Commanderfest!",
+          "count": 13,
+          "dayOfWeek": 6,
+          "startTime": "14:30",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-10-10",
+          "entryFee": 8.0,
+          "currency": "USD",
+          "capacity": 56,
+          "description": "Commanderfest is here every Saturday at 2:30 PM for an epic afternoon of Magic: The Gathering Commander! Entry is $8. Bring your favorite deck and enjoy a fun, social Commander experience with plenty of big plays and wild moments. At the end of the night, we’re giving away a guaranteed booster box to one lucky participant! Great games, great vibes, and big prizes — don’t miss it!",
+          "sampleEventId": "11203614"
+        },
+        {
+          "title": "cEDH Workshop",
+          "count": 12,
+          "dayOfWeek": 1,
+          "startTime": "18:00",
+          "firstDate": "2026-07-20",
+          "lastObservedDate": "2026-10-05",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 68,
+          "description": "Join us for a laid-back cEDH hangout night built around the competitive side of Magic: The Gathering. This isn’t a tournament—there is no pressure. It’s simply a space to jam high-powered games, try out new decks, test fresh tech, and get real reps in with your favorite lists. Whether you’re tuning a new brew or sharpening your main deck, this is the perfect environment to play, learn, and hang out with other competitive-minded players. Bring your best, keep it friendly, and let’s enjoy some great games together.",
+          "sampleEventId": "11015144"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "20922",
+      "name": "GameStop - 4644 - Lakewood Center Mall",
+      "distanceMiles": 5.11,
+      "address": "19 Lakewood Ctr Mall, Lakewood, CA, 90712, US",
+      "website": "https://www.gamestop.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "GameStop Magic Meetup - Commander",
+          "count": 1,
+          "dayOfWeek": 6,
+          "startTime": "18:00",
+          "firstDate": "2026-07-25",
+          "lastObservedDate": "2026-07-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Join us at your local GameStop for a casual commander event!",
+          "sampleEventId": "11387401"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "9348",
+      "name": "Krazy Nick's Games",
+      "distanceMiles": 5.12,
+      "address": "13327 Artesia Blvd, Cerritos, CA, 90703, United States",
+      "website": "http://www.krazynicksgames.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Krazy Commander Wednesdays!",
+          "count": 9,
+          "dayOfWeek": 3,
+          "startTime": "16:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-09-09",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 64,
+          "description": "Krazy Commander Free play at KNG! Free entry with raffles going on throughout the day Join a pod or bring some friends in to play from opening till closing!",
+          "sampleEventId": "11183436"
+        },
+        {
+          "title": "Krazy Commander Sundays!",
+          "count": 12,
+          "dayOfWeek": 0,
+          "startTime": "13:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-10-04",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 64,
+          "description": "Free play Commander Sundays at KNG! Come in to play commander and be added to raffles throughout the day and possible free promos!",
+          "sampleEventId": "11345890"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "18067",
+      "name": "Tilted Gaming",
+      "distanceMiles": 5.99,
+      "address": "15973 Piuma Ave, Cerritos, CA, 90703, US",
+      "website": "https://www.instagram.com/tilted.gaming.ca/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Friday Night Magic Casual Tilted Commanders",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "18:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "$5 entry is to secure your seat and participate with other players who are here for the event. Raffles & Promos all night. Casual Play Raffles may include available packs, promotional material and more.",
+          "sampleEventId": "11152861"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "7516",
+      "name": "The Guild House",
+      "distanceMiles": 6.32,
+      "address": "16631 Bellflower Blvd Bellflower, CA 90706 United States",
+      "website": "https://www.facebook.com/theguildhouse5",
+      "candidateRecurringEvents": [],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "21179",
+      "name": "Nerdy Related",
+      "distanceMiles": 6.84,
+      "address": "1246 Long Beach Blvd, Long Beach, CA, 90813, United States",
+      "website": "https://nerdyrelated.com",
+      "candidateRecurringEvents": [],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "19321",
+      "name": "Good Game Collectibles",
+      "distanceMiles": 7.53,
+      "address": "15264 Rosecrans Ave, La Mirada, CA, 90638, United States",
+      "website": "http://www.goodgamestore.com",
+      "candidateRecurringEvents": [],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "17569",
+      "name": "Paper Hero's Games - Huntington Beach",
+      "distanceMiles": 8.98,
+      "address": "18502 Beach Blvd, Huntington Beach, CA, 92646, US",
+      "website": "http://paperherosgames.com",
+      "candidateRecurringEvents": [],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "14480",
+      "name": "Requiem: Coffee, Tea, and Fantasy",
+      "distanceMiles": 9.21,
+      "address": "280 S Clementine St, Anaheim, CA, 92805, United States",
+      "website": "http://requiemcafe.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Mondays!",
+          "count": 6,
+          "dayOfWeek": 1,
+          "startTime": "18:00",
+          "firstDate": "2026-07-20",
+          "lastObservedDate": "2026-08-24",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander Mondays at Requiem!!! Come join!",
+          "sampleEventId": "11119259"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "8283",
+      "name": "Comic Book Hideout",
+      "distanceMiles": 9.56,
+      "address": "215 W Commonwealth Ave, Fullerton, CA, 92832, United States",
+      "website": "https://www.instagram.com/comicbookhideout/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Sunday Commander",
+          "count": 9,
+          "dayOfWeek": 0,
+          "startTime": "12:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-09-13",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Sunday Commander! The perfect way to start the week and hang out with fellow players. All skill levels welcome, just make sure to bring decks that can match a variety of power levels",
+          "sampleEventId": "11217946"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "7819",
+      "name": "Kingslayer Games - Fountain Valley",
+      "distanceMiles": 10.52,
+      "address": "17870 Newhope St, Suite 106, Fountain Valley, CA, 92708, United States",
+      "website": "https://www.kingslayergames.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Fountain Valley Wednesday MTG Commander Slay Pass 7 PM",
+          "count": 3,
+          "dayOfWeek": 3,
+          "startTime": "19:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-07-29",
+          "entryFee": 13.0,
+          "currency": "USD",
+          "capacity": 72,
+          "description": "Event Fee Refund Policy: When you register for an event, you agree to these terms. For any cancellation requests, please call the store where the event is being hosted at least 3 hours before the start time of the event. Cancellation requests made within 3 hours of the event start time are not eligible for a refund. For any cancellation requests for an event that starts at or before 12:00 PM, please call the store the day before during opening hours.",
+          "sampleEventId": "11276761"
+        },
+        {
+          "title": "Fountain Valley MTG FNM Commander Slay Pass Friday 7 PM",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "19:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 13.0,
+          "currency": "USD",
+          "capacity": 72,
+          "description": "Commander Slay Pass Location - Kingslayer Games Fountain Valley Entry Fee - $13 Event Check-in Time: 6:00 PM Format - Commander What does a Slay Pass entry get me? Each Slay Pass player will receive 3 Magic the Gathering Booster Packs from our selection of Slay Pass-eligible packs (Any pack that is $6.50 or below). Players will only receive their 3 packs after joining the event through the MTG Companion app! Check our website for the entire description of our FNM Commander Night! Event Fee Refund Policy: When you register for an event, you agree to these terms. For any cancellation requests, please call the store where the event is being hosted at least 3 hours before the start time of the event. Cancellation requests made within 3 hours of the event start time are not eligible for a refund. For any cancellation requests for an event that starts at or before 12:00 PM, please call the store the day before during opening hours.",
+          "sampleEventId": "11276802"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "9263",
+      "name": "Psycho Turtle Collectibles",
+      "distanceMiles": 10.57,
+      "address": "9547 Telegraph Rd #1/2 Pico Rivera, CA 90240 United States",
+      "website": "psychoturtlegames.com",
+      "candidateRecurringEvents": [],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "8707",
+      "name": "SoCalMagic",
+      "distanceMiles": 11.56,
+      "address": "1818 W Chapman Ave Ste M, Orange, CA, 92868, United States",
+      "website": "https://magic.wizards.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander all day / No proxy",
+          "count": 11,
+          "dayOfWeek": 3,
+          "startTime": "13:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-09-23",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander all day / No proxy",
+          "sampleEventId": "11311591"
+        },
+        {
+          "title": "Commander all day / No proxy",
+          "count": 11,
+          "dayOfWeek": 4,
+          "startTime": "13:00",
+          "firstDate": "2026-07-16",
+          "lastObservedDate": "2026-09-24",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander all day / No proxy",
+          "sampleEventId": "11320737"
+        },
+        {
+          "title": "Commander all day / No proxy",
+          "count": 11,
+          "dayOfWeek": 5,
+          "startTime": "13:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-09-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander all day / No proxy",
+          "sampleEventId": "11327391"
+        },
+        {
+          "title": "Commander all day / No proxy",
+          "count": 11,
+          "dayOfWeek": 6,
+          "startTime": "13:00",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-09-26",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander all day / No proxy",
+          "sampleEventId": "11334583"
+        },
+        {
+          "title": "Commander all day / No proxy",
+          "count": 11,
+          "dayOfWeek": 0,
+          "startTime": "13:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-09-27",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander all day / No proxy",
+          "sampleEventId": "11338725"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "17882",
+      "name": "Tweedy Cards and Gaming",
+      "distanceMiles": 11.97,
+      "address": "4367 Tweedy Blvd, South Gate, CA, 90280, US",
+      "website": "http://wpn.wizards.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Friday Night Magic Casual Commander",
+          "count": 2,
+          "dayOfWeek": 5,
+          "startTime": "17:00",
+          "firstDate": "2026-07-24",
+          "lastObservedDate": "2026-08-28",
+          "entryFee": 10.0,
+          "currency": "USD",
+          "capacity": 16,
+          "description": "Join us for Commander Friday Night Magic.",
+          "sampleEventId": "11029392"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "19606",
+      "name": "Guildhall - Whittier",
+      "distanceMiles": 12.39,
+      "address": "6741 Bright Ave, Whittier, CA, 90601, United States",
+      "website": "https://www.guildhall.tv/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander Night. Bring your deck and jump in the fun!",
+          "count": 7,
+          "dayOfWeek": 2,
+          "startTime": "17:30",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-08-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Come and play commander in a fun bar atmosphere. Bring friends or meet others looking for a game. Signing in with Wizards account and spending $25 on food/drink gives eligibility for booster pack prizes. No outside food or drink allowed. Preregister on the companion app now!",
+          "sampleEventId": "11304732"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "16787",
+      "name": "Shadow Realm Collectibles",
+      "distanceMiles": 12.4,
+      "address": "7508 Eastern Ave, Bell Gardens, CA, 90201, US",
+      "website": "instagram.com/srctcg",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander night",
+          "count": 8,
+          "dayOfWeek": 1,
+          "startTime": "17:00",
+          "firstDate": "2026-07-20",
+          "lastObservedDate": "2026-09-07",
+          "entryFee": 15.0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Weekly commander night. Tournament packs while supplies last for participants. Top 4 pricing. Participation pack of current set, 2 packs added to pricing pool per participant.",
+          "sampleEventId": "10636032"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "8579",
+      "name": "Shuffle and Cut Games - La Habra",
+      "distanceMiles": 12.97,
+      "address": "1033 E Imperial Hwy STE E3, Brea, CA, 92821, US",
+      "website": "http://retail.shuffleandcut.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander Night",
+          "count": 4,
+          "dayOfWeek": 2,
+          "startTime": "17:30",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-08-04",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 60,
+          "description": "Casual Commander every Tuesday night! Meet new players and pilot your latest brew!",
+          "sampleEventId": "11181229"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "20273",
+      "name": "ProjectCCG - Santa Ana",
+      "distanceMiles": 13.43,
+      "address": "600 S Grand Ave, Santa Ana, CA, 92705, United States",
+      "website": "https://projectccg.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "ProjectCCG - OC - Commander Nights",
+          "count": 7,
+          "dayOfWeek": 2,
+          "startTime": "19:00",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-08-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Commander Party Nights at ProjectCCG in Santa Ana. No entry to sit and play other than to sign up on the companion app Bring your friends! Promos will be given out randomly while supplies last! One Booster prizing per pod winner at the end of the night.",
+          "sampleEventId": "11299434"
+        },
+        {
+          "title": "ProjectCCG - OC - Commander Nights",
+          "count": 7,
+          "dayOfWeek": 5,
+          "startTime": "19:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-08-28",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Commander Party Nights at ProjectCCG in Santa Ana. No entry to sit and play other than to sign up on the companion app Bring your friends! Promos will be given out randomly while supplies last! One Booster prizing per pod winner at the end of the night.",
+          "sampleEventId": "11299435"
+        },
+        {
+          "title": "ProjectCCG - OC - Commander Nights",
+          "count": 6,
+          "dayOfWeek": 0,
+          "startTime": "16:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-08-23",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Commander Nights at ProjectCCG in Santa Ana. No entry to sit and play other than to sign up on the companion app Bring your friends! Promos will be given out randomly while supplies last!",
+          "sampleEventId": "11299453"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "6830",
+      "name": "Spellhold Games",
+      "distanceMiles": 13.43,
+      "address": "1438 E Katella Ave, Orange, CA, 92867, United States",
+      "website": "http://spellholdgames.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Saturday Open Play Commander",
+          "count": 4,
+          "dayOfWeek": 6,
+          "startTime": "12:00",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-08-29",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Saturday Open Play Commander, 12pm-8pm, Free Entry, Free Raffles for players that sign into the event using their MTG Companion App.",
+          "sampleEventId": "11187850"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "12433",
+      "name": "Table 1 Gaming",
+      "distanceMiles": 13.93,
+      "address": "4219 Gage Ave, Bell, CA, 90201, US",
+      "website": "http://wpn.wizards.com",
+      "candidateRecurringEvents": [],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "18376",
+      "name": "Buddies Collectibles",
+      "distanceMiles": 14.22,
+      "address": "18527 S Western Ave, Gardena, CA, 90248, United States",
+      "website": "https://socalbuddiescards.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Buddies Collectibles casual commander night",
+          "count": 12,
+          "dayOfWeek": 5,
+          "startTime": "18:30",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-10-02",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "casual commander night",
+          "sampleEventId": "11336310"
+        },
+        {
+          "title": "Buddies Collectibles Casual Commander Night",
+          "count": 11,
+          "dayOfWeek": 6,
+          "startTime": "22:30",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-09-26",
+          "entryFee": 10.0,
+          "currency": "USD",
+          "capacity": 12,
+          "description": "Casual commander night",
+          "sampleEventId": "11336296"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "9261",
+      "name": "Alakazam Comics",
+      "distanceMiles": 14.73,
+      "address": "17777 Main Street, Irvine, CA, 92614, United States",
+      "website": "https://alakazamcomics.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Friday Night Magic Table C - Commander Draft",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "19:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 18.0,
+          "currency": "USD",
+          "capacity": 8,
+          "description": "Table C - 5 pack commander draft. Get 20% of cost of the packs. Make your best 60 card commander deck. Play in groups of 3 to 4.",
+          "sampleEventId": "11205411"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "17086",
+      "name": "Cardboard Games",
+      "distanceMiles": 14.73,
+      "address": "205 W First St, Tustin, CA, 92780, US",
+      "website": "http://www.cardboardgames.store",
+      "candidateRecurringEvents": [
+        {
+          "title": "CBG Commander Night",
+          "count": 7,
+          "dayOfWeek": 5,
+          "startTime": "19:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-08-28",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Come enjoy free play Commander at Cardboard Games every Friday! Raffles for promos and other goodies!",
+          "sampleEventId": "11158277"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "18731",
+      "name": "Grails Gone Wild",
+      "distanceMiles": 14.83,
+      "address": "2140 Artesia Blvd, Torrance, CA, 90504, US",
+      "website": "http://wpn.wizards.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander",
+          "count": 7,
+          "dayOfWeek": 0,
+          "startTime": "13:30",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-08-30",
+          "entryFee": 8.0,
+          "currency": "USD",
+          "capacity": 20,
+          "description": "Hosting our weekly Commander night for our locals! Upon admission you will receive a participation pack and participation promo. Part of your fee will go into a raffle and a random winner will be chosen at the end of day! Come pod up and play some casual Commander!!",
+          "sampleEventId": "10962760"
+        }
+      ],
+      "decision": "promoted-to-curated-json",
+      "reason": "Within 15 miles and has repeated explicit Commander/EDH/cEDH Wizards listings."
+    },
+    {
+      "organizationId": "20168",
+      "name": "TK Collectibles",
+      "distanceMiles": 15.03,
+      "address": "3723 Birch St, Newport Beach, CA, 92660, United States",
+      "website": "https://www.tiktok.com/@tk.tcg",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander",
+          "count": 2,
+          "dayOfWeek": 6,
+          "startTime": "12:00",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-07-25",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 20,
+          "description": "Join us for some casual commander!",
+          "sampleEventId": "10887476"
+        },
+        {
+          "title": "Casual Commander",
+          "count": 1,
+          "dayOfWeek": 0,
+          "startTime": "12:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-07-19",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 20,
+          "description": "Join us for some casual commander!",
+          "sampleEventId": "10887477"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "18910",
+      "name": "Lost Planet",
+      "distanceMiles": 15.07,
+      "address": "2711 Plaza del Amo, Torrance, CA, 90501, United States",
+      "website": "https://www.facebook.com/LostPlanetGames/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Tuesday Night Commander",
+          "count": 2,
+          "dayOfWeek": 2,
+          "startTime": "19:00",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-07-21",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Our weekly meet-up for commander play! Up to bracket level 4 decks permitted! (pods built to match level)",
+          "sampleEventId": "11311153"
+        },
+        {
+          "title": "FRIDAY NIGHT LVL 2 COMMANDER",
+          "count": 2,
+          "dayOfWeek": 5,
+          "startTime": "19:00",
+          "firstDate": "2026-08-28",
+          "lastObservedDate": "2026-09-11",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Come into LP and enjoy a casual night of Commander! Level 2 Decks ONLY! Please be sure to keep your deck up to date with the current list of allowed cards for this level! https://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta Official Prize packs for winning players and booster pack for each sign-up!",
+          "sampleEventId": "10910981"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "17840",
+      "name": "Lucky Seven Games",
+      "distanceMiles": 15.16,
+      "address": "2001 E Orangethorpe Ave, Placentia, CA, 92870, United States",
+      "website": "http://www.luckysevengames.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Lucky 7 Casual Commander",
+          "count": 3,
+          "dayOfWeek": 0,
+          "startTime": "19:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-08-02",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Come jump into a Commander pod at Lucky 7 Games.",
+          "sampleEventId": "11326301"
+        },
+        {
+          "title": "Lucky 7 Casual Commander",
+          "count": 2,
+          "dayOfWeek": 1,
+          "startTime": "19:00",
+          "firstDate": "2026-07-20",
+          "lastObservedDate": "2026-07-27",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Come jump into a Commander pod at Lucky 7 Games.",
+          "sampleEventId": "11326302"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "22306",
+      "name": "Honey Pot Meadery",
+      "distanceMiles": 15.79,
+      "address": "5120 E La Palma Ave, Anaheim, CA, 92807-2037, USA",
+      "website": "https://www.honeypotmeadery.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander Wednesdays",
+          "count": 11,
+          "dayOfWeek": 3,
+          "startTime": "18:30",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-09-23",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Join us every Wednesday for casual Magic: The Gathering Commander play at Honey Pot Meadery. Bring your favorite Commander deck, grab a pour, and find a pod for a relaxed night of multiplayer Magic. This is a casual open-play night, not a league or tournament, so players are welcome to drop in, meet the community, and play at their own pace. Newer players, returning players, and experienced Commander players are all welcome. When: Wednesdays Time: Main group arrives around 7:00 PM Format: Casual Commander Entry: Free to play Location: Honey Pot Meadery Bring: A Commander deck Loaner supplies: Precon decks, playmats, dice, and tokens available to borrow",
+          "sampleEventId": "11294168"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "9724",
+      "name": "The Game Chest - Del Amo Fashion Center",
+      "distanceMiles": 16.1,
+      "address": "21540 Hawthorne Blvd, Torrance, CA, 90503, United States",
+      "website": "https://www.facebook.com/thegamechestDelamo",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander DA",
+          "count": 5,
+          "dayOfWeek": 3,
+          "startTime": "18:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-08-12",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Join us for casual commander",
+          "sampleEventId": "11046604"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "6480",
+      "name": "Card Arena",
+      "distanceMiles": 16.38,
+      "address": "16350-C Valley Blvd La Puente, CA 91744 United States",
+      "website": null,
+      "candidateRecurringEvents": [
+        {
+          "title": "Friday Night Magic EDH",
+          "count": 5,
+          "dayOfWeek": 5,
+          "startTime": "18:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-08-14",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Weekly EDH",
+          "sampleEventId": "11015702"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "20150",
+      "name": "Blue Penguin Gaming",
+      "distanceMiles": 16.87,
+      "address": "2071 S Atlantic Blvd, Monterey Park, CA, 91754, United States",
+      "website": "https://www.bluepenguingaming.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander",
+          "count": 1,
+          "dayOfWeek": 0,
+          "startTime": "12:00",
+          "firstDate": "2026-07-26",
+          "lastObservedDate": "2026-07-26",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 16,
+          "description": "Casual Commander. Event time is from 12pm - 5pm.",
+          "sampleEventId": "11231376"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "11405",
+      "name": "Collector Legion",
+      "distanceMiles": 16.87,
+      "address": "4451 Redondo Beach Blvd, Lawndale, CA, 90260, United States",
+      "website": "collectorlegion.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Tuesday Free Raffle",
+          "count": 4,
+          "dayOfWeek": 2,
+          "startTime": "19:00",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-08-18",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Free raffles at 7pm 8pm and 9pm!",
+          "sampleEventId": "11081181"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "15729",
+      "name": "The Game Chest - Promenade on the Peninsula",
+      "distanceMiles": 17.39,
+      "address": "550 Deep Valley Dr Unit 137, Rolling Hills Estates, CA, 90274, United States",
+      "website": "https://www.facebook.com/GameChestPromenade",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander",
+          "count": 7,
+          "dayOfWeek": 2,
+          "startTime": "18:15",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-08-25",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Join us for our Commander Night",
+          "sampleEventId": "11064393"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "21934",
+      "name": "B.Y.O.GAMES LLC",
+      "distanceMiles": 17.47,
+      "address": "3555 E 1st St, Los Angeles, CA, 90063-4141, United States",
+      "website": "http://www.byogames.co/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Night (Casual)",
+          "count": 7,
+          "dayOfWeek": 2,
+          "startTime": "19:45",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-08-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Doors open 4:00pm for casual, warm-ups, and free-play. Tournament: 4 players min needed to run a pod, entry $10 Bracket 3-4, no infinites Rule zero is strongly encouraged to be discussed before starting games.",
+          "sampleEventId": "11136928"
+        },
+        {
+          "title": "Commander Night (Casual)",
+          "count": 7,
+          "dayOfWeek": 3,
+          "startTime": "19:45",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-08-26",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Doors open 4:00pm for casual, warm-ups, and free-play. Tournament: 4 players min needed to run a pod, entry $10 Bracket 3-4, no infinites Rule zero is strongly encouraged to be discussed before starting games.",
+          "sampleEventId": "11136929"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "15152",
+      "name": "LVLUP GAMING TCG",
+      "distanceMiles": 17.48,
+      "address": "1356 E 41st St, Los Angeles, CA, 90011, US",
+      "website": "https://lvlupgamingtcg.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Tuesday Night Commander!",
+          "count": 13,
+          "dayOfWeek": 2,
+          "startTime": "19:30",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-10-06",
+          "entryFee": 10.0,
+          "currency": "USD",
+          "capacity": 40,
+          "description": "Prizing TBD on turnout",
+          "sampleEventId": "11357795"
+        },
+        {
+          "title": "Friday Night Commander",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "19:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 10.0,
+          "currency": "USD",
+          "capacity": 40,
+          "description": "Bracket 3 Commander Format",
+          "sampleEventId": "11148206"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "21645",
+      "name": "Endless Entertainment",
+      "distanceMiles": 17.54,
+      "address": "2939 Whittier Blvd, Los Angeles, CA, 90023, United States",
+      "website": "http://magic.wizards.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Friday Night Magic EE’s Commander",
+          "count": 1,
+          "dayOfWeek": 5,
+          "startTime": "17:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-17",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Free pack for every attendee.",
+          "sampleEventId": "11358137"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "18899",
+      "name": "The Crimson Guild - South El Monte",
+      "distanceMiles": 17.99,
+      "address": "9661 Garvey Ave, South El Monte, CA, 91733, United States",
+      "website": "http://magic.wizards.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "The Crimson Guild COMMANDER NIGHT",
+          "count": 10,
+          "dayOfWeek": 5,
+          "startTime": "18:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-09-18",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Come play Commander with your friends",
+          "sampleEventId": "11282286"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "17911",
+      "name": "Games For Meeple",
+      "distanceMiles": 18.22,
+      "address": "21308 Pathfinder Rd, Diamond Bar, CA, 91765, United States",
+      "website": "https://www.gamesformeeple.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Friday Night Magic Commander Night",
+          "count": 10,
+          "dayOfWeek": 5,
+          "startTime": "17:30",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-09-18",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 16,
+          "description": "Come down for casual commander night fun!",
+          "sampleEventId": "11283328"
+        },
+        {
+          "title": "GFM - Sunday Casual Play Commander Fun",
+          "count": 13,
+          "dayOfWeek": 0,
+          "startTime": "13:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-10-11",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Sunday Commander Fun",
+          "sampleEventId": "11339940"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "8432",
+      "name": "The Comic Bug",
+      "distanceMiles": 18.6,
+      "address": "1807 Manhattan Beach Blvd Manhattan Beach, CA 90266 United States",
+      "website": "http://thecomicbug.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Night",
+          "count": 3,
+          "dayOfWeek": 3,
+          "startTime": "18:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-07-29",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 40,
+          "description": "Spend $5 play all night!",
+          "sampleEventId": "10894115"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "19392",
+      "name": "Aki Collectibles",
+      "distanceMiles": 19.16,
+      "address": "432 E Valley Blvd, San Gabriel, CA, 91776, United States",
+      "website": "http://wpn.wizards.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Night",
+          "count": 6,
+          "dayOfWeek": 6,
+          "startTime": "17:00",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-08-22",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Join us for our weekly Commander Night!",
+          "sampleEventId": "11243064"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "12524",
+      "name": "The Game Chest - Irvine ",
+      "distanceMiles": 19.25,
+      "address": "5365 A1 Alton Pkwy, Irvine, CA, 92618, United States",
+      "website": "https://www.facebook.com/GameChestIrvineSpectrum/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander",
+          "count": 11,
+          "dayOfWeek": 0,
+          "startTime": "15:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-09-27",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 16,
+          "description": "casual commander",
+          "sampleEventId": "11339680"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "18939",
+      "name": "Otaku Vault",
+      "distanceMiles": 19.52,
+      "address": "330 E 2nd St, Los Angeles, CA, 90012, United States",
+      "website": "https://otakuvault.la",
+      "candidateRecurringEvents": [
+        {
+          "title": "Friday Night Magic Commander Night @Otaku Vault",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "18:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 16,
+          "description": "Our most adored Friday Night Magic Casual Commander Night is happening at Otaku Vault! Come sling spells and enjoy a wonderful atmosphere in the heart of Little Tokyo!",
+          "sampleEventId": "11365775"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "19738",
+      "name": "Alamo Drafthouse Cinema Downtown Los Angeles",
+      "distanceMiles": 20.03,
+      "address": "700 W 7th St Ste. , Los Angeles, CA, 90017, United States",
+      "website": "https://drafthouse.com/los-angeles/theater/downtown",
+      "candidateRecurringEvents": [
+        {
+          "title": "Magic Meetup - Casual Commander Nights",
+          "count": 3,
+          "dayOfWeek": 4,
+          "startTime": "17:00",
+          "firstDate": "2026-07-23",
+          "lastObservedDate": "2026-09-24",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 30,
+          "description": "Players who sign up using a Wizards account will receive a special promo card, while supplies last. All skills levels are welcome!",
+          "sampleEventId": "11180506"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "13567",
+      "name": "The Game Cellar",
+      "distanceMiles": 20.49,
+      "address": "261 S San Gabriel Blvd, San Gabriel, CA, 91776, United States",
+      "website": "https://thegamecellar.com//",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander in the Cellar",
+          "count": 3,
+          "dayOfWeek": 2,
+          "startTime": "14:00",
+          "firstDate": "2026-07-14",
+          "lastObservedDate": "2026-07-28",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander in the Cellar!",
+          "sampleEventId": "11321225"
+        },
+        {
+          "title": "Commander in the Cellar",
+          "count": 3,
+          "dayOfWeek": 3,
+          "startTime": "14:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-07-29",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander in the Cellar!",
+          "sampleEventId": "11321221"
+        },
+        {
+          "title": "Commander in the Cellar",
+          "count": 3,
+          "dayOfWeek": 4,
+          "startTime": "14:00",
+          "firstDate": "2026-07-16",
+          "lastObservedDate": "2026-07-30",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander in the Cellar!",
+          "sampleEventId": "11321195"
+        },
+        {
+          "title": "Commander in the Cellar",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "14:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander in the Cellar!",
+          "sampleEventId": "11321200"
+        },
+        {
+          "title": "Commander in the Cellar",
+          "count": 2,
+          "dayOfWeek": 6,
+          "startTime": "12:00",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-07-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander in the Cellar!",
+          "sampleEventId": "11321213"
+        },
+        {
+          "title": "Commander in the Cellar",
+          "count": 2,
+          "dayOfWeek": 0,
+          "startTime": "12:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-07-26",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander in the Cellar!",
+          "sampleEventId": "11321216"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "22276",
+      "name": "GXGAMERS",
+      "distanceMiles": 20.81,
+      "address": "1243 S Alvarado St, Los Angeles, CA, 90006-3824, USA",
+      "website": "https://www.gxgamers.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Thursday All Night Commander!",
+          "count": 3,
+          "dayOfWeek": 4,
+          "startTime": "19:00",
+          "firstDate": "2026-07-16",
+          "lastObservedDate": "2026-07-30",
+          "entryFee": 10.0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Welcome to GX Casual Commander Open Play Every player gets 2x packs will be given for participation. Players will be seated in 4 pod man Bracket 3 Casual, No Proxies Infinite Combos allowed after Round 8 and after. Commander Banlist in effect. Prizing will be given end of the match Companion ID will be required to participate in this event.",
+          "sampleEventId": "11292604"
+        },
+        {
+          "title": "Saturday All Night Commander!",
+          "count": 2,
+          "dayOfWeek": 6,
+          "startTime": "19:00",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-07-25",
+          "entryFee": 10.0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Welcome to GX Casual Commander Open Play Every player gets 2x packs will be given for participation. Players will be seated in 4 pod man Bracket 3 Casual, No Proxies Infinite Combos allowed after Round 8 and after. Commander Banlist in effect. Prizing will be given end of the match Companion ID will be required to participate in this event.",
+          "sampleEventId": "11292611"
+        },
+        {
+          "title": "Monday All Night Commander!",
+          "count": 2,
+          "dayOfWeek": 1,
+          "startTime": "19:00",
+          "firstDate": "2026-07-20",
+          "lastObservedDate": "2026-07-27",
+          "entryFee": 10.0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Welcome to GX Casual Commander Open Play Every player gets 2x packs will be given for participation. Players will be seated in 4 pod man Bracket 3 Casual, No Proxies Infinite Combos allowed after Round 8 and after. Commander Banlist in effect. Prizing will be given end of the match Companion ID will be required to participate in this event.",
+          "sampleEventId": "11292619"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "9446",
+      "name": "The Bullpen 2.0",
+      "distanceMiles": 21.35,
+      "address": "6234 West 87th Street, Los Angeles, CA, 90045, United States",
+      "website": "http://magic.wizards.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Weekly Commander",
+          "count": 3,
+          "dayOfWeek": 6,
+          "startTime": "14:00",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-08-01",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Weekly Commander games.",
+          "sampleEventId": "11305760"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "8425",
+      "name": "Turn Zero Games",
+      "distanceMiles": 22.6,
+      "address": "3959 Wilshire Blvd Ste A-9 Los Angeles, CA 90010 United States",
+      "website": "www.turnzerogames.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Turn Zero Games Commander Night",
+          "count": 12,
+          "dayOfWeek": 3,
+          "startTime": "11:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-09-30",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Commander Free Play",
+          "sampleEventId": "11355745"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "18474",
+      "name": "GameStop - 1871 - Arcadia",
+      "distanceMiles": 22.94,
+      "address": "400 S Baldwin Ave, Arcadia, CA, 91007, United States",
+      "website": "https://www.gamestop.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "GameStop Magic Meetup - Commander",
+          "count": 1,
+          "dayOfWeek": 6,
+          "startTime": "18:00",
+          "firstDate": "2026-07-25",
+          "lastObservedDate": "2026-07-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Join us at your local GameStop for a casual commander event!",
+          "sampleEventId": "11387102"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "11989",
+      "name": "CoreTCG",
+      "distanceMiles": 23.16,
+      "address": "770 S Arroyo Pkwy Ste 110 Pasadena, CA 91105-3255 United States",
+      "website": "www.coretcg.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "CoreTCG Commander",
+          "count": 4,
+          "dayOfWeek": 5,
+          "startTime": "16:30",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-08-14",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 16,
+          "description": "$5 Entry, 1 Booster Pack for Entry Packs awarded based on number of wins",
+          "sampleEventId": "11058992"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "13652",
+      "name": "DXN Provisions",
+      "distanceMiles": 23.22,
+      "address": "215 S 1st Ave Arcadia, CA 91006 United States",
+      "website": "www.dxnprovisions.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Dxn Casual Commander Night",
+          "count": 2,
+          "dayOfWeek": 4,
+          "startTime": "19:00",
+          "firstDate": "2026-07-16",
+          "lastObservedDate": "2026-07-23",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Dxn Casual Commander Night",
+          "sampleEventId": "10809725"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "15923",
+      "name": "Revenge Of",
+      "distanceMiles": 23.47,
+      "address": "3420 Eagle Rock Blvd, Los Angeles, CA, 90065, United States",
+      "website": "https://revengeof.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander!",
+          "count": 3,
+          "dayOfWeek": 6,
+          "startTime": "18:00",
+          "firstDate": "2026-07-18",
+          "lastObservedDate": "2026-08-01",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Come join us for casual commander at Revenge of! Sign in with your companion app to receive a promo!",
+          "sampleEventId": "10977303"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "9747",
+      "name": "Next-Gen Games",
+      "distanceMiles": 23.57,
+      "address": "5450 W Pico Blvd Ste 103 Los Angeles, CA 90019-3997 United States",
+      "website": "http://www.nextgengames.la/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Night",
+          "count": 7,
+          "dayOfWeek": 3,
+          "startTime": "18:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-08-26",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Commander Night 6PM Wednesday",
+          "sampleEventId": "11144933"
+        },
+        {
+          "title": "All Day Sunday Commander",
+          "count": 1,
+          "dayOfWeek": 0,
+          "startTime": "23:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-07-19",
+          "entryFee": 5.0,
+          "currency": "USD",
+          "capacity": 64,
+          "description": "Sunday Commander $5 entry",
+          "sampleEventId": "10875304"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "5693",
+      "name": "Odyssey Games - Pasadena",
+      "distanceMiles": 23.82,
+      "address": "1795 E Colorado Blvd Pasadena, CA 91106 United States",
+      "website": null,
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander",
+          "count": 10,
+          "dayOfWeek": 5,
+          "startTime": "18:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-09-18",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "FREE to play! Bring your Commander decks, sit down at a table, and have fun! Sometimes we do giveaways~ :D",
+          "sampleEventId": "11237758"
+        },
+        {
+          "title": "Casual Commander",
+          "count": 9,
+          "dayOfWeek": 1,
+          "startTime": "18:00",
+          "firstDate": "2026-07-20",
+          "lastObservedDate": "2026-09-14",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "FREE to play! Bring your Commander decks, sit down at a table, and have fun! Sometimes we do giveaways~ :D",
+          "sampleEventId": "11237759"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "19658",
+      "name": "Crown City Games",
+      "distanceMiles": 24.07,
+      "address": "42 E Colorado Blvd, Pasadena, CA, 91105, United States",
+      "website": "https://www.crown-city-games.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Friendly Commander",
+          "count": 4,
+          "dayOfWeek": 3,
+          "startTime": "19:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-08-05",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 36,
+          "description": "Our Friendly Commander Event",
+          "sampleEventId": "11002299"
+        },
+        {
+          "title": "Friday Night Magic Friendly Commander",
+          "count": 9,
+          "dayOfWeek": 5,
+          "startTime": "18:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-09-11",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 40,
+          "description": "GLHF!",
+          "sampleEventId": "11237928"
+        },
+        {
+          "title": "CEDH",
+          "count": 2,
+          "dayOfWeek": 1,
+          "startTime": "18:00",
+          "firstDate": "2026-07-20",
+          "lastObservedDate": "2026-07-27",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "CEDH",
+          "sampleEventId": "10926781"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "6809",
+      "name": "Comic Quest",
+      "distanceMiles": 24.57,
+      "address": "23811 Bridger Rd, Lake Forest, CA, 92630, United States",
+      "website": "https://comicquest.org/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Friday Night Magic FNM Commander",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "18:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "FNM COMMANDER",
+          "sampleEventId": "11205675"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "15689",
+      "name": "Kingslayer Games - Lake Forest",
+      "distanceMiles": 24.69,
+      "address": "23615 El Toro Rd, Lake Forest, CA, 92630, US",
+      "website": "https://www.kingslayergames.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "Lake Forest MTG FNM Commander Slay Pass Friday 6 PM",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "18:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 13.0,
+          "currency": "USD",
+          "capacity": 32,
+          "description": "Commander Slay Pass Location - Kingslayer Games Fountain Valley Entry Fee - $13 Event Check-in Time: 6:00 PM Format - Commander What does a Slay Pass entry get me? Each Slay Pass player will receive 3 Magic the Gathering Booster Packs from our selection of Slay Pass-eligible packs (Any pack that is $6.50 or below). Players will only receive their 3 packs after joining the event through the MTG Companion app! Check out our website for the description of our FNM Commander Event! Event Fee Refund Policy: When you register for an event, you agree to these terms. For any cancellation requests, please call the store where the event is being hosted at least 3 hours before the start time of the event. Cancellation requests made within 3 hours of the event start time are not eligible for a refund. For any cancellation requests for an event that starts at or before 12:00 PM, please call the store the day before during opening hours.",
+          "sampleEventId": "11277074"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "22419",
+      "name": "GameStop - 7846 - Gilmore Station",
+      "distanceMiles": 24.89,
+      "address": "175 S Fairfax Ave, Los Angeles, CA, 90036-2170, USA",
+      "website": "https://www.gamestop.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "GameStop Magic Meetup - Commander",
+          "count": 1,
+          "dayOfWeek": 6,
+          "startTime": "18:00",
+          "firstDate": "2026-07-25",
+          "lastObservedDate": "2026-07-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Join us at your local GameStop for a casual commander event!",
+          "sampleEventId": "11387658"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "9054",
+      "name": "It's GameTime!",
+      "distanceMiles": 24.89,
+      "address": "3301 Motor Ave Los Angeles, CA 90034 United States",
+      "website": "itsgametimela.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Casual Commander Day.",
+          "count": 4,
+          "dayOfWeek": 0,
+          "startTime": "13:00",
+          "firstDate": "2026-07-19",
+          "lastObservedDate": "2026-08-16",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 20,
+          "description": "Free to join in!",
+          "sampleEventId": "11366059"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "10514",
+      "name": "A & N Collectibles",
+      "distanceMiles": 25.71,
+      "address": "105 W Arrow Hwy Ste 7 San Dimas, CA 91773 United States",
+      "website": null,
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Night",
+          "count": 3,
+          "dayOfWeek": 3,
+          "startTime": "17:00",
+          "firstDate": "2026-07-15",
+          "lastObservedDate": "2026-07-29",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Free Commander Play",
+          "sampleEventId": "10942055"
+        },
+        {
+          "title": "Friday Night Magic Commander Night",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "17:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Free Commander",
+          "sampleEventId": "10941894"
+        },
+        {
+          "title": "Commander Night",
+          "count": 2,
+          "dayOfWeek": 1,
+          "startTime": "17:00",
+          "firstDate": "2026-07-20",
+          "lastObservedDate": "2026-07-27",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 24,
+          "description": "Free Commander Play",
+          "sampleEventId": "10942056"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "20710",
+      "name": "GameStop - 502 - Glendale Galleria Mall - GameStop Planet X",
+      "distanceMiles": 25.81,
+      "address": "3216 Galleria Way, Glendale, CA, 91210, US",
+      "website": "https://www.gamestop.com/",
+      "candidateRecurringEvents": [
+        {
+          "title": "GameStop Magic Meetup - Commander",
+          "count": 1,
+          "dayOfWeek": 6,
+          "startTime": "18:00",
+          "firstDate": "2026-07-25",
+          "lastObservedDate": "2026-07-25",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": null,
+          "description": "Join us at your local GameStop for a casual commander event!",
+          "sampleEventId": "11387149"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    },
+    {
+      "organizationId": "7807",
+      "name": "Magic and Monsters",
+      "distanceMiles": 25.93,
+      "address": "23854 Via Fabricante Ste B1 Mission Viejo, CA 92691 United States",
+      "website": "http://www.magicandmonsters.com",
+      "candidateRecurringEvents": [
+        {
+          "title": "Commander Free Play",
+          "count": 3,
+          "dayOfWeek": 5,
+          "startTime": "18:00",
+          "firstDate": "2026-07-17",
+          "lastObservedDate": "2026-07-31",
+          "entryFee": 0,
+          "currency": "USD",
+          "capacity": 48,
+          "description": "Commander Free Play",
+          "sampleEventId": "10954254"
+        }
+      ],
+      "decision": "review-later",
+      "reason": "Outside first-pass radius, lacks repeated explicit recurring Commander listings, or needs manual verification."
+    }
+  ],
+  "mergeNotes": [
+    "Finch and Sparrow Games WPN listing was merged into existing store id finch-sparrow.",
+    "JJ's Collectibles WPN listing was merged into existing store id jjs-collectibles."
+  ]
+}

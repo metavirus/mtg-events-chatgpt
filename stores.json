@@ -1,32 +1,535 @@
 [
   {
-    "id": "finch-sparrow",
-    "name": "Finch and Sparrow Games",
-    "city": "Signal Hill",
-    "address": "2699 E 28th St., Ste 406, Signal Hill, CA 90755",
-    "phone": "562-249-8172",
-    "website": "https://finchandsparrowgames.com/",
-    "eventsUrl": "https://finchandsparrow.tcgplayerpro.com/events",
-    "instagram": "https://www.instagram.com/finch_and_sparrow_games/",
-    "wpnPremium": true,
-    "distanceMiles": null,
+    "id": "collectors-lounge-cypress",
+    "name": "Collectors Lounge - Cypress",
+    "city": "Cypress",
+    "address": "9975 Walker St, Cypress, CA, 90630, United States",
+    "phone": "",
+    "website": "http://www.collectorslounge.us",
+    "eventsUrl": "https://locator.wizards.com/store/20379",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 2.21,
     "status": "open",
-    "lastVerified": "2026-07-13",
-    "researchStatus": "partial",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
     "assessment": {
-      "commanderActivity": 4,
-      "meetupAccessibility": 2,
-      "communityContinuity": 4,
+      "commanderActivity": 3,
+      "meetupAccessibility": 5,
+      "communityContinuity": 3,
       "newPlayerIntegration": 3,
-      "physicalEnvironment": 4,
+      "physicalEnvironment": 3,
       "scheduleReliability": 3,
       "homeGroupPotential": 4
     },
-    "assessmentNotes": "Strong Magic identity and established community. Public commentary suggests active Commander play, but also indicates that existing pods can make spontaneous integration uneven. This makes advance meetup coordination especially valuable.",
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
     "sourceIds": [
-      "src-finch-site",
-      "src-finch-events",
-      "src-finch-community"
+      "src-wpn-20379"
+    ]
+  },
+  {
+    "id": "hobby-overflow",
+    "name": "Hobby Overflow",
+    "city": "Cypress",
+    "address": "4760 Lincoln Ave, Cypress, CA, 90630, US",
+    "phone": "",
+    "website": "https://www.instagram.com/hobbyoverflow/",
+    "eventsUrl": "https://locator.wizards.com/store/17690",
+    "instagram": "https://www.instagram.com/hobbyoverflow/",
+    "wpnPremium": false,
+    "distanceMiles": 2.36,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 5,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-17690"
+    ]
+  },
+  {
+    "id": "joyful-toad-tcg",
+    "name": "Joyful Toad TCG",
+    "city": "Anaheim",
+    "address": "3150 W Lincoln Ave, Anaheim, CA, 92801, US",
+    "phone": "",
+    "website": "https://www.facebook.com/JoyfulToadTCG/",
+    "eventsUrl": "https://locator.wizards.com/store/15985",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 4.59,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 5,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-15985"
+    ]
+  },
+  {
+    "id": "krazy-nick-s-games",
+    "name": "Krazy Nick's Games",
+    "city": "Cerritos",
+    "address": "13327 Artesia Blvd, Cerritos, CA, 90703, United States",
+    "phone": "",
+    "website": "http://www.krazynicksgames.com",
+    "eventsUrl": "https://locator.wizards.com/store/9348",
+    "instagram": "",
+    "wpnPremium": true,
+    "distanceMiles": 5.12,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 5,
+      "meetupAccessibility": 4,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-9348"
+    ]
+  },
+  {
+    "id": "tilted-gaming",
+    "name": "Tilted Gaming",
+    "city": "Cerritos",
+    "address": "15973 Piuma Ave., Cerritos, CA 90703",
+    "phone": "",
+    "website": "",
+    "eventsUrl": "https://locator.wizards.com/store/18067",
+    "instagram": "",
+    "wpnPremium": null,
+    "distanceMiles": 5.99,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "partial",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 4,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "A nearby option with a clearly listed recurring casual Commander event. Proximity and predictable scheduling make it a high-priority field visit even though broader community evidence remains limited.",
+    "sourceIds": [
+      "src-tilted-wpn",
+      "src-wpn-18067"
+    ]
+  },
+  {
+    "id": "requiem-coffee-tea-and-fantasy",
+    "name": "Requiem: Coffee, Tea, and Fantasy",
+    "city": "Anaheim",
+    "address": "280 S Clementine St, Anaheim, CA, 92805, United States",
+    "phone": "",
+    "website": "http://requiemcafe.com",
+    "eventsUrl": "https://locator.wizards.com/store/14480",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 9.21,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 4,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-14480"
+    ]
+  },
+  {
+    "id": "comic-book-hideout",
+    "name": "Comic Book Hideout",
+    "city": "Fullerton",
+    "address": "215 W Commonwealth Ave, Fullerton, CA, 92832, United States",
+    "phone": "",
+    "website": "https://www.instagram.com/comicbookhideout/",
+    "eventsUrl": "https://locator.wizards.com/store/8283",
+    "instagram": "https://www.instagram.com/comicbookhideout/",
+    "wpnPremium": false,
+    "distanceMiles": 9.56,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 4,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-8283"
+    ]
+  },
+  {
+    "id": "kingslayer-games-fountain-valley",
+    "name": "Kingslayer Games - Fountain Valley",
+    "city": "Fountain Valley",
+    "address": "17870 Newhope St, Suite 106, Fountain Valley, CA, 92708, United States",
+    "phone": "",
+    "website": "https://www.kingslayergames.com/",
+    "eventsUrl": "https://locator.wizards.com/store/7819",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 10.52,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-7819"
+    ]
+  },
+  {
+    "id": "socalmagic",
+    "name": "SoCalMagic",
+    "city": "Orange",
+    "address": "1818 W Chapman Ave Ste M, Orange, CA, 92868, United States",
+    "phone": "",
+    "website": "https://magic.wizards.com",
+    "eventsUrl": "https://locator.wizards.com/store/8707",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 11.56,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 5,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-8707"
+    ]
+  },
+  {
+    "id": "tweedy-cards-and-gaming",
+    "name": "Tweedy Cards and Gaming",
+    "city": "South Gate",
+    "address": "4367 Tweedy Blvd, South Gate, CA, 90280, US",
+    "phone": "",
+    "website": "http://wpn.wizards.com",
+    "eventsUrl": "https://locator.wizards.com/store/17882",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 11.97,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-17882"
+    ]
+  },
+  {
+    "id": "guildhall-whittier",
+    "name": "Guildhall - Whittier",
+    "city": "Whittier",
+    "address": "6741 Bright Ave, Whittier, CA, 90601, United States",
+    "phone": "",
+    "website": "https://www.guildhall.tv/",
+    "eventsUrl": "https://locator.wizards.com/store/19606",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 12.39,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-19606"
+    ]
+  },
+  {
+    "id": "shadow-realm-collectibles",
+    "name": "Shadow Realm Collectibles",
+    "city": "Bell Gardens",
+    "address": "7508 Eastern Ave, Bell Gardens, CA, 90201, US",
+    "phone": "",
+    "website": "instagram.com/srctcg",
+    "eventsUrl": "https://locator.wizards.com/store/16787",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 12.4,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 4,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-16787"
+    ]
+  },
+  {
+    "id": "shuffle-and-cut-games-la-habra",
+    "name": "Shuffle and Cut Games - La Habra",
+    "city": "Brea",
+    "address": "1033 E Imperial Hwy STE E3, Brea, CA, 92821, US",
+    "phone": "",
+    "website": "http://retail.shuffleandcut.com",
+    "eventsUrl": "https://locator.wizards.com/store/8579",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 12.97,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-8579"
+    ]
+  },
+  {
+    "id": "projectccg-santa-ana",
+    "name": "ProjectCCG - Santa Ana",
+    "city": "Santa Ana",
+    "address": "600 S Grand Ave, Santa Ana, CA, 92705, United States",
+    "phone": "",
+    "website": "https://projectccg.com",
+    "eventsUrl": "https://locator.wizards.com/store/20273",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 13.43,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 5,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-20273"
+    ]
+  },
+  {
+    "id": "spellhold-games",
+    "name": "Spellhold Games",
+    "city": "Orange",
+    "address": "1438 E Katella Ave, Orange, CA, 92867, United States",
+    "phone": "",
+    "website": "http://spellholdgames.com",
+    "eventsUrl": "https://locator.wizards.com/store/6830",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 13.43,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-6830"
+    ]
+  },
+  {
+    "id": "buddies-collectibles",
+    "name": "Buddies Collectibles",
+    "city": "Gardena",
+    "address": "18527 S Western Ave, Gardena, CA, 90248, United States",
+    "phone": "",
+    "website": "https://socalbuddiescards.com",
+    "eventsUrl": "https://locator.wizards.com/store/18376",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 14.22,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 5,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 4
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-18376"
+    ]
+  },
+  {
+    "id": "alakazam-comics",
+    "name": "Alakazam Comics",
+    "city": "Irvine",
+    "address": "17777 Main Street, Irvine, CA, 92614, United States",
+    "phone": "",
+    "website": "https://alakazamcomics.com/",
+    "eventsUrl": "https://locator.wizards.com/store/9261",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 14.73,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 3,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-9261"
+    ]
+  },
+  {
+    "id": "cardboard-games",
+    "name": "Cardboard Games",
+    "city": "Tustin",
+    "address": "205 W First St, Tustin, CA, 92780, US",
+    "phone": "",
+    "website": "http://www.cardboardgames.store",
+    "eventsUrl": "https://locator.wizards.com/store/17086",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 14.73,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-17086"
+    ]
+  },
+  {
+    "id": "grails-gone-wild",
+    "name": "Grails Gone Wild",
+    "city": "Torrance",
+    "address": "2140 Artesia Blvd, Torrance, CA, 90504, US",
+    "phone": "",
+    "website": "http://wpn.wizards.com",
+    "eventsUrl": "https://locator.wizards.com/store/18731",
+    "instagram": "",
+    "wpnPremium": false,
+    "distanceMiles": 14.83,
+    "status": "open",
+    "lastVerified": "2026-07-14",
+    "researchStatus": "wizards-discovery",
+    "assessment": {
+      "commanderActivity": 3,
+      "meetupAccessibility": 3,
+      "communityContinuity": 3,
+      "newPlayerIntegration": 3,
+      "physicalEnvironment": 3,
+      "scheduleReliability": 4,
+      "homeGroupPotential": 3
+    },
+    "assessmentNotes": "Added from repeated Wizards Store & Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+    "sourceIds": [
+      "src-wpn-18731"
     ]
   },
   {
@@ -60,31 +563,34 @@
     ]
   },
   {
-    "id": "tilted-gaming",
-    "name": "Tilted Gaming",
-    "city": "Cerritos",
-    "address": "15973 Piuma Ave., Cerritos, CA 90703",
-    "phone": "",
-    "website": "",
-    "eventsUrl": "https://locator.wizards.com/store/18067",
-    "instagram": "",
-    "wpnPremium": null,
-    "distanceMiles": null,
+    "id": "finch-sparrow",
+    "name": "Finch and Sparrow Games",
+    "city": "Signal Hill",
+    "address": "2699 E 28th St., Ste 406, Signal Hill, CA 90755",
+    "phone": "562-249-8172",
+    "website": "https://finchandsparrowgames.com/",
+    "eventsUrl": "https://finchandsparrow.tcgplayerpro.com/events",
+    "instagram": "https://www.instagram.com/finch_and_sparrow_games/",
+    "wpnPremium": true,
+    "distanceMiles": 5.07,
     "status": "open",
-    "lastVerified": "2026-07-13",
+    "lastVerified": "2026-07-14",
     "researchStatus": "partial",
     "assessment": {
       "commanderActivity": 4,
-      "meetupAccessibility": 4,
-      "communityContinuity": 3,
+      "meetupAccessibility": 2,
+      "communityContinuity": 4,
       "newPlayerIntegration": 3,
-      "physicalEnvironment": 3,
-      "scheduleReliability": 4,
+      "physicalEnvironment": 4,
+      "scheduleReliability": 3,
       "homeGroupPotential": 4
     },
-    "assessmentNotes": "A nearby option with a clearly listed recurring casual Commander event. Proximity and predictable scheduling make it a high-priority field visit even though broader community evidence remains limited.",
+    "assessmentNotes": "Strong Magic identity and established community. Public commentary suggests active Commander play, but also indicates that existing pods can make spontaneous integration uneven. This makes advance meetup coordination especially valuable.",
     "sourceIds": [
-      "src-tilted-wpn"
+      "src-finch-site",
+      "src-finch-events",
+      "src-finch-community",
+      "src-wpn-6718"
     ]
   },
   {
@@ -97,9 +603,9 @@
     "eventsUrl": "https://locator.wizards.com/store/18648",
     "instagram": "",
     "wpnPremium": null,
-    "distanceMiles": null,
+    "distanceMiles": 2.55,
     "status": "open",
-    "lastVerified": "2026-07-13",
+    "lastVerified": "2026-07-14",
     "researchStatus": "partial",
     "assessment": {
       "commanderActivity": 4,
@@ -113,12 +619,13 @@
     "assessmentNotes": "Tuesday Commander is explicitly framed as casual play across brackets with raffle prizing. That structure may be better for meeting new players than unstructured open tables.",
     "sourceIds": [
       "src-jjs-wpn",
-      "src-jjs-instagram"
+      "src-jjs-instagram",
+      "src-wpn-18648"
     ]
   },
   {
     "id": "paper-heros-hb",
-    "name": "Paper Hero's Games \u2014 Huntington Beach",
+    "name": "Paper Hero's Games — Huntington Beach",
     "city": "Huntington Beach",
     "address": "18502 Beach Blvd., Unit 120, Huntington Beach, CA 92648",
     "phone": "661-459-0099",

@@ -7,5 +7,14 @@
     "entityId": "all",
     "summary": "Initial verified seed dataset created.",
     "reviewStatus": "accepted"
+  },
+  {
+    "id": "wizards-reconciliation-2026-07-14",
+    "detectedAt": "2026-07-14T15:30:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "wizards-locator",
+    "summary": "Promoted 18 new stores and 32 recurring Commander events from the Wizards locator snapshot; 68 organizations remain in the review report.",
+    "reviewStatus": "accepted"
   }
 ]

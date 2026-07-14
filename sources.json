@@ -1,30 +1,9 @@
 [
   {
-    "id": "src-finch-site",
-    "label": "Official store website",
-    "url": "https://finchandsparrowgames.com/",
-    "type": "officialWebsite",
-    "lastChecked": "2026-07-13"
-  },
-  {
-    "id": "src-finch-events",
-    "label": "Official TCGplayer Pro events page",
-    "url": "https://finchandsparrow.tcgplayerpro.com/events",
-    "type": "eventPlatform",
-    "lastChecked": "2026-07-13"
-  },
-  {
-    "id": "src-finch-community",
+    "id": "src-collector-community",
     "label": "Community discussion",
     "url": "https://www.reddit.com/r/magicTCG/comments/1g3swxw/shop_and_commander_event_recommendations_for/",
     "type": "community",
-    "lastChecked": "2026-07-13"
-  },
-  {
-    "id": "src-collector-site",
-    "label": "Official store website",
-    "url": "https://www.collectorlegion.com/",
-    "type": "officialWebsite",
     "lastChecked": "2026-07-13"
   },
   {
@@ -35,52 +14,38 @@
     "lastChecked": "2026-07-13"
   },
   {
-    "id": "src-collector-community",
+    "id": "src-collector-site",
+    "label": "Official store website",
+    "url": "https://www.collectorlegion.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-finch-community",
     "label": "Community discussion",
     "url": "https://www.reddit.com/r/magicTCG/comments/1g3swxw/shop_and_commander_event_recommendations_for/",
     "type": "community",
     "lastChecked": "2026-07-13"
   },
   {
-    "id": "src-tilted-wpn",
-    "label": "Wizards Store & Event Locator",
-    "url": "https://locator.wizards.com/store/18067",
-    "type": "wpn",
-    "lastChecked": "2026-07-13"
-  },
-  {
-    "id": "src-jjs-wpn",
-    "label": "Wizards Store & Event Locator",
-    "url": "https://locator.wizards.com/store/18648",
-    "type": "wpn",
-    "lastChecked": "2026-07-13"
-  },
-  {
-    "id": "src-jjs-instagram",
-    "label": "Official Instagram evidence",
-    "url": "https://www.instagram.com/reel/DK8StygPKhr/",
-    "type": "social",
-    "lastChecked": "2026-07-13"
-  },
-  {
-    "id": "src-phg-site",
-    "label": "Official store website",
-    "url": "https://paperherosgames.com/",
-    "type": "officialWebsite",
-    "lastChecked": "2026-07-13"
-  },
-  {
-    "id": "src-phg-events",
-    "label": "Official event storefront",
-    "url": "https://paperherosgames4.crystalcommerce.com/",
+    "id": "src-finch-events",
+    "label": "Official TCGplayer Pro events page",
+    "url": "https://finchandsparrow.tcgplayerpro.com/events",
     "type": "eventPlatform",
     "lastChecked": "2026-07-13"
   },
   {
-    "id": "src-phg-wpn",
-    "label": "Wizards event listing",
-    "url": "https://locator.wizards.com/event/10702761",
-    "type": "wpn",
+    "id": "src-finch-site",
+    "label": "Official store website",
+    "url": "https://finchandsparrowgames.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-guild-community",
+    "label": "Long Beach community discussion",
+    "url": "https://www.reddit.com/r/longbeach/comments/1f5w7fp/looking_for_fellow_nerds/",
+    "type": "community",
     "lastChecked": "2026-07-13"
   },
   {
@@ -91,10 +56,192 @@
     "lastChecked": "2026-07-13"
   },
   {
-    "id": "src-guild-community",
-    "label": "Long Beach community discussion",
-    "url": "https://www.reddit.com/r/longbeach/comments/1f5w7fp/looking_for_fellow_nerds/",
-    "type": "community",
+    "id": "src-jjs-instagram",
+    "label": "Official Instagram evidence",
+    "url": "https://www.instagram.com/reel/DK8StygPKhr/",
+    "type": "social",
     "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-jjs-wpn",
+    "label": "Wizards Store & Event Locator",
+    "url": "https://locator.wizards.com/store/18648",
+    "type": "wpn",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-phg-events",
+    "label": "Official event storefront",
+    "url": "https://paperherosgames4.crystalcommerce.com/",
+    "type": "eventPlatform",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-phg-site",
+    "label": "Official store website",
+    "url": "https://paperherosgames.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-phg-wpn",
+    "label": "Wizards event listing",
+    "url": "https://locator.wizards.com/event/10702761",
+    "type": "wpn",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-tilted-wpn",
+    "label": "Wizards Store & Event Locator",
+    "url": "https://locator.wizards.com/store/18067",
+    "type": "wpn",
+    "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-wpn-14480",
+    "label": "Wizards Store & Event Locator - Requiem: Coffee, Tea, and Fantasy",
+    "url": "https://locator.wizards.com/store/14480",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-15985",
+    "label": "Wizards Store & Event Locator - Joyful Toad TCG",
+    "url": "https://locator.wizards.com/store/15985",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-16787",
+    "label": "Wizards Store & Event Locator - Shadow Realm Collectibles",
+    "url": "https://locator.wizards.com/store/16787",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-17086",
+    "label": "Wizards Store & Event Locator - Cardboard Games",
+    "url": "https://locator.wizards.com/store/17086",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-17690",
+    "label": "Wizards Store & Event Locator - Hobby Overflow",
+    "url": "https://locator.wizards.com/store/17690",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-17882",
+    "label": "Wizards Store & Event Locator - Tweedy Cards and Gaming",
+    "url": "https://locator.wizards.com/store/17882",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-18067",
+    "label": "Wizards Store & Event Locator - Tilted Gaming",
+    "url": "https://locator.wizards.com/store/18067",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-18376",
+    "label": "Wizards Store & Event Locator - Buddies Collectibles",
+    "url": "https://locator.wizards.com/store/18376",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-18648",
+    "label": "Wizards Store & Event Locator - JJ's Collectibles",
+    "url": "https://locator.wizards.com/store/18648",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-18731",
+    "label": "Wizards Store & Event Locator - Grails Gone Wild",
+    "url": "https://locator.wizards.com/store/18731",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-19606",
+    "label": "Wizards Store & Event Locator - Guildhall - Whittier",
+    "url": "https://locator.wizards.com/store/19606",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-20273",
+    "label": "Wizards Store & Event Locator - ProjectCCG - Santa Ana",
+    "url": "https://locator.wizards.com/store/20273",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-20379",
+    "label": "Wizards Store & Event Locator - Collectors Lounge - Cypress",
+    "url": "https://locator.wizards.com/store/20379",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-6718",
+    "label": "Wizards Store & Event Locator - Finch and Sparrow Games",
+    "url": "https://locator.wizards.com/store/6718",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-6830",
+    "label": "Wizards Store & Event Locator - Spellhold Games",
+    "url": "https://locator.wizards.com/store/6830",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-7819",
+    "label": "Wizards Store & Event Locator - Kingslayer Games - Fountain Valley",
+    "url": "https://locator.wizards.com/store/7819",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-8283",
+    "label": "Wizards Store & Event Locator - Comic Book Hideout",
+    "url": "https://locator.wizards.com/store/8283",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-8579",
+    "label": "Wizards Store & Event Locator - Shuffle and Cut Games - La Habra",
+    "url": "https://locator.wizards.com/store/8579",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-8707",
+    "label": "Wizards Store & Event Locator - SoCalMagic",
+    "url": "https://locator.wizards.com/store/8707",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-9261",
+    "label": "Wizards Store & Event Locator - Alakazam Comics",
+    "url": "https://locator.wizards.com/store/9261",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-wpn-9348",
+    "label": "Wizards Store & Event Locator - Krazy Nick's Games",
+    "url": "https://locator.wizards.com/store/9348",
+    "type": "wpn",
+    "lastChecked": "2026-07-14"
   }
 ]
