@@ -80,13 +80,41 @@ ChatGPT must not:
 10. Report exactly what validation was and was not performed. Never imply that
     GitHub-only inspection is equivalent to a local app test.
 
-### Read-only integration fallback
+## GitHub connector recovery checklist
 
 If GitHub returns `403 Resource not accessible by integration`, or the session
 cannot create a branch, commit, or pull request:
 
-1. Stop all repository write attempts. Do not fall back to editing `main`, an
+1. Stop the current write attempt. Do not fall back to editing `main`, an
    existing Codex branch, or any canonical file directly.
+2. Check whether the ChatGPT GitHub plugin is merely connected or is actually
+   installed for the repository.
+3. If the plugin is not installed, use the ChatGPT plugin settings flow:
+   - open the GitHub plugin page;
+   - choose `Install plugin` if shown;
+   - continue to GitHub;
+   - install `ChatGPT Codex Connector` on the `metavirus` account;
+   - grant `All repositories` access, or explicitly include
+     `mtg-events-chatgpt`;
+   - confirm that GitHub shows read and write access to code, pull requests,
+     issues, actions, and workflows.
+4. Confirm installation on the repository page:
+   - `mtg-events-chatgpt -> Settings -> GitHub Apps`
+   - expect to see `ChatGPT Codex Connector` with a `Configure` button.
+5. Retry one minimal write probe only:
+   - create a new `chatgpt-data-update/...` branch from the requested base;
+   - do not edit files or open a PR during the probe.
+6. If that probe succeeds, resume normal guarded branch-and-PR workflow and
+   note in `docs/chatgpt-changelog.md` that connector write access is working.
+7. Only if the install/configure flow is complete and the minimal write probe
+   still fails should ChatGPT fall back to read-only handoff mode.
+
+## Read-only handoff mode
+
+Use this only after the connector recovery checklist above has been attempted
+or when the user explicitly prefers not to reconfigure the plugin.
+
+1. Stop all repository write attempts.
 2. Continue only with read-only inspection, analysis, and source gathering.
 3. Return one self-contained **ChatGPT Sideload Handoff Packet** containing:
    - the request and recommended disposition;
@@ -99,8 +127,8 @@ cannot create a branch, commit, or pull request:
 5. Codex may later apply and audit the packet. Until then, the ChatGPT session
    remains read-only and no canonical state has changed.
 
-This fallback is expected behavior for a read-only GitHub connector, not a
-reason to weaken the branch-and-PR guardrail.
+This fallback is a contingency, not the default response, when connector setup
+has not yet been fully established.
 
 ## Data integrity rules
 
@@ -153,19 +181,19 @@ change is valid.
 
 When a request exceeds the safe lane, respond constructively:
 
-- New entity: “I found a possible new store/event/group. Creating canonical
+- New entity: "I found a possible new store/event/group. Creating canonical
   records requires Codex deduplication and validation, so I queued it as a
-  sourced candidate in `docs/ASYNC_INTAKE.md`.”
-- Code or schema: “This changes app behavior or data architecture and is
+  sourced candidate in `docs/ASYNC_INTAKE.md`."
+- Code or schema: "This changes app behavior or data architecture and is
   Codex-only. I recorded the request, expected outcome, evidence, and open
-  questions for the next Codex session.”
-- Ambiguous fact: “The sources conflict, so I preserved both claims in intake
-  and marked the decision as unresolved rather than changing canonical data.”
-- No validation: “I made the narrow documentary/data edit, but this session
+  questions for the next Codex session."
+- Ambiguous fact: "The sources conflict, so I preserved both claims in intake
+  and marked the decision as unresolved rather than changing canonical data."
+- No validation: "I made the narrow documentary/data edit, but this session
   could not run local validation. The exact unperformed checks are listed in
-  the changelog and PR.”
-- Unsafe bulk request: “This would rewrite too much to audit safely. I split it
-  into bounded intake items for Codex rather than editing the dataset.”
+  the changelog and PR."
+- Unsafe bulk request: "This would rewrite too much to audit safely. I split it
+  into bounded intake items for Codex rather than editing the dataset."
 
 ## Pull request template
 

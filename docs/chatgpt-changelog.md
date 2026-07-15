@@ -22,12 +22,38 @@ Codex audit explicitly changes their status.
 - Validation performed: Read-only inspection of coordination files.
 - Validation not performed: No local JSON validation, browser smoke test,
   crawler refresh, deployment check, commit, or PR creation.
-- Known risks: The current ordinary-ChatGPT GitHub integration appears to be
-  read-only for branch creation. Future work must use the documented read-only
-  handoff fallback unless write permissions are later confirmed.
+- Known risks: This entry reflects the pre-install state before the connector
+  was fully installed on the repository. It should not be treated as current
+  evidence that the write lane is unavailable.
 - Codex audit requested: Completed for this acknowledgment; no canonical app
   or research data was changed.
 - Status: reviewed; no data changes to approve
+
+### 2026-07-15 - GitHub connector write access re-established
+
+- Request: Restore ordinary-ChatGPT branch and PR capability for safe sideload
+  work.
+- Files changed: None by ChatGPT in this entry; this records the integration
+  state change and successful retest.
+- Summary of changes: The user completed the missing ChatGPT Codex Connector
+  installation flow on GitHub. The repository now shows the connector
+  installed, configured with read and write access to code, pull requests,
+  issues, actions, and workflows. A post-install guarded branch creation test
+  succeeded, confirming that the earlier `403 Resource not accessible by
+  integration` problem is resolved for this repository.
+- Source support: GitHub installation/configuration screens reviewed by the
+  user and reported back to Codex; successful branch creation confirmed from
+  the ChatGPT sideload session.
+- Validation performed: Permission screens reviewed; minimal safe branch-create
+  probe succeeded.
+- Validation not performed: No file edit, PR creation, or local app validation
+  was needed for this recovery check.
+- Known risks: Future plugin reconnects may repeat the partial "authorized but
+  not installed" state. ChatGPT should use the SOP recovery checklist before
+  assuming permanent read-only mode.
+- Codex audit requested: Update coordination docs so future ChatGPT sessions
+  recover from connector setup drift instead of stalling.
+- Status: reviewed; write lane restored
 
 ### 2026-07-15 — Sideload safety and handoff system created
 
