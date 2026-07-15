@@ -207,6 +207,136 @@ status or deprioritized by early signals.
 - Background activity log link for favorites, notes, and important changes.
 - Google Calendar add-to-calendar action if/when we wire that in.
 
+### Personalization and preference controls
+
+- Revisit whether personal fields should live alongside core records in one
+  unified data model, with strict namespacing between:
+  - research-authored fields
+  - user-authored fields
+  - agent/workflow metadata
+- Ensure favorites, ratings, notes, and follow-up flags have clear behavioral
+  impact rather than feeling bolted on.
+- Add negative preference controls, likely thumb-down actions, for stores, event
+  series, and possibly individual events.
+- Thumb-down actions should hide or deprioritize items in recommendation/event
+  views without overwriting the underlying research truth.
+- Add an explicit hidden/deprioritized bucket so avoided items are not
+  mysteriously gone.
+- Revisit the top-level `Favorites` control so it either has a clear global job
+  or is redesigned/removed.
+- Ensure the top-level favorites control produces a visible effect on all
+  relevant pages and does not conflict with page-local favorite filters.
+- Add saved view presets such as `My commander view`, `Weekend scan`, `All
+  updates`, and `Discovery queue`.
+
+### Today page refinement
+
+- Add a curation/ranking layer so a day's events are not presented as a flat
+  chronological dump.
+- Default daily ranking should prioritize favorite stores, high-fit stores,
+  Commander bracket 2/3 signals, and prerelease/sealed highlights.
+- Draft should be easy to phase in as a secondary preference rather than forced
+  into the default top-priority mix.
+- Visually separate `best bets` from the broader full-day event catalog.
+- Add `why am I seeing this?` drilldowns so ranked and highlighted items feel
+  trustworthy.
+- Add a collapsible right-side insights rail for `Fresh Signals` and `For You`.
+- The right-side rail should be open by default on roomy desktop layouts, but
+  collapsible into a slim edge tab or drawer.
+- Revisit whether `Fresh Signals` / `For You` deserve their own dedicated log,
+  drawer, or popout rather than routing `View all` into the noisier Updates
+  stream.
+- Support `HOT` editorial flags for especially notable items, used sparingly for
+  truly high-value discoveries.
+- Audit and fix search behavior on the Today page so keyword search matches
+  event title, format, store name, venue name, and other relevant metadata.
+- Improve empty-state explanations when search plus current filters eliminate
+  all visible events.
+
+### Updates and activity surfaces
+
+- Rename `New & changed` to `Updates` in navigation and related UI so the label
+  stays compact and does not wrap awkwardly.
+- Treat the Updates badge count as an unread indicator rather than a static
+  total.
+- Opening Updates should clear or mark that count as read until new items
+  arrive.
+- Revisit the Updates timeline layout so date and text align more cleanly and
+  the main text weight is less heavy.
+- Add useful update-type filters such as:
+  - new place discovered
+  - store/venue profile materially updated
+  - new event discovered
+  - event changed/cancelled
+  - research follow-up needed
+  - waiting-on-user / agent question
+  - app/product change completed
+- Add richer embedded links so update entries can open the relevant store,
+  event, community, or research view directly.
+- Let Updates carry lightweight follow-ups from Codex, including small A-vs-B
+  questions and waiting-on-user clarifications.
+- User responses inside Updates should be able to unblock immediate execution
+  rather than always waiting for the next scheduled daily run.
+
+### Research coverage and drilldowns
+
+- Make more dashboard summary cards and metrics clickable when they imply an
+  underlying dataset.
+- On the Research Coverage page, clicking `Discovery Queue` should open the
+  lightly vetted places behind that count.
+- Extend the same drilldown pattern to other cards, rankings, and evidence
+  summaries when they represent real underlying records.
+
+### Places page refinement
+
+- Revisit the Places page layout and scrolling behavior so the most important
+  reading surface feels naturally placed.
+- Evaluate whether the current master-detail split should stay as-is or whether
+  the right-side detail content should feel more central.
+- Continue refining the Places page as a second-pass layout problem rather than
+  treating the current version as final.
+
+### Communities page refinement
+
+- Add a `hot finds` / `promising threads` surface for recent meetup-seeking,
+  LFG, coordination, and newcomer-friendly community signals.
+- Add limited daily Discord sweeps for only the most promising community
+  channels, such as LFG, meetups, events, and EDH coordination.
+- Make the community detail drawer more useful with best recent signals,
+  activity level, linked venues/geography, and next suggested action.
+- Consider a Communities-page async request box for instructions like `watch
+  this server for Saturday commander meetup chatter`.
+
+### Async collaboration workflow
+
+- Add in-app Codex request capture, likely a top popdown drawer or command box,
+  for async instructions to future research/dev sessions.
+- Support async note types for:
+  - general async requests
+  - research follow-up tied to a place/event/community
+  - product/UI fix tied to a specific screen or record
+- Let entity-specific notes be attached to stores, events, event series, venues,
+  and communities for later investigation.
+- Daily-agent runs should review prior backlog items, resolve easy fixes
+  directly when possible, and surface in-flight or unresolved items back into
+  Updates.
+- If a backlog item needs discussion, the agent should be able to do preliminary
+  research and then add a waiting-on-user note into Updates.
+- Add page-specific `dear AI, watch for X here` capture on surfaces like
+  Communities where ongoing pattern-watching is especially valuable.
+
+### Visual system and naming
+
+- Rename the app from `Mana Radar` to `MTG Events`.
+- Revisit supporting subtitle/copy so branding stays coherent after the rename.
+- Re-do typography best-practice review after the regression that left the base
+  font scale smaller than intended.
+- Audit base font size, text hierarchy, and readable defaults against current UI
+  best practice and restore a more normal reading scale.
+- Reassess whether `Import updated data` belongs in the normal user-facing UI;
+  if retained, add stronger explanation and guardrails, and if not, move it to
+  an admin/dev-only surface.
+
 ## Process backlog
 
 - Enforce the new rule that each store pass includes social review in the same
@@ -238,6 +368,11 @@ status or deprioritized by early signals.
 - Keep attributed user field notes in repo-backed evidence when they are meant to
   be durable project knowledge.
 - Add periodic continuity checkpoints when a work stretch gets long.
+- At the next stable checkpoint, perform a deliberate branch-hygiene pass:
+  review the active worktree, make an intentional checkpoint commit, create or
+  rename into a broader canonical working branch for the full project, push it,
+  and record the transition clearly so future work does not remain anchored to
+  the legacy `codex/reconcile-wizards` name by accident.
 
 ## Done when
 

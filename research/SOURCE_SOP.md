@@ -1,0 +1,306 @@
+# Source SOP
+
+This document is the mandatory operating procedure for recurring research passes.
+Its purpose is to stop source re-learning, reduce token waste, and make future
+store/group passes consistent.
+
+If a pass deviates from this SOP, the run note must say why.
+
+## Core rules
+
+1. Do not rediscover what a source is good for during a normal pass.
+2. Use each source for its best job first.
+3. Stay bounded on first pass; deepen only when promoted.
+4. Record source role, source value, and failure mode once, then reuse that
+   judgment.
+5. If a source is blocked or finicky, switch to the approved fallback path
+   rather than improvising a new workflow mid-pass.
+
+## Source hierarchy by job
+
+Use this hierarchy unless a run note explains a better store-specific routing:
+
+- **Wizards / EventLink / locator**
+  - best for: canonical MTG event existence, recurrence, dates, fees, official
+    Magic-branded program names, branch identity
+  - weak for: broader community tone, actual store emphasis, non-MTG context,
+    store-specific nuance
+- **Official website / event calendar**
+  - best for: official schedule infrastructure, recurring house events,
+    registration flow, store identity, contact/social routing
+  - weak for: freshness when small stores neglect the site
+- **Instagram**
+  - best for: weekly schedule graphics, specials, prereleases, cancellations,
+    visual proof of current activity, social routing
+  - weak for: easy structured extraction; can be noisy/branding-heavy
+- **Discord**
+  - best for: meetup behavior, LFG, announcement detail, server events, local
+    community energy, correction value when official sources are thin
+  - weak for: access friction, exhaustive reading cost
+
+## Pass types
+
+### 1. Strict first pass
+
+Goal: classify quickly, promote only if warranted.
+
+Allowed work:
+- one Wizards check
+- one official-site sweep
+- one Instagram sweep
+- one Discord bounded survey if accessible and clearly relevant
+- one light business/review/search corroboration layer
+
+Stop once these questions are answerable:
+- is this a real active place/group?
+- is MTG real here?
+- is Commander real here?
+- what is the strongest source routing?
+- does this deserve `partial`, remain `discovery`, or get promoted?
+
+Do not deep-scroll, chase comments, or exhaustively browse secondary surfaces.
+
+### 2. Promoted deepening pass
+
+Goal: extract operational texture for promising candidates.
+
+Allowed work:
+- deeper Instagram/Facebook post review
+- deeper Discord channel sweep
+- secondary signal capture
+- fuller event normalization
+- displacement-risk checks
+
+Only do this after explicit promotion by either:
+- strong first-pass signals
+- user priority
+- favorite status
+- correction need
+
+## Wizards SOP
+
+Wizards is critical and finicky. Do not improvise.
+
+The detailed query/interface contract lives in
+`research/WIZARDS_LOCATOR_SOP.md`. Future agents should treat that file as the
+mandatory Wizards collection manual.
+
+### What Wizards is for
+
+Use Wizards first for:
+- canonical store identity
+- branch-specific MTG participation
+- recurring Magic event anchors
+- fees, times, dates, capacity when visible
+- official branded terms like prerelease, Commander Party, FNM, etc.
+
+Do not use Wizards alone to conclude:
+- community warmth
+- actual turnout
+- social vibe
+- Commander bracket culture
+- whether Magic is the store's dominant identity
+
+### Approved Wizards workflow
+
+1. Start from the normalized local Wizards data already in repo when available:
+   - `stores.json`
+   - `events.json`
+   - `output/wizards/metadata.json`
+   - `output/wizards/events-commander.json`
+   - `output/wizards/events-all.json`
+2. Treat existing normalized Wizards records as the first source, not as
+   something to rediscover live every time.
+3. Use live Wizards/browser verification only when one of these is true:
+   - the store is still `wizards-discovery`
+   - the existing local record looks suspicious or incomplete
+   - a current event detail is needed
+   - a branded/special event needs confirmation
+4. If direct fetch is blocked, use the approved browser fallback rather than
+   repeated failed public fetch attempts.
+5. Extract only:
+   - store identity
+   - active MTG event names
+   - recurring cadence
+   - fee/capacity if visible
+   - unusual wording worth preserving
+6. Stop. Do not keep wrestling the locator once those fields are obtained.
+
+### Wizards fallback order
+
+1. local normalized Wizards data
+2. direct public fetch if it works quickly
+3. bounded browser read of search-visible Wizards text or locator page
+4. preserve uncertainty and move on
+
+### Wizards anti-rabbit-hole rules
+
+- Never spend a full pass fighting locator mechanics.
+- Never repeat multiple failing fetch attempts in the same run.
+- Never use Wizards as proof of community quality by itself.
+- If Wizards confirms only that MTG exists, that is enough for first-pass
+  classification.
+
+## Official website SOP
+
+### What the website is for
+
+Use the website to answer:
+- does the store maintain a real official surface?
+- is there an events page or calendar?
+- does the site describe recurring house schedule or formats?
+- does it route to socials, Discord, registration, or commerce?
+
+### Workflow
+
+1. Find homepage.
+2. Check events/calendar/community/contact pages.
+3. Capture whether the site is:
+   - current operational source
+   - stale but still useful for routine schedule
+   - broken / certificate issue / dead
+   - generic retail shell with little event value
+4. Record source-routing value.
+
+### Stop conditions
+
+Stop once you can classify the site into one of the above roles.
+Do not wander the full store catalog.
+
+## Instagram SOP
+
+The detailed Instagram operating manual lives in
+`research/INSTAGRAM_SOP.md`.
+
+### What Instagram is for
+
+Instagram is a first-class operational source in this project.
+
+Use it for:
+- weekly schedule graphics
+- prereleases / specials
+- current store priorities
+- event cadence clues
+- social routing such as Linktree or Discord references
+- visible play-space / activity signals when easy
+
+### Workflow
+
+1. Confirm official profile identity.
+2. Read profile bio for:
+   - MTG mention
+   - Discord / Linktree / website routing
+   - location / brand identity
+3. Inspect only the minimum recent content needed to answer:
+   - does the store actively post schedules or event promos?
+   - is Magic prominent, secondary, or rare?
+   - are Commander / draft / prerelease visibly promoted?
+4. Capture one or two high-value recent examples, not a long scroll.
+
+### Stop conditions
+
+Stop after:
+- profile-level judgment is clear
+- recent MTG prominence is legible
+- obvious schedule/special signal is captured
+
+### Anti-rabbit-hole rules
+
+- Do not deep-scroll arbitrary reels.
+- Do not read comments unless they obviously contain operational value.
+- If Instagram is mostly branding with little MTG, record that and move on.
+
+## Discord SOP
+
+Use `research/DISCORD_METHODOLOGY.md` for claim extraction and reasoning, and
+`research/DISCORD_SWEEP_SOP.md` for efficient recurring first-pass/daily/weekly
+Discord handling.
+
+### What Discord is for
+
+Discord is the best source for:
+- meetup coordination
+- LFG behavior
+- operational announcements
+- practical newcomer usability
+- community continuity
+
+### First-pass bounded survey
+
+When an accessible Discord exists, inspect:
+- server identity and rough scale if visible
+- one announcement/event surface
+- one MTG/Commander/LFG surface
+- one schedule surface if present
+
+Look for:
+- event graphics
+- recurring schedule text
+- Commander/EDH chatter
+- meetup planning
+- signals of friendliness or usefulness
+
+### Stop conditions
+
+Stop once you can answer:
+- is this server operationally useful?
+- is it mainly official announcements, real community coordination, or both?
+- does it add meaningful value beyond Wizards/site/Instagram?
+
+### Anti-rabbit-hole rules
+
+- Do not read deep history on first pass.
+- Do not inspect DMs.
+- Do not chase every channel.
+- If the server looks sparse, say so and move on.
+
+## Corroboration SOP
+
+Use light corroboration only after the main four sources above.
+
+Good uses:
+- Google business surface for identity and prominence
+- Yelp/reviews for scale hints or broken-site replacement
+- TCGplayer or marketplace profile for proof of active trading-card identity
+
+Bad uses:
+- spending a long time comparing review prose
+- letting directories replace stronger primary sources
+
+## Promotion rules
+
+Promote from `wizards-discovery` to `partial` when:
+- identity is corroborated
+- MTG presence is real beyond a lone suspicious listing
+- at least one non-Wizards source supports the store as real and active
+
+Promote into deeper follow-up when:
+- source routing is rich
+- Commander/community fit looks promising
+- Discord/socials provide strong correction value
+- the venue looks unusually good for your preferences
+
+## Mandatory pass checklist
+
+Before closing a first pass, confirm:
+
+- Wizards role used correctly
+- official site checked
+- Instagram checked
+- Discord checked if accessible/relevant
+- source routing classified
+- MTG focus assessed separately from Commander fit
+- no unnecessary rabbit hole taken
+- result classified: `discovery`, `partial`, or promoted deeper
+
+## Required self-audit before moving on
+
+Ask:
+
+- Did I use the existing known best modality for each source?
+- Did I re-learn something I should have treated as settled process?
+- Did I go deeper than first-pass needs?
+- If I were him, would this feel complete for a first pass?
+
+If the answer exposes a gap, fix the process note here or in the run note so it
+does not repeat.

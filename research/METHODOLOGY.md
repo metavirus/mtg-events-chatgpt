@@ -11,6 +11,12 @@ libraries, clubs, and convention/community spaces.
 
 ## Standard store trawl
 
+Use the source-specific operating procedure in `research/SOURCE_SOP.md` as a
+mandatory companion to this methodology. `METHODOLOGY.md` defines the overall
+research standard; `SOURCE_SOP.md` defines the approved modality for Wizards,
+official site, Instagram, Discord, and light corroboration so future passes do
+not re-discover source handling from scratch.
+
 A store pass is not complete until social surfaces have been checked in the same
 pass unless they are genuinely blocked. Do not defer Instagram/Facebook/social
 review to a later optional sweep just because other sources already produced

@@ -260,5 +260,14 @@
     "entityId": "joyfultoad-secondary-signals",
     "summary": "Completed a fuller Joyful Toad pass that adds scale and prominence signals, concluding that the store looks broad and active with decent opportunity surface but still not strongly Commander-centered in the current public evidence.",
     "reviewStatus": "accepted"
+  },
+  {
+    "id": "aandn-aki-first-pass-promotion-2026-07-15",
+    "detectedAt": "2026-07-15T13:30:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "aandn-aki-partial-promotion",
+    "summary": "Promoted A & N Collectibles and Aki Collectibles from Wizards-discovery to partial after bounded first-pass corroboration across public search and social surfaces.",
+    "reviewStatus": "accepted"
   }
 ]

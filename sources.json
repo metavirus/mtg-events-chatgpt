@@ -847,6 +847,48 @@
     "lastChecked": "2026-07-15"
   },
   {
+    "id": "src-social-aandn-instagram-2026-07-15",
+    "label": "A&N Collectibles Instagram profile",
+    "url": "https://www.instagram.com/ancollectibles/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-aandn-facebook-2026-07-15",
+    "label": "A & N Collectibles Facebook page",
+    "url": "https://www.facebook.com/ANCollectibles/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-aandn-google-business-2026-07-15",
+    "label": "A & N Collectibles Google business / search surface",
+    "url": "https://www.google.com/search?q=A+%26+N+Collectibles+San+Dimas+Magic+the+Gathering",
+    "type": "community",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-aki-instagram-2026-07-15",
+    "label": "Aki Collectibles Instagram profile",
+    "url": "https://www.instagram.com/aki_collectibles/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-aki-google-business-2026-07-15",
+    "label": "Aki Collectibles Google business / search surface",
+    "url": "https://www.google.com/search?q=Aki+Collectibles+San+Gabriel+Magic+the+Gathering",
+    "type": "community",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-aki-tcgplayer-2026-07-15",
+    "label": "Aki Collectibles TCGplayer seller profile",
+    "url": "https://www.tcgplayer.com/search/all/seller/aki-collectibles",
+    "type": "community",
+    "lastChecked": "2026-07-15"
+  },
+  {
     "id": "src-social-lostplanet-facebook-2026-07-15",
     "label": "Lost Planet Games Facebook page",
     "url": "https://www.facebook.com/LostPlanetGamesTorrance/",
