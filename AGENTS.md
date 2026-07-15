@@ -2,6 +2,8 @@
 
 Read `README.md`, `docs/PROJECT_CONTEXT.md`, `CURRENT_FRONTIER.md`, and
 `docs/WORK_BACKLOG.md` before substantive research, data, or app work.
+For a quick reacclimation note in a fresh task, also read
+`docs/SESSION_BOOTSTRAP.md`.
 
 Follow `docs/CHANGE_CONTROL.md` for app changes and `docs/EFFICIENCY_SOP.md`
 for research and tool-use discipline. Imported legacy materials are not active
