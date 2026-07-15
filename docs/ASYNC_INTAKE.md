@@ -26,6 +26,29 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260715-002 — Add collapsible sidebar control
+
+Outcome type: intake-only
+Entity: Mana Radar sidebar navigation
+Modality path used: user-supplied application screenshot -> explicit UX request
+Promotion status: Candidate queued for Codex review
+Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`
+Branch / PR: `chatgpt-data-update/2026-07-15-sidebar-collapse-intake`; pending PR
+Codex review needed: Design and implement the bounded sidebar toggle under normal app change control.
+
+- Submitted by: User
+- Date: 2026-07-15
+- Type: product-idea
+- Status: new
+- Risk: codex-required
+- Related entity: Mana Radar sidebar navigation
+- Request / observation: Add a sidebar control that collapses and reopens the left navigation. The sidebar should remain open by default. The user supplied a screenshot of the current desktop layout showing the full open sidebar and requested this as a design-backlog item.
+- Source support: User request and user-supplied screenshot in the ChatGPT project conversation on 2026-07-15.
+- Desired outcome: A clear, discoverable icon control toggles between the full sidebar and a compact or hidden state without changing the default-open behavior.
+- Suggested next step: Codex should inspect the current responsive navigation implementation, define the collapsed desktop state, preserve accessibility and keyboard operation, make the smallest targeted UI change, and validate open/collapsed/reopened behavior at relevant viewport widths. Confirm whether the collapsed state should persist across navigation or reloads; absent a user decision, default to open on each new session.
+- User decision needed: no; implementation may ask only if persistence or compact-state details materially affect the design.
+- Related mailbox/changelog/PR: Changelog entry `2026-07-15 — Queue collapsible sidebar design request`; PR pending.
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
