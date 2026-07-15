@@ -1,3 +1,6 @@
+param(
+  [switch]$FullRepo
+)
 $ErrorActionPreference = "Stop"
 
 $root = Split-Path -Parent $PSScriptRoot
@@ -54,11 +57,15 @@ function Read-Utf8Strict([string]$path) {
   return $utf8NoBom.GetString($bytes)
 }
 
-$filesToScan = Get-GitTextFiles @("diff", "--cached", "--name-only", "--diff-filter=ACMR")
-$scopeLabel = "staged files"
-if ($filesToScan.Count -eq 0) {
-  $filesToScan = Get-GitTextFiles @("ls-files", "--others", "--exclude-standard")
-  $scopeLabel = "untracked files"
+$filesToScan = @()
+$scopeLabel = "full repo"
+if (-not $FullRepo) {
+  $filesToScan = Get-GitTextFiles @("diff", "--cached", "--name-only", "--diff-filter=ACMR")
+  $scopeLabel = "staged files"
+  if ($filesToScan.Count -eq 0) {
+    $filesToScan = Get-GitTextFiles @("ls-files", "--others", "--exclude-standard")
+    $scopeLabel = "untracked files"
+  }
 }
 if ($filesToScan.Count -eq 0) {
   $filesToScan = Get-ChildItem -Path $root -Recurse -File | Where-Object { Test-ShouldScan $_ } | Select-Object -ExpandProperty FullName

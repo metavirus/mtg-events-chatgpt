@@ -23,6 +23,9 @@ full repo) so legacy text drift elsewhere does not hide or block the current
 edit. Run a deliberate full-repo normalization pass separately rather than
 mixing it into unrelated work.
 
+For an explicit house-cleaning audit, run:
+`powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1 -FullRepo`
+
 ## Core rule
 
 Before any non-trivial UI, UX, styling, or data-shape change:

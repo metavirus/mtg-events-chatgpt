@@ -94,15 +94,22 @@ def validate_json(errors: list[str]) -> None:
 
 
 def main() -> int:
+    full_repo = "--full-repo" in sys.argv[1:]
     errors: list[str] = []
-    text_files = iter_git_paths("diff", "--cached", "--name-only", "--diff-filter=ACMR")
-    scope_label = "staged files"
-    if not text_files:
-        text_files = iter_git_paths("ls-files", "--others", "--exclude-standard")
-        scope_label = "untracked files"
-    if not text_files:
+    text_files: list[Path]
+    scope_label: str
+    if full_repo:
         text_files = iter_text_files()
         scope_label = "full repo"
+    else:
+        text_files = iter_git_paths("diff", "--cached", "--name-only", "--diff-filter=ACMR")
+        scope_label = "staged files"
+        if not text_files:
+            text_files = iter_git_paths("ls-files", "--others", "--exclude-standard")
+            scope_label = "untracked files"
+        if not text_files:
+            text_files = iter_text_files()
+            scope_label = "full repo"
 
     for path in text_files:
         text = validate_utf8(path, errors)

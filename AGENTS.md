@@ -10,6 +10,10 @@ requirements; see `docs/LEGACY_MATERIALS.md`.
 If text files change, run the repo text-integrity check before finalizing:
 `powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1`.
 
+Surface structural risks early. If you notice encoding drift, branch/worktree
+ambiguity, schema mismatch, or another issue that could compound silently,
+pause and raise it before continuing deeper work.
+
 ## ChatGPT Sideload Coordination
 
 Before handling work originating in ordinary ChatGPT, read:

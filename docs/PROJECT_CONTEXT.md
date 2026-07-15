@@ -5,15 +5,6 @@ synthesized inside this repository. Earlier imported artifacts are affirmatively
 deprecated as active project inputs under `docs/LEGACY_MATERIALS.md`. They are
 historical archive, not ordinary reference material for current work.
 
-The following imported artifacts were ingested as reference material on
-2026-07-14:
-
-- `Southern_California_Commander_Intelligence_Master_Specification_v1_0.docx`
-- `Southern_California_Commander_Intelligence_Master_Handoff_Package_v1_0.zip`
-
-The handoff package's 39 SHA-256 manifest entries were verified with zero
-mismatches before this summary was written, but verification of those files
-does not make their content authoritative for current product direction.
 
 ## Product outcome
 
