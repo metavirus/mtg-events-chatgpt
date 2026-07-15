@@ -1,0 +1,60 @@
+[
+  {
+    "id": "finding-collector-tuesday-anchor-2026-07-14",
+    "storeId": "collector-legion",
+    "category": "recurring-event",
+    "confidence": "high",
+    "summary": "Tuesday Commander is the clearest recurring Commander anchor for Collector Legion.",
+    "evidenceSourceIds": [
+      "src-wpn-11405"
+    ],
+    "normalizedClaim": {
+      "eventId": "collector-legion-commander-tuesday-free-raffle-2-19-00",
+      "dayOfWeek": 2,
+      "startTime": "19:00",
+      "entryFee": 0
+    }
+  },
+  {
+    "id": "finding-collector-site-routing-2026-07-14",
+    "storeId": "collector-legion",
+    "category": "source-routing",
+    "confidence": "high",
+    "summary": "The official website is more useful for store identity, social discovery, and special-event load than for a readable weekly Magic schedule.",
+    "evidenceSourceIds": [
+      "src-collector-homepage-2026-07-14",
+      "src-collector-events-catalog-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-collector-saturday-displacement-risk-2026-07-14",
+    "storeId": "collector-legion",
+    "category": "displacement-risk",
+    "confidence": "medium",
+    "summary": "Saturday Commander plans at Collector Legion should be treated as potentially at risk because the official event catalog is dense with Saturday tournaments and prereleases.",
+    "evidenceSourceIds": [
+      "src-collector-events-catalog-2026-07-14",
+      "src-collector-legion-discord-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-collector-instagram-viability-2026-07-14",
+    "storeId": "collector-legion",
+    "category": "social-source",
+    "confidence": "medium",
+    "summary": "Collector Legion Instagram is an active enough official profile to justify future deep post-level mining.",
+    "evidenceSourceIds": [
+      "src-social-collector-instagram-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-collector-facebook-blocked-2026-07-14",
+    "storeId": "collector-legion",
+    "category": "access-limitation",
+    "confidence": "high",
+    "summary": "Collector Legion Facebook was attempted in this pass but returned a temporary block in the current public fetch path.",
+    "evidenceSourceIds": [
+      "src-collector-facebook"
+    ]
+  }
+]

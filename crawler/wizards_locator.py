@@ -2,8 +2,8 @@
 """Collect public Wizards Store & Event Locator data around Los Alamitos.
 
 The repository intentionally stores only a public Los Alamitos centroid, never the
-user's home address. A small discovery buffer is used. Exact 25-mile inclusion can
-be resolved privately after collection.
+user's home address. Routine collection uses the Wizards locator's 25-mile search
+radius. Distance remains descriptive rather than a catalog inclusion cutoff.
 """
 
 from __future__ import annotations
@@ -296,7 +296,7 @@ def main() -> int:
     parser.add_argument(
         "--radius-miles",
         type=float,
-        default=float(os.getenv("LOCATOR_RADIUS_MILES", "26")),
+        default=float(os.getenv("LOCATOR_RADIUS_MILES", "25")),
     )
     parser.add_argument(
         "--start-date",

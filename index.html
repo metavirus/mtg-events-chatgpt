@@ -1,76 +1,181 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Los Alamitos Commander Finder</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0d18">
+  <meta name="description" content="A private, research-backed view of Southern California Magic events, places, and communities.">
+  <title>Mana Radar - Southern California Magic Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-  <div>
-    <h1>Los Alamitos Commander Finder</h1>
-    <p>Research-backed store and event directory</p>
-  </div>
-  <div class="header-actions">
-    <label class="import-button">Import data folder files
-      <input id="fileImport" type="file" accept=".json" multiple hidden>
-    </label>
-  </div>
-</header>
+  <div class="app-shell">
+    <aside class="side-rail" aria-label="Primary navigation">
+      <a class="brand" href="#today" data-route-link="today" aria-label="Mana Radar home">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span class="brand-copy"><strong>Mana Radar</strong><small>SoCal intelligence</small></span>
+      </a>
 
-<nav>
-  <button class="tab active" data-tab="calendar">Calendar</button>
-  <button class="tab" data-tab="stores">Stores</button>
-  <button class="tab" data-tab="changes">Changes</button>
-</nav>
+      <nav class="primary-nav">
+        <button class="nav-item active" data-route="today"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.5"></circle><path d="M10 10 13 8"></path><path d="M10 4.5v1.5"></path></svg></span><span>Today</span></button>
+        <button class="nav-item" data-route="events"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6.5h10"></path><path d="M5 10h10"></path><path d="M5 13.5h10"></path></svg></span><span>Events</span></button>
+        <button class="nav-item" data-route="places"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5 10 3.5l6.5 5"></path><path d="M5.5 8v8h9V8"></path></svg></span><span>Places</span></button>
+        <button class="nav-item" data-route="communities"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="2.25"></circle><circle cx="13" cy="8.75" r="1.9"></circle><path d="M3.8 15c.8-2 2.4-3 4.2-3s3.4 1 4.2 3"></path><path d="M11.5 14.8c.5-1.4 1.6-2.2 3-2.2 1.2 0 2.1.5 2.8 1.6"></path></svg></span><span>Communities</span></button>
+        <button class="nav-item" data-route="changes"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15 15 5"></path><path d="M8 5h7v7"></path></svg></span><span>New & changed</span><span id="changeNavCount" class="nav-count"></span></button>
+        <button class="nav-item" data-route="research"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="4.75"></circle><path d="m12.2 12.2 4.3 4.3"></path></svg></span><span>Research</span></button>
+      </nav>
 
-<main>
-<section id="calendar" class="panel active">
-  <div class="toolbar">
-    <div class="segmented">
-      <button data-view="agenda" class="active">Agenda</button>
-      <button data-view="week">Week</button>
-      <button data-view="month">Month</button>
+      <div class="rail-footer">
+        <button class="quiet-link" id="activityLogButton">Activity log</button>
+        <button class="quiet-link" id="importButton">Import updated data</button>
+        <input id="fileImport" type="file" accept=".json" multiple hidden>
+        <div class="freshness-mini"><span class="status-dot"></span><span>Research snapshot<br><strong>July 15, 2026</strong></span></div>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button id="mobileMenu" class="icon-button mobile-only" aria-label="Open navigation">&#9776;</button>
+        <div class="global-search-wrap">
+          <span aria-hidden="true">&#8981;</span>
+          <input id="globalSearch" type="search" placeholder="Search events, places, formats..." autocomplete="off">
+          <kbd>/</kbd>
+        </div>
+        <div class="topbar-actions">
+          <button id="favoritesToggle" class="soft-button" aria-pressed="false"><span aria-hidden="true">&#9825;</span><span class="desktop-label">Favorites</span></button>
+          <button id="coverageButton" class="coverage-pill"><span class="coverage-ring">49%</span><span class="desktop-label">Venue research coverage</span></button>
+          <button id="openQuickNote" class="avatar-button" aria-label="Open personal notes">K</button>
+        </div>
+      </header>
+
+      <main id="mainContent">
+        <section class="route-panel active" id="route-today" data-route-panel="today">
+          <div class="page-heading today-heading">
+            <div>
+              <p class="eyebrow" id="todayEyebrow">Your Magic landscape</p>
+              <h1>What's worth playing?</h1>
+              <p class="heading-subtitle">Upcoming opportunities from today forward, reconciled across the sources we have checked.</p>
+            </div>
+            <div class="heading-actions">
+              <button class="soft-button" id="jumpWeekend">This weekend</button>
+              <button class="primary-button" id="openFilters"><span aria-hidden="true">&#8801;</span> Filters <span id="activeFilterCount" class="button-count hidden">0</span></button>
+            </div>
+          </div>
+
+          <div class="coverage-banner" id="coverageBanner">
+            <span class="coverage-icon" aria-hidden="true">i</span>
+            <div><strong>This is a researched starting set, not the whole Magic landscape.</strong><span> Event coverage currently emphasizes Commander; discovery-level places and other formats remain visibly labeled.</span></div>
+            <button class="text-button" data-route="research">See coverage</button>
+            <button class="banner-close" aria-label="Dismiss coverage note">&times;</button>
+          </div>
+
+          <div class="calendar-toolbar">
+            <div class="view-switcher" role="group" aria-label="Calendar view">
+              <button class="active" data-view="agenda">Upcoming</button>
+              <button data-view="week">Week</button>
+              <button data-view="month">Month</button>
+            </div>
+            <div class="date-navigator">
+              <button class="icon-button" id="prevDate" aria-label="Previous date range">&#8592;</button>
+              <button class="today-button" id="resetToday">Today</button>
+              <button class="icon-button" id="nextDate" aria-label="Next date range">&#8594;</button>
+              <strong id="dateLabel"></strong>
+            </div>
+            <div class="quick-chips" id="quickChips">
+              <button class="filter-chip active" data-preset="all">All interesting</button>
+              <button class="filter-chip" data-preset="best">Best fits</button>
+              <button class="filter-chip" data-preset="weekend">Fri-Sun</button>
+              <button class="filter-chip" data-preset="specials">Prerelease & limited</button>
+            </div>
+          </div>
+
+          <div class="today-grid">
+            <section class="calendar-stage" aria-live="polite">
+              <div id="calendarContent"></div>
+            </section>
+            <aside class="highlights-rail" aria-label="Highlights">
+              <div class="rail-section">
+                <div class="section-title-row"><div><p class="eyebrow amber">Fresh signals</p><h2>New & notable</h2></div><button class="text-button" data-route="changes">View all</button></div>
+                <div id="newHighlights" class="highlight-stack"></div>
+              </div>
+              <div class="rail-section">
+                <div class="section-title-row"><div><p class="eyebrow mint">For you</p><h2>Promising nearby</h2></div></div>
+                <div id="fitHighlights" class="highlight-stack"></div>
+              </div>
+              <div class="rail-section compact-section">
+                <div class="section-title-row"><div><p class="eyebrow coral">Check first</p><h2>Research alerts</h2></div></div>
+                <div id="researchAlerts"></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="route-panel" id="route-events" data-route-panel="events">
+          <div class="page-heading"><div><p class="eyebrow">Full catalog</p><h1>Events</h1><p class="heading-subtitle">Everything retained, including distant, competitive, and uncertain listings.</p></div><button class="primary-button" data-action="open-filters">&#8801; Filters</button></div>
+          <div class="catalog-summary" id="eventSummary"></div>
+          <div class="catalog-grid" id="eventCatalog"></div>
+        </section>
+
+        <section class="route-panel" id="route-places" data-route-panel="places">
+          <div class="page-heading"><div><p class="eyebrow">Stores & venues</p><h1>Places</h1><p class="heading-subtitle">Compare opportunity, community signals, source coverage, and practical fit.</p></div></div>
+          <div class="master-detail">
+            <aside class="master-pane">
+              <div class="pane-search"><span>&#8981;</span><input id="placeSearch" type="search" placeholder="Find a place..."></div>
+              <div class="master-controls"><div class="master-filters"><button class="mini-chip active" data-place-filter="all">All</button><button class="mini-chip" data-place-filter="partial">Reviewed</button><button class="mini-chip" data-place-filter="favorites">Favorites</button></div><div class="sort-toggle" role="group" aria-label="Sort places"><button class="active" data-place-sort="name">A-Z</button><button data-place-sort="distance">Distance</button></div></div>
+              <div id="placeList" class="entity-list"></div>
+            </aside>
+            <article id="placeDetail" class="detail-pane"></article>
+          </div>
+        </section>
+
+        <section class="route-panel" id="route-communities" data-route-panel="communities">
+          <div class="page-heading"><div><p class="eyebrow">People beyond places</p><h1>Communities</h1><p class="heading-subtitle">Regional groups are tracked separately from the venues where they happen to meet.</p></div></div>
+          <div class="coverage-banner subtle"><span class="coverage-icon">i</span><div><strong>This section is structurally ready and lightly seeded.</strong><span> Community records still need the next normalization pass.</span></div></div>
+          <div id="communityGrid" class="community-grid"></div>
+        </section>
+
+        <section class="route-panel" id="route-changes" data-route-panel="changes">
+          <div class="page-heading"><div><p class="eyebrow amber">Last two weeks</p><h1>New & changed</h1><p class="heading-subtitle">Research discoveries, schedule updates, reclassifications, and source changes.</p></div></div>
+          <div id="changeList" class="change-timeline"></div>
+        </section>
+
+        <section class="route-panel" id="route-research" data-route-panel="research">
+          <div class="page-heading"><div><p class="eyebrow">Evidence health</p><h1>Research coverage</h1><p class="heading-subtitle">What we know, what we have only discovered, and where the current picture is incomplete.</p></div></div>
+          <div id="researchDashboard"></div>
+        </section>
+      </main>
     </div>
-    <div class="date-controls">
-      <button id="prev">←</button>
-      <button id="today">Today</button>
-      <button id="next">→</button>
-      <strong id="dateLabel"></strong>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <button class="active" data-route="today"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.5"></circle><path d="M10 10 13 8"></path><path d="M10 4.5v1.5"></path></svg></span>Today</button>
+    <button data-route="events"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6.5h10"></path><path d="M5 10h10"></path><path d="M5 13.5h10"></path></svg></span>Events</button>
+    <button data-route="places"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5 10 3.5l6.5 5"></path><path d="M5.5 8v8h9V8"></path></svg></span>Places</button>
+    <button data-route="communities"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="2.25"></circle><circle cx="13" cy="8.75" r="1.9"></circle><path d="M3.8 15c.8-2 2.4-3 4.2-3s3.4 1 4.2 3"></path><path d="M11.5 14.8c.5-1.4 1.6-2.2 3-2.2 1.2 0 2.1.5 2.8 1.6"></path></svg></span>Groups</button>
+    <button id="mobileMore"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><circle cx="5" cy="10" r="1.5"></circle><circle cx="10" cy="10" r="1.5"></circle><circle cx="15" cy="10" r="1.5"></circle></svg></span>More</button>
+  </nav>
+
+  <div id="drawerScrim" class="drawer-scrim hidden"></div>
+  <aside id="detailDrawer" class="detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+    <button class="drawer-close" id="drawerClose" aria-label="Close details">&times;</button>
+    <div id="drawerContent"></div>
+  </aside>
+
+  <aside id="filterDrawer" class="filter-drawer" role="dialog" aria-modal="true" aria-labelledby="filterTitle" aria-hidden="true">
+    <div class="drawer-header"><div><p class="eyebrow">Refine the landscape</p><h2 id="filterTitle">Filters</h2></div><button class="drawer-close inline" data-close-filters aria-label="Close filters">&times;</button></div>
+    <div class="filter-form">
+      <fieldset><legend>Research status</legend><label><input type="checkbox" name="research" value="partial" checked> Reviewed / partial</label><label><input type="checkbox" name="research" value="wizards-discovery" checked> Discovery-level</label></fieldset>
+      <fieldset><legend>Confidence</legend><label><input type="checkbox" name="confidence" value="high" checked> High</label><label><input type="checkbox" name="confidence" value="medium" checked> Medium</label><label><input type="checkbox" name="confidence" value="low" checked> Low</label></fieldset>
+      <fieldset><legend>Distance</legend><label class="range-label"><span>Within <strong id="distanceValue">30 miles</strong></span><input id="distanceFilter" type="range" min="5" max="50" value="30" step="5"></label><p class="field-help">Distance changes what you see; it never deletes research.</p></fieldset>
+      <fieldset><legend>Event character</legend><label><input id="hideCompetitive" type="checkbox" checked> Deprioritize cEDH / optimized / competitive</label><label><input id="onlyFree" type="checkbox"> Free events only</label></fieldset>
     </div>
-    <div class="filters">
-      <select id="storeFilter"><option value="">All stores</option></select>
-      <select id="confidenceFilter">
-        <option value="">All confidence levels</option>
-        <option value="high">High confidence</option>
-        <option value="medium">Medium confidence</option>
-        <option value="low">Low confidence</option>
-      </select>
-    </div>
-  </div>
-  <div id="calendarContent"></div>
-</section>
+    <div class="drawer-footer"><button class="soft-button" id="clearFilters">Reset</button><button class="primary-button" id="applyFilters">Show events</button></div>
+  </aside>
 
-<section id="stores" class="panel">
-  <div class="store-layout">
-    <aside id="storeList"></aside>
-    <article id="storeDetail"><p>Select a store.</p></article>
-  </div>
-</section>
-
-<section id="changes" class="panel">
-  <div id="changeList"></div>
-</section>
-</main>
-
-<div id="modal" class="modal hidden">
-  <div class="modal-card">
-    <button id="modalClose" class="close">×</button>
-    <div id="modalContent"></div>
-  </div>
-</div>
-
-<script src="app.js"></script>
+  <div id="toastRegion" class="toast-region" aria-live="polite"></div>
+  <script src="app.js"></script>
 </body>
 </html>

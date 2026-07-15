@@ -1,0 +1,38 @@
+[
+  {
+    "id": "finding-guildhouse-socials-operational-2026-07-14",
+    "storeId": "guild-house",
+    "category": "social-source",
+    "confidence": "high",
+    "summary": "The Guild House socials are actively operational and directly reinforce routine Tuesday Commander rather than only general branding.",
+    "evidenceSourceIds": [
+      "src-social-guildhouse-instagram-2026-07-14",
+      "src-social-guildhouse-facebook-2026-07-14",
+      "src-socialcontent-guildhouse-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-kingslayer-socials-branch-mixed-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "category": "source-routing",
+    "confidence": "high",
+    "summary": "Kingslayer socials are active but too multi-location to replace official Fountain Valley event pages for weekly Commander specifics.",
+    "evidenceSourceIds": [
+      "src-social-kingslayer-instagram-2026-07-14",
+      "src-social-kingslayer-facebook-2026-07-14",
+      "src-socialcontent-kingslayer-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-collectorlegion-socials-active-complete-2026-07-14",
+    "storeId": "collector-legion",
+    "category": "social-source",
+    "confidence": "medium",
+    "summary": "Collector Legion socials are now completed as review surfaces: active, MTG-relevant, and readable enough to rule out an uninspected gap, even though they still do not cleanly settle Saturday Commander.",
+    "evidenceSourceIds": [
+      "src-social-collector-instagram-2026-07-14",
+      "src-social-collector-facebook-2026-07-14",
+      "src-socialcontent-collectorlegion-2026-07-14"
+    ]
+  }
+]

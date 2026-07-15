@@ -1,0 +1,54 @@
+[
+  {
+    "id": "run-src-kingslayer-fv-wed-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "sourceRegistryId": "src-kingslayer-fv-wed-2026-07-14",
+    "label": "Kingslayer Fountain Valley Wednesday Commander detail",
+    "url": "https://www.kingslayergames.com/7-15-26-fountain-valley-wednesday-mtg-commander-sl.html",
+    "platform": "event-commerce",
+    "checkedAt": "2026-07-14T22:48:00-07:00",
+    "accessResult": "reused",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Structured Wednesday Commander detail page with Slay Pass naming, check-in/start time, pod-filling language, and house rules."
+  },
+  {
+    "id": "run-src-kingslayer-fv-fri-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "sourceRegistryId": "src-kingslayer-fv-fri-2026-07-14",
+    "label": "Kingslayer Fountain Valley Friday Commander detail",
+    "url": "https://www.kingslayergames.com/7-24-26-fountain-valley-mtg-fnm-commander-slay-pas.html",
+    "platform": "event-commerce",
+    "checkedAt": "2026-07-14T22:49:00-07:00",
+    "accessResult": "reused",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Structured Friday Commander detail page using the same Slay Pass naming and event rules as Wednesday."
+  },
+  {
+    "id": "run-src-kingslayer-socialcontent-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "sourceRegistryId": "src-socialcontent-kingslayer-2026-07-14",
+    "label": "Kingslayer social cleanup synthesis",
+    "url": "research/runs/2026-07-14-social-cleanup-missing-stores/RUN.md",
+    "platform": "social-synthesis",
+    "checkedAt": "2026-07-14T22:52:00-07:00",
+    "accessResult": "reused",
+    "authority": "official-synthesis",
+    "freshness": "medium-high",
+    "notes": "Helpful for branch-awareness limits; not the best source for decoding specific weekly Commander nomenclature."
+  },
+  {
+    "id": "run-src-kingslayer-slaypass-clue-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "sourceRegistryId": "src-wpn-15689",
+    "label": "Kingslayer-branded Slay Pass reward wording already normalized in dataset",
+    "url": "events.json",
+    "platform": "wpn-derived",
+    "checkedAt": "2026-07-14T22:56:00-07:00",
+    "accessResult": "reused",
+    "authority": "official-ambiguous",
+    "freshness": "medium",
+    "notes": "Contains explicit reward wording for Slay Pass but lacks sufficiently clean branch linkage for direct Fountain Valley promotion."
+  }
+]

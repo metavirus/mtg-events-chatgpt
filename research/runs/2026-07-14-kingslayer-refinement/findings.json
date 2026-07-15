@@ -1,0 +1,34 @@
+[
+  {
+    "id": "finding-kingslayer-slaypass-term-decoded-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "category": "terminology",
+    "confidence": "high",
+    "summary": "At Kingslayer Fountain Valley, `Slay Pass` should be interpreted as Kingslayer's branded paid entry for a structured Commander event rather than as a separate Magic format.",
+    "evidenceSourceIds": [
+      "src-kingslayer-fv-wed-2026-07-14",
+      "src-kingslayer-fv-fri-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-kingslayer-structured-solo-help-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "category": "solo-arrival",
+    "confidence": "high",
+    "summary": "Kingslayer Fountain Valley Wednesday and Friday Commander both use a structured event model with 6 PM check-in, 7 PM start, and store-assisted attempts to fill incomplete four-player pods.",
+    "evidenceSourceIds": [
+      "src-kingslayer-fv-wed-2026-07-14",
+      "src-kingslayer-fv-fri-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-kingslayer-slaypass-reward-branch-ambiguous-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "category": "prize-support-ambiguity",
+    "confidence": "medium",
+    "summary": "Existing Kingslayer-branded evidence suggests a Slay Pass may include three eligible booster packs after Companion-app event join, but that reward wording is not yet cleanly tied to Fountain Valley specifically.",
+    "evidenceSourceIds": [
+      "src-wpn-15689"
+    ]
+  }
+]

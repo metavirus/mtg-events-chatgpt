@@ -1,0 +1,90 @@
+[
+  {
+    "sourceId": "src-collectorslounge-site-2026-07-14",
+    "store": "Collectors Lounge - Cypress",
+    "url": "http://collectorslounge.us/",
+    "platform": "official_website",
+    "checkedAt": "2026-07-14T12:56:41-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "current identity page",
+    "summary": "Official site confirms address, social links, and Discord invite but does not provide a visible text-usable MTG schedule."
+  },
+  {
+    "sourceId": "src-guildhouse-site-2026-07-14",
+    "store": "The Guild House",
+    "url": "https://www.theguildhousegames.com/",
+    "platform": "official_website",
+    "checkedAt": "2026-07-14T12:56:41-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "current",
+    "summary": "Official site exposes Hours & Events page with embedded Google Calendar and community links."
+  },
+  {
+    "sourceId": "src-guildhouse-calendar-2026-07-14",
+    "store": "The Guild House",
+    "url": "https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=America%2FLos_Angeles&bgcolor=%23ffffff&showPrint=0&showTz=0&mode=AGENDA&src=MTN1MnFkcWZ0MHRnZXRxZzFzYzhxZWh1Y3NAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGhlZ3VpbGRob3VzZTVAZ21haWwuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23B39DDB&color=%23D81B60&color=%23E67C73",
+    "platform": "embedded_public_calendar",
+    "checkedAt": "2026-07-14T12:56:41-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "current",
+    "summary": "Public schedule view confirms Tuesday Commander Night 6-9 PM and Friday MTG Booster Draft 7-11 PM."
+  },
+  {
+    "sourceId": "src-kingslayer-fv-events-2026-07-14",
+    "store": "Kingslayer Games - Fountain Valley",
+    "url": "https://www.kingslayergames.com/events/fountain-valley/",
+    "platform": "official_event_commerce",
+    "checkedAt": "2026-07-14T12:56:41-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "current",
+    "summary": "Category page lists dated Fountain Valley event products including Wednesday and Friday Commander entries."
+  },
+  {
+    "sourceId": "src-kingslayer-fv-wed-2026-07-14",
+    "store": "Kingslayer Games - Fountain Valley",
+    "url": "https://www.kingslayergames.com/7-15-26-fountain-valley-wednesday-mtg-commander-sl.html",
+    "platform": "official_event_detail",
+    "checkedAt": "2026-07-14T12:56:41-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "dated occurrence page",
+    "summary": "Wednesday Commander Slay Pass at 7 PM with 6 PM check-in, $13 entry, pod-pairing policy, and house rules."
+  },
+  {
+    "sourceId": "src-kingslayer-fv-fri-2026-07-14",
+    "store": "Kingslayer Games - Fountain Valley",
+    "url": "https://www.kingslayergames.com/7-24-26-fountain-valley-mtg-fnm-commander-slay-pas.html",
+    "platform": "official_event_detail",
+    "checkedAt": "2026-07-14T12:56:41-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "dated occurrence page",
+    "summary": "Friday FNM Commander Slay Pass at 7 PM with materially identical structure to the Wednesday series."
+  },
+  {
+    "sourceId": "src-finch-homepage-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://www.finchandsparrowgames.com/",
+    "platform": "official_website",
+    "checkedAt": "2026-07-14T12:56:41-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "current",
+    "summary": "Homepage prominently features Birdcage VII cEDH special event with full proxy-friendly language, 64-player cap, and prize-heavy positioning."
+  },
+  {
+    "sourceId": "src-finch-calendar-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://www.finchandsparrowgames.com/pages/finch-and-sparrow-games-events",
+    "platform": "official_event_calendar",
+    "checkedAt": "2026-07-14T12:56:41-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "current",
+    "summary": "Monthly event calendar renders but did not expose event titles in the captured visible text state."
+  }
+]

@@ -1,146 +1,837 @@
-const DATA={stores:[],events:[],sources:[],changes:[]};
-let currentDate=new Date();
-let view='agenda';
+﻿const DATA = { stores: [], events: [], sources: [], changes: [] };
 
-async function load(){
-  const files=['stores','events','sources','changes'];
-  for(const f of files){
-    DATA[f]=await fetch(`${f}.json`).then(r=>r.json());
+const COMMUNITY_SEED = [
+  {
+    id: 'legendary-creature-club',
+    name: 'Legendary Creature Club',
+    region: 'Long Beach · South Bay',
+    status: 'partial',
+    formats: ['Commander', 'Meetups'],
+    channel: 'Discord',
+    summary: 'A geographically relevant player group with a Long Beach and South Bay center of gravity. Its proximity makes it especially interesting for repeat local relationships.',
+    signal: 'Closer regional fit',
+    nextQuestion: 'Normalize its current meetup cadence, venue relationships, and newcomer coordination pattern.'
+  },
+  {
+    id: 'infinite-loop-mtg',
+    name: 'Infinite Loop MTG',
+    region: 'Los Angeles · northern coverage',
+    status: 'partial',
+    formats: ['Magic', 'Commander'],
+    channel: 'Discord',
+    summary: 'A strong regional Magic community lead whose events tend to be farther north. Still appealing when the event or group signal is unusually strong.',
+    signal: 'High interest, farther travel',
+    nextQuestion: 'Map recurring hosts and separate nearby opportunities from the broader LA stream.'
+  },
+  {
+    id: 'mtg-oc',
+    name: 'MTG OC / ProjectCCG',
+    region: 'Orange County',
+    status: 'discovery',
+    formats: ['Magic', 'Community'],
+    channel: 'Discord',
+    summary: 'An Orange County community surface selected for Magic and local coverage. It may provide useful cross-store discovery and player coordination.',
+    signal: 'Regional discovery lead',
+    nextQuestion: 'Clarify whether the useful unit is one community, several channels, or organizer-linked venue activity.'
   }
+];
+
+const state = {
+  route: 'today',
+  view: 'agenda',
+  date: startOfDay(new Date()),
+  agendaDays: 42,
+  preset: 'all',
+  favoritesOnly: false,
+  search: '',
+  selectedPlaceId: null,
+  selectedPlaceTab: 'overview',
+  placeFilter: 'all',
+  placeSort: 'name',
+  filters: {
+    research: ['partial', 'wizards-discovery'],
+    confidence: ['high', 'medium', 'low'],
+    distance: 30,
+    hideCompetitive: true,
+    onlyFree: false
+  },
+  personal: loadPersonal()
+};
+
+function loadPersonal() {
+  try {
+    return JSON.parse(localStorage.getItem('mana-radar-personal')) || defaultPersonal();
+  } catch (_) {
+    return defaultPersonal();
+  }
+}
+
+function defaultPersonal() {
+  return { favorites: {}, ratings: {}, notes: {}, interested: {}, activity: [] };
+}
+
+function savePersonal(action) {
+  localStorage.setItem('mana-radar-personal', JSON.stringify(state.personal));
+  if (action) {
+    state.personal.activity.unshift({ at: new Date().toISOString(), ...action });
+    state.personal.activity = state.personal.activity.slice(0, 100);
+    localStorage.setItem('mana-radar-personal', JSON.stringify(state.personal));
+  }
+}
+
+async function load() {
+  for (const key of ['stores', 'events', 'sources', 'changes']) {
+    const response = await fetch(`${key}.json`, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Could not load ${key}.json`);
+    DATA[key] = await response.json();
+  }
+  state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
   initialize();
 }
-function initialize(){
-  bindTabs(); bindControls(); populateStoreFilter(); renderCalendar(); renderStores(); renderChanges();
+
+function initialize() {
+  bindStaticEvents();
+  routeFromHash();
+  renderAll();
 }
-function bindTabs(){
-  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
-    document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active'); document.getElementById(b.dataset.tab).classList.add('active');
+
+function bindStaticEvents() {
+  document.addEventListener('click', handleClick);
+  document.addEventListener('keydown', handleKeys);
+  document.getElementById('globalSearch').addEventListener('input', (event) => {
+    state.search = event.target.value.trim().toLowerCase();
+    renderCurrentRoute();
   });
-}
-function bindControls(){
-  document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{
-    document.querySelectorAll('[data-view]').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active'); view=b.dataset.view; renderCalendar();
+  document.getElementById('placeSearch').addEventListener('input', renderPlaces);
+  document.getElementById('distanceFilter').addEventListener('input', (event) => {
+    document.getElementById('distanceValue').textContent = `${event.target.value} miles`;
   });
-  document.getElementById('today').onclick=()=>{currentDate=new Date();renderCalendar()};
-  document.getElementById('prev').onclick=()=>{move(-1);renderCalendar()};
-  document.getElementById('next').onclick=()=>{move(1);renderCalendar()};
-  document.getElementById('storeFilter').onchange=renderCalendar;
-  document.getElementById('confidenceFilter').onchange=renderCalendar;
-  document.getElementById('modalClose').onclick=()=>document.getElementById('modal').classList.add('hidden');
-  document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')e.currentTarget.classList.add('hidden')};
-  document.getElementById('fileImport').onchange=importFiles;
+  document.getElementById('fileImport').addEventListener('change', importFiles);
+  window.addEventListener('hashchange', routeFromHash);
 }
-function move(n){
-  if(view==='month') currentDate.setMonth(currentDate.getMonth()+n);
-  else currentDate.setDate(currentDate.getDate()+n*(view==='week'?7:14));
+
+function handleClick(event) {
+  const routeButton = event.target.closest('[data-route]');
+  if (routeButton) return navigate(routeButton.dataset.route);
+
+  const viewButton = event.target.closest('[data-view]');
+  if (viewButton) {
+    state.view = viewButton.dataset.view;
+    document.querySelectorAll('[data-view]').forEach((button) => button.classList.toggle('active', button === viewButton));
+    renderCalendar();
+    return;
+  }
+
+  const presetButton = event.target.closest('[data-preset]');
+  if (presetButton) {
+    state.preset = presetButton.dataset.preset;
+    document.querySelectorAll('[data-preset]').forEach((button) => button.classList.toggle('active', button === presetButton));
+    renderCalendar();
+    return;
+  }
+
+  const placeTab = event.target.closest('[data-place-tab]');
+  if (placeTab) {
+    state.selectedPlaceTab = placeTab.dataset.placeTab;
+    renderPlaceDetail(store(state.selectedPlaceId));
+    return;
+  }
+
+  const eventTrigger = event.target.closest('[data-event-id]');
+  if (eventTrigger && !event.target.closest('[data-favorite]') && !event.target.closest('[data-place-id]')) {
+    const occurrenceDate = eventTrigger.dataset.date;
+    return openEvent(eventTrigger.dataset.eventId, occurrenceDate);
+  }
+
+  const placeTrigger = event.target.closest('[data-place-id]');
+  if (placeTrigger && !event.target.closest('[data-favorite]')) {
+    if (placeTrigger.dataset.placeMode === 'drawer') return openPlaceDrawer(placeTrigger.dataset.placeId);
+    if (state.selectedPlaceId !== placeTrigger.dataset.placeId) state.selectedPlaceTab = 'overview';
+    state.selectedPlaceId = placeTrigger.dataset.placeId;
+    navigate('places');
+    renderPlaces();
+    return;
+  }
+
+  const communityTrigger = event.target.closest('[data-community-id]');
+  if (communityTrigger && !event.target.closest('[data-favorite]')) return openCommunity(communityTrigger.dataset.communityId);
+
+  const favorite = event.target.closest('[data-favorite]');
+  if (favorite) return toggleFavorite(favorite.dataset.favorite);
+
+  const rating = event.target.closest('[data-rating]');
+  if (rating) return setRating(rating.dataset.entity, Number(rating.dataset.rating));
+
+  const interested = event.target.closest('[data-interested]');
+  if (interested) return toggleInterested(interested.dataset.interested);
+
+  const action = event.target.closest('[data-action]');
+  if (action) return handleAction(action.dataset.action, action);
+
+  const placeFilter = event.target.closest('[data-place-filter]');
+  if (placeFilter) {
+    state.placeFilter = placeFilter.dataset.placeFilter;
+    document.querySelectorAll('[data-place-filter]').forEach((button) => button.classList.toggle('active', button === placeFilter));
+    renderPlaces();
+    return;
+  }
+
+  const placeSort = event.target.closest('[data-place-sort]');
+  if (placeSort) {
+    state.placeSort = placeSort.dataset.placeSort;
+    document.querySelectorAll('[data-place-sort]').forEach((button) => button.classList.toggle('active', button === placeSort));
+    renderPlaces();
+    return;
+  }
+
+  if (event.target.closest('#prevDate')) return moveDate(-1);
+  if (event.target.closest('#nextDate')) return moveDate(1);
+  if (event.target.closest('#resetToday')) { state.date = startOfDay(new Date()); state.agendaDays = 42; return renderCalendar(); }
+  if (event.target.closest('#jumpWeekend')) return jumpToWeekend();
+  if (event.target.closest('#openFilters') || event.target.closest('[data-action="open-filters"]')) return openFilters();
+  if (event.target.closest('[data-close-filters]')) return closeFilters();
+  if (event.target.closest('#applyFilters')) return applyFilters();
+  if (event.target.closest('#clearFilters')) return resetFilters();
+  if (event.target.closest('#favoritesToggle')) return toggleFavoritesOnly();
+  if (event.target.closest('#coverageButton')) return navigate('research');
+  if (event.target.closest('#drawerClose') || event.target.id === 'drawerScrim') return closeDrawer();
+  if (event.target.closest('.banner-close')) return document.getElementById('coverageBanner').remove();
+  if (event.target.closest('#activityLogButton')) return openActivityLog();
+  if (event.target.closest('#openQuickNote')) return openQuickNote();
+  if (event.target.closest('#importButton')) return document.getElementById('fileImport').click();
+  if (event.target.closest('#mobileMenu') || event.target.closest('#mobileMore')) return document.querySelector('.side-rail').classList.toggle('mobile-open');
 }
-function populateStoreFilter(){
-  const s=document.getElementById('storeFilter');
-  DATA.stores.sort((a,b)=>a.name.localeCompare(b.name)).forEach(x=>{
-    const o=document.createElement('option');o.value=x.id;o.textContent=x.name;s.appendChild(o);
-  });
+
+function handleKeys(event) {
+  if (event.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+    event.preventDefault();
+    document.getElementById('globalSearch').focus();
+  }
+  if (event.key === 'Escape') {
+    closeDrawer();
+    closeFilters();
+    document.querySelector('.side-rail').classList.remove('mobile-open');
+  }
 }
-function occurrences(rangeStart,rangeEnd){
-  const out=[];
-  for(const e of DATA.events){
-    if(e.status!=='active')continue;
-    if(e.recurrence?.frequency==='weekly'){
-      let d=new Date(rangeStart); d.setHours(12,0,0,0);
-      while(d.getDay()!==e.recurrence.dayOfWeek)d.setDate(d.getDate()+1);
-      while(d<=rangeEnd){
-        const min=new Date(e.startDate+'T12:00:00');
-        if(d>=min && (!e.endDate || d<=new Date(e.endDate+'T23:59:59'))){
-          out.push({...e,occurrenceDate:new Date(d)});
-        }
-        d.setDate(d.getDate()+7);
+
+function handleAction(action, element) {
+  if (action === 'open-filters') return openFilters();
+  if (action === 'day-popover') return openDay(element.dataset.dayDate);
+  if (action === 'load-more') { state.agendaDays += 28; return renderCalendar(); }
+  if (action === 'explain-scores') return openScoreExplanation();
+  if (action === 'save-note') return saveNote(element.dataset.entity, element.dataset.input);
+  if (action === 'show-log') return openActivityLog();
+  if (action === 'dismiss-drawer') return closeDrawer();
+}
+
+function navigate(route) {
+  if (!document.querySelector(`[data-route-panel="${route}"]`)) return;
+  state.route = route;
+  history.replaceState(null, '', `#${route}`);
+  document.querySelectorAll('[data-route-panel]').forEach((panel) => panel.classList.toggle('active', panel.dataset.routePanel === route));
+  document.querySelectorAll('.nav-item[data-route], .mobile-nav [data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === route));
+  document.querySelector('.side-rail').classList.remove('mobile-open');
+  renderCurrentRoute();
+  document.querySelector('.workspace').scrollTo?.(0, 0);
+}
+
+function routeFromHash() {
+  const route = location.hash.replace('#', '') || 'today';
+  navigate(document.querySelector(`[data-route-panel="${route}"]`) ? route : 'today');
+}
+
+function renderAll() {
+  renderCalendar();
+  renderHighlights();
+  renderEventCatalog();
+  renderPlaces();
+  renderCommunities();
+  renderChanges();
+  renderResearch();
+  updateChrome();
+}
+
+function renderCurrentRoute() {
+  if (state.route === 'today') { renderCalendar(); renderHighlights(); }
+  if (state.route === 'events') renderEventCatalog();
+  if (state.route === 'places') renderPlaces();
+  if (state.route === 'communities') renderCommunities();
+  if (state.route === 'changes') renderChanges();
+  if (state.route === 'research') renderResearch();
+  updateChrome();
+}
+
+function updateChrome() {
+  const favCount = Object.values(state.personal.favorites).filter(Boolean).length;
+  const favoriteButton = document.getElementById('favoritesToggle');
+  favoriteButton.classList.toggle('active', state.favoritesOnly);
+  favoriteButton.setAttribute('aria-pressed', String(state.favoritesOnly));
+  favoriteButton.querySelector('span:first-child').textContent = state.favoritesOnly ? '\u2665' : '\u2661';
+  favoriteButton.title = favCount ? `${favCount} favorites` : 'No favorites yet';
+  document.getElementById('changeNavCount').textContent = DATA.changes.length;
+  document.getElementById('todayEyebrow').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
+function source(id) { return DATA.sources.find((item) => item.id === id); }
+function store(id) { return DATA.stores.find((item) => item.id === id); }
+function eventById(id) { return DATA.events.find((item) => item.id === id); }
+function startOfDay(date) { const value = new Date(date); value.setHours(0, 0, 0, 0); return value; }
+function endOfDay(date) { const value = new Date(date); value.setHours(23, 59, 59, 999); return value; }
+function addDays(date, days) { const value = new Date(date); value.setDate(value.getDate() + days); return value; }
+function dateKey(date) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; }
+function parseDate(value) { return new Date(`${value}T12:00:00`); }
+function dayName(index) { return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][index]; }
+function formatTime(value) {
+  if (!value) return 'Time TBD';
+  const [hours, minutes] = value.split(':').map(Number);
+  return new Date(2000, 0, 1, hours, minutes).toLocaleTimeString([], { hour: 'numeric', minute: minutes ? '2-digit' : undefined });
+}
+function escapeHtml(value = '') { return String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]); }
+function truncate(value = '', length = 150) { return value.length > length ? `${value.slice(0, length).trim()}...` : value; }
+function freshnessDays(value) { return Math.max(0, Math.floor((startOfDay(new Date()) - parseDate(value)) / 86400000)); }
+function numericDistance(place) {
+  const raw = place?.distanceMiles;
+  if (raw == null || raw === '') return null;
+  return Number.isFinite(Number(raw)) ? Number(raw) : null;
+}
+function distanceLabel(place, long = false) {
+  const distance = numericDistance(place);
+  if (distance == null) return long ? 'distance not yet calculated' : 'distance unknown';
+  return `${distance.toFixed(1)} ${long ? 'miles' : 'mi'}`;
+}
+function mapsUrl(place) { return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place.address)}`; }
+function isCompetitive(event) { return /cedh|competitive|optimized|rcq|championship/i.test(`${event.eventType} ${event.title} ${event.details}`); }
+function isSpecial(event) { return /prerelease|sealed|draft|limited|party|special/i.test(`${event.eventType} ${event.title} ${event.format}`); }
+function isWeekend(date) { return [5, 6, 0].includes(date.getDay()); }
+
+function rangeForView() {
+  if (state.view === 'agenda') return { start: startOfDay(state.date), end: endOfDay(addDays(state.date, state.agendaDays)) };
+  if (state.view === 'week') {
+    const start = startOfDay(addDays(state.date, -state.date.getDay()));
+    return { start, end: endOfDay(addDays(start, 6)) };
+  }
+  return { start: new Date(state.date.getFullYear(), state.date.getMonth(), 1), end: endOfDay(new Date(state.date.getFullYear(), state.date.getMonth() + 1, 0)) };
+}
+
+function buildOccurrences(start, end, applyFilters = true) {
+  const items = [];
+  for (const event of DATA.events) {
+    if (event.status !== 'active') continue;
+    if (event.recurrence?.frequency === 'weekly') {
+      let cursor = startOfDay(start);
+      while (cursor.getDay() !== event.recurrence.dayOfWeek) cursor = addDays(cursor, 1);
+      const earliest = parseDate(event.startDate);
+      const latest = event.endDate ? endOfDay(parseDate(event.endDate)) : null;
+      while (cursor <= end) {
+        if (cursor >= earliest && (!latest || cursor <= latest)) items.push({ ...event, occurrenceDate: new Date(cursor), occurrenceStatus: 'projected' });
+        cursor = addDays(cursor, 7);
       }
-    }else if(e.date){
-      const d=new Date(e.date+'T12:00:00');
-      if(d>=rangeStart&&d<=rangeEnd)out.push({...e,occurrenceDate:d});
+    } else if (event.date) {
+      const date = parseDate(event.date);
+      if (date >= start && date <= end) items.push({ ...event, occurrenceDate: date, occurrenceStatus: 'confirmed' });
     }
   }
-  const sf=document.getElementById('storeFilter').value;
-  const cf=document.getElementById('confidenceFilter').value;
-  return out.filter(e=>(!sf||e.storeId===sf)&&(!cf||e.confidence===cf))
-            .sort((a,b)=>a.occurrenceDate-b.occurrenceDate||a.recurrence.startTime.localeCompare(b.recurrence.startTime));
+  const filtered = applyFilters ? items.filter(matchesFilters) : items;
+  return filtered.sort((a, b) => a.occurrenceDate - b.occurrenceDate || (a.recurrence?.startTime || '').localeCompare(b.recurrence?.startTime || ''));
 }
-function dateKey(d){return d.toISOString().slice(0,10)}
-function store(id){return DATA.stores.find(s=>s.id===id)}
-function source(id){return DATA.sources.find(s=>s.id===id)}
-function range(){
-  let start,end;
-  if(view==='agenda'){start=new Date(currentDate);start.setHours(0,0,0,0);end=new Date(start);end.setDate(end.getDate()+20)}
-  if(view==='week'){start=new Date(currentDate);start.setDate(start.getDate()-start.getDay());start.setHours(0,0,0,0);end=new Date(start);end.setDate(end.getDate()+6);end.setHours(23,59,59,999)}
-  if(view==='month'){start=new Date(currentDate.getFullYear(),currentDate.getMonth(),1);end=new Date(currentDate.getFullYear(),currentDate.getMonth()+1,0,23,59,59)}
-  return {start,end};
+
+function matchesFilters(event) {
+  const place = store(event.storeId);
+  if (!place) return false;
+  if (!state.filters.research.includes(place.researchStatus)) return false;
+  if (!state.filters.confidence.includes(event.confidence)) return false;
+  if (numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
+  if (state.filters.onlyFree && Number(event.entryFee || 0) !== 0) return false;
+  if (state.filters.hideCompetitive && state.route === 'today' && isCompetitive(event)) return false;
+  if (state.favoritesOnly && !state.personal.favorites[`event:${event.id}`] && !state.personal.favorites[`place:${place.id}`]) return false;
+  if (state.search && !`${event.title} ${event.details} ${event.format} ${place.name} ${place.city}`.toLowerCase().includes(state.search)) return false;
+  if (state.preset === 'best' && fitScore(event) < 68) return false;
+  if (state.preset === 'weekend' && !isWeekend(event.occurrenceDate)) return false;
+  if (state.preset === 'specials' && !isSpecial(event)) return false;
+  return true;
 }
-function renderCalendar(){
-  const {start,end}=range();const ev=occurrences(start,end);
-  document.getElementById('dateLabel').textContent=view==='month'
-    ?currentDate.toLocaleDateString(undefined,{month:'long',year:'numeric'})
-    :`${start.toLocaleDateString(undefined,{month:'short',day:'numeric'})} – ${end.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}`;
-  if(view==='agenda')renderAgenda(ev,start,end);
-  if(view==='week')renderWeek(ev,start);
-  if(view==='month')renderMonth(ev);
+
+function fitScore(event) {
+  const place = store(event.storeId);
+  if (!place) return 0;
+  const assessment = place.assessment || {};
+  let score = 35;
+  score += (assessment.communityContinuity || 3) * 5;
+  score += (assessment.meetupAccessibility || 3) * 4;
+  score += (assessment.scheduleReliability || 3) * 3;
+  score += (assessment.homeGroupPotential || 3) * 3;
+  score -= Math.min(numericDistance(place) ?? 28, 35) * 0.8;
+  if (event.bracket === '3' || /bracket 3|casual|open play/i.test(`${event.bracket} ${event.title} ${event.details}`)) score += 9;
+  if (event.bracket === '2') score += 5;
+  if (isCompetitive(event)) score -= 30;
+  if (/no prox/i.test(`${event.details} ${place.assessmentNotes}`)) score -= 12;
+  if (isSpecial(event) && /prerelease|sealed/i.test(`${event.title} ${event.eventType}`)) score += 8;
+  return Math.max(0, Math.min(100, Math.round(score)));
 }
-function card(e,mini=false){
-  const st=store(e.storeId);
-  const el=document.createElement('div');el.className=mini?'mini-event':'event-card';
-  el.innerHTML=mini
-    ?`<b>${e.recurrence.startTime}</b> ${e.title}<br><span class="muted">${st.name}</span>`
-    :`<div class="event-title">${e.recurrence.startTime} — ${e.title}</div><div>${st.name} · ${st.city}</div><div><span class="badge">${e.eventType}</span><span class="badge">${e.confidence} confidence</span>${e.entryFee!=null?`<span class="badge">$${e.entryFee}</span>`:''}</div>`;
-  el.onclick=()=>showEvent(e);return el;
+
+function fitLabel(event) {
+  const score = fitScore(event);
+  if (isCompetitive(event)) return { label: 'Competitive lane', tone: 'coral' };
+  if (score >= 78) return { label: 'Strong fit', tone: 'mint' };
+  if (score >= 64) return { label: 'Promising', tone: 'sky' };
+  return { label: 'Worth a look', tone: 'slate' };
 }
-function renderAgenda(ev,start,end){
-  const c=document.getElementById('calendarContent');c.innerHTML='';
-  const grouped={};ev.forEach(e=>(grouped[dateKey(e.occurrenceDate)]??=[]).push(e));
-  for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
-    const list=grouped[dateKey(d)]||[];if(!list.length)continue;
-    const sec=document.createElement('section');sec.className='agenda-day';
-    sec.innerHTML=`<h3>${d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}</h3>`;
-    list.forEach(e=>sec.appendChild(card(e)));c.appendChild(sec);
+
+function evidenceLabel(event) {
+  const place = store(event.storeId);
+  if (event.occurrenceStatus === 'confirmed') return { label: 'Dated listing', tone: 'mint' };
+  if (event.confidence === 'high' && place?.researchStatus === 'partial') return { label: 'Supported routine', tone: 'sky' };
+  if (place?.researchStatus === 'wizards-discovery') return { label: 'Discovery-level', tone: 'amber' };
+  return { label: 'Expected routine', tone: 'amber' };
+}
+
+function renderCalendar() {
+  const { start, end } = rangeForView();
+  const events = buildOccurrences(start, end);
+  const label = state.view === 'month'
+    ? state.date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })
+    : state.view === 'week'
+      ? `${start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`
+      : 'From today onward';
+  document.getElementById('dateLabel').textContent = label;
+  if (state.view === 'agenda') renderAgenda(events, start);
+  if (state.view === 'week') renderWeek(events, start);
+  if (state.view === 'month') renderMonth(events);
+  document.getElementById('activeFilterCount').textContent = activeFilterCount();
+  document.getElementById('activeFilterCount').classList.toggle('hidden', activeFilterCount() === 0);
+}
+
+function renderAgenda(events, start) {
+  const container = document.getElementById('calendarContent');
+  if (!events.length) return container.innerHTML = emptyState('No events match this view', 'Try widening the distance, research status, or confidence filters.');
+  const groups = Object.groupBy ? Object.groupBy(events, (event) => dateKey(event.occurrenceDate)) : events.reduce((acc, event) => ((acc[dateKey(event.occurrenceDate)] ||= []).push(event), acc), {});
+  let html = `<div class="agenda-intro"><div><span class="live-dot"></span><strong>${events.length} opportunities</strong> in this window</div><span>Scroll toward future dates</span></div>`;
+  for (let date = new Date(start); date <= rangeForView().end; date = addDays(date, 1)) {
+    const dayEvents = groups[dateKey(date)] || [];
+    if (!dayEvents.length) continue;
+    const weekend = isWeekend(date);
+    html += `<section class="agenda-day ${weekend ? 'weekend-day' : ''}" id="day-${dateKey(date)}">
+      <div class="day-marker"><span class="day-name">${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong><span>${date.toLocaleDateString(undefined, { month: 'short' })}</span></div>
+      <div class="day-content"><div class="day-heading"><h2>${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</h2>${weekend ? '<span class="weekend-label">Weekend focus</span>' : ''}</div>
+      <div class="event-stack">${dayEvents.map((event) => eventCard(event)).join('')}</div></div>
+    </section>`;
   }
-  if(!ev.length)c.innerHTML='<p>No matching events in this range.</p>';
+  html += `<button class="load-more" data-action="load-more"><span>&darr;</span><strong>Show four more weeks</strong><small>Continue the timeline</small></button>`;
+  container.innerHTML = html;
 }
-function renderWeek(ev,start){
-  const c=document.getElementById('calendarContent');c.innerHTML='';const grid=document.createElement('div');grid.className='week-grid';
-  for(let i=0;i<7;i++){const d=new Date(start);d.setDate(d.getDate()+i);const col=document.createElement('div');col.className='week-day';col.innerHTML=`<h4>${d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})}</h4>`;ev.filter(e=>dateKey(e.occurrenceDate)===dateKey(d)).forEach(e=>col.appendChild(card(e,true)));grid.appendChild(col)}c.appendChild(grid);
+
+function eventCard(event, compact = false) {
+  const place = store(event.storeId);
+  const fit = fitLabel(event);
+  const evidence = evidenceLabel(event);
+  const favoriteKey = `event:${event.id}`;
+  const isFavorite = !!state.personal.favorites[favoriteKey];
+  const fee = event.entryFee == null ? 'Fee unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`;
+  if (compact) {
+    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span>${formatTime(event.recurrence?.startTime)}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small></button>`;
+  }
+  return `<article class="event-card ${isCompetitive(event) ? 'competitive' : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
+    <div class="event-time"><strong>${formatTime(event.recurrence?.startTime)}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span></div>
+    <div class="event-main">
+      <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
+      <button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">${escapeHtml(place.name)} <span>· ${distanceLabel(place)}</span></button>
+      <div class="event-chips"><span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="meta-chip">${fee}</span>${event.bracket && event.bracket !== 'unspecified' ? `<span class="meta-chip">Bracket ${escapeHtml(event.bracket)}</span>` : '<span class="meta-chip muted-chip">Bracket unknown</span>'}</div>
+      <p>${escapeHtml(truncate(event.details || 'Details are limited in the current source.', 175))}</p>
+    </div>
+    <div class="event-actions"><button class="heart-button ${isFavorite ? 'active' : ''}" data-favorite="${favoriteKey}" aria-label="${isFavorite ? 'Remove from' : 'Add to'} favorites">${isFavorite ? '♥' : '♡'}</button><span class="open-cue">Open details →</span></div>
+  </article>`;
 }
-function renderMonth(ev){
-  const c=document.getElementById('calendarContent');c.innerHTML='';const grid=document.createElement('div');grid.className='month-grid';
-  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(x=>{const h=document.createElement('div');h.className='month-head';h.textContent=x;grid.appendChild(h)});
-  const first=new Date(currentDate.getFullYear(),currentDate.getMonth(),1);const start=new Date(first);start.setDate(1-first.getDay());
-  for(let i=0;i<42;i++){const d=new Date(start);d.setDate(d.getDate()+i);const col=document.createElement('div');col.className='month-day'+(d.getMonth()!==currentDate.getMonth()?' outside':'');col.innerHTML=`<h4>${d.getDate()}</h4>`;ev.filter(e=>dateKey(e.occurrenceDate)===dateKey(d)).forEach(e=>col.appendChild(card(e,true)));grid.appendChild(col)}c.appendChild(grid);
+
+function formatClass(event) {
+  if (/prerelease|sealed|limited/i.test(`${event.format} ${event.eventType}`)) return 'format-limited';
+  if (/draft/i.test(`${event.format} ${event.eventType}`)) return 'format-draft';
+  if (isCompetitive(event)) return 'format-competitive';
+  return 'format-commander';
 }
-function showEvent(e){
-  const st=store(e.storeId),src=source(e.sourceId);
-  document.getElementById('modalContent').innerHTML=`<h2>${e.title}</h2><p><b>${e.occurrenceDate.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'})} at ${e.recurrence.startTime}</b></p><p>${st.name}<br>${st.address}</p><p>${e.details}</p><p><span class="badge">${e.confidence} confidence</span><span class="badge">verified ${e.lastVerified}</span></p>${src?`<p><a href="${src.url}" target="_blank">Open source listing</a></p>`:''}`;
-  document.getElementById('modal').classList.remove('hidden');
+
+function formatShort(event) {
+  if (/prerelease/i.test(`${event.title} ${event.eventType}`)) return 'PR';
+  if (/sealed|limited/i.test(`${event.format} ${event.eventType}`)) return 'SE';
+  if (/draft/i.test(`${event.format} ${event.eventType}`)) return 'DR';
+  if (isCompetitive(event)) return 'C4';
+  return 'EDH';
 }
-function renderStores(){
-  const list=document.getElementById('storeList');list.innerHTML='';
-  DATA.stores.sort((a,b)=>a.name.localeCompare(b.name)).forEach((s,i)=>{
-    const el=document.createElement('div');el.className='store-list-item';el.innerHTML=`<b>${s.name}</b><br><span class="muted">${s.city} · verified ${s.lastVerified}</span>`;el.onclick=()=>{document.querySelectorAll('.store-list-item').forEach(x=>x.classList.remove('active'));el.classList.add('active');showStore(s)};list.appendChild(el);if(i===0){el.classList.add('active');showStore(s)}
+
+function renderWeek(events, start) {
+  document.getElementById('calendarContent').innerHTML = `<div class="week-grid">${Array.from({ length: 7 }, (_, index) => {
+    const date = addDays(start, index);
+    const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
+    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong></header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
+  }).join('')}</div>`;
+}
+
+function renderMonth(events) {
+  const first = new Date(state.date.getFullYear(), state.date.getMonth(), 1);
+  const gridStart = addDays(first, -first.getDay());
+  let html = `<div class="month-grid">${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => `<div class="month-label">${day}</div>`).join('')}`;
+  for (let index = 0; index < 42; index++) {
+    const date = addDays(gridStart, index);
+    const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
+    html += `<section class="month-cell ${date.getMonth() !== state.date.getMonth() ? 'outside' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${dayEvents.slice(0, 3).map((event) => eventCard(event, true)).join('')}${dayEvents.length > 3 ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">+${dayEvents.length - 3} more</button>` : ''}</div></section>`;
+  }
+  document.getElementById('calendarContent').innerHTML = `${html}</div>`;
+}
+
+function moveDate(direction) {
+  if (state.view === 'month') state.date = new Date(state.date.getFullYear(), state.date.getMonth() + direction, 1);
+  else if (state.view === 'week') state.date = addDays(state.date, direction * 7);
+  else state.date = addDays(state.date, direction * 14);
+  renderCalendar();
+}
+
+function jumpToWeekend() {
+  let date = startOfDay(new Date());
+  while (date.getDay() !== 5) date = addDays(date, 1);
+  state.date = date;
+  state.view = 'agenda';
+  state.preset = 'weekend';
+  document.querySelectorAll('[data-view]').forEach((button) => button.classList.toggle('active', button.dataset.view === 'agenda'));
+  document.querySelectorAll('[data-preset]').forEach((button) => button.classList.toggle('active', button.dataset.preset === 'weekend'));
+  renderCalendar();
+  document.getElementById(`day-${dateKey(date)}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderHighlights() {
+  const events = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 28)), false);
+  const notable = [...events].sort((a, b) => Number(isSpecial(b)) - Number(isSpecial(a)) || freshnessDays(a.lastVerified) - freshnessDays(b.lastVerified)).slice(0, 3);
+  document.getElementById('newHighlights').innerHTML = notable.map((event) => highlightEvent(event)).join('');
+  const bestPlaces = rankedStores().filter((place) => place.researchStatus === 'partial').slice(0, 3);
+  document.getElementById('fitHighlights').innerHTML = bestPlaces.map((place, index) => `<button class="place-highlight" data-place-id="${place.id}"><span class="rank-number">0${index + 1}</span><span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)} · ${placeFitPhrase(place)}</small></span><span>→</span></button>`).join('');
+  const discoveryCount = DATA.stores.filter((place) => place.researchStatus === 'wizards-discovery').length;
+  document.getElementById('researchAlerts').innerHTML = `<button class="alert-row" data-route="research"><span class="alert-icon amber">!</span><span><strong>${discoveryCount} places need deeper review</strong><small>Visible, but not fully vetted</small></span></button><button class="alert-row" data-route="research"><span class="alert-icon coral">↯</span><span><strong>Other Magic formats under-covered</strong><small>Current seed is Commander-heavy</small></span></button>`;
+}
+
+function highlightEvent(event) {
+  const place = store(event.storeId);
+  return `<button class="highlight-card" data-event-id="${event.id}" data-date="${dateKey(event.occurrenceDate)}"><span class="highlight-date"><strong>${event.occurrenceDate.getDate()}</strong>${event.occurrenceDate.toLocaleDateString(undefined, { month: 'short' })}</span><span><em>${isSpecial(event) ? 'Special event' : evidenceLabel(event).label}</em><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)} · ${formatTime(event.recurrence?.startTime)}</small></span><span>→</span></button>`;
+}
+
+function rankedStores() {
+  return [...DATA.stores].sort((a, b) => storeScore(b) - storeScore(a) || a.distanceMiles - b.distanceMiles);
+}
+
+function placesByName() {
+  return [...DATA.stores].sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+}
+
+function placesByDistance() {
+  return [...DATA.stores].sort((a, b) => {
+    const distanceA = numericDistance(a);
+    const distanceB = numericDistance(b);
+    if (distanceA == null && distanceB == null) return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+    if (distanceA == null) return 1;
+    if (distanceB == null) return -1;
+    return distanceA - distanceB || a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
   });
 }
-function showStore(s){
-  const labels={commanderActivity:'Commander activity',meetupAccessibility:'Meetup accessibility',communityContinuity:'Community continuity',newPlayerIntegration:'New-player integration',physicalEnvironment:'Physical environment',scheduleReliability:'Schedule reliability',homeGroupPotential:'Home-group potential'};
-  const ev=DATA.events.filter(e=>e.storeId===s.id);
-  const src=s.sourceIds.map(id=>source(id)).filter(Boolean);
-  document.getElementById('storeDetail').innerHTML=`<div class="store-detail-card"><h2>${s.name}</h2><p>${s.address}<br>${s.phone||''}</p><p><a href="${s.website||s.eventsUrl}" target="_blank">Store website or event page</a></p><p>${s.assessmentNotes}</p><h3>Assessment</h3><div class="score-grid">${Object.entries(s.assessment).map(([k,v])=>`<div class="score"><b>${labels[k]}</b><br>${'●'.repeat(v)}${'○'.repeat(5-v)} (${v}/5)</div>`).join('')}</div><div class="store-events"><h3>Known events</h3>${ev.length?ev.map(e=>`<div class="event-card"><b>${e.title}</b><br>${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][e.recurrence.dayOfWeek]} ${e.recurrence.startTime} · ${e.confidence} confidence</div>`).join(''):'<p>No current event has been verified yet.</p>'}</div><div class="source-list"><h3>Research sources</h3>${src.map(x=>`<a href="${x.url}" target="_blank">${x.label}</a>`).join('')}</div></div>`;
+
+function storeScore(place) {
+  const values = Object.values(place.assessment || {});
+  const average = values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 3;
+  return average * 18 - Math.min(numericDistance(place) ?? 28, 40) + (place.researchStatus === 'partial' ? 8 : 0);
 }
-function renderChanges(){
-  const c=document.getElementById('changeList');c.innerHTML=DATA.changes.sort((a,b)=>b.detectedAt.localeCompare(a.detectedAt)).map(x=>`<div class="change"><b>${x.summary}</b><br><span class="muted">${new Date(x.detectedAt).toLocaleString()} · ${x.changeType} · ${x.reviewStatus}</span></div>`).join('');
+
+function placeFitPhrase(place) {
+  if ((place.assessment?.homeGroupPotential || 0) >= 4 && numericDistance(place) != null && numericDistance(place) < 10) return 'strong local potential';
+  if ((place.assessment?.commanderActivity || 0) >= 4) return 'active Magic opportunity';
+  return 'worth investigating';
 }
-async function importFiles(e){
-  for(const f of e.target.files){
-    const key=f.name.replace('.json','');
-    if(DATA[key])DATA[key]=JSON.parse(await f.text());
+
+function renderEventCatalog() {
+  const start = startOfDay(new Date());
+  const events = buildOccurrences(start, endOfDay(addDays(start, 56)));
+  document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${new Set(events.map((event) => event.storeId)).size}</strong><span>places represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>Commander-heavy</strong><span>current research coverage</span></div>`;
+  document.getElementById('eventCatalog').innerHTML = events.length ? events.slice(0, 120).map((event) => eventCard(event)).join('') : emptyState('No catalog matches', 'Clear filters or search terms to restore events.');
+}
+
+function renderPlaces() {
+  const list = document.getElementById('placeList');
+  const query = document.getElementById('placeSearch').value.trim().toLowerCase();
+  const sortedPlaces = state.placeSort === 'distance' ? placesByDistance() : placesByName();
+  let places = sortedPlaces.filter((place) => !query || `${place.name} ${place.city} ${place.assessmentNotes}`.toLowerCase().includes(query));
+  if (state.placeFilter === 'partial') places = places.filter((place) => place.researchStatus === 'partial');
+  if (state.placeFilter === 'favorites') places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
+  if (!places.some((place) => place.id === state.selectedPlaceId)) state.selectedPlaceId = places[0]?.id;
+  list.innerHTML = places.map((place) => {
+    const active = place.id === state.selectedPlaceId;
+    const favorite = state.personal.favorites[`place:${place.id}`];
+    return `<button class="entity-list-item ${active ? 'active' : ''}" data-place-id="${place.id}"><span class="entity-avatar">${initials(place.name)}</span><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small><em class="${place.researchStatus === 'partial' ? 'mint-text' : 'amber-text'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</em></span><span class="list-heart">${favorite ? '♥' : ''}</span></button>`;
+  }).join('') || emptyState('No places match', 'Try another name or filter.');
+  renderPlaceDetail(store(state.selectedPlaceId));
+}
+
+function renderPlaceDetail(place) {
+  const container = document.getElementById('placeDetail');
+  if (!place) return container.innerHTML = emptyState('Select a place', 'Choose a venue from the list.');
+  const placeEvents = DATA.events.filter((event) => event.storeId === place.id);
+  const sources = (place.sourceIds || []).map(source).filter(Boolean);
+  const favorite = !!state.personal.favorites[`place:${place.id}`];
+  const rating = state.personal.ratings[`place:${place.id}`] || 0;
+  container.innerHTML = `<div class="detail-hero"><div class="detail-identity"><span class="large-avatar">${initials(place.name)}</span><div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place">${favorite ? '♥' : '♡'}</button></div>
+    <div class="detail-actions"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a>${place.website ? `<a class="soft-button" href="${escapeHtml(place.website)}" target="_blank" rel="noreferrer">Website ↗</a>` : ''}${place.instagram ? `<a class="soft-button" href="${escapeHtml(place.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>` : ''}</div>
+    <div class="detail-tabs" role="tablist" aria-label="Place details"><button class="${state.selectedPlaceTab === 'overview' ? 'active' : ''}" data-place-tab="overview" role="tab" aria-selected="${state.selectedPlaceTab === 'overview'}">Overview</button><button class="${state.selectedPlaceTab === 'events' ? 'active' : ''}" data-place-tab="events" role="tab" aria-selected="${state.selectedPlaceTab === 'events'}">Events <span>${placeEvents.length}</span></button><button class="${state.selectedPlaceTab === 'evidence' ? 'active' : ''}" data-place-tab="evidence" role="tab" aria-selected="${state.selectedPlaceTab === 'evidence'}">Evidence <span>${sources.length}</span></button></div>
+    <div class="place-tab-content">${placeTabContent(place, placeEvents, sources, rating)}</div>`;
+}
+
+function placeTabContent(place, placeEvents, sources, rating) {
+  if (state.selectedPlaceTab === 'events') {
+    const upcoming = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 56)), false).filter((event) => event.storeId === place.id);
+    return `<section class="detail-section tab-intro"><p class="eyebrow">Known schedule</p><h3>${placeEvents.length} normalized series · ${upcoming.length} projected occurrences</h3><p class="analysis-copy">Recurring listings are patterns, not promises. Open any occurrence to see whether it is dated or projected and what should be verified before leaving.</p></section><section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Event series</p><h3>Recurring and one-off records</h3></div></div><div class="series-list">${placeEvents.length ? placeEvents.map((event) => seriesRow(event)).join('') : '<p class="muted-copy">No normalized event series yet. This is not proof that the venue has no Magic events.</p>'}</div></section><section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Next eight weeks</p><h3>Upcoming occurrences</h3></div></div><div class="place-occurrences">${upcoming.length ? upcoming.slice(0, 24).map((event) => `<button class="occurrence-row" data-event-id="${event.id}" data-date="${dateKey(event.occurrenceDate)}"><time><strong>${event.occurrenceDate.getDate()}</strong>${event.occurrenceDate.toLocaleDateString(undefined,{month:'short'})}</time><span><strong>${escapeHtml(event.title)}</strong><small>${event.occurrenceDate.toLocaleDateString(undefined,{weekday:'long'})} · ${formatTime(event.recurrence?.startTime)}</small></span><span class="status-chip ${evidenceLabel(event).tone}">${evidenceLabel(event).label}</span></button>`).join('') : '<p class="muted-copy">No upcoming occurrence is generated in the current window.</p>'}</div></section>`;
   }
-  document.getElementById('storeFilter').innerHTML='<option value="">All stores</option>';
-  populateStoreFilter();renderCalendar();renderStores();renderChanges();
-  alert('Data imported for this browser session.');
+  if (state.selectedPlaceTab === 'evidence') {
+    return `<section class="detail-section tab-intro"><p class="eyebrow">Evidence coverage</p><h3>${sources.length} connected sources</h3><p class="analysis-copy">Sources are retained separately from the analyst synthesis. A strong venue can have a weak social channel, and silence on one source is not proof that an event does not exist.</p></section><section class="detail-section"><div class="source-health-summary"><div><span>Research status</span><strong>${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</strong></div><div><span>Last venue check</span><strong>${escapeHtml(place.lastVerified || 'Unknown')}</strong></div><div><span>Source count</span><strong>${sources.length}</strong></div></div><div class="source-list evidence-list">${sources.length ? sources.map((item) => sourceRow(item, true)).join('') : '<p class="muted-copy">No normalized sources are linked yet.</p>'}</div></section><section class="detail-section"><p class="eyebrow">Interpretive boundary</p><h3>What remains uncertain</h3><p class="analysis-copy">Fields not stated by the connected sources remain unknown. In particular, proxy policy, pod formation, typical power level, and solo-arrival experience should not be inferred from silence.</p></section>`;
+  }
+  return `<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Why it’s on the radar</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p></section>
+    <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Fit dimensions</p><h3>Current working assessment</h3></div><button class="why-button" data-action="explain-scores">Why these scores?</button></div><div class="score-bars">${assessmentBars(place)}</div></section>
+    <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Known schedule</p><h3>Event series</h3></div><button class="text-button" data-place-tab="events">See all events</button></div><div class="series-list">${placeEvents.length ? placeEvents.slice(0, 4).map((event) => seriesRow(event)).join('') : '<p class="muted-copy">No normalized event series yet. This is not proof that the venue has no Magic events.</p>'}</div></section>
+    <section class="detail-section two-column-section"><div><p class="eyebrow">Personal continuity</p><h3>Your rating & notes</h3><div class="rating-row" aria-label="Rate this place">${[1,2,3,4,5].map((value) => `<button class="star ${value <= rating ? 'active' : ''}" data-rating="${value}" data-entity="place:${place.id}" aria-label="${value} stars">★</button>`).join('')}</div>${noteComposer(`place:${place.id}`, 'What did it feel like in person?')}</div><div><p class="eyebrow">Source map</p><h3>${sources.length} connected sources</h3><div class="source-list">${sources.slice(0, 5).map((item) => sourceRow(item)).join('') || '<p class="muted-copy">Source mapping incomplete.</p>'}</div><button class="text-button evidence-jump" data-place-tab="evidence">Review all evidence →</button></div></section>`;
 }
-load().catch(err=>{document.body.innerHTML=`<pre>Unable to load data. Run this folder through a local web server.\n\n${err}</pre>`});
+
+function assessmentBars(place) {
+  const labels = { commanderActivity: 'Commander activity', meetupAccessibility: 'Solo-arrival access', communityContinuity: 'Community continuity', newPlayerIntegration: 'New-player integration', physicalEnvironment: 'Physical environment', scheduleReliability: 'Schedule reliability', homeGroupPotential: 'Home-pod potential' };
+  return Object.entries(place.assessment || {}).map(([key, value]) => `<div class="score-row"><span>${labels[key] || key}</span><div class="score-track"><i style="width:${value * 20}%"></i></div><strong>${value}/5</strong></div>`).join('');
+}
+
+function seriesRow(event) {
+  return `<button class="series-row" data-event-id="${event.id}" data-date="${event.date || event.startDate}"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><span><strong>${escapeHtml(event.title)}</strong><small>${event.recurrence?.frequency === 'weekly' ? `${dayName(event.recurrence.dayOfWeek)} · ${formatTime(event.recurrence.startTime)} · recurring` : event.date || 'Dated event'}</small></span><span class="status-chip ${event.confidence === 'high' ? 'mint' : 'amber'}">${event.confidence}</span></button>`;
+}
+
+function renderCommunities() {
+  document.getElementById('communityGrid').innerHTML = COMMUNITY_SEED.map((community) => {
+    const favorite = state.personal.favorites[`community:${community.id}`];
+    return `<article class="community-card" data-community-id="${community.id}" tabindex="0"><div class="community-card-top"><span class="community-symbol">◎</span><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${community.id}">${favorite ? '♥' : '♡'}</button></div><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><h2>${escapeHtml(community.name)}</h2><p class="community-region">${escapeHtml(community.region)}</p><p>${escapeHtml(community.summary)}</p><div class="community-tags">${community.formats.map((format) => `<span class="meta-chip">${format}</span>`).join('')}<span class="meta-chip">${community.channel}</span></div><div class="community-signal"><span>Signal</span><strong>${escapeHtml(community.signal)}</strong></div><span class="open-cue">Open community profile →</span></article>`;
+  }).join('');
+}
+
+function renderChanges() {
+  const items = [...DATA.changes].sort((a, b) => b.detectedAt.localeCompare(a.detectedAt));
+  document.getElementById('changeList').innerHTML = items.map((change) => `<article class="change-row"><div class="timeline-node ${change.changeType === 'source_failure' ? 'coral' : change.changeType === 'new_event' ? 'mint' : 'violet'}"></div><time>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}<small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div><span class="status-chip slate">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span><h3>${escapeHtml(change.summary)}</h3><p>${escapeHtml(change.details || 'The research record was updated.')}</p></div><span class="review-state">${escapeHtml(change.reviewStatus || 'recorded')}</span></article>`).join('');
+}
+
+function renderResearch() {
+  const partial = DATA.stores.filter((place) => place.researchStatus === 'partial').length;
+  const discovery = DATA.stores.length - partial;
+  const formats = DATA.events.reduce((acc, event) => ((acc[event.format || 'Unknown'] = (acc[event.format || 'Unknown'] || 0) + 1), acc), {});
+  const sourceTypes = DATA.sources.reduce((acc, item) => ((acc[item.type || 'other'] = (acc[item.type || 'other'] || 0) + 1), acc), {});
+  document.getElementById('researchDashboard').innerHTML = `<div class="research-stats"><div class="research-stat primary"><span>Venue depth</span><strong>${partial}<small> / ${DATA.stores.length}</small></strong><p>have moved beyond raw discovery</p><div class="progress"><i style="width:${partial / DATA.stores.length * 100}%"></i></div></div><div class="research-stat"><span>Discovery queue</span><strong>${discovery}</strong><p>places remain lightly vetted</p></div><div class="research-stat"><span>Source records</span><strong>${DATA.sources.length}</strong><p>connected evidence surfaces</p></div><div class="research-stat warning"><span>Event-format balance</span><strong>${formats.Commander || 0}<small> Commander</small></strong><p>${DATA.events.length - (formats.Commander || 0)} other-format record</p></div></div>
+    <div class="research-grid"><section class="research-panel"><p class="eyebrow">Coverage truth</p><h2>What this snapshot can and cannot say</h2><div class="truth-list"><div><span class="truth-icon mint">✓</span><p><strong>Useful nearby Commander starting set</strong><br>Recurring listings and strong partial venue profiles can support real planning now.</p></div><div><span class="truth-icon amber">~</span><p><strong>Uneven venue depth</strong><br>${partial} places have qualitative work; ${discovery} remain discovery-level and need social/site corroboration.</p></div><div><span class="truth-icon coral">!</span><p><strong>Not a complete Magic calendar</strong><br>Draft, sealed, prerelease, and other formats have not received comparable normalization yet.</p></div><div><span class="truth-icon sky">i</span><p><strong>Recurring dates are expectations</strong><br>Weekly schedules are displayed as projected occurrences unless a date-specific source confirms them.</p></div></div></section>
+    <section class="research-panel"><p class="eyebrow">Source mix</p><h2>Where the evidence comes from</h2><div class="source-bars">${Object.entries(sourceTypes).sort((a,b) => b[1]-a[1]).slice(0,8).map(([type,count]) => `<div><span>${escapeHtml(type.replaceAll(/([A-Z])/g, ' $1'))}</span><div><i style="width:${count / Math.max(...Object.values(sourceTypes)) * 100}%"></i></div><strong>${count}</strong></div>`).join('')}</div></section></div>
+    <div class="research-panel methodology-card"><div><p class="eyebrow">Method in one line</p><h2>Catalog broadly. Classify carefully. Rank personally. Preserve the evidence.</h2></div><button class="soft-button" data-action="show-log">View activity log</button></div>`;
+}
+
+function openEvent(id, occurrenceDate) {
+  const event = eventById(id);
+  const place = store(event?.storeId);
+  if (!event || !place) return;
+  const occurrence = occurrenceDate ? parseDate(occurrenceDate) : parseDate(event.date || event.startDate);
+  const src = source(event.sourceId);
+  const fit = fitLabel({ ...event, occurrenceDate: occurrence });
+  const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: event.date ? 'confirmed' : 'projected' });
+  const favorite = state.personal.favorites[`event:${event.id}`];
+  const interested = state.personal.interested[`${event.id}:${dateKey(occurrence)}`];
+  const calendarUrl = googleCalendarUrl(event, place, occurrence);
+  openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1><button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
+    <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(event.recurrence?.startTime)}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
+    <div class="drawer-action-grid"><a class="primary-button" href="${calendarUrl}" target="_blank" rel="noreferrer">Add to Google Calendar ↗</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button><button class="heart-button labeled ${favorite ? 'active' : ''}" data-favorite="event:${event.id}">${favorite ? '♥ Following series' : '♡ Follow series'}</button></div>
+    <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(event.details || 'The current source provides only a minimal event listing.')}</p></section>
+    <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
+    <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Address</span><strong>${escapeHtml(place.address)}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>
+    <section class="drawer-section"><p class="eyebrow">Evidence</p><h2>Source trail</h2>${src ? sourceRow(src, true) : '<p class="muted-copy">No normalized source link is attached yet.</p>'}</section>
+    <section class="drawer-section"><p class="eyebrow">Your memory</p><h2>Note on this series</h2>${noteComposer(`event:${event.id}`, 'What should future-you remember about this event?')}</section>`);
+}
+
+function openDay(dayDate) {
+  if (!dayDate) return;
+  const date = parseDate(dayDate);
+  const events = buildOccurrences(startOfDay(date), endOfDay(date));
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Calendar day</span><span class="status-chip slate">${events.length} events</span></div><h1 id="drawerTitle">${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</h1><p class="drawer-lead">Every matching event currently visible for this date.</p><section class="drawer-section day-drawer-list">${events.length ? events.map((event) => eventCard(event)).join('') : '<p class="muted-copy">No events match the active filters for this day.</p>'}</section>`);
+}
+
+function eventFitExplanation(event, place) {
+  if (isCompetitive(event)) return 'The wording suggests cEDH, optimized, or tournament-style play outside your usual Bracket 2/3 preference.';
+  if (/open play|drop.?in|casual/i.test(`${event.title} ${event.details}`)) return 'The casual/open wording aligns with your preferred play style; solo-arrival mechanics may still be unknown.';
+  if (isSpecial(event)) return 'This is the kind of infrequent limited or special event you asked to have highlighted.';
+  return `The listing is relevant, but its power expectations and social structure need interpretation. ${distanceLabel(place, true)} keeps distance in the practical calculation.`;
+}
+
+function evidenceExplanation(event, place) {
+  if (event.date) return 'A source names this specific date rather than only a recurring weekly pattern.';
+  if (place.researchStatus === 'partial' && event.confidence === 'high') return 'The routine is supported by a stronger store pass, but this displayed date is still projected from recurrence.';
+  return 'This occurrence is generated from a recurring listing. Verify the source before a longer drive.';
+}
+
+function openPlaceDrawer(id) {
+  const place = store(id);
+  if (!place) return;
+  const events = DATA.events.filter((event) => event.storeId === id);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span></div><h1 id="drawerTitle">${escapeHtml(place.name)}</h1><p class="drawer-lead">${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p><div class="drawer-action-grid"><button class="primary-button" data-place-id="${place.id}">Open full profile</button><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a></div><section class="drawer-section"><p class="eyebrow">Analyst synthesis</p><h2>Why it’s on the radar</h2><p>${escapeHtml(place.assessmentNotes)}</p></section><section class="drawer-section"><p class="eyebrow">Known schedule</p><h2>${events.length} event series</h2><div class="series-list">${events.map(seriesRow).join('') || '<p>No normalized series yet.</p>'}</div></section>`);
+}
+
+function openCommunity(id) {
+  const community = COMMUNITY_SEED.find((item) => item.id === id);
+  if (!community) return;
+  const favorite = state.personal.favorites[`community:${id}`];
+  openDrawer(`<div class="drawer-kicker"><span class="community-symbol small">◎</span><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span></div><h1 id="drawerTitle">${escapeHtml(community.name)}</h1><p class="drawer-lead">${escapeHtml(community.region)}</p><div class="drawer-action-grid"><button class="heart-button labeled ${favorite ? 'active' : ''}" data-favorite="community:${id}">${favorite ? '♥ Following community' : '♡ Follow community'}</button></div><section class="drawer-section"><p class="eyebrow">Current synthesis</p><h2>Why this group matters</h2><p>${escapeHtml(community.summary)}</p></section><section class="drawer-section"><p class="eyebrow">Geographic signal</p><h2>${escapeHtml(community.signal)}</h2><p>Community geography is descriptive and is not replaced with a store address merely because a group sometimes meets there.</p></section><section class="drawer-section"><p class="eyebrow">Open research question</p><h2>What we still need</h2><p>${escapeHtml(community.nextQuestion)}</p></section>${noteComposer(`community:${id}`, 'Add a personal note about this community...')}`);
+}
+
+function openActivityLog() {
+  const activity = state.personal.activity || [];
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip slate">Private on this device</span></div><h1 id="drawerTitle">Activity log</h1><p class="drawer-lead">A quiet record of favorites, ratings, notes, and planning actions.</p><section class="drawer-section"><div class="activity-list">${activity.length ? activity.map((item) => `<div class="activity-row"><span>${activityIcon(item.type)}</span><div><strong>${escapeHtml(item.label || item.type)}</strong><small>${new Date(item.at).toLocaleString()}</small></div></div>`).join('') : '<p class="muted-copy">No personal actions yet. Favorite a place or add a note and it will appear here.</p>'}</div></section><section class="drawer-section"><p class="field-help">For this initial build, personal state is stored in this browser. The interface is designed for the private cross-device persistence layer planned for hosting.</p></section>`);
+}
+
+function openQuickNote() {
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Personal</span></div><h1 id="drawerTitle">Quick note</h1><p class="drawer-lead">Capture something before it disappears from memory.</p><section class="drawer-section">${noteComposer('general:inbox', 'A store to revisit, a player-group clue, a future question...')}</section>`);
+}
+
+function activityIcon(type) { return type === 'favorite' ? '♥' : type === 'rating' ? '★' : type === 'note' ? '✎' : '✓'; }
+
+function noteComposer(entity, placeholder) {
+  const note = state.personal.notes[entity] || '';
+  const id = `note-${entity.replace(/[^a-z0-9]/gi, '-')}`;
+  return `<div class="note-composer"><textarea id="${id}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(note)}</textarea><div><span>${note ? 'Saved note · edit anytime' : 'Private working note'}</span><button class="soft-button" data-action="save-note" data-entity="${escapeHtml(entity)}" data-input="${id}">Save note</button></div></div>`;
+}
+
+function saveNote(entity, inputId) {
+  const value = document.getElementById(inputId)?.value.trim() || '';
+  state.personal.notes[entity] = value;
+  savePersonal({ type: 'note', label: value ? `Updated note for ${entity.split(':')[1]}` : `Cleared note for ${entity.split(':')[1]}` });
+  toast('Note saved');
+}
+
+function setRating(entity, rating) {
+  state.personal.ratings[entity] = rating;
+  savePersonal({ type: 'rating', label: `Rated ${entity.split(':')[1]} ${rating} stars` });
+  renderPlaces();
+  toast(`Rating saved: ${rating} stars`);
+}
+
+function toggleFavorite(key) {
+  state.personal.favorites[key] = !state.personal.favorites[key];
+  savePersonal({ type: 'favorite', label: `${state.personal.favorites[key] ? 'Followed' : 'Unfollowed'} ${key.split(':')[1]}` });
+  renderCurrentRoute();
+  toast(state.personal.favorites[key] ? 'Added to favorites' : 'Removed from favorites');
+}
+
+function toggleInterested(key) {
+  state.personal.interested[key] = !state.personal.interested[key];
+  savePersonal({ type: 'planning', label: `${state.personal.interested[key] ? 'Marked interested in' : 'Removed interest from'} ${key.split(':')[0]}` });
+  const [eventId, date] = key.split(/:(?=\d{4}-\d{2}-\d{2}$)/);
+  openEvent(eventId, date);
+  toast(state.personal.interested[key] ? 'Marked interested' : 'Interest removed');
+}
+
+function toggleFavoritesOnly() {
+  state.favoritesOnly = !state.favoritesOnly;
+  renderCurrentRoute();
+}
+
+function openScoreExplanation() {
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Scoring guide</span></div><h1 id="drawerTitle">How place scores work</h1><p class="drawer-lead">These are working analyst scores, not objective truths. They exist to help you compare places quickly and to show where the current read is stronger or weaker.</p><section class="drawer-section"><p class="eyebrow">How to read them</p><h2>What each dimension means</h2><div class="truth-list"><div><span class="truth-icon mint">1</span><p><strong>Commander activity</strong><br>How much real Magic activity, especially Commander opportunity, seems to be happening here.</p></div><div><span class="truth-icon sky">2</span><p><strong>Solo-arrival access</strong><br>How plausible it feels to show up alone and still find games without a lot of social friction.</p></div><div><span class="truth-icon amber">3</span><p><strong>Community continuity</strong><br>Whether the venue seems likely to support repeat relationships rather than one-off random appearances.</p></div><div><span class="truth-icon coral">4</span><p><strong>Physical and schedule signals</strong><br>How dependable the venue looks in space, cadence, and event follow-through.</p></div></div></section><section class="drawer-section"><p class="eyebrow">Important caveat</p><h2>These scores stay editable in spirit</h2><p>They should change as research deepens or after your own visits. A place can look modest on paper and still be great in person, or look busy online and be a weak fit for you.</p></section>`);
+}
+
+function openDrawer(html) {
+  document.getElementById('drawerContent').innerHTML = html;
+  document.getElementById('detailDrawer').classList.add('open');
+  document.getElementById('detailDrawer').setAttribute('aria-hidden', 'false');
+  document.getElementById('drawerScrim').classList.remove('hidden');
+  document.body.classList.add('drawer-open');
+  setTimeout(() => document.getElementById('drawerClose').focus(), 50);
+}
+
+function closeDrawer() {
+  document.getElementById('detailDrawer').classList.remove('open');
+  document.getElementById('detailDrawer').setAttribute('aria-hidden', 'true');
+  document.getElementById('drawerScrim').classList.add('hidden');
+  document.body.classList.remove('drawer-open');
+}
+
+function openFilters() {
+  document.getElementById('filterDrawer').classList.add('open');
+  document.getElementById('filterDrawer').setAttribute('aria-hidden', 'false');
+  document.getElementById('drawerScrim').classList.remove('hidden');
+}
+
+function closeFilters() {
+  document.getElementById('filterDrawer').classList.remove('open');
+  document.getElementById('filterDrawer').setAttribute('aria-hidden', 'true');
+  if (!document.getElementById('detailDrawer').classList.contains('open')) document.getElementById('drawerScrim').classList.add('hidden');
+}
+
+function applyFilters() {
+  state.filters.research = [...document.querySelectorAll('input[name="research"]:checked')].map((input) => input.value);
+  state.filters.confidence = [...document.querySelectorAll('input[name="confidence"]:checked')].map((input) => input.value);
+  state.filters.distance = Number(document.getElementById('distanceFilter').value);
+  state.filters.hideCompetitive = document.getElementById('hideCompetitive').checked;
+  state.filters.onlyFree = document.getElementById('onlyFree').checked;
+  closeFilters();
+  renderCurrentRoute();
+}
+
+function resetFilters() {
+  state.filters = { research: ['partial', 'wizards-discovery'], confidence: ['high', 'medium', 'low'], distance: 30, hideCompetitive: true, onlyFree: false };
+  document.querySelectorAll('input[name="research"], input[name="confidence"]').forEach((input) => input.checked = true);
+  document.getElementById('distanceFilter').value = 30;
+  document.getElementById('distanceValue').textContent = '30 miles';
+  document.getElementById('hideCompetitive').checked = true;
+  document.getElementById('onlyFree').checked = false;
+}
+
+function activeFilterCount() {
+  let count = 0;
+  if (state.filters.research.length < 2) count++;
+  if (state.filters.confidence.length < 3) count++;
+  if (state.filters.distance !== 30) count++;
+  if (!state.filters.hideCompetitive) count++;
+  if (state.filters.onlyFree) count++;
+  return count;
+}
+
+function googleCalendarUrl(event, place, date) {
+  const [hour = 18, minute = 0] = (event.recurrence?.startTime || '18:00').split(':').map(Number);
+  const start = new Date(date); start.setHours(hour, minute, 0, 0);
+  const end = new Date(start); end.setHours(end.getHours() + 3);
+  const stamp = (value) => value.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const params = new URLSearchParams({ action: 'TEMPLATE', text: event.title, dates: `${stamp(start)}/${stamp(end)}`, details: event.details || '', location: place.address });
+  return `https://calendar.google.com/calendar/render?${params}`;
+}
+
+function sourceRow(item, prominent = false) {
+  return `<a class="source-row ${prominent ? 'prominent' : ''}" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer"><span class="source-icon">${sourceIcon(item.type)}</span><span><strong>${escapeHtml(item.label)}</strong><small>${escapeHtml(item.type || 'source')} · checked ${escapeHtml(item.lastChecked || 'date unknown')}</small></span><span>↗</span></a>`;
+}
+
+function sourceIcon(type = '') {
+  if (/social|community/i.test(type)) return '◎';
+  if (/calendar|event/i.test(type)) return '▦';
+  if (/official|website/i.test(type)) return '⌂';
+  return '↗';
+}
+
+function initials(name) { return name.split(/\s+/).filter((word) => !/^(and|the|-)$/.test(word.toLowerCase())).slice(0, 2).map((word) => word[0]).join('').toUpperCase(); }
+
+function emptyState(title, copy) { return `<div class="empty-state"><span>⌁</span><h2>${escapeHtml(title)}</h2><p>${escapeHtml(copy)}</p></div>`; }
+
+function toast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.getElementById('toastRegion').appendChild(toast);
+  setTimeout(() => toast.remove(), 2600);
+}
+
+async function importFiles(event) {
+  for (const file of event.target.files) {
+    const key = file.name.replace('.json', '');
+    if (Object.hasOwn(DATA, key)) DATA[key] = JSON.parse(await file.text());
+  }
+  renderAll();
+  toast('Updated data loaded for this session');
+}
+
+load().catch((error) => {
+  document.body.innerHTML = `<main class="load-error"><h1>Mana Radar needs a local web server</h1><p>${escapeHtml(error.message)}</p><p>Open this project through its normal preview or hosted address so the research files can load.</p></main>`;
+});

@@ -1,0 +1,84 @@
+{
+  "runId": "2026-07-14-social-baseline-top-venues",
+  "generatedAt": "2026-07-14T13:18:00-07:00",
+  "findings": [
+    {
+      "entity": "Collectors Lounge - Cypress",
+      "findingType": "social_source_assessment",
+      "status": "high_priority_social_source",
+      "claims": {
+        "instagramFollowersApprox": 5418,
+        "instagramPostsApprox": 4428,
+        "facebookFollowersApprox": 158,
+        "profileSignals": [
+          "daily tournaments branding",
+          "daily hours branding",
+          "Cypress address visible"
+        ]
+      },
+      "sources": [
+        "src-social-collectors-instagram-2026-07-14",
+        "src-social-collectors-facebook-2026-07-14"
+      ]
+    },
+    {
+      "entity": "The Guild House",
+      "findingType": "social_source_assessment",
+      "status": "viable_social_source",
+      "claims": {
+        "instagramFollowersApprox": 1635,
+        "instagramPostsApprox": 1134,
+        "facebookFollowersApprox": 2000,
+        "profileSignals": [
+          "community-oriented branding",
+          "Bellflower address visible",
+          "strong recommendation signal on Facebook"
+        ],
+        "easierWeeklySocialSurface": "facebook"
+      },
+      "sources": [
+        "src-social-guildhouse-instagram-2026-07-14",
+        "src-social-guildhouse-facebook-2026-07-14"
+      ]
+    },
+    {
+      "entity": "Kingslayer Games - Fountain Valley",
+      "findingType": "social_source_assessment",
+      "status": "viable_social_source_branch_caution",
+      "claims": {
+        "instagramFollowersApprox": 14000,
+        "instagramPostsApprox": 1479,
+        "facebookFollowersApprox": 2700,
+        "profileSignals": [
+          "multi-location brand account",
+          "explicit Magic focus on Facebook",
+          "branch phone numbers listed on Instagram"
+        ],
+        "normalizationWarning": "social posts may represent multiple store branches"
+      },
+      "sources": [
+        "src-social-kingslayer-instagram-2026-07-14",
+        "src-social-kingslayer-facebook-2026-07-14"
+      ]
+    },
+    {
+      "entity": "Finch and Sparrow Games",
+      "findingType": "social_source_assessment",
+      "status": "high_priority_social_source",
+      "claims": {
+        "instagramFollowersApprox": 9828,
+        "instagramPostsApprox": 4005,
+        "facebookFollowersApprox": 1400,
+        "profileSignals": [
+          "Wizards Premium branding",
+          "MTG-specialist branding",
+          "large public social footprint despite sparse Discord"
+        ]
+      },
+      "sources": [
+        "src-social-finch-instagram-2026-07-14",
+        "src-social-finch-facebook-2026-07-14"
+      ]
+    }
+  ]
+}

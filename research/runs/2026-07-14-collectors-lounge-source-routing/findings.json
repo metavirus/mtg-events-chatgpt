@@ -1,0 +1,49 @@
+[
+  {
+    "id": "finding-collectors-no-cleaner-commerce-layer-2026-07-14",
+    "storeId": "collectors-lounge-cypress",
+    "category": "source-routing",
+    "confidence": "high",
+    "summary": "No cleaner official event-commerce layer surfaced for Collectors Lounge beyond the weekly Discord, Instagram, and Wizards combination.",
+    "evidenceSourceIds": [
+      "src-collectorslounge-site-2026-07-14",
+      "src-collectors-online-store-2026-07-14",
+      "src-wpn-20379",
+      "src-socialcontent-collectors-instagram-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-collectors-friday-casual-lane-2026-07-14",
+    "storeId": "collectors-lounge-cypress",
+    "category": "event-interpretation",
+    "confidence": "high",
+    "summary": "Friday Commander is the more casual lane, branded in current weekly graphics as God of Mischief Commander and supported by Discord rules guidance as the bracket-3/proxy-friendly track.",
+    "evidenceSourceIds": [
+      "src-wpn-20379",
+      "src-collectors-discord-2026-07-14",
+      "src-socialcontent-collectors-instagram-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-collectors-saturday-optimized-lane-2026-07-14",
+    "storeId": "collectors-lounge-cypress",
+    "category": "event-interpretation",
+    "confidence": "high",
+    "summary": "Saturday Optimized Commander is the stronger high-power lane and should stay visibly separated from the casual Friday experience.",
+    "evidenceSourceIds": [
+      "src-wpn-20379",
+      "src-collectors-discord-2026-07-14",
+      "src-socialcontent-collectors-instagram-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-collectors-facebook-supporting-source-2026-07-14",
+    "storeId": "collectors-lounge-cypress",
+    "category": "social-source",
+    "confidence": "medium",
+    "summary": "Facebook remains a usable official supporting source, but it is not the main weekly monitoring surface.",
+    "evidenceSourceIds": [
+      "src-social-collectors-facebook-2026-07-14"
+    ]
+  }
+]

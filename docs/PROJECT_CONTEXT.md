@@ -1,18 +1,25 @@
-# Southern California Commander Intelligence — Project Context
+# Southern California Magic Intelligence — Project Context
 
-This file is the durable working summary of the master specification and handoff
-package ingested on 2026-07-14. Consult the original artifacts for full detail:
+This file is the durable working summary of the product direction now
+synthesized inside this repository. Earlier imported artifacts are affirmatively
+deprecated as active project inputs under `docs/LEGACY_MATERIALS.md`. They are
+historical archive, not ordinary reference material for current work.
+
+The following imported artifacts were ingested as reference material on
+2026-07-14:
 
 - `Southern_California_Commander_Intelligence_Master_Specification_v1_0.docx`
 - `Southern_California_Commander_Intelligence_Master_Handoff_Package_v1_0.zip`
 
 The handoff package's 39 SHA-256 manifest entries were verified with zero
-mismatches before this summary was written.
+mismatches before this summary was written, but verification of those files
+does not make their content authoritative for current product direction.
 
 ## Product outcome
 
 Build a durable intelligence system for discovering, verifying, comparing, and
-revisiting Commander opportunities near Los Alamitos, California. The primary
+revisiting Magic: The Gathering opportunities near Los Alamitos, California.
+Commander is the user's primary format, not the boundary of the product. The primary
 goal is not maximum event volume. It is helping the user become a repeat
 participant in a compatible local community and eventually form a stable
 four-person home pod.
@@ -102,6 +109,11 @@ The project combines two responsibilities:
 Analysis must add value without erasing evidence. Raw wording, normalized facts,
 and analytical interpretation remain separately inspectable.
 
+The system should not merely repeat store jargon. When stores invent local
+labels for event programs, admission packages, or play styles, the app should
+explain those labels in plain player language whenever the evidence supports
+that translation.
+
 ## Common-calendar and interface mandate
 
 The application is the unified working surface for this research. It should let
@@ -127,6 +139,19 @@ resource in a new browser tab when the user wants to investigate further.
 The interface should favor synthesis over duplication: one coherent store or
 event view may combine evidence from several sources, clearly showing where
 facts agree, conflict, remain stale, or require verification.
+
+Recurring event reliability should include an `at risk` concept for dates where
+a same-day large special event likely threatens the routine series even if the
+store never explicitly posts a formal cancellation notice.
+
+A meaningful user-facing distinction exists between structured paid Commander
+events with staff-managed pod filling and loose open-play Commander nights.
+That difference should be visible in event descriptions, ranking logic, and
+later filtering.
+
+Commander open play is itself a meaningful event type. Even when listings are
+light on detail, an explicit `open play` label should be preserved and modeled
+rather than collapsed into generic Commander.
 
 ## Catalog-first prioritization
 
@@ -265,6 +290,9 @@ start, and last materially changed.
 - Store details should allow private notes and structured visit notes.
 - Personal observations may inform future analysis but must remain visibly
   separate from official facts and public community evidence.
+- User-supplied field notes that the user wants retained should be storable as
+  clearly attributed research evidence in GitHub rather than only in hosted
+  private storage, so important visit knowledge is not lost.
 - Event details should provide an Add to Google Calendar action. Prefer a simple
   prefilled calendar link or standards-based calendar export that does not
   require broad account access.
@@ -273,6 +301,34 @@ start, and last materially changed.
 - Signed-in Instagram, Facebook, Discord, or other sources may be inspected with
   the user's permission when needed. Never post, react, join, message, or change
   account state without separate explicit authorization.
+- Discord is useful supplementary evidence for coordination and community
+  activity, but it is not mandatory for a successful research run. Missing or
+  inaccessible Discord coverage should be logged and reflected in freshness or
+  confidence without blocking publication of other current findings.
+
+When accessible, Discord can be a high-value deep-research source. Selected store
+servers and regional Magic communities may expose scheduled events, announcements,
+looking-for-game coordination, meetup patterns, cancellations, power expectations,
+and operational details absent from public websites. Research should include
+targeted server/channel inventories and searches while following the privacy and
+non-interaction rules in `research/METHODOLOGY.md`.
+
+Regional player groups should be surfaced as first-class communities with their
+own geographic coverage, activity, events, venue relationships, and coordination
+channels. Known leads include Legendary Creature Club (South Bay/Long Beach) and
+infiniteloopmtg (Los Angeles/northern focus). MTG OC is an additional Orange
+County community lead. Discord servers remain source records: a server can represent
+a venue, a community, both, or an unresolved operator and must not be presumed to
+be a physical place.
+
+Events distinguish their organizer from their venue. For example, a community may
+organize a meetup at a store and announce it through Discord and Meetup; the
+community, store, sources, and event remain linked but independently assessable.
+
+The app and research system must keep three score layers separate: source/channel
+usefulness, venue/community fit, and individual event fit. This allows a strong
+venue with a sparse Discord, or a small but socially effective regional group, to
+be represented accurately.
 
 ## Hosting and responsive direction
 
@@ -283,11 +339,13 @@ but desktop may expose denser evidence, comparisons, and analytical controls.
 An unlisted/private URL is sufficient initially; account authentication is not a
 current requirement.
 
-Private ratings and notes must persist in the hosted web application and be
-available across the user's devices. They are not device-local browser data and
-must not be committed into the public/research GitHub dataset. This requires a
-small private writable data service and at least a lightweight access boundary
-before personal-data features are deployed.
+Private ratings, favorites, planning state, and optional private-only notes must
+persist in the hosted web application and be available across the user's devices.
+They are not device-local browser data. Separately, user field notes intended as
+durable research evidence may be committed to the research dataset if they are
+clearly attributed and kept distinct from official/public claims. This still
+requires a small private writable data service for the truly private workflow
+layer before personal-data features are deployed.
 
 ## Interaction and drilldown mandate
 
@@ -434,13 +492,17 @@ must be immediately clear.
 
 ## Canonical source priority
 
-1. The master specification defines intent, boundaries, and acceptance criteria.
-2. The handoff package preserves exact historical interface, crawler, research,
-   screenshot, and workbook artifacts.
-3. The v0.4 JSON and workbook are provisional research, not publication truth.
-4. Raw collector snapshots are immutable evidence.
-5. Normalized application data is a generated current view and must not become
-   the sole record of truth.
+1. The user's clarified goals, preferences, and decisions made during this
+   project.
+2. Repo-backed research, run notes, normalized data, and current design/docs
+   produced through this project.
+3. Raw collector snapshots and source-backed evidence gathered here.
+4. Deprecated legacy materials from earlier AI attempts, excluded from ordinary
+   project work and inspected only when historical comparison is explicitly needed.
+
+Legacy materials do not govern or corroborate current product, UX, ranking,
+research methodology, or architecture. A potentially useful historical idea must
+first be independently evaluated and adopted into a current repo-native document.
 
 ## Locked principles
 
@@ -455,7 +517,8 @@ must be immediately clear.
 - Preserve research methodology, source-trawl coverage, reasoning, findings, and
   unresolved questions in the repository; chat history is not a durable research record.
 - Distinguish recurring availability, event series, and confirmed occurrences.
-- Complete the evidence foundation before major production UI modernization.
+- Build structural v1 interface capabilities on an explicit, validated data
+  contract; deeper evidence automation can continue after the usable v1 exists.
 
 ## Geographic rule
 
@@ -482,9 +545,12 @@ Completed:
   26-mile snapshot; distance is descriptive rather than an exclusion rule.
 
 The current normalized data is useful but intentionally provisional. It does not
-yet satisfy the master evidence model.
+yet satisfy the target evidence model, and its event coverage is overwhelmingly
+Commander-weighted because Commander was the first research tranche. The app
+must disclose that coverage limitation rather than imply that other Magic formats
+were comprehensively searched and found absent.
 
-## Handoff research that must be retained
+## Deprecated historical inventory
 
 The v0.4 workbook contains 15 qualitative store audits, six event/recurring-play
 records, and 33 sources. Its fields include priority tier, evidence confidence,
@@ -492,8 +558,9 @@ research status, ranking reason, assessment notes, primary communication
 channel, communication notes, current Commander evidence, open questions,
 radius status, and last-verified date.
 
-Do not overwrite richer v0.4 qualitative research with thinner Wizards-only
-records. Reconcile and merge it claim by claim.
+This inventory is recorded only to explain project history. It is not a research
+source for ordinary work. See `docs/LEGACY_MATERIALS.md` for the narrow historical-
+comparison exception and the rule for independently adopting any old idea.
 
 ## Major model gaps
 
@@ -511,20 +578,11 @@ structure lacks several required layers:
 - research backlog and open questions;
 - before/after change values and supporting observation IDs.
 
-## Next implementation phase
+## Legacy-material status
 
-1. Preserve the exact handoff artifacts in a dedicated import/preservation change
-   without overwriting current files.
-2. Add committed JSON Schemas and referential-integrity/privacy tests.
-3. Introduce observation, claim, event-series, and occurrence records.
-4. Reconcile all 77 Wizards organizations, including explicit exclusions and
-   duplicate/identity decisions—not only promoted event venues.
-5. Merge v0.4 qualitative audits into canonical stores without losing source wording.
-6. Revalidate priority stores against store-controlled channels and record
-   communication profiles.
-7. Generate the normalized application view from reviewed evidence.
-8. Only then modernize the interface by combining the functional calendar with
-   the richer MTG Event Atlas visual direction.
+The imported early materials are now fully deprecated as active inputs. Current
+work must use repo-native sources of truth. Historical files may remain preserved
+outside the active workspace, but they must not shape the product by inertia.
 
 ## Durable research-journal requirement
 
@@ -537,6 +595,13 @@ Use the conventions in `research/README.md` and `research/METHODOLOGY.md`.
 Research notes supplement structured observations and raw snapshots; they do not
 replace them. Avoid pasting secrets, login state, private coordinates, private
 messages, or unnecessary copyrighted content into the repository.
+
+The project should also use explicit persistence checkpoints during long-running
+work. After each meaningful source pass or before moving to a new tranche of
+stores/groups, pause and reduce the latest findings, source lessons, and unresolved
+questions into repository files before continuing. This rule exists to protect the
+research record from chat-context loss and to make later tranches faster and more
+consistent.
 
 ## Research completeness gate
 

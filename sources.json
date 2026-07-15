@@ -21,6 +21,97 @@
     "lastChecked": "2026-07-13"
   },
   {
+    "id": "src-collector-legion-discord-2026-07-14",
+    "label": "Collector Legion Discord baseline synthesis",
+    "url": "research/discord-baseline-2026-07-14.md",
+    "type": "community",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-collector-homepage-2026-07-14",
+    "label": "Collector Legion official homepage and social directory",
+    "url": "https://www.collectorlegion.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-collector-events-catalog-2026-07-14",
+    "label": "Collector Legion special-events catalog listing",
+    "url": "https://www.collectorlegion.com/catalog/events-special_events/3693",
+    "type": "eventsPage",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-social-collector-instagram-2026-07-14",
+    "label": "Collector Legion Instagram profile",
+    "url": "https://www.instagram.com/collectorlegion/",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-social-collector-x-2026-07-14",
+    "label": "Collector Legion X profile",
+    "url": "https://twitter.com/CollectorLegion",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-social-collector-facebook-2026-07-14",
+    "label": "Collector Legion Facebook page",
+    "url": "https://www.facebook.com/collectorlegion/",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-socialcontent-collectorlegion-2026-07-14",
+    "label": "Collector Legion social content cleanup synthesis",
+    "url": "research/runs/2026-07-14-social-cleanup-missing-stores/RUN.md",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-collectorslounge-site-2026-07-14",
+    "label": "Collectors Lounge official website identity page",
+    "url": "http://collectorslounge.us/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-collectors-online-store-2026-07-14",
+    "label": "Collectors Lounge online store shell",
+    "url": "https://collectorslounge.us/online-store",
+    "type": "eventsPage",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-collectors-discord-2026-07-14",
+    "label": "Collectors Lounge Discord weekly lineup and Commander rules synthesis",
+    "url": "research/discord-baseline-2026-07-14.md",
+    "type": "community",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-social-collectors-instagram-2026-07-14",
+    "label": "Collectors Lounge Instagram profile",
+    "url": "https://www.instagram.com/collectors.lounge/",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-socialcontent-collectors-instagram-2026-07-14",
+    "label": "Collectors Lounge Instagram weekly Magic lineup synthesis",
+    "url": "research/runs/2026-07-14-social-content-finch-collectors/RUN.md",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-social-collectors-facebook-2026-07-14",
+    "label": "Collectors Lounge Facebook page",
+    "url": "https://www.facebook.com/110508608781459",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
     "id": "src-finch-community",
     "label": "Community discussion",
     "url": "https://www.reddit.com/r/magicTCG/comments/1g3swxw/shop_and_commander_event_recommendations_for/",
@@ -35,11 +126,32 @@
     "lastChecked": "2026-07-13"
   },
   {
+    "id": "src-finch-homepage-2026-07-14",
+    "label": "Finch homepage special-event feature",
+    "url": "https://www.finchandsparrowgames.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-finch-routine-blog-2026-07-14",
+    "label": "Finch official Commander routine blog post",
+    "url": "https://finchandsparrowgames.com/blogs/magic-the-gathering-news-1/living-your-best-life",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-14"
+  },
+  {
     "id": "src-finch-site",
     "label": "Official store website",
     "url": "https://finchandsparrowgames.com/",
     "type": "officialWebsite",
     "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-user-finch-field-note-2026-07-14",
+    "label": "User field note - Finch visits",
+    "url": "research/runs/2026-07-14-user-field-notes-finch/RUN.md",
+    "type": "userFieldNote",
+    "lastChecked": "2026-07-14"
   },
   {
     "id": "src-guild-community",
@@ -54,6 +166,97 @@
     "url": "https://www.theguildhousegames.com/",
     "type": "officialWebsite",
     "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-guildhouse-calendar-2026-07-14",
+    "label": "Guild House public events calendar",
+    "url": "https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=America%2FLos_Angeles&bgcolor=%23ffffff&showPrint=0&showTz=0&mode=AGENDA&src=MTN1MnFkcWZ0MHRnZXRxZzFzYzhxZWh1Y3NAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGhlZ3VpbGRob3VzZTVAZ21haWwuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23B39DDB&color=%23D81B60&color=%23E67C73",
+    "type": "eventPlatform",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-social-guildhouse-instagram-2026-07-14",
+    "label": "The Guild House Instagram profile",
+    "url": "https://www.instagram.com/theguildhousegames/",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-social-guildhouse-facebook-2026-07-14",
+    "label": "The Guild House Facebook page",
+    "url": "https://www.facebook.com/theguildhouse5",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-socialcontent-guildhouse-2026-07-14",
+    "label": "The Guild House social content cleanup synthesis",
+    "url": "research/runs/2026-07-14-social-cleanup-missing-stores/RUN.md",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-guildhouse-discord-2026-07-14",
+    "label": "The Guild House Discord routine Commander and reservations synthesis",
+    "url": "research/discord-baseline-2026-07-14.md",
+    "type": "community",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-guildhouse-site-2026-07-14",
+    "label": "The Guild House website hours and events surface",
+    "url": "https://www.theguildhousegames.com/hours-events/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-user-kingslayer-branch-preference-2026-07-14",
+    "label": "User preference note on Kingslayer branch weighting",
+    "url": "conversation://user-note/kingslayer-branch-preference-2026-07-14",
+    "type": "userFieldNote",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-kingslayer-fv-events-2026-07-14",
+    "label": "Kingslayer Fountain Valley events page",
+    "url": "https://www.kingslayergames.com/events/fountain-valley/",
+    "type": "eventPlatform",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-social-kingslayer-instagram-2026-07-14",
+    "label": "Kingslayer Games Instagram profile",
+    "url": "https://www.instagram.com/kingslayergames",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-social-kingslayer-facebook-2026-07-14",
+    "label": "Kingslayer Games Facebook page",
+    "url": "https://www.facebook.com/kingslayergames",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-socialcontent-kingslayer-2026-07-14",
+    "label": "Kingslayer Games social content cleanup synthesis",
+    "url": "research/runs/2026-07-14-social-cleanup-missing-stores/RUN.md",
+    "type": "social",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-kingslayer-fv-wed-2026-07-14",
+    "label": "Kingslayer Fountain Valley Wednesday Commander detail",
+    "url": "https://www.kingslayergames.com/7-15-26-fountain-valley-wednesday-mtg-commander-sl.html",
+    "type": "eventPlatform",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-kingslayer-fv-fri-2026-07-14",
+    "label": "Kingslayer Fountain Valley Friday Commander detail",
+    "url": "https://www.kingslayergames.com/7-24-26-fountain-valley-mtg-fnm-commander-slay-pas.html",
+    "type": "eventPlatform",
+    "lastChecked": "2026-07-14"
   },
   {
     "id": "src-jjs-instagram",
@@ -89,6 +292,27 @@
     "url": "https://locator.wizards.com/event/10702761",
     "type": "wpn",
     "lastChecked": "2026-07-13"
+  },
+  {
+    "id": "src-projectccg-discord-2026-07-14",
+    "label": "ProjectCCG Discord baseline synthesis",
+    "url": "research/discord-baseline-2026-07-14.md",
+    "type": "community",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-spellhold-discord-2026-07-14",
+    "label": "Spellhold Discord baseline synthesis",
+    "url": "research/discord-baseline-2026-07-14.md",
+    "type": "community",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-kng-discord-2026-07-14",
+    "label": "Krazy Nick's Discord baseline synthesis",
+    "url": "research/discord-baseline-2026-07-14.md",
+    "type": "community",
+    "lastChecked": "2026-07-14"
   },
   {
     "id": "src-tilted-wpn",
@@ -466,6 +690,237 @@
     "label": "Wizards Store & Event Locator — Next-Gen Games",
     "url": "https://locator.wizards.com/store/9747",
     "type": "wpn",
+    "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-honeypot-site-2026-07-15",
+    "label": "Honey Pot Meadery official website",
+    "url": "https://www.honeypotmeadery.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-requiem-site-2026-07-15",
+    "label": "Requiem Cafe official website and weekly events pages",
+    "url": "https://www.requiemcafe.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-honeypot-instagram-2026-07-15",
+    "label": "Honey Pot Meadery Instagram profile",
+    "url": "https://www.instagram.com/honeypotmeadery/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-honeypot-facebook-2026-07-15",
+    "label": "Honey Pot Meadery Facebook page",
+    "url": "https://www.facebook.com/honeypotmeadery",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-hobbyoverflow-site-2026-07-15",
+    "label": "Hobby Overflow official website",
+    "url": "https://hobbyoverflow.com/",
+    "type": "officialWebsite",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-hobbyoverflow-linktree-2026-07-15",
+    "label": "Hobby Overflow Linktree routing hub",
+    "url": "https://linktr.ee/hobbyoverflow",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-hobbyoverflow-instagram-2026-07-15",
+    "label": "Hobby Overflow Instagram profile",
+    "url": "https://www.instagram.com/hobbyoverflow/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-joyfultoad-facebook-2026-07-15",
+    "label": "Joyful Toad TCG Facebook page",
+    "url": "https://www.facebook.com/JoyfulToadTCG/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-joyfultoad-instagram-2026-07-15",
+    "label": "Joyful Toad TCG Instagram profile",
+    "url": "https://www.instagram.com/joyfultoadtcg/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-requiem-facebook-2026-07-15",
+    "label": "Requiem Cafe Facebook page",
+    "url": "https://www.facebook.com/RequiemCoffee",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-requiem-instagram-2026-07-15",
+    "label": "Requiem Cafe Instagram profile",
+    "url": "https://www.instagram.com/requiemcafe/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-honeypot-events-2026-07-15",
+    "label": "Honey Pot Meadery official events pages",
+    "url": "https://www.honeypotmeadery.com/events/",
+    "type": "eventsPage",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-honeypot-google-business-2026-07-15",
+    "label": "Honey Pot Meadery Google business/search result surface",
+    "url": "https://www.google.com/search?q=Honey+Pot+Meadery+Anaheim",
+    "type": "community",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-hobbyoverflow-discord-invite-2026-07-15",
+    "label": "Hobby Overflow Discord invite landing",
+    "url": "https://discord.gg/Sf4QFYdSBA",
+    "type": "community",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-hobbyoverflow-google-business-2026-07-15",
+    "label": "Hobby Overflow Google Maps / business surface",
+    "url": "https://www.google.com/maps/search/Hobby+Overflow+Cypress+CA",
+    "type": "community",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-comicbookhideout-instagram-2026-07-15",
+    "label": "Comic Book Hideout Instagram profile",
+    "url": "https://www.instagram.com/comicbookhideout/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-comicbookhideout-linktree-2026-07-15",
+    "label": "Comic Book Hideout Linktree routing hub",
+    "url": "https://linktr.ee/comicbookhideout",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-comicbookhideout-google-business-2026-07-15",
+    "label": "Comic Book Hideout Google Maps / business surface",
+    "url": "https://www.google.com/maps/search/Comic+Book+Hideout+Fullerton+CA",
+    "type": "community",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-socalmagic-facebook-2026-07-15",
+    "label": "SoCalMagic Facebook page",
+    "url": "https://www.facebook.com/SocalMagic/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-socalmagic-google-business-2026-07-15",
+    "label": "SoCalMagic Google Maps / business surface",
+    "url": "https://www.google.com/maps/search/SoCal+Magic+Orange+CA",
+    "type": "community",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-guildhallwhittier-instagram-2026-07-15",
+    "label": "Guildhall - Whittier Instagram profile",
+    "url": "https://www.instagram.com/guildhallwhittier/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-alakazammtg-facebook-2026-07-15",
+    "label": "Alakazam Comics MTG Facebook page",
+    "url": "https://www.facebook.com/alakazammtg",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-lostplanet-facebook-2026-07-15",
+    "label": "Lost Planet Games Facebook page",
+    "url": "https://www.facebook.com/LostPlanetGamesTorrance/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-lostplanet-instagram-2026-07-15",
+    "label": "Lost Planet Games Instagram profile",
+    "url": "https://www.instagram.com/lostplanetgames/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-lostplanet-calendar-2026-07-15",
+    "label": "Lost Planet monthly public event calendar",
+    "url": "https://tinyurl.com/lostplanetcalendar",
+    "type": "calendar",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-luckyseven-site-2026-07-15",
+    "label": "Lucky Seven Games official website",
+    "url": "https://www.luckysevengames.com/",
+    "type": "official",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-luckyseven-instagram-2026-07-15",
+    "label": "Lucky Seven Games Instagram profile",
+    "url": "https://www.instagram.com/luckysevengames_ca/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-magicandmonsters-site-2026-07-15",
+    "label": "Magic and Monsters official website",
+    "url": "https://www.magicandmonsters.com/",
+    "type": "official",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-magicandmonsters-events-2026-07-15",
+    "label": "Magic and Monsters official events page",
+    "url": "https://www.magicandmonsters.com/pages/events",
+    "type": "calendar",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-magicandmonsters-instagram-2026-07-15",
+    "label": "Magic and Monsters Instagram profile",
+    "url": "https://www.instagram.com/magicandmonstersshop/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-magicandmonsters-facebook-2026-07-15",
+    "label": "Magic and Monsters Facebook page",
+    "url": "https://www.facebook.com/magicandmonsters",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-joyfultoad-google-business-2026-07-15",
+    "label": "Joyful Toad TCG Google business/search result surface",
+    "url": "https://www.google.com/search?q=Joyful+Toad+TCG+Anaheim",
+    "type": "community",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-finch-instagram-2026-07-14",
+    "label": "Finch and Sparrow Games official Instagram profile",
+    "url": "https://www.instagram.com/finch_and_sparrow_games/",
+    "type": "social",
     "lastChecked": "2026-07-14"
   }
 ]

@@ -66,11 +66,14 @@ superseded evidence.
   changes distinguishable in commit history.
 - Summarize the research scope and key result in the commit or pull-request body.
 - Never commit the user's exact home address, private coordinates, personal
-  correspondence, browser state, or private visit/player notes.
+  correspondence, browser state, or notes the user wants kept private-only.
+
+Clearly attributed user field notes intended as durable research evidence may be
+committed when they are scoped, dated, and kept distinct from official/public
+claims.
 
 ## Existing material
 
 `wizards-reconciliation-2026-07-14.json` is the first reconciliation checkpoint.
 Future work should use the run-folder convention above and link back to that
 checkpoint when relevant.
-

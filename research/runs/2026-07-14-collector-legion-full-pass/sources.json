@@ -1,0 +1,80 @@
+[
+  {
+    "id": "run-src-collector-homepage-2026-07-14",
+    "storeId": "collector-legion",
+    "sourceRegistryId": "src-collector-homepage-2026-07-14",
+    "label": "Collector Legion official homepage and social directory",
+    "url": "https://www.collectorlegion.com/",
+    "platform": "website",
+    "checkedAt": "2026-07-14T20:05:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Homepage exposes store info, social links, and featured special events but not a clean weekly MTG schedule."
+  },
+  {
+    "id": "run-src-collector-events-catalog-2026-07-14",
+    "storeId": "collector-legion",
+    "sourceRegistryId": "src-collector-events-catalog-2026-07-14",
+    "label": "Collector Legion special-events catalog listing",
+    "url": "https://www.collectorlegion.com/catalog/events-special_events/3693",
+    "platform": "event-commerce",
+    "checkedAt": "2026-07-14T20:12:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Listing is dominated by dated Saturday tournaments and prereleases, supporting displacement-risk interpretation."
+  },
+  {
+    "id": "run-src-wpn-11405-2026-07-14",
+    "storeId": "collector-legion",
+    "sourceRegistryId": "src-wpn-11405",
+    "label": "Wizards Store & Event Locator — Collector Legion",
+    "url": "https://locator.wizards.com/store/11405",
+    "platform": "wpn",
+    "checkedAt": "2026-07-14T20:15:00-07:00",
+    "accessResult": "reused-existing-snapshot",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Repeated Tuesday Commander series already captured in the same-day reconciliation snapshot."
+  },
+  {
+    "id": "run-src-social-collector-instagram-2026-07-14",
+    "storeId": "collector-legion",
+    "sourceRegistryId": "src-social-collector-instagram-2026-07-14",
+    "label": "Collector Legion Instagram profile",
+    "url": "https://www.instagram.com/collectorlegion/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T20:20:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Public profile metadata shows 5,027 followers, 151 following, and 3,078 posts."
+  },
+  {
+    "id": "run-src-social-collector-x-2026-07-14",
+    "storeId": "collector-legion",
+    "sourceRegistryId": "src-social-collector-x-2026-07-14",
+    "label": "Collector Legion X profile",
+    "url": "https://twitter.com/CollectorLegion",
+    "platform": "x",
+    "checkedAt": "2026-07-14T20:22:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "medium",
+    "notes": "Profile resolves and is linked from the official website; deeper content mining deferred."
+  },
+  {
+    "id": "run-src-social-collector-facebook-2026-07-14",
+    "storeId": "collector-legion",
+    "sourceRegistryId": "src-collector-facebook",
+    "label": "Collector Legion Facebook page",
+    "url": "https://www.facebook.com/collectorlegion/",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T20:24:00-07:00",
+    "accessResult": "temporary-block",
+    "authority": "official",
+    "freshness": "unknown",
+    "notes": "Public fetch path returned a temporary block and no usable content."
+  }
+]

@@ -1,18 +1,20 @@
 # UX/UI Research Direction
 
-This design brief translates current UX guidance and the preserved interface
-artifacts into a concrete direction for the Southern California Commander
-Intelligence app.
+This design brief translates current UX guidance and the decisions synthesized
+through this project into a concrete direction for the Southern California Magic
+Intelligence app. Earlier imported interfaces are deprecated, and the current
+thin static app is only a functional data-loading prototype; neither defines the
+new product shell.
 
 ## Recommended visual concept
 
 Build a **visual research instrument**, not a generic business dashboard.
 
-Combine:
+Build from the current requirements:
 
-- the functional light interface's evidence-first calendar and store-detail structure;
-- the MTG Event Atlas prototype's dark navy shell, violet accents, navigation rail,
-  quick filters, KPI summaries, and colorful status panels;
+- an evidence-first calendar and rich venue/community detail structure;
+- a dark navy shell, violet interaction accents, persistent navigation, quick
+  filters, meaningful summaries, and colorful semantic status panels;
 - modern cards, borders, chips, icons, timelines, and contextual drawers;
 - progressive disclosure so the first screen remains legible while almost every
   meaningful element supports a deeper investigation.

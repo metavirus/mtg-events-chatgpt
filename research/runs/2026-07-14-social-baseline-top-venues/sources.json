@@ -1,0 +1,82 @@
+[
+  {
+    "sourceId": "src-social-collectors-instagram-2026-07-14",
+    "store": "Collectors Lounge - Cypress",
+    "url": "https://www.instagram.com/collectors.lounge/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T13:18:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Public profile showed 5,418 followers, 4,428 posts, Cypress location language, daily-hours language, and tournament-every-day branding."
+  },
+  {
+    "sourceId": "src-social-collectors-facebook-2026-07-14",
+    "store": "Collectors Lounge - Cypress",
+    "url": "https://www.facebook.com/110508608781459",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T13:18:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Public page showed address, phone, email, website, open-now state, and local engagement counts."
+  },
+  {
+    "sourceId": "src-social-guildhouse-instagram-2026-07-14",
+    "store": "The Guild House",
+    "url": "https://www.instagram.com/theguildhousegames/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T13:18:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Public metadata showed 1,635 followers, 1,134 posts, and a community-oriented profile statement."
+  },
+  {
+    "sourceId": "src-social-guildhouse-facebook-2026-07-14",
+    "store": "The Guild House",
+    "url": "https://www.facebook.com/theguildhouse5",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T13:18:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Public page showed Bellflower identity, address, website, recommendation signal, and roughly 2K followers."
+  },
+  {
+    "sourceId": "src-social-kingslayer-instagram-2026-07-14",
+    "store": "Kingslayer Games - brand account",
+    "url": "https://www.instagram.com/kingslayergames",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T13:18:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Public metadata showed roughly 14K followers, 1,479 posts, and multi-location contact language for Fountain Valley, Oceanside, and Lake Forest."
+  },
+  {
+    "sourceId": "src-social-kingslayer-facebook-2026-07-14",
+    "store": "Kingslayer Games - brand account",
+    "url": "https://www.facebook.com/kingslayergames",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T13:18:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Public page showed Magic-focused store description, website, and sizeable follower base."
+  },
+  {
+    "sourceId": "src-social-finch-instagram-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://www.instagram.com/finch_and_sparrow_games/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T13:18:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Public profile showed 9,828 followers, 4,005 posts, and explicit Wizards Premium / MTG-specialist branding."
+  },
+  {
+    "sourceId": "src-social-finch-facebook-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://www.facebook.com/FinchandSparrowGames/",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T13:18:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Public page showed Signal Hill identity, contact details, recommendation signal, and local follower base."
+  }
+]

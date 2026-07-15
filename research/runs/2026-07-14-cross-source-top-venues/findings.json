@@ -1,0 +1,122 @@
+{
+  "runId": "2026-07-14-cross-source-top-venues",
+  "generatedAt": "2026-07-14T12:56:41-07:00",
+  "findings": [
+    {
+      "entity": "The Guild House",
+      "findingType": "series_confirmation",
+      "seriesName": "Commander Night",
+      "status": "confirmed_same_event",
+      "claims": {
+        "dayOfWeek": "Tuesday",
+        "startTime": "18:00",
+        "endTime": "21:00",
+        "format": "Commander",
+        "recurrenceEvidence": "repeated dated entries on official public Google Calendar"
+      },
+      "sources": [
+        "src-guildhouse-calendar-2026-07-14"
+      ],
+      "notes": "Upgrades prior Discord-based routine Commander evidence to official public-calendar confirmation."
+    },
+    {
+      "entity": "The Guild House",
+      "findingType": "series_confirmation",
+      "seriesName": "MTG Booster Draft",
+      "status": "confirmed_same_event",
+      "claims": {
+        "dayOfWeek": "Friday",
+        "startTime": "19:00",
+        "endTime": "23:00",
+        "format": "Booster Draft"
+      },
+      "sources": [
+        "src-guildhouse-calendar-2026-07-14"
+      ],
+      "notes": "Separate Magic series; do not merge into Commander programming."
+    },
+    {
+      "entity": "Kingslayer Games - Fountain Valley",
+      "findingType": "series_confirmation",
+      "seriesName": "Wednesday MTG Commander Slay Pass",
+      "status": "confirmed_same_event",
+      "claims": {
+        "dayOfWeek": "Wednesday",
+        "startTime": "19:00",
+        "checkInTime": "18:00",
+        "entryFeeUsd": 13,
+        "format": "Commander",
+        "podFormation": "store attempts to seat pods of four and fill partial groups",
+        "houseRules": [
+          "No infinites of any kind",
+          "No win conditions through Thassa's Oracle",
+          "Only 1 extra turn per turn cycle"
+        ]
+      },
+      "sources": [
+        "src-kingslayer-fv-events-2026-07-14",
+        "src-kingslayer-fv-wed-2026-07-14"
+      ],
+      "notes": "Strong solo-arrival signal because official text explains how incomplete groups are seated."
+    },
+    {
+      "entity": "Kingslayer Games - Fountain Valley",
+      "findingType": "series_confirmation",
+      "seriesName": "FNM Commander Slay Pass",
+      "status": "confirmed_same_event",
+      "claims": {
+        "dayOfWeek": "Friday",
+        "startTime": "19:00",
+        "checkInTime": "18:00",
+        "entryFeeUsd": 13,
+        "format": "Commander",
+        "podFormation": "store attempts to seat pods of four and fill partial groups",
+        "houseRules": [
+          "No infinites of any kind",
+          "No win conditions through Thassa's Oracle",
+          "Only 1 extra turn per turn cycle"
+        ]
+      },
+      "sources": [
+        "src-kingslayer-fv-events-2026-07-14",
+        "src-kingslayer-fv-fri-2026-07-14"
+      ],
+      "notes": "Official page language matches the Wednesday paid Commander track."
+    },
+    {
+      "entity": "Finch and Sparrow Games",
+      "findingType": "special_event_classification",
+      "seriesName": "The Birdcage VII: 2FAST2FINCH",
+      "status": "confirmed_same_event",
+      "claims": {
+        "date": "2026-07-25",
+        "startTime": "11:00",
+        "format": "cEDH",
+        "proxyPolicy": "Full proxy friendly for this event",
+        "capacity": 64,
+        "entryFeeUsd": 60
+      },
+      "sources": [
+        "src-finch-homepage-2026-07-14"
+      ],
+      "notes": "Should be surfaced as a separate competitive special event, not blended into ordinary casual Commander nights."
+    },
+    {
+      "entity": "Collectors Lounge - Cypress",
+      "findingType": "source_routing",
+      "status": "source_preference_confirmed",
+      "claims": {
+        "bestIdentitySource": "official website",
+        "bestScheduleSources": [
+          "Discord weekly lineup and rules posts",
+          "Wizards/EventLink recurring entries"
+        ],
+        "websiteScheduleReliability": "low"
+      },
+      "sources": [
+        "src-collectorslounge-site-2026-07-14"
+      ],
+      "notes": "Use the website for identity and social links, not as the primary weekly MTG schedule surface."
+    }
+  ]
+}

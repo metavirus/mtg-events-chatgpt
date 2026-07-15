@@ -1,0 +1,47 @@
+{
+  "runId": "2026-07-14-social-content-finch-collectors",
+  "generatedAt": "2026-07-14T13:38:00-07:00",
+  "findings": [
+    {
+      "entity": "Finch and Sparrow Games",
+      "findingType": "social_event_signal",
+      "status": "active_special_event_surface",
+      "claims": {
+        "recentSpecials": [
+          "Lorcana Attack of the VINE prerelease, start 6:00 PM, entry $30",
+          "Pokemon Pitch Black prerelease, July 12 at 2:30 PM, entry $35"
+        ],
+        "recentCommunityContent": [
+          "Fish Bowl 7 recap content",
+          "explicit cEDH-tagged reels/posts"
+        ],
+        "bestSocialSurface": "Instagram",
+        "facebookMirrorsInstagram": true
+      },
+      "sources": [
+        "src-socialcontent-finch-instagram-2026-07-14",
+        "src-socialcontent-finch-facebook-2026-07-14"
+      ]
+    },
+    {
+      "entity": "Collectors Lounge - Cypress",
+      "findingType": "social_event_signal",
+      "status": "active_weekly_schedule_surface",
+      "claims": {
+        "recentMagicPostCaption": "This weeks gatherings of magic",
+        "weeklyLineupVisualCorroboration": "7/13-7/19 weekly Magic lineup visually matched the Discord weekly extraction",
+        "multiGamePostingPattern": [
+          "Magic",
+          "One Piece",
+          "Pokemon",
+          "Gundam"
+        ],
+        "bestSocialSurface": "Instagram"
+      },
+      "sources": [
+        "src-socialcontent-collectors-instagram-2026-07-14",
+        "src-socialcontent-collectors-facebook-2026-07-14"
+      ]
+    }
+  ]
+}

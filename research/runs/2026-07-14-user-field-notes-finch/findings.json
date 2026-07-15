@@ -1,0 +1,34 @@
+[
+  {
+    "id": "finding-user-finch-saturday-structured-2026-07-14",
+    "sourceId": "src-user-finch-field-note-2026-07-14",
+    "venueId": "finch-sparrow",
+    "eventId": "finch-sparrow-commanderfest-6-14-30",
+    "findingType": "visit_observation",
+    "observedOn": "2026-07-14",
+    "summary": "Saturday structured casual Commander was a reasonable experience with random four-player pods and loose 50-minute rounds.",
+    "details": {
+      "arrivalMode": "structured_solo_arrival_possible",
+      "podFormation": "random_four_player_assignment",
+      "roundStructure": "loose_50_minute_rounds",
+      "vibe": "reasonable_fun",
+      "competitivenessNote": "some very experienced players and occasionally very strong decks were in the mix",
+      "interpretation": "less control over who and what power level you end up facing, but still broadly acceptable"
+    }
+  },
+  {
+    "id": "finding-user-finch-sunday-open-play-2026-07-14",
+    "sourceId": "src-user-finch-field-note-2026-07-14",
+    "venueId": "finch-sparrow",
+    "findingType": "visit_observation",
+    "observedOn": "2026-07-14",
+    "summary": "Sunday casual/open-play Commander had no structure but generally had the right vibe.",
+    "details": {
+      "arrivalMode": "open_play",
+      "podFormation": "self_organized",
+      "roundStructure": "none",
+      "vibe": "generally_decent",
+      "interpretation": "socially different from Saturday structured Commander and worth preserving as separate venue behavior"
+    }
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "run-src-social-guildhouse-instagram-2026-07-14",
+    "storeId": "guild-house",
+    "sourceRegistryId": "src-social-guildhouse-instagram-2026-07-14",
+    "label": "The Guild House Instagram profile and recent posts",
+    "url": "https://www.instagram.com/theguildhousegames/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T21:28:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Recent visible posts included Tuesday casual Commander, a Friday special Commander event, and Standard Showdown."
+  },
+  {
+    "id": "run-src-social-guildhouse-facebook-2026-07-14",
+    "storeId": "guild-house",
+    "sourceRegistryId": "src-social-guildhouse-facebook-2026-07-14",
+    "label": "The Guild House Facebook page",
+    "url": "https://www.facebook.com/theguildhouse5",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T21:34:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Visible current page excerpt mirrored the Standard Showdown reminder and active local identity."
+  },
+  {
+    "id": "run-src-social-kingslayer-instagram-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "sourceRegistryId": "src-social-kingslayer-instagram-2026-07-14",
+    "label": "Kingslayer Games Instagram profile and sampled content",
+    "url": "https://www.instagram.com/kingslayergames",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T21:42:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "medium-high",
+    "notes": "Operational and active, but current visible signal remained multi-location and not especially Commander-specific."
+  },
+  {
+    "id": "run-src-social-kingslayer-facebook-2026-07-14",
+    "storeId": "kingslayer-games-fountain-valley",
+    "sourceRegistryId": "src-social-kingslayer-facebook-2026-07-14",
+    "label": "Kingslayer Games Facebook page",
+    "url": "https://www.facebook.com/kingslayergames",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T21:46:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "medium-high",
+    "notes": "Current visible post was Fountain Valley-specific but about Pokemon inventory rather than Commander."
+  },
+  {
+    "id": "run-src-social-collector-instagram-2026-07-14",
+    "storeId": "collector-legion",
+    "sourceRegistryId": "src-social-collector-instagram-2026-07-14",
+    "label": "Collector Legion Instagram profile and sampled posts",
+    "url": "https://www.instagram.com/collectorlegion/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T21:52:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "medium-high",
+    "notes": "Login-enabled view allowed both current MTG product/news posts and an older event-schedule post to be read."
+  },
+  {
+    "id": "run-src-social-collector-facebook-2026-07-14",
+    "storeId": "collector-legion",
+    "sourceRegistryId": "src-social-collector-facebook-2026-07-14",
+    "label": "Collector Legion Facebook page",
+    "url": "https://www.facebook.com/collectorlegion/",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T21:55:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "medium-high",
+    "notes": "Visible current posts included closure guidance and MTG x Star Trek welcome-deck promotion."
+  }
+]

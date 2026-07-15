@@ -1,0 +1,64 @@
+{
+  "runId": "2026-07-14-finch-routine-commander-focus",
+  "generatedAt": "2026-07-14T14:05:00-07:00",
+  "findings": [
+    {
+      "entity": "Finch and Sparrow Games",
+      "findingType": "routine_series_confirmation",
+      "seriesName": "Commander Nite!!",
+      "status": "confirmed_same_event",
+      "claims": {
+        "dayOfWeek": "Thursday",
+        "startTime": "19:00",
+        "entryFeeUsd": 5,
+        "structureSignals": [
+          "raffle at end of night"
+        ],
+        "supportingSourceType": "official blog text aligned with repeated current Wizards recurrence"
+      },
+      "sources": [
+        "src-finch-routine-blog-2026-07-14",
+        "src-finch-routine-wizards-checkpoint-2026-07-14"
+      ]
+    },
+    {
+      "entity": "Finch and Sparrow Games",
+      "findingType": "routine_series_confirmation",
+      "seriesName": "Commanderfest!",
+      "status": "confirmed_same_event",
+      "claims": {
+        "dayOfWeek": "Saturday",
+        "startTime": "14:30",
+        "entryFeeUsd": 8,
+        "structureSignals": [
+          "booster-box raffle prize"
+        ],
+        "supportingSourceType": "official blog text aligned with repeated current Wizards recurrence"
+      },
+      "sources": [
+        "src-finch-routine-blog-2026-07-14",
+        "src-finch-routine-wizards-checkpoint-2026-07-14"
+      ]
+    },
+    {
+      "entity": "Finch and Sparrow Games",
+      "findingType": "source_priority_assessment",
+      "status": "split_routine_vs_specials",
+      "claims": {
+        "routineCommanderBestSources": [
+          "Wizards/EventLink",
+          "official blog/history",
+          "event calendar page if better extracted later"
+        ],
+        "specialsAndCurrentToneBestSource": "Instagram",
+        "competitiveSpecialTrackSeparated": true
+      },
+      "sources": [
+        "src-finch-routine-events-page-2026-07-14",
+        "src-finch-routine-blog-2026-07-14",
+        "src-finch-routine-social-sample-2026-07-14",
+        "src-finch-routine-wizards-checkpoint-2026-07-14"
+      ]
+    }
+  ]
+}

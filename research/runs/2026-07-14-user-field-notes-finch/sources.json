@@ -1,0 +1,16 @@
+[
+  {
+    "id": "src-user-finch-field-note-2026-07-14",
+    "type": "userFieldNote",
+    "label": "User field note - Finch visits",
+    "attribution": "project user",
+    "recordedAt": "2026-07-14",
+    "scope": {
+      "venueId": "finch-sparrow",
+      "eventIds": [
+        "finch-sparrow-commanderfest-6-14-30"
+      ]
+    },
+    "storagePath": "research/runs/2026-07-14-user-field-notes-finch/RUN.md"
+  }
+]

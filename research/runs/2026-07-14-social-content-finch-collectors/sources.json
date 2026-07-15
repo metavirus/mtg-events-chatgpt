@@ -1,0 +1,42 @@
+[
+  {
+    "sourceId": "src-socialcontent-finch-instagram-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://www.instagram.com/finch_and_sparrow_games/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T13:38:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Sampled recent posts showed Lorcana prerelease promotion, Pokemon prerelease promotion, and repeated Fish Bowl / cEDH recap content."
+  },
+  {
+    "sourceId": "src-socialcontent-finch-facebook-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://www.facebook.com/FinchandSparrowGames/",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T13:38:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Visible page excerpt surfaced the same Lorcana prerelease announcement seen on Instagram and provided a direct post permalink."
+  },
+  {
+    "sourceId": "src-socialcontent-collectors-instagram-2026-07-14",
+    "store": "Collectors Lounge - Cypress",
+    "url": "https://www.instagram.com/collectors.lounge/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T13:38:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Sampled recent posts showed a weekly Magic lineup post plus current multi-game promotional posts for One Piece, Pokemon, and Gundam."
+  },
+  {
+    "sourceId": "src-socialcontent-collectors-facebook-2026-07-14",
+    "store": "Collectors Lounge - Cypress",
+    "url": "https://www.facebook.com/110508608781459",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T13:38:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Visible page excerpt surfaced a recent Pokemon post and a direct page-post permalink."
+  }
+]

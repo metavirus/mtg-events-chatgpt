@@ -1,0 +1,67 @@
+[
+  {
+    "id": "run-src-collectors-site-2026-07-14",
+    "storeId": "collectors-lounge-cypress",
+    "sourceRegistryId": "src-collectorslounge-site-2026-07-14",
+    "label": "Collectors Lounge official website identity page",
+    "url": "http://collectorslounge.us/",
+    "platform": "website",
+    "checkedAt": "2026-07-14T20:45:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Identity, contact, social links, online-store link, and general tournament positioning are visible."
+  },
+  {
+    "id": "run-src-collectors-online-store-2026-07-14",
+    "storeId": "collectors-lounge-cypress",
+    "sourceRegistryId": "src-collectors-online-store-2026-07-14",
+    "label": "Collectors Lounge online store shell",
+    "url": "https://collectorslounge.us/online-store",
+    "platform": "event-commerce",
+    "checkedAt": "2026-07-14T20:48:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "medium-high",
+    "notes": "Page resolves but did not expose a usable Commander or weekly-event catalog in accessible text."
+  },
+  {
+    "id": "run-src-social-collectors-instagram-2026-07-14",
+    "storeId": "collectors-lounge-cypress",
+    "sourceRegistryId": "src-social-collectors-instagram-2026-07-14",
+    "label": "Collectors Lounge Instagram profile",
+    "url": "https://www.instagram.com/collectors.lounge/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T20:52:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Public metadata shows 5,418 followers, 87 following, and 4,429 posts."
+  },
+  {
+    "id": "run-src-social-collectors-facebook-2026-07-14",
+    "storeId": "collectors-lounge-cypress",
+    "sourceRegistryId": "src-social-collectors-facebook-2026-07-14",
+    "label": "Collectors Lounge Facebook page",
+    "url": "https://www.facebook.com/110508608781459",
+    "platform": "facebook",
+    "checkedAt": "2026-07-14T20:55:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "medium-high",
+    "notes": "Page title resolves cleanly as Collectors Lounge | Cypress CA."
+  },
+  {
+    "id": "run-src-collectors-weekly-trio-2026-07-14",
+    "storeId": "collectors-lounge-cypress",
+    "sourceRegistryId": "src-socialcontent-collectors-instagram-2026-07-14",
+    "label": "Collectors Lounge weekly-lineup corroboration",
+    "url": "research/runs/2026-07-14-social-content-finch-collectors/RUN.md",
+    "platform": "synthesis",
+    "checkedAt": "2026-07-14T20:58:00-07:00",
+    "accessResult": "reused",
+    "authority": "official-synthesis",
+    "freshness": "high",
+    "notes": "Reused same-day Discord plus Instagram weekly lineup evidence for Friday/Saturday Magic lanes."
+  }
+]

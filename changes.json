@@ -26,4 +26,239 @@
     "summary": "Promoted 2 additional stores and 4 recurring Commander events from repeated Wizards listings in the 15–26 mile discovery ring.",
     "reviewStatus": "accepted"
   }
+,
+  {
+    "id": "user-field-note-finch-2026-07-14",
+    "detectedAt": "2026-07-14T18:15:00-07:00",
+    "changeType": "research",
+    "entityType": "source",
+    "entityId": "src-user-finch-field-note-2026-07-14",
+    "summary": "Added the first attributed user field note source capturing Finch and Sparrow visit observations for Saturday structured Commander and Sunday open play.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "top-tranche-promotion-2026-07-14",
+    "detectedAt": "2026-07-14T18:40:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "top-tranche-normalized-data",
+    "summary": "Promoted confirmed top-tranche findings into normalized data for Finch, Collectors Lounge, Kingslayer Fountain Valley, and The Guild House, including Guild House Tuesday Commander and stronger official-source routing.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "next-venue-promotion-2026-07-14",
+    "detectedAt": "2026-07-14T19:10:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "projectccg-spellhold-kng-normalized-data",
+    "summary": "Promoted follow-on venue interpretation for ProjectCCG, Spellhold, and Krazy Nick's, especially schedule ambiguity, open-play characterization, and community-fit notes from Discord evidence.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "collector-legion-promotion-2026-07-14",
+    "detectedAt": "2026-07-14T19:35:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "collector-legion-normalized-data",
+    "summary": "Promoted Collector Legion Discord-backed community and solo-arrival interpretation into the normalized store record while keeping Saturday Commander unofficial pending stronger source support.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "collector-legion-full-pass-2026-07-14",
+    "detectedAt": "2026-07-14T20:35:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "collector-legion-cross-source-pass",
+    "summary": "Completed a comparable public-source pass for Collector Legion, adding official-site source routing, Instagram/X profile evidence, and an explicit Saturday displacement-risk interpretation while keeping only Tuesday Commander fully confirmed.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "collectors-lounge-source-routing-2026-07-14",
+    "detectedAt": "2026-07-14T21:10:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "collectors-lounge-cypress-source-routing",
+    "summary": "Completed a focused source-routing pass for Collectors Lounge, confirming that no cleaner event-commerce layer surfaced beyond the canonical Discord plus Instagram plus Wizards weekly trio.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "social-cleanup-missing-stores-2026-07-14",
+    "detectedAt": "2026-07-14T22:05:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "guildhouse-kingslayer-collector-social-cleanup",
+    "summary": "Completed the deferred deeper social pass for The Guild House, Kingslayer Fountain Valley, and Collector Legion, clarifying where socials are operationally strong, branch-mixed, or only partially specific for Commander research.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "guildhouse-refinement-2026-07-14",
+    "detectedAt": "2026-07-14T22:35:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "guild-house-refinement",
+    "summary": "Refined The Guild House interpretation by distinguishing useful reservation tooling from true solo-arrival support and by recording that proxy policy remains unstated in the reviewed official/public sources.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "kingslayer-terminology-refinement-2026-07-14",
+    "detectedAt": "2026-07-14T23:05:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "kingslayer-fountain-valley-refinement",
+    "summary": "Refined Kingslayer Fountain Valley interpretation by translating `Slay Pass` into plain-language structured Commander event meaning while keeping booster-pack support only as a branch-ambiguous Kingslayer-branded clue.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "user-kingslayer-branch-preference-2026-07-14",
+    "detectedAt": "2026-07-14T23:20:00-07:00",
+    "changeType": "research",
+    "entityType": "source",
+    "entityId": "src-user-kingslayer-branch-preference-2026-07-14",
+    "summary": "Added an attributed user preference note that Kingslayer Fountain Valley should remain the primary weighted branch, Lake Forest stays worth watching, and Oceanside is out of scope due to distance.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "finch-track-refinement-2026-07-14",
+    "detectedAt": "2026-07-14T23:40:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "finch-sparrow-routine-vs-competitive-refinement",
+    "summary": "Promoted earlier Finch routine-Commander findings plus the attributed user field note into normalized data so routine Thursday/Saturday Commander, structured Saturday pod behavior, and the separate Birdcage/Fish Bowl/cEDH promotional layer are more clearly distinguished.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "open-play-modeling-refinement-2026-07-14",
+    "detectedAt": "2026-07-14T23:50:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "commander-open-play-modeling",
+    "summary": "Refined the project modeling rules so explicit Commander open-play listings are treated as a distinct event type rather than collapsed into generic Commander ambiguity, with Finch Sunday open play as the motivating example.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "displacement-risk-signal-refinement-2026-07-14",
+    "detectedAt": "2026-07-14T23:58:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "recurring-event-displacement-risk",
+    "summary": "Refined the displacement-risk rule so a prominently advertised same-day major event such as an RCQ can be enough to mark routine Commander as at risk even without an explicit cancellation notice.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "collectors-lounge-fit-refinement-2026-07-15",
+    "detectedAt": "2026-07-15T00:20:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "collectors-lounge-cypress-fit-refinement",
+    "summary": "Refined Collectors Lounge interpretation so Friday casual Commander is clearly treated as a strong Bracket 3/proxy-friendly fit while solo-arrival confidence remains only medium until explicit pod-assignment or LFG support is found.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "nearby-wpn-led-store-promotion-2026-07-15",
+    "detectedAt": "2026-07-15T00:45:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "nearby-wpn-led-store-tranche",
+    "summary": "Promoted a light nearby-store tranche from Wizards-led evidence, especially Honey Pot Meadery as a strong open-play/nontraditional lead and SoCalMagic as an explicit no-proxy caution case, while keeping Hobby Overflow, Joyful Toad, and Requiem in the promising-but-lightly-vetted set.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "nearby-partials-social-pass-2026-07-15",
+    "detectedAt": "2026-07-15T01:20:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "honeypot-hobbyoverflow-joyfultoad-social-pass",
+    "summary": "Completed the first comparable social and official-source pass for Honey Pot Meadery, Hobby Overflow, and Joyful Toad TCG, promoting Hobby Overflow and Joyful Toad to partial status and materially strengthening Honey Pot as a secondary fit candidate.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "daily-signal-and-upstream-modeling-2026-07-15",
+    "detectedAt": "2026-07-15T01:35:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "project-methodology-and-product-direction",
+    "summary": "Expanded the standing methodology to treat WPN/Wizards news as an upstream event-vocabulary signal layer and added a daily light-sweep model for socials, alerts, cancellations, and urgent event changes that can eventually power a daily dashboard.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "favorites-monitoring-tier-2026-07-15",
+    "detectedAt": "2026-07-15T01:50:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "favorites-monitoring-priority",
+    "summary": "Clarified in the standing project docs that user favorites are a first-class watchlist and should automatically enter the daily monitoring tier with higher alert priority.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "requiem-dedicated-pass-2026-07-15",
+    "detectedAt": "2026-07-15T02:20:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "requiem-cross-source-pass",
+    "summary": "Completed a dedicated Requiem pass, confirming a socially active venue with real Commander identity but explicitly collaboration-sensitive schedule reliability more akin to a flexible venue calendar than a rigid weekly store series.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "mtg-focus-dimension-2026-07-15",
+    "detectedAt": "2026-07-15T02:35:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "mtg-focus-analytical-dimension",
+    "summary": "Added MTG-focus as a distinct analytical dimension so Magic-centered stores can be differentiated from broader mixed-use venues where Commander is only one part of the programming mix.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "secondary-signal-calibration-note-2026-07-15",
+    "detectedAt": "2026-07-15T02:45:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "secondary-signal-calibration",
+    "summary": "Added a standing calibration note that MTG-focus, player-pool breadth, venue-scale, and play-space-image evidence should be backfilled cautiously and revisited if they produce weird or unhelpful rankings.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "honeypot-event-normalization-2026-07-15",
+    "detectedAt": "2026-07-15T03:10:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "honeypot-events",
+    "summary": "Promoted Honey Pot Meadery's richer official event stream into normalized records, including the God of Mischief Commander variant, structured Mead & Mana Commander League items, and a Hobbit prerelease.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "honeypot-signal-deepening-2026-07-15",
+    "detectedAt": "2026-07-15T03:30:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "honeypot-secondary-signals",
+    "summary": "Deepened Honey Pot interpretation with secondary signals, concluding that it has meaningful player-pool breadth and active social energy but only medium MTG-focus because Magic shares the venue with broader fandom and community programming.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "honeypot-daily-calendar-priority-2026-07-15",
+    "detectedAt": "2026-07-15T03:45:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "honeypot-daily-refresh-priority",
+    "summary": "Promoted Honey Pot Meadery's official events calendar into the daily-refresh source set because its regularly updated Magic formats and variants indicate serious event curation and community-building effort.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "hobbyoverflow-discord-routing-2026-07-15",
+    "detectedAt": "2026-07-15T04:00:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "hobbyoverflow-discord-routing",
+    "summary": "Confirmed that Hobby Overflow's Discord path is real and nontrivial, strengthening the store's breadth/opportunity profile even though deeper Commander-specific Discord interpretation remains pending.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "joyfultoad-fuller-pass-2026-07-15",
+    "detectedAt": "2026-07-15T04:25:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "joyfultoad-secondary-signals",
+    "summary": "Completed a fuller Joyful Toad pass that adds scale and prominence signals, concluding that the store looks broad and active with decent opportunity surface but still not strongly Commander-centered in the current public evidence.",
+    "reviewStatus": "accepted"
+  }
 ]

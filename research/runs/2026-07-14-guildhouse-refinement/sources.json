@@ -1,0 +1,54 @@
+[
+  {
+    "id": "run-src-guildhouse-discord-2026-07-14",
+    "storeId": "guild-house",
+    "sourceRegistryId": "src-guildhouse-discord-2026-07-14",
+    "label": "The Guild House Discord routine Commander and reservations synthesis",
+    "url": "research/discord-baseline-2026-07-14.md",
+    "platform": "discord-synthesis",
+    "checkedAt": "2026-07-14T22:14:00-07:00",
+    "accessResult": "reused",
+    "authority": "official-community",
+    "freshness": "high",
+    "notes": "Key distinctions reused: Tuesday Commander is current; reservations channel is space-oriented, not pod-matching."
+  },
+  {
+    "id": "run-src-guildhouse-calendar-2026-07-14",
+    "storeId": "guild-house",
+    "sourceRegistryId": "src-guildhouse-calendar-2026-07-14",
+    "label": "The Guild House public calendar",
+    "url": "https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=America%2FLos_Angeles&bgcolor=%23ffffff&showPrint=0&showTz=0&mode=AGENDA&src=MTN1MnFkcWZ0MHRnZXRxZzFzYzhxZWh1Y3NAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGhlZ3VpbGRob3VzZTVAZ21haWwuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29vZ2xlLmNvbQ&color=%23B39DDB&color=%23D81B60&color=%23E67C73",
+    "platform": "calendar",
+    "checkedAt": "2026-07-14T22:16:00-07:00",
+    "accessResult": "reused",
+    "authority": "official",
+    "freshness": "high",
+    "notes": "Tuesday Commander remains the official recurring anchor."
+  },
+  {
+    "id": "run-src-guildhouse-site-2026-07-14",
+    "storeId": "guild-house",
+    "sourceRegistryId": "src-guildhouse-site-2026-07-14",
+    "label": "The Guild House website hours and events surface",
+    "url": "https://www.theguildhousegames.com/hours-events/",
+    "platform": "website",
+    "checkedAt": "2026-07-14T22:22:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "freshness": "medium-high",
+    "notes": "Reviewed current visible site surface and found no explicit proxy-policy statement."
+  },
+  {
+    "id": "run-src-guildhouse-socialcontent-2026-07-14",
+    "storeId": "guild-house",
+    "sourceRegistryId": "src-socialcontent-guildhouse-2026-07-14",
+    "label": "The Guild House social content cleanup synthesis",
+    "url": "research/runs/2026-07-14-social-cleanup-missing-stores/RUN.md",
+    "platform": "social-synthesis",
+    "checkedAt": "2026-07-14T22:24:00-07:00",
+    "accessResult": "reused",
+    "authority": "official-synthesis",
+    "freshness": "high",
+    "notes": "Recent social posts corroborate that Tuesday Commander is live and currently promoted."
+  }
+]

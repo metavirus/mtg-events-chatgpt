@@ -1,0 +1,36 @@
+[
+  {
+    "id": "finding-guildhouse-reservations-not-lfg-2026-07-14",
+    "storeId": "guild-house",
+    "category": "solo-arrival",
+    "confidence": "high",
+    "summary": "The Guild House reservations channel helps secure space for an already-arranged group but does not itself function as pod matching or LFG for a solo arrival.",
+    "evidenceSourceIds": [
+      "src-guildhouse-discord-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-guildhouse-proxy-unstated-2026-07-14",
+    "storeId": "guild-house",
+    "category": "policy-unknown",
+    "confidence": "high",
+    "summary": "Proxy policy remains unstated in the currently reviewed official/public Guild House sources.",
+    "evidenceSourceIds": [
+      "src-guildhouse-site-2026-07-14",
+      "src-guildhouse-discord-2026-07-14",
+      "src-socialcontent-guildhouse-2026-07-14"
+    ]
+  },
+  {
+    "id": "finding-guildhouse-tuesday-live-current-2026-07-14",
+    "storeId": "guild-house",
+    "category": "recurring-event",
+    "confidence": "high",
+    "summary": "Guild House Tuesday Commander is a live current recurring event corroborated by calendar, Discord, and recent social promotion.",
+    "evidenceSourceIds": [
+      "src-guildhouse-calendar-2026-07-14",
+      "src-guildhouse-discord-2026-07-14",
+      "src-socialcontent-guildhouse-2026-07-14"
+    ]
+  }
+]

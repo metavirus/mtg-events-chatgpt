@@ -1,0 +1,52 @@
+[
+  {
+    "sourceId": "src-finch-routine-events-page-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://www.finchandsparrowgames.com/pages/finch-and-sparrow-games-events",
+    "platform": "official_event_calendar",
+    "checkedAt": "2026-07-14T14:05:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Visual calendar rendered but event names were not exposed in the text snapshot; hidden page code confirmed a third-party calendar backend exists."
+  },
+  {
+    "sourceId": "src-finch-routine-search-commander-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://www.finchandsparrowgames.com/search?q=Commander",
+    "platform": "official_site_search",
+    "checkedAt": "2026-07-14T14:05:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Search surfaced commander-related blog content rather than clean current event-product records."
+  },
+  {
+    "sourceId": "src-finch-routine-blog-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://finchandsparrowgames.com/blogs/magic-the-gathering-news-1/living-your-best-life",
+    "platform": "official_blog",
+    "checkedAt": "2026-07-14T14:05:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Official blog text states Commander-nite every Thursday at 7 PM for $5 and Commander-fest Saturdays at 2:30 PM for $8, plus raffle language and Instagram-first announcement guidance."
+  },
+  {
+    "sourceId": "src-finch-routine-social-sample-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "https://www.instagram.com/finch_and_sparrow_games/",
+    "platform": "instagram",
+    "checkedAt": "2026-07-14T14:05:00-07:00",
+    "accessResult": "success",
+    "authority": "official",
+    "summary": "Recent sampled posts emphasized Birdcage/Fish Bowl cEDH content and specials rather than routine Thursday/Saturday Commander."
+  },
+  {
+    "sourceId": "src-finch-routine-wizards-checkpoint-2026-07-14",
+    "store": "Finch and Sparrow Games",
+    "url": "research/wizards-reconciliation-2026-07-14.json",
+    "platform": "local_wizards_checkpoint",
+    "checkedAt": "2026-07-14T14:05:00-07:00",
+    "accessResult": "success",
+    "authority": "wizards_eventlink_checkpoint",
+    "summary": "Repeated recurring entries for Thursday Commander Nite!! at 7 PM and Saturday Commanderfest! at 2:30 PM remain current in the local checkpoint."
+  }
+]

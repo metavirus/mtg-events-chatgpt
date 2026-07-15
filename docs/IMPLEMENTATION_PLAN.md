@@ -1,56 +1,126 @@
 # Implementation Plan
 
-## Phase 0 — Preserve and publish current work
+## Governing direction
 
-- Publish the Wizards reconciliation and project/design documentation.
-- Preserve the original handoff artifacts without overwriting current files.
-- Verify JSON, referential integrity, privacy rules, and existing app behavior.
+Build the first complete private version from the user decisions, research,
+normalized evidence, and repo-native product synthesis created in this project.
+Imported artifacts from earlier AI attempts are deprecated and excluded from
+ordinary project work. The existing static interface is also a disposable proof
+of data loading and basic calendar rendering, not a visual or architectural
+specification.
 
-## Phase 1 — Evidence foundation
+The product covers the local Magic: The Gathering landscape. Commander is the
+user's primary format and receives the strongest personal-fit analysis, but the
+system must also model and surface prerelease, sealed, draft, and other notable
+Magic opportunities. Store MTG-focus and Commander fit remain separate concepts.
 
-- Commit schemas for venue, source, observation, claim, series, occurrence,
-  research decision, and generated views.
-- Add validation, privacy, duplicate-ID, and referential-integrity tests.
-- Generalize `store` to `venue` without losing stable existing IDs.
-- Add source-health observations, including broken/stale/no-result outcomes.
-- Convert the Wizards snapshot into immutable observations.
-- Import v0.4 qualitative research without flattening its richer evidence.
+## V1 product foundation
 
-## Phase 2 — Reconciliation and maintenance
+V1 should establish the durable interface structure so core features do not have
+to be stapled onto an incompatible shell later. It includes:
 
-- Reconcile all 77 Wizards organizations to venues or explicit exclusions.
-- Build weekly known-source refresh and biweekly new-venue discovery runs.
-- Generate eight weeks of clearly labeled projections from supported recurrence.
-- Add source-coverage, freshness, conflict, and research-queue indexes.
-- Produce repository-backed run notes for every substantive pass.
+- a calendar-first application with scrolling upcoming, week, and month views;
+- a useful Home/Highlights surface for new, changed, best-fit, special, and
+  at-risk opportunities;
+- venue and community destinations with master-detail navigation;
+- event-series and dated-occurrence details with recurring, confirmed,
+  projected, cancelled, and at-risk states kept distinct;
+- source links, source health, freshness, confidence, conflicts, and plain-language
+  explanations of how conclusions were reached;
+- favorites, ratings, timestamped notes, visit history, planning states, and a
+  quiet activity log;
+- deep links, browser history, visible filters, search, directions, Google
+  Calendar export, and accessible drawers/popovers;
+- responsive behavior that preserves rich desktop research while supporting
+  practical mobile lookup and actions.
 
-## Phase 3 — Core hosted app
+Less-vetted records remain available. They receive explicit labels such as
+`reviewed`, `partial`, or `discovery`, and event evidence states such as
+`corroborated`, `single source`, `projected`, or `needs confirmation`. Weakness
+changes presentation and ranking; it does not erase the record.
 
-- Implement the scrolling agenda as the default route.
-- Add week/month views and Friday–Sunday focus.
-- Add Highlights/New & Changed right rail.
-- Implement venue master-detail pages and event drawers/details.
-- Add concise generated titles while preserving raw source wording.
-- Add search, visible filters, deep links, directions, source links, and calendar export.
-- Apply the researched dark visual system and accessibility requirements.
+## Build sequence
 
-## Phase 4 — Private personal layer
+### 1. Freeze the current research contract
 
-- Select a small hosted persistence service compatible with private/unlisted access.
-- Add a lightweight access boundary.
-- Add favorites, planning states, ratings, notes, visits, preferences, and activity log.
-- Keep private records linked by stable public IDs and excluded from GitHub data.
+- Document the fields the first app build can reliably consume from the current
+  JSON while preserving links to richer run notes and sources.
+- Add validation for duplicate IDs, broken references, invalid dates/enums, and
+  accidental private-location data.
+- Add explicit dataset-coverage metadata. The current event seed is heavily
+  Commander-weighted and must not be presented as a complete local Magic calendar.
+- Define adapters so the current `store`-based records can feed a venue-oriented
+  UI without destructive ID changes.
 
-## Phase 5 — Analytical refinement
+### 2. Build the application shell and navigation
 
-- Implement explainable personal-fit and venue ranking.
-- Add bracket/power inference with evidence and confidence.
-- Add before-you-go cards, comparisons, source health, and verification warnings.
-- Tune rankings from personal visits without rewriting official evidence.
+- Establish Home, Calendar, Events, Venues, Communities, New & Changed, and
+  Research destinations.
+- Preserve selected date, filters, entity, and scroll context through URLs and
+  browser navigation.
+- Implement the shared visual system, responsive layout, focus behavior, and
+  reusable cards, chips, drawers, tabs, and source-status components.
 
-## First build milestone
+### 3. Build the calendar and intelligence surfaces
 
-The first meaningful milestone is a validated generated calendar containing venue
-records, series, confirmed occurrences, projections, source health, concise titles,
-and evidence links. Build the richer interface directly on that durable contract.
+- Make the chronological upcoming view the default working surface.
+- Add complete week and month views, including compact titles and overflow
+  drilldowns rather than hiding events.
+- Add Friday-Sunday emphasis without suppressing weekday opportunities.
+- Add the Highlights rail/panel for new discoveries, prereleases/specials,
+  best fits, material changes, and verification/displacement warnings.
+- Keep all relevant Magic formats filterable and visually legible.
 
+### 4. Build entity and event drilldowns
+
+- Implement venue and community master-detail views without merging the two
+  entity types.
+- Implement event-series and occurrence details with raw wording, normalized
+  interpretation, evidence, freshness, and unresolved questions.
+- Add source-health timelines, maps/directions, registration/source actions,
+  Google Calendar export, and `Why?` explanations.
+- Surface MTG-focus, player-pool/scale clues, social accessibility, schedule
+  reliability, and personal fit as separate evidence-aware dimensions.
+
+### 5. Add the personal continuity layer
+
+- Add favorites for venues, communities, and event series.
+- Add interested/attended/skipped states for occurrences.
+- Add one-to-five ratings plus timestamped notes at venue, community, series,
+  occurrence, and visit scope where appropriate.
+- Add the compact personal/research/system activity log.
+- Use a private hosted persistence layer so this state works across devices;
+  retain user field notes intended as durable research evidence in GitHub with
+  explicit attribution.
+
+### 6. Integrate, validate, and seed
+
+- Load the strongest researched venue and event records first.
+- Include partially vetted and discovery records with conspicuous coverage and
+  confidence labels rather than silently omitting them.
+- Test calendar boundaries, recurrence display, source links, state persistence,
+  keyboard/touch behavior, mobile layout, and empty/unknown/conflicting states.
+- Perform a visual and content QA pass using the user's priorities before hosting.
+
+## Deferred until after the usable V1
+
+These are important but do not need to block the first complete interface:
+
+- autonomous daily/weekly/biweekly collection agents;
+- production reconciliation pipelines and immutable claim extraction;
+- automated upstream Wizards/WPN vocabulary monitoring;
+- sophisticated learned ranking or inference;
+- exhaustive backfill of every discovery lead;
+- deep historical analytics.
+
+The V1 data and UI contracts must leave clean places for these capabilities, but
+the build should not spend the remaining near-term effort implementing them
+before the user has a rich, usable application.
+
+## Acceptance checkpoint
+
+V1 is ready when the user can open the private web app on desktop or mobile,
+understand the actual coverage and freshness of the data, browse upcoming/week/
+month Magic opportunities, investigate venues and communities, see why records
+are promising or uncertain, follow sources and directions, save personal state,
+and add durable notes without relying on the chat history.

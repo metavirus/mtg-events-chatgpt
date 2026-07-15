@@ -1,4 +1,13 @@
-# Los Alamitos Commander Finder
+# Southern California Magic Intelligence
+
+The current source of truth is the direction synthesized inside this repository
+from the user's goals, the ongoing research performed here, the normalized data,
+and the repo-backed design decisions.
+
+Imported materials from earlier AI attempts are affirmatively deprecated as
+active project inputs. They are historical archive only and are not ordinary
+design/build/research references. See
+[`docs/LEGACY_MATERIALS.md`](docs/LEGACY_MATERIALS.md).
 
 The durable product and research requirements are summarized in
 [`docs/PROJECT_CONTEXT.md`](docs/PROJECT_CONTEXT.md). Read that file before
@@ -10,6 +19,9 @@ The researched visual and interaction direction is documented in
 
 The build is governed by [`docs/DATA_ARCHITECTURE.md`](docs/DATA_ARCHITECTURE.md)
 and [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md).
+
+The pre-v1 source-of-truth review and corrections are recorded in
+[`docs/DIRECTION_AUDIT_2026-07-15.md`](docs/DIRECTION_AUDIT_2026-07-15.md).
 
 A static browser application whose interface is separated from its data.
 
@@ -46,7 +58,7 @@ Install the crawler dependencies:
 
 Refresh the public Wizards snapshot:
 
-    python crawler/wizards_locator.py --radius-miles 26 --output output/wizards
+    python crawler/wizards_locator.py --radius-miles 25 --output output/wizards
 
 The crawler stores:
 
@@ -55,8 +67,8 @@ The crawler stores:
 - `output/wizards/events-commander.json`: heuristic Commander/EDH/cEDH candidates
 - `output/wizards/organizations.json`: deduplicated Wizards organizations/stores
 
-The default query uses the public Los Alamitos, CA centroid and a 26-mile
-discovery buffer. It does not store a private home address. Candidate events
+The default query uses the public Los Alamitos, CA centroid and the Wizards
+locator's 25-mile routine search radius. It does not store a private home address. Candidate events
 are intentionally broad and should be verified before being promoted into the
 app's curated `events.json` and `stores.json` files.
 
@@ -65,6 +77,8 @@ GitHub Actions refreshes the Wizards snapshot every Monday and commits changed
 
 ## Current status
 
-This is a functional version 0.1 with a deliberately limited verified seed
-dataset plus a fresh Wizards locator discovery snapshot. It is not yet the
-comprehensive 30-mile census.
+This is a functional research prototype with a deliberately limited seed dataset
+plus a Wizards locator discovery snapshot. The seed events are heavily weighted
+toward Commander because that was the first research tranche; they are not a
+complete local Magic calendar. Distance is descriptive rather than an inclusion
+cutoff, and useful farther-away findings remain eligible for the catalog.
