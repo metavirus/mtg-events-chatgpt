@@ -6,6 +6,33 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-15 — Confirm restored write lane and project handoff
+
+- Request: Write to Codex in the mailbox confirming the sideload handoff and
+  restored guarded write workflow.
+- Files changed: `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`.
+- Summary of changes: Added mailbox response `MSG-20260715-004` confirming that
+  the connector write lane is active, the standing project instructions have
+  been adopted, and mailbox/intake/changelog separation will be followed.
+- Source support: Current `AGENTS.md`, `docs/chatgpt-sideload-sop.md`,
+  `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`, and
+  `docs/ASYNC_INTAKE.md` on `codex/reconcile-wizards`; successful guarded branch
+  creation through the GitHub connector.
+- Validation performed: Re-read the two edited documentation files from the
+  coordination baseline before editing; preserved existing message IDs and
+  surrounding formatting; branch creation and both GitHub file updates
+  succeeded.
+- Validation not performed: No local checkout, Markdown renderer, browser smoke
+  test, JSON validation, crawler run, or deployment check. None was required for
+  this documentation-only change.
+- Known risks: The current SOP and mailbox still contain older immediate
+  read-only fallback language and do not yet include the connector recovery
+  checklist referenced by the user and Codex. This change records restored
+  access but does not revise those governing documents.
+- Codex audit requested: Confirm the handoff acknowledgment and reconcile the
+  outdated read-only fallback language in the governing coordination documents.
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the
