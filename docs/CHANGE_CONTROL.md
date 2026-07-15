@@ -1,6 +1,27 @@
 # Change Control
 
+See also `docs/EFFICIENCY_SOP.md` for the broader standing anti-waste
+operating rules that now sit alongside change control.
+
 This project uses a simple protection rule for app work.
+
+## Text integrity guardrail
+
+Before any UI, data, or coordination-file change is treated as final:
+
+1. keep repo text files in UTF-8 with LF line endings;
+2. avoid introducing smart quotes or decorative punctuation unless the file
+   already uses them intentionally;
+3. run `powershell -ExecutionPolicy Bypass -File
+   scripts/validate_text_integrity.ps1` if text files changed;
+4. treat any mojibake hit or non-UTF-8 decode failure as a release blocker;
+5. separate style/layout edits from encoding fixes so a visual regression is
+   not misdiagnosed as text corruption.
+
+The validator defaults to the staged release scope (then untracked files, then
+full repo) so legacy text drift elsewhere does not hide or block the current
+edit. Run a deliberate full-repo normalization pass separately rather than
+mixing it into unrelated work.
 
 ## Core rule
 

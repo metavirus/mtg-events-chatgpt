@@ -7,6 +7,9 @@ Follow `docs/CHANGE_CONTROL.md` for app changes and `docs/EFFICIENCY_SOP.md`
 for research and tool-use discipline. Imported legacy materials are not active
 requirements; see `docs/LEGACY_MATERIALS.md`.
 
+If text files change, run the repo text-integrity check before finalizing:
+`powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1`.
+
 ## ChatGPT Sideload Coordination
 
 Before handling work originating in ordinary ChatGPT, read:
