@@ -6,6 +6,41 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-15 — Finch website event check
+
+- Request: Check Finch and Sparrow Games' website for new posts or events as a
+  test of the restored sideload workflow.
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`.
+- Summary of changes: Reviewed Finch and Sparrow Games' official homepage,
+  in-store-events page, MTG blog, general-news blog, and linked event surface.
+  Added `INTAKE-20260715-001` for the dated `THE BIRDCAGE VII: 2FAST2FINCH
+  cEDH` event on July 25, 2026. No canonical event was created. No newer MTG or
+  general-news blog post was found; the latest visible MTG blog post remains
+  dated November 11, 2024, and the general-news blog remains dated April 18,
+  2024.
+- Source support: Finch and Sparrow Games official website and official event
+  links reviewed on 2026-07-15; existing `stores.json` and `events.json` records
+  for store ID `finch-sparrow` on `codex/reconcile-wizards`.
+- Validation performed: Compared the website finding against the existing Finch
+  store record and all three current Finch canonical Commander event records;
+  confirmed the dated Birdcage VII event was not represented among those
+  records. Preserved the candidate-only boundary by writing intake rather than
+  canonical data.
+- Validation not performed: The dynamic TCGplayerPro event page returned no
+  readable event content through the web retrieval tool. Instagram, EventLink,
+  local JSON parsing, browser rendering, and application smoke testing were not
+  performed.
+- Known risks: The homepage promotion may duplicate a direct product page,
+  social post, or event-platform listing not yet reviewed. Event details should
+  be cross-checked before canonical promotion. The website does not expose a
+  reliable publication timestamp for when the homepage promotion first
+  appeared, so `new` means absent from current canonical event records, not
+  necessarily first published after the prior July 14 review.
+- Codex audit requested: Verify and deduplicate `INTAKE-20260715-001`, then decide
+  whether to promote the dated Birdcage VII event and supporting source metadata
+  into canonical data.
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the
