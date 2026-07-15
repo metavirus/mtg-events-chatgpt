@@ -28,4 +28,6 @@ ChatGPT-originated change in `docs/chatgpt-changelog.md`, including sources,
 files changed, validation performed or unavailable, risks, and requested Codex
 follow-up. Prefer a `chatgpt-data-update/YYYY-MM-DD-short-description` branch
 and pull request; do not commit directly to `main` unless the user expressly
-authorizes it.
+authorizes it. If the GitHub integration cannot create a branch or PR, remain
+read-only and return the structured handoff packet defined in the SOP; never
+substitute a direct edit to `main` or an existing Codex branch.

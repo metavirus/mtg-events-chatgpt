@@ -80,6 +80,28 @@ ChatGPT must not:
 10. Report exactly what validation was and was not performed. Never imply that
     GitHub-only inspection is equivalent to a local app test.
 
+### Read-only integration fallback
+
+If GitHub returns `403 Resource not accessible by integration`, or the session
+cannot create a branch, commit, or pull request:
+
+1. Stop all repository write attempts. Do not fall back to editing `main`, an
+   existing Codex branch, or any canonical file directly.
+2. Continue only with read-only inspection, analysis, and source gathering.
+3. Return one self-contained **ChatGPT Sideload Handoff Packet** containing:
+   - the request and recommended disposition;
+   - exact files that would change;
+   - proposed mailbox, intake, and changelog text;
+   - source support;
+   - validation performed and unavailable;
+   - risks and the specific Codex action requested.
+4. Do not represent proposed text as applied repository work.
+5. Codex may later apply and audit the packet. Until then, the ChatGPT session
+   remains read-only and no canonical state has changed.
+
+This fallback is expected behavior for a read-only GitHub connector, not a
+reason to weaken the branch-and-PR guardrail.
+
 ## Data integrity rules
 
 - Every factual data change must be traceable to a source.
