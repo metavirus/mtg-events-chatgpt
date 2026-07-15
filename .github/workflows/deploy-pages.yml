@@ -3,6 +3,7 @@ name: Deploy Mana Radar to GitHub Pages
 on:
   push:
     branches:
+      - main
       - codex/reconcile-wizards
   workflow_dispatch:
 
