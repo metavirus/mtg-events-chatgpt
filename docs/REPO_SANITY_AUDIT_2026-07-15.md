@@ -66,3 +66,15 @@ Do a separate, deliberate normalization pass for the remaining CRLF files with:
 1. checkpointed diff review;
 2. full-repo text-integrity audit before and after;
 3. no unrelated research or UI edits mixed into the same change set.
+
+## Completion update
+
+That normalization pass has now been executed in the working tree, and the
+explicit full-repo audit now passes:
+
+`powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1 -FullRepo`
+
+Important caveat: some normalized files were already carrying unrelated
+research/data edits. Treat the normalization line in the sand as achieved from
+an integrity perspective, while keeping publication/commit scope deliberate so
+those unrelated edits are not bundled accidentally.

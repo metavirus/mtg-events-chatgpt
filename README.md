@@ -50,6 +50,23 @@ Then open:
 
 The application code does not need to change when records are added or revised.
 
+## Text integrity guardrails
+
+This repository standardizes text files on UTF-8 with LF line endings through
+`.editorconfig` and `.gitattributes`.
+
+Recommended local release-gate check:
+
+    powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1
+
+Full-repo audit check:
+
+    powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1 -FullRepo
+
+Optional local hook setup if you use `pre-commit`:
+
+    pre-commit install
+
 ## Wizards locator refresh
 
 Install the crawler dependencies:

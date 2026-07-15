@@ -1,4 +1,4 @@
-﻿const DATA = { stores: [], events: [], sources: [], changes: [] };
+const DATA = { stores: [], events: [], sources: [], changes: [] };
 
 const COMMUNITY_SEED = [
   {
