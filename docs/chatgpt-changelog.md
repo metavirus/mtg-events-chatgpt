@@ -9,6 +9,9 @@ Codex audit explicitly changes their status.
 ### 2026-07-15 — Sideload safety and handoff system created
 
 - Request: Establish guarded ordinary-ChatGPT coordination for low-risk work.
+- Origin: Created by Codex as the baseline coordination system; this entry is
+  retained here so future ChatGPT sessions and Codex audits share one starting
+  point.
 - Files changed: `AGENTS.md`, `docs/chatgpt-sideload-sop.md`,
   `docs/chatgpt-changelog.md`, `docs/agent-mailbox.md`,
   `docs/ASYNC_INTAKE.md`, `CURRENT_FRONTIER.md`
