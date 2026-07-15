@@ -65,20 +65,49 @@ ChatGPT must not:
 
 1. Read `AGENTS.md`, this SOP, `docs/agent-mailbox.md`, and
    `docs/ASYNC_INTAKE.md`.
-2. Inspect the relevant record and nearby records before proposing an edit.
-3. Identify the canonical file. Do not treat a screenshot, generated file, run
+2. Before doing substantive source interrogation, also read the applicable
+   modality guidance if it exists:
+   - `research/WIZARDS_LOCATOR_SOP.md`
+   - `research/INSTAGRAM_SOP.md`
+   - `research/DISCORD_SWEEP_SOP.md`
+   - `research/SOURCE_SOP.md`
+   - `research/METHODOLOGY.md`
+   - `docs/EFFICIENCY_SOP.md`
+   If any of these are missing in the current session view, say so explicitly
+   rather than improvising as if they were read.
+3. Inspect the relevant record and nearby records before proposing an edit.
+4. Identify the canonical file. Do not treat a screenshot, generated file, run
    note, or mailbox entry as canonical data.
-4. Decide whether the request is safe, queue-only, or Codex-only.
-5. For a safe edit, make the smallest possible diff. Preserve IDs, ordering,
+5. Decide whether the request is safe, queue-only, or Codex-only.
+6. For a safe edit, make the smallest possible diff. Preserve IDs, ordering,
    indentation, date/time/timezone conventions, enums, and surrounding style.
-6. Do not invent missing values. Preserve an empty or unknown value using the
+7. Do not invent missing values. Preserve an empty or unknown value using the
    convention already present in that file.
-7. Cite source support in a run note, intake entry, or changelog entry.
-8. Update `docs/chatgpt-changelog.md` in the same branch.
-9. Prefer a branch named
+8. Cite source support in a run note, intake entry, or changelog entry.
+9. Update `docs/chatgpt-changelog.md` in the same branch.
+10. Prefer a branch named
    `chatgpt-data-update/YYYY-MM-DD-short-description` and open a pull request.
-10. Report exactly what validation was and was not performed. Never imply that
+11. Report exactly what validation was and was not performed. Never imply that
     GitHub-only inspection is equivalent to a local app test.
+
+### Required review signals
+
+For any substantive mailbox reply, changelog entry, intake item, or PR
+description, ChatGPT should make the review state obvious by including:
+
+- `Outcome type:` one of `connector-test`, `intake-only`, `documentary-edit`,
+  `canonical-correction`, or `mixed`
+- `Entity:` the store, event, source, page, or `none`
+- `Modality path used:` for example `website homepage -> dated event listing`
+  or `wizards locator -> weak signal only`
+- `Promotion status:` one of `No canonical promotion attempted`,
+  `Canonical correction only`, or `Candidate queued for Codex review`
+- `Files changed:` exact repo paths or `none`
+- `Branch / PR:` exact branch and PR reference or `none`
+- `Codex review needed:` `no` or a short explicit question/decision
+
+Use these as compact labels, not long paragraphs. The goal is to let Codex
+tell at a glance what happened and what kind of review is required.
 
 ## GitHub connector recovery checklist
 
@@ -200,6 +229,11 @@ When a request exceeds the safe lane, respond constructively:
 ```markdown
 ## Summary
 
+Outcome type:
+Entity:
+Modality path used:
+Promotion status:
+
 ## Files changed
 
 ## Source support
@@ -209,6 +243,8 @@ When a request exceeds the safe lane, respond constructively:
 ## Validation not performed
 
 ## Risks / Codex follow-up
+
+Codex review needed:
 
 ## Sideload record
 - Changelog entry:
