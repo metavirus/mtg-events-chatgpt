@@ -8,6 +8,8 @@ For a quick reacclimation note in a fresh task, also read
 Follow `docs/CHANGE_CONTROL.md` for app changes and `docs/EFFICIENCY_SOP.md`
 for research and tool-use discipline. Imported legacy materials are not active
 requirements; see `docs/LEGACY_MATERIALS.md`.
+For this user's precision and escalation expectations, also follow
+`docs/COLLABORATION_SOP.md`.
 
 If text files change, run the repo text-integrity check before finalizing:
 `powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1`.
