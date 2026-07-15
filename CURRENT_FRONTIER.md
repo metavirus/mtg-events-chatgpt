@@ -2,6 +2,17 @@
 
 Last updated: 2026-07-15
 
+## ChatGPT sideload handoff
+
+When Codex quota is constrained, ordinary ChatGPT may assist only through the
+guarded lane defined in `docs/chatgpt-sideload-sop.md`. Current cross-agent
+messages live in `docs/agent-mailbox.md`; candidate discoveries, feature ideas,
+and follow-ups enter through `docs/ASYNC_INTAKE.md`; ChatGPT-originated edits are
+recorded in `docs/chatgpt-changelog.md` for later Codex audit.
+
+New stores, venues, groups, events, and event series are candidate-only in this
+lane. Ordinary ChatGPT must not create canonical entities.
+
 ## Current tranche (paused)
 
 Top-venue tranche near Los Alamitos, focused on:
