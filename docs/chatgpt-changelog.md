@@ -6,6 +6,26 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-15 — Queue instruction-cache proposal
+
+Outcome type: intake-only
+Entity: ChatGPT sideload coordination workflow
+Modality path used: repeated GitHub instruction reads -> user process proposal
+Promotion status: Candidate queued for Codex review
+Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`
+Branch / PR: `chatgpt-data-update/2026-07-15-instruction-cache-intake`; pending PR
+Codex review needed: Decide whether and how to implement a safe cache keyed by repository, ref, and blob SHA.
+
+- Request: Log the user's proposal for a formal instruction-file cache that avoids re-reading unchanged SOP and coordination files before every substantive ChatGPT sideload task.
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`
+- Summary of changes: Added `INTAKE-20260715-005`, proposing a cache or manifest keyed by repository, branch/ref, path, and Git blob SHA. The proposal requires selective re-read of changed files and explicit invalidation for ref changes, missing files, modality changes, new dependencies, or conflicts with remembered instructions.
+- Source support: User process proposal in the ChatGPT project conversation on 2026-07-15.
+- Validation performed: Read the current intake and changelog from `codex/reconcile-wizards`; preserved the existing formats; limited the edit to two documentary files.
+- Validation not performed: The required local text-integrity script, local checkout, application tests, browser smoke test, and deployment checks were unavailable and unnecessary for this intake-only change.
+- Known risks: A poorly designed cache could preserve stale governance or create a duplicate instruction authority. The repository must remain authoritative, and cache reuse must require matching repository, ref, path, and blob SHA.
+- Codex audit requested: Evaluate implementation options, determine whether the cache belongs in tool/session state or a generated manifest, and add an approved approach to the durable process backlog or SOP.
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the

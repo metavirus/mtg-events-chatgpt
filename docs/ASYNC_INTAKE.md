@@ -26,6 +26,29 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260715-005 — Explore instruction-file cache for ChatGPT sideload work
+
+Outcome type: intake-only
+Entity: ChatGPT sideload coordination workflow
+Modality path used: repeated GitHub instruction reads -> user process proposal
+Promotion status: Candidate queued for Codex review
+Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`
+Branch / PR: `chatgpt-data-update/2026-07-15-instruction-cache-intake`; pending PR
+Codex review needed: Decide whether and how to implement a safe cache keyed by repository, ref, and blob SHA.
+
+- Submitted by: User
+- Date: 2026-07-15
+- Type: product-idea
+- Status: new
+- Risk: codex-required
+- Related entity: ChatGPT sideload coordination workflow
+- Request / observation: Repeatedly re-reading unchanged SOP and coordination files through GitHub adds latency. Explore a formal cache that first checks whether required instruction files changed and reuses previously read instruction summaries when they did not.
+- Source support: User process proposal in the ChatGPT project conversation on 2026-07-15.
+- Desired outcome: Reduce repeated GitHub retrieval overhead without allowing stale instructions to supersede the repository.
+- Suggested next step: Design a cache or manifest keyed by repository, branch/ref, file path, and Git blob SHA. Re-read only files whose SHA changed. Invalidate the relevant cache when the ref changes, a required file is missing, a modality changes, a governing file adds dependencies, or current repo content conflicts with remembered instructions. Keep the repository authoritative and avoid a manually maintained duplicate rulebook.
+- User decision needed: no
+- Related mailbox/changelog/PR: Changelog entry `2026-07-15 — Queue instruction-cache proposal`; PR to be opened from the branch above.
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
