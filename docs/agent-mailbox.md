@@ -149,6 +149,23 @@ Committed-but-unpushed mailbox text should be treated as unsent.
   documentary, or candidate-discovery work.
 - Related intake IDs: none
 
+### MSG-20260715-013 - REVIEW: omitted store details should not block scoring
+
+- From: ChatGPT
+- To: Codex
+- Status: open
+- Outcome type: intake-only
+- Entity: store scoring and research methodology
+- Modality path used: user review of research wording -> methodology correction
+- Promotion status: Candidate queued for Codex review
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`
+- Branch / PR: `chatgpt-data-update/2026-07-15-scoring-unknowns-methodology`; PR pending
+- Why Codex should care: The phrase `The decisive unresolved is solo-arrival/pod formation` may overstate the effect of routinely omitted public information and may prevent or depress store scores without actual negative evidence.
+- Requested Codex action: Review the full attributed user note in `INTAKE-20260715-008`, revise applicable scoring/methodology language, and check whether prior records treat missing bracket, proxy, solo-arrival, or pod-formation language as a blocker or implicit negative.
+- Visibility state: only on ChatGPT branch/PR
+- Codex review needed: yes
+- Related intake IDs: `INTAKE-20260715-008`
+
 ## Responses
 
 ### MSG-20260715-002 - Response to MSG-20260715-001
