@@ -239,6 +239,8 @@ function handleAction(action, element) {
   if (action === 'day-popover') return openDay(element.dataset.dayDate);
   if (action === 'load-more') { state.agendaDays += 28; return renderCalendar(); }
   if (action === 'explain-scores') return openScoreExplanation(store(state.selectedPlaceId));
+  if (action === 'show-fresh-signals') return openFreshSignals();
+  if (action === 'show-promising-nearby') return openPromisingNearby();
   if (action === 'show-discovery-queue') return openDiscoveryQueue();
   if (action === 'show-reviewed-places') return openReviewedPlaces();
   if (action === 'show-source-records') return navigate('places');
@@ -618,6 +620,14 @@ function highlightEvent(event) {
   return `<button class="highlight-card" data-event-id="${event.id}" data-date="${dateKey(event.occurrenceDate)}"><span class="highlight-date"><strong>${event.occurrenceDate.getDate()}</strong>${event.occurrenceDate.toLocaleDateString(undefined, { month: 'short' })}</span><span><em>${isSpecial(event) ? 'Special event' : evidenceLabel(event).label}</em><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)} · ${formatTime(eventStartTime(event))}</small></span><span>→</span></button>`;
 }
 
+function notableEvents(limit = 12) {
+  const start = startOfDay(new Date());
+  const events = buildOccurrences(start, endOfDay(addDays(start, 28)), false);
+  return [...events]
+    .sort((a, b) => Number(isSpecial(b)) - Number(isSpecial(a)) || freshnessDays(a.lastVerified) - freshnessDays(b.lastVerified) || a.occurrenceDate - b.occurrenceDate)
+    .slice(0, limit);
+}
+
 function rankedStores() {
   return [...DATA.stores].sort((a, b) => storeScore(b) - storeScore(a) || a.distanceMiles - b.distanceMiles);
 }
@@ -904,6 +914,16 @@ function openDiscoveryQueue() {
 function openReviewedPlaces() {
   const places = DATA.stores.filter((place) => place.researchStatus === 'partial').sort((a, b) => storeScore(b) - storeScore(a));
   openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">Reviewed places</span></div><h1 id="drawerTitle">Places with deeper work</h1><p class="drawer-lead">These places have moved beyond raw discovery and now support a real planning judgment.</p><section class="drawer-section"><div class="place-occurrences">${places.map((place) => { const evaluation = normalizedEvaluation(place); return `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${escapeHtml(evaluation.fitGrade)}</strong>${Number(evaluation.fitScore).toFixed(1)}</time><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small></span><span class="status-chip ${evaluation.candidateStatus === 'promoted' ? 'mint' : 'amber'}">${evaluation.candidateStatus === 'promoted' ? 'Promoted' : 'Working'}</span></button>`; }).join('')}</div></section>`);
+}
+
+function openFreshSignals() {
+  const events = notableEvents();
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip amber">Fresh signals</span></div><h1 id="drawerTitle">New & notable</h1><p class="drawer-lead">A quieter shortlist of the most actionable or attention-worthy finds in the next four weeks.</p><section class="drawer-section"><div class="day-drawer-list">${events.length ? events.map((event) => eventCard(event)).join('') : '<p class="muted-copy">No notable upcoming items are visible in the current window.</p>'}</div></section><section class="drawer-section"><p class="eyebrow">Why these surfaced</p><div class="truth-list"><div><span class="truth-icon mint">★</span><p><strong>Special-event bias</strong><br>Prereleases, limited events, and unusual one-offs rise first because they are easy to miss and often matter most.</p></div><div><span class="truth-icon sky">i</span><p><strong>Freshness matters</strong><br>More recently verified items outrank older routine listings when the practical value is otherwise similar.</p></div></div></section>`);
+}
+
+function openPromisingNearby() {
+  const places = rankedStores().filter((place) => place.researchStatus === 'partial').slice(0, 12);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">For you</span></div><h1 id="drawerTitle">Promising nearby</h1><p class="drawer-lead">Reviewed places that currently look like the most practical bets for repeat play and local pod-building.</p><section class="drawer-section"><div class="place-occurrences">${places.map((place, index) => { const evaluation = normalizedEvaluation(place); return `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${String(index + 1).padStart(2, '0')}</strong>fit</time><span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)} · ${escapeHtml(evaluation.fitGrade)} · ${Number(evaluation.fitScore).toFixed(1)}/5</small></span><span class="status-chip ${evaluation.candidateStatus === 'promoted' ? 'mint' : 'amber'}">${evaluation.candidateStatus === 'promoted' ? 'Promoted' : 'Working'}</span></button>`; }).join('')}</div></section><section class="drawer-section"><p class="eyebrow">How to use this</p><div class="truth-list"><div><span class="truth-icon mint">1</span><p><strong>Use it as a short list</strong><br>This is where to start when you want a realistic near-term option rather than the full landscape.</p></div><div><span class="truth-icon amber">2</span><p><strong>Not a permanent verdict</strong><br>Rank can move as we deepen research, add your visit notes, or learn something better about solo-arrival fit.</p></div></div></section>`);
 }
 
 function openDrawer(html) {
