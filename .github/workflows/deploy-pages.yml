@@ -42,6 +42,7 @@ jobs:
           cp sources.json _site/
           cp changes.json _site/
           cp .nojekyll _site/
+          sed -i "s/__BUILD_VERSION__/${GITHUB_SHA}/g" _site/index.html
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v4
