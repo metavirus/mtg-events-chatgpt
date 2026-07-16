@@ -123,6 +123,9 @@ To prevent recurrence:
 - The mailbox message must use `REVIEW:` when Codex judgment is needed.
 - The mailbox message must state whether the work is visible only on the
   ChatGPT branch/PR or already present in the current Codex branch.
+- If the message is intended for prompt cross-agent visibility, push the branch
+  containing the mailbox update. Unpushed mailbox edits do not count as
+  delivered communication.
 - PR creation alone does not count as successful communication to Codex.
 - Intake-only work, backlog proposals, and documentary changes on a ChatGPT
   branch are not considered fully handed off until the mailbox signal exists.

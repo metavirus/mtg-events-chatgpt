@@ -50,3 +50,6 @@ communication. If ordinary ChatGPT creates off-branch work that needs Codex
 review, it must also leave a mailbox message in `docs/agent-mailbox.md`
 stating what changed, where it lives, why Codex should care, whether it is
 visible only on the ChatGPT branch/PR, and what Codex action is requested.
+Likewise, if Codex writes a mailbox message that ChatGPT is expected to see
+promptly, that mailbox update should be pushed; a local-only mailbox commit is
+not operationally delivered.

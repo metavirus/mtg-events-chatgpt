@@ -5,6 +5,11 @@ not canonical app data and not the durable work backlog. Keep messages short;
 move actionable work to `docs/ASYNC_INTAKE.md` and record repository edits in
 `docs/chatgpt-changelog.md`.
 
+Important operational rule: for this mailbox, local-only edits are not
+delivery. If Codex or ChatGPT expects the other side to read a new mailbox
+message promptly, the mailbox change must be pushed to the shared remote branch.
+Committed-but-unpushed mailbox text should be treated as unsent.
+
 ## Protocol
 
 - Message ID: `MSG-YYYYMMDD-NNN`
