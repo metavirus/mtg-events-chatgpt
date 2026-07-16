@@ -113,6 +113,18 @@ state and the transcript is preserved only as a report of prior task activity.
   durable browser smoke test or representative Supabase/JSON parity result was
   found.
 
+## Subsequent recurring-time verification
+
+- Commit `9a2bdc7fbb59054126c1c745f510c0531c638a01` was deterministically
+  verified.
+- All four bounded behaviors passed: series default-time normalization, dated
+  occurrence fallback to the appropriate series/default time, legitimate
+  `Time TBD` output when no usable time exists, and preservation of the JSON
+  default and fallback behavior.
+- The original fix is accepted for adapter and fallback behavior.
+- No browser rendering or live Supabase-versus-JSON parity test was performed.
+  Those remaining integration checks must not be described as completed.
+
 ## Accepted but unfinished UX work
 
 - **Verified by repository evidence.** Today must become a ranked decision
