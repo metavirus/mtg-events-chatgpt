@@ -6,6 +6,26 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-15 — Queue site data freshness indicator request
+
+Outcome type: intake-only
+Entity: Mana Radar bottom-right research snapshot indicator
+Modality path used: user-supplied application screenshot -> explicit UX/data-status request
+Promotion status: Candidate queued for Codex review
+Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`
+Branch / PR: `chatgpt-data-update/2026-07-15-data-freshness-indicator`; pending PR
+Codex review needed: Audit the current indicator purpose and implement an authoritative, accessible data-refresh status.
+
+- Request: Add a design-backlog item to determine what the bottom-right green-light icon currently means and make it reflect the last successful update of the site's underlying data.
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`.
+- Summary of changes: Added `INTAKE-20260715-003` with the user's proposed freshness model: green within 48 hours, yellow from 48 to 72 hours, and red or amber after 72 hours or when a refresh problem is detected. The intake asks Codex to identify the authoritative refresh timestamp, distinguish stale data from an actual failed refresh if appropriate, and include non-color status text or a tooltip.
+- Source support: User-supplied screenshot and explicit design request in the ChatGPT project conversation on 2026-07-15.
+- Validation performed: Read the current intake format and relevant project/change-control guidance; preserved the request as a documentary product item without editing application code or canonical data.
+- Validation not performed: The required local text-integrity script, local checkout, implementation inspection, browser smoke test, accessibility test, data-pipeline verification, threshold-boundary test, and deployment check were unavailable in this GitHub-only session.
+- Known risks: The screenshot alone does not establish the indicator's current implementation semantics. A single timestamp may also conflate content freshness, deployment time, and source-by-source freshness; Codex must select the intended authoritative signal before implementation.
+- Codex audit requested: Promote the request into the durable app backlog, inspect the current indicator and refresh pipeline, and implement it under normal UI change control.
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the
