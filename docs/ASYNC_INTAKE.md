@@ -26,6 +26,20 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260715-008 — Do not treat omitted store details as scoring blockers
+- Submitted by: User
+- Date: 2026-07-15
+- Type: research-follow-up
+- Status: new
+- Risk: codex-required
+- Related entity: store scoring and research methodology
+- Request / observation: Refine the statement `The decisive unresolved is solo-arrival/pod formation.` That wording is too strong and should not prevent a store score. Store information is predictably incomplete: many stores do not state Commander brackets, proxy policy, solo-player support, or pod-formation practices. Missing language should remain unknown rather than count as adverse evidence or a decisive unresolved. Affirmative positive evidence in these areas should still be captured and should improve notes, confidence, and analysis.
+- Source support: Direct user methodology correction in the ChatGPT project conversation.
+- Desired outcome: Update the research/scoring methodology so scores can be assigned from the available evidence without requiring explicit statements on every desired dimension. Preserve uncertainty, reward affirmative evidence, and distinguish omission from negative evidence.
+- Suggested next step: Codex should locate the quoted or equivalent wording, revise the applicable methodology and scoring guidance, and review existing records for places where missing solo-arrival, bracket, or proxy information was treated as a blocker or implicit negative.
+- User decision needed: no
+- Related mailbox/changelog/PR: `MSG-20260715-013`; `chatgpt-data-update/2026-07-15-scoring-unknowns-methodology`; PR pending
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
