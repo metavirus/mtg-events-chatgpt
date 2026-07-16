@@ -26,6 +26,29 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260715-006 — Explore database-backed application storage
+
+Outcome type: intake-only
+Entity: application data-storage architecture
+Modality path used: user design/backlog request -> architecture intake
+Promotion status: Candidate queued for Codex review
+Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`
+Branch / PR: `chatgpt-data-update/2026-07-15-database-storage-intake`; pending PR
+Codex review needed: Evaluate whether and when the app should migrate from JSON files to a database-backed store.
+
+- Submitted by: User
+- Date: 2026-07-15
+- Type: product-idea
+- Status: new
+- Risk: codex-required
+- Related entity: application architecture
+- Request / observation: Add a design-backlog item for Codex to explore replacing or augmenting the current JSON-file data store with a database.
+- Source support: User request in the ChatGPT project conversation on 2026-07-15.
+- Desired outcome: A documented architecture assessment covering whether a database would materially improve updates, querying, concurrency, history, personal state, deployment, validation, and future automation compared with the current static JSON model.
+- Suggested next step: Codex should assess requirements and tradeoffs before implementation, including candidate database types, migration strategy, hosting/deployment implications, offline/static-site compatibility, source-of-truth rules, backups, schema evolution, Git auditability, and whether JSON should remain an export or generated artifact. Do not begin a migration as part of this intake item.
+- User decision needed: no
+- Related mailbox/changelog/PR: changelog entry `2026-07-15 — Queue database-storage architecture exploration`; PR pending
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
