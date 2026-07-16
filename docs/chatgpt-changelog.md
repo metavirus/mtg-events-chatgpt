@@ -6,6 +6,24 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-16 — Research 26 discovery-tier stores
+
+- Outcome type: documentary-edit
+- Entity: 26 user-requested Southern California stores and venues
+- Modality path used: repo context -> exact-name/variant search -> official sites and calendars -> organized-play locators -> business/review corroboration -> social/Discord routing leads
+- Promotion status: No canonical promotion attempted
+- Files changed: `research/runs/2026-07-16-discovery-store-tranche.md`, `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`
+- Branch / PR: `chatgpt-data-update/2026-07-16-discovery-store-tranche`; PR pending
+- Request: Perform a broad source sweep for the 26 stores while Codex was occupied, preserve the evidence, and deliver it for Codex review.
+- Summary of changes: Added a store-by-store first-pass research run covering identity, MTG/Commander signals, event/community evidence, source routing, conflicts, recommended priority, and unresolved status questions. No canonical records were edited.
+- Source support: Official store websites and calendars where available; official or platform locators; Linktree/social routing; TCGplayer; business profiles; review aggregations; LAist/Boyle Heights Beat reporting; all URLs are preserved in the run note.
+- Validation performed: Exact-name and common-variant searches for all 26 entities; cross-source conflicts retained; no ordinary source silence treated as negative evidence.
+- Validation not performed: Local text-integrity script, authenticated social/Discord inspection, store-by-store live Wizards extraction, browser-rendered Google Maps review/photo pass, canonical JSON inspection or validation.
+- Known risks: Event schedules and operating status can change quickly. Third-party summaries may be stale or synthetic. Codex should verify high-value event claims through official/Wizards/social sources before canonical promotion.
+- Codex audit requested: Triage the run, prioritize the strongest stores, resolve status conflicts, and decide which existing records should be promoted or corrected.
+- Codex review needed: yes
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the
