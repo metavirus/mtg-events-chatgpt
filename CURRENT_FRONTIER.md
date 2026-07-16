@@ -110,9 +110,10 @@ Do not expand to the next discovery candidate until Tweedy has either:
   website is weak for weekly schedule extraction; Discord plus Wizards remain the
   primary weekly pair there.
 - Collectors Lounge refinement now clarifies that Friday casual Commander is a
-  strong rules-level fit with Bracket 3/proxy-friendly signals, but solo-arrival
-  confidence remains only medium because current sources do not show explicit
-  staff pairing or a durable LFG mechanism.
+  strong rules-level fit with Bracket 3/proxy-friendly signals. The absence of
+  explicit staff-pairing or LFG language is neutral and does not block its
+  promoted B+ / 4.1 judgment; medium confidence instead reflects that the lived
+  size and social mix of Friday turnout have not yet been observed.
 - Honey Pot Meadery stands out as a more newcomer-friendly nontraditional venue
   lead because the Wizards listing explicitly describes free-entry casual open
   play with drop-in pacing and loaner supplies.

@@ -286,5 +286,23 @@
     "entityId": "cardboard-games-and-displaced-store-fields",
     "summary": "Completed the promoted Cardboard Games main pass, surfaced and normalized its Friday Commander, Monday draft, and official-calendar Magic prerelease signals including the upcoming August 8-9 Hobbit prerelease events, attached official site/calendar/social/community sources to the correct store, and repaired unrelated store fields and assessments that prior broad replacements had assigned to the wrong entities.",
     "reviewStatus": "accepted"
+  },
+  {
+    "id": "top-store-evaluation-calibration-2026-07-15",
+    "detectedAt": "2026-07-15T20:30:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "finch-and-collectors-lounge-evaluations",
+    "summary": "Calibrated Finch and Sparrow and Collectors Lounge as promoted candidates with separate fit grades, numeric scores, confidence levels, and inspectable supporting rationale.",
+    "reviewStatus": "accepted"
+  },
+  {
+    "id": "top-store-dated-events-2026-07-15",
+    "detectedAt": "2026-07-15T20:35:00-07:00",
+    "changeType": "new_event",
+    "entityType": "dataset",
+    "entityId": "finch-collectors-july-specials",
+    "summary": "Added Finch's Birdcage VII cEDH tournament and Collectors Lounge's God of Mischief Commander and Marvel Super Heroes draft as dated, source-linked events.",
+    "reviewStatus": "accepted"
   }
 ]

@@ -218,7 +218,7 @@ function handleAction(action, element) {
   if (action === 'open-filters') return openFilters();
   if (action === 'day-popover') return openDay(element.dataset.dayDate);
   if (action === 'load-more') { state.agendaDays += 28; return renderCalendar(); }
-  if (action === 'explain-scores') return openScoreExplanation();
+  if (action === 'explain-scores') return openScoreExplanation(store(state.selectedPlaceId));
   if (action === 'save-note') return saveNote(element.dataset.entity, element.dataset.input);
   if (action === 'show-log') return openActivityLog();
   if (action === 'dismiss-drawer') return closeDrawer();
@@ -286,6 +286,7 @@ function formatTime(value) {
   const [hours, minutes] = value.split(':').map(Number);
   return new Date(2000, 0, 1, hours, minutes).toLocaleTimeString([], { hour: 'numeric', minute: minutes ? '2-digit' : undefined });
 }
+function eventStartTime(event) { return event.recurrence?.startTime || event.startTime; }
 function escapeHtml(value = '') { return String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]); }
 function truncate(value = '', length = 150) { return value.length > length ? `${value.slice(0, length).trim()}...` : value; }
 function freshnessDays(value) { return Math.max(0, Math.floor((startOfDay(new Date()) - parseDate(value)) / 86400000)); }
@@ -326,13 +327,13 @@ function buildOccurrences(start, end, applyFilters = true) {
         if (cursor >= earliest && (!latest || cursor <= latest)) items.push({ ...event, occurrenceDate: new Date(cursor), occurrenceStatus: 'projected' });
         cursor = addDays(cursor, 7);
       }
-    } else if (event.date) {
-      const date = parseDate(event.date);
+    } else if (event.date || event.startDate) {
+      const date = parseDate(event.date || event.startDate);
       if (date >= start && date <= end) items.push({ ...event, occurrenceDate: date, occurrenceStatus: 'confirmed' });
     }
   }
   const filtered = applyFilters ? items.filter(matchesFilters) : items;
-  return filtered.sort((a, b) => a.occurrenceDate - b.occurrenceDate || (a.recurrence?.startTime || '').localeCompare(b.recurrence?.startTime || ''));
+  return filtered.sort((a, b) => a.occurrenceDate - b.occurrenceDate || (eventStartTime(a) || '').localeCompare(eventStartTime(b) || ''));
 }
 
 function matchesFilters(event) {
@@ -428,10 +429,10 @@ function eventCard(event, compact = false) {
   const isFavorite = !!state.personal.favorites[favoriteKey];
   const fee = event.entryFee == null ? 'Fee unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`;
   if (compact) {
-    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span>${formatTime(event.recurrence?.startTime)}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small></button>`;
+    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span>${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small></button>`;
   }
   return `<article class="event-card ${isCompetitive(event) ? 'competitive' : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
-    <div class="event-time"><strong>${formatTime(event.recurrence?.startTime)}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span></div>
+    <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span></div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
       <button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">${escapeHtml(place.name)} <span>· ${distanceLabel(place)}</span></button>
@@ -508,7 +509,7 @@ function renderHighlights() {
 
 function highlightEvent(event) {
   const place = store(event.storeId);
-  return `<button class="highlight-card" data-event-id="${event.id}" data-date="${dateKey(event.occurrenceDate)}"><span class="highlight-date"><strong>${event.occurrenceDate.getDate()}</strong>${event.occurrenceDate.toLocaleDateString(undefined, { month: 'short' })}</span><span><em>${isSpecial(event) ? 'Special event' : evidenceLabel(event).label}</em><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)} · ${formatTime(event.recurrence?.startTime)}</small></span><span>→</span></button>`;
+  return `<button class="highlight-card" data-event-id="${event.id}" data-date="${dateKey(event.occurrenceDate)}"><span class="highlight-date"><strong>${event.occurrenceDate.getDate()}</strong>${event.occurrenceDate.toLocaleDateString(undefined, { month: 'short' })}</span><span><em>${isSpecial(event) ? 'Special event' : evidenceLabel(event).label}</em><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)} · ${formatTime(eventStartTime(event))}</small></span><span>→</span></button>`;
 }
 
 function rankedStores() {
@@ -531,6 +532,9 @@ function placesByDistance() {
 }
 
 function storeScore(place) {
+  if (Number.isFinite(place.evaluation?.fitScore)) {
+    return place.evaluation.fitScore * 20 - Math.min(numericDistance(place) ?? 28, 40);
+  }
   const values = Object.values(place.assessment || {});
   const average = values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 3;
   return average * 18 - Math.min(numericDistance(place) ?? 28, 40) + (place.researchStatus === 'partial' ? 8 : 0);
@@ -540,6 +544,21 @@ function placeFitPhrase(place) {
   if ((place.assessment?.homeGroupPotential || 0) >= 4 && numericDistance(place) != null && numericDistance(place) < 10) return 'strong local potential';
   if ((place.assessment?.commanderActivity || 0) >= 4) return 'active Magic opportunity';
   return 'worth investigating';
+}
+
+function placeResearchLabel(place) {
+  if (place.evaluation?.researchStatus === 'deepened') return 'Deepened';
+  return place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level';
+}
+
+function placeEvaluationSummary(place) {
+  const evaluation = place.evaluation;
+  if (!evaluation) return '';
+  return `<div class="evaluation-summary" aria-label="Current place evaluation">
+    <button class="evaluation-tile" data-action="explain-scores"><span>Fit</span><strong>${escapeHtml(evaluation.fitGrade)}</strong><small>${Number(evaluation.fitScore).toFixed(1)} / 5</small></button>
+    <button class="evaluation-tile" data-action="explain-scores"><span>Confidence</span><strong>${escapeHtml(evaluation.confidence)}</strong><small>Evidence support</small></button>
+    <button class="evaluation-tile" data-action="explain-scores"><span>Research</span><strong>${escapeHtml(placeResearchLabel(place))}</strong><small>${evaluation.candidateStatus === 'promoted' ? 'Promoted candidate' : 'Working candidate'}</small></button>
+  </div>`;
 }
 
 function renderEventCatalog() {
@@ -586,7 +605,7 @@ function placeTabContent(place, placeEvents, sources, rating) {
   if (state.selectedPlaceTab === 'evidence') {
     return `<section class="detail-section tab-intro"><p class="eyebrow">Evidence coverage</p><h3>${sources.length} connected sources</h3><p class="analysis-copy">Sources are retained separately from the analyst synthesis. A strong venue can have a weak social channel, and silence on one source is not proof that an event does not exist.</p></section><section class="detail-section"><div class="source-health-summary"><div><span>Research status</span><strong>${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</strong></div><div><span>Last venue check</span><strong>${escapeHtml(place.lastVerified || 'Unknown')}</strong></div><div><span>Source count</span><strong>${sources.length}</strong></div></div><div class="source-list evidence-list">${sources.length ? sources.map((item) => sourceRow(item, true)).join('') : '<p class="muted-copy">No normalized sources are linked yet.</p>'}</div></section><section class="detail-section"><p class="eyebrow">Interpretive boundary</p><h3>What remains uncertain</h3><p class="analysis-copy">Fields not stated by the connected sources remain unknown. In particular, proxy policy, pod formation, typical power level, and solo-arrival experience should not be inferred from silence.</p></section>`;
   }
-  return `<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Why it’s on the radar</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p></section>
+  return `${placeEvaluationSummary(place)}<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Why it’s on the radar</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p></section>
     <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Fit dimensions</p><h3>Current working assessment</h3></div><button class="why-button" data-action="explain-scores">Why these scores?</button></div><div class="score-bars">${assessmentBars(place)}</div></section>
     <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Known schedule</p><h3>Event series</h3></div><button class="text-button" data-place-tab="events">See all events</button></div><div class="series-list">${placeEvents.length ? placeEvents.slice(0, 4).map((event) => seriesRow(event)).join('') : '<p class="muted-copy">No normalized event series yet. This is not proof that the venue has no Magic events.</p>'}</div></section>
     <section class="detail-section two-column-section"><div><p class="eyebrow">Personal continuity</p><h3>Your rating & notes</h3><div class="rating-row" aria-label="Rate this place">${[1,2,3,4,5].map((value) => `<button class="star ${value <= rating ? 'active' : ''}" data-rating="${value}" data-entity="place:${place.id}" aria-label="${value} stars">★</button>`).join('')}</div>${noteComposer(`place:${place.id}`, 'What did it feel like in person?')}</div><div><p class="eyebrow">Source map</p><h3>${sources.length} connected sources</h3><div class="source-list">${sources.slice(0, 5).map((item) => sourceRow(item)).join('') || '<p class="muted-copy">Source mapping incomplete.</p>'}</div><button class="text-button evidence-jump" data-place-tab="evidence">Review all evidence →</button></div></section>`;
@@ -631,12 +650,12 @@ function openEvent(id, occurrenceDate) {
   const occurrence = occurrenceDate ? parseDate(occurrenceDate) : parseDate(event.date || event.startDate);
   const src = source(event.sourceId);
   const fit = fitLabel({ ...event, occurrenceDate: occurrence });
-  const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: event.date ? 'confirmed' : 'projected' });
+  const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: !event.recurrence && (event.date || event.startDate) ? 'confirmed' : 'projected' });
   const favorite = state.personal.favorites[`event:${event.id}`];
   const interested = state.personal.interested[`${event.id}:${dateKey(occurrence)}`];
   const calendarUrl = googleCalendarUrl(event, place, occurrence);
   openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1><button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
-    <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(event.recurrence?.startTime)}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
+    <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(eventStartTime(event))}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
     <div class="drawer-action-grid"><a class="primary-button" href="${calendarUrl}" target="_blank" rel="noreferrer">Add to Google Calendar ↗</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button><button class="heart-button labeled ${favorite ? 'active' : ''}" data-favorite="event:${event.id}">${favorite ? '♥ Following series' : '♡ Follow series'}</button></div>
     <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(event.details || 'The current source provides only a minimal event listing.')}</p></section>
     <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
@@ -660,7 +679,7 @@ function eventFitExplanation(event, place) {
 }
 
 function evidenceExplanation(event, place) {
-  if (event.date) return 'A source names this specific date rather than only a recurring weekly pattern.';
+  if (!event.recurrence && (event.date || event.startDate)) return 'A source names this specific date rather than only a recurring weekly pattern.';
   if (place.researchStatus === 'partial' && event.confidence === 'high') return 'The routine is supported by a stronger store pass, but this displayed date is still projected from recurrence.';
   return 'This occurrence is generated from a recurring listing. Verify the source before a longer drive.';
 }
@@ -730,8 +749,11 @@ function toggleFavoritesOnly() {
   renderCurrentRoute();
 }
 
-function openScoreExplanation() {
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Scoring guide</span></div><h1 id="drawerTitle">How place scores work</h1><p class="drawer-lead">These are working analyst scores, not objective truths. They exist to help you compare places quickly and to show where the current read is stronger or weaker.</p><section class="drawer-section"><p class="eyebrow">How to read them</p><h2>What each dimension means</h2><div class="truth-list"><div><span class="truth-icon mint">1</span><p><strong>Commander activity</strong><br>How much real Magic activity, especially Commander opportunity, seems to be happening here.</p></div><div><span class="truth-icon sky">2</span><p><strong>Solo-arrival access</strong><br>How plausible it feels to show up alone and still find games without a lot of social friction.</p></div><div><span class="truth-icon amber">3</span><p><strong>Community continuity</strong><br>Whether the venue seems likely to support repeat relationships rather than one-off random appearances.</p></div><div><span class="truth-icon coral">4</span><p><strong>Physical and schedule signals</strong><br>How dependable the venue looks in space, cadence, and event follow-through.</p></div></div></section><section class="drawer-section"><p class="eyebrow">Important caveat</p><h2>These scores stay editable in spirit</h2><p>They should change as research deepens or after your own visits. A place can look modest on paper and still be great in person, or look busy online and be a weak fit for you.</p></section>`);
+function openScoreExplanation(place) {
+  const evaluation = place?.evaluation;
+  const evidence = evaluation ? `<section class="drawer-section"><p class="eyebrow">Current judgment</p><h2>${escapeHtml(place.name)}: ${escapeHtml(evaluation.fitGrade)} · ${Number(evaluation.fitScore).toFixed(1)}/5</h2><p class="drawer-lead">${escapeHtml(evaluation.confidence)} confidence · ${escapeHtml(placeResearchLabel(place))} research · ${evaluation.candidateStatus === 'promoted' ? 'promoted candidate' : 'working candidate'}</p></section>
+    <section class="drawer-section evaluation-evidence"><div><p class="eyebrow">Pluses</p><ul>${evaluation.positives.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div><div><p class="eyebrow">Cautions</p><ul>${evaluation.cautions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div><div><p class="eyebrow">Open questions</p><ul>${evaluation.openQuestions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div></section>` : '';
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Scoring guide</span></div><h1 id="drawerTitle">${evaluation ? 'Why this place received its score' : 'How place scores work'}</h1><p class="drawer-lead">Fit and confidence are separate. The grade estimates how good a practical bet the place is for you; confidence describes how strongly the available evidence supports that judgment.</p>${evidence}<section class="drawer-section"><p class="eyebrow">How to read the dimensions</p><div class="truth-list"><div><span class="truth-icon mint">1</span><p><strong>Magic and event fit</strong><br>Relevant Commander, prerelease, sealed, and draft opportunity without rewarding poor-fit competitive volume.</p></div><div><span class="truth-icon sky">2</span><p><strong>Solo-arrival and community fit</strong><br>Explicit welcoming or pairing help is a positive. Ordinary silence is neutral rather than a penalty.</p></div><div><span class="truth-icon amber">3</span><p><strong>Practical fit</strong><br>Distance, schedule reliability, physical environment, and realistic repeat-visit value.</p></div><div><span class="truth-icon coral">4</span><p><strong>Confidence</strong><br>Evidence depth and agreement across official, social, community, and user-observation sources.</p></div></div></section><section class="drawer-section"><p class="eyebrow">Important caveat</p><p>These are transparent working judgments, not objective truths. They should change when research deepens or your own visits provide better evidence.</p></section>`);
 }
 
 function openDrawer(html) {
@@ -792,7 +814,7 @@ function activeFilterCount() {
 }
 
 function googleCalendarUrl(event, place, date) {
-  const [hour = 18, minute = 0] = (event.recurrence?.startTime || '18:00').split(':').map(Number);
+  const [hour = 18, minute = 0] = (eventStartTime(event) || '18:00').split(':').map(Number);
   const start = new Date(date); start.setHours(hour, minute, 0, 0);
   const end = new Date(start); end.setHours(end.getHours() + 3);
   const stamp = (value) => value.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');

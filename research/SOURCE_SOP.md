@@ -96,6 +96,19 @@ A sparse but bounded store can still be `reviewed` with medium or low
 confidence. Do not keep a store in research purgatory merely because it lacks
 Discord, e-commerce, or a richer community footprint.
 
+Treat ordinary source silence as neutral. Most stores will not publish bracket
+expectations, proxy policy, pod-formation mechanics, or instructions for solo
+arrivals. Their omission does not lower the fit grade, block a candidate
+decision, or justify endless follow-up. An affirmative welcoming, staff-pairing,
+proxy-friendly, or power-matching statement is a positive signal. An explicit
+restriction or hostile practice is a negative signal. Otherwise record the
+field as unstated and score the store from the evidence that actually exists.
+
+Confidence measures support for the judgment being made; it is not a checklist
+penalty for every fact a store could theoretically disclose. A store can earn a
+clear fit grade and be promoted on strong schedule, distance, format, activity,
+and community signals even when those optional operational details are unstated.
+
 ### 2. Promoted deepening pass
 
 Goal: extract operational texture for promising candidates.

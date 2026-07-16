@@ -99,7 +99,12 @@ For a store to count as `candidate / partial`, the pass should normally provide:
    - enough concrete detail is captured that the user could plausibly choose to go
 4. a candidate judgment
    - why this might be worth trying
-   - what still blocks stronger confidence
+   - any evidence-backed caution that materially affects the judgment
+
+Do not manufacture a blocker from missing routine disclosures. Unstated proxy,
+bracket, solo-arrival, or pod-formation details are neutral unless the available
+evidence makes one of them genuinely decisive. Positive explicit guidance earns
+credit; explicit restrictive guidance counts against fit; silence does neither.
 
 If a pass cannot answer near-term playability at all, that is usually still
 `discovery`, not a comfortable candidate-grade result.

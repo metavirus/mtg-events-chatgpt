@@ -107,6 +107,22 @@ well while still carrying only medium confidence because the source stack is
 thin. The app should eventually let users click these judgments and inspect the
 supporting pluses, minuses, and open questions.
 
+During the incremental calibration period, reviewed stores may carry an additive
+`evaluation` object without requiring a risky all-store migration. Its fields are:
+
+- `researchStatus`: `reviewed` or `deepened`
+- `candidateStatus`: currently `promoted` when the store belongs in the serious
+  consideration set
+- `fitGrade`: A-F comparative judgment
+- `fitScore`: 1.0-5.0 practical-fit score
+- `confidence`: `low`, `medium`, or `high`
+- `positives`, `cautions`, and `openQuestions`: short inspectable rationale lists
+
+Legacy top-level `researchStatus` remains temporarily available for existing
+filters. The evaluation object is the authoritative richer judgment where it is
+present. Missing routine disclosures are neutral: explicit helpful guidance is a
+positive, explicit restrictions are negative, and silence does not reduce fit.
+
 ## Attributed user field notes
 
 User-supplied observations should be preserved in the evidence plane so they are

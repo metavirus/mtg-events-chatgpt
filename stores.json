@@ -13,6 +13,27 @@
         "status":  "open",
         "lastVerified":  "2026-07-14",
         "researchStatus":  "partial",
+        "evaluation":  {
+                           "researchStatus":  "deepened",
+                           "candidateStatus":  "promoted",
+                           "fitGrade":  "B+",
+                           "fitScore":  4.1,
+                           "confidence":  "medium",
+                           "positives":  [
+                                             "Only 2.2 miles from Los Alamitos, making repeat visits and local friendships practical.",
+                                             "Friday casual Commander is explicitly separated from Saturday Optimized Commander.",
+                                             "Current weekly Instagram lineups, Wizards listings, and Discord provide a strong operational source stack.",
+                                             "The official site identifies Cypress as the larger main location and actively routes players to tournaments and Discord."
+                                         ],
+                           "cautions":  [
+                                            "Saturday Optimized Commander is intentionally high-power and is a poor personal fit.",
+                                            "The public evidence is stronger on schedule and rules than on the lived Friday community experience."
+                                        ],
+                           "openQuestions":  [
+                                                "How large and socially mixed is the Friday Commander turnout in practice?",
+                                                "A future visit can refine the community read, but this is not required to retain the current promoted score."
+                                            ]
+                       },
         "assessment":  {
                            "commanderActivity":  3,
                            "meetupAccessibility":  5,
@@ -22,13 +43,14 @@
                            "scheduleReliability":  4,
                            "homeGroupPotential":  4
                        },
-        "assessmentNotes":  "Collectors Lounge is now one of the clearest source-routing cases in the project. The official website is mostly an identity/social hub, and its linked online store behaves like a generic retail shell rather than a usable event-registration layer. For actual weekly Magic monitoring, the canonical trio is Discord, Instagram weekly lineup posts, and Wizards/EventLink. That makes Friday casual Commander reasonably well supported across sources, while Saturday Optimized Commander remains a meaningful high-power caution signal. The practical-fit refinement is narrower: official rules and weekly lineup evidence make Friday look like one of the strongest local Bracket 3/proxy-friendly fits, but the currently reviewed sources still do not show explicit staff pairing, formal solo-arrival instructions, or a durable LFG mechanism. So this store looks highly compatible on rules and distance, with medium rather than solved confidence on cold solo arrival.",
+        "assessmentNotes":  "Collectors Lounge is now one of the clearest source-routing cases in the project. The official website is mostly an identity/social hub, and its linked online store behaves like a generic retail shell rather than a usable event-registration layer. For actual weekly Magic monitoring, the canonical trio is Discord, Instagram weekly lineup posts, and Wizards/EventLink. That makes Friday casual Commander reasonably well supported across sources, while Saturday Optimized Commander remains a meaningful high-power caution signal. Official rules and weekly lineup evidence make Friday look like one of the strongest local Bracket 3/proxy-friendly fits. The sources do not describe formal solo-arrival or pod-placement mechanics, but that silence is neutral rather than a negative or a barrier to promotion. The remaining medium-confidence boundary concerns the lived size and social mix of Friday turnout, not whether the store is already a strong practical candidate.",
         "sourceIds":  [
                           "src-collectors-discord-2026-07-14",
                           "src-collectorslounge-site-2026-07-14",
                           "src-collectors-online-store-2026-07-14",
                           "src-social-collectors-instagram-2026-07-14",
                           "src-socialcontent-collectors-instagram-2026-07-14",
+                          "src-social-collectors-weekly-2026-07-15",
                           "src-social-collectors-facebook-2026-07-14",
                           "src-wpn-20379"
                       ]
@@ -80,6 +102,27 @@
         "status":  "open",
         "lastVerified":  "2026-07-14",
         "researchStatus":  "partial",
+        "evaluation":  {
+                           "researchStatus":  "deepened",
+                           "candidateStatus":  "promoted",
+                           "fitGrade":  "A-",
+                           "fitScore":  4.3,
+                           "confidence":  "high",
+                           "positives":  [
+                                             "Multiple distinct Commander lanes include structured casual pods, open play, and clearly labeled competitive specials.",
+                                             "The user experienced both Saturday structured casual Commander and Sunday open play as reasonable to very good.",
+                                             "WPN Premium status, a substantial play space, and a strong official web and Instagram footprint support schedule and community depth.",
+                                             "At 5.1 miles away, the store is close enough to support repeat attendance and local pod-building."
+                                         ],
+                           "cautions":  [
+                                            "The store promotes a loud cEDH layer that must remain separate from casual recommendations.",
+                                            "Sunday open play still requires approaching players without a formal matching mechanism."
+                                        ],
+                           "openQuestions":  [
+                                                "How consistently does the Sunday open-play crowd accommodate a solo arrival?",
+                                                "Which routine casual sessions produce the best repeat-player continuity over time?"
+                                            ]
+                       },
         "assessment":  {
                            "commanderActivity":  4,
                            "meetupAccessibility":  4,
@@ -157,6 +200,7 @@
                           "src-finch-homepage-2026-07-14",
                           "src-finch-routine-blog-2026-07-14",
                           "src-social-finch-instagram-2026-07-14",
+                          "src-finch-birdcage-2026-07-15",
                           "src-user-finch-field-note-2026-07-14",
                           "src-finch-community",
                           "src-wpn-6718"

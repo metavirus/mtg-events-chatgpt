@@ -184,13 +184,14 @@ status or deprioritized by early signals.
 - Implement explicit displacement-risk / at-risk flags for recurring events.
 - Preserve ambiguous events instead of discarding them, but rank/filter them
   appropriately.
-- Replace the single overloaded venue-status feel with separate user-facing
+- Pilot complete on Finch and Collectors Lounge; continue calibrated rollout of
+  the separate user-facing layers for:
   layers for:
   - research status (`discovery`, `reviewed`, `deepened`)
   - fit grade (A-F or equivalent)
   - confidence (low/medium/high)
-- Make fit-grade and confidence displays clickable so they explain the exact
-  pluses, minuses, and open questions behind the score.
+- Clickable fit/confidence rationale is implemented for calibrated stores;
+  extend it as additional stores receive explicit evaluations.
 - Support recurring-versus-one-off distinction clearly in the UI.
 - Support freshness/staleness indicators for sources and event evidence.
 - Add an MTG-focus dimension so stores/venues can be distinguished from mixed-use
