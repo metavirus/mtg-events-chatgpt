@@ -161,6 +161,31 @@ For any of the above:
 
 Do not keep piling fixes onto a corrupted state.
 
+For canonical JSON specifically (`stores.json`, `events.json`, `sources.json`,
+`changes.json`):
+
+1. make the smallest edit batch possible
+2. run the text-integrity check immediately
+3. if it fails, stop and repair before any further substantive work
+
+Do not stack additional research, synthesis, or reconciliation work on top of a
+canonical JSON file that has not yet passed the immediate post-edit check.
+
+### 4a. Prefer safer canonical JSON edit paths
+
+When choosing how to touch canonical JSON:
+
+- prefer tight file patches or other minimal-diff edits
+- prefer UTF-8-preserving write paths
+- avoid broad PowerShell content-rewrite flows unless there is a clear reason
+- when a structured rewrite is needed, prefer `python.exe` over the `py`
+  launcher in this workspace
+- if a broad rewrite is unavoidable, treat it as a high-risk operation and
+  validate immediately
+
+The goal is to catch encoding drift at the earliest choke point rather than pay
+for diagnosis and repair later.
+
 ### 5. Roll back early, not late
 
 If a change introduces regressions:
@@ -178,6 +203,11 @@ Do not attempt an improvised forward-only rescue when rollback is cheaper and sa
 When a meaningful result appears, get it into the repo.
 
 Do not hold too much value only in chat context.
+
+If the work uncovers structural correction risk affecting records beyond the
+current target, surface that immediately in the user update and in the durable
+note before resuming ordinary research. Do not silently fold cross-entity repair
+work into a routine pass summary.
 
 ### 2. Record source failures once
 
@@ -203,6 +233,19 @@ Do not alternate endlessly between:
 
 Collect a bounded tranche, then synthesize.
 
+But do not synthesize from memory when a high-value source is visibly richer
+than your current notes. Re-open the source and perform one explicit extraction
+check for the user's highest-interest event classes before finalizing.
+
+If an important source seems blocked, spend one bounded recovery cycle before
+accepting the blocker:
+
+- verify whether the failure is source-side or tool-path-specific
+- switch to the approved fallback path
+- refresh stale browser/session state when applicable
+
+Only preserve uncertainty after that bounded recovery cycle is exhausted.
+
 ### 4. Use promotion tiers
 
 Think in tiers:
@@ -217,6 +260,15 @@ Not every place deserves the same amount of effort.
 ### 5. Preserve "good enough for now"
 
 Some findings are sufficient for operational use without being exhaustive.
+
+This does not apply to clearly visible high-priority event classes already named
+in project context, especially Commander, draft, sealed, and prerelease. When
+those appear in an official source, "good enough" includes explicitly deciding
+whether they were normalized or intentionally deferred.
+
+The same principle applies across operational social surfaces. If Instagram,
+Discord, or another official channel visibly carries those event classes, "good
+enough" still requires an explicit normalize-or-defer decision.
 
 Examples:
 

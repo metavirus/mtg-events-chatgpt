@@ -154,10 +154,14 @@ built. The research queue remains open and should resume from
   but the broader public evidence points to a serious Magic-dedicated shop with
   real MTG depth, helpful-staff signals, and larger-event capacity.
 - The Cardboard Games research pass supports later promotion into a real partial
-  record: strong official site, real official calendar, clear Magic presence
-  including Hobbit prerelease events and a Wizards Commander anchor. However,
-  the normalized store/source records did not receive that pass completely, so
-  the data repair remains explicitly queued rather than being treated as done.
+  record: strong official site, real official calendar, repeated Friday free-play
+  Commander and Monday draft anchors in Wizards, explicit June 20-21 Marvel
+  Super Heroes prerelease Sealed evidence on the official calendar, and now
+  normalized upcoming August 8-9 Hobbit prerelease Sealed events, plus
+  encouraging recent community recommendations. The normalization repair is now
+  complete. The calendar is useful for specials but has category-tagging errors,
+  Instagram is only a secondary operational source, and no official Discord
+  route surfaced.
 - Guildhall - Whittier has now been promoted into a real partial record too, but
   with a different lesson: it looks more like a lively nerd-bar/community venue
   than a clearly Magic-centered store, and current visible promotion gives much

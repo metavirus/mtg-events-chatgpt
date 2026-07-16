@@ -74,7 +74,7 @@
         "phone":  "",
         "website":  "",
         "eventsUrl":  "https://locator.wizards.com/store/18648",
-        "instagram":  "https://www.instagram.com/ancollectibles/",
+        "instagram":  "",
         "wpnPremium":  null,
         "distanceMiles":  2.55,
         "status":  "open",
@@ -353,14 +353,14 @@
         "city":  "South Gate",
         "address":  "4367 Tweedy Blvd, South Gate, CA, 90280, US",
         "phone":  "",
-        "website":  "",
+        "website":  "http://wpn.wizards.com",
         "eventsUrl":  "https://locator.wizards.com/store/17882",
-        "instagram":  "https://www.instagram.com/aki_collectibles/",
+        "instagram":  "",
         "wpnPremium":  false,
         "distanceMiles":  11.97,
         "status":  "open",
-        "lastVerified":  "2026-07-15",
-        "researchStatus":  "partial",
+        "lastVerified":  "2026-07-14",
+        "researchStatus":  "wizards-discovery",
         "assessment":  {
                            "commanderActivity":  3,
                            "meetupAccessibility":  3,
@@ -370,7 +370,7 @@
                            "scheduleReliability":  3,
                            "homeGroupPotential":  3
                        },
-        "assessmentNotes":  "Cardboard Games now reads as a real and operationally serious nearby candidate rather than a bare Wizards-only lead. The official site is strong, explicitly community-minded (`Community First`), and directly names Magic: The Gathering among the store's supported games. The official events page is current and robust, which materially improves confidence in the store's event infrastructure. At the same time, the visible current calendar slice is dominated more by Riftbound and Pokemon than by Magic, so the store currently looks like a multi-game venue where Magic is definitely present but may not be the dominant promotional focus. Magic is still clearly active here: the official calendar visibly includes Hobbit prerelease sealed events, and Wizards still provides a meaningful Friday `CBG Commander Night` anchor with free play and promos/raffles.",
+        "assessmentNotes":  "Added from repeated Wizards Store \u0026 Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
         "sourceIds":  [
                           "src-wpn-17882"
                       ]
@@ -416,8 +416,8 @@
         "wpnPremium":  false,
         "distanceMiles":  12.4,
         "status":  "open",
-        "lastVerified":  "2026-07-15",
-        "researchStatus":  "partial",
+        "lastVerified":  "2026-07-14",
+        "researchStatus":  "wizards-discovery",
         "assessment":  {
                            "commanderActivity":  4,
                            "meetupAccessibility":  3,
@@ -427,7 +427,7 @@
                            "scheduleReliability":  4,
                            "homeGroupPotential":  4
                        },
-        "assessmentNotes":  "Shuffle and Cut Games - La Habra now reads like one of the stronger Magic-overall candidates in the discovery tranche. The official site prominently foregrounds Magic: The Gathering in navigation and featured merchandise, and the visible homepage directly promotes MTG event commerce including Hobbit prerelease registration and other Magic event/product entries. That is particularly valuable for this project because it suggests real prerelease/sealed infrastructure and active MTG handling, not just a thin recurring Commander shell. The rough edge is site routing: the obvious `Event Calendar & Tickets` path returned a 404 in this bounded pass, so the store appears stronger on MTG identity than on clean calendar navigation. Current evidence therefore supports a real Magic-first signal, while Commander-specific texture still needs later sharpening.",
+        "assessmentNotes":  "Added from repeated Wizards Store \u0026 Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
         "sourceIds":  [
                           "src-wpn-16787"
                       ]
@@ -455,7 +455,7 @@
                            "scheduleReliability":  4,
                            "homeGroupPotential":  3
                        },
-        "assessmentNotes":  "Added from repeated Wizards Store \u0026 Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+        "assessmentNotes":  "Shuffle and Cut Games - La Habra now reads like one of the stronger Magic-overall candidates in the discovery tranche. The official site prominently foregrounds Magic: The Gathering in navigation and featured merchandise, and the visible homepage directly promotes MTG event commerce including prerelease registration and other Magic event/product entries. That suggests real prerelease/sealed infrastructure and active MTG handling, not just a thin recurring Commander shell. The rough edge is site routing: the obvious `Event Calendar & Tickets` path returned a 404 in the bounded pass, so the store appears stronger on MTG identity than on clean calendar navigation. Commander-specific texture still needs later sharpening.",
         "sourceIds":  [
                           "src-wpn-8579"
                       ]
@@ -530,8 +530,8 @@
         "wpnPremium":  false,
         "distanceMiles":  14.22,
         "status":  "open",
-        "lastVerified":  "2026-07-15",
-        "researchStatus":  "partial",
+        "lastVerified":  "2026-07-14",
+        "researchStatus":  "wizards-discovery",
         "assessment":  {
                            "commanderActivity":  5,
                            "meetupAccessibility":  3,
@@ -580,10 +580,10 @@
         "name":  "Cardboard Games",
         "city":  "Tustin",
         "address":  "205 W First St, Tustin, CA, 92780, US",
-        "phone":  "",
-        "website":  "http://www.cardboardgames.store",
+        "phone":  "(657) 758-2400",
+        "website":  "https://cardboardgames.store/",
         "eventsUrl":  "https://locator.wizards.com/store/17086",
-        "instagram":  "",
+        "instagram":  "https://www.instagram.com/cbg_cardboardgames/",
         "wpnPremium":  false,
         "distanceMiles":  14.73,
         "status":  "open",
@@ -598,9 +598,13 @@
                            "scheduleReliability":  4,
                            "homeGroupPotential":  3
                        },
-        "assessmentNotes":  "Added from repeated Wizards Store \u0026 Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+        "assessmentNotes":  "Cardboard Games is a real, active multi-TCG store with a strong official site and current event calendar, but the MTG read should be based on actual Magic programming rather than generic promo noise across many games. Wizards repeatedly confirms Friday 7 PM `CBG Commander Night` as free-play Commander with a 32-player capacity plus promos and raffles, and also shows a recurring Monday $20 booster draft. The official calendar materially strengthens the MTG case because it shows true Magic special-event infrastructure: dated June 20 and June 21, 2026 `Magic: The Gathering - Marvel Super Heroes` prerelease Sealed events plus upcoming August 8 and August 9, 2026 `Magic: The Gathering - The Hobbit` prerelease Sealed events. That said, the calendar still omits routine Commander and mislabels some Pokemon prerelease entries as Magic, so it is analytically valuable but not clean enough to trust mechanically without review. Official Instagram is branch-specific but low-frequency and currently more useful as secondary corroboration than as a Commander schedule source. Recent community recommendations are encouraging for newcomer friendliness, but Friday pod formation, power expectations, proxy policy, and advance coordination remain unknown. No official Discord route surfaced in the bounded pass.",
         "sourceIds":  [
-                          "src-wpn-17086"
+                          "src-wpn-17086",
+                          "src-cardboardgames-site-2026-07-15",
+                          "src-cardboardgames-calendar-2026-07-15",
+                          "src-social-cardboardgames-instagram-2026-07-15",
+                          "src-cardboardgames-reddit-newplayer-2026-07-15"
                       ]
     },
     {
@@ -609,14 +613,14 @@
         "city":  "Torrance",
         "address":  "2140 Artesia Blvd, Torrance, CA, 90504, US",
         "phone":  "",
-        "website":  "",
+        "website":  "http://wpn.wizards.com",
         "eventsUrl":  "https://locator.wizards.com/store/18731",
-        "instagram":  "https://www.instagram.com/aki_collectibles/",
+        "instagram":  "",
         "wpnPremium":  false,
         "distanceMiles":  14.83,
         "status":  "open",
-        "lastVerified":  "2026-07-15",
-        "researchStatus":  "partial",
+        "lastVerified":  "2026-07-14",
+        "researchStatus":  "wizards-discovery",
         "assessment":  {
                            "commanderActivity":  3,
                            "meetupAccessibility":  3,
@@ -761,7 +765,7 @@
         "phone":  "",
         "website":  "https://www.facebook.com/thegamechestDelamo",
         "eventsUrl":  "https://locator.wizards.com/store/9724",
-        "instagram":  "https://www.instagram.com/ancollectibles/",
+        "instagram":  "",
         "wpnPremium":  false,
         "distanceMiles":  16.1,
         "status":  "open",
@@ -793,8 +797,8 @@
         "wpnPremium":  false,
         "distanceMiles":  16.38,
         "status":  "open",
-        "lastVerified":  "2026-07-15",
-        "researchStatus":  "partial",
+        "lastVerified":  "2026-07-14",
+        "researchStatus":  "wizards-discovery",
         "assessment":  {
                            "commanderActivity":  3,
                            "meetupAccessibility":  3,
@@ -1627,6 +1631,4 @@
                       ]
     }
 ]
-
-
 

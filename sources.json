@@ -964,5 +964,33 @@
     "url": "https://www.instagram.com/finch_and_sparrow_games/",
     "type": "social",
     "lastChecked": "2026-07-14"
+  },
+  {
+    "id": "src-cardboardgames-site-2026-07-15",
+    "label": "Cardboard Games official website",
+    "url": "https://cardboardgames.store/",
+    "type": "official",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-cardboardgames-calendar-2026-07-15",
+    "label": "Cardboard Games official events calendar",
+    "url": "https://cardboardgames.store/events",
+    "type": "calendar",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-social-cardboardgames-instagram-2026-07-15",
+    "label": "Cardboard Games official Instagram profile",
+    "url": "https://www.instagram.com/cbg_cardboardgames/",
+    "type": "social",
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-cardboardgames-reddit-newplayer-2026-07-15",
+    "label": "Orange County Reddit discussion recommending Cardboard Games to new players",
+    "url": "https://www.reddit.com/r/orangecounty/comments/1tp94ia/friendly_card_shops_that_teach_magic_the_gathering/",
+    "type": "community",
+    "lastChecked": "2026-07-15"
   }
 ]

@@ -15,6 +15,8 @@ If a pass deviates from this SOP, the run note must say why.
    judgment.
 5. If a source is blocked or finicky, switch to the approved fallback path
    rather than improvising a new workflow mid-pass.
+6. Event-seeking is cross-surface work. Do not assume the most important MTG
+   events will appear on only one source.
 
 ## Source hierarchy by job
 
@@ -76,6 +78,44 @@ Only do this after explicit promotion by either:
 - user priority
 - favorite status
 - correction need
+
+### Cross-surface event extraction rule
+
+For any promoted pass, explicitly look for meaningful MTG events across all
+available operational surfaces, not just the website.
+
+At minimum, check the best available evidence for:
+
+- recurring Commander anchors
+- recurring draft / sealed / limited anchors
+- upcoming prerelease or other one-off MTG specials
+- schedule changes, cancellations, or displacement risk
+
+Relevant surfaces may include:
+
+- Wizards / EventLink
+- official website / event calendar
+- Instagram
+- Discord
+- Facebook or other official social surfaces when they appear operationally useful
+
+Before concluding the pass, reconcile cross-surface differences instead of
+letting one source silently dominate the final read.
+
+### Blocker recovery rule
+
+If an important source appears blocked but the task still depends on it, do not
+stop at the first failed path.
+
+You must try the approved recovery sequence before moving on:
+
+1. confirm whether the source is actually blocked or just the current fetch path
+2. switch to the approved fallback surface or tool
+3. if browser state seems stale, recover by claiming the existing tab or
+   opening a fresh tab/session
+4. only then preserve uncertainty and stop, with the blocker recorded plainly
+
+Do not treat a tooling hiccup as equivalent to source unavailability.
 
 ## Wizards SOP
 
@@ -155,6 +195,14 @@ Use the website to answer:
 
 1. Find homepage.
 2. Check events/calendar/community/contact pages.
+3. If a real event calendar exists, do one bounded MTG extraction pass over the
+   visible relevant slice before leaving the page:
+   - recurring MTG anchors
+   - upcoming one-off MTG events
+   - distinctive historical MTG specials that materially affect the store's
+     MTG-focus read
+   - obvious category/tagging errors that make the calendar unreliable for
+     mechanical normalization
 3. Capture whether the site is:
    - current operational source
    - stale but still useful for routine schedule
@@ -166,6 +214,31 @@ Use the website to answer:
 
 Stop once you can classify the site into one of the above roles.
 Do not wander the full store catalog.
+
+### Event-capture rule for official calendars
+
+If the official calendar visibly contains MTG events, do not leave the calendar
+pass with only a store-level impression.
+
+You must explicitly answer:
+
+- which recurring MTG events should become normalized records now
+- which upcoming one-off MTG events should become normalized records now
+- which older MTG specials matter analytically even if they are not normalized
+- which visible MTG-looking items are actually non-MTG or miscategorized noise
+
+For promoted passes, future prerelease / sealed / draft / Commander specials are
+high-priority capture targets, not optional color.
+
+### Promoted-pass completion gate
+
+Before calling a promoted pass complete, the run note or handoff must state:
+
+1. the strongest recurring MTG anchors found
+2. the strongest upcoming one-off MTG events found
+3. whether each of those was normalized into `events.json`
+4. any visible MTG events intentionally not normalized, with reason
+5. the resulting MTG-focus read for the store
 
 ## Instagram SOP
 

@@ -51,6 +51,13 @@ Allowed:
 
 Do not do this unless the place has been promoted.
 
+For promoted passes, Instagram is not only a profile-classification surface.
+It is also an event-seeking surface. Explicitly look for:
+
+- upcoming prerelease / sealed / draft / Commander special posts
+- weekly schedule graphics with MTG lanes
+- corrections or reminders that materially change event interpretation
+
 ## First-pass workflow
 
 ### Step 1: confirm the profile
@@ -166,6 +173,8 @@ Before leaving Instagram, ask:
 
 - Did I determine whether this profile is branch-specific or brand-level?
 - Did I decide whether Instagram is primary, secondary, branding-heavy, or routing-only?
+- Did I explicitly check whether recent posts contain any high-interest MTG
+  events that should be normalized or used to correct weaker sources?
 - Did I stop once that answer was clear?
 
 If yes, the pass is complete.

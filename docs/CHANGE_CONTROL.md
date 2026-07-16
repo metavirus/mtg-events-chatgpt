@@ -18,6 +18,21 @@ Before any UI, data, or coordination-file change is treated as final:
 5. separate style/layout edits from encoding fixes so a visual regression is
    not misdiagnosed as text corruption.
 
+For canonical JSON files (`stores.json`, `events.json`, `sources.json`,
+`changes.json`), do not wait until the end of a longer work stretch. Run the
+text-integrity check immediately after each edit batch before continuing deeper
+research, reconciliation, or app work.
+
+Avoid broad full-file rewrite paths for canonical JSON unless they are strictly
+necessary. Prefer the smallest safe edit path available, and treat PowerShell
+content-rewrite flows as higher-risk than line-targeted patches or controlled
+UTF-8-preserving writes.
+
+In this workspace, if a canonical JSON file needs a structured rewrite rather
+than a tight patch, prefer `python.exe` over the `py` launcher and over broad
+PowerShell content rewrites. If PowerShell must touch canonical JSON directly,
+use explicit UTF-8 encoding and validate immediately.
+
 The validator defaults to the staged release scope (then untracked files, then
 full repo) so legacy text drift elsewhere does not hide or block the current
 edit. Run a deliberate full-repo normalization pass separately rather than

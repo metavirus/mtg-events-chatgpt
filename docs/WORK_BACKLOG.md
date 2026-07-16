@@ -18,9 +18,9 @@ Use it for:
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a
   paused queue for a completed regional census.
-- Repair the Cardboard Games first-pass normalization: the run note says the
-  store should be promoted, but its official-site/calendar sources and refined
-  assessment were not written into the normalized data.
+- Begin the next discovery pass with Tweedy Cards and Gaming. Its prior record
+  had inherited Cardboard narrative and Aki Instagram data; those fields were
+  restored to cautious discovery state and now need identity-first research.
 
 ## Research backlog
 
@@ -70,11 +70,10 @@ Discord/social evidence.
 
 #### Higher-priority discovery candidates
 
-- Cardboard Games
+- Tweedy Cards and Gaming
 
 #### Broader discovery bench
 
-- Tweedy Cards and Gaming
 - Shadow Realm Collectibles
 - Buddies Collectibles
 - Grails Gone Wild

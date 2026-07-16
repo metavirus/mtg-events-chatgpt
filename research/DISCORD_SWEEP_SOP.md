@@ -51,6 +51,20 @@ Use this order every time:
 
 Stop after the server's role is clear.
 
+For promoted or correction-driven passes, also perform one explicit MTG event
+check on the most relevant visible surfaces:
+
+- scheduled events
+- announcement graphics
+- weekly lineup posts
+- MTG / Commander announcement lanes
+
+The goal is not free browsing. The goal is to determine whether Discord carries:
+
+- future MTG events not yet captured elsewhere
+- clarifications or corrections to website / Wizards / Instagram event reads
+- practical meetup signals that materially change the interpretation of an event
+
 ## Daily light sweep
 
 For useful servers, daily sweep should check only:
@@ -107,5 +121,7 @@ Every Discord check should leave behind:
 - what surfaces were checked
 - whether anything materially changed
 - whether the server deserves promotion, maintenance, or de-prioritization
+- whether Discord surfaced any MTG events or corrections that should affect
+  normalization or analysis
 
 If those are captured, the Discord pass is done.
