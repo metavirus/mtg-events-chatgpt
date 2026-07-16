@@ -269,20 +269,27 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .detail-section:last-child { border-bottom: 0; }
 .detail-section h3 { margin: 4px 0 12px; font: 700 16px var(--display); }
 .analysis-copy { color: #bac2d3; font-size: 12px; line-height: 1.7; max-width: 1000px; }
-.why-button { border: 0; background: none; color: var(--sky); font-size: 9px; cursor: pointer; }
+.why-button { border: 0; background: none; color: var(--sky); font-size: 11px; cursor: pointer; }
 .evaluation-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
 .evaluation-tile { display: grid; gap: 3px; min-height: 78px; padding: 13px; text-align: left; color: var(--text); background: linear-gradient(145deg, rgba(139,124,255,.12), rgba(84,212,167,.04)); border: 1px solid rgba(139,124,255,.28); border-radius: 12px; cursor: pointer; }
 .evaluation-tile:hover { border-color: rgba(139,124,255,.58); transform: translateY(-1px); }
-.evaluation-tile span, .evaluation-tile small { color: var(--muted); font-size: 9px; }
-.evaluation-tile strong { font-size: 20px; text-transform: capitalize; }
+.evaluation-tile span, .evaluation-tile small { color: var(--muted); font-size: 10px; }
+.evaluation-tile strong { font-size: 22px; text-transform: capitalize; }
 .evaluation-evidence { display: grid; gap: 18px; }
 .evaluation-evidence ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
 .evaluation-evidence li { margin: 7px 0; line-height: 1.45; }
 .score-bars { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; }
-.score-row { display: grid; grid-template-columns: 135px 1fr 25px; gap: 9px; align-items: center; color: #b6bed0; font-size: 9px; }
+.score-row { display: grid; grid-template-columns: 150px 1fr 32px; gap: 10px; align-items: center; color: #b6bed0; font-size: 11px; }
 .score-track { height: 5px; border-radius: 4px; background: #252c40; overflow: hidden; }
 .score-track i { display: block; height: 100%; background: linear-gradient(90deg, var(--violet-2), var(--violet)); border-radius: inherit; }
-.score-row strong { color: var(--muted); font-size: 8px; }
+.score-track.large { height: 7px; }
+.score-row strong { color: var(--muted); font-size: 10px; }
+.dimension-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.dimension-card { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.02); display: grid; gap: 10px; }
+.dimension-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.dimension-head strong { font-size: 12px; }
+.dimension-head span { color: var(--violet-2); font-size: 11px; font-weight: 700; }
+.dimension-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
 .series-list { display: grid; gap: 6px; }
 .series-row { width: 100%; min-height: 53px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.018); display: grid; grid-template-columns: 32px 1fr auto; align-items: center; gap: 10px; text-align: left; cursor: pointer; }
 .series-row:hover { border-color: var(--line-strong); }
@@ -457,7 +464,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
   .rail-collapse-row { justify-content: flex-start; }
   .master-detail { grid-template-columns: 1fr; }
   .master-pane { position: static; max-height: 420px; }
-  .score-bars, .two-column-section, .research-grid, .evaluation-summary { grid-template-columns: 1fr; }
+  .score-bars, .two-column-section, .research-grid, .evaluation-summary, .dimension-grid { grid-template-columns: 1fr; }
   .research-stats { grid-template-columns: 1fr 1fr; }
   .mobile-nav { display: grid; position: fixed; z-index: 50; left: 10px; right: 10px; bottom: 10px; grid-template-columns: repeat(5, 1fr); min-height: 61px; border: 1px solid var(--line-strong); border-radius: 15px; background: rgba(14,18,31,.94); backdrop-filter: blur(18px); box-shadow: var(--shadow); padding: 5px; }
   .mobile-nav button { border: 0; border-radius: 9px; background: none; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 8px; }

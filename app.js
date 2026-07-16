@@ -718,6 +718,37 @@ function assessmentBars(place) {
   return Object.entries(place.assessment || {}).map(([key, value]) => `<div class="score-row"><span>${labels[key] || key}</span><div class="score-track"><i style="width:${value * 20}%"></i></div><strong>${value}/5</strong></div>`).join('');
 }
 
+function scoreBreakdown(place) {
+  const labels = {
+    commanderActivity: 'Commander activity',
+    meetupAccessibility: 'Solo-arrival access',
+    communityContinuity: 'Community continuity',
+    newPlayerIntegration: 'New-player integration',
+    physicalEnvironment: 'Physical environment',
+    scheduleReliability: 'Schedule reliability',
+    homeGroupPotential: 'Home-pod potential'
+  };
+  const explanations = {
+    commanderActivity: 'How much useful Magic opportunity appears to exist for your preferred play.',
+    meetupAccessibility: 'Whether the sources say anything that makes showing up alone feel easier.',
+    communityContinuity: 'Whether this looks like a repeat-visit scene rather than a one-off stop.',
+    newPlayerIntegration: 'Signals that the store helps people slot into games without already knowing the room.',
+    physicalEnvironment: 'What the sources imply about usable play space, comfort, and scale.',
+    scheduleReliability: 'How dependable the recurring schedule looks across official and secondary surfaces.',
+    homeGroupPotential: 'Whether the place seems promising for meeting nearby people you might play with again.'
+  };
+  return Object.entries(place.assessment || {}).map(([key, value]) => `
+    <div class="dimension-card">
+      <div class="dimension-head">
+        <strong>${labels[key] || key}</strong>
+        <span>${value}/5</span>
+      </div>
+      <div class="score-track large"><i style="width:${value * 20}%"></i></div>
+      <p>${explanations[key] || 'This dimension contributes to the overall fit grade.'}</p>
+    </div>
+  `).join('');
+}
+
 function seriesRow(event) {
   return `<button class="series-row" data-event-id="${event.id}" data-date="${event.date || event.startDate}"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><span><strong>${escapeHtml(event.title)}</strong><small>${event.recurrence?.frequency === 'weekly' ? `${dayName(event.recurrence.dayOfWeek)} · ${formatTime(event.recurrence.startTime)} · recurring` : event.date || 'Dated event'}</small></span><span class="status-chip ${event.confidence === 'high' ? 'mint' : 'amber'}">${event.confidence}</span></button>`;
 }
@@ -861,7 +892,8 @@ function openScoreExplanation(place) {
   const evaluation = place ? normalizedEvaluation(place) : null;
   const evidence = evaluation ? `<section class="drawer-section"><p class="eyebrow">Current judgment</p><h2>${escapeHtml(place.name)}: ${escapeHtml(evaluation.fitGrade)} · ${Number(evaluation.fitScore).toFixed(1)}/5</h2><p class="drawer-lead">${escapeHtml(evaluation.confidence)} confidence · ${escapeHtml(placeResearchLabel(place))} research · ${evaluation.candidateStatus === 'promoted' ? 'promoted candidate' : evaluation.candidateStatus === 'working' ? 'working candidate' : 'discovery candidate'}</p></section>
     <section class="drawer-section evaluation-evidence"><div><p class="eyebrow">Pluses</p><ul>${evaluation.positives.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div><div><p class="eyebrow">Cautions</p><ul>${evaluation.cautions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div><div><p class="eyebrow">Open questions</p><ul>${evaluation.openQuestions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div></section>` : '';
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Scoring guide</span></div><h1 id="drawerTitle">${evaluation ? 'Why this place received its score' : 'How place scores work'}</h1><p class="drawer-lead">Fit and confidence are separate. The grade estimates how good a practical bet the place is for you; confidence describes how strongly the available evidence supports that judgment.</p>${evidence}<section class="drawer-section"><p class="eyebrow">How to read the dimensions</p><div class="truth-list"><div><span class="truth-icon mint">1</span><p><strong>Magic and event fit</strong><br>Relevant Commander, prerelease, sealed, and draft opportunity without rewarding poor-fit competitive volume.</p></div><div><span class="truth-icon sky">2</span><p><strong>Solo-arrival and community fit</strong><br>Explicit welcoming or pairing help is a positive. Ordinary silence is neutral rather than a penalty.</p></div><div><span class="truth-icon amber">3</span><p><strong>Practical fit</strong><br>Distance, schedule reliability, physical environment, and realistic repeat-visit value.</p></div><div><span class="truth-icon coral">4</span><p><strong>Confidence</strong><br>Evidence depth and agreement across official, social, community, and user-observation sources.</p></div></div></section><section class="drawer-section"><p class="eyebrow">Important caveat</p><p>These are transparent working judgments, not objective truths. They should change when research deepens or your own visits provide better evidence.</p></section>`);
+  const breakdown = place ? `<section class="drawer-section"><p class="eyebrow">Dimension breakdown</p><h2>What pushed the score up or down</h2><div class="dimension-grid">${scoreBreakdown(place)}</div></section>` : '';
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Scoring guide</span></div><h1 id="drawerTitle">${evaluation ? 'Why this place received its score' : 'How place scores work'}</h1><p class="drawer-lead">Fit and confidence are separate. The grade estimates how good a practical bet the place is for you; confidence describes how strongly the available evidence supports that judgment.</p>${evidence}${breakdown}<section class="drawer-section"><p class="eyebrow">How to read the dimensions</p><div class="truth-list"><div><span class="truth-icon mint">1</span><p><strong>Magic and event fit</strong><br>Relevant Commander, prerelease, sealed, and draft opportunity without rewarding poor-fit competitive volume.</p></div><div><span class="truth-icon sky">2</span><p><strong>Solo-arrival and community fit</strong><br>Explicit welcoming or pairing help is a positive. Ordinary silence is neutral rather than a penalty.</p></div><div><span class="truth-icon amber">3</span><p><strong>Practical fit</strong><br>Distance, schedule reliability, physical environment, and realistic repeat-visit value.</p></div><div><span class="truth-icon coral">4</span><p><strong>Confidence</strong><br>Evidence depth and agreement across official, social, community, and user-observation sources.</p></div></div></section><section class="drawer-section"><p class="eyebrow">Important caveat</p><p>These are transparent working judgments, not objective truths. They should change when research deepens or your own visits provide better evidence.</p></section>`);
 }
 
 function openDiscoveryQueue() {
