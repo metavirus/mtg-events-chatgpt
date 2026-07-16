@@ -6,6 +6,25 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-15 — Instagram 24-hour event sweep
+
+Outcome type: documentary-edit
+Entity: stores with populated `instagram` fields in `stores.json`
+Modality path used: canonical Instagram URL -> direct public retrieval attempt -> indexed web search fallback
+Promotion status: No canonical promotion attempted
+Files changed: `research/runs/2026-07-15-instagram-24h-sweep.md`, `docs/chatgpt-changelog.md`
+Branch / PR: `chatgpt-data-update/2026-07-15-instagram-24h-sweep`; PR pending
+Codex review needed: Decide whether a browser-authenticated or alternate Instagram extraction path should be used for future daily sweeps.
+
+- Request: Check stores with identified Instagram accounts for posts in the preceding 24 hours and identify event announcements.
+- Summary of changes: Added a bounded run note covering 13 unique populated Instagram handles. Direct Instagram retrieval was blocked and indexed search returned no current post-level results, so the run records a no-result/coverage limitation rather than asserting that no posts existed.
+- Source support: `stores.json`; `research/METHODOLOGY.md`; direct Instagram profile retrieval attempts; bounded indexed-web searches for each handle.
+- Validation performed: Verified the canonical Instagram handle list against `stores.json`, deduplicated shared handles, attempted all 13 unique handles, and preserved the distinction between a blocked source and a confirmed negative finding.
+- Validation not performed: No authenticated Instagram browser session, Instagram API extraction, story/reel inspection, local checkout, JSON validation, browser smoke test, crawler run, or deployment check.
+- Known risks: Search-engine indexing is incomplete and delayed, so this pass cannot establish 24-hour completeness. `research/INSTAGRAM_SOP.md`, `research/SOURCE_SOP.md`, and `docs/EFFICIENCY_SOP.md` returned 404 in this session view.
+- Codex audit requested: Review the source-coverage limitation and identify an approved direct Instagram modality before relying on ChatGPT for complete daily Instagram monitoring.
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the
