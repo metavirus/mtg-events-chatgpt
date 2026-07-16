@@ -43,6 +43,7 @@ const state = {
   agendaDays: 42,
   preset: 'all',
   favoritesOnly: false,
+  highlightsCollapsed: false,
   search: '',
   selectedPlaceId: null,
   selectedPlaceTab: 'overview',
@@ -194,11 +195,11 @@ function handleClick(event) {
   if (event.target.closest('#clearFilters')) return resetFilters();
   if (event.target.closest('#favoritesToggle')) return toggleFavoritesOnly();
   if (event.target.closest('#coverageButton')) return navigate('research');
+  if (event.target.closest('#toggleHighlights')) return toggleHighlightsRail();
   if (event.target.closest('#drawerClose') || event.target.id === 'drawerScrim') return closeDrawer();
   if (event.target.closest('.banner-close')) return document.getElementById('coverageBanner').remove();
   if (event.target.closest('#activityLogButton')) return openActivityLog();
   if (event.target.closest('#openQuickNote')) return openQuickNote();
-  if (event.target.closest('#importButton')) return document.getElementById('fileImport').click();
   if (event.target.closest('#mobileMenu') || event.target.closest('#mobileMore')) return document.querySelector('.side-rail').classList.toggle('mobile-open');
 }
 
@@ -219,6 +220,10 @@ function handleAction(action, element) {
   if (action === 'day-popover') return openDay(element.dataset.dayDate);
   if (action === 'load-more') { state.agendaDays += 28; return renderCalendar(); }
   if (action === 'explain-scores') return openScoreExplanation(store(state.selectedPlaceId));
+  if (action === 'show-discovery-queue') return openDiscoveryQueue();
+  if (action === 'show-reviewed-places') return openReviewedPlaces();
+  if (action === 'show-source-records') return navigate('places');
+  if (action === 'show-format-balance') return navigate('events');
   if (action === 'save-note') return saveNote(element.dataset.entity, element.dataset.input);
   if (action === 'show-log') return openActivityLog();
   if (action === 'dismiss-drawer') return closeDrawer();
@@ -264,12 +269,20 @@ function renderCurrentRoute() {
 function updateChrome() {
   const favCount = Object.values(state.personal.favorites).filter(Boolean).length;
   const favoriteButton = document.getElementById('favoritesToggle');
+  const highlightsRail = document.querySelector('.highlights-rail');
+  const highlightsToggle = document.getElementById('toggleHighlights');
   favoriteButton.classList.toggle('active', state.favoritesOnly);
   favoriteButton.setAttribute('aria-pressed', String(state.favoritesOnly));
   favoriteButton.querySelector('span:first-child').textContent = state.favoritesOnly ? '\u2665' : '\u2661';
   favoriteButton.title = favCount ? `${favCount} favorites` : 'No favorites yet';
   document.getElementById('changeNavCount').textContent = DATA.changes.length;
   document.getElementById('todayEyebrow').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+  highlightsRail?.classList.toggle('collapsed', state.highlightsCollapsed);
+  if (highlightsToggle) {
+    highlightsToggle.setAttribute('aria-expanded', String(!state.highlightsCollapsed));
+    highlightsToggle.title = state.highlightsCollapsed ? 'Open side panel' : 'Collapse side panel';
+    highlightsToggle.textContent = state.highlightsCollapsed ? '←' : '→';
+  }
 }
 
 function source(id) { return DATA.sources.find((item) => item.id === id); }
@@ -299,6 +312,61 @@ function distanceLabel(place, long = false) {
   const distance = numericDistance(place);
   if (distance == null) return long ? 'distance not yet calculated' : 'distance unknown';
   return `${distance.toFixed(1)} ${long ? 'miles' : 'mi'}`;
+}
+function fitScoreFor(place) {
+  if (Number.isFinite(place.evaluation?.fitScore)) return Number(place.evaluation.fitScore);
+  const values = Object.values(place.assessment || {}).filter((value) => Number.isFinite(value));
+  if (!values.length) return 3;
+  return Number((values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(1));
+}
+function fitGradeFor(score) {
+  if (score >= 4.5) return 'A';
+  if (score >= 4.2) return 'A-';
+  if (score >= 3.9) return 'B+';
+  if (score >= 3.6) return 'B';
+  if (score >= 3.3) return 'B-';
+  if (score >= 3.0) return 'C+';
+  if (score >= 2.7) return 'C';
+  if (score >= 2.4) return 'C-';
+  if (score >= 2.1) return 'D';
+  return 'F';
+}
+function confidenceFor(place) {
+  if (place.evaluation?.confidence) return place.evaluation.confidence;
+  const sourceCount = (place.sourceIds || []).length;
+  if (place.researchStatus === 'partial') return sourceCount >= 4 ? 'medium' : 'medium';
+  return sourceCount >= 3 ? 'medium' : 'low';
+}
+function candidateStatusFor(place) {
+  if (place.evaluation?.candidateStatus) return place.evaluation.candidateStatus;
+  if (place.researchStatus === 'partial' && fitScoreFor(place) >= 3.8) return 'promoted';
+  return place.researchStatus === 'partial' ? 'working' : 'discovery';
+}
+function normalizedEvaluation(place) {
+  const explicit = place.evaluation || {};
+  const fitScore = fitScoreFor(place);
+  const positives = explicit.positives ? [...explicit.positives] : [];
+  const cautions = explicit.cautions ? [...explicit.cautions] : [];
+  const openQuestions = explicit.openQuestions ? [...explicit.openQuestions] : [];
+  if (!place.evaluation) {
+    if ((place.assessment?.commanderActivity || 0) >= 4) positives.push('Magic opportunity looks meaningfully active for your interests.');
+    if ((place.assessment?.communityContinuity || 0) >= 4) positives.push('Signals suggest better repeat-visit potential than a one-off curiosity stop.');
+    if ((place.assessment?.newPlayerIntegration || 0) >= 4 || (place.assessment?.meetupAccessibility || 0) >= 4) positives.push('There are above-baseline signs that solo arrival or joining games could be workable.');
+    if ((place.sourceIds || []).length >= 4) positives.push('The connected evidence is strong enough to support a real planning judgment now.');
+    if ((place.assessment?.meetupAccessibility || 0) <= 2) cautions.push('Pod formation and solo-arrival mechanics are still not strongly described.');
+    if ((place.assessment?.scheduleReliability || 0) <= 2) cautions.push('Schedule reliability still needs stronger corroboration before relying on it repeatedly.');
+    if ((numericDistance(place) ?? 0) > 15) cautions.push('Distance raises the bar for this place to earn repeat-visit priority.');
+    if (!openQuestions.length) openQuestions.push('Treat unstated proxy policy, bracket language, and pod logistics as unknown unless a source says otherwise.');
+  }
+  return {
+    fitScore,
+    fitGrade: explicit.fitGrade || fitGradeFor(fitScore),
+    confidence: explicit.confidence || confidenceFor(place),
+    candidateStatus: explicit.candidateStatus || candidateStatusFor(place),
+    positives,
+    cautions,
+    openQuestions
+  };
 }
 function mapsUrl(place) { return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place.address)}`; }
 function isCompetitive(event) { return /cedh|competitive|optimized|rcq|championship/i.test(`${event.eventType} ${event.title} ${event.details}`); }
@@ -532,12 +600,7 @@ function placesByDistance() {
 }
 
 function storeScore(place) {
-  if (Number.isFinite(place.evaluation?.fitScore)) {
-    return place.evaluation.fitScore * 20 - Math.min(numericDistance(place) ?? 28, 40);
-  }
-  const values = Object.values(place.assessment || {});
-  const average = values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 3;
-  return average * 18 - Math.min(numericDistance(place) ?? 28, 40) + (place.researchStatus === 'partial' ? 8 : 0);
+  return fitScoreFor(place) * 20 - Math.min(numericDistance(place) ?? 28, 40) + (place.researchStatus === 'partial' ? 8 : 0);
 }
 
 function placeFitPhrase(place) {
@@ -548,16 +611,16 @@ function placeFitPhrase(place) {
 
 function placeResearchLabel(place) {
   if (place.evaluation?.researchStatus === 'deepened') return 'Deepened';
-  return place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level';
+  if (place.researchStatus === 'partial') return candidateStatusFor(place) === 'promoted' ? 'Deepened' : 'Reviewed';
+  return 'Discovery-level';
 }
 
 function placeEvaluationSummary(place) {
-  const evaluation = place.evaluation;
-  if (!evaluation) return '';
+  const evaluation = normalizedEvaluation(place);
   return `<div class="evaluation-summary" aria-label="Current place evaluation">
     <button class="evaluation-tile" data-action="explain-scores"><span>Fit</span><strong>${escapeHtml(evaluation.fitGrade)}</strong><small>${Number(evaluation.fitScore).toFixed(1)} / 5</small></button>
     <button class="evaluation-tile" data-action="explain-scores"><span>Confidence</span><strong>${escapeHtml(evaluation.confidence)}</strong><small>Evidence support</small></button>
-    <button class="evaluation-tile" data-action="explain-scores"><span>Research</span><strong>${escapeHtml(placeResearchLabel(place))}</strong><small>${evaluation.candidateStatus === 'promoted' ? 'Promoted candidate' : 'Working candidate'}</small></button>
+    <button class="evaluation-tile" data-action="explain-scores"><span>Research</span><strong>${escapeHtml(placeResearchLabel(place))}</strong><small>${evaluation.candidateStatus === 'promoted' ? 'Promoted candidate' : evaluation.candidateStatus === 'working' ? 'Working candidate' : 'Discovery candidate'}</small></button>
   </div>`;
 }
 
@@ -575,6 +638,7 @@ function renderPlaces() {
   let places = sortedPlaces.filter((place) => !query || `${place.name} ${place.city} ${place.assessmentNotes}`.toLowerCase().includes(query));
   if (state.placeFilter === 'partial') places = places.filter((place) => place.researchStatus === 'partial');
   if (state.placeFilter === 'favorites') places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
+  if (state.favoritesOnly) places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
   if (!places.some((place) => place.id === state.selectedPlaceId)) state.selectedPlaceId = places[0]?.id;
   list.innerHTML = places.map((place) => {
     const active = place.id === state.selectedPlaceId;
@@ -621,10 +685,11 @@ function seriesRow(event) {
 }
 
 function renderCommunities() {
-  document.getElementById('communityGrid').innerHTML = COMMUNITY_SEED.map((community) => {
+  const communities = state.favoritesOnly ? COMMUNITY_SEED.filter((community) => state.personal.favorites[`community:${community.id}`]) : COMMUNITY_SEED;
+  document.getElementById('communityGrid').innerHTML = communities.map((community) => {
     const favorite = state.personal.favorites[`community:${community.id}`];
     return `<article class="community-card" data-community-id="${community.id}" tabindex="0"><div class="community-card-top"><span class="community-symbol">◎</span><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${community.id}">${favorite ? '♥' : '♡'}</button></div><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><h2>${escapeHtml(community.name)}</h2><p class="community-region">${escapeHtml(community.region)}</p><p>${escapeHtml(community.summary)}</p><div class="community-tags">${community.formats.map((format) => `<span class="meta-chip">${format}</span>`).join('')}<span class="meta-chip">${community.channel}</span></div><div class="community-signal"><span>Signal</span><strong>${escapeHtml(community.signal)}</strong></div><span class="open-cue">Open community profile →</span></article>`;
-  }).join('');
+  }).join('') || emptyState('No communities match', 'Try turning off Favorites or adding a community to your followed list first.');
 }
 
 function renderChanges() {
@@ -637,7 +702,7 @@ function renderResearch() {
   const discovery = DATA.stores.length - partial;
   const formats = DATA.events.reduce((acc, event) => ((acc[event.format || 'Unknown'] = (acc[event.format || 'Unknown'] || 0) + 1), acc), {});
   const sourceTypes = DATA.sources.reduce((acc, item) => ((acc[item.type || 'other'] = (acc[item.type || 'other'] || 0) + 1), acc), {});
-  document.getElementById('researchDashboard').innerHTML = `<div class="research-stats"><div class="research-stat primary"><span>Venue depth</span><strong>${partial}<small> / ${DATA.stores.length}</small></strong><p>have moved beyond raw discovery</p><div class="progress"><i style="width:${partial / DATA.stores.length * 100}%"></i></div></div><div class="research-stat"><span>Discovery queue</span><strong>${discovery}</strong><p>places remain lightly vetted</p></div><div class="research-stat"><span>Source records</span><strong>${DATA.sources.length}</strong><p>connected evidence surfaces</p></div><div class="research-stat warning"><span>Event-format balance</span><strong>${formats.Commander || 0}<small> Commander</small></strong><p>${DATA.events.length - (formats.Commander || 0)} other-format record</p></div></div>
+  document.getElementById('researchDashboard').innerHTML = `<div class="research-stats"><button class="research-stat primary clickable" data-action="show-reviewed-places"><span>Venue depth</span><strong>${partial}<small> / ${DATA.stores.length}</small></strong><p>have moved beyond raw discovery</p><div class="progress"><i style="width:${partial / DATA.stores.length * 100}%"></i></div></button><button class="research-stat clickable" data-action="show-discovery-queue"><span>Discovery queue</span><strong>${discovery}</strong><p>places remain lightly vetted</p></button><button class="research-stat clickable" data-action="show-source-records"><span>Source records</span><strong>${DATA.sources.length}</strong><p>connected evidence surfaces</p></button><button class="research-stat warning clickable" data-action="show-format-balance"><span>Event-format balance</span><strong>${formats.Commander || 0}<small> Commander</small></strong><p>${DATA.events.length - (formats.Commander || 0)} other-format record</p></button></div>
     <div class="research-grid"><section class="research-panel"><p class="eyebrow">Coverage truth</p><h2>What this snapshot can and cannot say</h2><div class="truth-list"><div><span class="truth-icon mint">✓</span><p><strong>Useful nearby Commander starting set</strong><br>Recurring listings and strong partial venue profiles can support real planning now.</p></div><div><span class="truth-icon amber">~</span><p><strong>Uneven venue depth</strong><br>${partial} places have qualitative work; ${discovery} remain discovery-level and need social/site corroboration.</p></div><div><span class="truth-icon coral">!</span><p><strong>Not a complete Magic calendar</strong><br>Draft, sealed, prerelease, and other formats have not received comparable normalization yet.</p></div><div><span class="truth-icon sky">i</span><p><strong>Recurring dates are expectations</strong><br>Weekly schedules are displayed as projected occurrences unless a date-specific source confirms them.</p></div></div></section>
     <section class="research-panel"><p class="eyebrow">Source mix</p><h2>Where the evidence comes from</h2><div class="source-bars">${Object.entries(sourceTypes).sort((a,b) => b[1]-a[1]).slice(0,8).map(([type,count]) => `<div><span>${escapeHtml(type.replaceAll(/([A-Z])/g, ' $1'))}</span><div><i style="width:${count / Math.max(...Object.values(sourceTypes)) * 100}%"></i></div><strong>${count}</strong></div>`).join('')}</div></section></div>
     <div class="research-panel methodology-card"><div><p class="eyebrow">Method in one line</p><h2>Catalog broadly. Classify carefully. Rank personally. Preserve the evidence.</h2></div><button class="soft-button" data-action="show-log">View activity log</button></div>`;
@@ -749,11 +814,26 @@ function toggleFavoritesOnly() {
   renderCurrentRoute();
 }
 
+function toggleHighlightsRail() {
+  state.highlightsCollapsed = !state.highlightsCollapsed;
+  updateChrome();
+}
+
 function openScoreExplanation(place) {
-  const evaluation = place?.evaluation;
-  const evidence = evaluation ? `<section class="drawer-section"><p class="eyebrow">Current judgment</p><h2>${escapeHtml(place.name)}: ${escapeHtml(evaluation.fitGrade)} · ${Number(evaluation.fitScore).toFixed(1)}/5</h2><p class="drawer-lead">${escapeHtml(evaluation.confidence)} confidence · ${escapeHtml(placeResearchLabel(place))} research · ${evaluation.candidateStatus === 'promoted' ? 'promoted candidate' : 'working candidate'}</p></section>
+  const evaluation = place ? normalizedEvaluation(place) : null;
+  const evidence = evaluation ? `<section class="drawer-section"><p class="eyebrow">Current judgment</p><h2>${escapeHtml(place.name)}: ${escapeHtml(evaluation.fitGrade)} · ${Number(evaluation.fitScore).toFixed(1)}/5</h2><p class="drawer-lead">${escapeHtml(evaluation.confidence)} confidence · ${escapeHtml(placeResearchLabel(place))} research · ${evaluation.candidateStatus === 'promoted' ? 'promoted candidate' : evaluation.candidateStatus === 'working' ? 'working candidate' : 'discovery candidate'}</p></section>
     <section class="drawer-section evaluation-evidence"><div><p class="eyebrow">Pluses</p><ul>${evaluation.positives.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div><div><p class="eyebrow">Cautions</p><ul>${evaluation.cautions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div><div><p class="eyebrow">Open questions</p><ul>${evaluation.openQuestions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div></section>` : '';
   openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Scoring guide</span></div><h1 id="drawerTitle">${evaluation ? 'Why this place received its score' : 'How place scores work'}</h1><p class="drawer-lead">Fit and confidence are separate. The grade estimates how good a practical bet the place is for you; confidence describes how strongly the available evidence supports that judgment.</p>${evidence}<section class="drawer-section"><p class="eyebrow">How to read the dimensions</p><div class="truth-list"><div><span class="truth-icon mint">1</span><p><strong>Magic and event fit</strong><br>Relevant Commander, prerelease, sealed, and draft opportunity without rewarding poor-fit competitive volume.</p></div><div><span class="truth-icon sky">2</span><p><strong>Solo-arrival and community fit</strong><br>Explicit welcoming or pairing help is a positive. Ordinary silence is neutral rather than a penalty.</p></div><div><span class="truth-icon amber">3</span><p><strong>Practical fit</strong><br>Distance, schedule reliability, physical environment, and realistic repeat-visit value.</p></div><div><span class="truth-icon coral">4</span><p><strong>Confidence</strong><br>Evidence depth and agreement across official, social, community, and user-observation sources.</p></div></div></section><section class="drawer-section"><p class="eyebrow">Important caveat</p><p>These are transparent working judgments, not objective truths. They should change when research deepens or your own visits provide better evidence.</p></section>`);
+}
+
+function openDiscoveryQueue() {
+  const places = DATA.stores.filter((place) => place.researchStatus !== 'partial').sort((a, b) => (numericDistance(a) ?? 999) - (numericDistance(b) ?? 999));
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip amber">Discovery queue</span></div><h1 id="drawerTitle">Lightly vetted places</h1><p class="drawer-lead">These places are still in the queue for stronger corroboration before they should be treated as serious bets.</p><section class="drawer-section"><div class="place-occurrences">${places.map((place) => `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${numericDistance(place) == null ? '?' : numericDistance(place).toFixed(0)}</strong>mi</time><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${truncate(place.assessmentNotes || 'Needs synthesis', 110)}</small></span><span class="status-chip amber">Discovery-level</span></button>`).join('')}</div></section>`);
+}
+
+function openReviewedPlaces() {
+  const places = DATA.stores.filter((place) => place.researchStatus === 'partial').sort((a, b) => storeScore(b) - storeScore(a));
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">Reviewed places</span></div><h1 id="drawerTitle">Places with deeper work</h1><p class="drawer-lead">These places have moved beyond raw discovery and now support a real planning judgment.</p><section class="drawer-section"><div class="place-occurrences">${places.map((place) => { const evaluation = normalizedEvaluation(place); return `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${escapeHtml(evaluation.fitGrade)}</strong>${Number(evaluation.fitScore).toFixed(1)}</time><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small></span><span class="status-chip ${evaluation.candidateStatus === 'promoted' ? 'mint' : 'amber'}">${evaluation.candidateStatus === 'promoted' ? 'Promoted' : 'Working'}</span></button>`; }).join('')}</div></section>`);
 }
 
 function openDrawer(html) {
@@ -855,5 +935,5 @@ async function importFiles(event) {
 }
 
 load().catch((error) => {
-  document.body.innerHTML = `<main class="load-error"><h1>Mana Radar needs a local web server</h1><p>${escapeHtml(error.message)}</p><p>Open this project through its normal preview or hosted address so the research files can load.</p></main>`;
+  document.body.innerHTML = `<main class="load-error"><h1>MTG Events needs a local web server</h1><p>${escapeHtml(error.message)}</p><p>Open this project through its normal preview or hosted address so the research files can load.</p></main>`;
 });

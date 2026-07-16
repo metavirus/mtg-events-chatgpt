@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0a0d18">
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="A private, research-backed view of Southern California Magic events, places, and communities.">
-  <title>Mana Radar - Southern California Magic Intelligence</title>
+  <title>MTG Events - Southern California Magic Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -15,9 +15,9 @@
 <body>
   <div class="app-shell">
     <aside class="side-rail" aria-label="Primary navigation">
-      <a class="brand" href="#today" data-route-link="today" aria-label="Mana Radar home">
+      <a class="brand" href="#today" data-route-link="today" aria-label="MTG Events home">
         <span class="brand-mark" aria-hidden="true">M</span>
-        <span class="brand-copy"><strong>Mana Radar</strong><small>SoCal intelligence</small></span>
+        <span class="brand-copy"><strong>MTG Events</strong><small>SoCal Magic</small></span>
       </a>
 
       <nav class="primary-nav">
@@ -25,13 +25,12 @@
         <button class="nav-item" data-route="events"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6.5h10"></path><path d="M5 10h10"></path><path d="M5 13.5h10"></path></svg></span><span>Events</span></button>
         <button class="nav-item" data-route="places"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5 10 3.5l6.5 5"></path><path d="M5.5 8v8h9V8"></path></svg></span><span>Places</span></button>
         <button class="nav-item" data-route="communities"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="2.25"></circle><circle cx="13" cy="8.75" r="1.9"></circle><path d="M3.8 15c.8-2 2.4-3 4.2-3s3.4 1 4.2 3"></path><path d="M11.5 14.8c.5-1.4 1.6-2.2 3-2.2 1.2 0 2.1.5 2.8 1.6"></path></svg></span><span>Communities</span></button>
-        <button class="nav-item" data-route="changes"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15 15 5"></path><path d="M8 5h7v7"></path></svg></span><span>New & changed</span><span id="changeNavCount" class="nav-count"></span></button>
+        <button class="nav-item" data-route="changes"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15 15 5"></path><path d="M8 5h7v7"></path></svg></span><span>Updates</span><span id="changeNavCount" class="nav-count"></span></button>
         <button class="nav-item" data-route="research"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="4.75"></circle><path d="m12.2 12.2 4.3 4.3"></path></svg></span><span>Research</span></button>
       </nav>
 
       <div class="rail-footer">
         <button class="quiet-link" id="activityLogButton">Activity log</button>
-        <button class="quiet-link" id="importButton">Import updated data</button>
         <input id="fileImport" type="file" accept=".json" multiple hidden>
         <div class="freshness-mini"><span class="status-dot"></span><span>Research snapshot<br><strong>July 15, 2026</strong></span></div>
       </div>
@@ -98,6 +97,10 @@
               <div id="calendarContent"></div>
             </section>
             <aside class="highlights-rail" aria-label="Highlights">
+              <div class="rail-collapse-row">
+                <button class="icon-button rail-toggle" id="toggleHighlights" aria-expanded="true" aria-controls="todayHighlights" title="Collapse side panel">→</button>
+              </div>
+              <div id="todayHighlights" class="rail-panels">
               <div class="rail-section">
                 <div class="section-title-row"><div><p class="eyebrow amber">Fresh signals</p><h2>New & notable</h2></div><button class="text-button" data-route="changes">View all</button></div>
                 <div id="newHighlights" class="highlight-stack"></div>
@@ -109,6 +112,7 @@
               <div class="rail-section compact-section">
                 <div class="section-title-row"><div><p class="eyebrow coral">Check first</p><h2>Research alerts</h2></div></div>
                 <div id="researchAlerts"></div>
+              </div>
               </div>
             </aside>
           </div>
@@ -139,7 +143,7 @@
         </section>
 
         <section class="route-panel" id="route-changes" data-route-panel="changes">
-          <div class="page-heading"><div><p class="eyebrow amber">Last two weeks</p><h1>New & changed</h1><p class="heading-subtitle">Research discoveries, schedule updates, reclassifications, and source changes.</p></div></div>
+          <div class="page-heading"><div><p class="eyebrow amber">Last two weeks</p><h1>Updates</h1><p class="heading-subtitle">Research discoveries, schedule updates, reclassifications, and source changes.</p></div></div>
           <div id="changeList" class="change-timeline"></div>
         </section>
 
