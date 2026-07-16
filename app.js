@@ -278,6 +278,7 @@ function mapEventSeries(item, sourcesBySeries) {
     bracket: item.bracket || 'unspecified',
     recurrence: normalizeRecurrence(item.recurrence, item.default_start_time),
     startDate: item.start_date || null,
+    startTime: normalizeTime(item.default_start_time),
     endDate: item.end_date || null,
     entryFee: item.entry_fee == null ? null : Number(item.entry_fee),
     currency: item.currency || 'USD',
