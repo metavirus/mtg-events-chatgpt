@@ -19,6 +19,16 @@ Use it for:
   until import and security parity checks pass.
 - Migrate canonical research, personal continuity, and async request data in
   explicit reversible stages.
+- During the current mega revision, allow foundation-only continuity work that
+  clarifies the eventual hosted contract for favorites, thumbs-down, notes,
+  ratings, update-read state, and `Ask Codex` requests without yet shipping the
+  signed-in write path.
+- Use `docs/UX_MEGA_REVISION_SCOPE.md` as the active execution scope for the
+  current UX build tranche; do not substitute scattered backlog items for that
+  consolidated scope.
+- Use `docs/SUPABASE_CONTINUITY_MODEL.md` as the plain-language contract for
+  what belongs in research truth, personal continuity, and workflow/request
+  state during this transition period.
 - Pause broad research expansion while building the first complete private app.
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a

@@ -26,7 +26,7 @@ changing auth/RLS/write policy or publishing a Supabase-backed release.
 
 The accepted near-term product scope is a focused UX revision, not a full
 Supabase write/auth build and not a renewed research expansion. The active UX
-targets are:
+targets are now pinned in `docs/UX_MEGA_REVISION_SCOPE.md`. In short:
 
 - make Today a decision-quality surface rather than a flat event dump;
 - improve event filtering and search, especially Commander, prerelease/sealed,
@@ -42,6 +42,18 @@ targets are:
   works as an activity surface;
 - fix obvious clickability, responsive, and terminology issues before publish.
 
+This same pass may also complete foundation-only continuity work when it is
+needed to protect the product direction or unblock the next UI step,
+specifically:
+
+- documenting the accepted split between research data, personal data, and
+  workflow/request data;
+- preserving the current read-adapter seam and parity-check discipline;
+- locking in the durable server-side target for favorites, thumbs-down,
+  ratings, notes, update-read state, and in-app `Ask Codex` requests;
+- preparing the cutover sequence so browser-local personal state can later be
+  replaced cleanly without redesigning the interaction model.
+
 Explicitly deferred from this tranche:
 
 - authenticated Supabase writes for favorites, thumbs-down, notes, and Ask Codex
@@ -51,6 +63,9 @@ Explicitly deferred from this tranche:
 - broad store re-research;
 - making Supabase the default data source;
 - publishing until the local UX tranche receives a sanity pass.
+
+In short: this revision may finish the contract for hosted personal/workflow
+state, but it does not yet ship the full signed-in write path.
 
 ## ChatGPT sideload handoff
 

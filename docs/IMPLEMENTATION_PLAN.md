@@ -52,6 +52,10 @@ Weakness changes presentation and ranking; it does not erase the record.
 The current build pass should improve the user-facing decision experience while
 leaving the newly seeded Supabase database in a safe read-first posture.
 
+The detailed execution scope for this pass is `docs/UX_MEGA_REVISION_SCOPE.md`.
+That file governs what is build-now, prototype-now, and deferred-later for the
+current UX tranche.
+
 Include in this pass:
 
 - Today event curation and ranking so the best options are easier to see first;
@@ -66,7 +70,10 @@ Include in this pass:
 - clearer venue scoring display for research status, fit grade, numeric score,
   confidence, and rationale;
 - Updates polish for naming, readability, direct links, and useful categories;
-- obvious responsive, clickability, terminology, and empty-state fixes.
+- obvious responsive, clickability, terminology, and empty-state fixes;
+- foundation-only continuity work that locks the eventual server-side model for
+  favorites, thumbs-down, ratings, notes, update-read state, and `Ask Codex`
+  requests without yet shipping the authenticated write path.
 
 Defer from this pass:
 
@@ -77,6 +84,13 @@ Defer from this pass:
   the UX;
 - making Supabase the default source;
 - publishing until local behavior has passed a deliberate sanity check.
+
+The practical rule is:
+
+- it is in scope now if it clarifies the contract, schema target, adapter seam,
+  or UI expectations for durable hosted personal/workflow state;
+- it is deferred if it requires real signed-in browser writes, final auth UX,
+  RLS policy expansion, or a Supabase-default runtime cutover.
 
 ### 1. Freeze the current research contract
 

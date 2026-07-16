@@ -10,6 +10,8 @@ for research and tool-use discipline. Imported legacy materials are not active
 requirements; see `docs/LEGACY_MATERIALS.md`.
 For this user's precision and escalation expectations, also follow
 `docs/COLLABORATION_SOP.md`.
+For Supabase-backed continuity planning, also read
+`docs/SUPABASE_CONTINUITY_MODEL.md`.
 
 If text files change, run the repo text-integrity check before finalizing:
 `powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1`.
