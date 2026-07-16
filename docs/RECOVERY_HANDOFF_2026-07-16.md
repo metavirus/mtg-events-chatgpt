@@ -209,6 +209,20 @@ state and the transcript is preserved only as a report of prior task activity.
   tranche and validate it against the existing acceptance criteria before
   claiming completion.
 
+## Subsequent UI interaction smoke test
+
+- Tested the committed `codex/reconcile-wizards` branch tip `910c7ed` using a
+  fresh-reload JSON-default preview; the bounded smoke test passed.
+- Primary navigation and the Places `Events` and `Evidence` subtabs passed.
+- Events `List`, `Week`, and `Month` views, a monthly `+X more` control, and the
+  Commander, prerelease/limited, and draft controls passed.
+- Roomy and narrow Fresh Signals / For You access passed; the narrow layout
+  retained an obvious Signals control that opened the intended content.
+- No JavaScript or runtime errors occurred. A missing `favicon.ico` request was
+  harmless and did not affect acceptance.
+- Supabase, authenticated writes, and live JSON/Supabase parity were not tested.
+- The tested UI tranche is behaviorally accepted for this scope.
+
 ## Short chronology
 
 - **Verified by repository evidence.** 2026-07-14 08:01 PDT: the parent commit
