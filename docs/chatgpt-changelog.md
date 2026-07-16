@@ -77,6 +77,26 @@ Codex audit explicitly changes their status.
   safe lane and does not create canonical entities.
 - Status: pending Codex review
 
+### 2026-07-15 — Queue database-storage architecture exploration
+
+Outcome type: intake-only
+Entity: application data-storage architecture
+Modality path used: user design/backlog request -> architecture intake
+Promotion status: Candidate queued for Codex review
+Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`
+Branch / PR: `chatgpt-data-update/2026-07-15-database-storage-intake`; pending PR
+Codex review needed: Evaluate whether and when the app should migrate from JSON files to a database-backed store.
+
+- Request: Add a design-backlog note for Codex to explore a database instead of JSON as the application's data store.
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`.
+- Summary of changes: Added `INTAKE-20260715-006`, preserving the request as an architecture investigation rather than authorizing implementation or changing the current storage model.
+- Source support: User request in the ChatGPT project conversation on 2026-07-15.
+- Validation performed: Searched the repository for an existing database/JSON migration item and found no matching result; reviewed current intake format; confirmed both edits are documentary only.
+- Validation not performed: The required local text-integrity script could not be run in this GitHub-only session. No local checkout, architecture prototype, migration test, application test, JSON validation, browser smoke test, or deployment check was performed.
+- Known risks: A database migration could affect static hosting, deployment, schema governance, Git-based auditability, backups, offline behavior, automation, and source-of-truth rules. The intake explicitly calls for assessment before implementation.
+- Codex audit requested: Decide whether to promote the item into `docs/WORK_BACKLOG.md`, define the decision criteria, and identify an appropriate future architecture study or implementation phase.
+- Status: pending Codex review
+
 <!-- Copy this block for each future ChatGPT change.
 ### YYYY-MM-DD — Short title
 - Request:
