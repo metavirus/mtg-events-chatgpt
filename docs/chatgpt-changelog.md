@@ -6,6 +6,26 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-15 — Queue bounded review-signal research proposal
+
+Outcome type: intake-only
+Entity: research methodology; Tweedy Cards and Gaming
+Modality path used: user-supplied Yelp review screenshot -> embedded Discord screenshot -> research-process proposal
+Promotion status: Candidate queued for Codex review
+Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`
+Branch / PR: `chatgpt-data-update/2026-07-15-review-signal-backlog`; pending PR
+Codex review needed: Add a bounded review/photo signal scan to `docs/WORK_BACKLOG.md` and verify the Tweedy Discord lead.
+
+- Request: Recommend that Codex formalize a secondary-signals research backlog or checklist after a quick Yelp review scan surfaced a possible Tweedy Cards and Gaming Discord.
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`.
+- Summary of changes: Added `INTAKE-20260715-004`, preserving two distinct outcomes: a process proposal for a quick, bounded scan of reviews and attached photos for hidden operational-source clues, and a specific unverified Tweedy Discord follow-up. The entry does not treat the review, Discord, or visible channel names as canonical source data.
+- Source support: User-supplied Yelp review screenshot dated April 13, 2026 and a user-supplied enlargement of the review photo. Visible text identifies a `TWEEDYgaming` Discord welcome screen and describes a Tweedy Cards and Gaming community server with `role-notifications`, `resources`, and `announcements` channels.
+- Validation performed: Read the current intake rules and durable work backlog; confirmed Tweedy Cards and Gaming remains in the broader discovery bench; reviewed the user-supplied screenshots for the limited claims recorded in intake; preserved the Discord as an attributed lead requiring verification.
+- Validation not performed: No Yelp page retrieval, review-author verification, Discord invite discovery, server access, channel inspection, local text-integrity script, local checkout, canonical JSON validation, browser smoke test, or deployment check.
+- Known risks: Review photos can be stale, user-generated, mislabeled, or no longer representative. The visible Discord screenshot dates to 2020 even though it appears inside a 2026 updated review, so current existence, official control, invite validity, and activity remain unresolved. A review scan could also become wasteful unless it has a strict stopping condition.
+- Codex audit requested: Decide the final bounded-review methodology and stopping rule; add it to the durable research/process backlog if accepted; verify the Tweedy Discord through an official or otherwise reliable access path before adding source metadata or using it for event claims.
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the
