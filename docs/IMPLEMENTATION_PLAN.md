@@ -47,6 +47,37 @@ Weakness changes presentation and ranking; it does not erase the record.
 
 ## Build sequence
 
+### Current mega-revision boundary
+
+The current build pass should improve the user-facing decision experience while
+leaving the newly seeded Supabase database in a safe read-first posture.
+
+Include in this pass:
+
+- Today event curation and ranking so the best options are easier to see first;
+- practical format filters for Commander, prerelease/sealed, draft, and other
+  Magic opportunities;
+- search that covers event title, store/venue name, format, tags, and useful
+  description text;
+- an Events catalog that is easier to sort and scan while still retaining the
+  complete event universe;
+- a Fresh Signals / For You rail that remains accessible when the viewport gets
+  narrower;
+- clearer venue scoring display for research status, fit grade, numeric score,
+  confidence, and rationale;
+- Updates polish for naming, readability, direct links, and useful categories;
+- obvious responsive, clickability, terminology, and empty-state fixes.
+
+Defer from this pass:
+
+- authenticated Supabase write paths for favorites, thumbs-down, personal notes,
+  ratings, or `Ask Codex` requests;
+- daily/weekly automation and Discord/Wizards monitoring agents;
+- broad research backfill or store re-audits beyond records needed to validate
+  the UX;
+- making Supabase the default source;
+- publishing until local behavior has passed a deliberate sanity check.
+
 ### 1. Freeze the current research contract
 
 - Document the fields the first app build can reliably consume from the current

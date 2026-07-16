@@ -17,9 +17,40 @@ Current status is documented in `docs/SUPABASE_MIGRATION_STATUS.md`:
   to the migration;
 - JSON remains the active app source until adapter/parity gates pass.
 
-Next safe data-layer work is a read adapter with JSON fallback, not a direct
-cutover. Use 5.6 before changing auth/RLS/write policy or publishing a
-Supabase-backed release.
+The safe read-adapter seam now exists in `app.js` and is opt-in only via
+`?data=supabase`; JSON remains the default app source. Next safe data-layer
+work is representative parity checking, not a direct cutover. Use 5.6 before
+changing auth/RLS/write policy or publishing a Supabase-backed release.
+
+## Current design mega-revision scope
+
+The accepted near-term product scope is a focused UX revision, not a full
+Supabase write/auth build and not a renewed research expansion. The active UX
+targets are:
+
+- make Today a decision-quality surface rather than a flat event dump;
+- improve event filtering and search, especially Commander, prerelease/sealed,
+  draft, favorites, confidence, and distance;
+- make the Events catalog easier to scan while preserving the full retained
+  universe;
+- keep Fresh Signals / For You available on narrower layouts through a
+  collapsible rail or drawer;
+- present venue fit grade, numeric score, confidence, and research status
+  consistently, with clickable rationale where records have calibrated
+  evaluations;
+- polish Updates labeling, typography, linking, and filtering enough that it
+  works as an activity surface;
+- fix obvious clickability, responsive, and terminology issues before publish.
+
+Explicitly deferred from this tranche:
+
+- authenticated Supabase writes for favorites, thumbs-down, notes, and Ask Codex
+  requests;
+- autonomous daily/weekly agents;
+- deep community automation;
+- broad store re-research;
+- making Supabase the default data source;
+- publishing until the local UX tranche receives a sanity pass.
 
 ## ChatGPT sideload handoff
 
