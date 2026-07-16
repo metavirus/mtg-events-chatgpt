@@ -26,6 +26,35 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260715-001 — Finch Birdcage VII cEDH event
+
+- Submitted by: ChatGPT
+- Date: 2026-07-15
+- Type: candidate-discovery
+- Status: new
+- Risk: candidate-only
+- Related entity: `finch-sparrow`
+- Request / observation: Finch and Sparrow Games currently promotes `THE
+  BIRDCAGE VII: 2FAST2FINCH cEDH` for July 25, 2026 at 11:00 AM. The listing
+  describes the event as full-proxy-friendly, $60 entry, 64-player capacity,
+  doors at 10:00 AM, and guaranteed tiered prizing. The current canonical event
+  file contains Finch's recurring cEDH Workshop, Thursday Commander Nite, and
+  Saturday Commanderfest, but not this dated special event.
+- Source support: Finch and Sparrow Games official homepage/product promotion,
+  https://finchandsparrowgames.com/ (reviewed 2026-07-15); existing
+  `events.json` records for store ID `finch-sparrow` on
+  `codex/reconcile-wizards`.
+- Desired outcome: Determine whether this dated cEDH event should be promoted to
+  canonical event data and whether its source should be retained as a distinct
+  event-registration or homepage source.
+- Suggested next step: Codex should verify the event details against the direct
+  product page and any EventLink, TCGplayerPro, or official social listing,
+  deduplicate against existing Birdcage research, then promote or decline under
+  the canonical event schema.
+- User decision needed: no
+- Related mailbox/changelog/PR: Changelog entry `2026-07-15 — Finch website
+  event check`; PR pending.
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
