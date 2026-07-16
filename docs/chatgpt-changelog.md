@@ -6,6 +6,22 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-15 — Queue event-quality rating exploration
+- Outcome type: intake-only
+- Entity: event ranking, research analysis, and event-list UI
+- Modality path used: user design/research backlog request -> product-methodology intake
+- Promotion status: Candidate queued for Codex review
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`
+- Branch / PR: `chatgpt-data-update/2026-07-15-event-quality-rating-intake`; PR pending
+- Request: Preserve the user's proposal to add event-level ratings that separate poor-fit events from high-value opportunities, including low for explicit cEDH, high for general Commander and prerelease, and possible intermediate labels such as `Promising` or `Iffy`.
+- Summary of changes: Added `INTAKE-20260715-009` with a short summary followed by the user's full attributed note, and added mailbox signal `MSG-20260715-014` for Codex review.
+- Source support: Direct user request in the ChatGPT project conversation.
+- Validation performed: Preserved the current intake, mailbox, and changelog formats and limited changes to documentary coordination files.
+- Validation not performed: No local text-integrity script, event-model inspection, ranking prototype, canonical-data review, UI test, browser smoke test, or deployment check.
+- Known risks: `Quality` may sound universal when the intended concept is partly personal fit. Codex should decide the final terminology, rating ownership, evidence rules, and whether ratings apply to event series, individual occurrences, or both.
+- Codex audit requested: Promote the accepted concept into the durable design/research backlog and define a bounded specification before implementation.
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the
