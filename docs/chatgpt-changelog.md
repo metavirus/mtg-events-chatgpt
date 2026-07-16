@@ -6,6 +6,23 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-15 — Queue MTG OC / ProjectCCG association bug
+
+- Outcome type: intake-only
+- Entity: MTG OC group; ProjectCCG store
+- Modality path used: user observation -> bug-report intake
+- Promotion status: Candidate queued for Codex review
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`
+- Branch / PR: `chatgpt-data-update/2026-07-15-mtg-oc-projectccg-bug`; PR pending
+- Codex review needed: Inspect the group/store records, relationship data, and Communities-page rendering to determine whether ProjectCCG is incorrectly nested under or conflated with MTG OC.
+- Request: Preserve the user's report of a potential bug involving the MTG OC group and ProjectCCG store.
+- Summary of changes: Added `INTAKE-20260715-007` and `MSG-20260715-012`. No canonical records or application code were changed.
+- Source support: User observation in the ChatGPT project conversation on 2026-07-15.
+- Validation performed: Reviewed current intake and mailbox formats and limited the edit to documentary coordination files.
+- Validation not performed: No canonical record inspection, relationship audit, local checkout, application rendering test, JSON validation, browser smoke test, or deployment check.
+- Known risks: The precise failure mode remains unverified. It may be a canonical relationship error, derived association bug, ambiguous naming, or UI presentation problem.
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the
