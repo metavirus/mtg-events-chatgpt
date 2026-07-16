@@ -256,6 +256,7 @@ create table public.agent_requests (
       'queued', 'in_progress', 'waiting_for_user', 'completed', 'declined'
     )),
   agent_response text,
+  user_response text,
   completed_at timestamptz,
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now()),
@@ -286,7 +287,16 @@ create table public.user_activity (
 create index event_series_venue_idx on public.event_series(venue_id);
 create index event_series_community_idx on public.event_series(community_id);
 create index event_occurrences_date_idx on public.event_occurrences(occurrence_date, start_time);
+create index entity_sources_entity_idx on public.entity_sources(entity_type, entity_id);
+create index entity_sources_source_idx on public.entity_sources(source_id);
+create index event_sources_series_idx on public.event_sources(series_id)
+  where series_id is not null;
+create index event_sources_occurrence_idx on public.event_sources(occurrence_id)
+  where occurrence_id is not null;
+create index evaluations_entity_idx on public.evaluations(entity_type, entity_id);
 create index research_changes_detected_idx on public.research_changes(detected_at desc);
+create index user_field_notes_user_idx on public.user_field_notes(user_id, created_at desc);
+create index personal_notes_user_idx on public.personal_notes(user_id, created_at desc);
 create index agent_requests_status_idx on public.agent_requests(user_id, request_status, created_at);
 create index user_activity_user_date_idx on public.user_activity(user_id, created_at desc);
 
@@ -398,10 +408,20 @@ grant select on public.dataset_metadata, public.venues, public.communities,
   public.sources, public.entity_sources, public.event_series,
   public.event_occurrences, public.event_sources, public.evaluations,
   public.research_changes to anon, authenticated;
-grant select, insert, update on public.user_field_notes to authenticated;
+grant select on public.user_field_notes to authenticated;
+grant insert (
+  user_id, entity_type, entity_id, note_type, note_text, source_url, observed_at
+) on public.user_field_notes to authenticated;
+grant update (
+  note_type, note_text, source_url, observed_at
+) on public.user_field_notes to authenticated;
 grant select, insert, update, delete on public.entity_preferences,
   public.personal_notes, public.user_state to authenticated;
-grant select, insert, update on public.agent_requests to authenticated;
+grant select on public.agent_requests to authenticated;
+grant insert (
+  user_id, request_type, entity_type, entity_id, instruction, source_url
+) on public.agent_requests to authenticated;
+grant update (user_response) on public.agent_requests to authenticated;
 grant select, insert on public.user_activity to authenticated;
 grant usage, select on sequence public.user_activity_id_seq to authenticated;
 

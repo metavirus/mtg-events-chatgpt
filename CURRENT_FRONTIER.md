@@ -1,6 +1,25 @@
 # Current Frontier
 
-Last updated: 2026-07-15
+Last updated: 2026-07-16
+
+## Supabase migration checkpoint
+
+Supabase is now the accepted direction for durable operational data, but the
+hosted app has not switched away from the file-backed source yet.
+
+Current status is documented in `docs/SUPABASE_MIGRATION_STATUS.md`:
+
+- initial schema migration exists;
+- current seed snapshot has been loaded into Supabase;
+- row counts have been verified;
+- security advisor was clean after migration;
+- the missing `entity_sources.source_id` performance index was fixed and added
+  to the migration;
+- JSON remains the active app source until adapter/parity gates pass.
+
+Next safe data-layer work is a read adapter with JSON fallback, not a direct
+cutover. Use 5.6 before changing auth/RLS/write policy or publishing a
+Supabase-backed release.
 
 ## ChatGPT sideload handoff
 

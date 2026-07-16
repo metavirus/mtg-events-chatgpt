@@ -21,13 +21,15 @@ See also:
 - `docs/REPO_SANITY_AUDIT_2026-07-15.md`
 - `docs/chatgpt-sideload-sop.md`
 - `docs/agent-mailbox.md`
+- `docs/SUPABASE_MIGRATION_STATUS.md`
+- `docs/MODEL_USAGE_GUIDE.md`
 
 ## First checks in a fresh task
 
 Before deeper work:
 
 1. verify Python visibility:
-   - `py --version`
+   - `python.exe --version`
 2. read:
    - `README.md`
    - `docs/PROJECT_CONTEXT.md`
@@ -41,15 +43,19 @@ Before deeper work:
 
 ## Python note
 
-Python is confirmed to work on the user's machine in normal PowerShell through
-the `py` launcher. Earlier Codex sessions failed to see `python` / `py`, which
-appeared to be a stale-session environment issue rather than a broken install.
+Python is confirmed on the user's machine, but the `py` launcher has been
+unreliable in Codex/Windows shell contexts because it can resolve through the
+WindowsApps stub. Prefer `python.exe`, not `py`, for repo validation and helper
+scripts.
 
 Interpretation:
 
-- if `py --version` works in a fresh task, use Python normally;
-- if it fails in an older task, do not assume Python is uninstalled;
-- prefer a fresh task before spending effort debugging environment visibility.
+- if `python.exe --version` works, use Python normally;
+- if `python.exe` fails in an older task, do not assume Python is uninstalled;
+- prefer a fresh task or environment refresh before spending effort debugging
+  launcher visibility;
+- do not use PowerShell text rewrites as a workaround for Python unless the
+  change is tiny and encoding-safe.
 
 ## What is still intentionally open
 
@@ -61,6 +67,7 @@ Still open:
 - design/app backlog items;
 - branch-hygiene pass to move off `codex/reconcile-wizards` deliberately;
 - future data-architecture evolution beyond the current seed JSON layer;
+- Supabase read-adapter work after the migration checkpoint is accepted;
 - continued store/community research using the SOPs.
 
 ## What not to re-litigate

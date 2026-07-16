@@ -10,6 +10,9 @@ The existing JSON files remain the active application source until the initial
 database import has been compared and accepted. They must not be removed or
 silently replaced during migration.
 
+Current migration/import status is tracked in
+`docs/SUPABASE_MIGRATION_STATUS.md`.
+
 ## Why this change
 
 The current proof-of-concept mixes several responsibilities:
@@ -136,4 +139,3 @@ The app must not switch to Supabase until:
 - one authenticated user cannot read another user's private records;
 - favorites and negative preferences persist across browsers;
 - rollback to the file-backed checkpoint is documented and tested.
-

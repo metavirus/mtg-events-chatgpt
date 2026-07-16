@@ -363,6 +363,13 @@ status or deprioritized by early signals.
 
 ## Process backlog
 
+- Use `docs/SUPABASE_MIGRATION_STATUS.md` as the current data-layer baseline
+  before any further Supabase work. Do not rediscover the schema/import state
+  from scratch unless the remote database has changed.
+- Build the Supabase read adapter with JSON fallback before attempting
+  authenticated writes, favorites, thumbs-down, notes, or in-app request capture.
+- Revisit authenticated user-data writes only after the read adapter is stable
+  and the RLS/write model receives a higher-reasoning review.
 - Enforce the new rule that each store pass includes social review in the same
   pass unless blocked; do not treat socials as an optional later extra.
 - Enforce the new rule that if a store has an accessible Discord, a bounded
