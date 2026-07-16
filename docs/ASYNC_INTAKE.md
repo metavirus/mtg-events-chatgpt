@@ -26,6 +26,20 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260715-007 — MTG OC group / ProjectCCG store association may be wrong
+- Submitted by: User
+- Date: 2026-07-15
+- Type: bug-report
+- Status: new
+- Risk: codex-required
+- Related entity: MTG OC group; ProjectCCG store
+- Request / observation: The user noticed a potential entity-modeling or UI association bug involving the MTG OC group and the ProjectCCG store shown under that group. It is unclear whether ProjectCCG is incorrectly nested under MTG OC, incorrectly represented as the group itself, or linked through an unintended relationship.
+- Source support: User observation in the ChatGPT project conversation on 2026-07-15. No independent repository or source verification was performed.
+- Desired outcome: Verify the intended relationship between the MTG OC community/group record and ProjectCCG store/venue records, then correct the data relationship or rendering logic if the current display is wrong.
+- Suggested next step: Inspect the canonical group, store, source, and relationship records plus the Communities-page rendering path. Determine whether the problem is canonical data, derived association logic, naming ambiguity, or presentation.
+- User decision needed: no
+- Related mailbox/changelog/PR: `MSG-20260715-012`; branch `chatgpt-data-update/2026-07-15-mtg-oc-projectccg-bug`
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
