@@ -64,11 +64,17 @@ A normal first pass should answer:
 - is MTG real here?
 - is Commander real here?
 - what are the best source routes?
+- what are the strongest near-term actionable MTG events?
 - does this stay discovery, move to partial, or deserve deeper follow-up?
 
 If those are answered, stop.
 
 Do not deepen during first pass unless the place is clearly promoted.
+
+Important nuance: "bounded" does not mean "too shallow to be useful."
+The first pass should usually be strong enough that the user could seriously
+consider the store as a candidate and potentially add one of the surfaced
+events to their calendar.
 
 ### 4. Promote before deepening
 
@@ -278,6 +284,11 @@ Examples:
 
 That may be enough for a first-pass classification.
 
+But if obvious near-term playable MTG events are visible on standard sources,
+first-pass efficiency still requires surfacing them. It is wasteful to save a
+few minutes during the pass only to force the user to do the obvious QA and ask
+for the same source sweep again.
+
 ## Conversation efficiency rules
 
 ### 1. Pause at clean handoff points
@@ -323,6 +334,8 @@ Ask:
 4. If this is build work, do I have a checkpoint?
 5. If a regression just appeared, is rollback cheaper than repair?
 6. Have I already answered the user's actual question?
+7. If I were the user, would I feel this store is genuinely "checked" or only
+   half-looked-at?
 
 If the answers show drift, pause and correct course before continuing.
 

@@ -39,6 +39,22 @@ For promoted research/store/event passes, completion normally requires:
 
 If these are not true, describe the pass as partial and say what remains open.
 
+For ordinary store research, the practical default target is not bare
+classification. It is a **candidate-grade first pass**:
+
+- strong enough that the user could seriously consider the store as a possible
+  place to play;
+- strong enough to surface at least the most actionable near-term MTG events;
+- still bounded enough to avoid turning every store into a full deep dive.
+
+A store should not be treated as comfortably "checked" if the result would
+still make the user ask obvious follow-up questions like:
+
+- "What are the next real events there?"
+- "Is Commander actually happening soon, or only vaguely in theory?"
+- "Did you check the obvious Wizards / official site / Instagram / Discord paths?"
+- "Could I plausibly put something from this store on my calendar right now?"
+
 ## Completion checklist for promoted passes
 
 Before calling a promoted pass complete, ask:
@@ -60,6 +76,60 @@ Before calling a promoted pass complete, ask:
 6. If I were the user, would I think something obvious was skipped?
 
 If the answer to any of these is "no" or "not sure," the pass is not complete.
+
+## Candidate-grade first pass standard
+
+Unless a run note explicitly says otherwise, a normal store pass should aim to
+graduate the store into one of these useful states:
+
+- `discovery`: real lead, but still too thin to seriously compare
+- `candidate / partial`: enough evidence to seriously consider the store
+- `promoted deepening`: strong enough to justify a fuller operational/social pass
+
+For a store to count as `candidate / partial`, the pass should normally provide:
+
+1. a real identity read
+   - store is real and active
+   - strongest official/public source routing is known
+2. a Magic reality read
+   - MTG is visibly real there, not only speculative
+   - Commander fit is assessed separately from MTG overall emphasis
+3. a near-term playability read
+   - at least the strongest upcoming playable MTG events are surfaced
+   - enough concrete detail is captured that the user could plausibly choose to go
+4. a candidate judgment
+   - why this might be worth trying
+   - what still blocks stronger confidence
+
+If a pass cannot answer near-term playability at all, that is usually still
+`discovery`, not a comfortable candidate-grade result.
+
+## Actionable-event requirement
+
+The initial pass is not only about store classification. It is also part of the
+user's practical planning surface.
+
+That means each ordinary store pass should try to surface the most actionable
+future MTG opportunities visible right now, especially:
+
+- casual Commander
+- prerelease / sealed
+- draft
+- notable specials or branded MTG variants
+
+For each meaningful upcoming event surfaced in the first pass, try to preserve
+at least:
+
+- event name
+- date
+- start time
+- format or practical play label
+- fee / capacity when easy to obtain
+- source path
+
+The goal is not full normalization on every first pass. The goal is that the
+user can leave the pass thinking, "I could actually consider this for my next
+outing."
 
 ## Source-path failure rule
 
@@ -142,6 +212,8 @@ Unknown is an acceptable state. Hidden uncertainty is not.
 
 - high-priority event classes were checked;
 - main operational surfaces were sampled;
+- the strongest near-term actionable MTG events were surfaced or explicitly
+  stated absent;
 - remaining ambiguity is bounded and clearly stated;
 - further work would be incremental rather than decision-changing.
 

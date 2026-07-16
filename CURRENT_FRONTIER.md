@@ -27,6 +27,22 @@ Broad research is intentionally paused while the first complete private app is
 built. The research queue remains open and should resume from
 `docs/WORK_BACKLOG.md` after a usable v1 exists.
 
+## Current immediate research rule
+
+Do not move on to the next store simply because a bounded discovery pass exists.
+The active requirement is now a stronger candidate-grade first pass:
+
+- enough source coverage from the standard suite to trust the read;
+- enough actionable upcoming MTG event detail to make the store practically useful;
+- enough synthesis to answer whether the store is a real candidate worth trying.
+
+Tweedy Cards and Gaming is the current test case for this refined standard.
+Do not expand to the next discovery candidate until Tweedy has either:
+
+- been raised to a genuinely useful candidate-grade partial record; or
+- been explicitly kept at discovery after the obvious standard-source event and
+  corroboration checks are completed and explained.
+
 ## Recently completed
 
 - Discord baseline and completion pass for selected store and regional servers

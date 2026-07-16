@@ -18,11 +18,12 @@ Use it for:
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a
   paused queue for a completed regional census.
-- Tweedy Cards and Gaming now has a bounded identity-first pass on file and
-  remains `wizards-discovery`; do not overpromote it without new corroboration.
-- Use the next discovery pass on Shadow Realm Collectibles or Buddies
-  Collectibles as the next efficiency test, since both remain in the backlog
-  and were part of the recent conservative repair set.
+- Tighten the ordinary-store-pass SOP so "checked" means candidate-grade useful,
+  not just lightly classified.
+- Repair and complete Tweedy Cards and Gaming as the current test case for that
+  improved first-pass standard before moving to another store.
+- Do not begin Shadow Realm Collectibles or any other next store until Tweedy
+  satisfies the stronger candidate-grade first-pass bar.
 
 ## Research backlog
 

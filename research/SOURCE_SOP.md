@@ -44,7 +44,8 @@ Use this hierarchy unless a run note explains a better store-specific routing:
 
 ### 1. Strict first pass
 
-Goal: classify quickly, promote only if warranted.
+Goal: produce a bounded but decision-useful candidate read, not just a thin
+classification shell.
 
 Allowed work:
 - one Wizards check
@@ -58,9 +59,30 @@ Stop once these questions are answerable:
 - is MTG real here?
 - is Commander real here?
 - what is the strongest source routing?
+- what are the strongest upcoming actionable MTG events visible right now?
 - does this deserve `partial`, remain `discovery`, or get promoted?
 
 Do not deep-scroll, chase comments, or exhaustively browse secondary surfaces.
+
+### Candidate-grade result expectation
+
+A first pass should usually aim to produce one of these outcomes:
+
+- `discovery`: real lead, but not yet useful enough to seriously compare
+- `partial`: real candidate, useful enough for serious consideration
+- `promoted`: strong enough to justify deeper operational/social work now
+
+Treat `partial` as a meaningful graduation threshold. A store should not be
+called comfortably `partial` unless the pass gives the user:
+
+- a reliable identity/source-routing read;
+- a real MTG/Commander read;
+- at least the strongest actionable upcoming MTG events visible across the
+  standard source suite;
+- a short plain-language answer to "why might I actually try this place?"
+
+If the pass still leaves obvious near-term play questions unanswered, it is
+usually still `discovery`.
 
 ### 2. Promoted deepening pass
 
@@ -203,12 +225,14 @@ Use the website to answer:
      MTG-focus read
    - obvious category/tagging errors that make the calendar unreliable for
      mechanical normalization
-3. Capture whether the site is:
-   - current operational source
-   - stale but still useful for routine schedule
-   - broken / certificate issue / dead
-   - generic retail shell with little event value
-4. Record source-routing value.
+ 3. Capture whether the site is:
+     - current operational source
+     - stale but still useful for routine schedule
+     - broken / certificate issue / dead
+     - generic retail shell with little event value
+ 4. Record source-routing value.
+ 5. If visible upcoming MTG events exist, capture the strongest actionable ones
+    for first-pass planning value even if full normalization is deferred.
 
 ### Stop conditions
 
@@ -269,6 +293,8 @@ Use it for:
    - is Magic prominent, secondary, or rare?
    - are Commander / draft / prerelease visibly promoted?
 4. Capture one or two high-value recent examples, not a long scroll.
+5. If a weekly graphic or promo post exposes near-term MTG events the user
+   could plausibly attend, preserve those actionable details in the pass output.
 
 ### Stop conditions
 
@@ -312,6 +338,8 @@ Look for:
 - Commander/EDH chatter
 - meetup planning
 - signals of friendliness or usefulness
+- upcoming actionable MTG events or corrections that materially change whether
+  the user might actually attend
 
 ### Stop conditions
 
@@ -346,6 +374,8 @@ Promote from `wizards-discovery` to `partial` when:
 - identity is corroborated
 - MTG presence is real beyond a lone suspicious listing
 - at least one non-Wizards source supports the store as real and active
+- the pass surfaces enough current MTG detail that the user could seriously
+  consider attending, even if deeper social/fit questions remain
 
 Promote into deeper follow-up when:
 - source routing is rich
@@ -363,6 +393,7 @@ Before closing a first pass, confirm:
 - Discord checked if accessible/relevant
 - source routing classified
 - MTG focus assessed separately from Commander fit
+- strongest near-term actionable MTG events surfaced or explicitly stated absent
 - no unnecessary rabbit hole taken
 - result classified: `discovery`, `partial`, or promoted deeper
 
@@ -373,7 +404,8 @@ Ask:
 - Did I use the existing known best modality for each source?
 - Did I re-learn something I should have treated as settled process?
 - Did I go deeper than first-pass needs?
-- If I were him, would this feel complete for a first pass?
+- If I were him, would this feel complete enough to seriously consider the
+  store and maybe add an event to my calendar?
 
 If the answer exposes a gap, fix the process note here or in the run note so it
 does not repeat.
