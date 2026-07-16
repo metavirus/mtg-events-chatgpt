@@ -33,9 +33,11 @@ state and the transcript is preserved only as a report of prior task activity.
   defined UX mega revision: make the research-heavy app a practical daily Magic
   decision tool while retaining the complete event catalog and preserving the
   JSON-to-Supabase migration boundary.
-- **Reported by the old-task transcript.** Compaction interrupted reliable
-  completion of the larger interface tranche. Repeated narrative descriptions
-  of UI patching must not be treated as proof of implemented or accepted code.
+- **Verified by repository evidence and clarified by the old-task transcript.**
+  Substantial partial UI implementation landed during the compaction period,
+  but the full UX tranche was neither behaviorally validated nor accepted.
+  Repeated narrative descriptions must not be treated as proof that the whole
+  tranche was complete.
 - **Unverified or still requiring acceptance.** The broader UX mega revision is
   not recorded as complete. Its authoritative backlog remains
   `docs/UX_MEGA_REVISION_SCOPE.md` together with the current implementation,
@@ -67,6 +69,28 @@ state and the transcript is preserved only as a report of prior task activity.
 - **Unverified or still requiring acceptance.** The presence of these pieces
   does not establish that the complete Today, Events, Places, Updates, or
   Communities acceptance criteria have been met.
+
+## Recovered transcript evidence addendum
+
+- **Reported by the old-task transcript.** The user explicitly accepted the
+  pre-polish interface as the strongest visual and UX baseline. A later polish
+  regression introduced smaller typography, malformed navigation icons, and
+  visible errors.
+- **Required verification.** Fresh-reload interaction smoke testing must cover
+  the Places `Events` and `Evidence` subtabs, monthly-view `+X more` controls,
+  and general click handling across primary navigation and interactive
+  controls.
+- **Required execution cadence.** Use one bounded implementation unit, minimal
+  narration, validation, a checkpoint, and a concise done-versus-deferred
+  report.
+- **Verified by repository evidence.** Commit `f7765a6` contains meaningful
+  partial Events and Signals implementation: List/Week/Month controls, format
+  controls, fit ordering and styling, event dates, and narrow-layout Signals
+  access. These features exist in code but are not yet proven regression-free
+  or accepted as complete.
+- **Publication clarification.** Reconfirm intended hosting visibility when
+  publication resumes. The current publication deferral is based on quality
+  and cost rather than privacy.
 
 ## Final false `Time TBD` defect
 
