@@ -42,6 +42,8 @@ const state = {
   date: startOfDay(new Date()),
   agendaDays: 42,
   preset: 'all',
+  eventCatalogView: 'list',
+  eventCatalogFilter: 'all',
   favoritesOnly: false,
   highlightsCollapsed: false,
   search: '',
@@ -99,6 +101,10 @@ function markChangesRead() {
   savePersonal();
 }
 
+function compareText(a, b, options = { sensitivity: 'base' }) {
+  return String(a ?? '').localeCompare(String(b ?? ''), undefined, options);
+}
+
 async function load() {
   for (const key of ['stores', 'events', 'sources', 'changes']) {
     const response = await fetch(`${key}.json`, { cache: "no-store" });
@@ -147,6 +153,22 @@ function handleClick(event) {
     state.preset = presetButton.dataset.preset;
     document.querySelectorAll('[data-preset]').forEach((button) => button.classList.toggle('active', button === presetButton));
     renderCalendar();
+    return;
+  }
+
+  const catalogViewButton = event.target.closest('[data-event-catalog-view]');
+  if (catalogViewButton) {
+    state.eventCatalogView = catalogViewButton.dataset.eventCatalogView;
+    document.querySelectorAll('[data-event-catalog-view]').forEach((button) => button.classList.toggle('active', button === catalogViewButton));
+    renderEventCatalog();
+    return;
+  }
+
+  const catalogFilterButton = event.target.closest('[data-event-catalog-filter]');
+  if (catalogFilterButton) {
+    state.eventCatalogFilter = catalogFilterButton.dataset.eventCatalogFilter;
+    document.querySelectorAll('[data-event-catalog-filter]').forEach((button) => button.classList.toggle('active', button === catalogFilterButton));
+    renderEventCatalog();
     return;
   }
 
@@ -239,6 +261,7 @@ function handleAction(action, element) {
   if (action === 'day-popover') return openDay(element.dataset.dayDate);
   if (action === 'load-more') { state.agendaDays += 28; return renderCalendar(); }
   if (action === 'explain-scores') return openScoreExplanation(store(state.selectedPlaceId));
+  if (action === 'show-highlights-hub') return openHighlightsHub();
   if (action === 'show-fresh-signals') return openFreshSignals();
   if (action === 'show-promising-nearby') return openPromisingNearby();
   if (action === 'show-discovery-queue') return openDiscoveryQueue();
@@ -398,6 +421,40 @@ function isCompetitive(event) { return /cedh|competitive|optimized|rcq|champions
 function isSpecial(event) { return /prerelease|sealed|draft|limited|party|special/i.test(`${event.eventType} ${event.title} ${event.format}`); }
 function isWeekend(date) { return [5, 6, 0].includes(date.getDay()); }
 
+function eventMatchesSharedFilters(event, options = {}) {
+  const { includePreset = true, includeSearch = true, hideCompetitive = state.route === 'today' && state.filters.hideCompetitive } = options;
+  const place = store(event.storeId);
+  if (!place) return false;
+  if (!state.filters.research.includes(place.researchStatus)) return false;
+  if (!state.filters.confidence.includes(event.confidence)) return false;
+  if (numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
+  if (state.filters.onlyFree && Number(event.entryFee || 0) !== 0) return false;
+  if (hideCompetitive && isCompetitive(event)) return false;
+  if (state.favoritesOnly && !state.personal.favorites[`event:${event.id}`] && !state.personal.favorites[`place:${place.id}`]) return false;
+  if (includeSearch && state.search) {
+    const haystack = [
+      event.title,
+      event.details,
+      event.format,
+      event.eventType,
+      event.bracket,
+      place.name,
+      place.city,
+      place.address,
+      place.assessmentNotes,
+      ...(place.tags || []),
+      ...(place.communitySignals || [])
+    ].filter(Boolean).join(' ').toLowerCase();
+    if (!haystack.includes(state.search)) return false;
+  }
+  if (includePreset) {
+    if (state.preset === 'best' && fitScore(event) < 68) return false;
+    if (state.preset === 'weekend' && !isWeekend(event.occurrenceDate)) return false;
+    if (state.preset === 'specials' && !isSpecial(event)) return false;
+  }
+  return true;
+}
+
 function rangeForView() {
   if (state.view === 'agenda') return { start: startOfDay(state.date), end: endOfDay(addDays(state.date, state.agendaDays)) };
   if (state.view === 'week') {
@@ -426,38 +483,11 @@ function buildOccurrences(start, end, applyFilters = true) {
     }
   }
   const filtered = applyFilters ? items.filter(matchesFilters) : items;
-  return filtered.sort((a, b) => a.occurrenceDate - b.occurrenceDate || (eventStartTime(a) || '').localeCompare(eventStartTime(b) || ''));
+  return filtered.sort((a, b) => a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b)));
 }
 
 function matchesFilters(event) {
-  const place = store(event.storeId);
-  if (!place) return false;
-  if (!state.filters.research.includes(place.researchStatus)) return false;
-  if (!state.filters.confidence.includes(event.confidence)) return false;
-  if (numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
-  if (state.filters.onlyFree && Number(event.entryFee || 0) !== 0) return false;
-  if (state.filters.hideCompetitive && state.route === 'today' && isCompetitive(event)) return false;
-  if (state.favoritesOnly && !state.personal.favorites[`event:${event.id}`] && !state.personal.favorites[`place:${place.id}`]) return false;
-  if (state.search) {
-    const haystack = [
-      event.title,
-      event.details,
-      event.format,
-      event.eventType,
-      event.bracket,
-      place.name,
-      place.city,
-      place.address,
-      place.assessmentNotes,
-      ...(place.tags || []),
-      ...(place.communitySignals || [])
-    ].filter(Boolean).join(' ').toLowerCase();
-    if (!haystack.includes(state.search)) return false;
-  }
-  if (state.preset === 'best' && fitScore(event) < 68) return false;
-  if (state.preset === 'weekend' && !isWeekend(event.occurrenceDate)) return false;
-  if (state.preset === 'specials' && !isSpecial(event)) return false;
-  return true;
+  return eventMatchesSharedFilters(event);
 }
 
 function fitScore(event) {
@@ -529,18 +559,21 @@ function renderAgenda(events, start) {
   container.innerHTML = html;
 }
 
-function eventCard(event, compact = false) {
+function eventCard(event, compact = false, options = {}) {
+  const { showDate = false, emphasize = false } = options;
   const place = store(event.storeId);
   const fit = fitLabel(event);
   const evidence = evidenceLabel(event);
   const favoriteKey = `event:${event.id}`;
   const isFavorite = !!state.personal.favorites[favoriteKey];
   const fee = event.entryFee == null ? 'Fee unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`;
+  const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+  const dateNote = occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
   if (compact) {
     return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span>${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small></button>`;
   }
-  return `<article class="event-card ${isCompetitive(event) ? 'competitive' : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
-    <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span></div>
+  return `<article class="event-card ${isCompetitive(event) ? 'competitive' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
+    <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
       <button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">${escapeHtml(place.name)} <span>· ${distanceLabel(place)}</span></button>
@@ -633,17 +666,17 @@ function rankedStores() {
 }
 
 function placesByName() {
-  return [...DATA.stores].sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+  return [...DATA.stores].sort((a, b) => compareText(a?.name, b?.name, { numeric: true, sensitivity: 'base' }));
 }
 
 function placesByDistance() {
   return [...DATA.stores].sort((a, b) => {
     const distanceA = numericDistance(a);
     const distanceB = numericDistance(b);
-    if (distanceA == null && distanceB == null) return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+    if (distanceA == null && distanceB == null) return compareText(a?.name, b?.name);
     if (distanceA == null) return 1;
     if (distanceB == null) return -1;
-    return distanceA - distanceB || a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+    return distanceA - distanceB || compareText(a?.name, b?.name);
   });
 }
 
@@ -674,9 +707,66 @@ function placeEvaluationSummary(place) {
 
 function renderEventCatalog() {
   const start = startOfDay(new Date());
-  const events = buildOccurrences(start, endOfDay(addDays(start, 56)));
-  document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${new Set(events.map((event) => event.storeId)).size}</strong><span>places represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>Commander-heavy</strong><span>current research coverage</span></div>`;
-  document.getElementById('eventCatalog').innerHTML = events.length ? events.slice(0, 120).map((event) => eventCard(event)).join('') : emptyState('No catalog matches', 'Clear filters or search terms to restore events.');
+  const rawEvents = buildOccurrences(start, endOfDay(addDays(start, 56)));
+  const events = eventCatalogMatches(rawEvents);
+  document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${new Set(events.map((event) => event.storeId)).size}</strong><span>places represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>${state.eventCatalogFilter === 'best' ? 'Best-fit ordering' : 'Full catalog view'}</strong><span>${state.eventCatalogView === 'list' ? 'sortable list' : state.eventCatalogView === 'week' ? 'weekly layout' : 'monthly layout'}</span></div>`;
+  if (!events.length) {
+    document.getElementById('eventCatalog').innerHTML = emptyState('No catalog matches', 'Clear filters or search terms to restore events.');
+    return;
+  }
+  if (state.eventCatalogView === 'week') {
+    document.getElementById('eventCatalog').innerHTML = renderEventCatalogWeek(events, start);
+    return;
+  }
+  if (state.eventCatalogView === 'month') {
+    document.getElementById('eventCatalog').innerHTML = renderEventCatalogMonth(events, start);
+    return;
+  }
+  document.getElementById('eventCatalog').innerHTML = `<div class="catalog-grid prioritized-grid">${events.slice(0, 120).map((event) => eventCard(event, false, { showDate: true, emphasize: true })).join('')}</div>`;
+}
+
+function eventCatalogMatches(events) {
+  let filtered = events.filter((event) => eventMatchesSharedFilters(event, { includePreset: false, includeSearch: true, hideCompetitive: false }));
+  if (state.eventCatalogFilter === 'commander') {
+    filtered = filtered.filter((event) => /commander|edh/i.test(`${event.title} ${event.format} ${event.eventType}`));
+  } else if (state.eventCatalogFilter === 'limited') {
+    filtered = filtered.filter((event) => /prerelease|sealed|limited/i.test(`${event.title} ${event.format} ${event.eventType}`));
+  } else if (state.eventCatalogFilter === 'draft') {
+    filtered = filtered.filter((event) => /draft/i.test(`${event.title} ${event.format} ${event.eventType}`));
+  }
+  const sorter = state.eventCatalogFilter === 'best'
+    ? (a, b) => eventCatalogPriority(b) - eventCatalogPriority(a) || a.occurrenceDate - b.occurrenceDate
+    : (a, b) => a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b));
+  return [...filtered].sort(sorter);
+}
+
+function eventCatalogPriority(event) {
+  const reviewedBonus = store(event.storeId)?.researchStatus === 'partial' ? 8 : 0;
+  const specialBonus = isSpecial(event) ? 10 : 0;
+  const favoriteBonus = state.personal.favorites[`place:${event.storeId}`] || state.personal.favorites[`event:${event.id}`] ? 14 : 0;
+  const competitivePenalty = isCompetitive(event) ? 18 : 0;
+  return fitScore(event) * 10 + reviewedBonus + specialBonus + favoriteBonus - competitivePenalty;
+}
+
+function renderEventCatalogWeek(events, start) {
+  const weekStart = addDays(start, -start.getDay());
+  return `<div class="week-grid event-catalog-week">${Array.from({ length: 7 }, (_, index) => {
+    const date = addDays(weekStart, index);
+    const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
+    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong></header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
+  }).join('')}</div>`;
+}
+
+function renderEventCatalogMonth(events, start) {
+  const first = new Date(start.getFullYear(), start.getMonth(), 1);
+  const gridStart = addDays(first, -first.getDay());
+  let html = `<div class="month-grid event-catalog-month">${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => `<div class="month-label">${day}</div>`).join('')}`;
+  for (let index = 0; index < 42; index++) {
+    const date = addDays(gridStart, index);
+    const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
+    html += `<section class="month-cell ${date.getMonth() !== start.getMonth() ? 'outside' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${dayEvents.slice(0, 3).map((event) => eventCard(event, true)).join('')}${dayEvents.length > 3 ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">+${dayEvents.length - 3} more</button>` : ''}</div></section>`;
+  }
+  return `${html}</div>`;
 }
 
 function renderPlaces() {
@@ -772,7 +862,7 @@ function renderCommunities() {
 }
 
 function renderChanges() {
-  const items = [...DATA.changes].sort((a, b) => b.detectedAt.localeCompare(a.detectedAt));
+  const items = [...DATA.changes].sort((a, b) => compareText(b.detectedAt, a.detectedAt));
   document.getElementById('changeList').innerHTML = items.map((change) => `<article class="change-row"><div class="timeline-node ${change.changeType === 'source_failure' ? 'coral' : change.changeType === 'new_event' ? 'mint' : 'violet'}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><span class="status-chip slate">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span><h3>${escapeHtml(change.summary)}</h3><p>${escapeHtml(change.details || 'The research record was updated.')}</p></div><span class="review-state">${escapeHtml(change.reviewStatus || 'recorded')}</span></article>`).join('');
 }
 
@@ -919,6 +1009,13 @@ function openReviewedPlaces() {
 function openFreshSignals() {
   const events = notableEvents();
   openDrawer(`<div class="drawer-kicker"><span class="status-chip amber">Fresh signals</span></div><h1 id="drawerTitle">New & notable</h1><p class="drawer-lead">A quieter shortlist of the most actionable or attention-worthy finds in the next four weeks.</p><section class="drawer-section"><div class="day-drawer-list">${events.length ? events.map((event) => eventCard(event)).join('') : '<p class="muted-copy">No notable upcoming items are visible in the current window.</p>'}</div></section><section class="drawer-section"><p class="eyebrow">Why these surfaced</p><div class="truth-list"><div><span class="truth-icon mint">★</span><p><strong>Special-event bias</strong><br>Prereleases, limited events, and unusual one-offs rise first because they are easy to miss and often matter most.</p></div><div><span class="truth-icon sky">i</span><p><strong>Freshness matters</strong><br>More recently verified items outrank older routine listings when the practical value is otherwise similar.</p></div></div></section>`);
+}
+
+function openHighlightsHub() {
+  const events = notableEvents(6);
+  const places = rankedStores().filter((place) => place.researchStatus === 'partial').slice(0, 6);
+  const alerts = DATA.stores.filter((place) => place.researchStatus !== 'partial').slice(0, 5);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Signals hub</span></div><h1 id="drawerTitle">Side-panel signals</h1><p class="drawer-lead">When the window gets tighter, use this drawer to reach the Today page highlights without hunting for where they went.</p><section class="drawer-section"><div class="section-title-row"><div><p class="eyebrow amber">Fresh signals</p><h2>New & notable</h2></div><button class="text-button" data-action="show-fresh-signals">Open full list</button></div><div class="day-drawer-list">${events.length ? events.map((event) => eventCard(event)).join('') : '<p class="muted-copy">No notable items are visible right now.</p>'}</div></section><section class="drawer-section"><div class="section-title-row"><div><p class="eyebrow mint">For you</p><h2>Promising nearby</h2></div><button class="text-button" data-action="show-promising-nearby">Open full list</button></div><div class="place-occurrences">${places.length ? places.map((place, index) => { const evaluation = normalizedEvaluation(place); return `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${String(index + 1).padStart(2, '0')}</strong>fit</time><span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)} · ${escapeHtml(evaluation.fitGrade)} · ${Number(evaluation.fitScore).toFixed(1)}/5</small></span><span class="status-chip ${evaluation.candidateStatus === 'promoted' ? 'mint' : 'amber'}">${evaluation.candidateStatus === 'promoted' ? 'Promoted' : 'Working'}</span></button>`; }).join('') : '<p class="muted-copy">No reviewed places are available yet.</p>'}</div></section><section class="drawer-section"><div class="section-title-row"><div><p class="eyebrow coral">Check first</p><h2>Research alerts</h2></div><button class="text-button" data-route="research">See coverage</button></div><div class="place-occurrences">${alerts.length ? alerts.map((place) => `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>?</strong>queue</time><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${truncate(place.assessmentNotes || 'Needs more corroboration', 95)}</small></span><span class="status-chip amber">Discovery</span></button>`).join('') : '<p class="muted-copy">No immediate research alerts are queued.</p>'}</div></section>`);
 }
 
 function openPromisingNearby() {

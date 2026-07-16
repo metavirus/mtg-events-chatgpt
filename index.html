@@ -60,6 +60,7 @@
               <p class="heading-subtitle">Upcoming opportunities from today forward, reconciled across the sources we have checked.</p>
             </div>
             <div class="heading-actions">
+              <button class="soft-button signals-button always-visible" data-action="show-highlights-hub">Signals</button>
               <button class="soft-button" id="jumpWeekend">This weekend</button>
               <button class="primary-button" id="openFilters"><span aria-hidden="true">&#8801;</span> Filters <span id="activeFilterCount" class="button-count hidden">0</span></button>
             </div>
@@ -120,6 +121,20 @@
 
         <section class="route-panel" id="route-events" data-route-panel="events">
           <div class="page-heading"><div><p class="eyebrow">Full catalog</p><h1>Events</h1><p class="heading-subtitle">Everything retained, including distant, competitive, and uncertain listings.</p></div><button class="primary-button" data-action="open-filters">&#8801; Filters</button></div>
+          <div class="calendar-toolbar catalog-toolbar">
+            <div class="view-switcher" id="eventCatalogViewSwitcher" role="group" aria-label="Events view">
+              <button class="active" data-event-catalog-view="list">List</button>
+              <button data-event-catalog-view="week">Week</button>
+              <button data-event-catalog-view="month">Month</button>
+            </div>
+            <div class="quick-chips event-catalog-chips" id="eventCatalogQuickChips">
+              <button class="filter-chip active" data-event-catalog-filter="all">All formats</button>
+              <button class="filter-chip" data-event-catalog-filter="commander">Commander</button>
+              <button class="filter-chip" data-event-catalog-filter="limited">Prerelease & limited</button>
+              <button class="filter-chip" data-event-catalog-filter="draft">Draft</button>
+              <button class="filter-chip" data-event-catalog-filter="best">Best fits first</button>
+            </div>
+          </div>
           <div class="catalog-summary" id="eventSummary"></div>
           <div class="catalog-grid" id="eventCatalog"></div>
         </section>
