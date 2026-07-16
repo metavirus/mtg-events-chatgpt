@@ -333,14 +333,16 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 
 .change-timeline { position: relative; max-width: 1050px; }
 .change-timeline::before { content: ""; position: absolute; left: 96px; top: 10px; bottom: 10px; width: 1px; background: var(--line); }
-.change-row { display: grid; grid-template-columns: 78px 18px 1fr auto; gap: 10px; min-height: 105px; align-items: start; padding: 9px 0; }
-.change-row time { color: #d4d8e4; font: 700 11px var(--display); text-align: right; }
-.change-row time small { display: block; color: var(--muted); font: 8px var(--font); }
+.change-row { display: grid; grid-template-columns: 78px 18px 1fr auto; gap: 12px; min-height: 105px; align-items: start; padding: 10px 0; }
+.change-row time { color: #d4d8e4; text-align: right; }
+.change-row time strong { display: block; font: 700 12px var(--display); }
+.change-row time small { display: block; color: var(--muted); font: 10px var(--font); margin-top: 4px; }
 .timeline-node { width: 11px; height: 11px; border-radius: 50%; background: var(--violet); margin: 3px; z-index: 1; box-shadow: 0 0 0 4px var(--bg); }
 .timeline-node.mint { background: var(--mint); }.timeline-node.coral { background: var(--coral); }
-.change-row h3 { margin: 7px 0 4px; font: 700 13px var(--display); }
-.change-row p { color: var(--muted); font-size: 10px; margin: 0; }
-.review-state { color: var(--muted-2); font-size: 8px; text-transform: uppercase; margin-top: 3px; }
+.change-body { display: grid; gap: 8px; }
+.change-row h3 { margin: 0; font: 600 13px var(--display); line-height: 1.4; }
+.change-row p { color: var(--muted); font-size: 11px; margin: 0; line-height: 1.5; }
+.review-state { color: var(--muted-2); font-size: 9px; text-transform: uppercase; margin-top: 4px; }
 
 .research-stats { display: grid; grid-template-columns: 1.25fr repeat(3, 1fr); gap: 11px; margin-bottom: 14px; }
 .research-stat { min-height: 145px; padding: 17px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); display: flex; flex-direction: column; text-align: left; }

@@ -68,7 +68,7 @@ function loadPersonal() {
 }
 
 function defaultPersonal() {
-  return { favorites: {}, ratings: {}, notes: {}, interested: {}, activity: [] };
+  return { favorites: {}, ratings: {}, notes: {}, interested: {}, activity: [], updatesSeenAt: null };
 }
 
 function savePersonal(action) {
@@ -78,6 +78,25 @@ function savePersonal(action) {
     state.personal.activity = state.personal.activity.slice(0, 100);
     localStorage.setItem('mana-radar-personal', JSON.stringify(state.personal));
   }
+}
+
+function latestChangeTimestamp() {
+  return DATA.changes.reduce((latest, change) => {
+    const at = change?.detectedAt || '';
+    return at > latest ? at : latest;
+  }, '');
+}
+
+function unreadChangesCount() {
+  const seenAt = state.personal.updatesSeenAt || '';
+  return DATA.changes.filter((change) => (change?.detectedAt || '') > seenAt).length;
+}
+
+function markChangesRead() {
+  const latest = latestChangeTimestamp();
+  if (!latest || state.personal.updatesSeenAt === latest) return;
+  state.personal.updatesSeenAt = latest;
+  savePersonal();
 }
 
 async function load() {
@@ -232,6 +251,7 @@ function handleAction(action, element) {
 function navigate(route) {
   if (!document.querySelector(`[data-route-panel="${route}"]`)) return;
   state.route = route;
+  if (route === 'changes') markChangesRead();
   history.replaceState(null, '', `#${route}`);
   document.querySelectorAll('[data-route-panel]').forEach((panel) => panel.classList.toggle('active', panel.dataset.routePanel === route));
   document.querySelectorAll('.nav-item[data-route], .mobile-nav [data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === route));
@@ -275,7 +295,10 @@ function updateChrome() {
   favoriteButton.setAttribute('aria-pressed', String(state.favoritesOnly));
   favoriteButton.querySelector('span:first-child').textContent = state.favoritesOnly ? '\u2665' : '\u2661';
   favoriteButton.title = favCount ? `${favCount} favorites` : 'No favorites yet';
-  document.getElementById('changeNavCount').textContent = DATA.changes.length;
+  const unreadCount = unreadChangesCount();
+  const changeNavCount = document.getElementById('changeNavCount');
+  changeNavCount.textContent = unreadCount ? String(unreadCount) : '';
+  changeNavCount.hidden = unreadCount === 0;
   document.getElementById('todayEyebrow').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
   highlightsRail?.classList.toggle('collapsed', state.highlightsCollapsed);
   if (highlightsToggle) {
@@ -413,7 +436,22 @@ function matchesFilters(event) {
   if (state.filters.onlyFree && Number(event.entryFee || 0) !== 0) return false;
   if (state.filters.hideCompetitive && state.route === 'today' && isCompetitive(event)) return false;
   if (state.favoritesOnly && !state.personal.favorites[`event:${event.id}`] && !state.personal.favorites[`place:${place.id}`]) return false;
-  if (state.search && !`${event.title} ${event.details} ${event.format} ${place.name} ${place.city}`.toLowerCase().includes(state.search)) return false;
+  if (state.search) {
+    const haystack = [
+      event.title,
+      event.details,
+      event.format,
+      event.eventType,
+      event.bracket,
+      place.name,
+      place.city,
+      place.address,
+      place.assessmentNotes,
+      ...(place.tags || []),
+      ...(place.communitySignals || [])
+    ].filter(Boolean).join(' ').toLowerCase();
+    if (!haystack.includes(state.search)) return false;
+  }
   if (state.preset === 'best' && fitScore(event) < 68) return false;
   if (state.preset === 'weekend' && !isWeekend(event.occurrenceDate)) return false;
   if (state.preset === 'specials' && !isSpecial(event)) return false;
@@ -694,7 +732,7 @@ function renderCommunities() {
 
 function renderChanges() {
   const items = [...DATA.changes].sort((a, b) => b.detectedAt.localeCompare(a.detectedAt));
-  document.getElementById('changeList').innerHTML = items.map((change) => `<article class="change-row"><div class="timeline-node ${change.changeType === 'source_failure' ? 'coral' : change.changeType === 'new_event' ? 'mint' : 'violet'}"></div><time>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}<small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div><span class="status-chip slate">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span><h3>${escapeHtml(change.summary)}</h3><p>${escapeHtml(change.details || 'The research record was updated.')}</p></div><span class="review-state">${escapeHtml(change.reviewStatus || 'recorded')}</span></article>`).join('');
+  document.getElementById('changeList').innerHTML = items.map((change) => `<article class="change-row"><div class="timeline-node ${change.changeType === 'source_failure' ? 'coral' : change.changeType === 'new_event' ? 'mint' : 'violet'}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><span class="status-chip slate">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span><h3>${escapeHtml(change.summary)}</h3><p>${escapeHtml(change.details || 'The research record was updated.')}</p></div><span class="review-state">${escapeHtml(change.reviewStatus || 'recorded')}</span></article>`).join('');
 }
 
 function renderResearch() {
