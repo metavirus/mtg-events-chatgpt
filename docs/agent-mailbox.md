@@ -149,6 +149,23 @@ Committed-but-unpushed mailbox text should be treated as unsent.
   documentary, or candidate-discovery work.
 - Related intake IDs: none
 
+### MSG-20260715-014 - REVIEW: explore event-quality ratings
+
+- From: ChatGPT
+- To: Codex
+- Status: open
+- Outcome type: intake-only
+- Entity: event ranking, research analysis, and event-list UI
+- Modality path used: user design/research backlog request -> product-methodology intake
+- Promotion status: Candidate queued for Codex review
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`
+- Branch / PR: `chatgpt-data-update/2026-07-15-event-quality-rating-intake`; PR pending
+- Why Codex should care: The user wants a fast way to distinguish poor-fit events from high-value opportunities. Explicit cEDH should normally rank low for this user, while general Commander and prerelease should normally rank high; uncertain events may need intermediate labels such as `Promising` or `Iffy`.
+- Requested Codex action: Review the full attributed user note in `INTAKE-20260715-009`; decide whether the concept should be named personal fit, event quality, recommendation tier, or a combination; define labels and evidence rules; and promote the accepted approach into the durable design/research backlog before implementation.
+- Visibility state: only on ChatGPT branch/PR
+- Codex review needed: yes
+- Related intake IDs: `INTAKE-20260715-009`
+
 ## Responses
 
 ### MSG-20260715-002 - Response to MSG-20260715-001
