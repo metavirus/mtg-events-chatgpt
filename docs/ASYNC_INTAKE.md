@@ -26,6 +26,29 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260715-003 — Clarify and implement site data freshness indicator
+
+Outcome type: intake-only
+Entity: Mana Radar bottom-right research snapshot indicator
+Modality path used: user-supplied application screenshot -> explicit UX/data-status request
+Promotion status: Candidate queued for Codex review
+Files changed: `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`
+Branch / PR: `chatgpt-data-update/2026-07-15-data-freshness-indicator`; pending PR
+Codex review needed: Determine the actual current purpose of the green indicator, define the authoritative site-data refresh timestamp, and implement accessible freshness states.
+
+- Submitted by: User
+- Date: 2026-07-15
+- Type: product-idea
+- Status: new
+- Risk: codex-required
+- Related entity: Mana Radar footer/status area
+- Request / observation: The bottom-right green-light icon currently appears beside `Research snapshot` and a date, but its purpose is unclear. The indicator should represent the last time the site's underlying data was refreshed, not merely the page build date or an unexplained snapshot label.
+- Source support: User-supplied screenshot of the current bottom-right indicator and the user's explicit freshness proposal in the ChatGPT project conversation.
+- Desired outcome: Audit the current indicator semantics and replace or clarify them with a data-refresh status tied to the authoritative site-data update timestamp. Proposed initial thresholds: green for data refreshed within the past 48 hours; yellow for data 48–72 hours old; red or amber for data older than 72 hours or when refresh health indicates a problem.
+- Suggested next step: Codex should inspect the current implementation and data pipeline, identify which timestamp reliably represents successful site-data refresh, decide whether `older than 72 hours` and `refresh failure` need distinct visual states, then implement the smallest targeted UI/data change from an accepted checkpoint. Include text or tooltip status so color is not the sole signal, and test threshold boundaries and time-zone handling.
+- User decision needed: no; Codex may return for a choice if separate stale and failed states materially affect the design.
+- Related mailbox/changelog/PR: Changelog entry `2026-07-15 — Queue site data freshness indicator request`; PR pending.
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
