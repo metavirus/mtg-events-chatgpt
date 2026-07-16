@@ -26,6 +26,20 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260715-009 — Explore event-quality ratings
+- Submitted by: User
+- Date: 2026-07-15
+- Type: product-idea
+- Status: new
+- Risk: codex-required
+- Related entity: event ranking, research analysis, and event-list UI
+- Request / observation: Summary: explore an event-level quality or fit rating so the user can quickly separate weak opportunities from high-value ones. Full user note: "we should explore adding a rating to events so we can easily separate crap from quality. for example, clear CEDH would get a low quality. general commander and prerelease would get a High, and maybe others get a Promising, or Iffy"
+- Source support: Direct user design and research-backlog request in the ChatGPT project conversation.
+- Desired outcome: Define a compact event classification that improves scanning, ranking, filtering, and explanations. Preserve the user's examples: explicit cEDH should normally receive a low personal-fit/quality classification; general Commander and prerelease should normally receive a high classification; less certain events may be labeled `Promising` or `Iffy`.
+- Suggested next step: Codex should decide whether this is best represented as personal fit, editorial quality, recommendation tier, or a combination; define labels and evidence rules; avoid presenting subjective fit as universal event quality; determine whether ratings apply to recurring series, individual occurrences, or both; and add the accepted design to the durable research/app backlog before implementation.
+- User decision needed: no
+- Related mailbox/changelog/PR: `MSG-20260715-014`; `chatgpt-data-update/2026-07-15-event-quality-rating-intake`; PR pending
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
