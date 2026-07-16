@@ -77,6 +77,23 @@ Codex audit explicitly changes their status.
   safe lane and does not create canonical entities.
 - Status: pending Codex review
 
+### 2026-07-15 — Queue scoring treatment of omitted store details
+
+- Outcome type: intake-only
+- Entity: store scoring and research methodology
+- Modality path used: user review of research wording -> methodology correction
+- Promotion status: Candidate queued for Codex review
+- Files changed: `docs/ASYNC_INTAKE.md`, `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`
+- Branch / PR: `chatgpt-data-update/2026-07-15-scoring-unknowns-methodology`; PR pending
+- Request: Preserve the user's full reasoning that commonly omitted store information should remain unknown rather than block or depress scoring.
+- Summary of changes: Added `INTAKE-20260715-008` with a short summary and the user's full attributed note, plus `MSG-20260715-013` as the required mailbox review signal.
+- Source support: Direct user methodology correction in the ChatGPT project conversation.
+- Validation performed: Preserved prior coordination content and confirmed the intake and mailbox edits committed successfully.
+- Validation not performed: No local text-integrity script, scoring audit, canonical-data review, browser test, or application test.
+- Known risks: Codex must identify the affected methodology, scoring language, and prior records. This is methodology guidance, not evidence about a particular store.
+- Codex audit requested: Ensure missing details remain unknown, affirmative evidence earns analytical credit, and scores are not withheld merely because stores omit commonly unreported details.
+- Status: pending Codex review
+
 <!-- Copy this block for each future ChatGPT change.
 ### YYYY-MM-DD — Short title
 - Request:

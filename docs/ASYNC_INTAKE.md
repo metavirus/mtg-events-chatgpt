@@ -26,6 +26,21 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260715-008 — Do not treat omitted store details as scoring blockers
+- Submitted by: User
+- Date: 2026-07-15
+- Type: research-follow-up
+- Status: new
+- Risk: codex-required
+- Related entity: store scoring and research methodology
+- Summary: Refine the statement `The decisive unresolved is solo-arrival/pod formation.` That wording is too strong and should not prevent a store score. Missing store language about brackets, proxies, solo-player support, or pod formation should remain unknown rather than become adverse evidence or a decisive scoring blocker. Affirmative positive evidence should still improve notes and analysis.
+- User's full note: "Need to refine something I saw: `The decisive unresolved is solo-arrival/pod formation.` That is too strong, and shouldn't be holding you up from making a score determination. Remember that stores provide imperfect information. For example, many will not mention what bracket Commander is played in. Also, most will not mention proxies at all. Many won't mention anything about solo players or arranging pods. If a store DOES affirmatively mention good things in that area, that should go into your notes and analysis. If that information is omitted, then that shouldn't be impeding you."
+- Source support: Direct user methodology correction in the ChatGPT project conversation.
+- Desired outcome: Update the research/scoring methodology so scores can be assigned from the available evidence without requiring explicit statements on every desired dimension. Preserve uncertainty, reward affirmative evidence, and distinguish omission from negative evidence.
+- Suggested next step: Codex should locate the quoted or equivalent wording, revise the applicable methodology and scoring guidance, and review existing records for places where missing solo-arrival, bracket, or proxy information was treated as a blocker or implicit negative.
+- User decision needed: no
+- Related mailbox/changelog/PR: `MSG-20260715-013`; `chatgpt-data-update/2026-07-15-scoring-unknowns-methodology`; PR pending
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
