@@ -18,9 +18,11 @@ Use it for:
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a
   paused queue for a completed regional census.
-- Begin the next discovery pass with Tweedy Cards and Gaming. Its prior record
-  had inherited Cardboard narrative and Aki Instagram data; those fields were
-  restored to cautious discovery state and now need identity-first research.
+- Tweedy Cards and Gaming now has a bounded identity-first pass on file and
+  remains `wizards-discovery`; do not overpromote it without new corroboration.
+- Use the next discovery pass on Shadow Realm Collectibles or Buddies
+  Collectibles as the next efficiency test, since both remain in the backlog
+  and were part of the recent conservative repair set.
 
 ## Research backlog
 
@@ -70,12 +72,12 @@ Discord/social evidence.
 
 #### Higher-priority discovery candidates
 
-- Tweedy Cards and Gaming
+- Shadow Realm Collectibles
+- Buddies Collectibles
 
 #### Broader discovery bench
 
-- Shadow Realm Collectibles
-- Buddies Collectibles
+- Tweedy Cards and Gaming
 - Grails Gone Wild
 - TK Collectibles
 - The Game Chest - Promenade on the Peninsula

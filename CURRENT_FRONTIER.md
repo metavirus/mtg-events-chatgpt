@@ -162,6 +162,11 @@ built. The research queue remains open and should resume from
   complete. The calendar is useful for specials but has category-tagging errors,
   Instagram is only a secondary operational source, and no official Discord
   route surfaced.
+- Tweedy Cards and Gaming has now received its bounded identity-first discovery
+  pass. The result is intentionally conservative: the Wizards-backed Friday
+  Commander signal appears real, but no stronger store-controlled or social
+  corroboration surfaced quickly enough to justify promotion beyond
+  `wizards-discovery`.
 - Guildhall - Whittier has now been promoted into a real partial record too, but
   with a different lesson: it looks more like a lively nerd-bar/community venue
   than a clearly Magic-centered store, and current visible promotion gives much
