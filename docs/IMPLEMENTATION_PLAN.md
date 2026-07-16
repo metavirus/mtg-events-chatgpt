@@ -34,10 +34,16 @@ to be stapled onto an incompatible shell later. It includes:
 - responsive behavior that preserves rich desktop research while supporting
   practical mobile lookup and actions.
 
-Less-vetted records remain available. They receive explicit labels such as
-`reviewed`, `partial`, or `discovery`, and event evidence states such as
-`corroborated`, `single source`, `projected`, or `needs confirmation`. Weakness
-changes presentation and ranking; it does not erase the record.
+Less-vetted records remain available. They should eventually receive explicit,
+separate labels for:
+
+- **research status:** `discovery`, `reviewed`, or `deepened`
+- **fit grade:** overall practical-quality grade
+- **confidence:** support level for the current interpretation
+- **event evidence state:** `corroborated`, `single source`, `projected`, or
+  `needs confirmation`
+
+Weakness changes presentation and ranking; it does not erase the record.
 
 ## Build sequence
 

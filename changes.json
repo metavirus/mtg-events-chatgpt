@@ -25,8 +25,16 @@
     "entityId": "wizards-locator-outer-ring",
     "summary": "Promoted 2 additional stores and 4 recurring Commander events from repeated Wizards listings in the 15–26 mile discovery ring.",
     "reviewStatus": "accepted"
-  }
-,
+  },
+  {
+    "id": "tweedy-candidate-pass-repair-2026-07-15",
+    "detectedAt": "2026-07-15T19:15:00-07:00",
+    "changeType": "reconciliation",
+    "entityType": "dataset",
+    "entityId": "tweedy-cards-and-gaming",
+    "summary": "Repaired the Tweedy first pass into a candidate-grade partial by promoting visible Wizards and Instagram MTG evidence, adding the July 17 God of Mischief Commander special plus Sunday Standard Showdown, and replacing the older Wizards-only lead framing with a more decision-useful store assessment.",
+    "reviewStatus": "accepted"
+  },
   {
     "id": "user-field-note-finch-2026-07-14",
     "detectedAt": "2026-07-14T18:15:00-07:00",

@@ -353,26 +353,27 @@
         "city":  "South Gate",
         "address":  "4367 Tweedy Blvd, South Gate, CA, 90280, US",
         "phone":  "",
-        "website":  "http://wpn.wizards.com",
+        "website":  "",
         "eventsUrl":  "https://locator.wizards.com/store/17882",
         "instagram":  "",
         "wpnPremium":  false,
         "distanceMiles":  11.97,
         "status":  "open",
-        "lastVerified":  "2026-07-14",
-        "researchStatus":  "wizards-discovery",
+        "lastVerified":  "2026-07-15",
+        "researchStatus":  "partial",
         "assessment":  {
-                           "commanderActivity":  3,
-                           "meetupAccessibility":  3,
+                           "commanderActivity":  4,
+                           "meetupAccessibility":  2,
                            "communityContinuity":  3,
-                           "newPlayerIntegration":  3,
-                           "physicalEnvironment":  3,
-                           "scheduleReliability":  3,
-                           "homeGroupPotential":  3
+                           "newPlayerIntegration":  2,
+                           "physicalEnvironment":  2,
+                           "scheduleReliability":  4,
+                           "homeGroupPotential":  2
                        },
-        "assessmentNotes":  "Added from repeated Wizards Store \u0026 Event Locator Commander listings. Needs follow-up verification against the store website, social channels, registration pages, and community reports before being treated as fully vetted.",
+        "assessmentNotes":  "Tweedy now clears the bar for a real candidate-grade partial rather than a bare Wizards-only lead, but it remains a modest one. Current evidence does not show a real official store-controlled website, and no richer community-routing surface has yet been captured. Even so, the source picture is meaningfully better than before: Wizards directly shows a July 17 `Magic Presents: God Of Mischief Commander` special, a recurring Friday 5:00 PM `Friday Night Magic Casual Commander` slot, and a Sunday 5:00 PM `Tweedy Standard Showdown`; a current Instagram weekly-tournaments graphic also visibly corroborates Friday Night Magic (Commander) at 5:00 PM and Sunday MTG Standard Showdown at 5:00 PM. That is enough to say MTG is operationally real here and that there are actionable near-term events a player could seriously consider. The caution is that the currently visible public footprint still leans much more toward schedule existence than toward social texture: no strong solo-arrival help, pod-filling process, Discord/LFG layer, or clearly Magic-centered community identity has been surfaced yet. Practical read: real MTG store, real Friday Commander lane, worth keeping in the candidate set, but still below the stronger nearby stores with richer community evidence.",
         "sourceIds":  [
-                          "src-wpn-17882"
+                          "src-wpn-17882",
+                          "src-socialcontent-tweedy-instagram-2026-07-15"
                       ]
     },
     {
@@ -1631,4 +1632,3 @@
                       ]
     }
 ]
-

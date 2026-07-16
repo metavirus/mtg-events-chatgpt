@@ -69,20 +69,32 @@ Do not deep-scroll, chase comments, or exhaustively browse secondary surfaces.
 A first pass should usually aim to produce one of these outcomes:
 
 - `discovery`: real lead, but not yet useful enough to seriously compare
-- `partial`: real candidate, useful enough for serious consideration
-- `promoted`: strong enough to justify deeper operational/social work now
+- `reviewed`: real candidate, useful enough for serious consideration after the
+  standard source-suite check
+- `deepened`: strong enough to justify or already reflect deeper
+  operational/social work now
 
-Treat `partial` as a meaningful graduation threshold. A store should not be
-called comfortably `partial` unless the pass gives the user:
+Treat `reviewed` as a meaningful graduation threshold. A store should not be
+called comfortably reviewed unless the pass gives the user:
 
 - a reliable identity/source-routing read;
-- a real MTG/Commander read;
+- a real MTG read, with Commander fit assessed separately;
 - at least the strongest actionable upcoming MTG events visible across the
   standard source suite;
 - a short plain-language answer to "why might I actually try this place?"
 
 If the pass still leaves obvious near-term play questions unanswered, it is
 usually still `discovery`.
+
+Use fit and confidence separately from research status:
+
+- research status answers whether the standard pass is complete enough
+- fit answers how attractive the store looks for the user's goals
+- confidence answers how well supported that judgment is by the current signals
+
+A sparse but bounded store can still be `reviewed` with medium or low
+confidence. Do not keep a store in research purgatory merely because it lacks
+Discord, e-commerce, or a richer community footprint.
 
 ### 2. Promoted deepening pass
 
@@ -174,7 +186,7 @@ Do not use Wizards alone to conclude:
 2. Treat existing normalized Wizards records as the first source, not as
    something to rediscover live every time.
 3. Use live Wizards/browser verification only when one of these is true:
-   - the store is still `wizards-discovery`
+   - the store is still effectively at discovery level
    - the existing local record looks suspicious or incomplete
    - a current event detail is needed
    - a branded/special event needs confirmation
@@ -370,7 +382,7 @@ Bad uses:
 
 ## Promotion rules
 
-Promote from `wizards-discovery` to `partial` when:
+Promote from discovery to reviewed when:
 - identity is corroborated
 - MTG presence is real beyond a lone suspicious listing
 - at least one non-Wizards source supports the store as real and active
@@ -395,7 +407,12 @@ Before closing a first pass, confirm:
 - MTG focus assessed separately from Commander fit
 - strongest near-term actionable MTG events surfaced or explicitly stated absent
 - no unnecessary rabbit hole taken
-- result classified: `discovery`, `partial`, or promoted deeper
+- result classified: `discovery`, `reviewed`, or `deepened`
+
+Temporary schema note: canonical JSON may still use legacy `researchStatus`
+values such as `partial` while the data model catches up. Until the schema and
+UI are migrated, interpret existing `partial` records as today's nearest
+equivalent to `reviewed`.
 
 ## Required self-audit before moving on
 

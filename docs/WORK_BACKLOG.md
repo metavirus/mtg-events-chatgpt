@@ -24,6 +24,11 @@ Use it for:
   improved first-pass standard before moving to another store.
 - Do not begin Shadow Realm Collectibles or any other next store until Tweedy
   satisfies the stronger candidate-grade first-pass bar.
+- Continue migrating repo/app language away from overloaded `partial` semantics
+  toward an explicit model of:
+  - research status
+  - fit grade
+  - confidence
 
 ## Research backlog
 
@@ -179,6 +184,13 @@ status or deprioritized by early signals.
 - Implement explicit displacement-risk / at-risk flags for recurring events.
 - Preserve ambiguous events instead of discarding them, but rank/filter them
   appropriately.
+- Replace the single overloaded venue-status feel with separate user-facing
+  layers for:
+  - research status (`discovery`, `reviewed`, `deepened`)
+  - fit grade (A-F or equivalent)
+  - confidence (low/medium/high)
+- Make fit-grade and confidence displays clickable so they explain the exact
+  pluses, minuses, and open questions behind the score.
 - Support recurring-versus-one-off distinction clearly in the UI.
 - Support freshness/staleness indicators for sources and event evidence.
 - Add an MTG-focus dimension so stores/venues can be distinguished from mixed-use
@@ -208,6 +220,8 @@ status or deprioritized by early signals.
   Wizards/WPN event announcements, and new high-value signals from socials.
 - Background activity log link for favorites, notes, and important changes.
 - Google Calendar add-to-calendar action if/when we wire that in.
+- During the current calibration phase only, allow selective publish-after-store-pass
+  when needed so the user can audit the updated record in the live app quickly.
 
 ### Personalization and preference controls
 

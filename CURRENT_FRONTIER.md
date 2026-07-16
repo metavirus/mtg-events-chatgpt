@@ -36,6 +36,14 @@ The active requirement is now a stronger candidate-grade first pass:
 - enough actionable upcoming MTG event detail to make the store practically useful;
 - enough synthesis to answer whether the store is a real candidate worth trying.
 
+Working interpretation change:
+
+- `discovery` = still too thin to act on comfortably
+- `partial` in the current schema should be treated as the nearest current
+  equivalent to a fully **reviewed** first pass
+- future model direction is to separate research status, fit grade, and
+  confidence rather than overloading one label
+
 Tweedy Cards and Gaming is the current test case for this refined standard.
 Do not expand to the next discovery candidate until Tweedy has either:
 
@@ -178,11 +186,12 @@ Do not expand to the next discovery candidate until Tweedy has either:
   complete. The calendar is useful for specials but has category-tagging errors,
   Instagram is only a secondary operational source, and no official Discord
   route surfaced.
-- Tweedy Cards and Gaming has now received its bounded identity-first discovery
-  pass. The result is intentionally conservative: the Wizards-backed Friday
-  Commander signal appears real, but no stronger store-controlled or social
-  corroboration surfaced quickly enough to justify promotion beyond
-  `wizards-discovery`.
+- Tweedy Cards and Gaming no longer belongs in the earlier conservative
+  Wizards-only bucket. The repaired pass now clears the candidate-grade bar:
+  Wizards plus Instagram corroborate real Friday Commander, Sunday Standard
+  Showdown, and the July 17 God of Mischief Commander special, which is enough
+  to treat Tweedy as a real reviewed candidate with modest rather than strong
+  fit.
 - Guildhall - Whittier has now been promoted into a real partial record too, but
   with a different lesson: it looks more like a lively nerd-bar/community venue
   than a clearly Magic-centered store, and current visible promotion gives much
@@ -318,6 +327,13 @@ retain the research backlog for later continuation.
 - later, ensure favorites drive monitoring cadence and alert priority
 - later, backfill MTG-focus / player-pool breadth / venue-scale carefully and
   treat the first results as a test of the framework, not final truth
+
+## Temporary audit workflow
+
+When helpful during methodology calibration, it is acceptable to publish a newly
+committed store pass so the user can audit it in the live app immediately. This
+is a temporary trust-building workflow, not yet a permanent requirement for
+every ordinary store update.
 
 ## Caution flags
 

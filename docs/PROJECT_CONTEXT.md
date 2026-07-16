@@ -131,6 +131,22 @@ The interface should favor synthesis over duplication: one coherent store or
 event view may combine evidence from several sources, clearly showing where
 facts agree, conflict, remain stale, or require verification.
 
+Venue research should not collapse completion state, practical fit, and
+confidence into one vague label. The working product model should distinguish:
+
+- **Research status:** whether the entity is still a discovery lead, has
+  received a reviewed first pass, or has been deepened further.
+- **Fit grade:** how promising the venue or community appears for the user's
+  stated goals after weighing distance, friendliness, MTG focus, solo-arrival
+  access, and schedule usefulness.
+- **Confidence:** how well supported that judgment is by the currently visible
+  evidence.
+
+A sparse store can still be marked reviewed if the standard first-pass source
+suite was checked and the remaining uncertainty is bounded. Missing Discord,
+missing e-commerce, or a thin website should not by themselves trap an entity
+in endless research purgatory.
+
 Recurring event reliability should include an `at risk` concept for dates where
 a same-day large special event likely threatens the routine series even if the
 store never explicitly posts a formal cancellation notice.
@@ -206,6 +222,36 @@ the current view; they must never remove them from the evidence base.
    try more often.
 
 Other Magic events remain cataloged under the catalog-first rule.
+
+## First-pass completion and practical usefulness
+
+The ordinary store pass is not just a taxonomy step. It is also part of the
+user's live planning surface.
+
+The default target is a **candidate-grade first pass**:
+
+- enough source coverage from the standard suite to trust the read;
+- enough actionable upcoming MTG detail that the user could plausibly add
+  something to their calendar now;
+- enough synthesis to say whether the venue is worth trying, weak, or still too
+  unresolved to recommend.
+
+That means a normal first pass should usually end in one of these practical
+states:
+
+- **Discovery:** real lead, but still too thin to compare or act on confidently.
+- **Reviewed:** standard first-pass source suite checked; enough concrete
+  evidence to judge whether this is a real candidate even if the source stack is
+  modest.
+- **Deepened:** additional operational or community work done because the venue
+  was strong enough, ambiguous enough, or risky enough to justify extra effort.
+
+For a venue to count as reviewed, it should normally surface the strongest
+near-term MTG opportunities visible right now, especially when they match the
+user's priorities such as casual Commander, prerelease/sealed, or draft. If a
+pass would still make the user ask obvious questions like "what could I actually
+go play there soon?" then the pass is usually still discovery rather than
+reviewed.
 
 ## Fees, proxies, and deck readiness
 

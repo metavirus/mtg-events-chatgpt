@@ -92,6 +92,21 @@ A strong venue may have a weak Discord; a small community may have an excellent
 coordination channel; and a generally promising entity may host a poor-fit event.
 No score may silently substitute for another layer.
 
+In addition, venue or community presentation should keep these three user-facing
+judgments distinct:
+
+1. **Research status:** `discovery`, `reviewed`, or `deepened`.
+2. **Fit grade:** an overall practical-quality judgment such as A-F that answers
+   "how good of a bet is this for the user right now?"
+3. **Confidence:** low / medium / high support for that judgment based on the
+   available evidence.
+
+These should not be overloaded into one status label. A venue may be fully
+reviewed yet still receive a mediocre fit grade; a venue may score surprisingly
+well while still carrying only medium confidence because the source stack is
+thin. The app should eventually let users click these judgments and inspect the
+supporting pluses, minuses, and open questions.
+
 ## Attributed user field notes
 
 User-supplied observations should be preserved in the evidence plane so they are

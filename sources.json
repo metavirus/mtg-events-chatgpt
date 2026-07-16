@@ -438,7 +438,14 @@
     "label": "Wizards Store & Event Locator - Tweedy Cards and Gaming",
     "url": "https://locator.wizards.com/store/17882",
     "type": "wpn",
-    "lastChecked": "2026-07-14"
+    "lastChecked": "2026-07-15"
+  },
+  {
+    "id": "src-socialcontent-tweedy-instagram-2026-07-15",
+    "label": "Tweedy Cards and Gaming Instagram weekly tournaments and July 17 MTG event synthesis",
+    "url": "research/runs/2026-07-15-tweedycards-candidate-pass/RUN.md",
+    "type": "social",
+    "lastChecked": "2026-07-15"
   },
   {
     "id": "src-wpn-17911",
