@@ -6,6 +6,24 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-16 — Google reviews and fuzzy resource pass for 26 stores
+
+- Outcome type: documentary-edit
+- Entity: 26 user-requested Southern California stores and venues
+- Modality path used: exact-name Google-oriented search -> Google Maps or Google-derived mirrors -> official/social routing -> fuzzy discovery across specialist directories, marketplaces, organized-play platforms, local reporting, and community surfaces
+- Promotion status: No canonical promotion attempted
+- Files changed: `research/runs/2026-07-16-google-reviews-fuzzy-resources.md`, `docs/chatgpt-changelog.md`, `docs/agent-mailbox.md`
+- Branch / PR: `chatgpt-data-update/2026-07-16-discovery-store-tranche`; PR #15
+- Request: Capture Google-review ratings, recent review themes, store details, and additional useful online resources for all 26 stores, with exact links for Codex and validators.
+- Summary of changes: Added a separate store-by-store Google/fuzzy-source report preserving exact URLs, rating/count variants, branch identity, review themes, operational conflicts, additional source classes, and priority conclusions. Direct Google Maps access was inconsistent, so Google-derived mirrors are explicitly labeled and kept separate from Yelp evidence.
+- Source support: Direct indexed Google Maps where available; Birdeye; Wanderlog; Chamber of Commerce; Card Shop Hub; Card Shops Finder; CardShows.io; KeepUp; specialist card-shop directories; TCGplayer; Whatnot; official Linktree/social routing; official organized-play listings; local reporting. Exact URLs are preserved in the run note.
+- Validation performed: Exact-name and address-aware searches for all 26 entities; branch/location conflicts retained; Google, Yelp, and mixed-platform counts not merged; exact links recorded for validator replay.
+- Validation not performed: Authenticated Google Maps review browsing, authenticated social/Discord inspection, canonical data validation, or live event normalization.
+- Known risks: Review mirrors can lag Google, counts drift, and some directories synthesize summaries. Branch ambiguity remains material for The Game Chest Irvine; operating status remains unresolved for several stores.
+- Codex audit requested: Review the report, replay high-value sources, resolve branch/status conflicts, and use the findings to prioritize deeper Wizards/social/Discord passes.
+- Codex review needed: yes
+- Status: pending Codex review
+
 ### 2026-07-16 — Research 26 discovery-tier stores
 
 - Outcome type: documentary-edit
