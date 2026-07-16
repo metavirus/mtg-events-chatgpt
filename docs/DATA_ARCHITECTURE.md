@@ -2,29 +2,43 @@
 
 ## Design goal
 
-Keep public research evidence durable and reproducible in GitHub while allowing
-private personal state to persist in the hosted web app across devices.
+Keep operational research, personal state, and agent workflow data durable in a
+validated hosted database while retaining reproducible schema, methodology,
+research notes, and snapshots in GitHub.
 
 ## Data planes
 
-### Evidence plane — GitHub
+### Evidence plane — Supabase with GitHub history
 
 Append-oriented research records: venues and aliases, sources and source-health
 observations, raw collector snapshots, extracted claims, attributed user field
 notes, event series and dated occurrences, reconciliation decisions, and
 research-run notes.
 
-### Generated application plane — GitHub and hosting build
+GitHub retains research-run documentation, source methodology, schema
+migrations, validation code, and reproducible exports. Large application JSON
+files are migration inputs and rollback snapshots rather than the permanent
+live-edit surface.
 
-Validated read-optimized JSON: current venue directory, series, confirmed and
-projected occurrences, freshness/source summaries, ranking explanations, new/change
-indexes, and calendar/search indexes. This is replaceable output, not the sole truth.
+### Application plane — Supabase and hosting build
 
-### Personal plane — private hosted storage
+Validated read models expose the current venue directory, series, confirmed and
+projected occurrences, freshness/source summaries, ranking explanations,
+new/change indexes, and calendar/search indexes. The application accesses these
+through a data-adapter boundary so the initial file-backed build remains
+available during migration and rollback.
+
+### Personal plane — authenticated Supabase storage
 
 Writable private state: favorites, interested/attended/skipped states, ratings,
 private planning notes, muted records, preferences, and personal activity log.
-Stable public entity IDs link the two planes.
+Stable public entity IDs link the research, personal, and workflow planes.
+
+### Workflow plane — authenticated Supabase storage
+
+User-to-agent requests, entity-specific research leads, corrections, watch
+instructions, product issues, statuses, and agent responses. Administrative
+agent access uses a server-side secret that is never available to the browser.
 
 ## Core entities
 

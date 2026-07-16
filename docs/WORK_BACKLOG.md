@@ -14,6 +14,11 @@ Use it for:
 
 ## Active next-up
 
+- Build the Supabase operational data foundation described in
+  `docs/SUPABASE_ARCHITECTURE.md` without switching the accepted file-backed app
+  until import and security parity checks pass.
+- Migrate canonical research, personal continuity, and async request data in
+  explicit reversible stages.
 - Pause broad research expansion while building the first complete private app.
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a
@@ -226,11 +231,13 @@ status or deprioritized by early signals.
 
 ### Personalization and preference controls
 
-- Revisit whether personal fields should live alongside core records in one
-  unified data model, with strict namespacing between:
+- Implement the accepted Supabase model with one operational database and
+  strict namespacing between:
   - research-authored fields
   - user-authored fields
   - agent/workflow metadata
+- Replace browser-only local storage with authenticated cross-device records,
+  including a one-time migration of existing browser preferences.
 - Ensure favorites, ratings, notes, and follow-up flags have clear behavioral
   impact rather than feeling bolted on.
 - Add negative preference controls, likely thumb-down actions, for stores, event

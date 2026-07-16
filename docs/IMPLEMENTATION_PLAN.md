@@ -88,16 +88,23 @@ Weakness changes presentation and ranking; it does not erase the record.
 - Surface MTG-focus, player-pool/scale clues, social accessibility, schedule
   reliability, and personal fit as separate evidence-aware dimensions.
 
-### 5. Add the personal continuity layer
+### 5. Add the Supabase continuity layer
 
+- Apply and validate the database schema described in
+  `docs/SUPABASE_ARCHITECTURE.md`.
+- Import and compare the current research dataset without switching the live
+  application until parity checks pass.
 - Add favorites for venues, communities, and event series.
 - Add interested/attended/skipped states for occurrences.
 - Add one-to-five ratings plus timestamped notes at venue, community, series,
   occurrence, and visit scope where appropriate.
 - Add the compact personal/research/system activity log.
-- Use a private hosted persistence layer so this state works across devices;
-  retain user field notes intended as durable research evidence in GitHub with
-  explicit attribution.
+- Add entity-specific `Ask Codex` requests with durable queued, in-progress,
+  waiting-for-user, and completed states.
+- Keep personal workflow state namespaced from canonical research data while
+  using stable entity IDs to combine them in ranking and display.
+- Retain GitHub research notes and reproducible snapshots with explicit
+  attribution.
 
 ### 6. Integrate, validate, and seed
 
