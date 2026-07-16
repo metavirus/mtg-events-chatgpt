@@ -13,8 +13,11 @@ touching the data layer so future tasks do not rediscover the same state.
 - Seed snapshot: `supabase/seed/0001_current_snapshot.sql`
 - The initial remote schema has been applied.
 - The current seed snapshot has been loaded into Supabase.
-- The existing JSON files remain the active app source until the adapter and
-  parity gates pass.
+- The existing JSON files remain the default app source until representative
+  parity checks and rollback behavior are accepted.
+- A Supabase read-adapter seam now exists in `app.js`. It is opt-in only via
+  `?data=supabase`; if Supabase loading fails, the app falls back to the JSON
+  files and logs a warning.
 
 ## Imported snapshot counts
 
@@ -70,21 +73,19 @@ the GitHub migration matches the accepted remote direction.
 - The earlier local Python parity script hit a local certificate verification
   problem. Do not burn time on that unless the Python environment itself is the
   active task; use Supabase MCP, Supabase dashboard, or `psql` for DB checks.
-- Do not switch the hosted app to Supabase by default until the data adapter,
-  representative record checks, and rollback path are accepted.
+- Do not switch the hosted app to Supabase by default until representative
+  record checks and rollback behavior are accepted.
 - Do not let this migration become an excuse to pause all UI work. The intended
   near-term path is an adapter seam, not a full rebuild.
 
 ## Next safe steps
 
-1. Commit the current migration refinement and documentation checkpoint.
-2. Build a read adapter that can load from Supabase while retaining JSON
-   fallback.
-3. Compare representative venue, event, source, and update records between JSON
+1. Commit the current migration refinement, read-adapter seam, and
+   documentation checkpoint.
+2. Compare representative venue, event, source, and update records between JSON
    and Supabase.
-4. Keep local preview only until the user accepts the behavior.
-5. Defer authenticated favorites, thumbs-down, notes, and in-app requests until
+3. Keep local preview only until the user accepts the behavior.
+4. Defer authenticated favorites, thumbs-down, notes, and in-app requests until
    the read adapter is stable.
-6. Use a higher-reasoning model before changing RLS/auth/write policies or
+5. Use a higher-reasoning model before changing RLS/auth/write policies or
    publishing a Supabase-backed release.
-

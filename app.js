@@ -1,5 +1,10 @@
 const DATA = { stores: [], events: [], sources: [], changes: [] };
 
+const SUPABASE = {
+  url: 'https://pyvftzsodzwfqncjbmbc.supabase.co',
+  publishableKey: 'sb_publishable_So6NutzmRqZnWIRis9uI1g_E1AT06Wm'
+};
+
 const COMMUNITY_SEED = [
   {
     id: 'legendary-creature-club',
@@ -106,13 +111,228 @@ function compareText(a, b, options = { sensitivity: 'base' }) {
 }
 
 async function load() {
+  if (new URLSearchParams(window.location.search).get('data') === 'supabase') {
+    try {
+      await loadFromSupabase();
+      state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
+      initialize();
+      return;
+    } catch (error) {
+      console.warn('Supabase read failed; falling back to JSON snapshot.', error);
+    }
+  }
+  await loadFromJson();
+  state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
+  initialize();
+}
+
+async function loadFromJson() {
   for (const key of ['stores', 'events', 'sources', 'changes']) {
     const response = await fetch(`${key}.json`, { cache: "no-store" });
     if (!response.ok) throw new Error(`Could not load ${key}.json`);
     DATA[key] = await response.json();
   }
-  state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
-  initialize();
+}
+
+async function loadFromSupabase() {
+  const tables = await Promise.all([
+    supabaseRows('venues'),
+    supabaseRows('communities'),
+    supabaseRows('sources'),
+    supabaseRows('entity_sources'),
+    supabaseRows('event_series'),
+    supabaseRows('event_occurrences'),
+    supabaseRows('event_sources'),
+    supabaseRows('evaluations'),
+    supabaseRows('research_changes')
+  ]);
+  const [venues, communities, sources, entitySources, series, occurrences, eventSources, evaluations, changes] = tables;
+  const evaluationByEntity = new Map(evaluations.map((item) => [`${item.entity_type}:${item.entity_id}`, item]));
+  const sourceIdsByEntity = groupValues(entitySources, (item) => `${item.entity_type}:${item.entity_id}`, (item) => item.source_id);
+  const sourcesBySeries = groupValues(eventSources.filter((item) => item.series_id), (item) => item.series_id, (item) => item.source_id);
+  const sourcesByOccurrence = groupValues(eventSources.filter((item) => item.occurrence_id), (item) => item.occurrence_id, (item) => item.source_id);
+  const seriesById = new Map(series.map((item) => [item.id, item]));
+
+  DATA.stores = venues.map((item) => mapVenue(item, sourceIdsByEntity, evaluationByEntity));
+  DATA.sources = sources.map(mapSource);
+  DATA.changes = changes.map(mapResearchChange);
+  DATA.events = [
+    ...series.map((item) => mapEventSeries(item, sourcesBySeries)),
+    ...occurrences.map((item) => mapEventOccurrence(item, seriesById.get(item.series_id), sourcesByOccurrence))
+  ].filter(Boolean);
+
+  if (communities.length) {
+    for (const community of communities.map((item) => mapCommunity(item, sourceIdsByEntity, evaluationByEntity))) {
+      const existing = COMMUNITY_SEED.findIndex((item) => item.id === community.id);
+      if (existing >= 0) COMMUNITY_SEED[existing] = community;
+      else COMMUNITY_SEED.push(community);
+    }
+  }
+}
+
+async function supabaseRows(table) {
+  const response = await fetch(`${SUPABASE.url}/rest/v1/${table}?select=*`, {
+    headers: {
+      apikey: SUPABASE.publishableKey,
+      Authorization: `Bearer ${SUPABASE.publishableKey}`
+    },
+    cache: 'no-store'
+  });
+  if (!response.ok) throw new Error(`Supabase could not load ${table}`);
+  return response.json();
+}
+
+function groupValues(items, keyFn, valueFn) {
+  const grouped = new Map();
+  for (const item of items) {
+    const key = keyFn(item);
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(valueFn(item));
+  }
+  return grouped;
+}
+
+function mapVenue(item, sourceIdsByEntity, evaluationByEntity) {
+  return {
+    id: item.id,
+    name: item.name,
+    city: item.city || '',
+    address: item.address || '',
+    phone: item.phone || '',
+    website: item.website || '',
+    eventsUrl: item.events_url || '',
+    instagram: item.instagram || '',
+    wpnPremium: Boolean(item.wpn_premium),
+    distanceMiles: item.distance_miles == null ? null : Number(item.distance_miles),
+    status: item.operating_status,
+    lastVerified: item.last_verified || '',
+    researchStatus: item.research_status,
+    evaluation: mapEvaluation(evaluationByEntity.get(`venue:${item.id}`)),
+    assessment: item.assessment || {},
+    assessmentNotes: item.assessment_notes || '',
+    sourceIds: sourceIdsByEntity.get(`venue:${item.id}`) || []
+  };
+}
+
+function mapCommunity(item, sourceIdsByEntity, evaluationByEntity) {
+  return {
+    id: item.id,
+    name: item.name,
+    region: item.region || '',
+    status: item.research_status,
+    formats: item.formats || [],
+    channel: item.primary_channel || '',
+    summary: item.summary || '',
+    signal: item.signal || '',
+    nextQuestion: item.next_question || '',
+    evaluation: mapEvaluation(evaluationByEntity.get(`community:${item.id}`)),
+    sourceIds: sourceIdsByEntity.get(`community:${item.id}`) || []
+  };
+}
+
+function mapSource(item) {
+  return {
+    id: item.id,
+    label: item.label,
+    url: item.url || '',
+    type: item.source_type,
+    status: item.health_status,
+    lastChecked: item.last_checked || ''
+  };
+}
+
+function mapEvaluation(item) {
+  if (!item) return undefined;
+  return {
+    researchStatus: item.research_status,
+    candidateStatus: item.candidate_status,
+    fitGrade: item.fit_grade,
+    fitScore: item.fit_score == null ? null : Number(item.fit_score),
+    confidence: item.confidence,
+    positives: item.positives || [],
+    cautions: item.cautions || [],
+    openQuestions: item.open_questions || []
+  };
+}
+
+function mapResearchChange(item) {
+  return {
+    id: item.id,
+    detectedAt: item.detected_at,
+    changeType: item.change_type,
+    entityType: item.entity_type,
+    entityId: item.entity_id,
+    summary: item.summary,
+    reviewStatus: item.review_status
+  };
+}
+
+function mapEventSeries(item, sourcesBySeries) {
+  return {
+    id: item.id,
+    storeId: item.venue_id || null,
+    communityId: item.community_id || null,
+    title: item.title,
+    format: item.format || 'Unknown',
+    eventType: item.event_type || '',
+    bracket: item.bracket || 'unspecified',
+    recurrence: normalizeRecurrence(item.recurrence, item.default_start_time),
+    startDate: item.start_date || null,
+    endDate: item.end_date || null,
+    entryFee: item.entry_fee == null ? null : Number(item.entry_fee),
+    currency: item.currency || 'USD',
+    details: item.details || '',
+    sourceIds: sourcesBySeries.get(item.id) || [],
+    sourceId: (sourcesBySeries.get(item.id) || [])[0],
+    lastVerified: item.last_verified || '',
+    confidence: item.confidence,
+    status: item.event_status
+  };
+}
+
+function mapEventOccurrence(item, series, sourcesByOccurrence) {
+  if (!series) return null;
+  return {
+    id: item.id,
+    seriesId: item.series_id,
+    storeId: series.venue_id || null,
+    communityId: series.community_id || null,
+    title: series.title,
+    format: series.format || 'Unknown',
+    eventType: series.event_type || '',
+    bracket: series.bracket || 'unspecified',
+    recurrence: null,
+    date: item.occurrence_date,
+    startDate: item.occurrence_date,
+    startTime: normalizeTime(item.start_time || series.default_start_time),
+    endTime: normalizeTime(item.end_time),
+    entryFee: item.entry_fee == null ? (series.entry_fee == null ? null : Number(series.entry_fee)) : Number(item.entry_fee),
+    capacity: item.capacity,
+    currency: series.currency || 'USD',
+    details: item.details || series.details || '',
+    sourceIds: sourcesByOccurrence.get(item.id) || [],
+    sourceId: (sourcesByOccurrence.get(item.id) || [])[0],
+    lastVerified: series.last_verified || '',
+    confidence: occurrenceConfidence(item.evidence_state, series.confidence),
+    status: item.occurrence_status || series.event_status
+  };
+}
+
+function normalizeRecurrence(value, defaultStartTime) {
+  if (!value) return null;
+  const recurrence = { ...value };
+  if (!recurrence.startTime && defaultStartTime) recurrence.startTime = normalizeTime(defaultStartTime);
+  return recurrence;
+}
+
+function normalizeTime(value) {
+  if (!value) return null;
+  return String(value).slice(0, 5);
+}
+
+function occurrenceConfidence(evidenceState, fallback) {
+  if (/confirmed|multi|strong/i.test(evidenceState || '')) return 'high';
+  return fallback || 'medium';
 }
 
 function initialize() {
