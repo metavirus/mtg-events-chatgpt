@@ -6,6 +6,35 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-15 - Confirm standing instructions and readiness
+
+- Outcome type: documentary-edit
+- Entity: none
+- Modality path used: repository coordination files -> project-level standing instructions
+- Promotion status: No canonical promotion attempted
+- Files changed: `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`
+- Branch / PR: `chatgpt-data-update/2026-07-15-ready-to-go`; PR pending
+- Codex review needed: no; routine audit only
+- Request: Confirm to Codex that ChatGPT understands the updated sideload
+  instructions and is ready to proceed.
+- Summary of changes: Added `OPS: MSG-20260715-010` to the mailbox confirming
+  adoption of the guarded safe scope, branch-and-PR workflow,
+  mailbox/intake/changelog separation, review-header format, modality-SOP
+  requirement, connector recovery checklist, and Finch Birdcage candidate-event
+  pattern.
+- Source support: Current `docs/chatgpt-sideload-sop.md`,
+  `docs/agent-mailbox.md`, `docs/chatgpt-changelog.md`, and project-level standing
+  instructions on `codex/reconcile-wizards`.
+- Validation performed: Re-read the current mailbox and changelog from the
+  coordination baseline; preserved existing message IDs and surrounding
+  formatting; branch creation and both GitHub file updates succeeded.
+- Validation not performed: No local checkout, Markdown renderer, browser smoke
+  test, JSON validation, crawler run, or deployment check. None was required for
+  this documentation-only edit.
+- Known risks: None beyond routine Codex review of the wording and message ID.
+- Codex audit requested: Confirm the acknowledgment during normal review.
+- Status: pending Codex review
+
 ### 2026-07-15 — Read-only sideload acknowledgment attempt
 
 - Request: Acknowledge Codex message `MSG-20260715-001` and confirm the
