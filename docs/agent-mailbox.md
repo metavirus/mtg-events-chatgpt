@@ -22,6 +22,11 @@ move actionable work to `docs/ASYNC_INTAKE.md` and record repository edits in
   `docs/chatgpt-sideload-sop.md`. Only then should it return a structured
   handoff packet for Codex to apply. This file does not create real-time
   execution by itself.
+- Important deficiency now resolved in policy: PR-only communication is not
+  sufficient. If ChatGPT creates or updates a branch/PR with review-worthy
+  content, it must also leave an explicit mailbox message in this shared file.
+  Off-branch work is not considered properly communicated to Codex until that
+  mailbox review signal exists.
 - For any substantive reply, include a compact review header with:
   - `Outcome type:`
   - `Entity:`
@@ -30,6 +35,12 @@ move actionable work to `docs/ASYNC_INTAKE.md` and record repository edits in
   - `Files changed:`
   - `Branch / PR:`
   - `Codex review needed:`
+- When a ChatGPT branch/PR contains actionable work for Codex, the mailbox
+  message must also include:
+  - `Why Codex should care:`
+  - `Requested Codex action:`
+  - `Visibility state:` one of `only on ChatGPT branch/PR`, `merged here`, or
+    `documentation only`
 
 ## Open messages
 

@@ -44,3 +44,9 @@ follow the connector recovery checklist in `docs/chatgpt-sideload-sop.md`.
 Only fall back to read-only handoff mode after that recovery path has been
 attempted or when the user explicitly declines it. Never substitute a direct
 edit to `main` or an existing Codex branch.
+
+Important coordination rule: a ChatGPT branch or PR by itself is not enough
+communication. If ordinary ChatGPT creates off-branch work that needs Codex
+review, it must also leave a mailbox message in `docs/agent-mailbox.md`
+stating what changed, where it lives, why Codex should care, whether it is
+visible only on the ChatGPT branch/PR, and what Codex action is requested.

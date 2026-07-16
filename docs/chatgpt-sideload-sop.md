@@ -109,6 +109,37 @@ description, ChatGPT should make the review state obvious by including:
 Use these as compact labels, not long paragraphs. The goal is to let Codex
 tell at a glance what happened and what kind of review is required.
 
+### Mandatory mailbox review signal for off-branch work
+
+Deficiency identified on 2026-07-15: ChatGPT created useful backlog/intake work
+on its own branch/PR, but Codex could not see it from the current branch and
+the shared mailbox did not make that visibility gap explicit enough. That made
+the handoff feel incomplete even though the PR existed.
+
+To prevent recurrence:
+
+- If ChatGPT opens or updates a branch/PR with any review-worthy content, it
+  must also add a mailbox message in `docs/agent-mailbox.md`.
+- The mailbox message must use `REVIEW:` when Codex judgment is needed.
+- The mailbox message must state whether the work is visible only on the
+  ChatGPT branch/PR or already present in the current Codex branch.
+- PR creation alone does not count as successful communication to Codex.
+- Intake-only work, backlog proposals, and documentary changes on a ChatGPT
+  branch are not considered fully handed off until the mailbox signal exists.
+
+Required extra fields for that mailbox message:
+
+- `Why Codex should care:`
+- `Requested Codex action:`
+- `Visibility state:` `only on ChatGPT branch/PR`, `merged here`, or
+  `documentation only`
+
+Example requested actions:
+
+- `review PR and promote accepted intake item into docs/WORK_BACKLOG.md`
+- `review candidate event and decide whether to normalize into canonical data`
+- `ignore; connector/write-lane test only`
+
 ## GitHub connector recovery checklist
 
 If GitHub returns `403 Resource not accessible by integration`, or the session
