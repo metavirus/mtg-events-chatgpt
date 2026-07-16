@@ -136,38 +136,167 @@ The goal is not full normalization on every first pass. The goal is that the
 user can leave the pass thinking, "I could actually consider this for my next
 outing."
 
-## Source-path failure rule
+## Capability recovery and task continuity
 
-Do not treat one failed access path as equivalent to a blocked source.
+Do not treat the first failed tool or access path as proof that the requested
+capability is unavailable. A failed invocation establishes only that the
+attempted path failed.
 
-Always distinguish:
+### Diagnose the failed layer
 
-- source unavailable;
-- current access path unavailable;
-- current tool/session/browser state unavailable;
-- source available but not yet recoverably readable.
+Distinguish among:
 
-### Required recovery behavior
+- external source or service availability;
+- authentication;
+- plugin or connector installation;
+- authorization for the target repository, project, or resource;
+- tool exposure in the current task;
+- sandbox or filesystem permission;
+- runtime availability versus launcher or `PATH` discovery;
+- browser, login, or session state;
+- transport or server health;
+- application initialization, routing, or interaction health.
 
-If an important source does not work on first try:
+A successful lower-layer probe proves only that layer. An HTTP response does
+not prove that application interactions work; a connected account does not
+prove that its plugin is installed or authorized for the target; and a missing
+launcher does not prove that the underlying runtime is absent.
 
-1. confirm whether the source itself is truly down or only the current path failed;
-2. try the approved alternate modality for that source;
-3. recover session/browser state if there is reason to think the page is stale,
-   collapsed, lazy-loaded, login-sensitive, or fetch-limited;
-4. only then preserve uncertainty and move on.
+### One bounded recovery cycle
 
-Do not move on while obvious, bounded recovery modalities remain available.
+When a required capability appears unavailable:
 
-### Examples
+1. inspect the available tools, skills, plugins, bundled runtimes, and approved
+   alternate modalities;
+2. consult the relevant repository instructions and official product
+   documentation when installation, authorization, or product behavior is
+   uncertain;
+3. try the smallest safe alternate path or recovery action;
+4. retest the exact failed operation with the smallest safe probe;
+5. stop after one bounded recovery cycle unless new evidence materially changes
+   the diagnosis.
 
-- If the static fetch path does not expose an event but a live page likely will,
-  try the live page path before declaring the source weak.
-- If one website subpage is noisy or partially rendered, inspect the direct
-  event page, calendar view, or alternate official route before concluding the
-  event is unavailable.
-- If Discord is accessible but one channel view is thin, check the most likely
-  announcements/events/LFG surfaces before concluding the server has little value.
+Do not repeat the same failed path without new evidence. Never turn "the first
+route failed" or "I have not found the route" into "this cannot be done."
+
+For important research sources, the approved alternate modality remains part of
+this same recovery cycle. For example, try a live page when static extraction is
+insufficient, a direct official event route when a calendar page is noisy, or
+the likely announcements/events/LFG channels before classifying an accessible
+Discord as low value.
+
+Recovery does not broaden user authorization. It does not justify destructive
+actions, credential changes, publication, external writes, or scope expansion.
+
+### Preserve the current task when practical
+
+Prefer recovering the capability inside the current well-contextualized task.
+Do not recommend a fresh task merely because one invocation failed, one
+launcher name is missing, a session may be stale, or the first connector path
+returned an error.
+
+Use a fresh task only when evidence shows that the current task cannot receive
+the required capability or the current task has become operationally unhealthy.
+Before assigning implementation, inventory or minimally probe the fresh task's
+relevant capability. Keep its first operation bounded.
+
+A fresh operator task must receive:
+
+- one exact target;
+- authoritative state files and commit or branch references;
+- preservation rules;
+- permitted and prohibited actions;
+- required validation;
+- explicit stop conditions.
+
+Do not assume that a new task has equivalent tools, judgment, model behavior,
+authorization, or conversational context. Do not transfer broad project
+ownership merely because one tool is available.
+
+If recovery fails, report the exact failed layer, recovery paths attempted,
+evidence gathered, and the smallest required user action or environmental
+change.
+
+## Compaction resilience
+
+Compaction is a continuity event, not proof that implementation failed.
+
+### Isolated compaction
+
+After one isolated compaction, continue directly when the exact target, file,
+and next step remain clear. Inspect the branch, diff, and named authoritative
+state only when continuity is uncertain. Do not impose a mandatory recovery
+ceremony or reconstruct the whole project after every marker.
+
+When inspection is needed:
+
+1. check the current branch, diff, and relevant authoritative state;
+2. restate the target in one sentence;
+3. resume from the interrupted file, command, or validation step;
+4. finish the current bounded batch when safe and still authorized.
+
+### Operational warning pattern
+
+Marker count alone is insufficient. Productive work has completed in turns
+with multiple compaction markers.
+
+Treat repeated or clustered compaction as an operational warning only when it
+is accompanied by one or more continuity failures:
+
+- the exact target is lost or repeatedly redefined;
+- the agent repeatedly re-anchors without acting;
+- the same bounded batch cannot reach edit, validation, or checkpoint;
+- the user must repeatedly ask whether work is progressing;
+- the task resumes broad project reconstruction instead of the interrupted
+  step.
+
+This pattern shows continuity risk. It does not establish the product-internal
+cause of compaction.
+
+### Predictable checkpoint moments
+
+Preserve durable state:
+
+- after a completed tranche;
+- before changing workstreams;
+- before risky operations;
+- after a material architecture or scope decision;
+- when substantial work has accumulated without a durable checkpoint.
+
+Record only what continuity requires: branch and worktree state, current diff
+and provenance, relevant commits, completed and pending validation, accepted
+decisions and deferrals, the one remaining target, and required capabilities.
+Prefer existing frontier, backlog, recovery, and run-note files over redundant
+summaries.
+
+### Finish or retire
+
+Finish one exact authorized unit before switching tasks when safe: for changes,
+edit, validate, and checkpoint; for read-only work, complete the evidence-backed
+analysis. Stop and retire the task when continuity failures repeatedly prevent
+the same bounded unit from closing, the target cannot remain exact, or a
+required capability is available only elsewhere.
+
+Do not preserve an unhealthy task indefinitely merely because it has accumulated
+context. Before retirement, prioritize:
+
+1. preserving uncommitted work or its exact diff;
+2. recording branch and commit state;
+3. recording completed and pending validation;
+4. identifying one remaining target and its required capabilities.
+
+Do not require an unhealthy task to generate a comprehensive narrative if that
+would perpetuate the loop. A fresh documentary task may reconstruct the handoff
+from durable repository evidence and read the old transcript without waking or
+continuing it.
+
+Before implementation moves to a successor, minimally probe its required
+capability and give it one bounded first operation. Do not assume the successor
+inherits the old task's tools, authorization, judgment, or context.
+
+Do not encode narration, scope, screenshots, model choice, or another observed
+behavior as the proven cause of compaction. The exact product trigger may be
+unknowable from transcript evidence.
 
 ## When to escalate immediately
 

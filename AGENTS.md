@@ -20,6 +20,18 @@ Surface structural risks early. If you notice encoding drift, branch/worktree
 ambiguity, schema mismatch, or another issue that could compound silently,
 pause and raise it before continuing deeper work.
 
+If a tool, connector, runtime, browser path, or task capability appears
+unavailable, follow the Capability Recovery and Task Continuity protocol in
+`docs/COLLABORATION_SOP.md` and its concise checklist in
+`docs/EFFICIENCY_SOP.md`. Do not treat the first failed path as proof that the
+capability is unavailable.
+
+If repeated compaction threatens execution continuity, follow the Compaction
+Resilience protocol in `docs/COLLABORATION_SOP.md`. Marker count alone is not a
+warning; use the documented continuity-failure criteria. Resume directly after
+an isolated compaction when the target remains clear, and retire an unhealthy
+task only after preserving the exact working state and bounding its successor.
+
 ## ChatGPT Sideload Coordination
 
 Before handling work originating in ordinary ChatGPT, read:

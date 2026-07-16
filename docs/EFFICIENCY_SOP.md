@@ -243,14 +243,10 @@ But do not synthesize from memory when a high-value source is visibly richer
 than your current notes. Re-open the source and perform one explicit extraction
 check for the user's highest-interest event classes before finalizing.
 
-If an important source seems blocked, spend one bounded recovery cycle before
-accepting the blocker:
-
-- verify whether the failure is source-side or tool-path-specific
-- switch to the approved fallback path
-- refresh stale browser/session state when applicable
-
-Only preserve uncertainty after that bounded recovery cycle is exhausted.
+If an important source seems blocked, use the one bounded recovery cycle in the
+Capability and Compaction Checklist below. Distinguish source-side failure from
+tool-path or session failure, use the approved fallback, and preserve
+uncertainty only after that bounded cycle is exhausted.
 
 ### 4. Use promotion tiers
 
@@ -293,14 +289,58 @@ for the same source sweep again.
 
 ### 1. Pause at clean handoff points
 
-Good pause points:
+Checkpoint at predictable moments:
 
 - a tranche completed
 - a source pass completed
 - a stable interpretation reached
-- before risky edits
+- before changing workstreams
+- before risky operations
+- after a material architecture or scope decision
+- when substantial work has accumulated without a durable checkpoint
 
-At a pause point, summarize clearly and stop.
+A checkpoint preserves durable state. Stop and yield to the user only at an
+appropriate user-facing handoff, when requested, when blocked, or before an
+action requiring new authority. Otherwise, checkpoint and continue when the
+current authorized task still has safe work remaining.
+
+### 1a. Capability and compaction checklist
+
+When a capability appears unavailable:
+
+1. identify the failed layer precisely;
+2. inspect available tools, skills, plugins, runtimes, and approved alternate
+   paths;
+3. consult official documentation when setup or authorization is uncertain;
+4. perform one bounded recovery cycle;
+5. retest the exact operation with a minimal safe probe;
+6. do not repeat the same failed path without new evidence.
+
+When compaction occurs:
+
+1. continue directly if the exact target, file, and next step remain clear;
+2. inspect branch, diff, and authoritative state only if continuity is
+   uncertain;
+3. avoid broad rereads, project reconstruction, and repeated re-anchoring;
+4. finish one exact authorized unit; for changes, edit, validate, and
+   checkpoint; for read-only work, complete the evidence-backed analysis; then
+   report concisely;
+5. treat marker count alone as insufficient; act on repeated or clustered
+   markers only when accompanied by lost target, repeated re-anchoring, failure
+   to close the batch, repeated user status checks, or broad reconstruction;
+6. if those continuity failures persist, preserve the exact diff, branch and
+   commit state, validation state, remaining target, and required capabilities,
+   then retire the unhealthy task;
+7. before assigning implementation to a successor, inventory or minimally
+   probe its required capability and keep its first operation bounded.
+
+Do not require an unhealthy task to produce a comprehensive history. A fresh
+documentary task can reconstruct a handoff from durable repository evidence and
+the old transcript without waking it.
+
+Compaction does not prove implementation failure. Recovery and persistence do
+not broaden authority, scope, publication rights, credential access, or
+permission for destructive actions.
 
 ### 2. Name the operating mode
 
