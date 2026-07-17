@@ -152,12 +152,13 @@ async function loadFromSupabase() {
   const sourcesBySeries = groupValues(eventSources.filter((item) => item.series_id), (item) => item.series_id, (item) => item.source_id);
   const sourcesByOccurrence = groupValues(eventSources.filter((item) => item.occurrence_id), (item) => item.occurrence_id, (item) => item.source_id);
   const seriesById = new Map(series.map((item) => [item.id, item]));
+  const occurrenceSeriesIds = new Set(occurrences.map((item) => item.series_id));
 
   DATA.stores = venues.map((item) => mapVenue(item, sourceIdsByEntity, evaluationByEntity));
   DATA.sources = sources.map(mapSource);
   DATA.changes = changes.map(mapResearchChange);
   DATA.events = [
-    ...series.map((item) => mapEventSeries(item, sourcesBySeries)),
+    ...series.filter((item) => !occurrenceSeriesIds.has(item.id)).map((item) => mapEventSeries(item, sourcesBySeries)),
     ...occurrences.map((item) => mapEventOccurrence(item, seriesById.get(item.series_id), sourcesByOccurrence))
   ].filter(Boolean);
 
@@ -206,7 +207,8 @@ function mapVenue(item, sourceIdsByEntity, evaluationByEntity) {
     distanceMiles: item.distance_miles == null ? null : Number(item.distance_miles),
     status: item.operating_status,
     lastVerified: item.last_verified || '',
-    researchStatus: item.research_status,
+    researchStatus: normalizeResearchStatusForUi(item.research_status),
+    researchStage: item.research_status,
     evaluation: mapEvaluation(evaluationByEntity.get(`venue:${item.id}`)),
     assessment: item.assessment || {},
     assessmentNotes: item.assessment_notes || '',
@@ -219,7 +221,8 @@ function mapCommunity(item, sourceIdsByEntity, evaluationByEntity) {
     id: item.id,
     name: item.name,
     region: item.region || '',
-    status: item.research_status,
+    status: normalizeResearchStatusForUi(item.research_status),
+    researchStage: item.research_status,
     formats: item.formats || [],
     channel: item.primary_channel || '',
     summary: item.summary || '',
@@ -228,6 +231,12 @@ function mapCommunity(item, sourceIdsByEntity, evaluationByEntity) {
     evaluation: mapEvaluation(evaluationByEntity.get(`community:${item.id}`)),
     sourceIds: sourceIdsByEntity.get(`community:${item.id}`) || []
   };
+}
+
+function normalizeResearchStatusForUi(value) {
+  if (value === 'reviewed' || value === 'deepened') return 'partial';
+  if (value === 'discovery') return 'wizards-discovery';
+  return value;
 }
 
 function mapSource(item) {
@@ -315,7 +324,8 @@ function mapEventOccurrence(item, series, sourcesByOccurrence) {
     sourceId: (sourcesByOccurrence.get(item.id) || [])[0],
     lastVerified: series.last_verified || '',
     confidence: occurrenceConfidence(item.evidence_state, series.confidence),
-    status: item.occurrence_status || series.event_status
+    status: series.event_status,
+    occurrenceStatus: item.occurrence_status || null
   };
 }
 
