@@ -40,6 +40,49 @@ Use this hierarchy unless a run note explains a better store-specific routing:
     community energy, correction value when official sources are thin
   - weak for: access friction, exhaustive reading cost
 
+## Secondary source-routing rules
+
+Use the ChatGPT source-map findings as a standard routing aid in future
+research batches. These sources are useful, but they do not all prove the same
+kind of fact.
+
+Event records require official or event-platform evidence whenever possible.
+Preferred event-fact sources remain official store calendars/sites,
+Wizards/EventLink, registration systems, and store-controlled event posts.
+
+Use review and marketplace sources for fit, confidence, warnings, identity, and
+prioritization:
+
+- **Google-derived mirrors** such as KeepUp, Card Shop Hub, Card Shops Finder,
+  CardShows.io, PokemonCard.info, and Board Game Cafe Finder are useful for
+  rough ratings, review excerpts, play-space/community signals, and identity
+  checks. Treat them as secondary mirrors; do not merge counts blindly.
+- **Yelp-derived mirrors** such as Yahoo Local, MapQuest, Roadtrippers, Apple
+  Maps, and Giftly are useful for solo-arrival fit, staff/service risks,
+  pricing concerns, community texture, play-space descriptions, and
+  "locals only" warnings. Do not treat Yelp or its mirrors as canonical event
+  proof.
+- **TCGplayer seller profiles** are useful for active commerce, MTG inventory
+  depth, and seller reliability. They are not proof of in-person play.
+- **Whatnot** is useful for commerce/community scale and identity. It is not
+  proof of organized play.
+- **Non-MTG organized-play locators** such as Yu-Gi-Oh!, Flesh and Blood,
+  Pokemon, and Lorcana/Ravensburger are useful to confirm physical operation,
+  event-hosting capability, address, and branch identity. They are not a
+  substitute for MTG event confirmation.
+- **Linktree/social routers** are high-value for branch-specific Discord,
+  Facebook, calendar, and community routing, especially for multi-branch
+  businesses.
+- **Discord and public community surfaces** are useful for LFG, turnout, event
+  graphics, solo-arrival support, and community health. Distinguish public
+  metadata from actual channel evidence.
+
+Branch-conflicting review sources must be preserved as conflicts, not averaged.
+If a review mirror, marketplace, or non-MTG locator points to a different
+branch, former location, predecessor, or ambiguous address, record the conflict
+and route the next check to official branch-specific sources before applying
+the signal to a venue or event.
+
 ## Pass types
 
 ### 1. Strict first pass
