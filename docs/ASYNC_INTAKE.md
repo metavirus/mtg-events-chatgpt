@@ -26,6 +26,27 @@ changes.
 
 ## New / active items
 
+### INTAKE-20260716-001 — Consolidated Supabase-ready venue research packet
+- Outcome type: intake-only
+- Entity: 55 researched stores, branches, community venues, events, and identity/status candidates
+- Modality path used: existing repo records and run notes -> Wizards snapshot evidence -> official websites/calendars -> Instagram/social routing -> Discord evidence/public metadata -> Google/Yelp-derived mirrors -> publisher organized-play lists -> marketplaces -> local reporting/community platforms
+- Promotion status: Candidate queued for Codex review
+- Files changed: `research/intake/2026-07-16-supabase-ready-intake/README.md`, `research/intake/2026-07-16-supabase-ready-intake/01-requested-26-venues.md`, `research/intake/2026-07-16-supabase-ready-intake/02-existing-repo-catchup-29.md`, `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`, `docs/agent-mailbox.md`
+- Branch / PR: `chatgpt-data-update/2026-07-16-research-intake`; PR pending
+- Codex review needed: Deduplicate and validate the packet, resolve entity/status conflicts, replay stale event sources, and decide which corrections/events/candidates should be promoted through the canonical or Supabase migration workflow.
+- Submitted by: User / ChatGPT
+- Date: 2026-07-16
+- Type: research-follow-up
+- Status: new
+- Risk: codex-required
+- Related entity: 55 existing/candidate venue records; see packet index
+- Request / observation: Consolidate all research already gathered into one fixed-schema, source-preserving intake packet suitable for later Supabase transformation without editing canonical JSON or writing to Supabase.
+- Source support: Exact URLs and source modality labels are included per record in `research/intake/2026-07-16-supabase-ready-intake/`. Supporting detailed run notes remain under `research/runs/2026-07-16-*`.
+- Desired outcome: Codex reviews the packet, reconciles duplicates/branches/moves/closure conflicts, validates freshness, and maps accepted facts to the eventual Supabase ingestion process.
+- Suggested next step: Review high-priority event candidates first, then identity/status conflicts, then no-action records. Do not ingest unresolved review counts or branch-conflated evidence.
+- User decision needed: no
+- Related mailbox/changelog/PR: `MSG-20260716-002`; changelog entry dated 2026-07-16; PR pending
+
 <!-- Copy this block for each item.
 ### INTAKE-YYYYMMDD-NNN — Short title
 - Submitted by: User / ChatGPT / Codex / app
