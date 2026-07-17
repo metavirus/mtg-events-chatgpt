@@ -991,7 +991,7 @@ function renderEventCatalog() {
   const start = startOfDay(new Date());
   const rawEvents = buildOccurrences(start, endOfDay(addDays(start, 56)));
   const events = eventCatalogMatches(rawEvents);
-  document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${new Set(events.map((event) => event.storeId)).size}</strong><span>places represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>${state.eventCatalogFilter === 'best' ? 'Best-fit ordering' : 'Full catalog view'}</strong><span>${state.eventCatalogView === 'list' ? 'sortable list' : state.eventCatalogView === 'week' ? 'weekly layout' : 'monthly layout'}</span></div>`;
+  document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${new Set(events.map((event) => event.storeId)).size}</strong><span>places represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>${state.eventCatalogFilter === 'best' ? 'Best-fit ordering' : 'Recommended first'}</strong><span>${state.eventCatalogView === 'list' ? 'full catalog list' : state.eventCatalogView === 'week' ? 'weekly layout' : 'monthly layout'}</span></div>`;
   if (!events.length) {
     document.getElementById('eventCatalog').innerHTML = emptyState('No catalog matches', 'Clear filters or search terms to restore events.');
     return;
@@ -1004,7 +1004,15 @@ function renderEventCatalog() {
     document.getElementById('eventCatalog').innerHTML = renderEventCatalogMonth(events, start);
     return;
   }
-  document.getElementById('eventCatalog').innerHTML = `<div class="catalog-grid prioritized-grid">${events.slice(0, 120).map((event) => eventCard(event, false, { showDate: true, emphasize: true })).join('')}</div>`;
+  const recommended = events.slice(0, 6);
+  document.getElementById('eventCatalog').innerHTML = `<section class="catalog-featured" aria-label="Recommended events">
+    <div class="today-section-heading"><div><p class="eyebrow mint">Recommended first</p><h2>High-signal events to scan first</h2></div><span>${recommended.length} surfaced</span></div>
+    <div class="catalog-grid prioritized-grid">${recommended.map((event) => eventCard(event, false, { showDate: true, emphasize: true })).join('')}</div>
+  </section>
+  <section class="catalog-all-events">
+    <div class="today-section-heading"><div><p class="eyebrow">Full catalog</p><h2>All matching events</h2></div><span>${events.length} total</span></div>
+    <div class="catalog-grid">${events.slice(0, 120).map((event) => eventCard(event, false, { showDate: true, emphasize: recommended.some((item) => todayLeadKey(item) === todayLeadKey(event)) })).join('')}</div>
+  </section>`;
 }
 
 function eventCatalogMatches(events) {
@@ -1016,7 +1024,7 @@ function eventCatalogMatches(events) {
   } else if (state.eventCatalogFilter === 'draft') {
     filtered = filtered.filter((event) => /draft/i.test(`${event.title} ${event.format} ${event.eventType}`));
   }
-  const sorter = state.eventCatalogFilter === 'best'
+  const sorter = state.eventCatalogFilter === 'all' || state.eventCatalogFilter === 'best'
     ? (a, b) => eventCatalogPriority(b) - eventCatalogPriority(a) || a.occurrenceDate - b.occurrenceDate
     : (a, b) => a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b));
   return [...filtered].sort(sorter);
