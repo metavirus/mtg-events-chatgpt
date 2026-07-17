@@ -95,6 +95,78 @@ Batch 1 scope:
   public-facing before relying on any in-person Commander record.
 - Do not chase now: physical status or Wizards validity replay.
 
+## Batch 2 disposition — completed structurally
+
+Batch 2 scope:
+
+- The Bullpen 2.0
+- DXN Provisions
+- Revenge Of
+- Odyssey Games - Pasadena
+
+### The Bullpen 2.0
+
+- Packet source: `01-requested-26-venues.md` item 16.
+- Existing ID: `the-bullpen-2-0`.
+- Current packet decision: `conflict/status TBD` plus `stale / historical`.
+- Event decision: no new event write from packet triage.
+- Reason: Supabase already has a Weekly Commander row from Wizards/EventLink,
+  but the packet does not provide current operation support. Packet evidence is
+  historical: older industry features support a real prior Magic/tournament
+  store, while map evidence flags the historical location closed and the current
+  repo address/status remain unresolved.
+- Durable TBD: resolve current operation, address continuity, and whether the
+  Wizards record is current before treating Bullpen as actionable.
+- Do not chase now: relocation/status archaeology or fresh Wizards replay.
+
+### DXN Provisions
+
+- Packet source: `01-requested-26-venues.md` item 19.
+- Existing ID: `dxn-provisions`.
+- Current packet decision: `no-write / no-action` plus `source/evidence-only`.
+- Event decision: no new event write from packet triage.
+- Reason: Supabase already has a Dxn Casual Commander Night row from
+  Wizards/EventLink. The packet adds only a mixed-hobby/source-routing read:
+  official identity historically emphasizes Mini 4WD, while TCGplayer and some
+  reviews support a broader TCG footprint. It does not supply a new credible
+  event or a strong reason to prioritize DXN for personal planning.
+- Durable TBD: only revisit if current Wizards/social evidence emerges or the
+  venue becomes geographically/planning relevant.
+- Do not chase now: broad review or current social replay.
+
+### Revenge Of
+
+- Packet source: `01-requested-26-venues.md` item 20.
+- Existing ID: `revenge-of`.
+- Current packet decision: `no-write / no-action` plus `source/evidence-only`.
+- Event decision: no new event write from packet triage.
+- Reason: Supabase already has a Casual Commander row from Wizards/EventLink.
+  Packet evidence shows a comic/pop-culture/pinball venue with MTG products,
+  but official current events are not Magic-focused and no actionable Magic
+  event is supplied by the packet.
+- Durable TBD: keep the Wizards-vs-low-visible-Magic-emphasis tension as a
+  deprioritization/context note; only replay if a current official/social Magic
+  signal appears.
+- Do not chase now: current events-page monitoring or Magic emphasis research.
+
+### Odyssey Games - Pasadena
+
+- Packet source: `01-requested-26-venues.md` item 22.
+- Existing ID: `odyssey-games-pasadena`.
+- Current packet decision: `deeper-research TBD` plus `source/evidence-only`.
+- Event decision: no new event write from packet triage.
+- Reason: Supabase already has Monday and Friday Casual Commander rows from
+  Wizards/EventLink. The packet supports Odyssey as a large established gaming
+  store with general Magic activity and a large positive review corpus, but it
+  also preserves a solo-arrival/community-fit caution: one review described the
+  MTG community as cliquish or difficult for unaffiliated players. The packet
+  does not provide enough current calendar/community detail to write additional
+  event rows.
+- Durable TBD: later review calendar/community signals if Odyssey becomes a
+  serious candidate; specifically test whether the solo-arrival caution is
+  representative.
+- Do not chase now: full calendar, Discord, or review replay.
+
 ## Remaining packet items
 
 ### Requested 26 venues packet
@@ -116,13 +188,13 @@ Batch 1 scope:
 | Alamo Drafthouse Cinema Downtown Los Angeles | remaining event-looking / likely stale or venue-only TBD | Batch 3 packet triage. |
 | The Game Cellar | applied / superseded | Event replay A handled. |
 | GXGAMERS | applied | Already evaluated. |
-| The Bullpen 2.0 | remaining conflict/status TBD | Batch 2 packet triage. |
+| The Bullpen 2.0 | conflict/status TBD / stale-historical | Batch 2 disposed structurally; current operation/address continuity later. |
 | Turn Zero Games | applied / Replay B tied off | Source/evaluation implications already in Supabase. |
 | CoreTCG | applied / Replay B tied off | Source/evaluation implications already in Supabase. |
-| DXN Provisions | remaining no-write or source/evidence-only candidate | Batch 2 packet triage. |
-| Revenge Of | remaining no-write or source/evidence-only candidate | Batch 2 packet triage. |
+| DXN Provisions | no-write / no-action plus source-evidence-only | Batch 2 disposed structurally; revisit only if current Magic signal emerges. |
+| Revenge Of | no-write / no-action plus source-evidence-only | Batch 2 disposed structurally; low visible Magic emphasis preserved. |
 | Next-Gen Games | applied / superseded | Event replay A handled. |
-| Odyssey Games - Pasadena | remaining source/evidence-only or deeper TBD | Batch 2 packet triage. |
+| Odyssey Games - Pasadena | deeper-research TBD / source-evidence-only | Batch 2 disposed structurally; calendar/community fit later if prioritized. |
 | Crown City Games | remaining source/evidence-only or deeper TBD | Batch 3 packet triage. |
 | Comic Quest | applied / Replay B tied off | Source/evaluation implications already in Supabase; God of Mischief remains deeper TBD unless stronger source confirms it. |
 | It's GameTime! | applied / superseded | Event replay A handled. |
@@ -163,16 +235,6 @@ Batch 1 scope:
 | Consolidated identity/status conflict record | partially applied / remaining conflict-status TBD | Batch A resolved key conflicts; remaining conflict items are tracked above. |
 
 ## Remaining immediate packet-ingest batches
-
-### Batch 2 — event-looking triage B
-
-- The Bullpen 2.0
-- DXN Provisions
-- Revenge Of
-- Odyssey Games - Pasadena
-
-Goal: no deep research; decide event write now, source/evidence-only, no-write,
-stale/historical, conflict/status TBD, or deeper-research TBD.
 
 ### Batch 3 — event-looking triage C
 
