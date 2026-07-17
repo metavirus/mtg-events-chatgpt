@@ -167,6 +167,68 @@ Batch 2 scope:
   representative.
 - Do not chase now: full calendar, Discord, or review replay.
 
+## Batch 3 disposition - completed structurally
+
+### Crown City Games
+
+- Packet source: `01-requested-26-venues.md` item 23.
+- Existing ID: `crown-city-games`.
+- Current packet decision: `superseded by later Codex pass` plus
+  `source/evidence-only`.
+- Event decision: no new event write from packet triage.
+- Reason: the packet treated Crown City as a promising physical/community venue
+  with no current actionable Magic cadence yet confirmed. The current data has
+  already moved beyond that packet state with Wizards/EventLink-backed event
+  rows for cEDH, Friendly Commander, and Friday Night Magic Friendly Commander.
+  The packet's Old Pasadena district profile and TCGList notes remain useful
+  as venue-quality/source-routing evidence, but they do not require a new
+  event write.
+- Durable TBD: later Places-assessment pass can use the district/profile
+  evidence to clarify newcomer friendliness, broad TCG environment, and
+  physical play-space confidence.
+- Do not chase now: official social/calendar replay or community-fit review
+  work.
+
+### A & N Collectibles
+
+- Packet source: `01-requested-26-venues.md` item 26.
+- Existing ID: `a-and-n-collectibles`.
+- Current packet decision: `source/evidence-only` plus `deeper-research TBD`.
+- Event decision: no new event write from packet triage.
+- Reason: the packet gives useful venue-assessment evidence: mixed
+  sports-card/TCG identity, strong review volume, review mentions of drafts,
+  Commander, weekly Magic tournaments, a tournament room, and deck-building
+  help. Current repository data already has A & N at `partial` with Wizards,
+  Facebook, Instagram, and Google/search source coverage. The packet does not
+  provide a store-controlled current event schedule, so its event implications
+  should remain assessment/evidence support rather than new event rows.
+- Durable TBD: later Places-assessment pass should decide whether A & N's fit
+  score/description should improve from the review-supported Magic signals,
+  while keeping confidence bounded until an official current calendar or social
+  event stream is replayed.
+- Do not chase now: direct Yelp/review replay, fees, turnout, or official
+  calendar extraction.
+
+### Alamo Drafthouse Cinema Downtown Los Angeles
+
+- Packet source: `01-requested-26-venues.md` item 13.
+- Existing ID: `alamo-drafthouse-cinema-downtown-los-angeles`.
+- Current packet decision: `superseded by later Codex pass` plus
+  `conflict/status TBD`.
+- Event decision: no new event write from packet triage.
+- Reason: the packet found an active cinema venue, a Wizards organization
+  record, and no ordinary ongoing public Magic identity. Current repository
+  data already contains a Wizards/EventLink-backed Casual Commander Nights row,
+  so the packet should not be used to add anything new. The useful unresolved
+  question is not "create event now"; it is whether Alamo should remain a
+  venue-only/special-case planning record, and how much confidence to assign to
+  a cinema-hosted Magic listing compared with ordinary LGS/community stores.
+- Durable TBD: later review/venue pass should verify whether the Magic listing
+  is recurring and practical for personal attendance, and whether the venue
+  should be deprioritized despite the event row.
+- Do not chase now: organizer provenance, The Bloc address variants, or
+  cinema-review replay.
+
 ## Remaining packet items
 
 ### Requested 26 venues packet
@@ -185,7 +247,7 @@ Batch 2 scope:
 | Aki Collectibles | applied | Already evaluated. |
 | The Game Chest - Irvine | applied / conflict resolved enough | Batch A clarified Alton/Spectrum context. |
 | Otaku Vault | applied | Already evaluated. |
-| Alamo Drafthouse Cinema Downtown Los Angeles | remaining event-looking / likely stale or venue-only TBD | Batch 3 packet triage. |
+| Alamo Drafthouse Cinema Downtown Los Angeles | superseded by later Codex pass / conflict-status TBD | Batch 3 disposed structurally; later venue-only/practicality check only. |
 | The Game Cellar | applied / superseded | Event replay A handled. |
 | GXGAMERS | applied | Already evaluated. |
 | The Bullpen 2.0 | conflict/status TBD / stale-historical | Batch 2 disposed structurally; current operation/address continuity later. |
@@ -195,10 +257,10 @@ Batch 2 scope:
 | Revenge Of | no-write / no-action plus source-evidence-only | Batch 2 disposed structurally; low visible Magic emphasis preserved. |
 | Next-Gen Games | applied / superseded | Event replay A handled. |
 | Odyssey Games - Pasadena | deeper-research TBD / source-evidence-only | Batch 2 disposed structurally; calendar/community fit later if prioritized. |
-| Crown City Games | remaining source/evidence-only or deeper TBD | Batch 3 packet triage. |
+| Crown City Games | superseded by later Codex pass / source-evidence-only | Batch 3 disposed structurally; later assessment/source replay only if prioritized. |
 | Comic Quest | applied / Replay B tied off | Source/evaluation implications already in Supabase; God of Mischief remains deeper TBD unless stronger source confirms it. |
 | It's GameTime! | applied / superseded | Event replay A handled. |
-| A & N Collectibles | remaining source/evidence-only or deeper TBD | Batch 3 packet triage. |
+| A & N Collectibles | source-evidence-only / deeper-research TBD | Batch 3 disposed structurally; later assessment pass should use review-supported Magic signals. |
 
 ### Existing repo catch-up 29 packet
 
@@ -235,14 +297,6 @@ Batch 2 scope:
 | Consolidated identity/status conflict record | partially applied / remaining conflict-status TBD | Batch A resolved key conflicts; remaining conflict items are tracked above. |
 
 ## Remaining immediate packet-ingest batches
-
-### Batch 3 — event-looking triage C
-
-- Crown City Games
-- A & N Collectibles
-- Alamo Drafthouse Cinema Downtown Los Angeles
-
-Goal: same structural disposition as Batch 2.
 
 ### Batch 4 — remaining conflict/status sweep
 
