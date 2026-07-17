@@ -723,10 +723,16 @@ function eventMatchesPreset(event, preset) {
 function rangeForView() {
   if (state.view === 'agenda') return { start: startOfDay(state.date), end: endOfDay(addDays(state.date, state.agendaDays)) };
   if (state.view === 'week') {
-    const start = startOfDay(addDays(state.date, -state.date.getDay()));
+    const start = fridayWeekStart(state.date);
     return { start, end: endOfDay(addDays(start, 6)) };
   }
   return { start: new Date(state.date.getFullYear(), state.date.getMonth(), 1), end: endOfDay(new Date(state.date.getFullYear(), state.date.getMonth() + 1, 0)) };
+}
+
+function fridayWeekStart(date) {
+  const day = date.getDay();
+  const offset = (day - 5 + 7) % 7;
+  return startOfDay(addDays(date, -offset));
 }
 
 function buildOccurrences(start, end, applyFilters = true) {
@@ -911,7 +917,7 @@ function renderWeek(events, start) {
   document.getElementById('calendarContent').innerHTML = `<div class="week-helper"><span>${weekendCount} Fri-Sun matches this week</span><span>Weekend columns are emphasized for planning.</span></div><div class="week-grid">${Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
-    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong></header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
+    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${isWeekend(date) ? '<em>Focus</em>' : ''}</header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
   }).join('')}</div>`;
 }
 
@@ -1067,11 +1073,11 @@ function eventCatalogPriority(event) {
 }
 
 function renderEventCatalogWeek(events, start) {
-  const weekStart = addDays(start, -start.getDay());
+  const weekStart = fridayWeekStart(start);
   return `<div class="week-grid event-catalog-week">${Array.from({ length: 7 }, (_, index) => {
     const date = addDays(weekStart, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
-    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong></header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
+    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${isWeekend(date) ? '<em>Focus</em>' : ''}</header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
   }).join('')}</div>`;
 }
 
