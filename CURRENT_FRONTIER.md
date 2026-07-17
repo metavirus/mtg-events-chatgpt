@@ -43,12 +43,11 @@ Immediate next tranche:
    baseline; do not rediscover the Supabase state from scratch.
 2. Verify the current migration files match the accepted remote/read-adapter
    state.
-3. Implement the smallest safe controlled workflow for future Codex research
-   updates: proposal validation, reviewable SQL, pre-write export/backup,
-   post-write verification, and deterministic JSON recovery/export.
+3. Validate the Supabase-default read path with JSON fallback and a real
+   usability/parity checkpoint.
 4. Do not perform new venue/event research, canonical data expansion, deployment,
-   default-source switching, authenticated personal/workflow writes, or broad UX
-   polish during that tranche.
+   authenticated personal/workflow writes, or broad UX polish during that
+   checkpoint.
 
 Execution model:
 
@@ -437,15 +436,13 @@ older notes saying "repair Tweedy first" as current next work.
 
 ## Recommended next step
 
-Run the next bounded Supabase operational-write readiness tranche. The goal is
-not deployment, read cutover, or new research. The goal is to make future
-research updates safe by routing them through controlled Supabase writes and
-deterministic JSON export/recovery rather than manual canonical JSON edits.
+Run the next real usability/parity checkpoint against the Supabase-default app.
+The goal is not deployment or new research. The goal is to verify the app is
+usable and semantically equivalent with Supabase as the operational read source
+and JSON retained as explicit recovery fallback.
 
 ## After that
 
-- make Supabase the default application read source with JSON fallback
-- perform a real usability/parity checkpoint
 - resume and complete the bounded research universe through controlled
   Supabase writes
 - run final research coverage and data-integrity assurance

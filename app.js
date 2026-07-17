@@ -67,6 +67,7 @@ const state = {
   },
   personal: loadPersonal()
 };
+state.dataSource = 'loading';
 
 function loadPersonal() {
   try {
@@ -114,15 +115,20 @@ function compareText(a, b, options = { sensitivity: 'base' }) {
 }
 
 async function load() {
-  if (new URLSearchParams(window.location.search).get('data') === 'supabase') {
+  const dataSource = new URLSearchParams(window.location.search).get('data');
+  if (dataSource !== 'json') {
     try {
       await loadFromSupabase();
+      state.dataSource = 'supabase';
       state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
       initialize();
       return;
     } catch (error) {
       console.warn('Supabase read failed; falling back to JSON snapshot.', error);
+      state.dataSource = 'json-fallback';
     }
+  } else {
+    state.dataSource = 'json';
   }
   await loadFromJson();
   state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
@@ -350,6 +356,7 @@ function occurrenceConfidence(evidenceState, fallback) {
 }
 
 function initialize() {
+  document.body.dataset.dataSource = state.dataSource;
   bindStaticEvents();
   routeFromHash();
   renderAll();

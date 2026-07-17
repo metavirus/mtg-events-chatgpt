@@ -1,8 +1,7 @@
 # Supabase setup and migration
 
-Supabase is the intended operational data layer for MTG Events. The public app
-continues to use the checked-in JSON snapshot until this migration passes every
-acceptance check.
+Supabase is the default operational read layer for MTG Events. The checked-in
+JSON snapshot remains available as explicit recovery/export fallback.
 
 ## Files
 
@@ -59,7 +58,7 @@ authorized, and verified after write.
 
 ## Cutover gates
 
-Do not switch the app to Supabase until all of these are true:
+The app has switched to Supabase-default reads only after these gates:
 
 - controlled research writes and deterministic JSON export/recovery are
   accepted;
@@ -72,6 +71,9 @@ Do not switch the app to Supabase until all of these are true:
 - the file-backed adapter remains available for immediate rollback;
 - Today, Events, Places, Communities, Updates, and Research pass a browser
   smoke test using Supabase data.
+
+Use `?data=json` to force the file-backed recovery path during local validation
+or rollback checks.
 
 ## Regenerating the snapshot
 

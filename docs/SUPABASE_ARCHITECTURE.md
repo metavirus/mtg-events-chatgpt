@@ -125,7 +125,8 @@ and rollback a stable seam.
    export/recovery so agents no longer need to hand-edit canonical JSON for
    ordinary research updates.
 6. Switch research reads to Supabase behind the adapter only after the write and
-   export safety gate is accepted.
+   export safety gate is accepted. The explicit JSON recovery path remains
+   available with `?data=json`.
 7. Perform a real usability/parity checkpoint.
 8. Resume and complete research through controlled Supabase writes.
 9. Add authenticated personal-state loading and one-time local-storage import.
@@ -135,10 +136,12 @@ and rollback a stable seam.
 
 ## Acceptance gates
 
-The app must not switch to Supabase until:
+The app must not be treated as ready for research resumption until:
 
 - controlled research writes and deterministic JSON export/recovery are
   implemented and accepted;
+- Supabase-default reads and `?data=json` recovery fallback pass browser
+  validation;
 - every current entity ID is accounted for;
 - duplicate and broken references are zero;
 - recurring series and dated occurrences render equivalently;

@@ -13,13 +13,14 @@ touching the data layer so future tasks do not rediscover the same state.
 - Seed snapshot: `supabase/seed/0001_current_snapshot.sql`
 - The initial remote schema has been applied.
 - The current seed snapshot has been loaded into Supabase.
-- The existing JSON files remain the default app source until a separate
-  deliberate cutover gate.
-- A Supabase read-adapter seam now exists in `app.js`. It is opt-in only via
-  `?data=supabase`; if Supabase loading fails, the app falls back to the JSON
-  files and logs a warning.
+- Supabase is now the default application read source.
+- The existing JSON files remain as recovery/export fallback.
+- A Supabase read-adapter seam exists in `app.js`. Use `?data=json` for the
+  explicit JSON recovery path; if Supabase loading fails, the app falls back to
+  the JSON files and logs a warning.
 - Representative raw-data and read-adapter parity are accepted at repair commit
-  `813c0f2`; that acceptance is not a default-source cutover decision.
+  `813c0f2`; the default-source cutover was made after controlled research-write
+  safety and pilot rollback were accepted.
 
 ## Imported snapshot counts
 
@@ -76,9 +77,7 @@ state from scratch.
 - The earlier local Python parity script hit a local certificate verification
   problem. Do not burn time on that unless the Python environment itself is the
   active task; use Supabase MCP, Supabase dashboard, or `psql` for DB checks.
-- Do not switch the hosted app to Supabase by default merely because
-  representative parity was accepted. The default-source cutover remains a
-  separate deliberate gate.
+- Do not remove the JSON fallback. It remains the recovery/export path.
 - Do not resume broad research directly into canonical JSON as the main path.
   The next stage is Supabase operational-write readiness because earlier project
   risk included bad JSON writing. Making Supabase the default read source is a
@@ -91,8 +90,8 @@ state from scratch.
 2. Establish controlled Supabase research writes and deterministic JSON
    export/recovery as documented in
    `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`.
-3. Keep JSON as the default application source until a separate read-cutover
-   gate is accepted.
+3. Perform a real usability/parity checkpoint against the Supabase-default app
+   before resuming broad research.
 4. Defer or separately gate authenticated favorites, thumbs-down, notes, and
    in-app requests if they are not required for the operational-source cutover.
 5. Use a higher-reasoning model before changing RLS/auth/write policies or
