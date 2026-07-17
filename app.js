@@ -68,14 +68,15 @@ const state = {
 
 function loadPersonal() {
   try {
-    return JSON.parse(localStorage.getItem('mana-radar-personal')) || defaultPersonal();
+    const saved = JSON.parse(localStorage.getItem('mana-radar-personal')) || {};
+    return { ...defaultPersonal(), ...saved, hidden: saved.hidden || {} };
   } catch (_) {
     return defaultPersonal();
   }
 }
 
 function defaultPersonal() {
-  return { favorites: {}, ratings: {}, notes: {}, interested: {}, activity: [], updatesSeenAt: null };
+  return { favorites: {}, hidden: {}, ratings: {}, notes: {}, interested: {}, activity: [], updatesSeenAt: null };
 }
 
 function savePersonal(action) {
@@ -417,7 +418,7 @@ function handleClick(event) {
   }
 
   const placeTrigger = event.target.closest('[data-place-id]');
-  if (placeTrigger && !event.target.closest('[data-favorite]')) {
+  if (placeTrigger && !event.target.closest('[data-favorite]') && !event.target.closest('[data-action]')) {
     if (placeTrigger.dataset.placeMode === 'drawer') return openPlaceDrawer(placeTrigger.dataset.placeId);
     if (state.selectedPlaceId !== placeTrigger.dataset.placeId) state.selectedPlaceTab = 'overview';
     state.selectedPlaceId = placeTrigger.dataset.placeId;
@@ -502,6 +503,7 @@ function handleAction(action, element) {
   if (action === 'save-note') return saveNote(element.dataset.entity, element.dataset.input);
   if (action === 'show-log') return openActivityLog();
   if (action === 'dismiss-drawer') return closeDrawer();
+  if (action === 'toggle-place-hidden') return toggleHidden(`place:${element.dataset.placeId}`);
 }
 
 function navigate(route) {
@@ -980,11 +982,14 @@ function placeResearchLabel(place) {
 
 function placeEvaluationSummary(place) {
   const evaluation = normalizedEvaluation(place);
+  const hidden = !!state.personal.hidden[`place:${place.id}`];
   return `<div class="evaluation-summary" aria-label="Current place evaluation">
-    <button class="evaluation-tile" data-action="explain-scores"><span>Fit</span><strong>${escapeHtml(evaluation.fitGrade)}</strong><small>${Number(evaluation.fitScore).toFixed(1)} / 5</small></button>
-    <button class="evaluation-tile" data-action="explain-scores"><span>Confidence</span><strong>${escapeHtml(evaluation.confidence)}</strong><small>Evidence support</small></button>
-    <button class="evaluation-tile" data-action="explain-scores"><span>Research</span><strong>${escapeHtml(placeResearchLabel(place))}</strong><small>${evaluation.candidateStatus === 'promoted' ? 'Promoted candidate' : evaluation.candidateStatus === 'working' ? 'Working candidate' : 'Discovery candidate'}</small></button>
-  </div>`;
+    <button class="evaluation-tile" data-action="explain-scores"><span>Personal fit</span><strong>${escapeHtml(evaluation.fitGrade)}</strong><small>${Number(evaluation.fitScore).toFixed(1)} / 5 · promise for you</small></button>
+    <button class="evaluation-tile" data-action="explain-scores"><span>Confidence</span><strong>${escapeHtml(evaluation.confidence)}</strong><small>How strongly the evidence supports that read</small></button>
+    <button class="evaluation-tile" data-action="explain-scores"><span>Research depth</span><strong>${escapeHtml(placeResearchLabel(place))}</strong><small>${evaluation.candidateStatus === 'promoted' ? 'Promoted candidate' : evaluation.candidateStatus === 'working' ? 'Working candidate' : 'Discovery candidate'}</small></button>
+  </div>
+  <section class="preference-note ${hidden ? 'warning' : ''}"><p><strong>${hidden ? 'You deprioritized this place.' : 'Research and preference are separate.'}</strong> ${hidden ? 'It stays in the research record and the Deprioritized bucket, but should not be treated as a default recommendation.' : 'Favorites, ratings, and deprioritize choices affect your view without changing the underlying venue assessment.'}</p></section>
+  <section class="detail-section assessment-snapshot"><div><p class="eyebrow">Pluses</p><ul>${evaluation.positives.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No strong positive factors are recorded yet.</li>'}</ul></div><div><p class="eyebrow">Cautions</p><ul>${evaluation.cautions.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No specific caution has been recorded yet.</li>'}</ul></div><div><p class="eyebrow">Open questions</p><ul>${evaluation.openQuestions.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No open question is recorded yet.</li>'}</ul></div></section>`;
 }
 
 function renderEventCatalog() {
@@ -1066,12 +1071,15 @@ function renderPlaces() {
   let places = sortedPlaces.filter((place) => !query || `${place.name} ${place.city} ${place.assessmentNotes}`.toLowerCase().includes(query));
   if (state.placeFilter === 'partial') places = places.filter((place) => place.researchStatus === 'partial');
   if (state.placeFilter === 'favorites') places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
+  if (state.placeFilter === 'hidden') places = places.filter((place) => state.personal.hidden[`place:${place.id}`]);
   if (state.favoritesOnly) places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
   if (!places.some((place) => place.id === state.selectedPlaceId)) state.selectedPlaceId = places[0]?.id;
   list.innerHTML = places.map((place) => {
     const active = place.id === state.selectedPlaceId;
     const favorite = state.personal.favorites[`place:${place.id}`];
-    return `<button class="entity-list-item ${active ? 'active' : ''}" data-place-id="${place.id}"><span class="entity-avatar">${initials(place.name)}</span><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small><em class="${place.researchStatus === 'partial' ? 'mint-text' : 'amber-text'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</em></span><span class="list-heart">${favorite ? '♥' : ''}</span></button>`;
+    const hidden = state.personal.hidden[`place:${place.id}`];
+    const evaluation = normalizedEvaluation(place);
+    return `<button class="entity-list-item ${active ? 'active' : ''} ${hidden ? 'deprioritized' : ''}" data-place-id="${place.id}"><span class="entity-avatar">${initials(place.name)}</span><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small><em class="${place.researchStatus === 'partial' ? 'mint-text' : 'amber-text'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'} · ${escapeHtml(evaluation.fitGrade)} · ${escapeHtml(evaluation.confidence)} confidence</em></span><span class="list-heart">${hidden ? '↓' : favorite ? '♥' : ''}</span></button>`;
   }).join('') || emptyState('No places match', 'Try another name or filter.');
   renderPlaceDetail(store(state.selectedPlaceId));
 }
@@ -1082,9 +1090,10 @@ function renderPlaceDetail(place) {
   const placeEvents = DATA.events.filter((event) => event.storeId === place.id);
   const sources = (place.sourceIds || []).map(source).filter(Boolean);
   const favorite = !!state.personal.favorites[`place:${place.id}`];
+  const hidden = !!state.personal.hidden[`place:${place.id}`];
   const rating = state.personal.ratings[`place:${place.id}`] || 0;
-  container.innerHTML = `<div class="detail-hero"><div class="detail-identity"><span class="large-avatar">${initials(place.name)}</span><div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place">${favorite ? '♥' : '♡'}</button></div>
-    <div class="detail-actions"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a>${place.website ? `<a class="soft-button" href="${escapeHtml(place.website)}" target="_blank" rel="noreferrer">Website ↗</a>` : ''}${place.instagram ? `<a class="soft-button" href="${escapeHtml(place.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>` : ''}</div>
+  container.innerHTML = `<div class="detail-hero"><div class="detail-identity"><span class="large-avatar">${initials(place.name)}</span><div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${hidden ? '<span class="status-chip coral">Deprioritized by you</span>' : ''}${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place">${favorite ? '♥' : '♡'}</button></div>
+    <div class="detail-actions"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a>${place.website ? `<a class="soft-button" href="${escapeHtml(place.website)}" target="_blank" rel="noreferrer">Website ↗</a>` : ''}${place.instagram ? `<a class="soft-button" href="${escapeHtml(place.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>` : ''}<button class="soft-button ${hidden ? 'active' : ''}" data-action="toggle-place-hidden" data-place-id="${place.id}">${hidden ? 'Restore priority' : 'Deprioritize'}</button></div>
     <div class="detail-tabs" role="tablist" aria-label="Place details"><button class="${state.selectedPlaceTab === 'overview' ? 'active' : ''}" data-place-tab="overview" role="tab" aria-selected="${state.selectedPlaceTab === 'overview'}">Overview</button><button class="${state.selectedPlaceTab === 'events' ? 'active' : ''}" data-place-tab="events" role="tab" aria-selected="${state.selectedPlaceTab === 'events'}">Events <span>${placeEvents.length}</span></button><button class="${state.selectedPlaceTab === 'evidence' ? 'active' : ''}" data-place-tab="evidence" role="tab" aria-selected="${state.selectedPlaceTab === 'evidence'}">Evidence <span>${sources.length}</span></button></div>
     <div class="place-tab-content">${placeTabContent(place, placeEvents, sources, rating)}</div>`;
 }
@@ -1258,6 +1267,13 @@ function toggleFavorite(key) {
   savePersonal({ type: 'favorite', label: `${state.personal.favorites[key] ? 'Followed' : 'Unfollowed'} ${key.split(':')[1]}` });
   renderCurrentRoute();
   toast(state.personal.favorites[key] ? 'Added to favorites' : 'Removed from favorites');
+}
+
+function toggleHidden(key) {
+  state.personal.hidden[key] = !state.personal.hidden[key];
+  savePersonal({ type: 'preference', label: `${state.personal.hidden[key] ? 'Deprioritized' : 'Restored'} ${key.split(':')[1]}` });
+  renderCurrentRoute();
+  toast(state.personal.hidden[key] ? 'Deprioritized in your view' : 'Restored to normal priority');
 }
 
 function toggleInterested(key) {
