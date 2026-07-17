@@ -726,7 +726,7 @@
         "candidate_status": "neutral",
         "fit_grade": "C",
         "fit_score": 2.8,
-        "confidence": "medium-low",
+        "confidence": "low",
         "positives": [
           "Existing Wizards/EventLink records support Tuesday and Friday Commander.",
           "Secondary sources support active TCG operation and broader event-hosting capability.",
@@ -767,3 +767,4 @@
     }
   ]
 }
+

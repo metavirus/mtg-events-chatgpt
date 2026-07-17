@@ -163,8 +163,8 @@ Event implication:
 Assessment implication:
 
 - Promote from placeholder `discovery` to `reviewed`.
-- Direction: fit cautious; confidence medium-low.
-- Proposed fit: `C`, 2.8/5, medium-low confidence.
+- Direction: fit cautious; confidence low.
+- Proposed fit: `C`, 2.8/5, low confidence.
 
 Why:
 
@@ -224,3 +224,4 @@ If accepted, apply the proposal through the controlled Supabase workflow with li
 - verify the four venues, new evidence links, evaluation rows, and relevant counts;
 - run deterministic export only for changed recovery tables;
 - no hosted smoke test unless the app rendering looks suspicious.
+
