@@ -1,0 +1,769 @@
+{
+  "proposal_id": "nearby-thin-discovery-assessment-pass-2026-07-17",
+  "description": "Places-assessment and evidence proposal for Shadow Realm Collectibles, Buddies Collectibles, TK Collectibles, and Aki Collectibles. Adds missing source evidence, updates venue assessment notes/status where useful, and adds evaluation rows. No event rows are added because existing Commander records already cover the event implications.",
+  "created_at": "2026-07-17T22:00:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-shadowrealm-linktree-2026-07-17"
+      },
+      "fields": {
+        "id": "src-shadowrealm-linktree-2026-07-17",
+        "label": "Shadow Realm Collectibles official Linktree",
+        "url": "https://linktr.ee/ShadowRealmDeals",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official social and commerce routing for Shadow Realm."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-shadowrealm-keepup-2026-07-17"
+      },
+      "fields": {
+        "id": "src-shadowrealm-keepup-2026-07-17",
+        "label": "KeepUp review mirror for Shadow Realm Collectibles",
+        "url": "https://www.keepupcards.com/shop/shadow-realm-collectibles",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived staff, product, trade-in caution, hours, and operation signals for Shadow Realm."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-shadowrealm-apple-maps-2026-07-17"
+      },
+      "fields": {
+        "id": "src-shadowrealm-apple-maps-2026-07-17",
+        "label": "Apple Maps / review mirror for Shadow Realm Collectibles",
+        "url": "https://maps.apple.com/place?place-id=IEC066570DC7B4DA7",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve secondary operation, hours, address-variance, and review signal for Shadow Realm."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-shadowrealm-yugioh-locator-2026-07-17"
+      },
+      "fields": {
+        "id": "src-shadowrealm-yugioh-locator-2026-07-17",
+        "label": "Yu-Gi-Oh! Rarity Collection 5 location listing for Shadow Realm Collectibles",
+        "url": "https://www.yugioh-card.com/en/events/release_celebration/ra05_relcel_locations/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve non-MTG organized-play evidence for Shadow Realm's physical operation and event-hosting capability."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-buddies-official-site-2026-07-17"
+      },
+      "fields": {
+        "id": "src-buddies-official-site-2026-07-17",
+        "label": "Buddies Collectibles official website",
+        "url": "https://socalbuddiescards.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official active TCG-commerce, Magic product category, livestream, and store identity support for Buddies."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-buddies-weekly-tournaments-2026-07-17"
+      },
+      "fields": {
+        "id": "src-buddies-weekly-tournaments-2026-07-17",
+        "label": "Buddies Collectibles official weekly TCG tournaments page",
+        "url": "https://socalbuddiescards.com/collections/weekly-tcg-tournaments",
+        "source_type": "eventsPage",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official weekly tournament infrastructure without inferring new Magic event rows from generic tournament product text."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-buddies-linktree-2026-07-17"
+      },
+      "fields": {
+        "id": "src-buddies-linktree-2026-07-17",
+        "label": "Buddies Collectibles official Linktree",
+        "url": "https://linktr.ee/socalbuddies",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official routing to shop, Instagram, Discord, Twitch, Whatnot, YouTube, TikTok, and other community surfaces."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-buddies-cardshophub-2026-07-17"
+      },
+      "fields": {
+        "id": "src-buddies-cardshophub-2026-07-17",
+        "label": "Card Shop Hub review mirror for Buddies Collectibles",
+        "url": "https://cardshophub.com/states/ca/gardena/buddies-collectibles/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Google-derived rating, hours, TCG-first identity, and MTG support signal for Buddies."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-buddies-keepup-2026-07-17"
+      },
+      "fields": {
+        "id": "src-buddies-keepup-2026-07-17",
+        "label": "KeepUp review mirror for Buddies Collectibles",
+        "url": "https://www.keepupcards.com/shop/buddies-collectibles",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived MTG/game support and pricing/live-break/service cautions for Buddies."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-tk-official-site-2026-07-17"
+      },
+      "fields": {
+        "id": "src-tk-official-site-2026-07-17",
+        "label": "TK Collectibles official website",
+        "url": "https://tkcollectibles.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official active collectibles/trading-card business support for TK."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-tk-mapquest-2026-07-17"
+      },
+      "fields": {
+        "id": "src-tk-mapquest-2026-07-17",
+        "label": "MapQuest / Yelp-derived listing for TK Collectibles",
+        "url": "https://www.mapquest.com/us/california/tk-collectibles-772453150",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived store quality, parking, staff, Pokemon/One Piece, and location-transition signals for TK."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-tk-atly-2026-07-17"
+      },
+      "fields": {
+        "id": "src-tk-atly-2026-07-17",
+        "label": "Atly review mirror for TK Collectibles",
+        "url": "https://www.atly.com/location/TK-Collectibles---TKTCG",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived kid-friendly, local-spot, clean-space, staff, and singles-selection signals for TK."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-tk-riftbound-locator-2026-07-17"
+      },
+      "fields": {
+        "id": "src-tk-riftbound-locator-2026-07-17",
+        "label": "Riftbound organized-play locator for TK Collectibles",
+        "url": "https://locator.riftbound.uvsgames.com/stores/7ed6b746-9a5b-4c7e-8005-10cbd92be4cf",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve non-MTG organized-play evidence for TK's physical operation and event-hosting capability."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-tk-lorcana-locator-2026-07-17"
+      },
+      "fields": {
+        "id": "src-tk-lorcana-locator-2026-07-17",
+        "label": "Lorcana organized-play locator for TK Collectibles",
+        "url": "https://tcg.ravensburgerplay.com/stores/9a5e1bd7-a04c-49d1-bfe4-9fe5c8db7e78",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve non-MTG organized-play evidence for TK's active physical store and event-hosting capability."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-aki-mapquest-2026-07-17"
+      },
+      "fields": {
+        "id": "src-aki-mapquest-2026-07-17",
+        "label": "MapQuest / Yelp-derived listing for Aki Collectibles",
+        "url": "https://www.mapquest.com/us/california/aki-collectibles-790513668",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived clean-shop, staff, Pokemon/One Piece, singles, and commerce signals for Aki."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-aki-keepup-2026-07-17"
+      },
+      "fields": {
+        "id": "src-aki-keepup-2026-07-17",
+        "label": "KeepUp review mirror for Aki Collectibles",
+        "url": "https://www.keepupcards.com/shop/aki-collectibles-llc",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Google/review-derived store operation, friendly staff, clean environment, and broad TCG retail signals for Aki."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-shadowrealm-linktree-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-shadowrealm-linktree-2026-07-17",
+        "relationship": "official source-routing support"
+      },
+      "reason": "Attach Shadow Realm official routing evidence to the venue."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-shadowrealm-keepup-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-shadowrealm-keepup-2026-07-17",
+        "relationship": "review/fit and caution signal"
+      },
+      "reason": "Attach Shadow Realm review-derived fit and caution support."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-shadowrealm-apple-maps-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-shadowrealm-apple-maps-2026-07-17",
+        "relationship": "review/address signal"
+      },
+      "reason": "Attach Shadow Realm secondary review/address evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-shadowrealm-yugioh-locator-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-shadowrealm-yugioh-locator-2026-07-17",
+        "relationship": "non-MTG organized-play operation support"
+      },
+      "reason": "Attach non-MTG organized-play evidence for operation and event-hosting capability."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-official-site-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-official-site-2026-07-17",
+        "relationship": "official venue/commerce support"
+      },
+      "reason": "Attach Buddies official website evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-weekly-tournaments-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-weekly-tournaments-2026-07-17",
+        "relationship": "official tournament infrastructure support"
+      },
+      "reason": "Attach official weekly tournament infrastructure evidence without inferring extra event rows."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-linktree-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-linktree-2026-07-17",
+        "relationship": "official source-routing/community support"
+      },
+      "reason": "Attach Buddies official social, Discord, and streaming source routing."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-cardshophub-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-cardshophub-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Attach Buddies Google-derived review and TCG identity evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-keepup-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-keepup-2026-07-17",
+        "relationship": "review/fit and caution signal"
+      },
+      "reason": "Attach Buddies review-derived caution and fit evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-official-site-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-official-site-2026-07-17",
+        "relationship": "official venue support"
+      },
+      "reason": "Attach TK official website evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-mapquest-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-mapquest-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Attach TK Yelp-derived review evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-atly-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-atly-2026-07-17",
+        "relationship": "review/community signal"
+      },
+      "reason": "Attach TK review-derived local/kid-friendly/staff evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-riftbound-locator-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-riftbound-locator-2026-07-17",
+        "relationship": "non-MTG organized-play operation support"
+      },
+      "reason": "Attach TK non-MTG organized-play operation support."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-lorcana-locator-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-lorcana-locator-2026-07-17",
+        "relationship": "non-MTG organized-play operation support"
+      },
+      "reason": "Attach TK Lorcana organized-play operation support."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "aki-collectibles",
+        "source_id": "src-aki-mapquest-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "aki-collectibles",
+        "source_id": "src-aki-mapquest-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Attach Aki Yelp-derived review evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "aki-collectibles",
+        "source_id": "src-aki-keepup-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "aki-collectibles",
+        "source_id": "src-aki-keepup-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Attach Aki Google/review-derived fit evidence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "shadow-realm-collectibles"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Shadow Realm Collectibles now reads as a real nearby Bell Gardens TCG store with a useful but cautious Commander signal. Wizards/EventLink already supports Monday Commander night, and official Linktree routing plus review/organized-play mirrors support active operation and broader TCG event-hosting. The personal-fit caution is that the Commander listing has paid-entry and prize-pool language, so it may be more tournament/prize-oriented than the user's ideal relaxed casual lane. Treat it as a plausible nearby option to watch, not a top casual recommendation until social posts or community evidence clarify turnout, power level, proxy norms, and solo-arrival behavior.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 2,
+          "communityContinuity": 3,
+          "newPlayerIntegration": 2,
+          "physicalEnvironment": 3,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote Shadow Realm from discovery placeholder to reviewed first-pass assessment with explicit cautions and TBDs."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "buddies-collectibles"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Buddies Collectibles now reads as the richest source-routing candidate in this nearby thin-store batch. Wizards/EventLink supports Friday casual Commander, while the official site and weekly tournament page show active TCG commerce and tournament infrastructure. The official Linktree routes to Discord, Instagram, Twitch, Whatnot, YouTube, TikTok, Twitter/X, and the shop; that makes Buddies worth a later bounded Discord survey. The caution is that public official and review surfaces are heavily commerce/live-break oriented, and review mirrors preserve pricing, live-break model, and busy-store service concerns. Treat Buddies as a watch/try candidate if Commander-specific Discord or social evidence looks good, not as an automatically warm casual home-base.",
+        "assessment": {
+          "commanderActivity": 5,
+          "meetupAccessibility": 3,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 3,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote Buddies from discovery placeholder to reviewed first-pass assessment with source-routing and review cautions."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "tk-collectibles"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "TK Collectibles now reads as a real Newport Beach TCG shop with an existing Saturday Casual Commander listing, but the public source texture remains stronger for Pokemon/collectibles and general retail quality than for Magic community depth. Official site, review mirrors, and non-MTG organized-play locators support active physical operation, friendly staff, clean/kid-friendly local-shop signals, and event-hosting capability. The Commander listing should stay visible, but TK is not yet a priority Magic-community target until Instagram or another store-controlled source confirms current MTG promotion, turnout, or casual-social texture.",
+        "assessment": {
+          "commanderActivity": 3,
+          "meetupAccessibility": 2,
+          "communityContinuity": 2,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 3,
+          "scheduleReliability": 3,
+          "homeGroupPotential": 2
+        }
+      },
+      "reason": "Promote TK from discovery placeholder to reviewed first-pass assessment while preserving weak MTG-community depth."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "aki-collectibles"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Aki Collectibles is a real San Gabriel TCG shop with an existing Saturday Commander record, but the current source mix supports broader TCG retail activity more strongly than Magic community depth. Existing evidence already includes Instagram, Google/search, TCGplayer seller reliability, and Wizards/EventLink; added review mirrors support a clean shop, friendly staff, strong Pokemon/One Piece/sealed/singles activity, and active commerce. Keep Aki visible as a confirmed Commander option, but treat it as a lower-priority personal target until store-controlled posts or community evidence show meaningful Commander turnout, draft/prerelease activity, or solo-friendly MTG texture.",
+        "assessment": {
+          "commanderActivity": 3,
+          "meetupAccessibility": 2,
+          "communityContinuity": 2,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 3,
+          "scheduleReliability": 3,
+          "homeGroupPotential": 2
+        }
+      },
+      "reason": "Replace Aki's placeholder reviewed note with a useful assessment and explicit TBDs."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "Only about 12.4 miles from Los Alamitos.",
+          "Existing Wizards/EventLink record supports a recurring Monday Commander anchor.",
+          "Official Linktree exposes social and commerce routing.",
+          "Review and organized-play mirrors support active operation, product availability, and broader event-hosting capability."
+        ],
+        "cautions": [
+          "Commander listing includes paid-entry, prize-pool, and Top 4 prizing language that may be more tournament-oriented than relaxed casual play.",
+          "Review-derived evidence includes a trade-in/value caution.",
+          "No public evidence yet for pod formation, proxy norms, casual power level, or solo-arrival support.",
+          "Minor address variance appears across mirrors and should be preserved as source noise rather than over-normalized."
+        ],
+        "open_questions": [
+          "Is Monday Commander casual in practice or mostly prize/tournament-oriented?",
+          "Do official/social posts show current Commander graphics, turnout, or cancellations?",
+          "Is there a Discord or usable community coordination surface?",
+          "Is the 7508/7510 Eastern address variance only frontage/suite noise?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Shadow Realm under the corrected event-plus-assessment rubric."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.4,
+        "confidence": "medium",
+        "positives": [
+          "Existing Wizards/EventLink record supports Friday casual Commander.",
+          "Official site and weekly tournament page show active TCG commerce and tournament infrastructure.",
+          "Official Linktree exposes Discord, Instagram, Twitch, Whatnot, YouTube, TikTok, and other source-routing surfaces.",
+          "Review mirrors support TCG-first identity, long hours, and Magic among supported games."
+        ],
+        "cautions": [
+          "Official and review surfaces are heavily commerce/live-break oriented rather than clearly casual Commander oriented.",
+          "Review mirrors preserve pricing, live-break business-model, and busy-store service cautions.",
+          "Commander table culture, proxy norms, and solo-arrival support remain unverified.",
+          "Large Discord/community scale still needs bounded inspection before it counts as usable LFG support."
+        ],
+        "open_questions": [
+          "Does the Buddies Discord have usable Commander, LFG, meetup, or events channels?",
+          "Is Friday Commander actively promoted outside Wizards/EventLink?",
+          "Does Friday late-hours traffic help casual play or make the store crowded/noisy?",
+          "Are pricing/live-break concerns relevant to in-person Commander attendance?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Buddies with source-routing strength and review cautions."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.1,
+        "confidence": "medium",
+        "positives": [
+          "Existing Wizards/EventLink record supports Saturday Casual Commander.",
+          "Official site confirms active collectibles/trading-card business.",
+          "Non-MTG organized-play locators corroborate physical operation and event-hosting capability.",
+          "Review mirrors support friendly staff, good lighting, decent parking, clean/kid-friendly local-shop signals, and Pokemon/One Piece/card selection."
+        ],
+        "cautions": [
+          "Public source texture is much stronger for Pokemon/collectibles than for Magic community depth.",
+          "Official site is generic and does not expose a useful MTG schedule in checked text.",
+          "No Discord or community coordination surface was found in this pass.",
+          "Commander may be real but thinly promoted."
+        ],
+        "open_questions": [
+          "Does Instagram show current MTG or Commander-specific posts?",
+          "What is Saturday Commander turnout and casual/social texture?",
+          "Does TK run prerelease or draft, or only the visible Commander lane?",
+          "Is there any community coordination surface beyond generic store socials?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for TK with operation support but weak MTG-community depth."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "aki-collectibles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "aki-collectibles",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.0,
+        "confidence": "medium",
+        "positives": [
+          "Existing Wizards/EventLink record supports Saturday Commander.",
+          "Existing source stack includes Instagram, Google/search surface, and TCGplayer seller profile.",
+          "TCGplayer seller profile supports active commerce and seller reliability.",
+          "Review mirrors support clean shop, friendly staff, and strong broader TCG retail activity."
+        ],
+        "cautions": [
+          "About 19.2 miles from Los Alamitos.",
+          "Public source texture is stronger for Pokemon, One Piece, Japanese packs, slabs, singles, and commerce than for Magic community depth.",
+          "No strong store-controlled MTG schedule source was found beyond Wizards/EventLink in this pass.",
+          "No Discord or community coordination surface was found in this pass."
+        ],
+        "open_questions": [
+          "Does Instagram show current Magic or Commander-specific posts?",
+          "Does Saturday Commander have meaningful turnout?",
+          "Does Aki run prerelease or draft, or is Commander the only visible MTG lane?",
+          "Is there any community coordination surface beyond general retail/social content?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Aki that preserve active-store evidence while clarifying lower Magic-community priority."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "nearby-thin-discovery-assessment-pass-2026-07-17"
+      },
+      "fields": {
+        "id": "nearby-thin-discovery-assessment-pass-2026-07-17",
+        "detected_at": "2026-07-17T22:00:00Z",
+        "change_type": "evaluation_update",
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "summary": "Nearby thin/discovery store pass translated Shadow Realm, Buddies, TK Collectibles, and Aki Collectibles into event/no-event decisions, Places-page assessment recommendations, visible Evidence links, and durable store-specific TBDs.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable update marker for the nearby thin/discovery assessment pass."
+    }
+  ]
+}
