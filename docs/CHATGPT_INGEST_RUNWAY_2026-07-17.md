@@ -2,8 +2,12 @@
 
 Purpose: reduce compaction risk by converting the preserved ChatGPT PR #15/#16
 packet into a finite Codex intake runway. This file is not canonical research
-truth; it is the durable triage map for finishing packet ingestion through the
+truth; it is the strategy note for finishing packet ingestion through the
 controlled Supabase workflow.
+
+Current disposition tracker:
+
+- `docs/CHATGPT_PACKET_INGEST_TRACKER_2026-07-17.md`
 
 ## Temporary operating adjustment
 
