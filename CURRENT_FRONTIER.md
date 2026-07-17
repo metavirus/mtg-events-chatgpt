@@ -1,6 +1,58 @@
 # Current Frontier
 
-Last updated: 2026-07-16
+Last updated: 2026-07-17
+
+## Checkpoint: UX accepted, Supabase continuity is next
+
+The local UX pass is accepted through commit `470b63b` on
+`codex/reconcile-wizards`. Do not keep polishing the interface unless a true
+blocker appears.
+
+Accepted UX work now includes:
+
+- Today decision-surface improvements, including weekend/week usability,
+  Friday-start week views, today highlighting, and a non-blocking Signals
+  treatment;
+- Events scanability improvements, including denser catalog cards, cleaner
+  list/week/month layouts, Friday-start weeks, today highlighting, and
+  navigation for Events week/month views;
+- Places assessment visibility, including separate research status, personal
+  fit, confidence, rationale, evidence access, and compact preference controls;
+- Updates/Communities usefulness improvements, including compact Updates
+  filtering and clearer activity surfaces;
+- responsive/layout fixes sufficient for the current local UX checkpoint.
+
+Known UX follow-ups are future polish, not completion blockers, unless the user
+explicitly promotes them. The main parked item is exploring whether Signals /
+Fresh Signals should regain a more prominent default surface without restoring a
+fixed right-side pane that consumes calendar width.
+
+The next product stage is **Supabase continuity / operational-source readiness
+before additional research expansion**. This sequencing is intentional. A major
+earlier failure mode was unsafe or low-quality canonical JSON writing; do not
+resume broad research collection directly into JSON as the main path. Use the
+Supabase continuity work to make the data-writing and operational-source path
+safer before the final research pass.
+
+Immediate next tranche:
+
+1. Use `docs/SUPABASE_MIGRATION_STATUS.md`,
+   `docs/SUPABASE_CONTINUITY_MODEL.md`, and the existing migrations/seeds as the
+   baseline; do not rediscover the Supabase state from scratch.
+2. Verify the current migration files match the accepted remote/read-adapter
+   state.
+3. Define and validate the next safe cutover step toward Supabase as operational
+   source while retaining JSON recovery/export.
+4. Do not perform new venue/event research, canonical data expansion, deployment,
+   or broad UX polish during that tranche.
+
+Execution model:
+
+- default to direct Project Steward execution for bounded low/medium work;
+- use a worker only when it has a concrete advantage under
+  `docs/EFFICIENCY_SOP.md`;
+- keep each tranche to one coherent outcome, proportionate validation, one
+  commit/push, and a concise report.
 
 ## Supabase migration checkpoint
 
@@ -28,11 +80,12 @@ across JSON and Supabase. This acceptance is not a default-cutover decision.
 Use 5.6 before changing auth/RLS/write policy, making Supabase the default, or
 publishing a Supabase-backed release.
 
-## Current design mega-revision scope
+## Completed local UX revision scope
 
-The accepted near-term product scope is a focused UX revision, not a full
-Supabase write/auth build and not a renewed research expansion. The active UX
-targets are now pinned in `docs/UX_MEGA_REVISION_SCOPE.md`. In short:
+The accepted local UX revision was a focused usability pass, not a full
+Supabase write/auth build and not a renewed research expansion. The scope was
+pinned in `docs/UX_MEGA_REVISION_SCOPE.md` and is now complete enough to move
+forward. In short, it covered:
 
 - make Today a decision-quality surface rather than a flat event dump;
 - improve event filtering and search, especially Commander, prerelease/sealed,
@@ -60,7 +113,7 @@ specifically:
 - preparing the cutover sequence so browser-local personal state can later be
   replaced cleanly without redesigning the interaction model.
 
-Explicitly deferred from this tranche:
+Still deferred from this local UX tranche:
 
 - authenticated Supabase writes for favorites, thumbs-down, notes, and Ask Codex
   requests;
@@ -68,10 +121,11 @@ Explicitly deferred from this tranche:
 - deep community automation;
 - broad store re-research;
 - making Supabase the default data source;
-- publishing until the local UX tranche receives a sanity pass.
+- publishing until the Supabase/data-source and final acceptance gates are
+  complete.
 
-In short: this revision may finish the contract for hosted personal/workflow
-state, but it does not yet ship the full signed-in write path.
+In short: this revision shaped the app around the durable hosted
+personal/workflow model, but it does not ship the full signed-in write path.
 
 ## ChatGPT sideload handoff
 
@@ -84,7 +138,7 @@ recorded in `docs/chatgpt-changelog.md` for later Codex audit.
 New stores, venues, groups, events, and event series are candidate-only in this
 lane. Ordinary ChatGPT must not create canonical entities.
 
-## Current tranche (paused)
+## Research tranche (paused)
 
 Top-venue tranche near Los Alamitos, focused on:
 
@@ -94,11 +148,12 @@ Top-venue tranche near Los Alamitos, focused on:
 - Finch and Sparrow Games
 - related regional/community context already captured through the Discord baseline
 
-Broad research is intentionally paused while the first complete private app is
-built. The research queue remains open and should resume from
-`docs/WORK_BACKLOG.md` after a usable v1 exists.
+Broad research is intentionally paused while the Supabase operational-source
+path is made safe. The research queue remains open and should resume from
+`docs/WORK_BACKLOG.md` only after the Supabase continuity/readiness stage is
+accepted.
 
-## Current immediate research rule
+## Research rule when research resumes
 
 Do not move on to the next store simply because a bounded discovery pass exists.
 The active requirement is now a stronger candidate-grade first pass:
@@ -115,12 +170,9 @@ Working interpretation change:
 - future model direction is to separate research status, fit grade, and
   confidence rather than overloading one label
 
-Tweedy Cards and Gaming is the current test case for this refined standard.
-Do not expand to the next discovery candidate until Tweedy has either:
-
-- been raised to a genuinely useful candidate-grade partial record; or
-- been explicitly kept at discovery after the obvious standard-source event and
-  corroboration checks are completed and explained.
+Tweedy Cards and Gaming already served as a test case for this refined standard
+and was raised out of the earlier conservative Wizards-only bucket. Do not treat
+older notes saying "repair Tweedy first" as current next work.
 
 ## Recently completed
 
@@ -381,18 +433,22 @@ Do not expand to the next discovery candidate until Tweedy has either:
 
 ## Recommended next step
 
-Resume one bounded Today/Events UX tranche from
-`docs/UX_MEGA_REVISION_SCOPE.md`, beginning with Today as the decision surface
-and only the directly shared Events filtering/search behavior needed to keep
-the two surfaces coherent. Keep the Commander-heavy event seed visibly labeled
-as incomplete Magic coverage, preserve JSON as the default with fallback, and
-retain the paused research backlog for later continuation.
+Run the next bounded Supabase continuity tranche. The goal is not deployment or
+new research. The goal is to make the accepted Supabase path safe enough to
+become the operational data source later, while retaining JSON as
+recovery/export and avoiding the prior bad-JSON-writing failure mode.
 
 ## After that
 
-- continue the next store/group tranche with the refined methodology
-- continue turning promising nearby partials into sharper comparable records
-- decide whether to finish the full top-venue tranche first or open the next store/group tranche
+- finish the Supabase operational-source cutover plan and acceptance checks
+- then complete the bounded research universe using the safer data path
+- then run final data-integrity and coverage assurance
+- then make Supabase the default operational source while retaining JSON
+  recovery/export
+- then run final end-to-end acceptance
+- then make the personal tool accessible through the existing deployment path
+  after authorization
+- later, continue turning promising nearby partials into sharper comparable records
 - keep `docs/WORK_BACKLOG.md` current as the explicit repo-backed future-work log
 - later, add an upstream-signal layer from official Wizards news for notable
   new-set, prerelease, Commander-product, and program-change awareness

@@ -12,7 +12,8 @@ The repository has already completed these stabilization steps:
 - text-integrity guardrails added;
 - full-repo text-integrity audit passes;
 - ChatGPT sideload lane established with mailbox/intake/changelog rules;
-- recent research/SOP checkpoint published.
+- recent research/SOP checkpoint published;
+- local UX pass accepted through `470b63b` on `codex/reconcile-wizards`.
 
 See also:
 
@@ -63,11 +64,12 @@ The repository is stabilized, not finished.
 
 Still open:
 
-- broad research backlog;
-- design/app backlog items;
+- Supabase continuity / operational-source readiness as the next stage before
+  additional research expansion;
+- broad research backlog, paused until the Supabase path is safe;
+- design/app backlog items that are not completion blockers unless promoted;
 - branch-hygiene pass to move off `codex/reconcile-wizards` deliberately;
-- future data-architecture evolution beyond the current seed JSON layer;
-- Supabase read-adapter work after the migration checkpoint is accepted;
+- future data-architecture evolution beyond the current default JSON layer;
 - continued store/community research using the SOPs.
 
 ## What not to re-litigate
@@ -75,4 +77,6 @@ Still open:
 - do not treat imported earlier-AI materials as operative spec;
 - do not casually relax the text-integrity guardrails;
 - do not silently let structural risks ride if they could compound;
+- do not restart the accepted UX polish tranche by default;
+- do not resume broad research directly into canonical JSON as the main path;
 - do not assume the current dataset is a complete local Magic census.

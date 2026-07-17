@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-07-15
+Last updated: 2026-07-17
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -18,28 +18,29 @@ Use it for:
   `docs/SUPABASE_ARCHITECTURE.md`. Representative raw-data and read-adapter
   parity are accepted at `813c0f2`, but keep the file-backed app as the default
   until a separate deliberate cutover gate.
+- The local UX pass is accepted through commit `470b63b`; do not resume
+  Today/Events/Places/Updates polish as the default next step unless a true
+  blocker appears.
+- The next product stage is Supabase continuity / operational-source readiness
+  before additional research expansion. This order exists to avoid repeating the
+  earlier bad-JSON-writing failure mode.
 - Migrate canonical research, personal continuity, and async request data in
   explicit reversible stages.
-- During the current mega revision, allow foundation-only continuity work that
-  clarifies the eventual hosted contract for favorites, thumbs-down, notes,
-  ratings, update-read state, and `Ask Codex` requests without yet shipping the
-  signed-in write path.
-- Use `docs/UX_MEGA_REVISION_SCOPE.md` as the active execution scope for the
-  current UX build tranche; do not substitute scattered backlog items for that
-  consolidated scope.
+- Treat `docs/UX_MEGA_REVISION_SCOPE.md` as the accepted local UX scope that has
+  now been substantially completed, not as the default current execution queue.
 - Use `docs/SUPABASE_CONTINUITY_MODEL.md` as the plain-language contract for
   what belongs in research truth, personal continuity, and workflow/request
   state during this transition period.
-- Pause broad research expansion while building the first complete private app.
+- Pause broad research expansion while making the Supabase operational-source
+  path safe.
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a
   paused queue for a completed regional census.
 - Tighten the ordinary-store-pass SOP so "checked" means candidate-grade useful,
   not just lightly classified.
-- Repair and complete Tweedy Cards and Gaming as the current test case for that
-  improved first-pass standard before moving to another store.
-- Do not begin Shadow Realm Collectibles or any other next store until Tweedy
-  satisfies the stronger candidate-grade first-pass bar.
+- Tweedy Cards and Gaming has already served as the current test case for that
+  improved first-pass standard; older "repair Tweedy first" instructions are no
+  longer active next-work.
 - Continue migrating repo/app language away from overloaded `partial` semantics
   toward an explicit model of:
   - research status
@@ -99,7 +100,6 @@ Discord/social evidence.
 
 #### Broader discovery bench
 
-- Tweedy Cards and Gaming
 - Grails Gone Wild
 - TK Collectibles
 - The Game Chest - Promenade on the Peninsula
@@ -202,7 +202,6 @@ status or deprioritized by early signals.
   appropriately.
 - Pilot complete on Finch and Collectors Lounge; continue calibrated rollout of
   the separate user-facing layers for:
-  layers for:
   - research status (`discovery`, `reviewed`, `deepened`)
   - fit grade (A-F or equivalent)
   - confidence (low/medium/high)
@@ -266,15 +265,16 @@ status or deprioritized by early signals.
 
 ### Today page refinement
 
-- Add a curation/ranking layer so a day's events are not presented as a flat
-  chronological dump.
-- Default daily ranking should prioritize favorite stores, high-fit stores,
-  Commander bracket 2/3 signals, and prerelease/sealed highlights.
+- Accepted local UX work now gives Today a stronger decision surface. Keep the
+  following items as future polish/calibration rather than immediate blockers.
+- Further tune the curation/ranking layer so a day's events are not presented as
+  a flat chronological dump.
+- Continue calibrating default daily ranking around favorite stores, high-fit
+  stores, Commander bracket 2/3 signals, and prerelease/sealed highlights.
 - Draft should be easy to phase in as a secondary preference rather than forced
   into the default top-priority mix.
-- Visually separate `best bets` from the broader full-day event catalog.
-- Add `why am I seeing this?` drilldowns so ranked and highlighted items feel
-  trustworthy.
+- Continue improving `why am I seeing this?` drilldowns so ranked and
+  highlighted items feel trustworthy.
 - Explore how to keep `Fresh Signals` and `For You` prominent after the fixed
   Today side rail was removed from the default layout.
 - Do not restore a permanent right-side pane that consumes calendar width by
@@ -292,14 +292,15 @@ status or deprioritized by early signals.
 
 ### Updates and activity surfaces
 
-- Rename `New & changed` to `Updates` in navigation and related UI so the label
-  stays compact and does not wrap awkwardly.
+- The `Updates` label and basic filter-chip behavior have been improved in the
+  accepted local UX pass. Remaining items below are future activity-surface
+  work, not current blockers.
 - Treat the Updates badge count as an unread indicator rather than a static
   total.
 - Opening Updates should clear or mark that count as read until new items
   arrive.
-- Revisit the Updates timeline layout so date and text align more cleanly and
-  the main text weight is less heavy.
+- Continue refining the Updates timeline layout if it becomes a blocker during
+  final acceptance; otherwise treat alignment/weight as polish.
 - Add useful update-type filters such as:
   - new place discovered
   - store/venue profile materially updated
@@ -326,8 +327,11 @@ status or deprioritized by early signals.
 
 ### Places page refinement
 
-- Revisit the Places page layout and scrolling behavior so the most important
-  reading surface feels naturally placed.
+- Places now exposes research status, fit, confidence, rationale, evidence, and
+  compact preference controls. Remaining layout work is future polish unless a
+  final-acceptance blocker appears.
+- Revisit the Places page layout and scrolling behavior later if the most
+  important reading surface still feels awkward in real use.
 - Evaluate whether the current master-detail split should stay as-is or whether
   the right-side detail content should feel more central.
 - Continue refining the Places page as a second-pass layout problem rather than
@@ -417,6 +421,10 @@ status or deprioritized by early signals.
   rename into a broader canonical working branch for the full project, push it,
   and record the transition clearly so future work does not remain anchored to
   the legacy `codex/reconcile-wizards` name by accident.
+- Backlog note from the accepted UX pass: explore whether Signals / Fresh
+  Signals should regain a more prominent default surface without restoring the
+  fixed right-side pane that consumed calendar width. This is not a current
+  blocker.
 
 ## Done when
 

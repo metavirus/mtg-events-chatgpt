@@ -573,6 +573,8 @@ Alamitos centroid, and farther results should be easy to recognize and filter.
 Completed:
 
 - A working static calendar/store/change interface backed by JSON.
+- An accepted local UX pass through commit `470b63b` that makes Today, Events,
+  Places, Updates, and Communities usable enough to move out of polish mode.
 - A repeatable Wizards GraphQL collector using a public Los Alamitos centroid.
 - A successful 26-mile buffered snapshot containing 1,231 Magic events, 669
   Commander candidates, and 77 organizations.
@@ -582,10 +584,15 @@ Completed:
   26-mile snapshot; distance is descriptive rather than an exclusion rule.
 
 The current normalized data is useful but intentionally provisional. It does not
-yet satisfy the target evidence model, and its event coverage is overwhelmingly
-Commander-weighted because Commander was the first research tranche. The app
-must disclose that coverage limitation rather than imply that other Magic formats
-were comprehensively searched and found absent.
+yet satisfy the target evidence model, and its event coverage is heavily shaped
+by the already-collected Commander-first research. The app must disclose that
+coverage limitation rather than imply that other Magic formats were
+comprehensively searched and found absent.
+
+As of the 2026-07-17 checkpoint, the next product stage is Supabase continuity /
+operational-source readiness before additional research expansion. This order
+protects against repeating the earlier failure mode of unsafe or low-quality
+canonical JSON writing.
 
 ## Deprecated historical inventory
 

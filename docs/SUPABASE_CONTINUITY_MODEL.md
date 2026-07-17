@@ -1,6 +1,6 @@
 # Supabase Continuity Model
 
-Last updated: 2026-07-16
+Last updated: 2026-07-17
 
 ## Purpose
 
@@ -11,7 +11,8 @@ boundary:
 - what the browser may read now;
 - what the eventual signed-in user state should store;
 - what future Codex/agent workflow requests should store;
-- what remains deliberately deferred until after the current UX revision.
+- what remains deliberately deferred until after the Supabase continuity and
+  default-source cutover gates.
 
 ## Working split
 
@@ -78,9 +79,10 @@ Expected lifecycle:
 
 This is not part of the public research record. It is private operational state.
 
-## What belongs in the current mega revision
+## What belonged in the accepted local UX revision
 
-The current mega revision may do any of the following:
+The local UX revision was allowed to do the following, and the product direction
+now assumes this split:
 
 - finalize this contract in repo docs;
 - keep the Supabase read seam intact;
@@ -90,11 +92,13 @@ The current mega revision may do any of the following:
   thumbs-down, ratings, notes, and requests as real product concepts;
 - define the data structures and cutover expectations for those features.
 
-In other words, we are allowed to design for durable hosted continuity now.
+In other words, the app may continue to design for durable hosted continuity, but
+the next stage is not more UX shaping. It is Supabase continuity /
+operational-source readiness.
 
 ## What is deliberately deferred
 
-The current mega revision does **not** need to ship:
+The accepted local UX revision did **not** need to ship:
 
 - real signed-in browser writes for personal state;
 - final auth onboarding or session UX;
@@ -124,10 +128,11 @@ answer.
 
 ## Cutover sequence
 
-When we are ready to move beyond the current mega revision, the intended order is:
+When moving beyond the accepted local UX revision, the intended order is:
 
 1. Keep research reads behind the adapter seam.
-2. Keep JSON as the accepted default until parity is signed off.
+2. Keep JSON as the accepted default until the separate default-source cutover
+   gate is signed off.
 3. Add authenticated personal/workflow table reads.
 4. Import or migrate existing browser-local personal state once.
 5. Turn on hosted writes for favorites, thumbs-down, ratings, notes,
@@ -155,6 +160,6 @@ This phase is complete when:
 
 - the repo clearly distinguishes research truth, personal continuity, and
   workflow/request data;
-- the current UX work is built against that distinction;
+- the accepted UX work is built against that distinction;
 - deferred write/auth work is explicit rather than accidental;
 - future implementation can proceed without reopening the product-shape debate.

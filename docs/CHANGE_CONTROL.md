@@ -78,5 +78,7 @@ If a change introduces regressions:
 
 ## Current note
 
-The immediate priority after this file is to create a protective checkpoint for
-the current Mana Radar state so future work has a rollback anchor.
+The accepted local UX state is checkpointed through `470b63b` on
+`codex/reconcile-wizards`. Future work should not restart UX polish by default;
+the next protected workstream is Supabase continuity / operational-source
+readiness before additional research expansion.

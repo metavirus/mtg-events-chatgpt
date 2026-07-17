@@ -1,6 +1,6 @@
 # Supabase Migration Status
 
-Last updated: 2026-07-16
+Last updated: 2026-07-17
 
 This file is the quick checkpoint for the Supabase migration. Use it before
 touching the data layer so future tasks do not rediscover the same state.
@@ -13,11 +13,13 @@ touching the data layer so future tasks do not rediscover the same state.
 - Seed snapshot: `supabase/seed/0001_current_snapshot.sql`
 - The initial remote schema has been applied.
 - The current seed snapshot has been loaded into Supabase.
-- The existing JSON files remain the default app source until representative
-  parity checks and rollback behavior are accepted.
+- The existing JSON files remain the default app source until a separate
+  deliberate cutover gate.
 - A Supabase read-adapter seam now exists in `app.js`. It is opt-in only via
   `?data=supabase`; if Supabase loading fails, the app falls back to the JSON
   files and logs a warning.
+- Representative raw-data and read-adapter parity are accepted at repair commit
+  `813c0f2`; that acceptance is not a default-source cutover decision.
 
 ## Imported snapshot counts
 
@@ -56,36 +58,39 @@ Additional seeded relationship/detail tables:
 - Some unused-index notices are expected until the app actually reads from the
   database.
 
-## Migration refinement pending in the repo
+## Migration refinement status
 
-The local migration now includes additional index and permission refinements:
+The local migration includes additional index and permission refinements:
 
 - relationship lookup indexes for entity sources, event sources, evaluations,
   and user notes;
 - narrower grants for user-writable tables, especially `agent_requests`, so a
   normal user can provide a response without updating agent/admin fields.
 
-These refinements should be committed before further Supabase feature work so
-the GitHub migration matches the accepted remote direction.
+Before further Supabase feature work, confirm the repository migration and seed
+still match the accepted remote direction rather than rediscovering the whole
+state from scratch.
 
 ## Known caveats
 
 - The earlier local Python parity script hit a local certificate verification
   problem. Do not burn time on that unless the Python environment itself is the
   active task; use Supabase MCP, Supabase dashboard, or `psql` for DB checks.
-- Do not switch the hosted app to Supabase by default until representative
-  record checks and rollback behavior are accepted.
-- Do not let this migration become an excuse to pause all UI work. The intended
-  near-term path is an adapter seam, not a full rebuild.
+- Do not switch the hosted app to Supabase by default merely because
+  representative parity was accepted. The default-source cutover remains a
+  separate deliberate gate.
+- Do not resume broad research directly into canonical JSON as the main path.
+  The next stage is Supabase continuity / operational-source readiness because
+  earlier project risk included bad JSON writing.
 
 ## Next safe steps
 
-1. Commit the current migration refinement, read-adapter seam, and
-   documentation checkpoint.
-2. Compare representative venue, event, source, and update records between JSON
-   and Supabase.
+1. Verify the repository migration, seed snapshot, and read-adapter seam still
+   match the accepted Supabase state.
+2. Define the smallest reversible step toward Supabase as the operational data
+   source while retaining JSON recovery/export.
 3. Keep local preview only until the user accepts the behavior.
-4. Defer authenticated favorites, thumbs-down, notes, and in-app requests until
-   the read adapter is stable.
+4. Defer or separately gate authenticated favorites, thumbs-down, notes, and
+   in-app requests if they are not required for the operational-source cutover.
 5. Use a higher-reasoning model before changing RLS/auth/write policies or
    publishing a Supabase-backed release.
