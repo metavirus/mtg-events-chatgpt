@@ -23,6 +23,10 @@ Use it for:
 - The minimal live Supabase write pilot passed using
   `supabase/proposals/workflow-pilot-2026-07-17.json`: one documentary
   `research_changes` insert only, with prewrite/postwrite exports verified.
+- Batch A identity/status clarifications were applied through
+  `supabase/proposals/identity-status-batch-a-2026-07-17.json`. The write
+  clarified Krazy Nick's / Honey Pot, Game Chest Irvine, ProjectCCG,
+  Kingslayer, and Shuffle and Cut / The Realm without changing event records.
 - The local UX pass is accepted; do not resume Today/Events/Places/Updates
   polish as the default next step unless a true blocker appears.
 - Migrate canonical research, personal continuity, and async request data in

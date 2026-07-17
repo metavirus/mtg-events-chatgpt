@@ -60,6 +60,18 @@ The controlled write workflow has now passed a minimal live pilot:
 - prewrite and postwrite deterministic exports verified;
 - hosted Supabase-default app and `?data=json` fallback still render.
 
+Batch A identity/status clarifications have also been applied through the
+controlled Supabase workflow:
+
+- proposal `supabase/proposals/identity-status-batch-a-2026-07-17.json`;
+- affected scope: Krazy Nick's / Honey Pot, Game Chest Irvine, ProjectCCG,
+  Kingslayer, and Shuffle and Cut / The Realm;
+- no event records, canonical JSON, app code, schema, auth, RLS, or browser-write
+  behavior changed;
+- postwrite export changed only `stores.json`, `sources.json`,
+  `entity_sources.json`, `changes.json`, and `manifest.json`;
+- `events.json` and `event_occurrences.json` were unchanged.
+
 Immediate next tranche:
 
 1. Use `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` for future research
