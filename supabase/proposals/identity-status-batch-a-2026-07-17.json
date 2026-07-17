@@ -1,0 +1,450 @@
+{
+  "proposal_id": "identity-status-batch-a-2026-07-17",
+  "description": "Controlled proposal only for Batch A identity/status clarifications. No event records are inserted or updated.",
+  "created_at": "2026-07-17T00:00:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-honeypot-wednesday-commander-2026-07-17"
+      },
+      "fields": {
+        "id": "src-honeypot-wednesday-commander-2026-07-17",
+        "label": "Honey Pot Meadery Wednesday casual Commander event page",
+        "url": "https://www.honeypotmeadery.com/events/2026/7/1/new-event-1491e/",
+        "source_type": "eventsPage",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Attach the specific Honey Pot Wednesday Commander evidence to Honey Pot, not Krazy Nick's."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-game-chest-alton-square-2026-07-17"
+      },
+      "fields": {
+        "id": "src-game-chest-alton-square-2026-07-17",
+        "label": "The Game Chest Irvine current Alton Square official listing",
+        "url": "https://www.irvinecompanyretail.com/centers/irvine/alton-square/the-game-chest/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Support treating the current Irvine branch as Alton Square rather than a separate active Spectrum branch."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-game-chest-irvine-move-note-2026-07-17"
+      },
+      "fields": {
+        "id": "src-game-chest-irvine-move-note-2026-07-17",
+        "label": "Irvine Community Connection note on The Game Chest moving to Alton Square",
+        "url": "https://www.irvineconnection.com/new-and-favorite-toy-shops-around-irvine/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Spectrum as historical/former-location context without creating a separate active Spectrum record."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-projectccg-about-alhambra-2026-07-17"
+      },
+      "fields": {
+        "id": "src-projectccg-about-alhambra-2026-07-17",
+        "label": "ProjectCCG official about page listing Alhambra identity",
+        "url": "https://projectccg.com/pages/about-us",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Support keeping Alhambra and Santa Ana/OC distinct under the shared ProjectCCG brand."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-projectccg-yugioh-branches-2026-07-17"
+      },
+      "fields": {
+        "id": "src-projectccg-yugioh-branches-2026-07-17",
+        "label": "Yu-Gi-Oh organized-play list showing ProjectCCG Alhambra and Santa Ana separately",
+        "url": "https://www.yugioh-card.com/en/events/core-booster-premiere/locations/",
+        "source_type": "eventPlatform",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Support branch distinction without ingesting branch-specific event facts."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-kingslayer-about-branches-2026-07-17"
+      },
+      "fields": {
+        "id": "src-kingslayer-about-branches-2026-07-17",
+        "label": "Kingslayer official about page listing Fountain Valley and Lake Forest branches",
+        "url": "https://www.kingslayergames.com/service/about/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Support preserving Fountain Valley and Lake Forest as separate real branches."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-shuffle-cut-realm-history-2026-07-17"
+      },
+      "fields": {
+        "id": "src-shuffle-cut-realm-history-2026-07-17",
+        "label": "KeepUp note tying The Realm Games / Shuffle and Cut to Brea historical context",
+        "url": "https://www.keepupcards.com/shop/the-realm-games-brea-ca",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Support preserving The Realm as historical/predecessor-related uncertainty rather than overwriting the current address."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-shuffle-cut-la-habra-listing-2026-07-17"
+      },
+      "fields": {
+        "id": "src-shuffle-cut-la-habra-listing-2026-07-17",
+        "label": "Loc8NearMe Shuffle and Cut La Habra listing",
+        "url": "https://www.loc8nearme.com/california/la-habra/shuffle-and-cut/5058549/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve conflicting La Habra evidence for current-location verification."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-shuffle-cut-brea-fab-2026-07-17"
+      },
+      "fields": {
+        "id": "src-shuffle-cut-brea-fab-2026-07-17",
+        "label": "Flesh and Blood locator Shuffle and Cut Brea listing",
+        "url": "https://legacy.fabtcg.com/en/locator/shuffle-and-cut-games/",
+        "source_type": "eventPlatform",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve conflicting Brea evidence for current-location verification."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "honey-pot-meadery",
+        "source_id": "src-honeypot-wednesday-commander-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "honey-pot-meadery",
+        "source_id": "src-honeypot-wednesday-commander-2026-07-17",
+        "relationship": "evidence"
+      },
+      "reason": "Keep Honey Pot Commander evidence attached to Honey Pot."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-irvine",
+        "source_id": "src-game-chest-alton-square-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-irvine",
+        "source_id": "src-game-chest-alton-square-2026-07-17",
+        "relationship": "evidence"
+      },
+      "reason": "Attach current Alton Square branch evidence to the Irvine record."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-irvine",
+        "source_id": "src-game-chest-irvine-move-note-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-irvine",
+        "source_id": "src-game-chest-irvine-move-note-2026-07-17",
+        "relationship": "evidence"
+      },
+      "reason": "Attach historical move context to the Irvine record."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "source_id": "src-projectccg-yugioh-branches-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "source_id": "src-projectccg-yugioh-branches-2026-07-17",
+        "relationship": "evidence"
+      },
+      "reason": "Attach branch-separation evidence without ingesting event facts."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-fountain-valley",
+        "source_id": "src-kingslayer-about-branches-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-fountain-valley",
+        "source_id": "src-kingslayer-about-branches-2026-07-17",
+        "relationship": "evidence"
+      },
+      "reason": "Attach official multi-branch evidence to Fountain Valley."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-lake-forest",
+        "source_id": "src-kingslayer-about-branches-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-lake-forest",
+        "source_id": "src-kingslayer-about-branches-2026-07-17",
+        "relationship": "evidence"
+      },
+      "reason": "Attach official multi-branch evidence to Lake Forest."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-shuffle-cut-realm-history-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-shuffle-cut-realm-history-2026-07-17",
+        "relationship": "evidence"
+      },
+      "reason": "Attach The Realm / Brea historical-context evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-shuffle-cut-la-habra-listing-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-shuffle-cut-la-habra-listing-2026-07-17",
+        "relationship": "evidence"
+      },
+      "reason": "Attach La Habra conflicting-location evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-shuffle-cut-brea-fab-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-shuffle-cut-brea-fab-2026-07-17",
+        "relationship": "evidence"
+      },
+      "reason": "Attach Brea conflicting-location evidence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "krazy-nick-s-games"
+      },
+      "fields": {
+        "instagram": "",
+        "assessment_notes": "Krazy Nick's Games and Honey Pot Meadery should be treated as separate entities. The Krazy Nick's venue remains anchored to the Cerritos Wizards/organized-play record and local community evidence, while Honey Pot Meadery has its own Anaheim venue record and its own current Commander evidence. Do not attach Honey Pot event/social evidence to Krazy Nick's unless a future source proves a direct operating relationship. Krazy Nick's current Instagram routing remains unknown after removing the erroneous Honey Pot Instagram link."
+      },
+      "reason": "Remove the misleading Honey Pot Instagram link from Krazy Nick's and preserve the separation rule."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "honey-pot-meadery"
+      },
+      "fields": {
+        "assessment_notes": "Honey Pot Meadery is a separate Anaheim mixed-use venue, not a Krazy Nick's alias. It remains one of the strongest non-store secondary leads in the project: official site and event pages confirm multiple Magic lanes, including recurring Wednesday casual Commander, a structured Mead & Mana Commander League with Bracket 3 or lower framing, a special God of Mischief Commander variant, and a Hobbit prerelease. Instagram and Facebook are active operational surfaces, and current Instagram promotion corroborates the Commander-league identity with welcoming language. A clear dedicated play-space photo has not yet been captured, so physical-scale inference should remain cautious."
+      },
+      "reason": "Make the Honey Pot / Krazy Nick's separation explicit while preserving Honey Pot Commander evidence under Honey Pot."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "the-game-chest-irvine"
+      },
+      "fields": {
+        "name": "The Game Chest - Irvine",
+        "website": "https://www.irvinecompanyretail.com/centers/irvine/alton-square/the-game-chest/",
+        "assessment_notes": "Treat the current Irvine branch as the Alton Square location at 5365A-1 Alton Parkway. Spectrum should be preserved as historical/former-location context, not as a separate active branch unless current official evidence reappears. Existing Wizards and directory evidence remains useful, but branch/location labels should be handled carefully because older surfaces still conflate Irvine Spectrum and Alton Square."
+      },
+      "reason": "Clarify current Irvine branch routing and remove the trailing-space name issue without creating a separate Spectrum entity."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "projectccg-santa-ana"
+      },
+      "fields": {
+        "assessment_notes": "Keep ProjectCCG Santa Ana / OC distinct from the Alhambra ProjectCCG store. Treat MTG OC as community or market shorthand unless a specific canonical community/entity is justified by later research. The official ProjectCCG brand and organized-play surfaces support multiple branch identities, so branch-specific event ingestion should wait until event sources are replayed and the Santa Ana/OC surface is tied to the correct venue."
+      },
+      "reason": "Record the branch-separation rule and defer event ingestion until branch-specific sources are replayed."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "kingslayer-games-lake-forest"
+      },
+      "fields": {
+        "assessment_notes": "Kingslayer Lake Forest is a real branch distinct from Fountain Valley, but current event interpretation remains lower-confidence. Kingslayer official surfaces support both Fountain Valley and Lake Forest, while the Lake Forest Commander listing appears to inherit Fountain Valley wording inside the event details. Preserve the branch and keep the event-text contamination warning; do not change Lake Forest event facts until branch-specific event sources are replayed."
+      },
+      "reason": "Preserve branch separation while explicitly retaining the Lake Forest event-text contamination warning."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "shuffle-and-cut-games-la-habra"
+      },
+      "fields": {
+        "assessment_notes": "Do not make a final current-address correction yet. Shuffle and Cut appears active and The Realm Games appears historical or predecessor-related, but current public location evidence conflicts between La Habra and Brea surfaces. Official current-location verification is required before changing the canonical address/city. Until then, preserve both La Habra and Brea evidence as uncertainty rather than treating either as settled."
+      },
+      "reason": "Replace overconfident location wording with an explicit unresolved current-location warning."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "identity-status-batch-a-krazy-honeypot-2026-07-17"
+      },
+      "fields": {
+        "id": "identity-status-batch-a-krazy-honeypot-2026-07-17",
+        "detected_at": "2026-07-17T00:00:00Z",
+        "change_type": "identity_status",
+        "entity_type": "venue",
+        "entity_id": "krazy-nick-s-games",
+        "summary": "Clarified that Krazy Nick's Games and Honey Pot Meadery should be treated as separate entities; Honey Pot Commander evidence belongs under Honey Pot, not Krazy Nick's.",
+        "review_status": "proposed"
+      },
+      "reason": "Document the proposed identity separation."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "identity-status-batch-a-game-chest-irvine-2026-07-17"
+      },
+      "fields": {
+        "id": "identity-status-batch-a-game-chest-irvine-2026-07-17",
+        "detected_at": "2026-07-17T00:00:00Z",
+        "change_type": "identity_status",
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-irvine",
+        "summary": "Clarified The Game Chest Irvine as current Alton Square branch with Irvine Spectrum preserved as historical/former-location context.",
+        "review_status": "proposed"
+      },
+      "reason": "Document the proposed Game Chest identity/location clarification."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "identity-status-batch-a-projectccg-2026-07-17"
+      },
+      "fields": {
+        "id": "identity-status-batch-a-projectccg-2026-07-17",
+        "detected_at": "2026-07-17T00:00:00Z",
+        "change_type": "identity_status",
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "summary": "Clarified ProjectCCG Santa Ana/OC and Alhambra as distinct branch identities; MTG OC remains shorthand/community context pending a specific canonical entity decision.",
+        "review_status": "proposed"
+      },
+      "reason": "Document the proposed ProjectCCG branch-separation rule."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "identity-status-batch-a-kingslayer-2026-07-17"
+      },
+      "fields": {
+        "id": "identity-status-batch-a-kingslayer-2026-07-17",
+        "detected_at": "2026-07-17T00:00:00Z",
+        "change_type": "identity_status",
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-lake-forest",
+        "summary": "Preserved Kingslayer Fountain Valley and Lake Forest as separate branches while retaining the Lake Forest event-text contamination warning.",
+        "review_status": "proposed"
+      },
+      "reason": "Document the proposed Kingslayer branch-separation clarification."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "identity-status-batch-a-shuffle-cut-realm-2026-07-17"
+      },
+      "fields": {
+        "id": "identity-status-batch-a-shuffle-cut-realm-2026-07-17",
+        "detected_at": "2026-07-17T00:00:00Z",
+        "change_type": "identity_status",
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "summary": "Recorded unresolved Shuffle and Cut / The Realm identity-location uncertainty: The Realm appears historical or predecessor-related, while current Shuffle and Cut location evidence conflicts between La Habra and Brea.",
+        "review_status": "proposed"
+      },
+      "reason": "Document the unresolved Shuffle and Cut / The Realm uncertainty without making a final address correction."
+    }
+  ]
+}
