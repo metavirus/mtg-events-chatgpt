@@ -917,7 +917,7 @@ function renderWeek(events, start) {
   document.getElementById('calendarContent').innerHTML = `<div class="week-helper"><span>${weekendCount} Fri-Sun matches this week</span><span>Weekend columns are emphasized for planning.</span></div><div class="week-grid">${Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
-    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${isWeekend(date) ? '<em>Focus</em>' : ''}</header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
+    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
   }).join('')}</div>`;
 }
 
@@ -1077,7 +1077,7 @@ function renderEventCatalogWeek(events, start) {
   return `<div class="week-grid event-catalog-week">${Array.from({ length: 7 }, (_, index) => {
     const date = addDays(weekStart, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
-    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${isWeekend(date) ? '<em>Focus</em>' : ''}</header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
+    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
   }).join('')}</div>`;
 }
 
