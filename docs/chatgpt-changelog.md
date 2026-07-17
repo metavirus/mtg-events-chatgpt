@@ -6,6 +6,24 @@ Codex audit explicitly changes their status.
 
 ## Unreviewed ChatGPT Changes
 
+### 2026-07-16 — Consolidated Supabase-ready research intake packet
+
+- Outcome type: intake-only
+- Entity: 55 researched stores, branches, community venues, event candidates, and identity/status candidates
+- Modality path used: existing repo records and run notes -> Wizards snapshot evidence -> official websites/calendars -> Instagram/social routing -> Discord evidence/public metadata -> Google/Yelp-derived review mirrors -> publisher organized-play lists -> marketplaces -> local reporting/community platforms
+- Promotion status: Candidate queued for Codex review
+- Files changed: `research/intake/2026-07-16-supabase-ready-intake/README.md`, `research/intake/2026-07-16-supabase-ready-intake/01-requested-26-venues.md`, `research/intake/2026-07-16-supabase-ready-intake/02-existing-repo-catchup-29.md`, `docs/ASYNC_INTAKE.md`, `docs/chatgpt-changelog.md`, `docs/agent-mailbox.md`
+- Branch / PR: `chatgpt-data-update/2026-07-16-research-intake`; PR pending
+- Request: Consolidate all previously gathered venue/community/event research into one reviewable, fixed-schema intake packet suitable for later Supabase transformation, without changing canonical JSON or writing to Supabase.
+- Summary of changes: Added one packet directory containing an intake contract and 55 structured entity records. Each record separates confirmed source facts, analyst interpretation, candidate proposal, unresolved conflict, upcoming event details, format-specific findings, freshness, duplicate risk, disposition, and Codex decision. Added one async intake item and a mandatory mailbox review signal.
+- Source support: Exact source URLs and modality labels are preserved per record. Supporting detailed evidence remains in the four dated research-run notes already on the branch.
+- Validation performed: Compared the recent 26-store tranche against the current store roster; included the 29 remaining records; preserved existing canonical IDs where unambiguous; used `candidate` for unresolved Honey Pot/identity reconciliation; kept Google, Yelp, official, Wizards, Discord, marketplace, publisher and community evidence separate; flagged duplicates, moves, closure and branch conflicts.
+- Validation not performed: No authenticated Google Maps/Yelp browsing; no new authenticated Discord channel inspection; no live Wizards crawler refresh for every store; no local PowerShell text-integrity check; no Supabase write/schema validation. Canonical JSON validation was not required because canonical JSON was not edited.
+- Known risks: Some ratings/counts and recurring events are stale snapshots; event dates described as recurring require live replay; several branch/predecessor/closure conflicts must be resolved before ingestion; the packet is structured for transformation but does not assume or establish a Supabase schema.
+- Codex audit requested: Review the intake packet, reconcile duplicates and identity/status conflicts, validate actionable events and freshness, and decide what—if anything—should be promoted or corrected through the canonical/Supabase migration workflow.
+- Codex review needed: yes
+- Status: pending Codex review
+
 ### 2026-07-16 — Google reviews and fuzzy resource pass for 26 stores
 
 - Outcome type: documentary-edit
