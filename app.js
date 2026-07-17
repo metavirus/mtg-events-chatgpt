@@ -383,8 +383,8 @@ function handleClick(event) {
 
   const presetButton = event.target.closest('[data-preset]');
   if (presetButton) {
-    state.preset = presetButton.dataset.preset;
-    document.querySelectorAll('[data-preset]').forEach((button) => button.classList.toggle('active', button === presetButton));
+    state.preset = toggledFilterValue(presetButton, 'preset', 'all');
+    document.querySelectorAll('[data-preset]').forEach((button) => button.classList.toggle('active', button.dataset.preset === state.preset));
     renderCalendar();
     return;
   }
@@ -399,16 +399,16 @@ function handleClick(event) {
 
   const catalogFilterButton = event.target.closest('[data-event-catalog-filter]');
   if (catalogFilterButton) {
-    state.eventCatalogFilter = catalogFilterButton.dataset.eventCatalogFilter;
-    document.querySelectorAll('[data-event-catalog-filter]').forEach((button) => button.classList.toggle('active', button === catalogFilterButton));
+    state.eventCatalogFilter = toggledFilterValue(catalogFilterButton, 'eventCatalogFilter', 'all');
+    document.querySelectorAll('[data-event-catalog-filter]').forEach((button) => button.classList.toggle('active', button.dataset.eventCatalogFilter === state.eventCatalogFilter));
     renderEventCatalog();
     return;
   }
 
   const changeFilterButton = event.target.closest('[data-change-filter]');
   if (changeFilterButton) {
-    state.changeFilter = changeFilterButton.dataset.changeFilter;
-    document.querySelectorAll('[data-change-filter]').forEach((button) => button.classList.toggle('active', button === changeFilterButton));
+    state.changeFilter = toggledFilterValue(changeFilterButton, 'changeFilter', 'all');
+    document.querySelectorAll('[data-change-filter]').forEach((button) => button.classList.toggle('active', button.dataset.changeFilter === state.changeFilter));
     renderChanges();
     return;
   }
@@ -453,8 +453,8 @@ function handleClick(event) {
 
   const placeFilter = event.target.closest('[data-place-filter]');
   if (placeFilter) {
-    state.placeFilter = placeFilter.dataset.placeFilter;
-    document.querySelectorAll('[data-place-filter]').forEach((button) => button.classList.toggle('active', button === placeFilter));
+    state.placeFilter = toggledFilterValue(placeFilter, 'placeFilter', 'all');
+    document.querySelectorAll('[data-place-filter]').forEach((button) => button.classList.toggle('active', button.dataset.placeFilter === state.placeFilter));
     renderPlaces();
     return;
   }
@@ -483,6 +483,11 @@ function handleClick(event) {
   if (event.target.closest('#activityLogButton')) return openActivityLog();
   if (event.target.closest('#openQuickNote')) return openQuickNote();
   if (event.target.closest('#mobileMenu') || event.target.closest('#mobileMore')) return document.querySelector('.side-rail').classList.toggle('mobile-open');
+}
+
+function toggledFilterValue(button, datasetKey, defaultValue = 'all') {
+  const value = button.dataset[datasetKey];
+  return value !== defaultValue && button.classList.contains('active') ? defaultValue : value;
 }
 
 function handleKeys(event) {
