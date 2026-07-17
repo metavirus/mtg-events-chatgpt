@@ -15,12 +15,18 @@ Current status is documented in `docs/SUPABASE_MIGRATION_STATUS.md`:
 - security advisor was clean after migration;
 - the missing `entity_sources.source_id` performance index was fixed and added
   to the migration;
-- JSON remains the active app source until adapter/parity gates pass.
+- representative raw-data and read-adapter parity are accepted at repair commit
+  `813c0f2`; JSON remains the active app source pending a separate deliberate
+  cutover gate.
 
 The safe read-adapter seam now exists in `app.js` and is opt-in only via
-`?data=supabase`; JSON remains the default app source. Next safe data-layer
-work is representative parity checking, not a direct cutover. Use 5.6 before
-changing auth/RLS/write policy or publishing a Supabase-backed release.
+`?data=supabase`; JSON remains the default app source. Initial validation at
+`7e42202` found a status-vocabulary mismatch and dated-event duplication.
+Repair commit `813c0f2` fixed both, and independent representative verification
+accepted 97 semantic events with matching Today, Events, and Commander results
+across JSON and Supabase. This acceptance is not a default-cutover decision.
+Use 5.6 before changing auth/RLS/write policy, making Supabase the default, or
+publishing a Supabase-backed release.
 
 ## Current design mega-revision scope
 
@@ -375,10 +381,12 @@ Do not expand to the next discovery candidate until Tweedy has either:
 
 ## Recommended next step
 
-Build the first complete private application using `docs/IMPLEMENTATION_PLAN.md`.
-Treat the existing static interface as a disposable data-loading prototype, keep
-the Commander-heavy event seed visibly labeled as incomplete Magic coverage, and
-retain the research backlog for later continuation.
+Resume one bounded Today/Events UX tranche from
+`docs/UX_MEGA_REVISION_SCOPE.md`, beginning with Today as the decision surface
+and only the directly shared Events filtering/search behavior needed to keep
+the two surfaces coherent. Keep the Commander-heavy event seed visibly labeled
+as incomplete Magic coverage, preserve JSON as the default with fallback, and
+retain the paused research backlog for later continuation.
 
 ## After that
 

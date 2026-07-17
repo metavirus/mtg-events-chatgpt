@@ -16,9 +16,40 @@ not retried. A local Node executable was not available for an additional
 in-memory fallback harness; the existing repository code and prior
 deterministic fallback verification were used instead.
 
-## Result
+## Current result after repair
 
-**Migration gate: reject for default cutover; keep the gate open for repair and
+**Representative read parity: accepted at repair commit `813c0f2`. This does
+not authorize a default Supabase cutover.**
+
+The initial validation recorded at `7e42202` rejected cutover because of two
+adapter defects: incompatible research-status vocabulary made the main Today
+and Events results empty, and dated events were represented as both series and
+occurrences. Repair commit `813c0f2` added status-vocabulary compatibility and
+removed the dated series/occurrence duplication from the semantic event set.
+
+Independent verification accepted the bounded repair with:
+
+- 97 semantic event records: 87 recurring series plus 10 dated occurrences;
+- matching JSON and Supabase result counts of 436 on Today and 641 on Events;
+- matching Commander-filter result count of 623;
+- representative Tweedy rendering at 5 PM with its provenance intact;
+- representative Hobbit rendering as `Time TBD`;
+- no browser console warnings or errors; and
+- unchanged JSON-default selection and fallback code.
+
+Raw data parity had already passed in the initial validation. The remaining
+limitations are unchanged: the live dataset has no recurring series without a
+default time and no occurrence with a null time that must inherit a non-null
+series default. The forced-network-failure browser fallback was not rerun;
+fallback code and the prior deterministic acceptance remain unchanged.
+
+JSON remains the default source and the JSON fallback remains in place. This
+representative acceptance does not claim or authorize default Supabase cutover,
+deployment, publication, authenticated writes, or removal of that fallback.
+
+## Initial result at `7e42202` (historical)
+
+**The initial migration gate rejected default cutover pending repair and
 reverification.**
 
 The live seed has complete count and identifier parity, and representative raw
@@ -36,7 +67,7 @@ however:
    representations. The first defect currently masks these duplicates in the
    filtered main views.
 
-## Verification matrix
+## Initial verification matrix (historical)
 
 | Class | JSON / expected identifier and value | Live Supabase identifier and value | Adapter or display result | Status |
 | --- | --- | --- | --- | --- |
@@ -96,6 +127,7 @@ Every expected hash matched live Supabase:
 - A fresh browser-level forced Supabase failure was not performed. JSON default
   selection is freshly verified; fallback remains accepted at the explicit
   code-path and prior deterministic-test level.
-- No defect was repaired. The next tranche should address only the status
-  vocabulary mismatch and dated series/occurrence duplication, then repeat this
-  parity matrix before any default cutover.
+- At the initial checkpoint, no defect had been repaired. Commit `813c0f2`
+  subsequently repaired the status vocabulary mismatch and dated
+  series/occurrence duplication, and the independent representative
+  reverification summarized above accepted that repair.

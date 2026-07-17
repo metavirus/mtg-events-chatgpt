@@ -14,9 +14,10 @@ Use it for:
 
 ## Active next-up
 
-- Build the Supabase operational data foundation described in
-  `docs/SUPABASE_ARCHITECTURE.md` without switching the accepted file-backed app
-  until import and security parity checks pass.
+- Continue the Supabase operational data foundation described in
+  `docs/SUPABASE_ARCHITECTURE.md`. Representative raw-data and read-adapter
+  parity are accepted at `813c0f2`, but keep the file-backed app as the default
+  until a separate deliberate cutover gate.
 - Migrate canonical research, personal continuity, and async request data in
   explicit reversible stages.
 - During the current mega revision, allow foundation-only continuity work that
