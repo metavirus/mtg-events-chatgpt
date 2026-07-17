@@ -1,0 +1,377 @@
+{
+  "proposal_id": "review-source-evidence-backfill-2026-07-17",
+  "description": "Backfills clickable review and mirror evidence for recently assessed stores where Yelp-derived, Google-derived, or review/complaint sources materially influenced Places-page fit, confidence, positives, cautions, or open questions. No event, grade, assessment, schema, auth, RLS, or canonical JSON changes.",
+  "created_at": "2026-07-17T21:00:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-game-cellar-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "id": "src-game-cellar-yahoo-local-2026-07-17",
+        "label": "Yahoo Local / Yelp-derived listing for The Game Cellar",
+        "url": "https://local.yahoo.com/info-238210773-the-game-cellar-san-gabriel/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived welcoming/community, Magic/newcomer, and operating-hours reliability signals that influenced The Game Cellar assessment."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-nextgen-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "id": "src-nextgen-yahoo-local-2026-07-17",
+        "label": "Yahoo Local / Yelp-derived listing for Next-Gen Games",
+        "url": "https://local.yahoo.com/info-198933692-nextgen-games-los-angeles",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived Magic presence, play-space, staff/community, and review-scale signals for Next-Gen."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-nextgen-roadtrippers-2026-07-17"
+      },
+      "fields": {
+        "id": "src-nextgen-roadtrippers-2026-07-17",
+        "label": "Roadtrippers / Yelp-derived listing for Next-Gen Games",
+        "url": "https://maps.roadtrippers.com/us/los-angeles-ca/places/next-gen-games-los-angeles",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve recent Yelp-derived review excerpts supporting both open play/Magic selection and recent service/pricing cautions for Next-Gen."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-itsgametime-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "id": "src-itsgametime-yahoo-local-2026-07-17",
+        "label": "Yahoo Local / Yelp-derived listing for It's GameTime!",
+        "url": "https://local.yahoo.com/info-168922240-it-s-gametime-los-angeles/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived stocked CCG, staff, limited play-space, and customer-experience signals for It's GameTime."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-crimson-apple-maps-2026-07-17"
+      },
+      "fields": {
+        "id": "src-crimson-apple-maps-2026-07-17",
+        "label": "Apple Maps / Yelp-derived listing for The Crimson Guild",
+        "url": "https://maps.apple.com/place?place-id=I51DEE7FF583245F2",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Yelp-derived review evidence for Crimson Guild's play-space, staff/pricing, and Friday Commander signal without using it as primary event proof."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-turnzero-roadtrippers-2026-07-17"
+      },
+      "fields": {
+        "id": "src-turnzero-roadtrippers-2026-07-17",
+        "label": "Roadtrippers / Yelp-derived listing for Turn Zero Games",
+        "url": "https://maps.roadtrippers.com/us/los-angeles-ca/shopping/turn-zero-games",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Yelp-derived evidence for Turn Zero's active TCG footprint, free play-space, and welcoming staff/community signals."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-turnzero-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "id": "src-turnzero-loc8nearme-2026-07-17",
+        "label": "Loc8NearMe review mirror for Turn Zero Games",
+        "url": "https://www.loc8nearme.com/california/los-angeles/turn-zero-games/5082061/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived signals about Turn Zero's inclusive community, Magic/TCG activity, free play space, and Discord usefulness."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-coretcg-mapquest-2026-07-17"
+      },
+      "fields": {
+        "id": "src-coretcg-mapquest-2026-07-17",
+        "label": "MapQuest / Yelp-derived listing for CoreTCG",
+        "url": "https://www.mapquest.com/us/california/core-tcg-346524733",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Yelp-derived broad storefront, review-scale, and service/selection signals for CoreTCG."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-coretcg-bbb-2026-07-17"
+      },
+      "fields": {
+        "id": "src-coretcg-bbb-2026-07-17",
+        "label": "Better Business Bureau review page for CoreTCG",
+        "url": "https://www.bbb.org/us/ca/pasadena/profile/pokemon-cards/coretcg-inc-1216-1005377/customer-reviews",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve separate commerce/service-risk evidence for CoreTCG without treating it as in-store Commander proof."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-comicquest-roadtrippers-2026-07-17"
+      },
+      "fields": {
+        "id": "src-comicquest-roadtrippers-2026-07-17",
+        "label": "Roadtrippers / Yelp-derived listing for Comic Quest",
+        "url": "https://maps.roadtrippers.com/us/lake-forest-ca/shopping/comic-quest-lake-forest",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Yelp-derived broad store-quality, staff, and physical-place signals for Comic Quest."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-comicquest-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "id": "src-comicquest-loc8nearme-2026-07-17",
+        "label": "Loc8NearMe review mirror for Comic Quest",
+        "url": "https://www.loc8nearme.com/california/lake-forest/comic-quest/8581846/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Google/review-derived staff, selection, and welcoming-store signals for Comic Quest."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar",
+        "source_id": "src-game-cellar-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar",
+        "source_id": "src-game-cellar-yahoo-local-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Make Game Cellar review-derived assessment support clickable in the Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "source_id": "src-nextgen-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "source_id": "src-nextgen-yahoo-local-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Make Next-Gen review-derived assessment support clickable in the Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "source_id": "src-nextgen-roadtrippers-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "source_id": "src-nextgen-roadtrippers-2026-07-17",
+        "relationship": "review/fit and caution signal"
+      },
+      "reason": "Attach a second review mirror preserving both positive and cautionary Next-Gen signals."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "it-s-gametime",
+        "source_id": "src-itsgametime-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "it-s-gametime",
+        "source_id": "src-itsgametime-yahoo-local-2026-07-17",
+        "relationship": "review/fit and caution signal"
+      },
+      "reason": "Make It's GameTime review-derived assessment support clickable in the Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "source_id": "src-crimson-apple-maps-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "source_id": "src-crimson-apple-maps-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Add a clickable review mirror for Crimson's play-space, staff/pricing, and Friday Commander review signal."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-turnzero-roadtrippers-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-turnzero-roadtrippers-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Make Turn Zero's review-derived play-space and community support clickable in the Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-turnzero-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-turnzero-loc8nearme-2026-07-17",
+        "relationship": "review/community signal"
+      },
+      "reason": "Attach an additional review mirror for Turn Zero's community, Discord, and Magic/TCG activity signals."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "source_id": "src-coretcg-mapquest-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "source_id": "src-coretcg-mapquest-2026-07-17",
+        "relationship": "review/fit and caution signal"
+      },
+      "reason": "Make CoreTCG's Yelp-derived store/review signal clickable in the Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "source_id": "src-coretcg-bbb-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "source_id": "src-coretcg-bbb-2026-07-17",
+        "relationship": "commerce/service-risk signal"
+      },
+      "reason": "Attach separate service-risk evidence for CoreTCG without using it as event or in-person community proof."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "source_id": "src-comicquest-roadtrippers-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "source_id": "src-comicquest-roadtrippers-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Make Comic Quest review-derived store-quality support clickable in the Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "source_id": "src-comicquest-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "source_id": "src-comicquest-loc8nearme-2026-07-17",
+        "relationship": "review/community signal"
+      },
+      "reason": "Attach an additional review mirror for Comic Quest staff, selection, and welcoming-store support."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "review-source-evidence-backfill-2026-07-17"
+      },
+      "fields": {
+        "id": "review-source-evidence-backfill-2026-07-17",
+        "detected_at": "2026-07-17T21:00:00Z",
+        "change_type": "source_replay",
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar",
+        "summary": "Backfilled clickable review and mirror evidence for recently assessed stores so Places-page fit, confidence, positives, cautions, and open questions have a visible source trail.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable update marker for review-source evidence backfill."
+    }
+  ]
+}

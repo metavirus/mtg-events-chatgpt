@@ -83,6 +83,51 @@ branch, former location, predecessor, or ambiguous address, record the conflict
 and route the next check to official branch-specific sources before applying
 the signal to a venue or event.
 
+## Evidence capture rule
+
+Evidence is not just event proof. It is any source that materially supports a
+store, event, community, identity, source-routing, or Places-page assessment
+claim.
+
+If a source affects any of these user-visible fields, it should usually be
+captured as structured evidence and attached to the relevant entity:
+
+- fit grade or numeric score;
+- confidence;
+- positives;
+- cautions;
+- open questions;
+- assessment notes / analyst synthesis;
+- source-routing notes;
+- branch, identity, status, or location uncertainty;
+- event existence, recurrence, date, time, fee, capacity, or status.
+
+This especially applies to review and mirror sources. A Yelp page, Yelp-derived
+mirror, Google-derived review mirror, marketplace profile, or public community
+surface should become clickable Evidence when it contributes meaningful
+store-quality, solo-arrival, play-space, service-risk, pricing, inventory,
+community, or identity signals.
+
+Do not attach every low-value search result. If a source was merely glanced at
+and rejected, it can stay out of structured Evidence. If it shaped the store
+read, preserve it.
+
+For review-derived evidence:
+
+- attach the source to the venue, not to an event, unless it directly supports a
+  specific event claim;
+- label the relationship plainly, such as `review/fit signal`,
+  `secondary activity/review support`, or `service-risk review support`;
+- preserve source family and role in the source label or relationship when the
+  URL is a mirror rather than the primary review platform;
+- do not use review sources as canonical event proof unless the claim is later
+  corroborated by an official/store-controlled/event-platform source.
+
+Run notes may summarize why a source mattered, but the app-facing Evidence tab
+should carry the clickable trail whenever the source materially influenced the
+assessment. The user should not have to trust a fit/caution synthesis that has
+no visible source trail.
+
 ## Pass types
 
 ### 1. Strict first pass
