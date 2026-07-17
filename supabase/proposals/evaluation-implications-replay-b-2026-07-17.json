@@ -1,0 +1,481 @@
+{
+  "proposal_id": "evaluation-implications-replay-b-2026-07-17",
+  "description": "Evaluation-focused proposal for high-value event candidate replay B. Enriches Places-page store assessments for Turn Zero Games, CoreTCG, Comic Quest, and Collector Legion, and catalogs Collector Legion LEGIONMANIA III as a historical competitive EDH special-event signal rather than an upcoming planning item.",
+  "created_at": "2026-07-17T19:00:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-turnzero-linktree-2026-07-17"
+      },
+      "fields": {
+        "id": "src-turnzero-linktree-2026-07-17",
+        "label": "Turn Zero Games official Linktree",
+        "url": "https://linktr.ee/turn0games",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Turn Zero's official routing to current schedule, Discord, website, and store identity surfaces."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-coretcg-official-site-2026-07-17"
+      },
+      "fields": {
+        "id": "src-coretcg-official-site-2026-07-17",
+        "label": "CoreTCG official website",
+        "url": "https://coretcg.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official CoreTCG identity, product-depth, events, Discord, and buylist routing support."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-comicquest-homepage-2026-07-17"
+      },
+      "fields": {
+        "id": "src-comicquest-homepage-2026-07-17",
+        "label": "Comic Quest official homepage and newcomer/open-play language",
+        "url": "https://comicquest.org/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Comic Quest's official welcoming/open-play language as direct solo-arrival fit evidence."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-comicquest-calendar-2026-07-17"
+      },
+      "fields": {
+        "id": "src-comicquest-calendar-2026-07-17",
+        "label": "Comic Quest official venue calendar",
+        "url": "https://comicquest.org/venue/comic-quest/",
+        "source_type": "eventsPage",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official calendar support for Friday Night Magic activity without duplicating the existing Commander record."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-collector-legion-legionmania-topdeck-2026-07-17"
+      },
+      "fields": {
+        "id": "src-collector-legion-legionmania-topdeck-2026-07-17",
+        "label": "TopDeck LEGIONMANIA III event page",
+        "url": "https://topdeck.gg/event/legionmania-iii",
+        "source_type": "eventPlatform",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Catalog the detailed LEGIONMANIA III competitive EDH special-event signal as store-character evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-turnzero-linktree-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-turnzero-linktree-2026-07-17",
+        "relationship": "official source-routing support"
+      },
+      "reason": "Attach Turn Zero's official routing surface to the venue record."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "source_id": "src-coretcg-official-site-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "source_id": "src-coretcg-official-site-2026-07-17",
+        "relationship": "official venue/activity support"
+      },
+      "reason": "Attach CoreTCG's official site as active store and routing evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "source_id": "src-comicquest-homepage-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "source_id": "src-comicquest-homepage-2026-07-17",
+        "relationship": "official welcoming/open-play support"
+      },
+      "reason": "Attach Comic Quest's official solo-arrival/newcomer-friendly language to the venue record."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "source_id": "src-comicquest-calendar-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "source_id": "src-comicquest-calendar-2026-07-17",
+        "relationship": "official calendar support"
+      },
+      "reason": "Attach Comic Quest's official calendar to support active FNM/event infrastructure."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "collector-legion",
+        "source_id": "src-collector-legion-legionmania-topdeck-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "collector-legion",
+        "source_id": "src-collector-legion-legionmania-topdeck-2026-07-17",
+        "relationship": "competitive special-event signal"
+      },
+      "reason": "Attach LEGIONMANIA III as a store-character signal reinforcing Collector Legion's organized competitive event layer."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "turn-zero-games"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Turn Zero Games now reads as a real Magic-focused Los Angeles store rather than a thin Wizards-discovery lead. The official Linktree is the best source-routing surface: it points to the website, current event schedule, Discord, and card-selling intake, and frames the store as a serious independent Magic venue with a wide tournament footprint. Existing Wizards/EventLink evidence already gives a Commander anchor, while review-derived evidence from the intake packet supports active tables, free play space, beginner support, and a sizable community surface. The personal-fit question is not whether Magic happens here; it is whether the Commander culture is casual/solo-friendly enough to justify the drive from Los Alamitos. Discord and schedule extraction remain the next useful checks.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 3,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 4,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote Turn Zero from placeholder discovery wording to a reviewed candidate with explicit source-routing, fit, and uncertainty."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "coretcg"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "CoreTCG is clearly an active, high-scale Pasadena TCG retailer with substantial Magic product depth, event infrastructure, Discord routing, and an existing Wizards/EventLink Commander record. Its strength is operational seriousness rather than proven casual-social fit. Review-derived signals from the intake packet are mixed: broad inventory and knowledgeable service appear alongside recurring service, pricing, and order-handling complaints. Treat CoreTCG as a real Magic infrastructure candidate, but do not assume it is a comfortable Bracket 2/3 solo-arrival Commander fit until the current schedule and Discord/LFG texture are reviewed.",
+        "assessment": {
+          "commanderActivity": 3,
+          "meetupAccessibility": 2,
+          "communityContinuity": 3,
+          "newPlayerIntegration": 2,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 2
+        }
+      },
+      "reason": "Promote CoreTCG from placeholder discovery wording to a reviewed infrastructure-heavy candidate while preserving casual-fit uncertainty."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "comic-quest"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Comic Quest now looks more promising than its placeholder record suggested because its official site directly addresses the user's solo-arrival concern: the store describes Friday Night Magic as regular activity and tells newcomers to pull up a chair with a friendly crowd used to teaching. The official venue calendar confirms active Friday Night Magic, while Wizards/EventLink already provides the Commander-specific recurring record. The caution is equally specific: review-derived evidence includes a report of a visitor being denied an event as `for locals only`, which matters directly for cold-arrival usability. Treat Comic Quest as a reviewed candidate with a meaningful open-play/newcomer upside, but verify whether Commander/FNM is genuinely open to non-regular walk-ins before promoting it as a personal target.",
+        "assessment": {
+          "commanderActivity": 3,
+          "meetupAccessibility": 4,
+          "communityContinuity": 3,
+          "newPlayerIntegration": 4,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 3,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote Comic Quest from placeholder discovery wording and preserve both official newcomer/open-play support and the locals-only caution."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "collector-legion"
+      },
+      "fields": {
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Collector Legion remains a high-activity Magic store with substantial source coverage, but the updated read should emphasize the split between useful Commander availability and strong competitive/special-event gravity. Wizards/EventLink cleanly supports the free Tuesday Commander anchor, while prior Discord/social/source work suggests Tuesday and Saturday are the main EDH gravity points. LEGIONMANIA III on TopDeck reinforces that Collector Legion can host detailed proxy-friendly EDH/cEDH tournament specials with paid entry, caps, Swiss rounds, cuts, prize support, and competitive-REL-like procedures. That is valuable catalog evidence but not a strong personal-fit signal for casual Bracket 2/3 play. Keep Collector Legion visible as a serious Magic destination, but preserve the cautions around distance, cold solo arrival, weekend displacement risk, and competitive event gravity.",
+        "assessment": {
+          "commanderActivity": 5,
+          "meetupAccessibility": 3,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 5,
+          "scheduleReliability": 3,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Refresh Collector Legion assessment to incorporate LEGIONMANIA III as competitive-special evidence while preserving existing casual-fit cautions."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.5,
+        "confidence": "medium",
+        "positives": [
+          "Official routing exposes schedule, Discord, website, and store identity surfaces.",
+          "Strong Magic-focused LGS identity with an existing Commander anchor.",
+          "Review-derived evidence supports active tables, free play space, beginner support, and a sizable community surface."
+        ],
+        "cautions": [
+          "Distance from Los Alamitos makes this worthwhile mainly if the Commander community proves strong.",
+          "Some review-derived evidence mentions counter-service friction.",
+          "Commander power level, proxy norms, and solo-arrival mechanics still need Discord/schedule review."
+        ],
+        "open_questions": [
+          "Does the Discord have usable LFG or Commander coordination for solo arrivals?",
+          "Is Commander casual, competitive, or mixed in practice?",
+          "What current draft, prerelease, or Commander events are on the linked schedule?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Turn Zero based on replay B and prior source-map evidence."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "coretcg"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.0,
+        "confidence": "medium",
+        "positives": [
+          "Clearly active high-scale TCG/Magic retailer with events and Discord routing.",
+          "Existing Wizards/EventLink Commander record supports real Magic event activity.",
+          "Large operational footprint may support reliable events and broad player volume."
+        ],
+        "cautions": [
+          "Casual Bracket 2/3 Commander fit is not proven by the current evidence.",
+          "Review-derived corpus includes recurring service, pricing, and order-handling complaints.",
+          "Large retailer/tournament identity may not translate into easy solo social integration."
+        ],
+        "open_questions": [
+          "Is the Friday Commander event casual and socially accessible or more prize/tournament oriented?",
+          "Does Discord support casual LFG or only tournament logistics?",
+          "Are prerelease/draft opportunities more relevant here than Commander?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for CoreTCG that separate activity strength from unresolved personal fit."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "medium",
+        "positives": [
+          "Official site gives unusually relevant newcomer/open-play language for solo arrivals.",
+          "Official calendar confirms active Friday Night Magic infrastructure.",
+          "Existing Wizards/EventLink record supports recurring Friday Commander/FNM activity."
+        ],
+        "cautions": [
+          "Review-derived locals-only event report is directly relevant to cold solo arrival risk.",
+          "Official calendar excerpt confirms FNM but does not independently specify Commander in the reviewed slice.",
+          "Distance from Los Alamitos means it needs a strong accessibility read before promotion."
+        ],
+        "open_questions": [
+          "Is Friday FNM Commander genuinely open to non-regular walk-ins?",
+          "Was the locals-only incident isolated, event-specific, or a real house-culture issue?",
+          "Does the store offer prerelease, sealed, or draft events that are easier for solo attendance?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Comic Quest with both official welcoming language and the access caution."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "collector-legion"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "collector-legion",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.4,
+        "confidence": "medium",
+        "positives": [
+          "Strong Magic activity, organized-play footprint, and source stack.",
+          "Existing Tuesday Commander anchor is cleanly supported by Wizards/EventLink.",
+          "Discord/social/source routing gives more depth than a simple locator listing.",
+          "LEGIONMANIA III reinforces that the store can host well-documented proxy-friendly EDH specials."
+        ],
+        "cautions": [
+          "Competitive and special-event gravity is strong and may not fit casual Bracket 2/3 goals.",
+          "Weekend specials can create displacement risk for routine Commander plans.",
+          "Distance and cold solo-arrival uncertainty keep it from being an obvious first personal target."
+        ],
+        "open_questions": [
+          "Is Tuesday Commander casual and socially accessible for a new solo player?",
+          "Does Discord help unaffiliated players find pods?",
+          "How often do specials or tournaments displace routine Commander opportunities?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Collector Legion that capture activity strength and personal-fit cautions."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "collector-legion-legionmania-iii-2026-01-31"
+      },
+      "fields": {
+        "id": "collector-legion-legionmania-iii-2026-01-31",
+        "venue_id": "collector-legion",
+        "title": "LEGIONMANIA III",
+        "format": "Commander",
+        "event_type": "cEDH",
+        "bracket": "competitive",
+        "recurrence": null,
+        "default_start_time": "12:00",
+        "start_date": "2026-01-31",
+        "end_date": "2026-01-31",
+        "entry_fee": 60,
+        "currency": "USD",
+        "details": "TopDeck lists LEGIONMANIA III as a proxy-friendly EDH tournament special at Collector Legion with 11:00 AM doors, 12:00 PM start, $60 entry, 32-player cap, 4 Swiss rounds, cut to Top 10 and Top 4, store-credit prizing, digital decklist submission, and competitive-REL-like multiplayer procedures. This is cataloged as a historical/special-event signal for store character rather than an upcoming personal-planning item because the event date is January 31, 2026.",
+        "confidence": "medium",
+        "event_status": "inactive",
+        "last_verified": "2026-07-17"
+      },
+      "reason": "Catalog the interesting LEGIONMANIA III special without presenting it as an active upcoming casual Commander opportunity."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "collector-legion-legionmania-iii-2026-01-31--occurrence"
+      },
+      "fields": {
+        "id": "collector-legion-legionmania-iii-2026-01-31--occurrence",
+        "series_id": "collector-legion-legionmania-iii-2026-01-31",
+        "occurrence_date": "2026-01-31",
+        "start_time": "12:00",
+        "end_time": "21:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 60,
+        "capacity": 32,
+        "details": "Historical TopDeck-listed LEGIONMANIA III occurrence. Store registration link should be treated with caution because the linked Collector Legion product URL text references a different December event path."
+      },
+      "reason": "Preserve the dated LEGIONMANIA III occurrence as historical catalog evidence with source uncertainty."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-collector-legion-legionmania-topdeck-2026-07-17",
+        "series_id": "collector-legion-legionmania-iii-2026-01-31",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-collector-legion-legionmania-topdeck-2026-07-17",
+        "series_id": "collector-legion-legionmania-iii-2026-01-31",
+        "relationship": "event-platform historical special-event evidence"
+      },
+      "reason": "Attach TopDeck as the source for the LEGIONMANIA III event series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-collector-legion-legionmania-topdeck-2026-07-17",
+        "series_id": null,
+        "occurrence_id": "collector-legion-legionmania-iii-2026-01-31--occurrence"
+      },
+      "fields": {
+        "source_id": "src-collector-legion-legionmania-topdeck-2026-07-17",
+        "occurrence_id": "collector-legion-legionmania-iii-2026-01-31--occurrence",
+        "relationship": "event-platform occurrence evidence"
+      },
+      "reason": "Attach TopDeck as the source for the specific dated LEGIONMANIA III occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "evaluation-implications-replay-b-2026-07-17"
+      },
+      "fields": {
+        "id": "evaluation-implications-replay-b-2026-07-17",
+        "detected_at": "2026-07-17T19:00:00Z",
+        "change_type": "evaluation_update",
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "summary": "Evaluation implications replay B translated source signals for Turn Zero, CoreTCG, Comic Quest, and Collector Legion into Places-page assessment fields, and cataloged Collector Legion LEGIONMANIA III as a historical competitive EDH special-event signal rather than an upcoming planning item.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable update entry for the evaluation-focused replay without implying every store changed for the same reason."
+    }
+  ]
+}
