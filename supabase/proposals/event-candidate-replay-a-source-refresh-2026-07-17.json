@@ -1,0 +1,212 @@
+{
+  "proposal_id": "event-candidate-replay-a-source-refresh-2026-07-17",
+  "description": "Lean source/provenance refresh after high-value event candidate replay A. No event facts, venue facts, schema, auth, RLS, canonical JSON, or app code change. This avoids duplicate event ingestion and records that the five checked candidates are already covered.",
+  "created_at": "2026-07-17T00:00:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-finch-birdcage-2026-07-15"
+      },
+      "fields": {
+        "last_checked": "2026-07-17",
+        "health_status": "current"
+      },
+      "reason": "Current replay confirmed the official Finch homepage still exposes Birdcage VII as a dated cEDH special already represented in the event catalog."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-game-cellar-official-site-2026-07-17"
+      },
+      "fields": {
+        "id": "src-game-cellar-official-site-2026-07-17",
+        "label": "The Game Cellar official website",
+        "url": "https://www.thegamecellarla.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official site support for The Game Cellar's WPN Premium identity, Magic support, weekly events, Commander language, and newcomer/community positioning."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-nextgen-about-2026-07-17"
+      },
+      "fields": {
+        "id": "src-nextgen-about-2026-07-17",
+        "label": "Next-Gen Games official about page",
+        "url": "https://www.nextgengames.la/service/about/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official support for Next-Gen's current Pico/Hauser identity, WPN Premium status, daily tournament infrastructure, Commander/EDH support, and community routing."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-itsgametime-official-schedule-2026-07-17"
+      },
+      "fields": {
+        "id": "src-itsgametime-official-schedule-2026-07-17",
+        "label": "It's GameTime official event schedule",
+        "url": "https://www.itsgametimela.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Official site corroborates the existing Sunday 1 PM EDH/Commander event and separately confirms Friday Night Magic without specifying Commander format."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-crimson-official-site-2026-07-17"
+      },
+      "fields": {
+        "id": "src-crimson-official-site-2026-07-17",
+        "label": "The Crimson Guild official website",
+        "url": "https://thecrimsonguild.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve store-controlled evidence that The Crimson Guild is active, while keeping its Commander schedule primarily tied to Wizards/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-crimson-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "id": "src-crimson-yahoo-local-2026-07-17",
+        "label": "Yahoo Local listing for The Crimson Guild",
+        "url": "https://local.yahoo.com/info-239400545-the-crimson-guild-south-el-monte/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve secondary evidence for Crimson Guild store activity, Magic product support, weekly-events positioning, and review signal without using it to change the address or event facts."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar",
+        "source_id": "src-game-cellar-official-site-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar",
+        "source_id": "src-game-cellar-official-site-2026-07-17",
+        "relationship": "official venue/program support"
+      },
+      "reason": "Attach the official Game Cellar source to the venue record only; no event facts change."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "source_id": "src-nextgen-about-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "source_id": "src-nextgen-about-2026-07-17",
+        "relationship": "official venue/program support"
+      },
+      "reason": "Attach official Next-Gen source support to the venue record; no event facts change."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "it-s-gametime",
+        "source_id": "src-itsgametime-official-schedule-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "it-s-gametime",
+        "source_id": "src-itsgametime-official-schedule-2026-07-17",
+        "relationship": "official schedule support"
+      },
+      "reason": "Attach the official It's GameTime source to the venue record."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "source_id": "src-crimson-official-site-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "source_id": "src-crimson-official-site-2026-07-17",
+        "relationship": "official active-store support"
+      },
+      "reason": "Attach store-controlled active-site support without changing event schedule or address facts."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "source_id": "src-crimson-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "source_id": "src-crimson-yahoo-local-2026-07-17",
+        "relationship": "secondary activity/review support"
+      },
+      "reason": "Preserve useful secondary activity evidence while retaining uncertainty around exact address presentation and event schedule corroboration."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-itsgametime-official-schedule-2026-07-17",
+        "series_id": "it-s-gametime-casual-commander-day-0-13-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-itsgametime-official-schedule-2026-07-17",
+        "series_id": "it-s-gametime-casual-commander-day-0-13-00",
+        "relationship": "official recurring schedule corroboration"
+      },
+      "reason": "Official It's GameTime page specifically corroborates EDH/Commander Sundays at 1 PM, matching the existing recurring event record."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "event-candidate-replay-a-source-refresh-2026-07-17"
+      },
+      "fields": {
+        "id": "event-candidate-replay-a-source-refresh-2026-07-17",
+        "detected_at": "2026-07-17T00:00:00Z",
+        "change_type": "source_replay",
+        "entity_type": "venue",
+        "entity_id": "it-s-gametime",
+        "summary": "High-value event candidate replay A found Finch Birdcage VII, The Game Cellar, Next-Gen Games, It's GameTime, and The Crimson Guild already covered by existing event records. Recommended action is source/provenance refresh only, avoiding duplicate event ingestion.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable documentary marker for the replay decision without changing event facts."
+    }
+  ]
+}
