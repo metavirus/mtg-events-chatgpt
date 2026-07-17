@@ -229,6 +229,72 @@ Batch 2 scope:
 - Do not chase now: organizer provenance, The Bloc address variants, or
   cinema-review replay.
 
+## Batch 4 disposition - completed structurally
+
+### Tilted Gaming
+
+- Packet source: `02-existing-repo-catchup-29.md` item 7.
+- Existing ID: `tilted-gaming`.
+- Current packet decision: `conflict/status TBD` plus `source/evidence-only`.
+- Event decision: no new event write from packet triage.
+- Reason: the packet preserves a useful conflict: Wizards and review-derived
+  sources support an active nearby Commander venue, while MapQuest flags the
+  business as closed. Current repository data already has Tilted Commander
+  event rows, so the packet does not justify another event write. It does,
+  however, require a later bounded status/duplicate-event check before Tilted
+  is promoted as a reliable planning target.
+- Durable TBD: verify current operation and official social/current calendar;
+  also review whether the two retained Tilted Commander rows represent a
+  duplicate or two distinct source snapshots.
+- Do not chase now: live status verification, review replay, or event cleanup.
+
+### Buddies Collectibles
+
+- Packet source: `02-existing-repo-catchup-29.md` item 17.
+- Existing ID: `buddies-collectibles`.
+- Current packet decision: `conflict/status TBD` plus `source/evidence-only`.
+- Event decision: no new event write from packet triage.
+- Reason: current repository data already has a Wizards/EventLink-backed casual
+  Commander row. The packet adds review/source-routing context and preserves a
+  status contradiction: official terms and review-derived sources suggest an
+  active physical business, while another map source marks it closed. The
+  packet does not supply a new current event or enough evidence to resolve
+  status.
+- Durable TBD: verify current operation and Magic emphasis before relying on
+  Buddies for planning; carry forward pricing/live-break/service cautions into
+  a future Places-assessment pass if Buddies becomes relevant.
+- Do not chase now: direct map/source status replay or review corpus synthesis.
+
+### Kingslayer Games - Lake Forest
+
+- Packet source: `02-existing-repo-catchup-29.md` item 25.
+- Existing ID: `kingslayer-games-lake-forest`.
+- Current packet decision: `applied / superseded` plus `conflict/status TBD`.
+- Event decision: no new event write from packet triage.
+- Reason: the packet's core warning has already been reduced into the current
+  store assessment: Lake Forest is a real Kingslayer branch with Commander
+  presence, but the retained Lake Forest event details appear to inherit
+  Fountain Valley wording. That means the packet is no longer an active ingest
+  blocker, but the underlying branch-specific schedule confidence remains a
+  later cleanup/replay item.
+- Durable TBD: in a future Kingslayer branch pass, replay Lake Forest-specific
+  official/social/Wizards evidence and correct or retire contaminated event
+  wording if needed.
+- Do not chase now: branch-specific schedule normalization or event edits.
+
+### Consolidated identity/status conflict record
+
+- Packet source: `02-existing-repo-catchup-29.md` item 29.
+- Existing ID: packet-level work item only; no canonical entity.
+- Current packet decision: `applied / decomposed into individual TBDs`.
+- Event decision: no event write.
+- Reason: the consolidated conflict list has now been split into durable
+  per-record decisions across Batch A and packet-ingest Batches 1-4. It should
+  not remain as a separate open memory burden.
+- Durable TBD: future work should use the individual tracker rows rather than
+  this consolidated packet item.
+- Do not chase now: broad identity/status sweep.
+
 ## Remaining packet items
 
 ### Requested 26 venues packet
@@ -272,7 +338,7 @@ Batch 2 scope:
 | Joyful Toad TCG | deeper-research TBD | Commander corroboration later. |
 | Finch and Sparrow Games | applied / superseded | Multiple later Codex passes supersede packet. |
 | Krazy Nick's Games / Honey Pot Meadery relationship | applied | Batch A identity/status resolved enough; Honey Pot later deepening separate. |
-| Tilted Gaming | conflict/status TBD | Later status check; not Batch 1. |
+| Tilted Gaming | conflict/status TBD / source-evidence-only | Batch 4 disposed structurally; later active/closed and duplicate-event check. |
 | Requiem: Coffee, Tea, and Fantasy | deeper-research TBD | Later venue/community pass; not packet-ingest blocker. |
 | Comic Book Hideout | applied / superseded | Later Codex pass promoted/corrected. |
 | Kingslayer Games - Fountain Valley | applied / superseded | Existing candidate; branch-specific refinements later. |
@@ -282,7 +348,7 @@ Batch 2 scope:
 | Shuffle and Cut Games - Brea / former La Habra identity | applied / conflict-status note | Batch A preserved uncertainty. |
 | ProjectCCG - Santa Ana | applied / conflict-status note | Batch A preserved branch/community separation. |
 | Spellhold Games | deeper-research TBD | Current Saturday details later if prioritized. |
-| Buddies Collectibles | applied / possible status TBD | Already evaluated; only reopen if closure contradiction matters. |
+| Buddies Collectibles | conflict/status TBD / source-evidence-only | Batch 4 disposed structurally; later active/closed check only if planning-relevant. |
 | Alakazam Comics | deeper-research TBD | Current schedule extraction later. |
 | Cardboard Games | applied / superseded | Later Codex pass normalized/updated. |
 | Lost Planet Games | applied / superseded | Later Codex pass promoted; current calendar refresh later. |
@@ -290,19 +356,20 @@ Batch 2 scope:
 | The Game Chest - Del Amo Fashion Center | no-write / no-action | Later light treatment did not raise priority. |
 | Card Arena | deeper-research TBD | Exact-address/source discovery later. |
 | Collector Legion | applied / Replay B tied off | LEGIONMANIA III logged as inactive historical competitive special; Saturday clarity later. |
-| Kingslayer Games - Lake Forest | conflict/status TBD | Event-text contamination warning remains until branch-specific replay. |
+| Kingslayer Games - Lake Forest | applied / superseded plus conflict-status TBD | Batch 4 disposed structurally; contamination warning already captured, branch-specific replay later. |
 | Magic and Monsters | applied / superseded | Later Codex pass promoted; further event-stream refinement later. |
 | Paper Hero's Games - Huntington Beach | deeper-research TBD | Determine actionable Commander nights later. |
 | The Guild House | applied / superseded | Strong candidate; solo-arrival operations later. |
-| Consolidated identity/status conflict record | partially applied / remaining conflict-status TBD | Batch A resolved key conflicts; remaining conflict items are tracked above. |
+| Consolidated identity/status conflict record | applied / decomposed into individual TBDs | Batch 4 disposed structurally; use individual tracker rows going forward. |
 
 ## Remaining immediate packet-ingest batches
 
-### Batch 4 — remaining conflict/status sweep
+No immediate structural packet-ingest batches remain.
 
-- Tilted Gaming
-- Buddies Collectibles if closure contradiction remains material
-- Kingslayer Games - Lake Forest contamination warning
-- any status/history item left open after Batches 2 and 3
+The packet is no longer an active-memory burden. Remaining work is ordinary
+bounded research backlog work, using the individual dispositions above:
 
-Goal: durable conflict/status TBDs or no-write decisions, not deep archaeology.
+- active/closed or location conflicts where planning relevance justifies it;
+- Places-assessment enrichment where source/evidence-only notes matter;
+- branch-specific event replay where contaminated or weak event text remains;
+- deeper Discord/social/calendar passes for genuinely promising venues.
