@@ -863,7 +863,8 @@ function eventCard(event, compact = false, options = {}) {
   const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
   const dateNote = occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
   if (compact) {
-    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span>${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small></button>`;
+    const cue = compactEventCue(event, fit, evidence);
+    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
   }
   return `<article class="event-card ${isCompetitive(event) ? 'competitive' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
     <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
@@ -884,6 +885,14 @@ function formatClass(event) {
   return 'format-commander';
 }
 
+function compactEventCue(event, fit, evidence) {
+  if (isCompetitive(event)) return { label: 'Check first', className: 'cue-caution' };
+  if (fit.tone === 'mint') return { label: 'Best fit', className: 'cue-best' };
+  if (fit.tone === 'sky') return { label: 'Promising', className: 'cue-promising' };
+  if (evidence.tone === 'amber') return { label: 'Verify', className: 'cue-verify' };
+  return { label: 'Maybe', className: 'cue-neutral' };
+}
+
 function formatShort(event) {
   if (/prerelease/i.test(`${event.title} ${event.eventType}`)) return 'PR';
   if (/sealed|limited/i.test(`${event.format} ${event.eventType}`)) return 'SE';
@@ -893,7 +902,8 @@ function formatShort(event) {
 }
 
 function renderWeek(events, start) {
-  document.getElementById('calendarContent').innerHTML = `<div class="week-grid">${Array.from({ length: 7 }, (_, index) => {
+  const weekendCount = events.filter((event) => isWeekend(event.occurrenceDate)).length;
+  document.getElementById('calendarContent').innerHTML = `<div class="week-helper"><span>${weekendCount} Fri-Sun matches this week</span><span>Weekend columns are emphasized for planning.</span></div><div class="week-grid">${Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
     return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong></header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
@@ -923,12 +933,11 @@ function jumpToWeekend() {
   let date = startOfDay(new Date());
   while (date.getDay() !== 5) date = addDays(date, 1);
   state.date = date;
-  state.view = 'agenda';
   state.preset = 'weekend';
-  document.querySelectorAll('[data-view]').forEach((button) => button.classList.toggle('active', button.dataset.view === 'agenda'));
   document.querySelectorAll('[data-preset]').forEach((button) => button.classList.toggle('active', button.dataset.preset === 'weekend'));
   renderCalendar();
-  document.getElementById(`day-${dateKey(date)}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (state.view === 'agenda') document.getElementById(`day-${dateKey(date)}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  else if (state.view === 'week') document.querySelector('.weekend-column')?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
 }
 
 function renderHighlights() {
