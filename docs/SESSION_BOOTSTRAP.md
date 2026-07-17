@@ -17,7 +17,17 @@ The repository has already completed these stabilization steps:
 - personal-use deployment accepted at `dd44e20`, tagged
   `checkpoint/personal-use-deployed-supabase-default-2026-07-17`;
 - hosted app uses Supabase as the default read source, with `?data=json` as the
-  explicit fallback.
+  explicit fallback;
+- Batch A identity/status clarifications have been applied through the
+  controlled Supabase workflow without changing event records;
+- high-value event candidate replay A has been completed and applied only as a
+  source/provenance refresh, avoiding duplicate event ingestion;
+- source-routing rules for review mirrors, marketplaces, non-MTG locators,
+  Linktree/social routers, Discord/community surfaces, and official event truth
+  are recorded in `research/SOURCE_SOP.md`;
+- the default worker model is retired for this project: use direct Project
+  Steward execution for small bounded batches unless the user explicitly
+  approves a specific exceptional worker.
 
 See also:
 
@@ -70,6 +80,8 @@ Still open:
 
 - broad research backlog, to resume only through the controlled Supabase
   research-write workflow;
+- next proposed direct research tranche:
+  `docs/NEXT_TRANCHE_PROPOSAL_2026-07-17.md`;
 - design/app backlog items that are not completion blockers unless promoted;
 - branch-hygiene pass to move off `codex/reconcile-wizards` deliberately;
 - future authenticated personal/workflow writes and data-architecture evolution;

@@ -27,8 +27,20 @@ Use it for:
   `supabase/proposals/identity-status-batch-a-2026-07-17.json`. The write
   clarified Krazy Nick's / Honey Pot, Game Chest Irvine, ProjectCCG,
   Kingslayer, and Shuffle and Cut / The Realm without changing event records.
+- High-value event candidate replay A was completed and applied only as a lean
+  source/provenance refresh:
+  `supabase/proposals/event-candidate-replay-a-source-refresh-2026-07-17.json`.
+  It confirmed Finch Birdcage VII, The Game Cellar, Next-Gen Games, It's
+  GameTime!, and The Crimson Guild are already event-covered enough to avoid
+  duplicate ingestion.
 - The local UX pass is accepted; do not resume Today/Events/Places/Updates
   polish as the default next step unless a true blocker appears.
+- Default research execution is now direct Project Steward work in small
+  batches. Do not launch workers/subagents unless the user explicitly approves a
+  specific exceptional worker.
+- The proposed next research tranche is
+  `docs/NEXT_TRANCHE_PROPOSAL_2026-07-17.md`; do not start it until the user
+  approves.
 - Migrate canonical research, personal continuity, and async request data in
   explicit reversible stages.
 - Treat `docs/UX_MEGA_REVISION_SCOPE.md` as the accepted local UX scope that has
@@ -39,6 +51,10 @@ Use it for:
 - Resume broad research only through the controlled Supabase research-write
   workflow, with generated JSON treated as export/recovery output rather than a
   manual canonical editing surface.
+- Use the source-routing rules in `research/SOURCE_SOP.md`: review mirrors and
+  marketplaces inform fit/confidence/activity, while exact event facts should
+  come from official/store-controlled/EventLink/event-platform evidence where
+  possible.
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a
   paused queue for a completed regional census.

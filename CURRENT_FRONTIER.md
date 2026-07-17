@@ -72,6 +72,33 @@ controlled Supabase workflow:
   `entity_sources.json`, `changes.json`, and `manifest.json`;
 - `events.json` and `event_occurrences.json` were unchanged.
 
+High-value event candidate replay A has been completed directly by the Project
+Steward and its lean source/provenance refresh has been applied live:
+
+- run note `research/runs/2026-07-17-high-value-event-candidate-replay-a.md`;
+- proposal
+  `supabase/proposals/event-candidate-replay-a-source-refresh-2026-07-17.json`;
+- scope: Finch Birdcage VII, The Game Cellar, Next-Gen Games, It's GameTime!,
+  and The Crimson Guild;
+- conclusion: all five already had useful event coverage, so no duplicate event
+  ingestion was needed;
+- live write added/refreshed source provenance only: 6 source rows checked, 5
+  venue-source links, 1 event-source link, and 1 research-change marker;
+- no event facts, canonical JSON, app code, schema, auth, RLS, or browser-write
+  behavior changed.
+
+The default worker model is retired for this project. Future research batches
+should default to direct Project Steward execution in small bounded tranches.
+Do not launch workers/subagents unless the user explicitly approves a specific
+exceptional worker. If a batch feels too large, split it into a smaller direct
+batch instead.
+
+The source-routing rules from the ChatGPT source-map packet are now durable in
+`research/SOURCE_SOP.md`: review mirrors support fit/confidence/warnings,
+marketplaces support activity and MTG inventory depth, non-MTG organized-play
+locators support operation/branch identity, and official/store-controlled
+event sources remain preferred for exact event facts.
+
 Immediate next tranche:
 
 1. Use `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` for future research
@@ -82,12 +109,14 @@ Immediate next tranche:
    in small batches with proposal review and postwrite export verification.
 4. Do not perform authenticated personal/workflow writes, auth/RLS expansion, or
    broad UX polish as part of ordinary research resumption.
+5. Recommended next research tranche is documented in
+   `docs/NEXT_TRANCHE_PROPOSAL_2026-07-17.md`.
 
 Execution model:
 
 - default to direct Project Steward execution for bounded low/medium work;
-- use a worker only when it has a concrete advantage under
-  `docs/EFFICIENCY_SOP.md`;
+- do not use workers/subagents by default; use one only with an explicit
+  user-approved exceptional reason;
 - keep each tranche to one coherent outcome, proportionate validation, one
   commit/push, and a concise report.
 
