@@ -5,3 +5,5 @@ outputs/
 .vendor/
 __pycache__/
 *.pyc
+supabase/exports/
+supabase/plans/

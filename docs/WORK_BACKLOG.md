@@ -21,9 +21,10 @@ Use it for:
 - The local UX pass is accepted through commit `470b63b`; do not resume
   Today/Events/Places/Updates polish as the default next step unless a true
   blocker appears.
-- The next product stage is Supabase continuity / operational-source readiness
-  before additional research expansion. This order exists to avoid repeating the
-  earlier bad-JSON-writing failure mode.
+- The next product stage is Supabase operational-write readiness before default
+  read cutover or additional research expansion. This order exists to avoid
+  repeating the earlier bad-JSON-writing failure mode; default reads alone do
+  not prevent unsafe research writes.
 - Migrate canonical research, personal continuity, and async request data in
   explicit reversible stages.
 - Treat `docs/UX_MEGA_REVISION_SCOPE.md` as the accepted local UX scope that has
@@ -31,8 +32,8 @@ Use it for:
 - Use `docs/SUPABASE_CONTINUITY_MODEL.md` as the plain-language contract for
   what belongs in research truth, personal continuity, and workflow/request
   state during this transition period.
-- Pause broad research expansion while making the Supabase operational-source
-  path safe.
+- Pause broad research expansion while making the controlled Supabase
+  research-write and JSON-export/recovery path safe.
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a
   paused queue for a completed regional census.
@@ -383,8 +384,14 @@ status or deprioritized by early signals.
 - Use `docs/SUPABASE_MIGRATION_STATUS.md` as the current data-layer baseline
   before any further Supabase work. Do not rediscover the schema/import state
   from scratch unless the remote database has changed.
-- Build the Supabase read adapter with JSON fallback before attempting
-  authenticated writes, favorites, thumbs-down, notes, or in-app request capture.
+- Use `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` for the research-write safety
+  gate before resuming broad research.
+- Build controlled Supabase research writes and deterministic JSON
+  export/recovery before making Supabase the default application read source.
+- Generated JSON exports are recovery/export artifacts and must not be manually
+  edited.
+- Make the Supabase read adapter the default only after the write/export safety
+  gate is accepted.
 - Revisit authenticated user-data writes only after the read adapter is stable
   and the RLS/write model receives a higher-reasoning review.
 - Enforce the new rule that each store pass includes social review in the same

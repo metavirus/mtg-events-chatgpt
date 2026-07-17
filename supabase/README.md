@@ -12,6 +12,9 @@ acceptance check.
   by `scripts/generate_supabase_seed.py`.
 - `scripts/verify_supabase_parity.py` compares the imported row IDs with the
   current JSON files through the public read API.
+- `scripts/supabase_research_workflow.py` validates reviewable research update
+  proposals, generates dry-run SQL plans, and exports deterministic JSON
+  recovery snapshots from Supabase.
 
 Never put a Supabase service-role key in this repository or in browser code.
 The publishable key is designed for browser use, but row-level security must
@@ -44,10 +47,22 @@ The expected initial result is:
 - 10 dated occurrence IDs
 - 34 research-change IDs
 
+## Research-write safety gate
+
+Before broad research resumes, use the controlled workflow documented in
+`docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`.
+
+Generated JSON exports are recovery/export artifacts and must not be manually
+edited. Future research updates should be proposed as field-specific Supabase
+operations, validated, reviewed, backed up/exported, applied only when
+authorized, and verified after write.
+
 ## Cutover gates
 
 Do not switch the app to Supabase until all of these are true:
 
+- controlled research writes and deterministic JSON export/recovery are
+  accepted;
 - schema and seed SQL complete without error;
 - parity check passes for every table;
 - anonymous users can read research tables but cannot write them;

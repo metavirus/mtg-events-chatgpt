@@ -121,16 +121,24 @@ and rollback a stable seam.
 2. Apply the initial database migration.
 3. Import current stores, events, sources, changes, and community seed records.
 4. Compare counts, IDs, references, and representative records.
-5. Add authenticated personal-state loading and one-time local-storage import.
-6. Add favorites, negative preferences, notes, and request capture.
-7. Switch research reads to Supabase behind the adapter.
-8. Retain an export/snapshot path back to GitHub.
-9. Remove routine hand-editing of canonical JSON only after an accepted release.
+5. Establish controlled Supabase research writes and deterministic JSON
+   export/recovery so agents no longer need to hand-edit canonical JSON for
+   ordinary research updates.
+6. Switch research reads to Supabase behind the adapter only after the write and
+   export safety gate is accepted.
+7. Perform a real usability/parity checkpoint.
+8. Resume and complete research through controlled Supabase writes.
+9. Add authenticated personal-state loading and one-time local-storage import.
+10. Add favorites, negative preferences, notes, and request capture.
+11. Retain an export/snapshot path back to GitHub.
+12. Remove routine hand-editing of canonical JSON only after an accepted release.
 
 ## Acceptance gates
 
 The app must not switch to Supabase until:
 
+- controlled research writes and deterministic JSON export/recovery are
+  implemented and accepted;
 - every current entity ID is accounted for;
 - duplicate and broken references are zero;
 - recurring series and dated occurrences render equivalently;

@@ -27,12 +27,14 @@ explicitly promotes them. The main parked item is exploring whether Signals /
 Fresh Signals should regain a more prominent default surface without restoring a
 fixed right-side pane that consumes calendar width.
 
-The next product stage is **Supabase continuity / operational-source readiness
-before additional research expansion**. This sequencing is intentional. A major
-earlier failure mode was unsafe or low-quality canonical JSON writing; do not
-resume broad research collection directly into JSON as the main path. Use the
-Supabase continuity work to make the data-writing and operational-source path
-safer before the final research pass.
+The next product stage is **Supabase operational-write readiness before default
+read cutover or additional research expansion**. This sequencing is intentional.
+A major earlier failure mode was unsafe or low-quality canonical JSON writing;
+making Supabase the default read source alone does not prevent that failure.
+Do not resume broad research collection directly into JSON as the main path.
+First establish controlled Supabase research writes, deterministic
+Supabase-to-JSON export/recovery, and validation that agents no longer need to
+hand-edit canonical JSON.
 
 Immediate next tranche:
 
@@ -41,10 +43,12 @@ Immediate next tranche:
    baseline; do not rediscover the Supabase state from scratch.
 2. Verify the current migration files match the accepted remote/read-adapter
    state.
-3. Define and validate the next safe cutover step toward Supabase as operational
-   source while retaining JSON recovery/export.
+3. Implement the smallest safe controlled workflow for future Codex research
+   updates: proposal validation, reviewable SQL, pre-write export/backup,
+   post-write verification, and deterministic JSON recovery/export.
 4. Do not perform new venue/event research, canonical data expansion, deployment,
-   or broad UX polish during that tranche.
+   default-source switching, authenticated personal/workflow writes, or broad UX
+   polish during that tranche.
 
 Execution model:
 
@@ -433,20 +437,20 @@ older notes saying "repair Tweedy first" as current next work.
 
 ## Recommended next step
 
-Run the next bounded Supabase continuity tranche. The goal is not deployment or
-new research. The goal is to make the accepted Supabase path safe enough to
-become the operational data source later, while retaining JSON as
-recovery/export and avoiding the prior bad-JSON-writing failure mode.
+Run the next bounded Supabase operational-write readiness tranche. The goal is
+not deployment, read cutover, or new research. The goal is to make future
+research updates safe by routing them through controlled Supabase writes and
+deterministic JSON export/recovery rather than manual canonical JSON edits.
 
 ## After that
 
-- finish the Supabase operational-source cutover plan and acceptance checks
-- then complete the bounded research universe using the safer data path
-- then run final data-integrity and coverage assurance
-- then make Supabase the default operational source while retaining JSON
-  recovery/export
-- then run final end-to-end acceptance
-- then make the personal tool accessible through the existing deployment path
+- make Supabase the default application read source with JSON fallback
+- perform a real usability/parity checkpoint
+- resume and complete the bounded research universe through controlled
+  Supabase writes
+- run final research coverage and data-integrity assurance
+- run final end-to-end acceptance
+- make the personal tool accessible through the existing deployment path
   after authorization
 - later, continue turning promising nearby partials into sharper comparable records
 - keep `docs/WORK_BACKLOG.md` current as the explicit repo-backed future-work log

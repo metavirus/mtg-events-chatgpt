@@ -130,17 +130,19 @@ answer.
 
 When moving beyond the accepted local UX revision, the intended order is:
 
-1. Keep research reads behind the adapter seam.
-2. Keep JSON as the accepted default until the separate default-source cutover
+1. Establish controlled Supabase research writes and deterministic JSON
+   export/recovery for canonical research updates.
+2. Keep research reads behind the adapter seam.
+3. Keep JSON as the accepted default until the separate default-source cutover
    gate is signed off.
-3. Add authenticated personal/workflow table reads.
-4. Import or migrate existing browser-local personal state once.
-5. Turn on hosted writes for favorites, thumbs-down, ratings, notes,
+4. Add authenticated personal/workflow table reads.
+5. Import or migrate existing browser-local personal state once.
+6. Turn on hosted writes for favorites, thumbs-down, ratings, notes,
    update-read state, and `Ask Codex` requests.
-6. Validate that hosted personal state survives refresh, browser change, and
+7. Validate that hosted personal state survives refresh, browser change, and
    device change.
-7. Only then consider switching the hosted app's default research source away
-   from the file-backed seed.
+8. Only after the research-write/export safety gate and default-read cutover are
+   accepted should broad research resume through controlled Supabase writes.
 
 ## Product consequences
 

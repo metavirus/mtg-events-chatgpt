@@ -80,16 +80,19 @@ state from scratch.
   representative parity was accepted. The default-source cutover remains a
   separate deliberate gate.
 - Do not resume broad research directly into canonical JSON as the main path.
-  The next stage is Supabase continuity / operational-source readiness because
-  earlier project risk included bad JSON writing.
+  The next stage is Supabase operational-write readiness because earlier project
+  risk included bad JSON writing. Making Supabase the default read source is a
+  separate later gate.
 
 ## Next safe steps
 
 1. Verify the repository migration, seed snapshot, and read-adapter seam still
    match the accepted Supabase state.
-2. Define the smallest reversible step toward Supabase as the operational data
-   source while retaining JSON recovery/export.
-3. Keep local preview only until the user accepts the behavior.
+2. Establish controlled Supabase research writes and deterministic JSON
+   export/recovery as documented in
+   `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`.
+3. Keep JSON as the default application source until a separate read-cutover
+   gate is accepted.
 4. Defer or separately gate authenticated favorites, thumbs-down, notes, and
    in-app requests if they are not required for the operational-source cutover.
 5. Use a higher-reasoning model before changing RLS/auth/write policies or
