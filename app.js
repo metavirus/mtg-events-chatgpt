@@ -648,7 +648,12 @@ function normalizedEvaluation(place) {
   };
 }
 function mapsUrl(place) { return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place.address)}`; }
-function isCompetitive(event) { return /cedh|competitive|optimized|rcq|championship/i.test(`${event.eventType} ${event.title} ${event.details}`); }
+function isCompetitive(event) {
+  if (/cedh|competitive|optimized|rcq|championship/i.test(`${event.eventType} ${event.title}`)) return true;
+  const details = String(event.details || '');
+  if (/(separate from|rather than|not|outside of)[^.]{0,80}cedh/i.test(details)) return false;
+  return /cedh|competitive|optimized|rcq|championship/i.test(details);
+}
 function isSpecial(event) { return /prerelease|sealed|draft|limited|party|special/i.test(`${event.eventType} ${event.title} ${event.format}`); }
 function isWeekend(date) { return [5, 6, 0].includes(date.getDay()); }
 
@@ -669,9 +674,14 @@ function eventMatchesSharedFilters(event, options = {}) {
       event.format,
       event.eventType,
       event.bracket,
+      fitLabel(event).label,
+      evidenceLabel(event).label,
+      event.confidence,
+      event.occurrenceStatus,
       place.name,
       place.city,
       place.address,
+      place.researchStatus,
       place.assessmentNotes,
       ...(place.tags || []),
       ...(place.communitySignals || [])
@@ -679,10 +689,18 @@ function eventMatchesSharedFilters(event, options = {}) {
     if (!haystack.includes(state.search)) return false;
   }
   if (includePreset) {
-    if (state.preset === 'best' && fitScore(event) < 68) return false;
-    if (state.preset === 'weekend' && !isWeekend(event.occurrenceDate)) return false;
-    if (state.preset === 'specials' && !isSpecial(event)) return false;
+    if (!eventMatchesPreset(event, state.preset)) return false;
   }
+  return true;
+}
+
+function eventMatchesPreset(event, preset) {
+  if (preset === 'best') return fitScore(event) >= 68;
+  if (preset === 'commander') return /commander|edh/i.test(`${event.title} ${event.format} ${event.eventType}`);
+  if (preset === 'weekend') return isWeekend(event.occurrenceDate);
+  if (preset === 'specials') return /prerelease|sealed|limited/i.test(`${event.title} ${event.format} ${event.eventType}`);
+  if (preset === 'draft') return /draft/i.test(`${event.title} ${event.format} ${event.eventType}`);
+  if (preset === 'favorites') return !!state.personal.favorites[`event:${event.id}`] || !!state.personal.favorites[`place:${event.storeId}`];
   return true;
 }
 
@@ -775,7 +793,16 @@ function renderAgenda(events, start) {
   const container = document.getElementById('calendarContent');
   if (!events.length) return container.innerHTML = emptyState('No events match this view', 'Try widening the distance, research status, or confidence filters.');
   const groups = Object.groupBy ? Object.groupBy(events, (event) => dateKey(event.occurrenceDate)) : events.reduce((acc, event) => ((acc[dateKey(event.occurrenceDate)] ||= []).push(event), acc), {});
+  const bestBets = rankedTodayLeads(events).slice(0, 5);
+  const bestIds = new Set(bestBets.map(todayLeadKey));
   let html = `<div class="agenda-intro"><div><span class="live-dot"></span><strong>${events.length} opportunities</strong> in this window</div><span>Scroll toward future dates</span></div>`;
+  if (bestBets.length) {
+    html += `<section class="today-best-bets" aria-label="Best near-term bets">
+      <div class="today-section-heading"><div><p class="eyebrow mint">Best bets</p><h2>Strong near-term leads</h2></div><span>${bestBets.length} highlighted</span></div>
+      <div class="best-bet-grid">${bestBets.map((event) => eventCard(event, false, { showDate: true, emphasize: true })).join('')}</div>
+    </section>
+    <div class="today-section-heading full-catalog-heading"><div><p class="eyebrow">Full catalog</p><h2>Everything still visible</h2></div><span>${events.length} matching</span></div>`;
+  }
   for (let date = new Date(start); date <= rangeForView().end; date = addDays(date, 1)) {
     const dayEvents = groups[dateKey(date)] || [];
     if (!dayEvents.length) continue;
@@ -783,11 +810,35 @@ function renderAgenda(events, start) {
     html += `<section class="agenda-day ${weekend ? 'weekend-day' : ''}" id="day-${dateKey(date)}">
       <div class="day-marker"><span class="day-name">${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong><span>${date.toLocaleDateString(undefined, { month: 'short' })}</span></div>
       <div class="day-content"><div class="day-heading"><h2>${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</h2>${weekend ? '<span class="weekend-label">Weekend focus</span>' : ''}</div>
-      <div class="event-stack">${dayEvents.map((event) => eventCard(event)).join('')}</div></div>
+      <div class="event-stack">${dayEvents.map((event) => eventCard(event, false, { emphasize: bestIds.has(todayLeadKey(event)) })).join('')}</div></div>
     </section>`;
   }
   html += `<button class="load-more" data-action="load-more"><span>&darr;</span><strong>Show four more weeks</strong><small>Continue the timeline</small></button>`;
   container.innerHTML = html;
+}
+
+function rankedTodayLeads(events) {
+  return [...events]
+    .filter((event) => !isCompetitive(event))
+    .sort((a, b) => todayLeadScore(b) - todayLeadScore(a) || a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b)));
+}
+
+function todayLeadScore(event) {
+  const place = store(event.storeId);
+  const daysAway = Math.max(0, Math.round((startOfDay(event.occurrenceDate) - startOfDay(new Date())) / 86400000));
+  const favoriteBonus = state.personal.favorites[`event:${event.id}`] || state.personal.favorites[`place:${event.storeId}`] ? 18 : 0;
+  const weekendBonus = isWeekend(event.occurrenceDate) ? 10 : 0;
+  const reviewedBonus = place?.researchStatus === 'partial' ? 8 : 0;
+  const confidenceBonus = event.confidence === 'high' ? 8 : event.confidence === 'medium' ? 3 : 0;
+  const specialBonus = /prerelease|sealed|limited/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 14 : isSpecial(event) ? 8 : 0;
+  const commanderBonus = /commander|edh/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 8 : 0;
+  const draftBonus = /draft/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 4 : 0;
+  const discoveryPenalty = place?.researchStatus === 'wizards-discovery' ? 10 : 0;
+  return fitScore(event) + favoriteBonus + weekendBonus + reviewedBonus + confidenceBonus + specialBonus + commanderBonus + draftBonus - discoveryPenalty - Math.min(daysAway, 21);
+}
+
+function todayLeadKey(event) {
+  return `${event.id}:${dateKey(event.occurrenceDate)}`;
 }
 
 function eventCard(event, compact = false, options = {}) {
