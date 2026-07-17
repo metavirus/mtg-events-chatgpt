@@ -59,40 +59,18 @@ records well enough that they should not be reopened by default:
   - CoreTCG
   - Comic Quest
   - Collector Legion
+- Replay B has also been reduced into Supabase: source/evidence and evaluation
+  implications exist for Turn Zero, CoreTCG, Comic Quest, and Collector Legion,
+  and LEGIONMANIA III is already cataloged as an inactive historical
+  competitive EDH special-event signal. Do not repeat this as the next ingest
+  tranche.
 
 ## Fast-ingest remaining
 
 These are the remaining packet items most suitable for quick controlled
 proposals. They should be small Supabase proposals, not deep research projects.
 
-### 1. Replay B write proposal
-
-Records:
-
-- Turn Zero Games
-- CoreTCG
-- Comic Quest
-- Collector Legion
-
-Likely action:
-
-- Add/refresh source and evidence links for Turn Zero, CoreTCG, Comic Quest,
-  and Collector Legion.
-- Log Collector Legion LEGIONMANIA / LEGIONMANIA III as a competitive EDH/cEDH
-  special if the event-platform evidence is sufficient.
-- Mark the event as low personal fit / tournament-special / deprioritized
-  rather than omitting it.
-- Preserve Comic Quest God of Mischief as a lead unless primary/store-controlled
-  or EventLink evidence confirms it.
-
-TBD after ingest:
-
-- Turn Zero Discord/community texture.
-- CoreTCG event schedule / Discord extraction.
-- Comic Quest God of Mischief primary-source confirmation.
-- Collector Legion Saturday routine Commander clarity and displacement risk.
-
-### 2. Remaining event-looking packet leads
+### 1. Remaining event-looking packet leads
 
 Records to sweep for event ingest or explicit no-write:
 
@@ -122,7 +100,7 @@ TBD after ingest:
   not yet safe to normalize.
 - Discord/community read only for records that become high-value candidates.
 
-### 3. Remaining Places-assessment-only packet leads
+### 2. Remaining Places-assessment-only packet leads
 
 Records most likely to need assessment/evidence cleanup rather than event rows:
 
@@ -149,7 +127,7 @@ TBD after ingest:
 - Actual player-pool and solo-arrival texture.
 - Discord or social deepening for only stores that remain promising.
 
-### 4. Conflict/history cleanup still not fully retired
+### 3. Conflict/history cleanup still not fully retired
 
 Records:
 
@@ -209,13 +187,21 @@ The PR #15/#16 packet is considered digested when:
 
 ## Recommended immediate next step
 
-Prepare and apply the Replay B proposal:
+Prepare the next packet-ingest tranche from the remaining event-looking packet
+leads:
 
-- source/provenance refresh for Turn Zero, CoreTCG, Comic Quest, and Collector
-  Legion;
-- include LEGIONMANIA only if event-platform evidence is sufficient to log it
-  as a low-fit competitive EDH/cEDH special;
-- preserve Comic Quest God of Mischief as TBD unless confirmed by a stronger
-  source;
-- use lean-to-standard validation depending on whether the LEGIONMANIA event row
-  is added.
+- The Comic Bug
+- The Game Chest - Promenade on the Peninsula
+- B.Y.O.GAMES LLC
+- Grails Gone Wild
+- The Bullpen 2.0
+- DXN Provisions
+- Revenge Of
+- Odyssey Games - Pasadena
+- Crown City Games
+- A & N Collectibles
+- Alamo Drafthouse Cinema Downtown Los Angeles
+
+Use quick controlled ingestion or explicit TBD capture. Do not deepen every
+record unless it changes whether a Magic event or important store-status signal
+should be logged.

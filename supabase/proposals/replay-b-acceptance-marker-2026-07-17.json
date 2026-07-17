@@ -1,0 +1,19 @@
+{
+  "proposal_id": "replay-b-acceptance-marker-2026-07-17",
+  "description": "Tie off Replay B by marking the already-applied evaluation/event-special marker accepted. No event, venue, source, evidence, app, schema, auth, RLS, or JSON data is changed.",
+  "created_at": "2026-07-17T23:30:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "research_changes",
+      "key": {
+        "id": "evaluation-implications-replay-b-2026-07-17"
+      },
+      "fields": {
+        "review_status": "accepted"
+      },
+      "reason": "Replay B has already been reduced into Supabase: Turn Zero, CoreTCG, Comic Quest, and Collector Legion source/evaluation evidence exists, and LEGIONMANIA III is cataloged as an inactive historical competitive EDH special-event signal."
+    }
+  ]
+}
