@@ -1,0 +1,769 @@
+{
+  "proposal_id": "unresolved-discovery-assessment-pass-2026-07-17",
+  "description": "Places-assessment and evidence proposal for Games For Meeple, GXGAMERS, Otaku Vault, and LVLUP GAMING TCG. Adds missing source evidence, updates venue assessment notes/status, and adds evaluation rows. No event rows are added because existing Wizards/EventLink Commander records already cover the event implications.",
+  "created_at": "2026-07-17T23:00:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-games-for-meeple-official-site-2026-07-17"
+      },
+      "fields": {
+        "id": "src-games-for-meeple-official-site-2026-07-17",
+        "label": "Games For Meeple official website",
+        "url": "https://gamesformeeple.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official venue, commerce, and source-routing support for Games For Meeple."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-games-for-meeple-cardshophub-2026-07-17"
+      },
+      "fields": {
+        "id": "src-games-for-meeple-cardshophub-2026-07-17",
+        "label": "Card Shop Hub review mirror for Games For Meeple",
+        "url": "https://cardshophub.com/states/ca/diamond-bar/games-for-meeple/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Google-derived active-store, MTG, tournament, table, and community signals for Games For Meeple."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-games-for-meeple-yahoo-2026-07-17"
+      },
+      "fields": {
+        "id": "src-games-for-meeple-yahoo-2026-07-17",
+        "label": "Yahoo Local / Yelp-derived listing for Games For Meeple",
+        "url": "https://local.yahoo.com/info-235339994-games-for-meeple-diamond-bar/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Yelp-derived staff, community, selection, tournament, newcomer-help, and service-caution signals for Games For Meeple."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-games-for-meeple-trustpilot-2026-07-17"
+      },
+      "fields": {
+        "id": "src-games-for-meeple-trustpilot-2026-07-17",
+        "label": "Trustpilot review profile for Games For Meeple",
+        "url": "https://www.trustpilot.com/review/gamesformeeple.com",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve broader commerce/community review signal for Games For Meeple without treating it as event proof."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-gxgamers-official-magic-2026-07-17"
+      },
+      "fields": {
+        "id": "src-gxgamers-official-magic-2026-07-17",
+        "label": "GXGAMERS official Magic category",
+        "url": "https://www.gxgamers.com/magic",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official Magic product/category support for GXGAMERS."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-gxgamers-cardshopfinder-2026-07-17"
+      },
+      "fields": {
+        "id": "src-gxgamers-cardshopfinder-2026-07-17",
+        "label": "The Card Shop Finder review mirror for GXGAMERS",
+        "url": "https://thecardshopfinder.com/ca/los-angeles/gxgamers/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Google-derived active-store, owner/staff, pricing, and regular-events signals for GXGAMERS."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-gxgamers-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "id": "src-gxgamers-loc8nearme-2026-07-17",
+        "label": "Loc8NearMe review/directory mirror for GXGAMERS",
+        "url": "https://www.loc8nearme.com/california/los-angeles/gxgamers/7221117/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve mixed-platform review and multi-TCG activity support for GXGAMERS."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-gxgamers-yugioh-locator-2026-07-17"
+      },
+      "fields": {
+        "id": "src-gxgamers-yugioh-locator-2026-07-17",
+        "label": "Yu-Gi-Oh! organized-play listing for GXGAMERS",
+        "url": "https://www.yugioh-card.com/en/events/release_celebration/ra05_relcel_locations/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve non-MTG organized-play evidence for GXGAMERS physical operation and event-hosting capability."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-otaku-vault-official-site-2026-07-17"
+      },
+      "fields": {
+        "id": "src-otaku-vault-official-site-2026-07-17",
+        "label": "Otaku Vault official website",
+        "url": "https://otakuvault.la/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official venue identity for Otaku Vault."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-otaku-vault-tcgplayer-2026-07-17"
+      },
+      "fields": {
+        "id": "src-otaku-vault-tcgplayer-2026-07-17",
+        "label": "TCGplayer seller profile for Otaku Vault",
+        "url": "https://www.tcgplayer.com/sellers/Otaku-Vault/f28cf856",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve active MTG commerce and seller-reliability support for Otaku Vault without treating it as event proof."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-otaku-vault-whatnot-2026-07-17"
+      },
+      "fields": {
+        "id": "src-otaku-vault-whatnot-2026-07-17",
+        "label": "Whatnot profile for Otaku Vault",
+        "url": "https://www.whatnot.com/user/otakuvault",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve commerce/community-broadcast scale and identity support for Otaku Vault without treating it as organized-play proof."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-otaku-vault-apple-maps-2026-07-17"
+      },
+      "fields": {
+        "id": "src-otaku-vault-apple-maps-2026-07-17",
+        "label": "Apple Maps / review mirror for Otaku Vault",
+        "url": "https://maps.apple.com/place?place-id=IAC61649846952019",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve sparse review/status signal for Otaku Vault while noting it is insufficient for broad sentiment analysis."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-lvlup-cardshopfinder-2026-07-17"
+      },
+      "fields": {
+        "id": "src-lvlup-cardshopfinder-2026-07-17",
+        "label": "The Card Shop Finder review mirror for LVLUP GAMING TCG",
+        "url": "https://thecardshopfinder.com/ca/los-angeles/lvlup-gaming-tcg/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Google-derived active-store, community-space, staff, and pricing signals for LVLUP."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-lvlup-yahoo-2026-07-17"
+      },
+      "fields": {
+        "id": "src-lvlup-yahoo-2026-07-17",
+        "label": "Yahoo Local / Yelp-derived listing for LVLUP GAMING TCG",
+        "url": "https://local.yahoo.com/info-230117484-lvlup-gaming-tcg-los-angeles/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Yelp-derived service, pricing, hours, and reliability cautions for LVLUP."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-lvlup-mapquest-2026-07-17"
+      },
+      "fields": {
+        "id": "src-lvlup-mapquest-2026-07-17",
+        "label": "MapQuest / Yelp-derived listing for LVLUP GAMING TCG",
+        "url": "https://www.mapquest.com/us/california/lvlup-gaming-tcg-431702117",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve secondary hours/status and review-derived caution support for LVLUP."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-lvlup-fab-locator-2026-07-17"
+      },
+      "fields": {
+        "id": "src-lvlup-fab-locator-2026-07-17",
+        "label": "Flesh and Blood organized-play locator for LVLUP GAMING TCG",
+        "url": "https://legacy.fabtcg.com/en/locator/lvlup-gaming-tcg/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve non-MTG organized-play evidence for LVLUP physical operation and event-hosting capability."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-official-site-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-official-site-2026-07-17",
+        "relationship": "official venue/source-routing support"
+      },
+      "reason": "Attach Games For Meeple official website evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-cardshophub-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-cardshophub-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Attach Games For Meeple Google-derived review evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-yahoo-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-yahoo-2026-07-17",
+        "relationship": "review/fit and caution signal"
+      },
+      "reason": "Attach Games For Meeple Yelp-derived fit and service-caution evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-trustpilot-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-trustpilot-2026-07-17",
+        "relationship": "commerce/community review signal"
+      },
+      "reason": "Attach Games For Meeple broader review evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-gxgamers-official-magic-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-gxgamers-official-magic-2026-07-17",
+        "relationship": "official Magic support"
+      },
+      "reason": "Attach GXGAMERS official Magic category evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-gxgamers-cardshopfinder-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-gxgamers-cardshopfinder-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Attach GXGAMERS Google-derived review evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-gxgamers-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-gxgamers-loc8nearme-2026-07-17",
+        "relationship": "review/multi-TCG signal"
+      },
+      "reason": "Attach GXGAMERS multi-TCG review and directory evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-gxgamers-yugioh-locator-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-gxgamers-yugioh-locator-2026-07-17",
+        "relationship": "non-MTG organized-play operation support"
+      },
+      "reason": "Attach GXGAMERS non-MTG organized-play operation support."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-otaku-vault-official-site-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-otaku-vault-official-site-2026-07-17",
+        "relationship": "official venue support"
+      },
+      "reason": "Attach Otaku Vault official website evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-otaku-vault-tcgplayer-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-otaku-vault-tcgplayer-2026-07-17",
+        "relationship": "marketplace/MTG depth signal"
+      },
+      "reason": "Attach Otaku Vault TCGplayer commerce evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-otaku-vault-whatnot-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-otaku-vault-whatnot-2026-07-17",
+        "relationship": "marketplace/community scale signal"
+      },
+      "reason": "Attach Otaku Vault Whatnot commerce/community-broadcast evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-otaku-vault-apple-maps-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-otaku-vault-apple-maps-2026-07-17",
+        "relationship": "sparse review/status signal"
+      },
+      "reason": "Attach sparse Otaku Vault review/status evidence while preserving uncertainty."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-lvlup-cardshopfinder-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-lvlup-cardshopfinder-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Attach LVLUP Google-derived review evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-lvlup-yahoo-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-lvlup-yahoo-2026-07-17",
+        "relationship": "review/service and reliability caution"
+      },
+      "reason": "Attach LVLUP Yelp-derived service/pricing/reliability caution evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-lvlup-mapquest-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-lvlup-mapquest-2026-07-17",
+        "relationship": "review/status signal"
+      },
+      "reason": "Attach LVLUP secondary status/review evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-lvlup-fab-locator-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-lvlup-fab-locator-2026-07-17",
+        "relationship": "non-MTG organized-play operation support"
+      },
+      "reason": "Attach LVLUP non-MTG organized-play operation support."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "games-for-meeple"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Games For Meeple now reads as a credible Diamond Bar multi-TCG candidate rather than a bare Wizards discovery lead. Wizards/EventLink already supports both Friday Night Magic Commander and Sunday casual Commander. Official site and review/resource mirrors support an active store with Magic products, play tables, tournaments, staff/product strengths, and some newcomer-help/community signals. The caution is that current store-controlled social/calendar extraction is still needed for draft, prerelease, and special-event detail, and one recent review-derived service/culture warning should remain visible rather than averaged away. Treat it as worth watching and possibly trying, especially for weekend Commander, but not yet a top recommendation until social texture and current special-event routing are clearer.",
+        "assessment": {
+          "commanderActivity": 5,
+          "meetupAccessibility": 3,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 4
+        }
+      },
+      "reason": "Promote Games For Meeple from discovery placeholder to reviewed first-pass assessment with explicit positives, cautions, and TBDs."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "gxgamers"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "GXGAMERS now reads as a real active Pico-Union multi-TCG store with unusually concrete Commander records, but not an obvious top personal fit. Wizards/EventLink already supports Monday, Thursday, and Saturday Commander with Bracket 3 casual language, a no-proxy rule, participation packs, Companion ID requirement, and prizing details. Official Magic-category and review/directory sources support active operation, regular events, friendly/knowledgeable ownership, and broader TCG community, while the store appears especially strong for Yu-Gi-Oh!, Pokemon, Digimon, and multi-TCG play. Personal-fit cautions are distance, parking/rush-hour access, no-proxy policy, and a somewhat structured/prize-oriented Commander presentation. Treat GXGAMERS as a legitimate but situational option rather than a first-choice casual home-base.",
+        "assessment": {
+          "commanderActivity": 5,
+          "meetupAccessibility": 2,
+          "communityContinuity": 3,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 3,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote GXGAMERS from discovery placeholder to reviewed first-pass assessment while preserving fit cautions."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "otaku-vault"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Otaku Vault now reads as an active Little Tokyo TCG shop with a plausible Friday casual Commander anchor, but the public evidence remains stronger for commerce/community-broadcast identity than for in-person Commander texture. Wizards/EventLink supports Friday Night Magic Commander with relatively warm casual wording. Official site, TCGplayer, and Whatnot evidence support current operation, active sales, MTG inventory depth, and a meaningful online/community footprint. Review evidence is too sparse to infer store vibe or solo-arrival fit. Treat Otaku Vault as a real watchlist candidate, not a top personal recommendation until store-controlled social or Discord evidence shows Friday Commander turnout, play space, and community norms.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 2,
+          "communityContinuity": 3,
+          "newPlayerIntegration": 2,
+          "physicalEnvironment": 3,
+          "scheduleReliability": 3,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote Otaku Vault from discovery placeholder to reviewed first-pass assessment with commerce/community strengths and in-person uncertainty."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "lvlup-gaming-tcg"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "LVLUP GAMING TCG now reads as a real South Los Angeles TCG store with visible Tuesday and Friday Commander records, but it carries a material reliability caution for personal planning. Wizards/EventLink supports both Tuesday and Friday Commander, and secondary sources support active TCG operation plus some positive staff, pricing, community-space, and evening-availability signals. However, review-derived evidence is polarized, and a prior report of arriving for a Companion-listed Commander event and finding the store apparently closed is directly relevant to whether the user should risk a visit. Treat LVLUP as an active-but-cautioned lead: do not discard it, but require current store-controlled or same-day confirmation before relying on its Commander schedule.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 2,
+          "communityContinuity": 2,
+          "newPlayerIntegration": 2,
+          "physicalEnvironment": 2,
+          "scheduleReliability": 2,
+          "homeGroupPotential": 2
+        }
+      },
+      "reason": "Promote LVLUP from discovery placeholder to reviewed first-pass assessment while preserving the Commander reliability warning."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.5,
+        "confidence": "medium",
+        "positives": [
+          "Existing Wizards/EventLink records support both Friday Night Magic Commander and Sunday casual Commander.",
+          "Official site and review/resource mirrors support an active multi-TCG store with Magic products and play infrastructure.",
+          "Review-derived signals mention play tables, tournaments, staff/product strengths, and some newcomer-help/community texture.",
+          "Weekend Commander coverage makes it more useful than a one-off discovery lead."
+        ],
+        "cautions": [
+          "About 18.2 miles from Los Alamitos.",
+          "One recent review-derived signal raises a service/culture caution that should remain visible.",
+          "Official social/calendar extraction is still needed for draft, prerelease, and special-event detail.",
+          "Commander turnout, power level, proxy norms, and solo-arrival behavior remain unverified."
+        ],
+        "open_questions": [
+          "Does official social show current draft, prerelease, or special MTG events?",
+          "What is the actual Commander turnout and power-level culture?",
+          "Is the negative service/culture signal isolated or meaningful?",
+          "Is there a Discord or useful community coordination surface?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Games For Meeple under the event-plus-assessment rubric."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "Existing Wizards/EventLink records support Monday, Thursday, and Saturday Commander.",
+          "Event text gives unusually concrete expectations: Bracket 3 casual, no proxies, participation packs, Companion ID, pods, and prizing.",
+          "Official Magic category supports real MTG product presence.",
+          "Review and organized-play mirrors support active operation, regular events, and broader multi-TCG community."
+        ],
+        "cautions": [
+          "About 20.8 miles from Los Alamitos.",
+          "Store identity appears stronger for Yu-Gi-Oh!, Pokemon, Digimon, and multi-TCG play than Magic specifically.",
+          "No-proxy rule and paid-entry/prizing language may make the Commander environment less flexible.",
+          "Parking and rush-hour access are practical negatives."
+        ],
+        "open_questions": [
+          "Does official social or Discord show current MTG turnout or community coordination?",
+          "Are Commander nights welcoming to solo arrivals?",
+          "Does the no-proxy rule affect the user's likely decks?",
+          "Are Monday/Thursday/Saturday Commander nights all equally real in practice?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for GXGAMERS with clear Commander strengths and personal-fit cautions."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.1,
+        "confidence": "medium",
+        "positives": [
+          "Existing Wizards/EventLink record supports Friday Night Magic Commander.",
+          "Commander event wording is explicitly casual and warmer than many generic listings.",
+          "Official site supports venue identity.",
+          "TCGplayer and Whatnot evidence support active commerce, MTG inventory depth, and community-broadcast scale."
+        ],
+        "cautions": [
+          "About 19.5 miles from Los Alamitos.",
+          "Review evidence is too sparse to infer in-store social quality.",
+          "Commerce and broadcast strength do not prove welcoming in-person Commander.",
+          "Current play-space, turnout, and solo-arrival behavior remain unclear."
+        ],
+        "open_questions": [
+          "Does Instagram or Discord show actual Commander turnout?",
+          "Is Friday Commander reliably happening beyond Wizards/EventLink?",
+          "What is the store's in-person play space like?",
+          "Are there prerelease, draft, or one-off MTG specials worth tracking?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Otaku Vault that preserve active-store evidence while keeping in-person uncertainty visible."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C",
+        "fit_score": 2.8,
+        "confidence": "medium-low",
+        "positives": [
+          "Existing Wizards/EventLink records support Tuesday and Friday Commander.",
+          "Secondary sources support active TCG operation and broader event-hosting capability.",
+          "Some review/mirror evidence mentions welcoming service, fair pricing, community space, and evening availability.",
+          "Friday Commander could matter if current reliability is confirmed."
+        ],
+        "cautions": [
+          "A prior report says a player arrived for a Companion-listed Commander event and found the store apparently closed.",
+          "Review-derived service and pricing signals are polarized.",
+          "Store-controlled current schedule/social confirmation is still needed before relying on listed Commander events.",
+          "Solo-arrival comfort and Commander community texture are unknown."
+        ],
+        "open_questions": [
+          "Is LVLUP currently open and reliably honoring Wizards/Companion-listed Commander?",
+          "Does store-controlled social confirm Tuesday and Friday Commander?",
+          "Are service/pricing concerns isolated or recurring?",
+          "Is the Commander environment comfortable for a solo first visit?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for LVLUP with an explicit schedule-reliability caution."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "unresolved-discovery-assessment-pass-2026-07-17"
+      },
+      "fields": {
+        "id": "unresolved-discovery-assessment-pass-2026-07-17",
+        "detected_at": "2026-07-17T23:00:00Z",
+        "change_type": "evaluation_update",
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "summary": "Unresolved discovery pass translated Games For Meeple, GXGAMERS, Otaku Vault, and LVLUP GAMING TCG into event/no-event decisions, Places-page assessment recommendations, visible Evidence links, and durable store-specific TBDs.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable update marker for the unresolved discovery assessment pass."
+    }
+  ]
+}
