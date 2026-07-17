@@ -22,8 +22,9 @@ Use it for:
   Today/Events/Places/Updates polish as the default next step unless a true
   blocker appears.
 - Supabase operational-write readiness and the default-read cutover are now in
-  place. The next product stage is a real usability/parity checkpoint before
-  additional research expansion.
+  place. The read-cutover checkpoint is recorded in
+  `docs/SUPABASE_READ_CUTOVER_CHECKPOINT_2026-07-17.md`; wait for user
+  acceptance before broad research expansion.
 - Migrate canonical research, personal continuity, and async request data in
   explicit reversible stages.
 - Treat `docs/UX_MEGA_REVISION_SCOPE.md` as the accepted local UX scope that has
@@ -31,7 +32,7 @@ Use it for:
 - Use `docs/SUPABASE_CONTINUITY_MODEL.md` as the plain-language contract for
   what belongs in research truth, personal continuity, and workflow/request
   state during this transition period.
-- Pause broad research expansion until the Supabase-default usability/parity
+- Pause broad research expansion until the Supabase-default read-cutover
   checkpoint is accepted.
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a

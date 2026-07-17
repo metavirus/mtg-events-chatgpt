@@ -43,8 +43,8 @@ Immediate next tranche:
    baseline; do not rediscover the Supabase state from scratch.
 2. Verify the current migration files match the accepted remote/read-adapter
    state.
-3. Validate the Supabase-default read path with JSON fallback and a real
-   usability/parity checkpoint.
+3. Review and accept the Supabase-default read-cutover checkpoint in
+   `docs/SUPABASE_READ_CUTOVER_CHECKPOINT_2026-07-17.md`.
 4. Do not perform new venue/event research, canonical data expansion, deployment,
    authenticated personal/workflow writes, or broad UX polish during that
    checkpoint.
@@ -436,10 +436,11 @@ older notes saying "repair Tweedy first" as current next work.
 
 ## Recommended next step
 
-Run the next real usability/parity checkpoint against the Supabase-default app.
-The goal is not deployment or new research. The goal is to verify the app is
-usable and semantically equivalent with Supabase as the operational read source
-and JSON retained as explicit recovery fallback.
+Ask the user to accept or reject the Supabase read-cutover checkpoint. If
+accepted, resume the bounded research universe only through the controlled
+Supabase research-write workflow in
+`docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`. Do not return to manual canonical
+JSON edits.
 
 ## After that
 
