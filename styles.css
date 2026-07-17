@@ -253,10 +253,27 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .catalog-summary .warning-stat strong { color: var(--amber); font-size: 15px; margin: 5px 0; }
 .catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
 .prioritized-grid .event-card { min-height: 100%; }
+.catalog-event-card { grid-template-columns: minmax(0, 1fr) auto; gap: 11px; padding: 13px; }
+.catalog-event-card .event-time { grid-column: 1 / -1; grid-row: 1; border-right: 0; flex-direction: row; justify-content: flex-start; align-items: center; gap: 7px; min-width: 0; }
+.catalog-event-card .event-time strong { font-size: 12px; }
+.catalog-event-card .event-time span, .catalog-event-card .event-time small { margin: 0; }
+.catalog-event-card .event-main { grid-column: 1; grid-row: 2; }
+.catalog-event-card .event-topline h3 { white-space: normal; }
+.catalog-event-card .place-inline { margin: 4px 0 6px; }
+.catalog-event-card .event-main > p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.catalog-event-card .event-actions { grid-column: 2; grid-row: 1 / span 2; min-width: 34px; justify-content: flex-start; }
+.catalog-event-card .open-cue { display: none; }
 .catalog-featured { margin-bottom: 18px; padding: 17px; border: 1px solid rgba(84,212,167,.2); border-radius: var(--radius); background: linear-gradient(145deg, rgba(84,212,167,.07), rgba(17,22,37,.82)); }
 .catalog-all-events { padding-top: 6px; border-top: 1px solid var(--line); }
 .event-catalog-week,
 .event-catalog-month { margin-top: 8px; }
+.event-catalog-week { grid-template-columns: repeat(7, minmax(0, 1fr)); overflow-x: visible; }
+.event-catalog-month { grid-template-columns: repeat(7, minmax(0, 1fr)); overflow-x: visible; }
+.event-catalog-week .week-column,
+.event-catalog-month .month-cell,
+.event-catalog-month .month-label,
+.event-catalog-week .compact-event,
+.event-catalog-month .compact-event { min-width: 0; }
 
 .master-detail { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 16px; min-height: 700px; }
 .master-pane, .detail-pane { border: 1px solid var(--line); border-radius: var(--radius); background: rgba(17,22,37,.78); }

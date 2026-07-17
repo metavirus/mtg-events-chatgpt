@@ -853,7 +853,7 @@ function todayLeadKey(event) {
 }
 
 function eventCard(event, compact = false, options = {}) {
-  const { showDate = false, emphasize = false } = options;
+  const { showDate = false, emphasize = false, catalog = false } = options;
   const place = store(event.storeId);
   const fit = fitLabel(event);
   const evidence = evidenceLabel(event);
@@ -866,7 +866,7 @@ function eventCard(event, compact = false, options = {}) {
     const cue = compactEventCue(event, fit, evidence);
     return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
   }
-  return `<article class="event-card ${isCompetitive(event) ? 'competitive' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
+  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
     <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
@@ -1030,11 +1030,11 @@ function renderEventCatalog() {
   const recommended = events.slice(0, 6);
   document.getElementById('eventCatalog').innerHTML = `<section class="catalog-featured" aria-label="Recommended events">
     <div class="today-section-heading"><div><p class="eyebrow mint">Recommended first</p><h2>High-signal events to scan first</h2></div><span>${recommended.length} surfaced</span></div>
-    <div class="catalog-grid prioritized-grid">${recommended.map((event) => eventCard(event, false, { showDate: true, emphasize: true })).join('')}</div>
+    <div class="catalog-grid prioritized-grid">${recommended.map((event) => eventCard(event, false, { showDate: true, emphasize: true, catalog: true })).join('')}</div>
   </section>
   <section class="catalog-all-events">
     <div class="today-section-heading"><div><p class="eyebrow">Full catalog</p><h2>All matching events</h2></div><span>${events.length} total</span></div>
-    <div class="catalog-grid">${events.slice(0, 120).map((event) => eventCard(event, false, { showDate: true, emphasize: recommended.some((item) => todayLeadKey(item) === todayLeadKey(event)) })).join('')}</div>
+    <div class="catalog-grid">${events.slice(0, 120).map((event) => eventCard(event, false, { showDate: true, emphasize: recommended.some((item) => todayLeadKey(item) === todayLeadKey(event)), catalog: true })).join('')}</div>
   </section>`;
 }
 
