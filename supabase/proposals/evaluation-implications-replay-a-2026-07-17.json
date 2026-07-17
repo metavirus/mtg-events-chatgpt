@@ -1,0 +1,292 @@
+{
+  "proposal_id": "evaluation-implications-replay-a-2026-07-17",
+  "description": "Evaluation-focused proposal for high-value event candidate replay A. Translates the already-completed event/source replay for Finch and Sparrow, The Game Cellar, Next-Gen Games, It's GameTime!, and The Crimson Guild into Places-page assessment fields without adding duplicate event records.",
+  "created_at": "2026-07-17T20:00:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "the-game-cellar"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "The Game Cellar now reads as a reviewed San Gabriel WPN Premium candidate rather than a generic discovery lead. Existing Commander in the Cellar records already cover recurring Commander opportunities across multiple days, while the official site adds useful qualitative support: weekly events, Commander, draft, prerelease, casual and competitive Magic, newcomer-friendly staff/community positioning, and explicit language around finding a pod. The personal-fit question is not whether Magic happens here; it is whether the best Commander day is socially accessible enough to justify the drive from Los Alamitos. Prior review-derived evidence supports welcoming community and play-space signals, with a small operating-hours reliability caution that should stay visible.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 3,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 4,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote The Game Cellar from placeholder discovery wording to a reviewed candidate with explicit fit, source, and uncertainty framing."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "next-gen-games"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Next-Gen Games now reads as one of the stronger full-service Magic hubs in the wider field, but not yet a proven casual Commander home-base candidate. The official site confirms WPN Premium status, weekly updated event listings, tournaments every day, Commander/EDH support, and Discord/community routing. Existing Wizards/EventLink data already gives a Wednesday Commander anchor. Prior review-derived evidence supports a large Magic footprint, play space, helpful staff, broad inventory, and inclusive/community signals. The remaining personal-fit uncertainty is practical: distance from Los Alamitos, whether Commander is casual or mixed, whether Discord supports LFG, and whether prerelease/draft may be the better way to try the store.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 3,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 4,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote Next-Gen from placeholder discovery wording to a reviewed Magic-hub candidate while preserving distance and solo-arrival uncertainty."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "it-s-gametime"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "It's GameTime is a confirmed Commander option, not just a discovery placeholder. The official site clearly lists EDH / Commander Sundays at 1 PM and Friday Night Magic at 8 PM, and the existing Sunday Commander record should remain the primary Commander anchor. Friday Night Magic should stay as a general Magic signal until its format is confirmed. The venue should be treated cautiously for personal fit because it is farther from Los Alamitos, public evidence does not yet describe pod formation or solo-arrival support, and prior review-derived evidence includes limited play-space concerns plus sharper service/environment/pricing complaints. Keep it visible as a real event option, but below stronger candidates until community fit improves.",
+        "assessment": {
+          "commanderActivity": 3,
+          "meetupAccessibility": 2,
+          "communityContinuity": 3,
+          "newPlayerIntegration": 2,
+          "physicalEnvironment": 2,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 2
+        }
+      },
+      "reason": "Promote It's GameTime from placeholder discovery wording while keeping confirmed schedule support separate from unresolved personal-fit cautions."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "the-crimson-guild-south-el-monte"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "The Crimson Guild now reads as a plausible mid-distance Friday Commander candidate rather than a vague discovery lead. Existing Wizards/EventLink evidence supports Friday Commander Night, while review-derived evidence describes a spacious, clean, modern play area, friendly staff, fair pricing, useful TCG selection, and active weekly events. The official site is active and useful for identity/social routing, but it is still schedule-thin in the replayed text. Confidence should therefore remain tied primarily to Wizards/EventLink for the Commander schedule until a stronger store-controlled event source, social post, or Discord signal is found. Do not over-normalize address or branch details from third-party mirrors in this pass.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 3,
+          "communityContinuity": 3,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 3,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote Crimson Guild from placeholder discovery wording while preserving schedule-source and solo-arrival uncertainty."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "finch-sparrow"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "finch-sparrow",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.8,
+        "confidence": "medium",
+        "positives": [
+          "Only about 5 miles from Los Alamitos, making repeat visits practical.",
+          "WPN Premium store with multiple Commander lanes across routine casual play and special events.",
+          "User field notes distinguish structured Saturday Commanderfest from more freeform Sunday casual/open-play vibes.",
+          "Strong source stack across official site, Wizards/EventLink, Instagram, and direct user observation."
+        ],
+        "cautions": [
+          "Birdcage, Fish Bowl, and cEDH specials are store-character signals, not casual Commander fit signals.",
+          "Saturday structure and loose timed rounds may not be the best fit for relaxed repeat play.",
+          "Sunday open play is promising but not yet normalized as a clean recurring event record.",
+          "Discord or pre-arrival coordination remains thinner than the ideal home-pod pathway."
+        ],
+        "open_questions": [
+          "What is the current average Thursday Commander table like?",
+          "What is the strongest current source route for Sunday open-play Commander?",
+          "Is Sunday open play stable enough to model as its own recurring series?"
+        ]
+      },
+      "reason": "Add Places-page evaluation fields for Finch without rewriting its already-rich venue assessment."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.7,
+        "confidence": "medium",
+        "positives": [
+          "Official site confirms WPN Premium status and broad Magic support.",
+          "Existing records already show recurring Commander in the Cellar coverage across multiple days.",
+          "Official language supports weekly events, Commander, draft, prerelease, casual and competitive play, and finding a pod.",
+          "Prior review-derived evidence supports welcoming community, social communication, and play-space signals."
+        ],
+        "cautions": [
+          "About 20.5 miles from Los Alamitos.",
+          "Exact Commander turnout and power-level mix still need a practical read.",
+          "Review base is smaller than some larger stores.",
+          "Prior review-derived evidence includes an operating-hours reliability caution."
+        ],
+        "open_questions": [
+          "Which Commander in the Cellar day is best for casual solo arrival?",
+          "Does the store or Discord actively help new players find pods?",
+          "What are the proxy, bracket, and power-level expectations?",
+          "Are draft or prerelease opportunities more useful than Commander here?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for The Game Cellar based on event replay A and prior source-map evidence."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.8,
+        "confidence": "medium",
+        "positives": [
+          "Official site confirms WPN Premium status, weekly updated event listings, tournaments every day, Commander/EDH support, and Discord/community routing.",
+          "Existing Wizards/EventLink record gives a Wednesday Commander anchor.",
+          "Prior review-derived evidence supports large-scale Magic activity, play space, helpful staff, broad inventory, and inclusive/community signals.",
+          "Likely useful for drafts, prereleases, and broader Magic activity in addition to Commander."
+        ],
+        "cautions": [
+          "About 23.6 miles from Los Alamitos.",
+          "Open play outside scheduled events may depend on manager approval and space availability.",
+          "Large tournament/store footprint may not automatically mean easy solo social integration.",
+          "Recent review-derived service complaints should remain visible."
+        ],
+        "open_questions": [
+          "What is the current Commander schedule beyond the existing Wednesday anchor?",
+          "Does Discord provide usable LFG or casual Commander coordination?",
+          "Is Commander casual, competitive, or mixed in practice?",
+          "Are prerelease or draft events the more attractive way to try the store?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Next-Gen that separate strong Magic infrastructure from unresolved personal fit."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "it-s-gametime"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "it-s-gametime",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.1,
+        "confidence": "medium",
+        "positives": [
+          "Official site clearly lists EDH / Commander Sundays at 1 PM.",
+          "Official site also lists Friday Night Magic at 8 PM.",
+          "Prior review-derived evidence supports a stocked CCG store with real TCG activity.",
+          "Useful as a confirmed event option rather than a mystery lead."
+        ],
+        "cautions": [
+          "About 24.9 miles from Los Alamitos.",
+          "Prior review-derived evidence includes limited play-space concerns.",
+          "Prior review-derived evidence also includes serious service, environment, and pricing complaints.",
+          "No current evidence of pod formation, proxy norms, casual power expectations, or solo-arrival support."
+        ],
+        "open_questions": [
+          "How large and socially accessible is the Sunday Commander turnout?",
+          "Is the Friday Night Magic format relevant to the user's interests?",
+          "Do the negative review-derived signals reflect current conditions?",
+          "Is there any Discord or social coordination surface for Commander?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for It's GameTime that keep confirmed schedule evidence separate from fit cautions."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.5,
+        "confidence": "medium",
+        "positives": [
+          "Existing Wizards/EventLink record supports Friday Commander Night.",
+          "Prior review-derived evidence describes a spacious, clean, modern play area.",
+          "Prior review-derived evidence supports friendly staff, fair pricing, TCG selection, and active weekly events.",
+          "Mid-distance compared with several farther candidates."
+        ],
+        "cautions": [
+          "Store-controlled public site is active but schedule-thin.",
+          "Newer shop, so long-term schedule stability is still being learned.",
+          "Address/source details should not be over-normalized from third-party mirrors.",
+          "No direct evidence yet for Discord, pod formation, power level, proxy policy, or cold solo-arrival support."
+        ],
+        "open_questions": [
+          "Can Friday Commander be corroborated by an official or social store-controlled source beyond Wizards/EventLink?",
+          "What is the actual turnout and power-level mix?",
+          "Does the store help solo players find pods?",
+          "Is there a public Discord or other community coordination surface?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Crimson Guild that preserve promising store-quality signals and schedule-source uncertainty."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "evaluation-implications-replay-a-2026-07-17"
+      },
+      "fields": {
+        "id": "evaluation-implications-replay-a-2026-07-17",
+        "detected_at": "2026-07-17T20:00:00Z",
+        "change_type": "evaluation_update",
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar",
+        "summary": "Evaluation implications replay A translated prior source replay for Finch, The Game Cellar, Next-Gen Games, It's GameTime!, and The Crimson Guild into Places-page fit, confidence, positives, cautions, and open-question fields without adding duplicate event records.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable update entry for the assessment-focused replay A proposal."
+    }
+  ]
+}
