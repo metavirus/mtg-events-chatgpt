@@ -41,6 +41,10 @@ Use it for:
 - The proposed next research tranche is
   `docs/NEXT_TRANCHE_PROPOSAL_2026-07-17.md`; do not start it until the user
   approves.
+- Tiny Updates housekeeping: applied Supabase `research_changes` rows can still
+  display as `PROPOSED`, and midnight UTC timestamps render as the prior evening
+  in Pacific time. This is not blocking; later clean up applied statuses and use
+  local-safe timestamps for user-visible update entries.
 - Migrate canonical research, personal continuity, and async request data in
   explicit reversible stages.
 - Treat `docs/UX_MEGA_REVISION_SCOPE.md` as the accepted local UX scope that has
