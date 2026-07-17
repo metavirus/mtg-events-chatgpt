@@ -41,6 +41,11 @@ Use it for:
 - The proposed next research tranche is
   `docs/NEXT_TRANCHE_PROPOSAL_2026-07-17.md`; do not start it until the user
   approves.
+- Temporary packet-ingest runway: use
+  `docs/CHATGPT_INGEST_RUNWAY_2026-07-17.md` to finish digesting the preserved
+  ChatGPT PR #15/#16 intake without relying on chat memory. During this phase,
+  prefer quick controlled ingestion or explicit TBD capture over deepening every
+  record immediately.
 - Tiny Updates housekeeping: applied Supabase `research_changes` rows can still
   display as `PROPOSED`, and midnight UTC timestamps render as the prior evening
   in Pacific time. This is not blocking; later clean up applied statuses and use
