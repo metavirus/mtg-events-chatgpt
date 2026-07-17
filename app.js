@@ -49,6 +49,7 @@ const state = {
   preset: 'all',
   eventCatalogView: 'list',
   eventCatalogFilter: 'all',
+  changeFilter: 'all',
   favoritesOnly: false,
   highlightsCollapsed: false,
   search: '',
@@ -401,6 +402,14 @@ function handleClick(event) {
     state.eventCatalogFilter = catalogFilterButton.dataset.eventCatalogFilter;
     document.querySelectorAll('[data-event-catalog-filter]').forEach((button) => button.classList.toggle('active', button === catalogFilterButton));
     renderEventCatalog();
+    return;
+  }
+
+  const changeFilterButton = event.target.closest('[data-change-filter]');
+  if (changeFilterButton) {
+    state.changeFilter = changeFilterButton.dataset.changeFilter;
+    document.querySelectorAll('[data-change-filter]').forEach((button) => button.classList.toggle('active', button === changeFilterButton));
+    renderChanges();
     return;
   }
 
@@ -1154,15 +1163,75 @@ function seriesRow(event) {
 
 function renderCommunities() {
   const communities = state.favoritesOnly ? COMMUNITY_SEED.filter((community) => state.personal.favorites[`community:${community.id}`]) : COMMUNITY_SEED;
-  document.getElementById('communityGrid').innerHTML = communities.map((community) => {
+  const partial = COMMUNITY_SEED.filter((community) => community.status === 'partial').length;
+  const discovery = COMMUNITY_SEED.length - partial;
+  const followed = COMMUNITY_SEED.filter((community) => state.personal.favorites[`community:${community.id}`]).length;
+  document.getElementById('communityGrid').innerHTML = `<div class="community-overview">
+    <div><span>Coverage</span><strong>${partial} partial · ${discovery} discovery</strong><p>Communities are leads and synthesis, not venue records.</p></div>
+    <div><span>Your follows</span><strong>${followed} followed</strong><p>Favorites keep promising groups visible when Favorites-only is on.</p></div>
+    <div><span>Next useful pass</span><strong>Normalize cadence</strong><p>Current unknowns focus on meetup rhythm, hosts, and newcomer path.</p></div>
+  </div>${communities.map((community) => {
     const favorite = state.personal.favorites[`community:${community.id}`];
-    return `<article class="community-card" data-community-id="${community.id}" tabindex="0"><div class="community-card-top"><span class="community-symbol">◎</span><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${community.id}">${favorite ? '♥' : '♡'}</button></div><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><h2>${escapeHtml(community.name)}</h2><p class="community-region">${escapeHtml(community.region)}</p><p>${escapeHtml(community.summary)}</p><div class="community-tags">${community.formats.map((format) => `<span class="meta-chip">${format}</span>`).join('')}<span class="meta-chip">${community.channel}</span></div><div class="community-signal"><span>Signal</span><strong>${escapeHtml(community.signal)}</strong></div><span class="open-cue">Open community profile →</span></article>`;
-  }).join('') || emptyState('No communities match', 'Try turning off Favorites or adding a community to your followed list first.');
+    return `<article class="community-card" data-community-id="${community.id}" tabindex="0"><div class="community-card-top"><span class="community-symbol">◎</span><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${community.id}">${favorite ? '♥' : '♡'}</button></div><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><h2>${escapeHtml(community.name)}</h2><p class="community-region">${escapeHtml(community.region)}</p><p>${escapeHtml(community.summary)}</p><div class="community-tags">${community.formats.map((format) => `<span class="meta-chip">${format}</span>`).join('')}<span class="meta-chip">${community.channel}</span></div><div class="community-signal"><span>Signal</span><strong>${escapeHtml(community.signal)}</strong></div><div class="community-next"><span>Next check</span><p>${escapeHtml(community.nextQuestion)}</p></div><span class="open-cue">Open community profile →</span></article>`;
+  }).join('') || emptyState('No communities match', 'Try turning off Favorites or adding a community to your followed list first.')}`;
 }
 
 function renderChanges() {
-  const items = [...DATA.changes].sort((a, b) => compareText(b.detectedAt, a.detectedAt));
-  document.getElementById('changeList').innerHTML = items.map((change) => `<article class="change-row"><div class="timeline-node ${change.changeType === 'source_failure' ? 'coral' : change.changeType === 'new_event' ? 'mint' : 'violet'}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><span class="status-chip slate">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span><h3>${escapeHtml(change.summary)}</h3><p>${escapeHtml(change.details || 'The research record was updated.')}</p></div><span class="review-state">${escapeHtml(change.reviewStatus || 'recorded')}</span></article>`).join('');
+  const allItems = [...DATA.changes].sort((a, b) => compareText(b.detectedAt, a.detectedAt));
+  const items = allItems.filter((change) => changeMatchesFilter(change, state.changeFilter));
+  const latest = allItems[0]?.detectedAt ? new Date(allItems[0].detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'None yet';
+  document.getElementById('changeList').innerHTML = `<div class="change-summary">
+    <div><span>Visible updates</span><strong>${items.length}<small> / ${allItems.length}</small></strong><p>Use filters to separate planning-relevant changes from background research.</p></div>
+    <div><span>Latest record</span><strong>${escapeHtml(latest)}</strong><p>Opening Updates marks the current batch as seen on this device.</p></div>
+    <div><span>Current filter</span><strong>${changeFilterLabel(state.changeFilter)}</strong><p>${changeFilterHelp(state.changeFilter)}</p></div>
+  </div>${items.length ? items.map((change) => changeRow(change)).join('') : emptyState('No updates in this filter', 'Try All updates or a different triage category.')}`;
+}
+
+function changeRow(change) {
+  const tone = changeTone(change);
+  const route = changeRoute(change);
+  return `<article class="change-row"><div class="timeline-node ${tone}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><span class="status-chip slate">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span><h3>${escapeHtml(change.summary)}</h3><p>${escapeHtml(change.details || 'The research record was updated.')}</p><button class="text-button change-action" data-route="${route}">${route === 'events' ? 'Review event catalog' : route === 'research' ? 'Review coverage' : 'Review places'} →</button></div><span class="review-state">${escapeHtml(change.reviewStatus || 'recorded')}</span></article>`;
+}
+
+function changeMatchesFilter(change, filter) {
+  if (filter === 'all') return true;
+  const text = `${change.changeType || ''} ${change.summary || ''} ${change.details || ''} ${change.reviewStatus || ''}`.toLowerCase();
+  if (filter === 'new') return /new_event|event|schedule|prerelease|draft|sealed|commander/.test(text);
+  if (filter === 'research') return /research|profile|venue|store|community|classified|assessment/.test(text);
+  if (filter === 'correction') return /correction|repair|fix|reclass|duplicate|resolved|updated/.test(text);
+  if (filter === 'source') return /source|failure|broken|stale|link|unreachable|instagram|website/.test(text);
+  if (filter === 'hot') return /hot|action|question|waiting|urgent|follow|verify|notable/.test(text);
+  return true;
+}
+
+function changeTone(change) {
+  const text = `${change.changeType || ''} ${change.summary || ''} ${change.details || ''}`.toLowerCase();
+  if (/source|failure|broken|stale/.test(text)) return 'coral';
+  if (/new_event|event|schedule|prerelease|draft|sealed|commander/.test(text)) return 'mint';
+  if (/research|profile|venue|store|community/.test(text)) return 'sky';
+  return 'violet';
+}
+
+function changeRoute(change) {
+  const text = `${change.changeType || ''} ${change.summary || ''} ${change.details || ''}`.toLowerCase();
+  if (/new_event|event|schedule|prerelease|draft|sealed|commander/.test(text)) return 'events';
+  if (/source|research|coverage|failure|broken|stale/.test(text)) return 'research';
+  return 'places';
+}
+
+function changeFilterLabel(filter) {
+  return ({ all: 'All updates', new: 'New events', research: 'Research', correction: 'Corrections', source: 'Source issues', hot: 'Hot/action' })[filter] || 'All updates';
+}
+
+function changeFilterHelp(filter) {
+  return ({
+    all: 'Everything recorded in the current change feed.',
+    new: 'Event and schedule signals most likely to affect plans.',
+    research: 'Venue, community, and assessment work.',
+    correction: 'Repairs, reclassifications, and cleanup.',
+    source: 'Evidence surfaces that need attention.',
+    hot: 'Items whose wording suggests follow-up or verification.'
+  })[filter] || 'Everything recorded in the current change feed.';
 }
 
 function renderResearch() {
@@ -1228,7 +1297,7 @@ function openCommunity(id) {
   const community = COMMUNITY_SEED.find((item) => item.id === id);
   if (!community) return;
   const favorite = state.personal.favorites[`community:${id}`];
-  openDrawer(`<div class="drawer-kicker"><span class="community-symbol small">◎</span><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span></div><h1 id="drawerTitle">${escapeHtml(community.name)}</h1><p class="drawer-lead">${escapeHtml(community.region)}</p><div class="drawer-action-grid"><button class="heart-button labeled ${favorite ? 'active' : ''}" data-favorite="community:${id}">${favorite ? '♥ Following community' : '♡ Follow community'}</button></div><section class="drawer-section"><p class="eyebrow">Current synthesis</p><h2>Why this group matters</h2><p>${escapeHtml(community.summary)}</p></section><section class="drawer-section"><p class="eyebrow">Geographic signal</p><h2>${escapeHtml(community.signal)}</h2><p>Community geography is descriptive and is not replaced with a store address merely because a group sometimes meets there.</p></section><section class="drawer-section"><p class="eyebrow">Open research question</p><h2>What we still need</h2><p>${escapeHtml(community.nextQuestion)}</p></section>${noteComposer(`community:${id}`, 'Add a personal note about this community...')}`);
+  openDrawer(`<div class="drawer-kicker"><span class="community-symbol small">◎</span><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><span class="status-chip slate">Community record</span></div><h1 id="drawerTitle">${escapeHtml(community.name)}</h1><p class="drawer-lead">${escapeHtml(community.region)}</p><div class="drawer-action-grid"><button class="heart-button labeled ${favorite ? 'active' : ''}" data-favorite="community:${id}">${favorite ? '♥ Following community' : '♡ Follow community'}</button></div><section class="drawer-section"><p class="eyebrow">Current synthesis</p><h2>Why this group matters</h2><p>${escapeHtml(community.summary)}</p></section><section class="drawer-section"><p class="eyebrow">How to use this</p><h2>${escapeHtml(community.signal)}</h2><p>Community records help find people, organizers, and recurring social patterns. They stay separate from store records so a Discord or meetup group does not accidentally become a fake venue.</p></section><section class="drawer-section"><p class="eyebrow">Open research question</p><h2>What we still need</h2><p>${escapeHtml(community.nextQuestion)}</p></section>${noteComposer(`community:${id}`, 'Add a personal note about this community...')}`);
 }
 
 function openActivityLog() {
