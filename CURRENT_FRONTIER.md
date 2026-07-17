@@ -50,13 +50,24 @@ write workflow**, not direct JSON editing. This sequencing is intentional. A
 major earlier failure mode was unsafe or low-quality canonical JSON writing.
 Do not resume broad research collection directly into JSON as the main path.
 
+The controlled write workflow has now passed a minimal live pilot:
+
+- proposal `supabase/proposals/workflow-pilot-2026-07-17.json`;
+- one documentary `research_changes` insert only;
+- affected venue: `collectors-lounge-cypress`;
+- no venue, source, event, evaluation, schema, auth, RLS, or browser-write facts
+  changed;
+- prewrite and postwrite deterministic exports verified;
+- hosted Supabase-default app and `?data=json` fallback still render.
+
 Immediate next tranche:
 
 1. Use `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` for future research
    updates.
 2. Keep generated JSON as recovery/export output, not a manual canonical editing
    surface.
-3. Resume the bounded research universe only through controlled Supabase writes.
+3. Resume the bounded research universe only through controlled Supabase writes,
+   in small batches with proposal review and postwrite export verification.
 4. Do not perform authenticated personal/workflow writes, auth/RLS expansion, or
    broad UX polish as part of ordinary research resumption.
 

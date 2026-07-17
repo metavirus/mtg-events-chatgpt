@@ -20,6 +20,9 @@ Use it for:
 - Supabase operational-write readiness and the default-read cutover are now in
   place. The hosted app uses Supabase by default and keeps `?data=json` as the
   explicit fallback.
+- The minimal live Supabase write pilot passed using
+  `supabase/proposals/workflow-pilot-2026-07-17.json`: one documentary
+  `research_changes` insert only, with prewrite/postwrite exports verified.
 - The local UX pass is accepted; do not resume Today/Events/Places/Updates
   polish as the default next step unless a true blocker appears.
 - Migrate canonical research, personal continuity, and async request data in
