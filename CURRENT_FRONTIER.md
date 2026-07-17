@@ -2,11 +2,29 @@
 
 Last updated: 2026-07-17
 
-## Checkpoint: UX accepted, Supabase continuity is next
+## Permanent rollback checkpoint: personal-use deployment
 
-The local UX pass is accepted through commit `470b63b` on
-`codex/reconcile-wizards`. Do not keep polishing the interface unless a true
-blocker appears.
+The personal-use deployed baseline is commit `dd44e20` on
+`codex/reconcile-wizards`, tagged
+`checkpoint/personal-use-deployed-supabase-default-2026-07-17`.
+
+If a future task loses continuity, corrupts direction, or needs a known-good
+rollback anchor, come back to this checkpoint first. It is the accepted
+inflection point where:
+
+- the already-approved UX work is complete enough to leave polish mode;
+- controlled Supabase research-write and deterministic JSON export/recovery are
+  in place;
+- Supabase is the default application read source;
+- `?data=json` remains the explicit file-backed fallback;
+- the static GitHub Pages deployment is live for personal use;
+- broad research remains paused until resumed through controlled Supabase
+  writes.
+
+Do not reopen this checkpoint by default. Future work should move forward from
+it unless the user explicitly asks to roll back or audit it.
+
+## Accepted UX and deployment state
 
 Accepted UX work now includes:
 
@@ -27,27 +45,20 @@ explicitly promotes them. The main parked item is exploring whether Signals /
 Fresh Signals should regain a more prominent default surface without restoring a
 fixed right-side pane that consumes calendar width.
 
-The next product stage is **Supabase operational-write readiness before default
-read cutover or additional research expansion**. This sequencing is intentional.
-A major earlier failure mode was unsafe or low-quality canonical JSON writing;
-making Supabase the default read source alone does not prevent that failure.
+The next product stage is **research resumption through the controlled Supabase
+write workflow**, not direct JSON editing. This sequencing is intentional. A
+major earlier failure mode was unsafe or low-quality canonical JSON writing.
 Do not resume broad research collection directly into JSON as the main path.
-First establish controlled Supabase research writes, deterministic
-Supabase-to-JSON export/recovery, and validation that agents no longer need to
-hand-edit canonical JSON.
 
 Immediate next tranche:
 
-1. Use `docs/SUPABASE_MIGRATION_STATUS.md`,
-   `docs/SUPABASE_CONTINUITY_MODEL.md`, and the existing migrations/seeds as the
-   baseline; do not rediscover the Supabase state from scratch.
-2. Verify the current migration files match the accepted remote/read-adapter
-   state.
-3. Review and accept the Supabase-default read-cutover checkpoint in
-   `docs/SUPABASE_READ_CUTOVER_CHECKPOINT_2026-07-17.md`.
-4. Do not perform new venue/event research, canonical data expansion, deployment,
-   authenticated personal/workflow writes, or broad UX polish during that
-   checkpoint.
+1. Use `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` for future research
+   updates.
+2. Keep generated JSON as recovery/export output, not a manual canonical editing
+   surface.
+3. Resume the bounded research universe only through controlled Supabase writes.
+4. Do not perform authenticated personal/workflow writes, auth/RLS expansion, or
+   broad UX polish as part of ordinary research resumption.
 
 Execution model:
 
@@ -59,8 +70,8 @@ Execution model:
 
 ## Supabase migration checkpoint
 
-Supabase is now the accepted direction for durable operational data, but the
-hosted app has not switched away from the file-backed source yet.
+Supabase is now the accepted default read source for the hosted personal-use
+app, with JSON retained as an explicit fallback.
 
 Current status is documented in `docs/SUPABASE_MIGRATION_STATUS.md`:
 
@@ -71,17 +82,18 @@ Current status is documented in `docs/SUPABASE_MIGRATION_STATUS.md`:
 - the missing `entity_sources.source_id` performance index was fixed and added
   to the migration;
 - representative raw-data and read-adapter parity are accepted at repair commit
-  `813c0f2`; JSON remains the active app source pending a separate deliberate
-  cutover gate.
+  `813c0f2`;
+- the controlled research-write/export workflow is in place;
+- the read-cutover checkpoint is accepted at `dd44e20` and deployed to GitHub
+  Pages for personal use.
 
-The safe read-adapter seam now exists in `app.js` and is opt-in only via
-`?data=supabase`; JSON remains the default app source. Initial validation at
+The safe read-adapter seam exists in `app.js`. Supabase is now the default app
+source; `?data=json` remains the explicit recovery path. Initial validation at
 `7e42202` found a status-vocabulary mismatch and dated-event duplication.
 Repair commit `813c0f2` fixed both, and independent representative verification
 accepted 97 semantic events with matching Today, Events, and Commander results
-across JSON and Supabase. This acceptance is not a default-cutover decision.
-Use 5.6 before changing auth/RLS/write policy, making Supabase the default, or
-publishing a Supabase-backed release.
+across JSON and Supabase. Use 5.6 before changing auth/RLS/write policy or
+turning on authenticated personal/workflow writes.
 
 ## Completed local UX revision scope
 

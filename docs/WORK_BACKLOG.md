@@ -14,17 +14,14 @@ Use it for:
 
 ## Active next-up
 
-- Continue the Supabase operational data foundation described in
-  `docs/SUPABASE_ARCHITECTURE.md`. Representative raw-data and read-adapter
-  parity are accepted at `813c0f2`, but keep the file-backed app as the default
-  until a separate deliberate cutover gate.
-- The local UX pass is accepted through commit `470b63b`; do not resume
-  Today/Events/Places/Updates polish as the default next step unless a true
-  blocker appears.
+- The permanent personal-use deployment baseline is commit `dd44e20`, tagged
+  `checkpoint/personal-use-deployed-supabase-default-2026-07-17`. If future work
+  blows up, return to that checkpoint before reconstructing state from chat.
 - Supabase operational-write readiness and the default-read cutover are now in
-  place. The read-cutover checkpoint is recorded in
-  `docs/SUPABASE_READ_CUTOVER_CHECKPOINT_2026-07-17.md`; wait for user
-  acceptance before broad research expansion.
+  place. The hosted app uses Supabase by default and keeps `?data=json` as the
+  explicit fallback.
+- The local UX pass is accepted; do not resume Today/Events/Places/Updates
+  polish as the default next step unless a true blocker appears.
 - Migrate canonical research, personal continuity, and async request data in
   explicit reversible stages.
 - Treat `docs/UX_MEGA_REVISION_SCOPE.md` as the accepted local UX scope that has
@@ -32,8 +29,9 @@ Use it for:
 - Use `docs/SUPABASE_CONTINUITY_MODEL.md` as the plain-language contract for
   what belongs in research truth, personal continuity, and workflow/request
   state during this transition period.
-- Pause broad research expansion until the Supabase-default read-cutover
-  checkpoint is accepted.
+- Resume broad research only through the controlled Supabase research-write
+  workflow, with generated JSON treated as export/recovery output rather than a
+  manual canonical editing surface.
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
 - Preserve the remaining research queue for later resumption; do not mistake a
   paused queue for a completed regional census.

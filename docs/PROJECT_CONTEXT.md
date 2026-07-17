@@ -572,9 +572,15 @@ Alamitos centroid, and farther results should be easy to recognize and filter.
 
 Completed:
 
-- A working static calendar/store/change interface backed by JSON.
-- An accepted local UX pass through commit `470b63b` that makes Today, Events,
-  Places, Updates, and Communities usable enough to move out of polish mode.
+- A working static calendar/store/change interface deployed for personal use on
+  GitHub Pages at checkpoint commit `dd44e20`, tagged
+  `checkpoint/personal-use-deployed-supabase-default-2026-07-17`.
+- Supabase as the default application read source, with `?data=json` retained as
+  the explicit file-backed fallback.
+- Controlled Supabase research-write and deterministic JSON export/recovery
+  workflows for future research updates.
+- An accepted local UX pass that makes Today, Events, Places, Updates, and
+  Communities usable enough to move out of polish mode.
 - A repeatable Wizards GraphQL collector using a public Los Alamitos centroid.
 - A successful 26-mile buffered snapshot containing 1,231 Magic events, 669
   Commander candidates, and 77 organizations.
@@ -589,10 +595,11 @@ by the already-collected Commander-first research. The app must disclose that
 coverage limitation rather than imply that other Magic formats were
 comprehensively searched and found absent.
 
-As of the 2026-07-17 checkpoint, the next product stage is Supabase continuity /
-operational-source readiness before additional research expansion. This order
-protects against repeating the earlier failure mode of unsafe or low-quality
-canonical JSON writing.
+As of the 2026-07-17 personal-use deployment checkpoint, future research should
+resume only through the controlled Supabase research-write workflow. Generated
+JSON is recovery/export output, not the manual canonical editing surface. This
+order protects against repeating the earlier failure mode of unsafe or
+low-quality canonical JSON writing.
 
 ## Deprecated historical inventory
 

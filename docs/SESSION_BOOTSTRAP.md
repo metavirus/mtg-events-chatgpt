@@ -13,7 +13,11 @@ The repository has already completed these stabilization steps:
 - full-repo text-integrity audit passes;
 - ChatGPT sideload lane established with mailbox/intake/changelog rules;
 - recent research/SOP checkpoint published;
-- local UX pass accepted through `470b63b` on `codex/reconcile-wizards`.
+- local UX pass accepted on `codex/reconcile-wizards`;
+- personal-use deployment accepted at `dd44e20`, tagged
+  `checkpoint/personal-use-deployed-supabase-default-2026-07-17`;
+- hosted app uses Supabase as the default read source, with `?data=json` as the
+  explicit fallback.
 
 See also:
 
@@ -64,12 +68,11 @@ The repository is stabilized, not finished.
 
 Still open:
 
-- Supabase continuity / operational-source readiness as the next stage before
-  additional research expansion;
-- broad research backlog, paused until the Supabase path is safe;
+- broad research backlog, to resume only through the controlled Supabase
+  research-write workflow;
 - design/app backlog items that are not completion blockers unless promoted;
 - branch-hygiene pass to move off `codex/reconcile-wizards` deliberately;
-- future data-architecture evolution beyond the current default JSON layer;
+- future authenticated personal/workflow writes and data-architecture evolution;
 - continued store/community research using the SOPs.
 
 ## What not to re-litigate
@@ -79,4 +82,5 @@ Still open:
 - do not silently let structural risks ride if they could compound;
 - do not restart the accepted UX polish tranche by default;
 - do not resume broad research directly into canonical JSON as the main path;
+- do not hand-edit generated JSON exports as canonical research updates;
 - do not assume the current dataset is a complete local Magic census.
