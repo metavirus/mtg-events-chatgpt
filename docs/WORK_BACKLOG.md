@@ -275,9 +275,11 @@ status or deprioritized by early signals.
 - Visually separate `best bets` from the broader full-day event catalog.
 - Add `why am I seeing this?` drilldowns so ranked and highlighted items feel
   trustworthy.
-- Add a collapsible right-side insights rail for `Fresh Signals` and `For You`.
-- The right-side rail should be open by default on roomy desktop layouts, but
-  collapsible into a slim edge tab or drawer.
+- Explore how to keep `Fresh Signals` and `For You` prominent after the fixed
+  Today side rail was removed from the default layout.
+- Do not restore a permanent right-side pane that consumes calendar width by
+  default; consider a compact inline summary, slim edge affordance, drawer, or
+  other non-blocking treatment instead.
 - Revisit whether `Fresh Signals` / `For You` deserve their own dedicated log,
   drawer, or popout rather than routing `View all` into the noisier Updates
   stream.

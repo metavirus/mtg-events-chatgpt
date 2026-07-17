@@ -110,6 +110,58 @@ Do not burn cycles trying to turn every ambiguity into certainty.
 
 ## UI/build efficiency rules
 
+### 0. Default to direct bounded steward execution
+
+The Project Steward should not delegate ordinary implementation merely because
+the work is called implementation.
+
+Perform Low-effort work directly in the steward task.
+
+Also perform straightforward Medium-effort UI, documentation, validation, and
+narrow debugging directly when the scope is exact and the relevant files are
+known.
+
+Use a worker only when it provides a concrete advantage, such as:
+
+- a specialized capability unavailable in the steward task;
+- large research collection;
+- bulk or repetitive processing;
+- isolated context that materially protects steward continuity;
+- work expected to generate substantial tool output;
+- independent verification justified by risk.
+
+Before delegating, ask:
+
+- Can this be completed safely in one bounded direct pass?
+- Does a worker have a capability or efficiency advantage?
+- Would delegation avoid more context than it creates?
+- Is the likely worker output worth the orchestration overhead?
+
+If those answers do not support delegation, execute directly.
+
+When a worker is used:
+
+- do not poll repeatedly;
+- inspect once after a reasonable bounded interval;
+- distinguish quiet progress from an actual stalled state;
+- interrupt only when there is no active operation, no artifact or diff, and no
+  meaningful progress signal;
+- preserve any worker changes before taking over;
+- do not restart the same work in another worker.
+
+Keep direct steward implementation bounded:
+
+- one coherent outcome;
+- targeted inspection;
+- proportionate validation;
+- one commit/push;
+- concise final report;
+- no unrelated continuation.
+
+If direct implementation begins accumulating broad context, tool-heavy research,
+or multiple workstreams, stop and delegate the next bounded unit rather than
+allowing the steward task to become another giant implementation task.
+
 ### 1. Checkpoint before non-trivial edits
 
 Before non-trivial UI, styling, or data-shape changes:
