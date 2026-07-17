@@ -49,6 +49,7 @@ const state = {
   preset: 'all',
   eventCatalogView: 'list',
   eventCatalogFilter: 'all',
+  eventCatalogDate: startOfDay(new Date()),
   changeFilter: 'all',
   favoritesOnly: false,
   highlightsCollapsed: false,
@@ -470,6 +471,9 @@ function handleClick(event) {
   if (event.target.closest('#prevDate')) return moveDate(-1);
   if (event.target.closest('#nextDate')) return moveDate(1);
   if (event.target.closest('#resetToday')) { state.date = startOfDay(new Date()); state.agendaDays = 42; return renderCalendar(); }
+  if (event.target.closest('#prevEventCatalogRange')) return moveEventCatalogDate(-1);
+  if (event.target.closest('#nextEventCatalogRange')) return moveEventCatalogDate(1);
+  if (event.target.closest('#resetEventCatalogRange')) { state.eventCatalogDate = startOfDay(new Date()); return renderEventCatalog(); }
   if (event.target.closest('#jumpWeekend')) return jumpToWeekend();
   if (event.target.closest('#openFilters') || event.target.closest('[data-action="open-filters"]')) return openFilters();
   if (event.target.closest('[data-close-filters]')) return closeFilters();
@@ -940,6 +944,12 @@ function moveDate(direction) {
   renderCalendar();
 }
 
+function moveEventCatalogDate(direction) {
+  if (state.eventCatalogView === 'month') state.eventCatalogDate = new Date(state.eventCatalogDate.getFullYear(), state.eventCatalogDate.getMonth() + direction, 1);
+  else state.eventCatalogDate = addDays(state.eventCatalogDate, direction * 7);
+  renderEventCatalog();
+}
+
 function jumpToWeekend() {
   let date = startOfDay(new Date());
   while (date.getDay() !== 5) date = addDays(date, 1);
@@ -1022,20 +1032,23 @@ function placeEvaluationSummary(place) {
 }
 
 function renderEventCatalog() {
-  const start = startOfDay(new Date());
-  const rawEvents = buildOccurrences(start, endOfDay(addDays(start, 56)));
+  const catalogRange = eventCatalogRange();
+  const rawStart = state.eventCatalogView === 'list' ? startOfDay(new Date()) : catalogRange.start;
+  const rawEnd = state.eventCatalogView === 'list' ? endOfDay(addDays(rawStart, 56)) : catalogRange.end;
+  const rawEvents = buildOccurrences(rawStart, rawEnd);
   const events = eventCatalogMatches(rawEvents);
+  updateEventCatalogDateNav(catalogRange);
   document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${new Set(events.map((event) => event.storeId)).size}</strong><span>places represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>${state.eventCatalogFilter === 'best' ? 'Best-fit ordering' : 'Recommended first'}</strong><span>${state.eventCatalogView === 'list' ? 'full catalog list' : state.eventCatalogView === 'week' ? 'weekly layout' : 'monthly layout'}</span></div>`;
   if (!events.length) {
     document.getElementById('eventCatalog').innerHTML = emptyState('No catalog matches', 'Clear filters or search terms to restore events.');
     return;
   }
   if (state.eventCatalogView === 'week') {
-    document.getElementById('eventCatalog').innerHTML = renderEventCatalogWeek(events, start);
+    document.getElementById('eventCatalog').innerHTML = renderEventCatalogWeek(events, catalogRange.start);
     return;
   }
   if (state.eventCatalogView === 'month') {
-    document.getElementById('eventCatalog').innerHTML = renderEventCatalogMonth(events, start);
+    document.getElementById('eventCatalog').innerHTML = renderEventCatalogMonth(events, catalogRange.start);
     return;
   }
   const recommended = events.slice(0, 6);
@@ -1047,6 +1060,24 @@ function renderEventCatalog() {
     <div class="today-section-heading"><div><p class="eyebrow">Full catalog</p><h2>All matching events</h2></div><span>${events.length} total</span></div>
     <div class="catalog-grid">${events.slice(0, 120).map((event) => eventCard(event, false, { showDate: true, emphasize: recommended.some((item) => todayLeadKey(item) === todayLeadKey(event)), catalog: true })).join('')}</div>
   </section>`;
+}
+
+function eventCatalogRange() {
+  if (state.eventCatalogView === 'month') {
+    const start = new Date(state.eventCatalogDate.getFullYear(), state.eventCatalogDate.getMonth(), 1);
+    return { start, end: endOfDay(new Date(start.getFullYear(), start.getMonth() + 1, 0)) };
+  }
+  const start = fridayWeekStart(state.eventCatalogDate);
+  return { start, end: endOfDay(addDays(start, 6)) };
+}
+
+function updateEventCatalogDateNav(range) {
+  const nav = document.getElementById('eventCatalogDateNav');
+  const label = document.getElementById('eventCatalogDateLabel');
+  if (!nav || !label) return;
+  nav.classList.toggle('hidden', state.eventCatalogView === 'list');
+  if (state.eventCatalogView === 'month') label.textContent = range.start.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  else label.textContent = `${range.start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${range.end.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
 }
 
 function eventCatalogMatches(events) {
