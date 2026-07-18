@@ -214,3 +214,55 @@ Prepare a controlled Supabase proposal that:
 - does not add event rows;
 - does not change schema, auth, RLS, app code, or canonical JSON manually.
 
+## Applied checkpoint
+
+Status: applied to Supabase after user approval on 2026-07-17.
+
+Proposal:
+
+- `supabase/proposals/wpn-led-planning-assessment-pass-c-2026-07-17.json`
+
+Pre-write safety:
+
+- Fresh deterministic export created at
+  `supabase/exports/prewrite-wpn-led-planning-assessment-pass-c-2026-07-17`.
+- Proposal revalidated against the fresh export immediately before writing.
+- Confirmed operation count: 27.
+- Confirmed no event rows, schema/auth/RLS settings, app code, or canonical
+  hand-edited JSON were changed.
+
+Writes performed:
+
+- Inserted 8 source records.
+- Inserted 8 venue evidence links.
+- Updated 5 venue `last_verified` / assessment-note records.
+- Inserted 5 Places-page evaluation records.
+- Inserted 1 research-change marker.
+
+Post-write verification:
+
+- All five venues now have 2026-07-17 verification/assessment notes.
+- All five evaluation rows are present:
+  - Hobby Overflow: B / 3.8 / high confidence / neutral.
+  - Joyful Toad TCG: C+ / 3.2 / medium confidence / neutral.
+  - Honey Pot Meadery: B+ / 4.1 / high confidence / neutral.
+  - Requiem: Coffee, Tea, and Fantasy: B- / 3.6 / medium confidence / neutral.
+  - SoCalMagic: C / 2.7 / high confidence / deprioritized.
+- SoCalMagic `No proxy` signal was checked before writing: 5 current
+  high-confidence Wizards/EventLink-derived Commander rows carry the
+  `Commander all day / No proxy` language. No quick mitigating source was found
+  in this pass, so the assessment treats SoCalMagic as a real Magic venue but a
+  poor personal Commander fit unless future evidence narrows or reverses that
+  rule.
+- Event-series and event-occurrence counts remained unchanged: 98 series and 11
+  dated occurrences.
+- Duplicate event-occurrence check remained clear.
+- Final row counts after write:
+  - Venues: 55.
+  - Sources: 229.
+  - Entity-source links: 233.
+  - Evaluations: 28.
+  - Research changes: 48.
+- Post-write deterministic export completed at
+  `supabase/exports/postwrite-wpn-led-planning-assessment-pass-c-2026-07-17`.
+- Repository text-integrity validation passed.
