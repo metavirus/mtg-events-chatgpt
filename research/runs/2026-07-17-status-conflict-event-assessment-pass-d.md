@@ -175,3 +175,46 @@ Prepare a controlled Supabase proposal that:
 - adds one research-change marker;
 - does not add new event rows;
 - does not change schema, auth, RLS, app code, or canonical JSON manually.
+
+## Applied checkpoint
+
+Status: applied to Supabase after user approval on 2026-07-17.
+
+Proposal:
+
+- `supabase/proposals/status-conflict-event-assessment-pass-d-2026-07-17.json`
+
+Writes performed:
+
+- Inserted 9 source records.
+- Inserted 9 venue evidence links.
+- Updated 3 venue assessment/status records.
+- Inserted 3 Places-page evaluation records.
+- Updated 1 existing Tilted event-series row to `inactive` as a
+  duplicate/superseded snapshot.
+- Inserted 1 research-change marker.
+
+Post-write verification:
+
+- All three venues now have 2026-07-17 reviewed assessment notes.
+- All three evaluation rows are present:
+  - Tilted Gaming: B / 3.7 / high confidence / neutral.
+  - Grails Gone Wild: C / 2.7 / low confidence / deprioritized.
+  - B.Y.O.GAMES LLC: B- / 3.5 / medium confidence / neutral.
+- Evidence links were attached as expected:
+  - Tilted Gaming: 1 new source link.
+  - Grails Gone Wild: 4 new source links.
+  - B.Y.O.GAMES LLC: 4 new source links.
+- Tilted now has exactly 1 active Friday 6:00 PM Commander series row.
+- Event-series count remained unchanged at 98 because no new event rows were
+  added.
+- Duplicate event-occurrence check remained clear at 0.
+- Final relevant row counts after write:
+  - Venues: 55.
+  - Sources: 238.
+  - Entity-source links: 242.
+  - Evaluations: 31.
+  - Event series: 98.
+  - Research changes: 49.
+- Full deterministic JSON export was intentionally not run under the reduced
+  overhead rule; this was a standard validation batch, not a release checkpoint.
