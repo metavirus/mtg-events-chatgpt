@@ -1,6 +1,6 @@
 {
   "proposal_id": "gx-otaku-lvlup-event-completion-2026-07-18",
-  "description": "PROPOSED. Event-focused completion pass for GXGAMERS, Otaku Vault, and LVLUP GAMING TCG after fresh Wizards/EventLink pull. Adds missing future/current Magic events and captures visible community routes without overclaiming content replay. No canonical JSON, app code, schema/auth/RLS, or personal preference changes.",
+  "description": "ACCEPTED/APPLIED. Event-focused completion pass for GXGAMERS, Otaku Vault, and LVLUP GAMING TCG after fresh Wizards/EventLink pull. Added missing future/current Magic events and captured visible community routes without overclaiming content replay. No canonical JSON, app code, schema/auth/RLS, or personal preference changes. Live Supabase write applied 2026-07-18 with standard validation.",
   "created_at": "2026-07-18T11:30:00-07:00",
   "author": "Codex Project Steward",
   "operations": [
@@ -63,7 +63,7 @@
         "end_date": null,
         "entry_fee": 10.0,
         "currency": "USD",
-        "details": "Fresh Wizards/EventLink pull lists recurring Wednesday 7:00 PM Standard Showdown at GXGAMERS with  entry. Event copy describes participation packs, prize support, and top-3/4 prizing depending on player count.",
+        "details": "Fresh Wizards/EventLink pull lists recurring Wednesday 7:00 PM Standard Showdown at GXGAMERS with $10 entry. Event copy describes participation packs, prize support, and top-3/4 prizing depending on player count.",
         "confidence": "high",
         "event_status": "active",
         "last_verified": "2026-07-18"
@@ -625,3 +625,4 @@
     }
   ]
 }
+

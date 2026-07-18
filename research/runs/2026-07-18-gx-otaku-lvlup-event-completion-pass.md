@@ -122,12 +122,38 @@ Coverage line:
 
 ## Proposal
 
-Prepared proposal:
+Prepared and applied proposal:
 
 - `supabase/proposals/gx-otaku-lvlup-event-completion-2026-07-18.json`
 
-No canonical JSON, app code, schema/auth/RLS, or personal preference data is
-changed by the proposal.
+The proposal was applied to live Supabase on 2026-07-18. No canonical JSON, app
+code, schema/auth/RLS, or personal preference data was changed.
+
+## Post-write verification
+
+Standard validation completed:
+
+- Proposal validation passed before write.
+- Live Supabase write applied through the controlled workflow.
+- 11 new event rows verified:
+  - GXGAMERS Wednesday Standard Showdown
+  - GXGAMERS The Hobbit prerelease
+  - Otaku Vault two The Hobbit prerelease times
+  - Otaku Vault The Hobbit Commander Party
+  - Otaku Vault Two-Headed Giant Commander
+  - LVLUP The Hobbit prerelease
+  - LVLUP An Unexpected Crafting Party
+  - LVLUP Two-Headed Giant Commander The Hobbit
+  - LVLUP The Hobbit Commander Party
+  - LVLUP Magic Presents: Heart of the Mountain
+- All 11 new event rows have WPN event-source provenance.
+- GXGAMERS and Otaku Vault community-route evidence verified as route-captured
+  / content-replay TBD.
+- WPN source freshness verified for GXGAMERS, Otaku Vault, and LVLUP.
+- Relevant duplicate active event-series check for the three venues returned no
+  duplicate rows.
+- Local/browser preview was not run because Supabase record verification was
+  the lower-overhead validation path for this routine event write.
 
 ## Deferred
 
