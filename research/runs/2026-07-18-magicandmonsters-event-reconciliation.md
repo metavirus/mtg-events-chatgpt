@@ -161,6 +161,43 @@ The proposal should:
 - not add event-occurrence rows;
 - not edit canonical JSON, app code, schema, auth, or RLS.
 
+## Applied checkpoint
+
+Status: applied to Supabase after user approval on 2026-07-18.
+
+Validation level used: standard. No local/hosted app preview and no full JSON
+export were run, per the current graduated-overhead rule for routine event-row
+corrections.
+
+Writes performed:
+
+- Updated Magic and Monsters Discord Evidence from route-only to inspected
+  Discord server route using the current invite `https://discord.gg/PQZCKPhhg`.
+- Added CardCommunity / EventLink mirror source for the Commander Free Play
+  signal.
+- Linked Discord, CardCommunity/EventLink, official events page, and Instagram
+  as event-source provenance for the retired Commander row.
+- Marked `magic-and-monsters-commander-free-play-5-18-00` inactive so it no
+  longer projects into the active calendar.
+- Updated Magic and Monsters Places synthesis and evaluation to C+ / 3.1 /
+  medium confidence, with explicit caution that moving MTG off the regular
+  schedule is a negative personal-fit signal.
+- Inserted accepted research-change marker
+  `magicandmonsters-event-reconciliation-2026-07-18`.
+
+Post-write verification:
+
+- The Commander Free Play event-series row exists and is now `inactive`.
+- Magic and Monsters has 1 total event series and 0 active event series.
+- Magic and Monsters evaluation is now C+ / 3.1 / medium confidence.
+- Venue assessment notes explicitly say MTG is no longer on the regular weekly
+  schedule and that this lowers personal fit.
+- Discord venue Evidence is present and marked inspected.
+- Event-source links are present for CardCommunity/EventLink, Discord, official
+  calendar, Instagram, and the existing Wizards source.
+- Duplicate event-occurrence check returned 0 rows.
+- Research-change marker is `accepted`.
+
 ## Remaining TBDs
 
 - Friday FNM: needs a current source-confirmed answer before being written.

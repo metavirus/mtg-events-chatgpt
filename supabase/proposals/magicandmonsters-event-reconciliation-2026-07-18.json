@@ -198,8 +198,8 @@
         "change_type": "event_reconciliation",
         "entity_type": "event_series",
         "entity_id": "magic-and-monsters-commander-free-play-5-18-00",
-        "summary": "Proposed Magic and Monsters event reconciliation: retire Commander Free Play from the active calendar because store Discord says MTG is no longer on the regular weekly schedule; preserve daily Commander drop-in support and Saturday EventLink signal as evidence/TBD rather than projected weekly calendar truth.",
-        "review_status": "proposed"
+        "summary": "Accepted Magic and Monsters event reconciliation: retired Commander Free Play from the active calendar because store Discord says MTG is no longer on the regular weekly schedule; preserved daily Commander drop-in support and Saturday EventLink signal as evidence/TBD rather than projected weekly calendar truth.",
+        "review_status": "accepted"
       },
       "reason": "Add reviewable Updates entry for the proposed Magic and Monsters calendar correction."
     }
