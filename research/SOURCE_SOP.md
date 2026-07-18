@@ -83,9 +83,13 @@ prioritization:
 - **Linktree/social routers** are high-value for branch-specific Discord,
   Facebook, calendar, and community routing, especially for multi-branch
   businesses.
-- **Discord and public community surfaces** are useful for LFG, turnout, event
-  graphics, solo-arrival support, and community health. Distinguish public
-  metadata from actual channel evidence.
+- **Discord and public community surfaces** are first-class research surfaces
+  for store fit and event reliability, not only context around calendars. They
+  can answer turnout, casual versus competitive texture, proxy friendliness,
+  draft firing reliability, solo/new-player friendliness, prerelease
+  attendance, community tone, LFG behavior, and coordination questions that
+  official calendars often omit. Distinguish public metadata and visible routes
+  from actual inspected channel evidence.
 
 Branch-conflicting review sources must be preserved as conflicts, not averaged.
 If a review mirror, marketplace, or non-MTG locator points to a different
@@ -107,6 +111,8 @@ baseline sweep:
 3. Check readily discoverable store-controlled social routes, especially
    Instagram and Facebook.
 4. Check public community routes, including Discord or Linktree when available.
+   Actively look for these routes from the official site, events page, Linktree,
+   social profiles, and obvious search results.
 5. Check Wizards/EventLink and other relevant organized-play or registration
    calendars.
 6. Check Google- and Yelp-derived review surfaces for fit, atmosphere,
@@ -133,6 +139,14 @@ No source that materially influences fit, confidence, status, cautions, open
 questions, or event conclusions may remain only in private reasoning or a run
 note. It must be visible as structured Evidence or explicitly dispositioned.
 
+If a Discord or other community route is visible but its content is not
+inspected, capture the route as Evidence when material and label it `route
+captured / content replay TBD`. If the content is accessible and material during
+a main store pass, inspect enough representative content to support or reject
+store-fit and event-reliability conclusions. Do not claim Discord/community
+content supports fit, turnout, proxy practice, solo arrival, draft reliability,
+or event reliability unless that content was actually inspected.
+
 Each store pass must answer both:
 
 - **Places:** What does the evidence say about store quality, personal fit,
@@ -146,7 +160,7 @@ End each store with a compact source-coverage line:
 - Official site: checked/captured
 - Instagram: checked/captured
 - Facebook: checked/no useful result
-- Discord/community route: checked/TBD
+- Discord/community route: inspected / captured-TBD / not found / inaccessible / not material
 - Wizards/EventLink: checked/captured
 - Reviews: checked/captured
 - Other useful sources: checked/captured
@@ -778,7 +792,7 @@ Pass type:
 Official site: inspected/disposition/result
 Instagram: inspected/disposition/result
 Facebook: inspected/disposition/result
-Discord/community: inspected/disposition/result
+Discord/community: inspected / captured-TBD / not found / inaccessible / not material - result
 Wizards/EventLink: inspected/disposition/result
 Reviews: inspected/disposition/result
 Other material sources: inspected/disposition/result

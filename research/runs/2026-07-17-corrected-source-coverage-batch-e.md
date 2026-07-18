@@ -4,7 +4,7 @@ Date: 2026-07-17
 Pass type: mixed corrective pass; Tilted escalated to corrected main-pass
 acceptance test
 
-Status: revised proposal prepared; no live Supabase write applied.
+Status: applied to live Supabase and accepted as the Batch E correction checkpoint.
 
 ## Why the original Batch E conclusion failed
 
@@ -20,10 +20,14 @@ wrong for two linked reasons:
    Evidence, but their material event contents were not compared against the
    series and occurrences actually present in Supabase.
 
-The correction also requires reading the useful context around an event
-calendar, including contact and community buttons. The direct Discord route
-under Tilted's calendar was operationally relevant and should not have remained
-implicit inside a generic events-page source.
+The correction also requires reading the useful context around official event
+surfaces, including contact and community buttons. Discord/community routes are
+first-class research surfaces for this project because they can answer store-fit
+and event-reliability questions that official calendars often omit: turnout,
+casual versus competitive texture, proxy friendliness, draft firing reliability,
+solo/new-player friendliness, prerelease attendance, and community tone. The
+direct Discord route under Tilted's calendar was operationally relevant and
+should not have remained implicit inside a generic events-page source.
 
 The sentence `No new event row is recommended` is withdrawn. Tilted is now
 classified as `corrected main pass required`, not `pass stands` or an Evidence
@@ -59,11 +63,12 @@ events and supplies the usable planning facts below.
 
 The events-page section also places a direct Discord button beside the store's
 phone contact. That makes Discord a material event/community-support route for
-questions, coordination, player texture, and a possible later community replay,
-not merely a generic social link. It is not currently a distinct Supabase
-Evidence record. The revised proposal captures the invite; Discord content was
-not entered or read in this correction, so its disposition is `Discord route
-captured / content replay TBD`.
+questions, coordination, player texture, turnout, proxy practice, draft firing
+reliability, solo-arrival support, and a possible later community replay, not
+merely a generic social link or calendar-adjacent context. It is not currently a
+distinct Supabase Evidence record. The revised proposal captures the invite;
+Discord content was not entered or read in this correction, so its disposition
+is `Discord route captured / content replay TBD`.
 
 ### Current live Wizards inventory
 
@@ -146,7 +151,7 @@ Pass type: corrected main-pass acceptance test; full main pass still required
 Official site: inspected/captured - homepage supports current FNM and Sunday Draft; event page supports operation, signup, hours, Discord routing, and an empty-embed contradiction
 Instagram: official route identified; content replay remains part of the bounded main-pass completion
 Facebook: official route identified; not material to this event correction
-Discord/community: direct invite inspected on the events page and proposed as event/community-support Evidence; content replay TBD and not represented as inspected
+Discord/community: captured-TBD - direct invite inspected on the events page and proposed as event/community-support Evidence; content replay TBD and not represented as inspected
 Wizards/EventLink: inspected/captured - five current listings reconciled individually
 Reviews: prior direct/mirror evidence remains captured; not reopened in this event correction
 Other material sources: official Linktree remains proposed as source-routing Evidence
@@ -158,7 +163,7 @@ Draft: found - missing weekly Sunday series and July 19/26 occurrences
 Prerelease/sealed: found - missing August 7 Hobbit prerelease
 Other Magic/FNM/specials: found - Friday FNM represented by the Commander/FNM series; no unsupported extra recurrence created
 Remaining decision-changing TBD: social/Discord content, proxy norms, Commander power mix, pod formation, solo-arrival experience, and the empty official calendar embed
-Final planning disposition: corrected main pass required; revised event proposal ready, not yet applied
+Final planning disposition: corrected main pass required; revised event proposal applied 2026-07-17 with standard validation
 ```
 
 ## Grails Gone Wild
@@ -176,25 +181,37 @@ proof. No new Buddies event signal was found or manufactured in this correction.
 
 ## Revised proposal and validation gate
 
-Revised proposal:
+Applied proposal:
 
 - `supabase/proposals/corrected-source-coverage-batch-e-2026-07-17.json`
 
-Validation level: **standard**, because event series and occurrences are now
-proposed.
+Validation level: **standard**, because event series and occurrences changed.
 
-Before any live write:
+Pre-write validation:
 
-- validate the proposal against live Supabase;
-- recheck affected IDs and duplicate keys;
-- show the user this reconciliation and obtain explicit approval.
+- proposal validated against live Supabase: PASS, 32 operations;
+- generated SQL plan reviewed:
+  `supabase/plans/corrected-source-coverage-batch-e-2026-07-17.sql`;
+- no schema/auth/RLS/app-code/manual canonical JSON operations were present.
 
-After an approved write:
+Live write:
 
-- verify Tilted's affected series, occurrences, and source relationships;
-- run targeted duplicate checks;
-- confirm Today, Events, and Places show the corrected Tilted event set;
-- confirm unrelated event records remain unchanged.
+- applied only the validated 32-operation proposal.
 
-No live Supabase write, canonical JSON edit, schema/auth/RLS change, or app-code
-change occurred during this correction.
+Post-write validation:
+
+- verified affected Buddies and Tilted venue/evaluation rows;
+- verified Tilted source links, event-source links, five Tilted event-series
+  rows, and four new dated occurrences;
+- verified no duplicate event occurrence keys for
+  `(series_id, occurrence_date, start_time)`;
+- local Supabase-default app check passed for Events, Today, and Places:
+  Events/Today showed Tilted Draft, Marvel Super Heroes Commander Party, and
+  The Hobbit Prerelease; Places showed Tilted as `Discovery-level - B+ - high
+  confidence`;
+- browser console check showed no runtime errors during the targeted app check;
+- deterministic recovery export verified at
+  `supabase/exports/postwrite-batch-e-2026-07-17`.
+
+No canonical JSON hand edit, schema/auth/RLS change, or app-code change occurred
+during this correction. Generated JSON remains recovery/export output.
