@@ -1,0 +1,546 @@
+{
+  "proposal_id": "known-store-cleanup-jjs-krazy-kingslayer-2026-07-18",
+  "description": "Bounded known-store cleanup for JJ's Collectibles, Krazy Nick's Games, and Kingslayer Fountain Valley. JJ's receives Discord evidence, future dated Magic events from an inspected Discord announcement image, duplicate Tuesday Commander cleanup, and a richer Places assessment. Krazy Nick's receives official-site and Yelp-derived review evidence/assessment clarification. Kingslayer receives Discord route evidence without overclaiming content inspection. No canonical JSON edit, schema/auth/RLS change, deployment, or broad research wave.",
+  "created_at": "2026-07-18T09:40:00-07:00",
+  "author": "Codex",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "fields": {
+        "id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "label": "JJ's Collectibles Discord Magic announcements and promo image",
+        "url": "https://discord.com/channels/1055756955043495946/1354561517160239296",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture the inspected JJ's Discord Magic announcements channel and user-supplied announcement image as first-class event/community evidence."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "fields": {
+        "id": "src-jjs-discord-commander-channel-2026-07-18",
+        "label": "JJ's Collectibles Discord Commander channel",
+        "url": "https://discord.com/channels/1055756955043495946/1354561796203085976",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture the inspected Commander channel as evidence for bracket guidance, random pod formation, and Commander-night timing context."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "fields": {
+        "id": "src-jjs-keepup-reviews-2026-07-18",
+        "label": "KeepUp review mirror - JJ's Collectibles",
+        "url": "https://www.keepupcards.com/shop/jjs-collectibles",
+        "source_type": "reviewMirror",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture review-derived venue-quality evidence used for fit/confidence analysis."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "fields": {
+        "id": "src-krazy-nicks-official-site-2026-07-18",
+        "label": "Krazy Nick's Games official website",
+        "url": "https://www.krazynicksgames.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture current official operation, address, hours, inventory, buylist, and event-entry routing."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "fields": {
+        "id": "src-krazy-nicks-mapquest-yelp-2026-07-18",
+        "label": "MapQuest/Yelp-derived review mirror - Krazy Nick's Games",
+        "url": "https://www.mapquest.com/us/california/krazy-nicks-games-687351025",
+        "source_type": "reviewMirror",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture Yelp-derived review texture used for fit positives and cautions."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "fields": {
+        "id": "src-kingslayer-discord-route-2026-07-18",
+        "label": "Kingslayer Games Discord discovery page",
+        "url": "https://discord.com/servers/692870371157999626",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture Kingslayer's large official/community Discord route without claiming content replay."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "jjs-collectibles",
+        "source_id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "relationship": "inspected Discord Magic announcements; supports active Magic program, future events, and promo-image event facts"
+      },
+      "reason": "Attach JJ's Discord Magic announcements as visible Places evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "jjs-collectibles",
+        "source_id": "src-jjs-discord-commander-channel-2026-07-18",
+        "relationship": "inspected Discord Commander channel; supports bracket guidance, random pods, and Commander-night timing context"
+      },
+      "reason": "Attach JJ's Commander channel as visible Places evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "jjs-collectibles",
+        "source_id": "src-jjs-keepup-reviews-2026-07-18",
+        "relationship": "review-derived venue quality, staff, pricing, stock, and welcoming-service support"
+      },
+      "reason": "Attach review-derived source evidence used for JJ's fit/confidence analysis."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "krazy-nick-s-games",
+        "source_id": "src-krazy-nicks-official-site-2026-07-18",
+        "relationship": "official operation, hours, address, MTG inventory, event-entry, buylist, and store-credit evidence"
+      },
+      "reason": "Attach Krazy Nick's official site as visible Places evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "krazy-nick-s-games",
+        "source_id": "src-krazy-nicks-mapquest-yelp-2026-07-18",
+        "relationship": "Yelp-derived review texture for family/space/staff positives and transaction/pricing cautions"
+      },
+      "reason": "Attach Krazy Nick's review-derived evidence used for Places assessment."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-fountain-valley",
+        "source_id": "src-kingslayer-discord-route-2026-07-18",
+        "relationship": "large Kingslayer community route captured; content replay TBD before using it for turnout, proxy, or solo-arrival claims"
+      },
+      "reason": "Attach Kingslayer Discord route without overclaiming inspected content."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "jjs-collectibles"
+      },
+      "fields": {
+        "id": "jjs-collectibles",
+        "last_verified": "2026-07-18",
+        "assessment_notes": "JJ's Collectibles now reads as one of the strongest close Magic candidates, not merely a Tuesday Commander lead. The inspected Discord has a dedicated Magic category, current Magic announcements, Commander guidance, and upcoming-event promo images. Future announced events include Precon Commander Night, Jumpstart, a Marvel Commander Party, and the Hobbit prerelease weekend. Past July Discord posts also support an active weekly rhythm across Commander, draft, Standard, and Pauper, but past events are signal evidence only and are not added as calendar occurrences. Commander-channel notes support random pod formation and bracket/power-level guidance, improving the solo-arrival read. Review-derived evidence adds friendly staff, fair pricing, trade-night/community, stock, prerelease product, and welcoming-service signals. Remaining questions are now practical: which recurring Commander lane is best for a first visit, actual turnout, proxy norms, and whether official posts add times for the newly announced specials.",
+        "assessment": {
+          "commanderActivity": 5,
+          "meetupAccessibility": 4,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 4,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 5
+        }
+      },
+      "reason": "Update JJ's visible Places synthesis after inspecting Discord content, image announcements, and review-derived evidence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "krazy-nick-s-games"
+      },
+      "fields": {
+        "id": "krazy-nick-s-games",
+        "last_verified": "2026-07-18",
+        "assessment_notes": "Krazy Nick's Games remains a real close Cerritos TCG store, now with cleaner source separation after the Honey Pot correction. Its official site supports current physical operation, MTG inventory, event-entry products, buylist/store-credit activity, hours, phone, and Cerritos address. Yelp-derived review mirrors add useful but mixed Places texture: positives include caring staff, family/kids use, spacious/clean facility, and Sunday play; cautions include pricing/transaction concerns and one poor staff-interaction report. Existing Wizards-derived Wednesday and Sunday Commander rows remain the actionable MTG event evidence. This pass did not find a fresh store-controlled MTG social route, so keep current Commander schedule confidence tied to Wizards plus prior community synthesis rather than overclaiming current social corroboration.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 4,
+          "communityContinuity": 3,
+          "newPlayerIntegration": 4,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 4
+        }
+      },
+      "reason": "Add official-site and review-derived Places synthesis while preserving the Honey Pot identity separation."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "kingslayer-games-fountain-valley"
+      },
+      "fields": {
+        "id": "kingslayer-games-fountain-valley",
+        "last_verified": "2026-07-18",
+        "assessment_notes": "Kingslayer Fountain Valley remains a strong official-source Commander candidate. The official Fountain Valley events page still shows a broad current Magic footprint including Commander Slay Pass, FNM Modern, Standard, Pauper, and prior visible draft signals, though Commander remains the main personal-fit lane. The newly captured Discord discovery surface shows a large Kingslayer community route for weekly events across its branches and games; content was not entered/replayed in this pass, so it supports community-route existence and scale, not turnout, proxy norms, or solo-arrival behavior. Existing branch-aware cautions remain: socials are multi-location, and precise weekly Commander facts should stay anchored to official event pages unless branch-specific Discord/social content is actually inspected.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 4,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 3,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 4
+        }
+      },
+      "reason": "Add Kingslayer Discord route/source-routing clarification while preserving official-event-page primacy."
+    },
+    {
+      "action": "update",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "jjs-collectibles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "jjs-collectibles",
+        "research_status": "deepened",
+        "candidate_status": "promoted",
+        "fit_grade": "A-",
+        "fit_score": 4.3,
+        "confidence": "high",
+        "positives": [
+          "Very close Garden Grove location with enough Magic depth to support repeat visits.",
+          "Inspected Discord has dedicated Magic channels, current announcements, Commander guidance, and upcoming-event promo images.",
+          "Future announced Magic events include Precon Commander Night, Jumpstart, Marvel Commander Party, and Hobbit prerelease weekend.",
+          "Commander-channel guidance supports bracket awareness and random pod formation, improving the solo-arrival read.",
+          "Review-derived evidence supports friendly staff, fair pricing, good stock, trade-night/community signals, prerelease product, and welcoming service."
+        ],
+        "cautions": [
+          "Some future Discord-image events still need official follow-up posts for exact times and preregistration details.",
+          "The store has enough distinct Magic lanes that picking the right first-visit event matters.",
+          "Proxy norms and actual lived turnout remain unverified despite strong route/schedule evidence."
+        ],
+        "open_questions": [
+          "Which recurring Commander lane is the best first solo visit?",
+          "Do official follow-up posts add times for the July 23, July 31, August 6, and Hobbit prerelease events?",
+          "What are the proxy norms and power-level mix in practice?",
+          "How consistently do random pods accommodate a solo arrival?"
+        ]
+      },
+      "reason": "Refresh JJ's evaluation with inspected Discord/image/review evidence without changing the already-promoted score."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "jjs-tuesday-edh"
+      },
+      "fields": {
+        "id": "jjs-tuesday-edh",
+        "venue_id": "jjs-collectibles",
+        "event_status": "inactive",
+        "last_verified": "2026-07-18",
+        "details": "Retired as a duplicate/superseded Tuesday Commander row. The active JJ's Tuesday Commander series is preserved separately; this row should not create a duplicate calendar tile."
+      },
+      "reason": "Clean up duplicate-ish JJ's Tuesday Commander calendar noise before adding future specials."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "jjs-collectibles-casual-commander-tuesday-at-jjs-2-19-00"
+      },
+      "fields": {
+        "id": "jjs-collectibles-casual-commander-tuesday-at-jjs-2-19-00",
+        "venue_id": "jjs-collectibles",
+        "last_verified": "2026-07-18",
+        "details": "Active Tuesday Night Commander / EDH at JJ's Garden Grove. Wizards and inspected Discord evidence support a $5 casual Commander lane with raffle/prize texture. Discord's July 2026 announcement frames Tuesday Night Commander as open play with bracket flexibility; use exact weekly details from current posts when planning."
+      },
+      "reason": "Update the preserved Tuesday Commander row with Discord corroboration."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "fields": {
+        "id": "jjs-precon-commander-night-2026-07-23",
+        "venue_id": "jjs-collectibles",
+        "title": "Precon Commander Night",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "precon",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-07-23",
+        "end_date": "2026-07-23",
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "JJ's Discord Magic announcement image lists Precon Commander Night on July 23 with code 4ZQRG3G. The post says to watch for official posts and that preregistration begins once those posts are made, so start time and final registration details remain pending.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Add future dated JJ's event from inspected Discord promo image."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {
+        "id": "jjs-precon-commander-night-2026-07-23--occurrence",
+        "series_id": "jjs-precon-commander-night-2026-07-23",
+        "occurrence_date": "2026-07-23",
+        "start_time": null,
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": null,
+        "capacity": null,
+        "details": "Discord promo image confirms date and event title; time/details pending official follow-up post."
+      },
+      "reason": "Create the dated occurrence for JJ's Precon Commander Night."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "fields": {
+        "id": "jjs-jumpin-with-jumpstart-2026-07-31",
+        "venue_id": "jjs-collectibles",
+        "title": "Jumpin' with Jumpstart",
+        "format": "Limited",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-07-31",
+        "end_date": "2026-07-31",
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "JJ's Discord Magic announcement image lists Jumpin' with Jumpstart on July 31 with code DWJD4B3. The post says to watch for official posts and that preregistration begins once those posts are made, so start time and final registration details remain pending.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Add future dated JJ's Jumpstart event from inspected Discord promo image."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {
+        "id": "jjs-jumpin-with-jumpstart-2026-07-31--occurrence",
+        "series_id": "jjs-jumpin-with-jumpstart-2026-07-31",
+        "occurrence_date": "2026-07-31",
+        "start_time": null,
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": null,
+        "capacity": null,
+        "details": "Discord promo image confirms date and event title; time/details pending official follow-up post."
+      },
+      "reason": "Create the dated occurrence for JJ's Jumpin' with Jumpstart."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "fields": {
+        "id": "jjs-marvel-super-heroes-commander-party-2026-08-06",
+        "venue_id": "jjs-collectibles",
+        "title": "Marvel Super Heroes Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-06",
+        "end_date": "2026-08-06",
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "JJ's Discord Magic announcement image lists Marvel Super Heroes Commander Party on August 6 with code YEMEE28. The post says to watch for official posts and that preregistration begins once those posts are made, so start time and final registration details remain pending.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Add future dated JJ's Commander Party from inspected Discord promo image."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {
+        "id": "jjs-marvel-super-heroes-commander-party-2026-08-06--occurrence",
+        "series_id": "jjs-marvel-super-heroes-commander-party-2026-08-06",
+        "occurrence_date": "2026-08-06",
+        "start_time": null,
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": null,
+        "capacity": null,
+        "details": "Discord promo image confirms date and event title; time/details pending official follow-up post."
+      },
+      "reason": "Create the dated occurrence for JJ's Marvel Super Heroes Commander Party."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "fields": {
+        "id": "jjs-the-hobbit-prerelease-2026-08-07",
+        "venue_id": "jjs-collectibles",
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "JJ's Discord Magic announcement image lists The Hobbit prerelease across August 7, 8, and 9. The post says to watch for official posts and that preregistration begins once those posts are made, so exact session times, entry fee, and registration details remain pending.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Add future JJ's Hobbit prerelease weekend from inspected Discord promo image."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {
+        "id": "jjs-the-hobbit-prerelease-2026-08-07--occurrence",
+        "series_id": "jjs-the-hobbit-prerelease-2026-08-07",
+        "occurrence_date": "2026-08-07",
+        "start_time": null,
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": null,
+        "capacity": null,
+        "details": "Discord promo image confirms prerelease date; exact session time/details pending official follow-up post."
+      },
+      "reason": "Create August 7 JJ's Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {
+        "id": "jjs-the-hobbit-prerelease-2026-08-08--occurrence",
+        "series_id": "jjs-the-hobbit-prerelease-2026-08-07",
+        "occurrence_date": "2026-08-08",
+        "start_time": null,
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": null,
+        "capacity": null,
+        "details": "Discord promo image confirms prerelease date; exact session time/details pending official follow-up post."
+      },
+      "reason": "Create August 8 JJ's Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {
+        "id": "jjs-the-hobbit-prerelease-2026-08-09--occurrence",
+        "series_id": "jjs-the-hobbit-prerelease-2026-08-07",
+        "occurrence_date": "2026-08-09",
+        "start_time": null,
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": null,
+        "capacity": null,
+        "details": "Discord promo image confirms prerelease date; exact session time/details pending official follow-up post."
+      },
+      "reason": "Create August 9 JJ's Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {
+        "source_id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "series_id": "jjs-collectibles-casual-commander-tuesday-at-jjs-2-19-00",
+        "occurrence_id": null,
+        "relationship": "Discord announcement corroborates active Tuesday Night Commander rhythm"
+      },
+      "reason": "Attach Discord source to preserved Tuesday Commander series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {
+        "source_id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "series_id": "jjs-precon-commander-night-2026-07-23",
+        "occurrence_id": null,
+        "relationship": "Discord promo image lists future Precon Commander Night date and code"
+      },
+      "reason": "Attach Discord image source to Precon Commander event."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {
+        "source_id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "series_id": "jjs-jumpin-with-jumpstart-2026-07-31",
+        "occurrence_id": null,
+        "relationship": "Discord promo image lists future Jumpstart event date and code"
+      },
+      "reason": "Attach Discord image source to Jumpstart event."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {
+        "source_id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "series_id": "jjs-marvel-super-heroes-commander-party-2026-08-06",
+        "occurrence_id": null,
+        "relationship": "Discord promo image lists future Marvel Commander Party date and code"
+      },
+      "reason": "Attach Discord image source to Marvel Commander Party."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {
+        "source_id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "series_id": "jjs-the-hobbit-prerelease-2026-08-07",
+        "occurrence_id": null,
+        "relationship": "Discord promo image lists future Hobbit prerelease weekend dates"
+      },
+      "reason": "Attach Discord image source to Hobbit prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "fields": {
+        "id": "known-store-cleanup-jjs-krazy-kingslayer-2026-07-18",
+        "detected_at": "2026-07-18T09:40:00-07:00",
+        "change_type": "event_update",
+        "entity_type": "venue",
+        "entity_id": "jjs-collectibles",
+        "summary": "Accepted known-store cleanup for JJ's, Krazy Nick's, and Kingslayer. JJ's Discord/image evidence added future Magic specials and richer Places support; duplicate Tuesday Commander was retired; Krazy Nick's and Kingslayer received bounded source/assessment clarifications.",
+        "review_status": "accepted"
+      },
+      "reason": "Create durable accepted update marker for this bounded known-store cleanup."
+    }
+  ]
+}
