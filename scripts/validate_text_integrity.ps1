@@ -16,7 +16,7 @@ $suspiciousFragments = @(
   [string][char]0x00C2,                                 # Â
   [string][char]0xFFFD
 )
-$skipDirs = @(".git", ".codex", "output", "node_modules")
+$skipDirs = @(".git", ".codex", "output", "node_modules", ".venv", "venv")
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false, $true)
 $errors = New-Object System.Collections.Generic.List[string]
 

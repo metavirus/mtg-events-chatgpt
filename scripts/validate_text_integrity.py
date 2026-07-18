@@ -27,7 +27,7 @@ SUSPICIOUS_FRAGMENTS = (
     "\ufffd",
 )
 
-SKIP_DIRS = {".git", ".codex", "output", "node_modules"}
+SKIP_DIRS = {".git", ".codex", "output", "node_modules", ".venv", "venv"}
 
 
 def should_scan(path: Path) -> bool:

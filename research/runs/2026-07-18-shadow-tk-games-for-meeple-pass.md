@@ -128,14 +128,14 @@ Source coverage:
 
 ## Proposal
 
-Prepared proposal:
+Prepared and applied proposal:
 
 - `supabase/proposals/shadow-tk-games-for-meeple-event-correction-2026-07-18.json`
 
-The proposal does not edit canonical JSON, app code, schema/auth/RLS, or
-personal preference data.
+The proposal was applied to live Supabase on 2026-07-18. It did not edit
+canonical JSON, app code, schema/auth/RLS, or personal preference data.
 
-Proposed live Supabase changes:
+Applied live Supabase changes:
 
 - update relevant WPN source freshness;
 - insert Shadow Realm Standard Showdown series;
@@ -144,6 +144,25 @@ Proposed live Supabase changes:
 - attach WPN evidence to the new event rows;
 - modestly update Shadow/TK Places assessment language;
 - add one research-change marker.
+
+## Post-write verification
+
+Standard validation completed:
+
+- Proposal validation passed before write.
+- Live Supabase write applied through the controlled workflow.
+- New event rows verified:
+  - `shadow-realm-collectibles-shadow-realms-standard-showdown-3-17-00`
+  - `shadow-realm-collectibles-two-headed-giant-4-17-00`
+  - `tk-collectibles-casual-commander-2026-07-19`
+- Event-source provenance verified for all three new rows.
+- WPN source freshness verified for Shadow Realm, TK Collectibles, and Games
+  For Meeple.
+- Shadow/TK venue and evaluation updates verified.
+- Relevant duplicate active event-series check for the three venues returned no
+  duplicate rows.
+- Local/browser preview was not run because this is a routine event/source
+  write and Supabase record verification was the lower-overhead validation path.
 
 ## Deferred
 

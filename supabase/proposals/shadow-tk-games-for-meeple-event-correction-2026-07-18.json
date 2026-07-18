@@ -1,6 +1,6 @@
 {
   "proposal_id": "shadow-tk-games-for-meeple-event-correction-2026-07-18",
-  "description": "PROPOSED. Corrected three-store pass for Shadow Realm Collectibles, TK Collectibles, and Games For Meeple after restoring the Wizards/EventLink crawler. Adds missing source-supported event rows for Shadow Realm and one dated TK Sunday Commander row; refreshes WPN source checks; modestly recalibrates Shadow/TK Places assessments. Games For Meeple required no event write because the fresh Wizards pull matches existing Friday/Sunday Commander coverage.",
+  "description": "ACCEPTED/APPLIED. Corrected three-store pass for Shadow Realm Collectibles, TK Collectibles, and Games For Meeple after restoring the Wizards/EventLink crawler. Added missing source-supported event rows for Shadow Realm and one dated TK Sunday Commander row; refreshed WPN source checks; modestly recalibrated Shadow/TK Places assessments. Games For Meeple required no event write because the fresh Wizards pull matches existing Friday/Sunday Commander coverage. Live Supabase write applied 2026-07-18 with standard validation.",
   "created_at": "2026-07-18T11:00:00-07:00",
   "author": "Codex Project Steward",
   "operations": [

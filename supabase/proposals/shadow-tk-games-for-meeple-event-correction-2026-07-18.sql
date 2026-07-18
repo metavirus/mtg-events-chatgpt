@@ -19,7 +19,7 @@ insert into public.event_series (id, venue_id, title, format, event_type, bracke
 -- Reason: Attach WPN evidence to Shadow Realm Two-Headed Giant Commander.
 insert into public.event_sources (source_id, series_id, occurrence_id, relationship) values ('src-wpn-16787', 'shadow-realm-collectibles-two-headed-giant-4-17-00', null, 'Wizards/EventLink recurring Two-Headed Giant Commander evidence');
 -- Reason: Catalog one source-supported upcoming TK Sunday Commander event without over-normalizing it into a weekly series.
-insert into public.event_series (id, venue_id, title, format, event_type, bracket, recurrence, default_start_time, start_date, end_date, entry_fee, currency, details, confidence, event_status, last_verified) values ('tk-collectibles-casual-commander-2026-07-19', 'tk-collectibles', 'Casual Commander', 'Commander', 'commander', 'all', 'null'::jsonb, '12:00', '2026-07-19', null, 5.0, 'USD', 'Wizards/EventLink fresh pull lists a Sunday, July 19, 2026 noon Casual Commander event at TK Collectibles with $5 entry. Because this Sunday listing appears only once in the checked July-September window, keep it as a dated event rather than inventing a recurring Sunday series.', 'high', 'active', '2026-07-18');
+insert into public.event_series (id, venue_id, title, format, event_type, bracket, recurrence, default_start_time, start_date, end_date, entry_fee, currency, details, confidence, event_status, last_verified) values ('tk-collectibles-casual-commander-2026-07-19', 'tk-collectibles', 'Casual Commander', 'Commander', 'commander', 'all', null, '12:00', '2026-07-19', null, 5.0, 'USD', 'Wizards/EventLink fresh pull lists a Sunday, July 19, 2026 noon Casual Commander event at TK Collectibles with $5 entry. Because this Sunday listing appears only once in the checked July-September window, keep it as a dated event rather than inventing a recurring Sunday series.', 'high', 'active', '2026-07-18');
 -- Reason: Attach WPN evidence to the TK July 19 Sunday Commander event.
 insert into public.event_sources (source_id, series_id, occurrence_id, relationship) values ('src-wpn-20168', 'tk-collectibles-casual-commander-2026-07-19', null, 'Wizards/EventLink dated Sunday Casual Commander evidence');
 -- Reason: Reflect fresh Wizards evidence that Shadow has broader current Magic coverage while preserving the structured/prize-oriented fit caution.
@@ -54,3 +54,4 @@ from public.event_occurrences
 group by series_id, occurrence_date, start_time
 having count(*) > 1;
 commit;
+
