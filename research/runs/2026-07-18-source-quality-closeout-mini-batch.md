@@ -76,4 +76,18 @@ The current Wizards/EventLink export reduces the earlier uncertainty about wheth
 
 Proposal file: `supabase/proposals/source-quality-closeout-mini-batch-2026-07-18.json`
 
-The proposal has not been applied. It captures missing material Evidence, adds Buddies Saturday Commander, refreshes affected WPN source checks, and recalibrates Places assessments without changing schema/auth/RLS/app code or canonical JSON.
+The proposal was approved and applied on 2026-07-18. It captures missing material Evidence, adds Buddies Saturday Commander, refreshes affected WPN source checks, and recalibrates Places assessments without changing schema/auth/RLS/app code or canonical JSON.
+
+Applied SQL artifact: `supabase/proposals/source-quality-closeout-mini-batch-2026-07-18.sql`
+
+Post-write verification:
+
+- Buddies now has both Friday 6:30 PM and Saturday 10:30 PM Commander rows.
+- BYO retains Tuesday and Wednesday Commander rows; no new event row was needed.
+- Grails retains Sunday 1:30 PM Commander; no new event row was needed.
+- New Evidence links are present for Buddies Discord, BYO Roadtrippers/Yelp-derived listing, and Grails Trading Card Database.
+- Buddies Saturday Commander has one WPN event-source link.
+- Duplicate occurrence groups: 0.
+- Duplicate recurring same-venue/title/day/time groups: 0.
+- Research-change row marked accepted.
+- No local preview was run, per the routine data-write overhead rule.
