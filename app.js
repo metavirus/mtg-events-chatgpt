@@ -753,7 +753,7 @@ function buildOccurrences(start, end, applyFilters = true) {
     if (event.recurrence?.frequency === 'weekly') {
       let cursor = startOfDay(start);
       while (cursor.getDay() !== event.recurrence.dayOfWeek) cursor = addDays(cursor, 1);
-      const earliest = parseDate(event.startDate);
+      const earliest = event.startDate ? startOfDay(parseDate(event.startDate)) : startOfDay(start);
       const latest = event.endDate ? endOfDay(parseDate(event.endDate)) : null;
       while (cursor <= end) {
         if (cursor >= earliest && (!latest || cursor <= latest)) items.push({ ...event, occurrenceDate: new Date(cursor), occurrenceStatus: 'projected' });
