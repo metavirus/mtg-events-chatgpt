@@ -95,7 +95,21 @@ Source coverage:
 
 Proposal file: `supabase/proposals/game-cellar-nextgen-gametime-event-assessment-pass-2026-07-18.json`
 
-The proposal is intentionally review-first and has not been applied. It adds missing event series/occurrences, captures the Next-Gen Discord route as Evidence, updates event/source provenance, and adds a proposed research-change marker.
+The proposal was approved and applied on 2026-07-18. It added missing event series/occurrences, captured the Next-Gen Discord route as Evidence, updated event/source provenance, and marked the resulting research-change row accepted.
+
+Applied SQL artifact: `supabase/proposals/game-cellar-nextgen-gametime-event-assessment-pass-2026-07-18.sql`
+
+Post-write verification:
+
+- The Game Cellar now has 9 event series total.
+- Next-Gen Games now has 9 event series total.
+- It's GameTime now has 2 event series total.
+- Dated occurrence counts matched expectation: 8 Game Cellar Hobbit prerelease, 1 Game Cellar Marvel Commander Party, 2 Game Cellar Hobbit Commander Party, 2 Next-Gen Two Headed Giant Commander, and 1 Next-Gen Marvel Commander Party.
+- New event-source links counted 12 for the 12 new event series.
+- Duplicate occurrence groups: 0.
+- Duplicate recurring same-venue/title/day/time groups: 0.
+- Next-Gen Discord route captured as Evidence with content replay TBD.
+- No local preview was run, per the routine data-write overhead rule.
 
 ## What remains TBD
 
