@@ -1,0 +1,889 @@
+{
+  "proposal_id": "krazy-comic-crimson-event-completion-2026-07-18",
+  "description": "PROPOSED. Fresh Wizards/EventLink event-completion pass for Krazy Nick's Games, Comic Quest, and The Crimson Guild - South El Monte. Adds current/future source-supported Magic rows and refreshes WPN source freshness. No canonical JSON, app code, schema/auth/RLS, or personal preference changes.",
+  "created_at": "2026-07-18T16:35:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-9348"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18",
+        "id": "src-wpn-9348"
+      },
+      "reason": "Fresh Wizards/EventLink pull inspected for this event-completion tranche."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-6809"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18",
+        "id": "src-wpn-6809"
+      },
+      "reason": "Fresh Wizards/EventLink pull inspected for this event-completion tranche."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-18899"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18",
+        "id": "src-wpn-18899"
+      },
+      "reason": "Fresh Wizards/EventLink pull inspected for this event-completion tranche."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "krazy-nick-s-games-krazy-commander-sundays-0-13-00"
+      },
+      "fields": {
+        "venue_id": "krazy-nick-s-games",
+        "last_verified": "2026-07-18",
+        "id": "krazy-nick-s-games-krazy-commander-sundays-0-13-00"
+      },
+      "reason": "Fresh WPN pull reconfirmed Sunday Commander at Krazy Nick's Games."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "krazy-nick-s-games-krazy-commander-wednesdays-3-16-00"
+      },
+      "fields": {
+        "venue_id": "krazy-nick-s-games",
+        "last_verified": "2026-07-18",
+        "id": "krazy-nick-s-games-krazy-commander-wednesdays-3-16-00"
+      },
+      "reason": "Fresh WPN pull reconfirmed Wednesday Commander at Krazy Nick's Games."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "krazy-nicks-god-of-mischief-commander-2026-07-19"
+      },
+      "fields": {
+        "venue_id": "krazy-nick-s-games",
+        "title": "Magic Presents: God of Mischief Krazy Commander",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "13:00",
+        "start_date": "2026-07-19",
+        "end_date": null,
+        "entry_fee": 0.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists a Sunday, July 19, 2026 Magic Presents: God of Mischief Commander free-play event at Krazy Nick's Games at 1:00 PM. Event copy says more information will be posted on store socials.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "krazy-nicks-god-of-mischief-commander-2026-07-19"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-god-of-mischief-commander-2026-07-19",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-god-of-mischief-commander-2026-07-19",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated Commander special evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "krazy-nicks-modern-thursdays-4-19-00"
+      },
+      "fields": {
+        "venue_id": "krazy-nick-s-games",
+        "title": "Krazy Modern Thursdays",
+        "format": "Modern",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 4,
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-23",
+        "end_date": null,
+        "entry_fee": 5.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists recurring Thursday 7:00 PM Modern at Krazy Nick's Games with $5 entry and store-credit prizing based on attendance.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "krazy-nicks-modern-thursdays-4-19-00"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-modern-thursdays-4-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-modern-thursdays-4-19-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "krazy-nicks-pauper-friday-5-19-00"
+      },
+      "fields": {
+        "venue_id": "krazy-nick-s-games",
+        "title": "Krazy Pauper Friday",
+        "format": "Pauper",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 5,
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 5.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists recurring Friday 7:00 PM Pauper at Krazy Nick's Games with $5 entry and store-credit prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "krazy-nicks-pauper-friday-5-19-00"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-pauper-friday-5-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-pauper-friday-5-19-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "krazy-nicks-standard-showdown-2026-07-24"
+      },
+      "fields": {
+        "venue_id": "krazy-nick-s-games",
+        "title": "Krazy Standard Showdown",
+        "format": "Standard",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 5.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists a Friday, July 24, 2026 7:00 PM Standard Showdown at Krazy Nick's Games with $5 entry, promos for top players, and store-credit prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "krazy-nicks-standard-showdown-2026-07-24"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-standard-showdown-2026-07-24",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-standard-showdown-2026-07-24",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated Standard Showdown evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "krazy-nicks-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "venue_id": "krazy-nick-s-games",
+        "title": "Krazy Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-08",
+        "entry_fee": 45.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists three The Hobbit prerelease sealed occurrences at Krazy Nick's Games on August 7-8, 2026. Event copy says signups will be handled through the store website/socials and prizing will be based on attendance.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "krazy-nicks-hobbit-prerelease-2026"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-hobbit-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink finite prerelease evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "krazy-nicks-hobbit-prerelease-2026-08-07-19-00"
+      },
+      "fields": {
+        "series_id": "krazy-nicks-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "19:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45.0,
+        "capacity": null,
+        "details": "Wizards/EventLink event 10989853 confirms Krazy Hobbit Prerelease at Krazy Nick's Games on 2026-08-07 at 19:00.",
+        "id": "krazy-nicks-hobbit-prerelease-2026-08-07-19-00"
+      },
+      "reason": "Capture separate WPN-confirmed occurrence time for finite event series."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "krazy-nicks-hobbit-prerelease-2026-08-08-12-00"
+      },
+      "fields": {
+        "series_id": "krazy-nicks-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "12:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45.0,
+        "capacity": null,
+        "details": "Wizards/EventLink event 10989974 confirms Krazy Hobbit Prerelease at Krazy Nick's Games on 2026-08-08 at 12:00.",
+        "id": "krazy-nicks-hobbit-prerelease-2026-08-08-12-00"
+      },
+      "reason": "Capture separate WPN-confirmed occurrence time for finite event series."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "krazy-nicks-hobbit-prerelease-2026-08-08-16-00"
+      },
+      "fields": {
+        "series_id": "krazy-nicks-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "16:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45.0,
+        "capacity": null,
+        "details": "Wizards/EventLink event 10989985 confirms Krazy Hobbit Prerelease at Krazy Nick's Games on 2026-08-08 at 16:00.",
+        "id": "krazy-nicks-hobbit-prerelease-2026-08-08-16-00"
+      },
+      "reason": "Capture separate WPN-confirmed occurrence time for finite event series."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-friday-night-magic-fnm-commander-5-18-00"
+      },
+      "fields": {
+        "venue_id": "comic-quest",
+        "confidence": "high",
+        "last_verified": "2026-07-18",
+        "id": "comic-quest-friday-night-magic-fnm-commander-5-18-00"
+      },
+      "reason": "Fresh WPN pull reconfirmed Friday 6:00 PM FNM Commander at Comic Quest."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-fnm-standard-showdown-5-18-00"
+      },
+      "fields": {
+        "venue_id": "comic-quest",
+        "title": "FNM Standard Showdown - Marvel Superheroes",
+        "format": "Standard",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 5,
+          "startTime": "18:00"
+        },
+        "default_start_time": "18:00",
+        "start_date": "2026-07-24",
+        "end_date": "2026-07-31",
+        "entry_fee": 0.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists Comic Quest Friday 6:00 PM FNM Standard Showdown on July 24 and July 31, 2026. Event copy describes 1v1 Standard and weekly winner promo support.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "comic-quest-fnm-standard-showdown-5-18-00"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-fnm-standard-showdown-5-18-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-fnm-standard-showdown-5-18-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-marvel-commander-party-2026-07-31"
+      },
+      "fields": {
+        "venue_id": "comic-quest",
+        "title": "Marvel Superheroes Commander Party #2",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "18:00",
+        "start_date": "2026-07-31",
+        "end_date": null,
+        "entry_fee": 0.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists Marvel Superheroes Commander Party #2 at Comic Quest on Friday, July 31, 2026 at 6:00 PM. Event copy describes Commander Party goals/achievements using provided party cards.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "comic-quest-marvel-commander-party-2026-07-31"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-marvel-commander-party-2026-07-31",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-marvel-commander-party-2026-07-31",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated Commander Party evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "venue_id": "comic-quest",
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists Comic Quest Hobbit prerelease sealed events on August 7, 8, and 9, 2026. Entry fee is TBA/zero in the WPN pull; do not infer free entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "comic-quest-hobbit-prerelease-2026"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-hobbit-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink finite prerelease evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "comic-quest-hobbit-prerelease-2026-08-07-18-00"
+      },
+      "fields": {
+        "series_id": "comic-quest-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "18:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": null,
+        "capacity": null,
+        "details": "Wizards/EventLink event 11253790 confirms The Hobbit prerelease at Comic Quest on 2026-08-07 at 18:00; Friday 2HG / Two-Headed Giant team play.",
+        "id": "comic-quest-hobbit-prerelease-2026-08-07-18-00"
+      },
+      "reason": "Capture separate WPN-confirmed occurrence time for finite event series."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "comic-quest-hobbit-prerelease-2026-08-08-12-00"
+      },
+      "fields": {
+        "series_id": "comic-quest-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "12:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": null,
+        "capacity": null,
+        "details": "Wizards/EventLink event 11253792 confirms The Hobbit prerelease at Comic Quest on 2026-08-08 at 12:00; Saturday 1v1 prerelease.",
+        "id": "comic-quest-hobbit-prerelease-2026-08-08-12-00"
+      },
+      "reason": "Capture separate WPN-confirmed occurrence time for finite event series."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "comic-quest-hobbit-prerelease-2026-08-09-12-00"
+      },
+      "fields": {
+        "series_id": "comic-quest-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "12:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": null,
+        "capacity": null,
+        "details": "Wizards/EventLink event 11253793 confirms The Hobbit prerelease at Comic Quest on 2026-08-09 at 12:00; Sunday 1v1 prerelease.",
+        "id": "comic-quest-hobbit-prerelease-2026-08-09-12-00"
+      },
+      "reason": "Capture separate WPN-confirmed occurrence time for finite event series."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-hobbit-commander-party-2026"
+      },
+      "fields": {
+        "venue_id": "comic-quest",
+        "title": "The Hobbit Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "18:00",
+        "start_date": "2026-08-21",
+        "end_date": "2026-09-18",
+        "entry_fee": 0.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists The Hobbit Commander Party events at Comic Quest on August 21 and September 18, 2026 at 6:00 PM.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "comic-quest-hobbit-commander-party-2026"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-hobbit-commander-party-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-hobbit-commander-party-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated Commander Party evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "comic-quest-hobbit-commander-party-2026-08-21-18-00"
+      },
+      "fields": {
+        "series_id": "comic-quest-hobbit-commander-party-2026",
+        "occurrence_date": "2026-08-21",
+        "start_time": "18:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 0.0,
+        "capacity": null,
+        "details": "Wizards/EventLink event 11253783 confirms The Hobbit Commander Party at Comic Quest on 2026-08-21 at 18:00.",
+        "id": "comic-quest-hobbit-commander-party-2026-08-21-18-00"
+      },
+      "reason": "Capture separate WPN-confirmed occurrence time for finite event series."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "comic-quest-hobbit-commander-party-2026-09-18-18-00"
+      },
+      "fields": {
+        "series_id": "comic-quest-hobbit-commander-party-2026",
+        "occurrence_date": "2026-09-18",
+        "start_time": "18:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 0.0,
+        "capacity": null,
+        "details": "Wizards/EventLink event 11253785 confirms The Hobbit Commander Party at Comic Quest on 2026-09-18 at 18:00.",
+        "id": "comic-quest-hobbit-commander-party-2026-09-18-18-00"
+      },
+      "reason": "Capture separate WPN-confirmed occurrence time for finite event series."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-heart-of-the-mountain-2026-09-04"
+      },
+      "fields": {
+        "venue_id": "comic-quest",
+        "title": "Magic Presents: Heart of the Mountain Commander Event",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "18:00",
+        "start_date": "2026-09-04",
+        "end_date": null,
+        "entry_fee": 0.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists Magic Presents: Heart of the Mountain Commander Event at Comic Quest on Friday, September 4, 2026 at 6:00 PM.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "comic-quest-heart-of-the-mountain-2026-09-04"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-heart-of-the-mountain-2026-09-04",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6809",
+        "series_id": "comic-quest-heart-of-the-mountain-2026-09-04",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated Commander special evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "the-crimson-guild-south-el-monte-the-crimson-guild-commander-night-5-18-00"
+      },
+      "fields": {
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "last_verified": "2026-07-18",
+        "id": "the-crimson-guild-south-el-monte-the-crimson-guild-commander-night-5-18-00"
+      },
+      "reason": "Fresh WPN pull reconfirmed Friday Commander Night at The Crimson Guild South El Monte."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "crimson-guild-draft-wednesday-3-19-00"
+      },
+      "fields": {
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "title": "The Crimson Guild Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 3,
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-22",
+        "end_date": null,
+        "entry_fee": 20.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists recurring Wednesday 7:00 PM draft at The Crimson Guild - South El Monte with $20 entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "crimson-guild-draft-wednesday-3-19-00"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-18899",
+        "series_id": "crimson-guild-draft-wednesday-3-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-18899",
+        "series_id": "crimson-guild-draft-wednesday-3-19-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "crimson-guild-fnm-pauper-5-19-00"
+      },
+      "fields": {
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "title": "Friday Night Magic Pauper",
+        "format": "Pauper",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 5,
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 10.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists recurring Friday 7:00 PM FNM Pauper at The Crimson Guild - South El Monte with $10 entry. Event copy frames it as a chill commons-only FNM environment.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "crimson-guild-fnm-pauper-5-19-00"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-18899",
+        "series_id": "crimson-guild-fnm-pauper-5-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-18899",
+        "series_id": "crimson-guild-fnm-pauper-5-19-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "crimson-guild-standard-showdown-0-16-00"
+      },
+      "fields": {
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "title": "The Crimson Guild Standard Showdown",
+        "format": "Standard",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 0,
+          "startTime": "16:00"
+        },
+        "default_start_time": "16:00",
+        "start_date": "2026-07-19",
+        "end_date": null,
+        "entry_fee": 10.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists recurring Sunday 4:00 PM Standard Showdown at The Crimson Guild - South El Monte with $10 entry, entry pack, and prize pool support.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "crimson-guild-standard-showdown-0-16-00"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-18899",
+        "series_id": "crimson-guild-standard-showdown-0-16-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-18899",
+        "series_id": "crimson-guild-standard-showdown-0-16-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "crimson-guild-marvel-commander-party-2026-07-31"
+      },
+      "fields": {
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "title": "Marvel Super Heroes Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-07-31",
+        "end_date": null,
+        "entry_fee": 0.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink contains two same-time Crimson Guild Marvel Super Heroes Commander Party listings for Friday, July 31, 2026 at 7:00 PM. Collapsed to one planning event; copy mentions Commander Party rules and promo/entry support while supplies last.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18",
+        "id": "crimson-guild-marvel-commander-party-2026-07-31"
+      },
+      "reason": "Catalog source-supported current/future Magic event missing from Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-18899",
+        "series_id": "crimson-guild-marvel-commander-party-2026-07-31",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-18899",
+        "series_id": "crimson-guild-marvel-commander-party-2026-07-31",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated Commander Party evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed or refreshed event row."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "chg-2026-07-18-krazy-comic-crimson-event-completion"
+      },
+      "fields": {
+        "detected_at": "2026-07-18T16:35:00-07:00",
+        "change_type": "new_event",
+        "entity_type": "event",
+        "entity_id": "krazy-comic-crimson-event-completion",
+        "summary": "Proposed fresh Wizards/EventLink event-completion pass for Krazy Nick's Games, Comic Quest, and The Crimson Guild, adding current Commander specials, prereleases, draft, Standard, Modern, and Pauper rows where source-supported.",
+        "review_status": "proposed",
+        "id": "chg-2026-07-18-krazy-comic-crimson-event-completion"
+      },
+      "reason": "Create visible Updates marker for the proposed event-completion batch."
+    }
+  ]
+}
