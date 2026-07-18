@@ -2,7 +2,8 @@
 
 Date: 2026-07-18  
 Pass type: targeted main-pass correction / micro-backfill  
-Validation level proposed for any write: standard, because event-series rows would be added.
+Validation level: standard, because event-series rows were added.
+Live write status: applied and verified on 2026-07-18.
 
 ## Scope
 
@@ -90,7 +91,20 @@ It proposes:
 - updating Finch venue/evaluation language conservatively;
 - adding a research-change marker.
 
-No live Supabase write has been performed.
+The proposal was applied to live Supabase on 2026-07-18 after user approval. Post-write checks confirmed:
+
+- five new Finch event series are present;
+- eight `src-finch-events` event-source relationships are present;
+- Finch evaluation now reads B+ / 4.0 / high confidence;
+- no duplicate Finch title/start-time combinations were detected;
+- no duplicate dated occurrences were detected;
+- deterministic export verification passed after the write.
+
+Tiny local app check passed:
+
+- Events page loaded from Supabase with no console errors;
+- `Finch and Sparrow Casual Play` appeared in the event feed;
+- the Draft filter surfaced `Booster Draft - Standard Sets`.
 
 ## What remains TBD
 
