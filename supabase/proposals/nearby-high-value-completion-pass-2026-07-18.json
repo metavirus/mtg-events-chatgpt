@@ -1,0 +1,515 @@
+{
+  "proposal_id": "nearby-high-value-completion-pass-2026-07-18",
+  "description": "Bounded nearby high-value completion pass for Hobby Overflow, Requiem, and Spellhold Games. Hobby Overflow requires no new writes. Requiem gets missing Wednesday Magic and Friday Night Magic rows. Spellhold gets missing broad weekly Magic format coverage and The Hobbit prerelease dated occurrences, plus source/evidence support and an assessment recalibration. No schema/auth/RLS/app-code or canonical JSON edits are proposed.",
+  "created_at": "2026-07-18T09:00:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-17690"},
+      "fields": {"health_status": "current", "last_checked": "2026-07-18"},
+      "reason": "Wizards/EventLink snapshot still supports Hobby Overflow Thursday casual Commander; no new event write is needed."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-14480"},
+      "fields": {"health_status": "current", "last_checked": "2026-07-18"},
+      "reason": "Wizards/EventLink snapshot supports Requiem Monday Commander plus missing Wednesday Magic and Friday Night Magic rows."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-requiem-weekly-events-2026-07-17"},
+      "fields": {"health_status": "current", "last_checked": "2026-07-18"},
+      "reason": "Requiem's official weekly-events page remains current and explicitly frames Magic tournaments as a normal weekly-event category while warning that collaborations can change the weekly schedule."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-6830"},
+      "fields": {"health_status": "current", "last_checked": "2026-07-18"},
+      "reason": "Wizards/EventLink snapshot supports Spellhold's broad weekly Magic schedule plus August 2026 The Hobbit prerelease rows."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-spellhold-site-2026-07-18"},
+      "fields": {
+        "id": "src-spellhold-site-2026-07-18",
+        "label": "Spellhold Games official website and weekly events route",
+        "url": "https://www.spellholdgames.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture Spellhold's official site as Evidence for current operation, MTG inventory depth, store hours, and weekly/special event routing."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "spellhold-games", "source_id": "src-spellhold-site-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "spellhold-games",
+        "source_id": "src-spellhold-site-2026-07-18",
+        "relationship": "official site / MTG inventory / weekly-event route support"
+      },
+      "reason": "Expose Spellhold's official site as visible Places Evidence."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-spellhold-cardshows-2026-07-18"},
+      "fields": {
+        "id": "src-spellhold-cardshows-2026-07-18",
+        "label": "CardShows.io Spellhold Games review/directory profile",
+        "url": "https://cardshows.io/shops/spellhold-games-orange",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture a secondary review/directory surface that summarizes Spellhold's Google-derived rating, MTG specialty, tournaments, singles, and store services."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "spellhold-games", "source_id": "src-spellhold-cardshows-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "spellhold-games",
+        "source_id": "src-spellhold-cardshows-2026-07-18",
+        "relationship": "review/directory support for MTG focus, events, singles, and store prominence"
+      },
+      "reason": "Expose Spellhold's review/directory support on the Places Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-spellhold-cardcommunity-commander-2026-07-18"},
+      "fields": {
+        "id": "src-spellhold-cardcommunity-commander-2026-07-18",
+        "label": "CardCommunity mirror for Spellhold Saturday Open Play Commander",
+        "url": "https://cardcommunity.org/event/dbad024b-9f0a-4dcf-a9ad-a5bb1cba008b?on=2026-07-25",
+        "source_type": "eventsPage",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture a human-readable EventLink mirror corroborating Spellhold Saturday Commander on July 25, 2026 and routing back to Wizards/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "spellhold-games", "source_id": "src-spellhold-cardcommunity-commander-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "spellhold-games",
+        "source_id": "src-spellhold-cardcommunity-commander-2026-07-18",
+        "relationship": "EventLink mirror / Commander cross-check"
+      },
+      "reason": "Expose the public EventLink mirror as supplemental Evidence without making it more canonical than Wizards/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "requiem-wednesday-magic"},
+      "fields": {
+        "id": "requiem-wednesday-magic",
+        "venue_id": "requiem-coffee-tea-and-fantasy",
+        "title": "Magic at Requiem",
+        "format": "Magic",
+        "event_type": "casual",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 3, "startTime": "18:00"},
+        "default_start_time": "18:00",
+        "start_date": "2026-07-22",
+        "end_date": null,
+        "entry_fee": 0.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Wednesday Magic at Requiem at 6:00 PM. The description says Magic the Gathering at Requiem Cafe is casual and fun for everyone; exact format is unspecified.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Make a current store/Wizards-supported non-Commander Magic row visible while preserving format uncertainty."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-14480", "series_id": "requiem-wednesday-magic", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-14480", "series_id": "requiem-wednesday-magic", "occurrence_id": null, "relationship": "Wizards/EventLink recurring general Magic evidence"},
+      "reason": "Attach WPN provenance to Requiem Wednesday Magic."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "requiem-friday-night-magic"},
+      "fields": {
+        "id": "requiem-friday-night-magic",
+        "venue_id": "requiem-coffee-tea-and-fantasy",
+        "title": "Friday Night Magic at Requiem",
+        "format": "Magic",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "18:00"},
+        "default_start_time": "18:00",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 0.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Friday Night Magic at Requiem at 6:00 PM. The description says Friday Night Magic at Requiem Cafe is casual and fun for everyone; exact format is unspecified.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Make Requiem's current FNM/Magic signal visible while preserving format uncertainty."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-14480", "series_id": "requiem-friday-night-magic", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-14480", "series_id": "requiem-friday-night-magic", "occurrence_id": null, "relationship": "Wizards/EventLink recurring FNM evidence"},
+      "reason": "Attach WPN provenance to Requiem FNM."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "spellhold-monday-modern"},
+      "fields": {
+        "id": "spellhold-monday-modern",
+        "venue_id": "spellhold-games",
+        "title": "Monday Modern",
+        "format": "Modern",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 1, "startTime": "19:30"},
+        "default_start_time": "19:30",
+        "start_date": "2026-07-20",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Monday Modern at Spellhold Games at 7:30 PM with $5 entry and store-credit prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current non-Commander Magic format coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "spellhold-tuesday-legacy"},
+      "fields": {
+        "id": "spellhold-tuesday-legacy",
+        "venue_id": "spellhold-games",
+        "title": "Tuesday Legacy",
+        "format": "Legacy",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 2, "startTime": "19:30"},
+        "default_start_time": "19:30",
+        "start_date": "2026-07-21",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Tuesday Legacy at Spellhold Games at 7:30 PM with $5 entry and store-credit prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current non-Commander Magic format coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "spellhold-wednesday-standard-showdown"},
+      "fields": {
+        "id": "spellhold-wednesday-standard-showdown",
+        "venue_id": "spellhold-games",
+        "title": "Wednesday Standard Showdown",
+        "format": "Standard",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 3, "startTime": "19:30"},
+        "default_start_time": "19:30",
+        "start_date": "2026-07-22",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Wednesday Standard Showdown at Spellhold Games at 7:30 PM with $5 entry and store-credit prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current Standard Showdown coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "spellhold-thursday-pioneer"},
+      "fields": {
+        "id": "spellhold-thursday-pioneer",
+        "venue_id": "spellhold-games",
+        "title": "Thursday Pioneer",
+        "format": "Pioneer",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 4, "startTime": "19:30"},
+        "default_start_time": "19:30",
+        "start_date": "2026-07-23",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Thursday Pioneer at Spellhold Games at 7:30 PM with $5 entry and store-credit prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current non-Commander Magic format coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "spellhold-friday-night-magic-draft"},
+      "fields": {
+        "id": "spellhold-friday-night-magic-draft",
+        "venue_id": "spellhold-games",
+        "title": "Friday Night Magic Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "19:00"},
+        "default_start_time": "19:00",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 25.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Friday Night Magic Draft at Spellhold Games at 7:00 PM with $25 entry and booster-pack prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current FNM draft coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "spellhold-premodern-friday"},
+      "fields": {
+        "id": "spellhold-premodern-friday",
+        "venue_id": "spellhold-games",
+        "title": "Premodern Friday",
+        "format": "Premodern",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "19:30"},
+        "default_start_time": "19:30",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Premodern Friday at Spellhold Games at 7:30 PM with $5 entry and store-credit prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current non-Commander Magic format coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "spellhold-sunday-pauper"},
+      "fields": {
+        "id": "spellhold-sunday-pauper",
+        "venue_id": "spellhold-games",
+        "title": "Sunday Pauper",
+        "format": "Pauper",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 0, "startTime": "16:30"},
+        "default_start_time": "16:30",
+        "start_date": "2026-07-19",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Sunday Pauper at Spellhold Games at 4:30 PM with $5 entry and store-credit prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current non-Commander Magic format coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "spellhold-hobbit-prerelease-2026"},
+      "fields": {
+        "id": "spellhold-hobbit-prerelease-2026",
+        "venue_id": "spellhold-games",
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": 50.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists five The Hobbit prerelease sealed occurrences at Spellhold Games from August 7-9, 2026. Event copy says $50 entry and booster-pack prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog upcoming prerelease/sealed coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-6830", "series_id": "spellhold-monday-modern", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-6830", "series_id": "spellhold-monday-modern", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Modern evidence"},
+      "reason": "Attach WPN evidence to Spellhold Monday Modern."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-6830", "series_id": "spellhold-tuesday-legacy", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-6830", "series_id": "spellhold-tuesday-legacy", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Legacy evidence"},
+      "reason": "Attach WPN evidence to Spellhold Tuesday Legacy."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-6830", "series_id": "spellhold-wednesday-standard-showdown", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-6830", "series_id": "spellhold-wednesday-standard-showdown", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Standard Showdown evidence"},
+      "reason": "Attach WPN evidence to Spellhold Standard Showdown."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-6830", "series_id": "spellhold-thursday-pioneer", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-6830", "series_id": "spellhold-thursday-pioneer", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Pioneer evidence"},
+      "reason": "Attach WPN evidence to Spellhold Thursday Pioneer."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-6830", "series_id": "spellhold-friday-night-magic-draft", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-6830", "series_id": "spellhold-friday-night-magic-draft", "occurrence_id": null, "relationship": "Wizards/EventLink recurring FNM Draft evidence"},
+      "reason": "Attach WPN evidence to Spellhold FNM Draft."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-6830", "series_id": "spellhold-premodern-friday", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-6830", "series_id": "spellhold-premodern-friday", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Premodern evidence"},
+      "reason": "Attach WPN evidence to Spellhold Premodern Friday."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-6830", "series_id": "spellhold-sunday-pauper", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-6830", "series_id": "spellhold-sunday-pauper", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Pauper evidence"},
+      "reason": "Attach WPN evidence to Spellhold Sunday Pauper."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-6830", "series_id": "spellhold-hobbit-prerelease-2026", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-6830", "series_id": "spellhold-hobbit-prerelease-2026", "occurrence_id": null, "relationship": "Wizards/EventLink dated prerelease evidence"},
+      "reason": "Attach WPN evidence to Spellhold Hobbit prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "spellhold-hobbit-prerelease-2026-08-07-19-00"},
+      "fields": {"id": "spellhold-hobbit-prerelease-2026-08-07-19-00", "series_id": "spellhold-hobbit-prerelease-2026", "occurrence_date": "2026-08-07", "start_time": "19:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": null, "details": "Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Friday, August 7, 2026 at 7:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "spellhold-hobbit-prerelease-2026-08-08-12-00"},
+      "fields": {"id": "spellhold-hobbit-prerelease-2026-08-08-12-00", "series_id": "spellhold-hobbit-prerelease-2026", "occurrence_date": "2026-08-08", "start_time": "12:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": null, "details": "Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Saturday, August 8, 2026 at 12:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "spellhold-hobbit-prerelease-2026-08-08-16-00"},
+      "fields": {"id": "spellhold-hobbit-prerelease-2026-08-08-16-00", "series_id": "spellhold-hobbit-prerelease-2026", "occurrence_date": "2026-08-08", "start_time": "16:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": null, "details": "Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Saturday, August 8, 2026 at 4:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "spellhold-hobbit-prerelease-2026-08-09-12-00"},
+      "fields": {"id": "spellhold-hobbit-prerelease-2026-08-09-12-00", "series_id": "spellhold-hobbit-prerelease-2026", "occurrence_date": "2026-08-09", "start_time": "12:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": null, "details": "Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Sunday, August 9, 2026 at 12:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "spellhold-hobbit-prerelease-2026-08-09-16-00"},
+      "fields": {"id": "spellhold-hobbit-prerelease-2026-08-09-16-00", "series_id": "spellhold-hobbit-prerelease-2026", "occurrence_date": "2026-08-09", "start_time": "16:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": null, "details": "Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Sunday, August 9, 2026 at 4:00 PM. Source description appears to repeat 'Saturday 4pm' copy, but the scheduled date/time and title are Sunday 4pm."},
+      "reason": "Add exact dated prerelease occurrence while preserving the source-copy caveat."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "spellhold-games"},
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "Spellhold has a broader and more reliable Magic calendar than the old Places note implied. Wizards/EventLink shows Saturday Commander plus weekly Modern, Legacy, Standard Showdown, Pioneer, FNM Draft, Premodern, Sunday Pauper, and The Hobbit prerelease dates; the official site supports current operation, MTG inventory depth, and weekly/special event routing. This improves Magic-overall activity and schedule reliability, but the store still reads as a broad/competitive Magic hub more than a proven solo-arrival Commander community. Proxy policy, bracket texture, pod formation, and Discord usefulness remain the main open questions.",
+        "assessment": {"commanderActivity": 3, "homeGroupPotential": 3, "communityContinuity": 3, "meetupAccessibility": 3, "physicalEnvironment": 4, "scheduleReliability": 5, "newPlayerIntegration": 3}
+      },
+      "reason": "Recalibrate Spellhold's Places assessment after correcting incomplete Commander-only event coverage."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "spellhold-games"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "spellhold-games",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "medium-high",
+        "positives": [
+          "Wizards/EventLink shows a broad current weekly Magic schedule across Commander, Modern, Legacy, Standard, Pioneer, Draft, Premodern, and Pauper.",
+          "Official site supports active operation, MTG inventory depth, online singles/sealed catalog, and weekly/special-event routing.",
+          "Review/directory surfaces point to substantial MTG play space, singles, tournaments, and generally positive staff/community signals."
+        ],
+        "cautions": [
+          "Best evidence points to broad/competitive Magic infrastructure, not necessarily a relaxed Commander-first solo-arrival environment.",
+          "Pricing/markup complaints appear in some review-derived surfaces, mainly around other TCG events, so event-pricing expectations should be checked.",
+          "Discord/public community evidence remains more flyer-board than proven LFG/community-texture support."
+        ],
+        "open_questions": [
+          "How welcoming is Saturday Commander for solo arrivals?",
+          "What are the actual proxy/bracket expectations for Commander?",
+          "Does the Discord contain useful LFG or event-reliability discussion beyond posted flyers?"
+        ]
+      },
+      "reason": "Expose the corrected Spellhold fit/confidence reasoning on the Places page."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {"id": "nearby-high-value-completion-pass-2026-07-18"},
+      "fields": {
+        "id": "nearby-high-value-completion-pass-2026-07-18",
+        "detected_at": "2026-07-18T09:00:00-07:00",
+        "change_type": "event_update",
+        "entity_type": "venue",
+        "entity_id": "spellhold-games",
+        "summary": "Proposed nearby completion pass for Hobby Overflow, Requiem, and Spellhold. Hobby Overflow needs no new rows; Requiem gets missing Wednesday Magic and FNM rows; Spellhold gets broad weekly Magic format coverage and The Hobbit prerelease dates, with a Places assessment recalibration.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable update marker before any live write."
+    }
+  ]
+}
