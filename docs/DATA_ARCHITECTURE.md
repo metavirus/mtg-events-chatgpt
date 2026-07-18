@@ -137,6 +137,41 @@ filters. The evaluation object is the authoritative richer judgment where it is
 present. Missing routine disclosures are neutral: explicit helpful guidance is a
 positive, explicit restrictions are negative, and silence does not reduce fit.
 
+## Confidence interpretation
+
+Confidence is not "how much the model likes the store." It is how strongly the
+available evidence supports the current judgment.
+
+Use confidence to answer:
+
+- how complete is the practical decision picture?
+- how coherent are the signals across sources?
+- how likely is it that a later bounded pass would materially overturn the
+  current fit read?
+
+Do not lower confidence merely because one ideal source is missing. A venue does
+not need a perfect website, public Discord, or official calendar to deserve a
+high-confidence planning read. Missing conveniences are often neutral.
+
+Confidence should rise when:
+
+- multiple independent signals converge on the same practical read;
+- branch identity, schedule reality, and venue type are clear;
+- the evidence is current enough for the intended planning horizon;
+- the remaining unknowns are secondary texture questions rather than identity,
+  status, or core-event truth questions.
+
+Confidence should stay bounded or drop when:
+
+- the source stack is thin, stale, contradictory, or branch-confused;
+- public sources support existence but not the lived planning question;
+- a major unknown could materially change whether the user should try the
+  place;
+- event or branch contamination risk is still unresolved.
+
+Treat confidence as a planning-grade judgment, not an omniscience score. The
+goal is not perfect information; the goal is a durable, decision-useful read.
+
 ## Attributed user field notes
 
 User-supplied observations should be preserved in the evidence plane so they are
@@ -158,6 +193,18 @@ official schedule, fee, rules, or policy claims from store-controlled sources.
 When a user field note conflicts with a public source, keep both. The app should
 be able to show a distinction such as "official listing says X" and "user visit
 reported Y on 2026-07-14."
+
+For personal-fit judgment, attributed user field notes are the highest-value
+evidence tier. If the user directly reports that a venue is a strong fit, a bad
+fit, unusually welcoming, cliquish, better than advertised, or worse than
+advertised, that firsthand note may outweigh weaker or more generic public
+signals.
+
+The strongest confidence state is reached when public evidence and the user's
+firsthand notes reinforce each other. When they conflict, keep both visible, but
+the user's firsthand note should usually control the personal-fit read unless a
+specific claim is clearly about official policy, fees, timing, or another fact
+better handled by store-controlled sources.
 
 ## Routine schedule versus exceptions
 

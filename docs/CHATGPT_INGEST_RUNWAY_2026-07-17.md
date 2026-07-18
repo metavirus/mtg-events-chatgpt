@@ -1,9 +1,17 @@
 # ChatGPT packet ingest runway — 2026-07-17
 
+Status: superseded for active planning by
+`docs/CHATGPT_PACKET_INGEST_TRACKER_2026-07-17.md`.
+
 Purpose: reduce compaction risk by converting the preserved ChatGPT PR #15/#16
 packet into a finite Codex intake runway. This file is not canonical research
 truth; it is the strategy note for finishing packet ingestion through the
 controlled Supabase workflow.
+
+As of the structural packet-ingest checkpoint, no immediate packet-ingest
+batches remain. Treat this file as historical strategy context only. For
+current packet-derived leftovers, use the disposition tracker and its individual
+TBD rows; do not restart the runway batches below as active work.
 
 Current disposition tracker:
 

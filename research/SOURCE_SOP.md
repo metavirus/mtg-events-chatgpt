@@ -128,6 +128,32 @@ should carry the clickable trail whenever the source materially influenced the
 assessment. The user should not have to trust a fit/caution synthesis that has
 no visible source trail.
 
+## Confidence handling
+
+Confidence is a support judgment, not a popularity score and not a reward for
+checking every imaginable source.
+
+During a bounded pass:
+
+- do not penalize a venue just because it lacks one ideal surface such as a
+  website, public Discord, or clean official calendar, if other sources already
+  provide a coherent planning picture;
+- treat silence as neutral unless the missing detail is itself a material
+  planning risk;
+- raise confidence when several independent sources converge on the same
+  practical read;
+- keep confidence bounded when the remaining unknown could still change whether
+  the user should try the place.
+
+User firsthand notes are top-tier evidence for personal-fit judgment. If the
+user directly reports that a venue is excellent, poor, welcoming, awkward,
+better than advertised, or worse than advertised, preserve that note as
+Evidence and let it materially influence fit and confidence. When public
+sources and user firsthand notes conflict, keep both visible; for personal-fit
+assessment, the user's lived report should usually outweigh weaker public
+signals, while official/store-controlled sources still remain primary for exact
+policy, fee, rules, and schedule claims.
+
 ## Pass types
 
 ### 1. Strict first pass
@@ -196,6 +222,50 @@ Confidence measures support for the judgment being made; it is not a checklist
 penalty for every fact a store could theoretically disclose. A store can earn a
 clear fit grade and be promoted on strong schedule, distance, format, activity,
 and community signals even when those optional operational details are unstated.
+
+### Research pass exit rubric
+
+Every meaningful store or community pass should end with a plain disposition,
+not only a pile of notes. Use one of these outcomes unless the run note explains
+why another label is clearer:
+
+- `try soon`: evidence is strong enough, fit looks good enough, and remaining
+  unknowns should not block a practical visit.
+- `keep watching`: promising, but one or more practical questions should be
+  checked before prioritizing it.
+- `low priority`: real venue or event, but current evidence suggests it should
+  rank below better options.
+- `status conflict`: existence, open/closed state, branch identity, or location
+  is unresolved enough to affect planning.
+- `event-only`: event should be logged, but the venue is not yet a strong
+  Places recommendation.
+- `no action`: packet/source item does not currently justify a write,
+  monitoring priority, or deeper pass.
+
+The exit note should answer:
+
+- what changed in the user's planning picture;
+- whether any event should be logged, hidden, deprioritized, or deferred;
+- whether Places assessment fields should change;
+- how confident the current read is and why;
+- what single later check would most likely change the judgment.
+
+### TBD taxonomy
+
+Use specific TBD labels so the backlog stays useful:
+
+- `before attending`: check this before the user relies on the venue or event.
+- `if promoted`: check this only if the store becomes a serious candidate.
+- `source cleanup`: useful for evidence quality, but not urgent for planning.
+- `status or identity`: resolve operation, location, branch, predecessor, or
+  duplicate uncertainty before attaching stronger claims.
+- `event replay`: re-check exact event facts through official or event-platform
+  sources.
+- `community texture`: Discord, LFG, turnout, solo-arrival, or vibe work that
+  can wait until the venue matters.
+
+Do not let TBDs become a shadow backlog of everything the internet could
+possibly answer. A useful TBD names the decision it would improve.
 
 ### 2. Promoted deepening pass
 
