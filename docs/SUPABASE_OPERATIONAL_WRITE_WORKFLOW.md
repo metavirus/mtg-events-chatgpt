@@ -13,11 +13,12 @@ research updates a controlled path:
 1. propose exact field-level changes;
 2. validate IDs, fields, relationships, and duplicates before writing;
 3. review generated SQL before live mutation;
-4. create a deterministic Supabase-to-JSON export/backup;
+4. choose the appropriate validation level for the risk;
 5. apply only after explicit authorization when live mutation is required;
 6. verify affected records, row counts, required fields, relationships,
    provenance, and duplicate guards after the write;
-7. export deterministic JSON recovery artifacts from the accepted Supabase state.
+7. export deterministic JSON recovery artifacts when the risk or release gate
+   calls for it.
 
 ## Scope
 
@@ -38,7 +39,55 @@ favorites, thumbs-down, notes, ratings, update-read state, or `Ask Codex`
 requests. Those remain a separate gate.
 
 It does not change auth, RLS, credentials, browser-write permissions, or the
-default app data source.
+default app data source. Supabase is already the operational/default research
+read source; JSON is the generated recovery/export fallback.
+
+## Validation levels
+
+Do not run full ceremony merely because Supabase is written. Choose the level
+that matches the write risk, and escalate if an anomaly appears.
+
+### Lean
+
+Use for low-risk evidence, source, assessment, note, or status changes with low
+identity/calendar risk.
+
+Required:
+
+- validate the proposal;
+- apply only the approved operations;
+- verify affected records and relevant relationships/counts;
+- update the durable run note/proposal status;
+- run repository text integrity before committing changed text files;
+- commit and push the small checkpoint.
+
+Do not automatically run a full deterministic export, broad duplicate scan,
+hosted app smoke test, or full export comparison.
+
+### Standard
+
+Use for event series or occurrences, several connected records, or
+user-visible planning changes.
+
+Add:
+
+- relevant duplicate and relationship checks for the touched tables;
+- a small affected app/UI check where useful;
+- deterministic export only if the changed tables should refresh recovery JSON
+  now or event/source/change exports are part of the accepted checkpoint.
+
+### Full
+
+Use for identity merge/split, branch/location correction, schema/auth/RLS or
+default-source changes, broad writes, destructive edits, release/recovery
+checkpoints, or anything with higher rollback risk.
+
+Add:
+
+- pre/post deterministic export or equivalent rollback evidence;
+- broader row-count, relationship, provenance, and duplicate checks;
+- export comparison when recovery JSON freshness matters;
+- hosted/local smoke testing when public app behavior could be affected.
 
 ## Tooling
 
@@ -70,8 +119,8 @@ python.exe scripts/supabase_research_workflow.py validate-proposal supabase/fixt
 python.exe scripts/supabase_research_workflow.py plan-sql supabase/fixtures/research_update_proposal.example.json --output supabase/plans/example-no-live-write.sql
 ```
 
-For real research work, first export the current accepted Supabase state and use
-that export as the validation basis:
+For full validation or an intentional recovery checkpoint, export the current
+accepted Supabase state and use that export as the validation basis:
 
 ```powershell
 python.exe scripts/supabase_research_workflow.py export-json --output-dir supabase/exports/prewrite-YYYY-MM-DD-short-name
@@ -93,7 +142,13 @@ identities and duplicate event occurrences are rejected before SQL is produced.
 
 ## Required pre-write safety
 
-Before any live write:
+Before any live write, validate the proposal and confirm the chosen validation
+level. For Lean and most Standard writes, a fresh full export is not mandatory
+unless the proposal touches exported recovery tables and the checkpoint is meant
+to refresh JSON.
+
+For Full writes, release/recovery checkpoints, or any write where rollback risk
+is higher than routine:
 
 1. create a deterministic export/backup:
 
@@ -135,7 +190,16 @@ safe.
 
 ## Post-write verification
 
-After any authorized live write, verify:
+After any authorized live write, verify at the selected validation level.
+
+At minimum for Lean:
+
+- affected IDs exist and contain the intended field values;
+- affected table counts/relationships are expected;
+- provenance links exist where the write added or relied on sources;
+- repository text-integrity validation passes for changed text files.
+
+For Standard and Full, add relevant checks from this list:
 
 - affected IDs exist and contain the intended field values;
 - row counts for affected tables are expected;
@@ -165,12 +229,19 @@ decision needed.
 
 ## Completion gate
 
-Research is not safe to resume merely because this workflow exists.
+Research is safe to resume only through this workflow and the corrected research
+method in `research/SOURCE_SOP.md`.
 
-Research can resume only after:
+Accepted gates:
 
 1. controlled Supabase research-write safety is accepted;
 2. deterministic Supabase-to-JSON export/recovery is accepted;
 3. default application read cutover to Supabase is separately accepted;
 4. agents no longer need to hand-edit canonical JSON for ordinary research
    updates.
+
+Still deferred:
+
+- authenticated personal/workflow writes;
+- auth/RLS expansion;
+- unattended recurring research automation.

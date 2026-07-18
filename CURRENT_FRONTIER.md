@@ -18,8 +18,8 @@ inflection point where:
 - Supabase is the default application read source;
 - `?data=json` remains the explicit file-backed fallback;
 - the static GitHub Pages deployment is live for personal use;
-- broad research remains paused until resumed through controlled Supabase
-  writes.
+- research has resumed through controlled Supabase writes in small direct
+  batches.
 
 Do not reopen this checkpoint by default. Future work should move forward from
 it unless the user explicitly asks to roll back or audit it.
@@ -101,16 +101,15 @@ event sources remain preferred for exact event facts.
 
 Immediate next tranche:
 
-1. Use `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` for future research
-   updates.
-2. Keep generated JSON as recovery/export output, not a manual canonical editing
+1. Use `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md` as the finite research
+   queue and closure-audit baseline.
+2. Address any safety corrections first if the ledger names one.
+3. Then run the first small corrective/main-pass batch from the ledger, using
+   the corrected main-pass method in `research/SOURCE_SOP.md`.
+4. Use `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` with the graduated
+   Lean/Standard/Full validation level that matches the batch risk.
+5. Keep generated JSON as recovery/export output, not a manual canonical editing
    surface.
-3. Resume the bounded research universe only through controlled Supabase writes,
-   in small batches with proposal review and postwrite export verification.
-4. Do not perform authenticated personal/workflow writes, auth/RLS expansion, or
-   broad UX polish as part of ordinary research resumption.
-5. Recommended next research tranche is documented in
-   `docs/NEXT_TRANCHE_PROPOSAL_2026-07-17.md`.
 
 Execution model:
 
@@ -187,7 +186,8 @@ Still deferred from this local UX tranche:
 - autonomous daily/weekly agents;
 - deep community automation;
 - broad store re-research;
-- making Supabase the default data source;
+- making Supabase the default data source, which was completed after this local
+  UX tranche;
 - publishing until the Supabase/data-source and final acceptance gates are
   complete.
 
@@ -205,20 +205,17 @@ recorded in `docs/chatgpt-changelog.md` for later Codex audit.
 New stores, venues, groups, events, and event series are candidate-only in this
 lane. Ordinary ChatGPT must not create canonical entities.
 
-## Research tranche (paused)
+## Research tranche state
 
-Top-venue tranche near Los Alamitos, focused on:
+Research is no longer paused for Supabase readiness. Supabase is the
+operational/default research source, controlled Supabase research writes are
+accepted, and manual canonical JSON research edits are forbidden.
 
-- Collectors Lounge - Cypress
-- The Guild House
-- Kingslayer Games - Fountain Valley
-- Finch and Sparrow Games
-- related regional/community context already captured through the Discord baseline
-
-Broad research is intentionally paused while the Supabase operational-source
-path is made safe. The research queue remains open and should resume from
-`docs/WORK_BACKLOG.md` only after the Supabase continuity/readiness stage is
-accepted.
+The active research unit is now a small direct Project Steward batch. Each
+ordinary store pass must inspect the baseline source suite enough to synthesize
+both Places assessment and Events/calendar implications. The finite venue queue
+and today's methodology-closure audit live in
+`docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`.
 
 ## Research rule when research resumes
 
@@ -500,16 +497,15 @@ older notes saying "repair Tweedy first" as current next work.
 
 ## Recommended next step
 
-Ask the user to accept or reject the Supabase read-cutover checkpoint. If
-accepted, resume the bounded research universe only through the controlled
-Supabase research-write workflow in
-`docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`. Do not return to manual canonical
-JSON edits.
+Resume ordinary store research immediately from
+`docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`: address any safety correction
+first, then take the recommended 2-4 store corrective/main-pass batch. Do not
+launch workers/subagents unless the user explicitly approves a specific
+exceptional worker.
 
 ## After that
 
-- resume and complete the bounded research universe through controlled
-  Supabase writes
+- complete the bounded research universe through controlled Supabase writes
 - run final research coverage and data-integrity assurance
 - run final end-to-end acceptance
 - make the personal tool accessible through the existing deployment path

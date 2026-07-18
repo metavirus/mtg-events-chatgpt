@@ -759,6 +759,35 @@ values such as `partial` while the data model catches up. Until the schema and
 UI are migrated, interpret existing `partial` records as today's nearest
 equivalent to `reviewed`.
 
+## Compact main-pass closure record
+
+Use this human-readable closure shape at the end of each main store pass. It is
+not a validator or automation target yet; prove it through at least three clean
+manual batches before building tooling around it.
+
+```text
+Store:
+Pass type:
+
+Official site: inspected/disposition/result
+Instagram: inspected/disposition/result
+Facebook: inspected/disposition/result
+Discord/community: inspected/disposition/result
+Wizards/EventLink: inspected/disposition/result
+Reviews: inspected/disposition/result
+Other material sources: inspected/disposition/result
+
+Places synthesis:
+Event disposition:
+Remaining decision-changing TBD:
+Final planning disposition:
+```
+
+For each source line, say what the source actually supports. Do not let
+`checked` mean only that a route was found. If the source was accessible and
+material, inspect enough content to support or reject the relevant Places and
+Events conclusions.
+
 ## Required self-audit before moving on
 
 Ask:

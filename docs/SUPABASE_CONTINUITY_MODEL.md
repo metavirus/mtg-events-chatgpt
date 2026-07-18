@@ -11,8 +11,8 @@ boundary:
 - what the browser may read now;
 - what the eventual signed-in user state should store;
 - what future Codex/agent workflow requests should store;
-- what remains deliberately deferred until after the Supabase continuity and
-  default-source cutover gates.
+- what remains deliberately deferred after the accepted Supabase research-read
+  and research-write gates.
 
 ## Working split
 
@@ -92,25 +92,29 @@ now assumes this split:
   thumbs-down, ratings, notes, and requests as real product concepts;
 - define the data structures and cutover expectations for those features.
 
-In other words, the app may continue to design for durable hosted continuity, but
-the next stage is not more UX shaping. It is Supabase continuity /
-operational-source readiness.
+In other words, the app may continue to design for durable hosted continuity,
+but the next stage is not more UX shaping. Supabase is already the operational
+research source; remaining continuity work is authenticated personal/workflow
+state and future agent/request handling.
 
 ## What is deliberately deferred
 
-The accepted local UX revision did **not** need to ship:
+The accepted local UX revision and subsequent Supabase checkpoint did **not**
+need to ship:
 
 - real signed-in browser writes for personal state;
 - final auth onboarding or session UX;
 - final row-level security policy expansion for personal/workflow writes;
 - server-side request processing or agent automation;
-- Supabase as the default research source;
-- removal of the JSON fallback.
+- removal of the JSON fallback;
+- unattended recurring research automation.
 
 The safe current rule is:
 
-- design the durable system now;
-- switch on the real writes only after a deliberate gate.
+- Supabase research reads and controlled research writes are operational;
+- JSON is generated recovery/export fallback, not the manual canonical editing
+  surface;
+- switch on authenticated personal/workflow writes only after a deliberate gate.
 
 ## Browser-local state during transition
 
@@ -128,22 +132,22 @@ answer.
 
 ## Cutover sequence
 
-When moving beyond the accepted local UX revision, the intended order is:
+Current sequence:
 
-1. Establish controlled Supabase research writes and deterministic JSON
-   export/recovery for canonical research updates.
-2. Keep research reads behind the adapter seam.
-3. Use Supabase as the default application read source, with `?data=json` as
-   the explicit recovery path.
-4. Add authenticated personal/workflow table reads.
+1. Controlled Supabase research writes and deterministic JSON export/recovery
+   are accepted for canonical research updates.
+2. Supabase is the default application read source, with `?data=json` as the
+   explicit recovery path.
+3. Research has resumed through controlled Supabase writes in small direct
+   batches.
+4. Add authenticated personal/workflow table reads in a later gate.
 5. Import or migrate existing browser-local personal state once.
 6. Turn on hosted writes for favorites, thumbs-down, ratings, notes,
    update-read state, and `Ask Codex` requests.
 7. Validate that hosted personal state survives refresh, browser change, and
    device change.
-8. Only after the research-write/export safety gate, default-read cutover, and
-   usability/parity checkpoint are accepted should broad research resume through
-   controlled Supabase writes.
+8. Only after the corrected manual research method has completed several clean
+   batches should unattended recurring research be considered.
 
 ## Product consequences
 

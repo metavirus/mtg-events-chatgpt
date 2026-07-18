@@ -25,6 +25,11 @@ The repository has already completed these stabilization steps:
 - source-routing rules for review mirrors, marketplaces, non-MTG locators,
   Linktree/social routers, Discord/community surfaces, and official event truth
   are recorded in `research/SOURCE_SOP.md`;
+- the corrected main-pass method is active: ordinary store passes must inspect
+  accessible source content, synthesize Places and Events conclusions, and leave
+  a compact source-coverage/closure record;
+- the finite research queue and 2026-07-17 closure audit are recorded in
+  `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`;
 - the default worker model is retired for this project: use direct Project
   Steward execution for small bounded batches unless the user explicitly
   approves a specific exceptional worker.
@@ -78,10 +83,10 @@ The repository is stabilized, not finished.
 
 Still open:
 
-- broad research backlog, to resume only through the controlled Supabase
-  research-write workflow;
-- next proposed direct research tranche:
-  `docs/NEXT_TRANCHE_PROPOSAL_2026-07-17.md`;
+- bounded research backlog, continuing only through the controlled Supabase
+  research-write workflow and the corrected main-pass method;
+- current finite research queue and closure-audit baseline:
+  `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`;
 - design/app backlog items that are not completion blockers unless promoted;
 - branch-hygiene pass to move off `codex/reconcile-wizards` deliberately;
 - future authenticated personal/workflow writes and data-architecture evolution;

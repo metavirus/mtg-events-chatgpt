@@ -38,14 +38,11 @@ Use it for:
 - Default research execution is now direct Project Steward work in small
   batches. Do not launch workers/subagents unless the user explicitly approves a
   specific exceptional worker.
-- The proposed next research tranche is
-  `docs/NEXT_TRANCHE_PROPOSAL_2026-07-17.md`; do not start it until the user
-  approves.
-- Temporary packet-ingest runway: use
-  `docs/CHATGPT_INGEST_RUNWAY_2026-07-17.md` to finish digesting the preserved
-  ChatGPT PR #15/#16 intake without relying on chat memory. During this phase,
-  prefer quick controlled ingestion or explicit TBD capture over deepening every
-  record immediately.
+- The active finite research queue and closure-audit baseline is
+  `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`.
+- The ChatGPT PR #15/#16 packet is preserved and structurally disposed in
+  `docs/CHATGPT_PACKET_INGEST_TRACKER_2026-07-17.md`; use only the tracker rows
+  when a specific packet-derived item is selected.
 - Tiny Updates housekeeping: applied Supabase `research_changes` rows can still
   display as `PROPOSED`, and midnight UTC timestamps render as the prior evening
   in Pacific time. This is not blocking; later clean up applied statuses and use
@@ -65,8 +62,8 @@ Use it for:
   come from official/store-controlled/EventLink/event-platform evidence where
   possible.
 - Use `docs/IMPLEMENTATION_PLAN.md` as the active build sequence.
-- Preserve the remaining research queue for later resumption; do not mistake a
-  paused queue for a completed regional census.
+- Preserve the remaining research queue; do not mistake an evaluated subset for
+  a completed regional census.
 - Tighten the ordinary-store-pass SOP so "checked" means candidate-grade useful,
   not just lightly classified.
 - Tweedy Cards and Gaming has already served as the current test case for that
@@ -116,49 +113,28 @@ Use it for:
   - SoCalMagic: verify whether the explicit `No proxy` language is stable and
     whether any mitigating context exists
 
-### Discovery queue: not-yet-full-pass stores
+### Research coverage queue
 
-These stores are still in `wizards-discovery` status and should remain visible
-in the backlog so the field does not look artificially complete. Priority within
-this queue should be driven by distance, Magic signal quality, community-fit
-potential, and whether a store appears likely to surface useful public or
-Discord/social evidence.
+Use `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md` as the current finite venue
+queue. It replaces the older discovery-list view, which mixed untouched leads,
+already-evaluated records, structural packet dispositions, and promoted stores.
 
-#### Higher-priority discovery candidates
+Current queue shape:
 
-- Shadow Realm Collectibles
-- Buddies Collectibles
+- mandatory corrected main-pass/status queue: 22 venues;
+- micro-backfill queue from the 2026-07-17 closure audit: 7 venues;
+- optional/deeper queue: promoted or mostly complete venues with named
+  decision-changing TBDs.
 
-#### Broader discovery bench
+Recommended first post-checkpoint batch:
 
-- Grails Gone Wild
-- TK Collectibles
-- The Game Chest - Promenade on the Peninsula
-- B.Y.O.GAMES LLC
-- LVLUP GAMING TCG
-- The Crimson Guild - South El Monte
-- Games For Meeple
-- The Comic Bug
-- Aki Collectibles
-- The Game Chest - Irvine
-- Otaku Vault
-- Alamo Drafthouse Cinema Downtown Los Angeles
-- The Game Cellar
-- GXGAMERS
-- The Bullpen 2.0
-- Turn Zero Games
-- CoreTCG
-- DXN Provisions
-- Revenge Of
-- Next-Gen Games
-- Odyssey Games - Pasadena
-- Crown City Games
-- Comic Quest
-- It's GameTime!
-- A & N Collectibles
+- Grails Gone Wild;
+- Buddies Collectibles;
+- Tilted Gaming.
 
-Keep this queue pruned and re-prioritized as stores are promoted into `partial`
-status or deprioritized by early signals.
+Reason: this small batch directly addresses the recent methodology correction:
+obvious-source capture, source-content inspection, and conservative event/status
+claims without reopening the whole packet.
 
 ### Medium priority
 

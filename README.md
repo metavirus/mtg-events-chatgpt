@@ -41,14 +41,24 @@ Then open:
 
     http://localhost:8000
 
-## Data files
+## Data source
 
-- `stores.json`: stable store information and assessments
-- `events.json`: recurring and one-time events
-- `sources.json`: provenance and last-check dates
-- `changes.json`: weekly audit diff log
+The operational research source is now Supabase. The hosted app reads Supabase
+by default, while `?data=json` remains the explicit recovery/export fallback.
+
+Generated JSON files are recovery artifacts, not the ordinary research editing
+surface:
+
+- `stores.json`: exported venue information and assessments
+- `events.json`: exported recurring and one-time events
+- `sources.json`: exported provenance and last-check dates
+- `changes.json`: exported audit/change feed
 
 The application code does not need to change when records are added or revised.
+Research updates should go through the controlled Supabase workflow in
+[`docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`](docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md);
+manual canonical JSON research edits are forbidden except for generated
+export/recovery work.
 
 ## Text integrity guardrails
 
@@ -94,8 +104,9 @@ GitHub Actions refreshes the Wizards snapshot every Monday and commits changed
 
 ## Current status
 
-This is a functional research prototype with a deliberately limited seed dataset
-plus a Wizards locator discovery snapshot. The seed events are heavily weighted
-toward Commander because that was the first research tranche; they are not a
-complete local Magic calendar. Distance is descriptive rather than an inclusion
-cutoff, and useful farther-away findings remain eligible for the catalog.
+This is a deployed personal-use research app backed by Supabase as the default
+read source. Controlled Supabase research writes are operational, JSON remains
+available as a generated fallback, and research has resumed in small direct
+Project Steward batches. The dataset is useful but still not a complete local
+Magic calendar; the finite venue queue is tracked in
+[`docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`](docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md).
