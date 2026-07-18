@@ -1,6 +1,6 @@
 {
   "proposal_id": "grails-baseline-source-correction-2026-07-17",
-  "description": "Lean corrective proposal for Grails Gone Wild / GGW Cards N Collects after baseline source sweep methodology correction. Adds readily discoverable official, social, review/directory, and non-MTG organized-play evidence; updates the Places assessment to reflect likely active TCG storefront status while preserving MTG Commander replay TBD. Instagram content was inspected: it supports GGW identity and a stale July 2025 MTG prerelease signal, not current weekly Commander. No event records are added or changed.",
+  "description": "Lean corrective proposal for Grails Gone Wild / GGW Cards N Collects after baseline source sweep methodology correction. Adds readily discoverable official, social, review/directory, and non-MTG organized-play evidence; updates the Places assessment to reflect likely active TCG storefront status while preserving MTG Commander replay TBD. This is a targeted source correction, not a completed main store pass. Instagram content was inspected: it supports GGW identity and visible TCG/MTG activity through September 2025, including a stale July 2025 MTG prerelease signal, but not July 2026 activity or current weekly Commander. No event records are added or changed.",
   "created_at": "2026-07-17T22:10:00-07:00",
   "author": "Codex Project Steward",
   "operations": [
@@ -172,7 +172,8 @@
       },
       "fields": {
         "last_verified": "2026-07-17",
-        "assessment_notes": "Grails Gone Wild should now be read as a Grails/GGW Cards N Collects alias cluster rather than a simple maybe-closed record. Current directory/review routes point to GGW Cards N Collects at the same Torrance phone/address, with a storefront route, hours, MTG among games available, and review texture. Instagram also supports the same store/location and linked storefront route, and it shows a July 2025 Edge of Eternities prerelease plus other TCG event/product activity, but the latest visible post is September 2025 and the visible sample does not confirm current weekly Commander. This weakens the older physical-status concern from the MapQuest closed flag, but it does not prove the existing Sunday MTG Commander row is currently operational. Keep Grails visible as an active-TCG-store lead and preserve the Commander row as a source-backed lead, but replay current MTG/EventLink or store-controlled social evidence before recommending it as a reliable personal Commander trip."
+        "research_status": "discovery",
+        "assessment_notes": "Grails Gone Wild should now be read as a Grails/GGW Cards N Collects alias cluster rather than a simple maybe-closed record. Presently current/current-looking sources support a conservative likely active TCG storefront read: KeepUp and Card Shop Hub point to GGW Cards N Collects at the same Torrance phone/address with hours, storefront routing, MTG among games available, and review texture; Ravensburger shows a May 2026 non-MTG organized-play event at GGW; and TCGplayer supports ongoing card-commerce depth. Instagram also supports the same store/location and linked storefront route, and it shows visible TCG/MTG activity through September 2025, including a July 2025 Edge of Eternities prerelease, but Instagram does not by itself prove July 2026 operation or current weekly Commander. This weakens the older physical-status concern from the MapQuest closed flag, but it does not prove the existing Sunday MTG Commander row is currently operational. Keep Grails visible as a likely active TCG-store lead and preserve the Commander row as a source-backed lead, but replay current MTG/EventLink or store-controlled social evidence before recommending it as a reliable personal Commander trip. This remains a targeted source correction, not a completed main store pass."
       },
       "reason": "Replace overly pessimistic status-conflict wording with the updated alias/current-storefront read."
     },
@@ -186,15 +187,15 @@
       "fields": {
         "entity_type": "venue",
         "entity_id": "grails-gone-wild",
-        "research_status": "reviewed",
+        "research_status": "discovery",
         "candidate_status": "neutral",
         "fit_grade": "C+",
         "fit_score": 3.0,
         "confidence": "medium",
         "positives": [
-          "Current GGW Cards N Collects alias sources point to the same Torrance phone/address and support active TCG-store operation.",
+          "Current/current-looking GGW Cards N Collects alias sources point to the same Torrance phone/address and support likely active TCG-store operation.",
           "KeepUp and Card Shop Hub list current hours and TCG-shop activity, with MTG included among games available.",
-          "Instagram confirms the store-controlled Grails/GGW route, same Torrance location, storefront link, and a July 2025 Edge of Eternities prerelease post.",
+          "Instagram confirms the store-controlled Grails/GGW route, same Torrance location, storefront link, and visible TCG/MTG activity through September 2025, including a July 2025 Edge of Eternities prerelease post.",
           "Ravensburger/Lorcana evidence supports current organized-play capability at GGW toys, though not MTG calendar truth.",
           "Existing Wizards/EventLink data still supports a Sunday casual Commander lead worth replaying rather than discarding.",
           "TCGplayer supports active MTG/collectibles commerce."
@@ -204,16 +205,18 @@
           "The older MapQuest/Yelp-derived closed flag remains a conflict signal, though it is weakened by current GGW alias evidence.",
           "Instagram's visible MTG evidence is stale/historical: the Edge of Eternities prerelease post was July 23, 2025 for July 25/26, 2025.",
           "The latest visible Instagram post is September 2025 and appears Lorcana/product-oriented, so Instagram does not currently support ongoing weekly Commander.",
-          "Current evidence supports an active TCG storefront more strongly than it supports a proven casual Commander community."
+          "Current evidence supports a likely active TCG storefront more strongly than it supports a proven casual Commander community.",
+          "This was a targeted source correction, not a full baseline main-store pass."
         ],
         "open_questions": [
           "Is the Wizards Sunday Commander listing still operationally valid?",
           "Does Grails/GGW currently promote MTG Commander, draft, prerelease/sealed, or other Magic play outside the stale July 2025 Instagram prerelease post?",
           "What is the current in-store Magic community texture and solo-arrival comfort?",
-          "Should the public display name eventually shift from Grails Gone Wild to GGW Cards N Collects, or preserve both as aliases?"
+          "Should the public display name eventually shift from Grails Gone Wild to GGW Cards N Collects, or preserve both as aliases?",
+          "Can one bounded main-store completion pass resolve current Magic activity, ordinary official/community routes, and direct review surfaces?"
         ]
       },
-      "reason": "Calibrate the Places evaluation after the baseline source sweep found stronger current-storefront evidence but not current MTG Commander confirmation."
+      "reason": "Calibrate the Places evaluation after the targeted source correction found stronger likely-current storefront evidence but not current MTG Commander confirmation; keep research status discovery/partial."
     },
     {
       "action": "insert",
@@ -227,8 +230,8 @@
         "change_type": "source_update",
         "entity_type": "venue",
         "entity_id": "grails-gone-wild",
-        "summary": "Baseline source sweep correction found current GGW Cards N Collects alias evidence, inspected Instagram content, review/directory support, and non-MTG organized-play evidence for Grails; proposed assessment treats it as likely active TCG storefront while classifying Instagram MTG evidence as stale and Commander as replay TBD.",
-        "review_status": "proposed"
+        "summary": "Targeted baseline source correction found current/current-looking GGW Cards N Collects alias evidence, inspected Instagram content through September 2025, review/directory support, and non-MTG organized-play evidence for Grails; assessment treats it as likely active TCG storefront while keeping research status partial/discovery, Instagram MTG evidence stale, and Commander as replay TBD.",
+        "review_status": "accepted"
       },
       "reason": "Create a durable update marker for the Grails source-sweep correction."
     }

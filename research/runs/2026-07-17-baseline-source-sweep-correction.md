@@ -35,6 +35,8 @@ merely found-but-unread, is not.
 
 ### Grails Gone Wild / GGW Cards N Collects
 
+Pass type: targeted source correction, not a completed main store pass.
+
 Reason for audit:
 
 - User flagged that Instagram was readily discoverable.
@@ -106,14 +108,22 @@ Places reassessment:
 - The previous "maybe closed / mostly online" caution is too pessimistic if the
   current `GGW Cards N Collects` alias sources are accepted.
 - Instagram partly helps and partly hurts: it confirms a store-controlled route,
-  location, storefront link, and 2025 MTG prerelease/event capability, but the
-  visible sample does not show 2026 posting or current weekly Magic.
+  location, storefront link, and visible TCG/MTG activity through September
+  2025, including a July 2025 MTG prerelease/event capability signal, but the
+  visible sample does not show July 2026 posting or current weekly Magic.
+- Presently current/current-looking sources outside Instagram support a
+  conservative "likely active TCG storefront" read: KeepUp and Card Shop Hub
+  list the current GGW Cards N Collects alias/address/hours and TCG-shop
+  routing, Ravensburger shows a May 2026 Lorcana organized-play event at GGW,
+  and TCGplayer supports active card-commerce depth.
 - The store still should not be promoted as a personal Commander target until
   the MTG/Wizards Sunday Commander row is replayed against current
   store-controlled or EventLink evidence.
-- Proposed direction: move from `C / 2.7 / low / deprioritized` to
+- Proposed direction: keep the record in schema-equivalent discovery/partial
+  research status, but recalibrate from `C / 2.7 / low / deprioritized` to
   `C+ / 3.0 / medium / neutral`. This recognizes a likely active TCG storefront
-  while preserving the Commander/status uncertainty.
+  while preserving the Commander/status uncertainty and the need for one
+  bounded main-store completion pass.
 
 Events reassessment:
 
@@ -129,15 +139,38 @@ Events reassessment:
 
 Coverage line:
 
-- Official site: checked / needs Evidence backfill
-- Instagram: checked / needs Evidence backfill; content inspected; supports
-  2025 MTG prerelease and GGW identity, not current weekly Commander
-- Facebook: checked / no direct current result captured in this lean pass
-- Discord/community route: checked / no direct route captured in this lean pass
-- Wizards/EventLink: checked / already captured, MTG event replay TBD
-- Reviews: checked / needs KeepUp/Card Shop Hub evidence backfill
-- Other useful sources: checked / Ravensburger evidence backfill; HobbyNext and
-  TCDB source-cleanup TBD
+- Official site: inspected / needs Evidence backfill. The
+  `ggwcardsncollects.com` storefront route is surfaced by Instagram and
+  current directory/review routes and supports the GGW alias/storefront route;
+  it was not used as standalone proof of current Magic events.
+- Instagram: inspected / needs Evidence backfill. The accessible profile
+  supports the Grails/GGW identity, same Torrance location, storefront link, and
+  visible TCG/MTG activity through September 2025, including a July 2025 Edge of
+  Eternities prerelease post. It does not prove July 2026 activity or current
+  weekly Commander.
+- Facebook: checked / no direct current Facebook route captured in this lean
+  correction; not used for assessment.
+- Discord/community route: checked / no direct Discord, Linktree, or public
+  community route captured in this lean correction; community route remains a
+  named main-pass TBD, not an emergency.
+- Wizards/EventLink: checked / existing Sunday Commander lead already captured;
+  current MTG event replay remains TBD before relying on it for travel.
+- Direct Google/Yelp review surfaces: checked / no reliable direct Google or
+  Yelp page was captured in this targeted correction; direct review replay
+  remains part of the bounded main-store completion pass if found.
+- Secondary directories/locators: inspected / KeepUp and Card Shop Hub need
+  Evidence backfill for alias, hours, MTG-listed/game-store status, and review
+  texture; Ravensburger needs Evidence backfill for May 2026 non-MTG
+  organized-play capability; HobbyNext and TCDB were useful source-map clues but
+  are source-cleanup TBD.
+
+Grails closure status after this correction:
+
+- Not fully reviewed.
+- Not an emergency.
+- Needs one bounded main-store completion pass covering current MTG activity,
+  the existing Sunday Commander series, direct review surfaces if found, and any
+  ordinary official/community routes not resolved here.
 
 ### Buddies Collectibles
 
