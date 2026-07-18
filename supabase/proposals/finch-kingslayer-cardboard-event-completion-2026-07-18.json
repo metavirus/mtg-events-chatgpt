@@ -1,6 +1,6 @@
 {
   "proposal_id": "finch-kingslayer-cardboard-event-completion-2026-07-18",
-  "description": "PROPOSED. Event-completion pass for Finch and Sparrow Games, Kingslayer Games - Fountain Valley, and Cardboard Games after fresh Wizards/EventLink pull. Adds missing current/future WPN-supported Magic events, clarifies Finch's Friday FNM row, retires one unsupported Finch Standard row, refreshes WPN source freshness, and preserves Cardboard's already-cataloged rows. No canonical JSON, app code, schema/auth/RLS, or personal preference changes.",
+  "description": "ACCEPTED/APPLIED. Event-completion pass for Finch and Sparrow Games, Kingslayer Games - Fountain Valley, and Cardboard Games after fresh Wizards/EventLink pull. Added missing current/future WPN-supported Magic events, clarified Finch's Friday FNM row, retired one unsupported Finch Standard row, refreshed WPN source freshness, and preserved Cardboard's already-cataloged rows. No canonical JSON, app code, schema/auth/RLS, or personal preference changes. Live Supabase write applied 2026-07-18 with standard validation.",
   "created_at": "2026-07-18T12:45:00-07:00",
   "author": "Codex Project Steward",
   "operations": [
@@ -12,7 +12,8 @@
       },
       "fields": {
         "health_status": "current",
-        "last_checked": "2026-07-18"
+        "last_checked": "2026-07-18",
+        "id": "src-wpn-6718"
       },
       "reason": "Fresh Wizards/EventLink pull inspected for Finch and Sparrow Games."
     },
@@ -24,7 +25,8 @@
       },
       "fields": {
         "health_status": "current",
-        "last_checked": "2026-07-18"
+        "last_checked": "2026-07-18",
+        "id": "src-wpn-7819"
       },
       "reason": "Fresh Wizards/EventLink pull inspected for Kingslayer Games - Fountain Valley."
     },
@@ -36,7 +38,8 @@
       },
       "fields": {
         "health_status": "current",
-        "last_checked": "2026-07-18"
+        "last_checked": "2026-07-18",
+        "id": "src-wpn-17086"
       },
       "reason": "Fresh Wizards/EventLink pull inspected for Cardboard Games."
     },
@@ -51,7 +54,8 @@
         "entry_fee": 28.0,
         "details": "Fresh Wizards/EventLink pull confirms recurring Wednesday 7:00 PM Magic draft nights at Finch and Sparrow Games with $28 entry. This remains a current limited-format planning lane.",
         "last_verified": "2026-07-18",
-        "venue_id": "finch-sparrow"
+        "venue_id": "finch-sparrow",
+        "id": "finch-sparrow-booster-draft-standard-sets"
       },
       "reason": "Refresh existing Finch draft row with current WPN title, fee, and verification."
     },
@@ -81,7 +85,8 @@
         "entry_fee": 15.0,
         "details": "Fresh Wizards/EventLink pull confirms recurring Tuesday 7:00 PM Modern Kombat at Finch and Sparrow Games with $15 entry. This is lower personal priority than Commander/draft/prerelease but supports Finch's broad active Magic footprint.",
         "last_verified": "2026-07-18",
-        "venue_id": "finch-sparrow"
+        "venue_id": "finch-sparrow",
+        "id": "finch-sparrow-modern-kombat"
       },
       "reason": "Refresh existing Finch Tuesday Modern row with current WPN fee and verification."
     },
@@ -116,7 +121,8 @@
         "confidence": "high",
         "details": "Fresh Wizards/EventLink pull clarifies Finch's Friday 7:00 PM Magic/FNM lane as Modern Kombat with $15 entry. This replaces the prior generic FNM label; it is useful as Magic-program context but is lower personal priority than Commander, draft, or prerelease.",
         "last_verified": "2026-07-18",
-        "venue_id": "finch-sparrow"
+        "venue_id": "finch-sparrow",
+        "id": "finch-sparrow-fnm-at-finch-and-sparrow"
       },
       "reason": "Clarify an existing generic Finch FNM row using current WPN event title/format."
     },
@@ -193,7 +199,8 @@
         "end_date": "2026-07-18",
         "details": "Previously cataloged from Finch's official event calendar as Monday 7:00 PM MTG Standard Constructed. Fresh Wizards/EventLink pull on July 18, 2026 did not surface this row; the current Monday WPN evidence instead shows cEDH Workshop and short-run Pauper Night. Retired from active planning pending future official replay.",
         "last_verified": "2026-07-18",
-        "venue_id": "finch-sparrow"
+        "venue_id": "finch-sparrow",
+        "id": "finch-sparrow-mtg-standard-constructed"
       },
       "reason": "Avoid leaving an unsupported open-ended Finch Standard row visible in the planning calendar."
     },
@@ -205,7 +212,8 @@
       },
       "fields": {
         "last_verified": "2026-07-18",
-        "venue_id": "finch-sparrow"
+        "venue_id": "finch-sparrow",
+        "id": "finch-sparrow-commanderfest-6-14-30"
       },
       "reason": "Fresh WPN pull reconfirmed Saturday Commanderfest at 2:30 PM."
     },
@@ -233,7 +241,8 @@
       },
       "fields": {
         "last_verified": "2026-07-18",
-        "venue_id": "kingslayer-games-fountain-valley"
+        "venue_id": "kingslayer-games-fountain-valley",
+        "id": "kingslayer-games-fountain-valley-fountain-valley-wednesday-m"
       },
       "reason": "Fresh WPN pull reconfirmed Wednesday Commander Slay Pass for Kingslayer Fountain Valley."
     },
@@ -261,7 +270,8 @@
       },
       "fields": {
         "last_verified": "2026-07-18",
-        "venue_id": "kingslayer-games-fountain-valley"
+        "venue_id": "kingslayer-games-fountain-valley",
+        "id": "kingslayer-games-fountain-valley-fountain-valley-mtg-fnm-com"
       },
       "reason": "Fresh WPN pull reconfirmed Friday Commander Slay Pass for Kingslayer Fountain Valley."
     },
@@ -511,7 +521,8 @@
       },
       "fields": {
         "last_verified": "2026-07-18",
-        "venue_id": "cardboard-games"
+        "venue_id": "cardboard-games",
+        "id": "cardboard-games-cbg-commander-night-5-19-00"
       },
       "reason": "Fresh WPN pull reconfirmed Friday CBG Commander Night."
     },
@@ -523,7 +534,8 @@
       },
       "fields": {
         "last_verified": "2026-07-18",
-        "venue_id": "cardboard-games"
+        "venue_id": "cardboard-games",
+        "id": "cardboard-games-cbg-marvel-superheroes-draft-1-19-00"
       },
       "reason": "Fresh WPN pull reconfirmed Monday CBG Marvel Superheroes Draft."
     },
@@ -540,7 +552,7 @@
         "entity_type": "event",
         "entity_id": "finch-kingslayer-cardboard-event-completion",
         "summary": "Fresh Wizards/EventLink completion pass added or refreshed current Magic event coverage for Finch and Sparrow, Kingslayer Fountain Valley, and Cardboard, including non-Commander formats where source-supported.",
-        "review_status": "proposed"
+        "review_status": "accepted"
       },
       "reason": "Create a visible Updates marker for the proposed event-completion batch."
     }

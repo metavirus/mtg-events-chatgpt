@@ -2,6 +2,8 @@
 
 Date: 2026-07-18
 
+Status: accepted/applied to live Supabase on 2026-07-18.
+
 Pass type: bounded event-completion pass with light Places implications.
 
 Validation level planned: standard, because event-series rows are proposed.
@@ -133,7 +135,7 @@ Assessment status: no full reassessment
 
 ## Proposed durable outcome
 
-Create a controlled Supabase proposal with event/source updates only. Do not hand-edit canonical JSON. Do not perform live writes until approved.
+Created and applied a controlled Supabase proposal with event/source updates only. Canonical JSON was not hand-edited.
 
 ## Pre-write validation note
 
@@ -147,6 +149,16 @@ For this proposal, pre-write validation was therefore performed against live Sup
 - Current duplicate active event-series check for Finch, Kingslayer Fountain Valley, and Cardboard returned no duplicates before this proposed write.
 
 Future workflow improvement: proposal validation should be taught to validate against live Supabase state, or the team should avoid treating the JSON-snapshot validator as authoritative after the Supabase cutover.
+
+## Apply notes
+
+The first live apply attempt correctly rolled back on an existing `src-wpn-6718` / `finch-sparrow-commanderfest-6-14-30` event-source link. The second attempt also rolled back while converting source-link inserts to idempotent form because the named unique object is a partial unique index rather than a constraint. The final applied SQL used:
+
+`on conflict (source_id, series_id) where series_id is not null do nothing`
+
+for event-source link inserts. This preserved existing provenance and allowed the rest of the approved event updates to apply cleanly.
+
+The Updates marker was set to `accepted` after the live write so the completed batch does not appear as merely proposed.
 
 ## Rollback and validation plan
 
@@ -164,3 +176,12 @@ Post-write validation if approved:
 - Verify no Kingslayer Lake Forest rows changed.
 - Run a relevant duplicate active event-series check for Finch, Kingslayer Fountain Valley, and Cardboard.
 - Skip local preview unless a data-path anomaly appears; this is a routine event/source write.
+
+Post-write validation performed:
+
+- Verified new Finch/Kingslayer rows exist with expected venue IDs, dates, times, active/inactive status, confidence, and WPN provenance.
+- Verified Finch Monday Standard is inactive with end date 2026-07-18.
+- Verified Cardboard Commander/draft rows and all three WPN source rows have `last_verified` / `last_checked` 2026-07-18 as applicable.
+- Verified no Kingslayer Lake Forest rows were touched.
+- Verified no duplicate active event-series rows for Finch, Kingslayer Fountain Valley, or Cardboard.
+- Skipped local preview by design; this was a routine event/source write and targeted data checks passed.
