@@ -1,6 +1,6 @@
 {
   "proposal_id": "krazy-comic-crimson-event-completion-2026-07-18",
-  "description": "PROPOSED. Fresh Wizards/EventLink event-completion pass for Krazy Nick's Games, Comic Quest, and The Crimson Guild - South El Monte. Adds current/future source-supported Magic rows and refreshes WPN source freshness. No canonical JSON, app code, schema/auth/RLS, or personal preference changes.",
+  "description": "ACCEPTED/APPLIED. Fresh Wizards/EventLink event-completion pass for Krazy Nick's Games, Comic Quest, and The Crimson Guild - South El Monte. Added current/future source-supported Magic rows and refreshed WPN source freshness. No canonical JSON, app code, schema/auth/RLS, or personal preference changes. Live Supabase write applied 2026-07-18 with standard validation.",
   "created_at": "2026-07-18T16:35:00-07:00",
   "author": "Codex Project Steward",
   "operations": [
@@ -880,7 +880,7 @@
         "entity_type": "event",
         "entity_id": "krazy-comic-crimson-event-completion",
         "summary": "Proposed fresh Wizards/EventLink event-completion pass for Krazy Nick's Games, Comic Quest, and The Crimson Guild, adding current Commander specials, prereleases, draft, Standard, Modern, and Pauper rows where source-supported.",
-        "review_status": "proposed",
+        "review_status": "accepted",
         "id": "chg-2026-07-18-krazy-comic-crimson-event-completion"
       },
       "reason": "Create visible Updates marker for the proposed event-completion batch."

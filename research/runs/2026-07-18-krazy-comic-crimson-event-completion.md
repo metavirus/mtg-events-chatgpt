@@ -2,7 +2,7 @@
 
 Date: 2026-07-18
 
-Status: proposed, not applied.
+Status: accepted/applied to live Supabase on 2026-07-18.
 
 Pass type: bounded event-completion pass with light Places implications.
 
@@ -106,9 +106,11 @@ Discord/community route: not replayed in this event-completion pass
 Events: write now  
 Assessment: event-program breadth strengthened, no full reassessment
 
-## Proposal
+## Proposal / apply status
 
 Proposal file: `supabase/proposals/krazy-comic-crimson-event-completion-2026-07-18.json`
+
+Applied SQL artifact: `supabase/proposals/krazy-comic-crimson-event-completion-2026-07-18.sql`
 
 Proposed operations:
 
@@ -118,7 +120,7 @@ Proposed operations:
 - Attach WPN provenance.
 - Add a proposed Updates marker.
 
-No canonical JSON, app code, schema/auth/RLS, or personal preference changes are proposed.
+No canonical JSON, app code, schema/auth/RLS, or personal preference changes were made.
 
 ## Proposed validation if approved
 
@@ -127,3 +129,13 @@ No canonical JSON, app code, schema/auth/RLS, or personal preference changes are
 - Verify no duplicate active event-series rows for Krazy Nick's, Comic Quest, or Crimson Guild.
 - Verify no unrelated venues changed.
 - Skip local preview unless a data-path anomaly appears; this is routine event/source work.
+
+## Post-write validation
+
+- Krazy Nick's Games now has 7 active event series.
+- Comic Quest now has 6 active event series.
+- The Crimson Guild - South El Monte now has 5 active event series.
+- The finite prerelease / Commander Party occurrence rows total 8 across the proposed finite series.
+- WPN source rows `src-wpn-9348`, `src-wpn-6809`, and `src-wpn-18899` are marked current with `last_checked` 2026-07-18.
+- Duplicate active event-series check for the three venues returned no rows.
+- Local preview was skipped by design; targeted data checks passed and this was routine event/source work.
