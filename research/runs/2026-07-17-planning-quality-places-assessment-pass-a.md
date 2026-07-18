@@ -291,3 +291,32 @@ Create a controlled Supabase proposal that:
 - does not add event rows;
 - does not change schema, auth, RLS, app code, or canonical JSON manually.
 
+## Applied status
+
+Applied live after user approval.
+
+- Proposal:
+  `supabase/proposals/planning-quality-places-assessment-pass-a-2026-07-17.json`
+- Pre-write export:
+  `supabase/exports/prewrite-planning-quality-places-assessment-pass-a-2026-07-17`
+- Post-write export:
+  `supabase/exports/postwrite-planning-quality-places-assessment-pass-a-2026-07-17`
+- Applied operations: 37
+- Supabase post-write counts:
+  - venues: 55
+  - sources: 221
+  - entity_sources: 225
+  - evaluations: 23
+  - event_series: 98
+  - event_occurrences: 11
+  - research_changes: 47
+- Verification:
+  - all four venues have `reviewed` status, `2026-07-17` verification date,
+    and assessment notes;
+  - all four venues have evaluation rows with fit, confidence, positives,
+    cautions, and open questions;
+  - 14 new sources and 14 venue evidence links were present;
+  - no duplicate event occurrences were found;
+  - deterministic post-write export verified;
+  - repository text integrity passed.
+- Event ingest result: no event rows were added or changed.
