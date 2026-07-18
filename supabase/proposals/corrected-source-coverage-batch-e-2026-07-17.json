@@ -1,0 +1,188 @@
+{
+  "proposal_id": "corrected-source-coverage-batch-e-2026-07-17",
+  "description": "Lean evidence and assessment-support proposal for corrected source coverage on Grails Gone Wild, Buddies Collectibles, and Tilted Gaming. Grails requires no new write because the targeted correction is already applied and remains partial/discovery. Buddies receives a Whatnot commerce/community-scale Evidence link; Tilted receives official Linktree source-routing Evidence. Buddies and Tilted Places assessments are lightly clarified to make review/source-router reasoning visible. No event rows, schema, auth, RLS, app code, or canonical JSON changes.",
+  "created_at": "2026-07-17T23:20:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-buddies-whatnot-2026-07-17"
+      },
+      "fields": {
+        "id": "src-buddies-whatnot-2026-07-17",
+        "label": "Buddies Collectibles Whatnot profile",
+        "url": "https://www.whatnot.com/user/socalbuddies",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture the material commerce/community-scale source that supports Buddies' live-break and broad TCG-commerce orientation without treating it as in-person Magic event proof."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-whatnot-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-whatnot-2026-07-17",
+        "relationship": "commerce/community-scale signal"
+      },
+      "reason": "Make the live-commerce/source-scale signal visible in the Buddies Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-tilted-linktree-2026-07-17"
+      },
+      "fields": {
+        "id": "src-tilted-linktree-2026-07-17",
+        "label": "Tilted Gaming official Linktree",
+        "url": "https://linktr.ee/tiltedgamingtcg",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture the official source-routing record that links Tilted's Discord, Instagram, Facebook, website, reviews, apps, and contact routes."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "source_id": "src-tilted-linktree-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "source_id": "src-tilted-linktree-2026-07-17",
+        "relationship": "official social/community source-routing support"
+      },
+      "reason": "Make Tilted's official social and Discord routing visible in the Evidence tab."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "buddies-collectibles"
+      },
+      "fields": {
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Buddies Collectibles remains a useful but commerce-heavy Gardena TCG lead. The official site supports current identity, in-store/online operation, Magic product depth, weekly tournament infrastructure, and a strong live-stream/live-commerce posture. The direct Yelp page and Google/Yelp-derived mirrors support a generally positive store-quality read: helpful/friendly staff, strong selection, open tables, and some tournament/community warmth. Whatnot reinforces that Buddies has meaningful live-commerce/community scale, but mostly as a commerce signal rather than proof of in-person Magic play. The Friday casual Commander event remains the actionable MTG calendar lead from Wizards/EventLink; the main remaining planning unknown is lived Commander turnout, proxy/power expectations, and solo-arrival comfort, best resolved by Discord or a targeted community-texture replay."
+      },
+      "reason": "Clarify that direct Yelp/review and Whatnot signals support the Places assessment while keeping event proof anchored to Wizards/EventLink."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.4,
+        "confidence": "medium",
+        "positives": [
+          "Wizards/EventLink supports a Friday casual Commander event already visible in the calendar.",
+          "Direct Yelp and review mirrors support generally positive store-quality signals: friendly/helpful staff, strong selection, tables, and some tournament/community warmth.",
+          "Official site supports current Gardena identity, Magic product depth, weekly tournament infrastructure, and in-store/online operation.",
+          "Official Linktree routes to Discord, Instagram, Twitch, Whatnot, and other community/social surfaces for future deeper replay.",
+          "Whatnot supports meaningful commerce/community scale, reinforcing that this is an active TCG business even though it is not event proof."
+        ],
+        "cautions": [
+          "The store's public footprint is strongly commerce/live-break oriented, so it may not automatically translate into a relaxed in-store Commander scene.",
+          "Public official tournament infrastructure is generic and does not independently describe the Friday Commander texture beyond the Wizards/EventLink event row.",
+          "Discord/community texture has not been surveyed, leaving turnout, proxy norms, power expectations, and solo-arrival comfort unresolved.",
+          "Review and marketplace sources support fit/confidence, not canonical event facts."
+        ],
+        "open_questions": [
+          "How many people regularly attend Friday casual Commander?",
+          "Is the Friday Commander environment newcomer/solo friendly, or mostly regulars?",
+          "What are the current proxy, pod-forming, and power-level norms?",
+          "Does Discord provide enough public/community signal to promote or deprioritize Buddies?"
+        ]
+      },
+      "reason": "Make the direct review and live-commerce evidence visible in the user-facing Places assessment without changing the fit grade."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "tilted-gaming"
+      },
+      "fields": {
+        "last_verified": "2026-07-17",
+        "website": "https://tiltedgamingtcg.com/",
+        "assessment_notes": "Tilted Gaming is a current Cerritos TCG store with unusually strong source agreement for branch identity and operation. The official events page supports current hours, address, Discord routing, in-store signup, and weekly/special event infrastructure across MTG and other competitive TCGs. Wizards/EventLink already supports the Friday casual Commander row, and the duplicate Commander series has been closed. The official Linktree adds clean source routing to Discord, Instagram, Facebook, reviews, apps, and the website. Review mirrors and public review surfaces support good service/store-quality signals. Keep Tilted visible as a high-confidence nearby candidate, but do not treat the competitive-hub framing as solved casual comfort: Commander turnout, power/proxy norms, and solo-arrival feel still need Discord or social texture if the store is promoted."
+      },
+      "reason": "Clarify source-router and review support while preserving the already accepted duplicate cleanup and event facts."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.7,
+        "confidence": "high",
+        "positives": [
+          "Official events page supports current Cerritos operation, hours, address, Discord routing, in-store signup, and MTG-inclusive event infrastructure.",
+          "Wizards/EventLink supports the active Friday casual Commander event already visible in the calendar.",
+          "Official Linktree captures the source-routing map for Discord, Instagram, Facebook, reviews, apps, and the website.",
+          "Review mirrors and public review surfaces support strong store-quality and customer-service signals.",
+          "Duplicate Commander cleanup is already complete, leaving the fuller active Friday row as the planning record."
+        ],
+        "cautions": [
+          "Official positioning is a competitive multi-TCG hub, so casual/proxy comfort should not be assumed.",
+          "Event signup is in-store and seats may fill, which matters for solo arrival and first visits.",
+          "Discord/social content was routed but not deeply surveyed in this micro-backfill.",
+          "Commander turnout, power level, and proxy expectations remain unresolved."
+        ],
+        "open_questions": [
+          "How casual is the Friday Commander crowd in practice?",
+          "Are proxies accepted or discouraged?",
+          "Does the Discord show newcomer-friendly LFG or mostly competitive regulars?",
+          "How early would a solo player need to arrive to secure a seat?"
+        ]
+      },
+      "reason": "Make the social-router and review-surface support explicit in the Places evaluation while preserving the B/high-confidence read."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "corrected-source-coverage-batch-e-2026-07-17"
+      },
+      "fields": {
+        "id": "corrected-source-coverage-batch-e-2026-07-17",
+        "detected_at": "2026-07-17T23:20:00-07:00",
+        "change_type": "source_update",
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "summary": "Corrected source-coverage audit for Grails, Buddies, and Tilted: Grails targeted correction stands as partial/discovery; Buddies direct Yelp was already captured and Whatnot should be added as commerce/community-scale Evidence; Tilted official Linktree should be added as source-routing Evidence. No event rows are proposed.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable update marker for the corrected source-coverage batch."
+    }
+  ]
+}
