@@ -1,0 +1,657 @@
+{
+  "proposal_id": "planning-quality-places-assessment-pass-a-2026-07-17",
+  "description": "Planning-quality Places assessment and evidence proposal for A & N Collectibles, Crown City Games, Odyssey Games - Pasadena, and The Game Chest - Promenade on the Peninsula. Adds materially useful venue evidence, updates assessment notes/status, and adds evaluation rows. No event rows are added because existing Wizards/EventLink Commander rows already cover the event implications.",
+  "created_at": "2026-07-17T23:30:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-aandn-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "id": "src-aandn-yahoo-local-2026-07-17",
+        "label": "Yahoo Local / Yelp-derived listing for A & N Collectibles",
+        "url": "https://local.yahoo.com/info-20766590-a-n-sports-cards-san-dimas",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Yelp-derived MTG, weekly tournament, draft, prerelease, Commander, staff-help, and review signals for A & N without treating them as canonical event proof."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-aandn-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "id": "src-aandn-loc8nearme-2026-07-17",
+        "label": "Loc8NearMe review/directory mirror for A & N Collectibles",
+        "url": "https://www.loc8nearme.com/california/san-dimas/a-and-n-collectibles/7794315/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived support for friendly staff, MTG inventory, Commander play, fair prices, and a welcoming atmosphere."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-aandn-cardshophub-2026-07-17"
+      },
+      "fields": {
+        "id": "src-aandn-cardshophub-2026-07-17",
+        "label": "Card Shop Hub review mirror for A & N Collectibles",
+        "url": "https://cardshophub.com/states/ca/san-dimas/a-n-collectibles/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Google-derived TCG/sports-card activity, organized-play, and rating support for A & N."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-aandn-cardshopsnearme-2026-07-17"
+      },
+      "fields": {
+        "id": "src-aandn-cardshopsnearme-2026-07-17",
+        "label": "Card Shops Near Me review/editorial mirror for A & N Collectibles",
+        "url": "https://cardshopsnearme.com/california/a-n-collectibles/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve a useful counter-signal that frames A & N as more sports-card oriented and less ideal for in-store play, while other evidence supports MTG/Commander activity."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-crowncity-frontline-2026-07-17"
+      },
+      "fields": {
+        "id": "src-crowncity-frontline-2026-07-17",
+        "label": "Frontline Gaming spotlight on Crown City Games",
+        "url": "https://frontlinegaming.org/2026/02/16/champions-of-tabletop-crown-city-games/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve independent support for Crown City's community/accessibility positioning, open gaming, and broad tabletop ecosystem."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-crowncity-topdeck-take-the-crown-2026-07-17"
+      },
+      "fields": {
+        "id": "src-crowncity-topdeck-take-the-crown-2026-07-17",
+        "label": "TopDeck Take the Crown cEDH listing at Crown City Games",
+        "url": "https://topdeck.gg/event/take-the-crown-02-bff",
+        "source_type": "eventsPage",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve competitive/cEDH ecosystem evidence for Crown City without adding a dated event row in this pass."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-crowncity-corner-2026-07-17"
+      },
+      "fields": {
+        "id": "src-crowncity-corner-2026-07-17",
+        "label": "Corner place profile for Crown City Games",
+        "url": "https://www.corner.inc/place/pmoShXQnuT4P",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve open-table, community, Discord, weekly-game-night, and card-tournament signals for Crown City."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-crowncity-boardgamecafefinder-2026-07-17"
+      },
+      "fields": {
+        "id": "src-crowncity-boardgamecafefinder-2026-07-17",
+        "label": "Board Game Cafe Finder profile for Crown City Games",
+        "url": "https://boardgamecafefinder.com/cafe/crown-city-games",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve directory/review support for Crown City's active venue identity, rating, hours, and location."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-odyssey-official-about-2026-07-17"
+      },
+      "fields": {
+        "id": "src-odyssey-official-about-2026-07-17",
+        "label": "Odyssey Games official About page",
+        "url": "https://odysseygamesco.com/about",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official support for Odyssey's large play space, Magic community, casual Commander, competitive events, and open-table positioning."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-odyssey-official-bulletin-2026-07-17"
+      },
+      "fields": {
+        "id": "src-odyssey-official-bulletin-2026-07-17",
+        "label": "Odyssey Games official bulletin board",
+        "url": "https://odysseygamesco.com/bulletin-board",
+        "source_type": "eventsPage",
+        "health_status": "stale",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve source-health caution: the official bulletin board exists but current Magic listings appeared stale or placeholder-like during this pass."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-odyssey-wanderlog-2026-07-17"
+      },
+      "fields": {
+        "id": "src-odyssey-wanderlog-2026-07-17",
+        "label": "Wanderlog review/directory mirror for Odyssey Games - Pasadena",
+        "url": "https://wanderlog.com/place/details/6658627/odyssey-games-pasadena",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived support for Odyssey's large play space, broad community, product depth, and activity level."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-gamechest-linktree-2026-07-17"
+      },
+      "fields": {
+        "id": "src-gamechest-linktree-2026-07-17",
+        "label": "The Game Chest official Linktree",
+        "url": "https://linktr.ee/TheGameChest",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve branch-specific source routing for The Game Chest, including Promenade/Palos Verdes social and Discord paths."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-gamechest-promenade-facebook-2026-07-17"
+      },
+      "fields": {
+        "id": "src-gamechest-promenade-facebook-2026-07-17",
+        "label": "The Game Chest Promenade branch Facebook",
+        "url": "https://www.facebook.com/GameChestPromenade",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve branch-specific social routing for the Promenade on the Peninsula location."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-gamechest-palosverdespulse-2026-07-17"
+      },
+      "fields": {
+        "id": "src-gamechest-palosverdespulse-2026-07-17",
+        "label": "Palos Verdes Pulse branch/venue context for The Game Chest Palos Verdes",
+        "url": "https://www.palosverdespulse.com/blog/meetgeannaculbertson",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve secondary active-branch context for the Promenade/Palos Verdes venue without treating it as Magic event proof."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-aandn-yahoo-local-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-aandn-yahoo-local-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Expose Yahoo/Yelp-derived MTG and community signals on A & N's Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-aandn-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-aandn-loc8nearme-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Expose Loc8NearMe's MTG, Commander, staff, and atmosphere signals on A & N's Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-aandn-cardshophub-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-aandn-cardshophub-2026-07-17",
+        "relationship": "secondary activity/review support"
+      },
+      "reason": "Expose Card Shop Hub's TCG and organized-play support on A & N's Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-aandn-cardshopsnearme-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-aandn-cardshopsnearme-2026-07-17",
+        "relationship": "review caution/conflict"
+      },
+      "reason": "Expose the sports-card-weighted and in-store-play caution rather than hiding the conflict."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-crowncity-frontline-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-crowncity-frontline-2026-07-17",
+        "relationship": "community/venue quality signal"
+      },
+      "reason": "Expose Frontline's community and accessibility profile on Crown City's Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-crowncity-topdeck-take-the-crown-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-crowncity-topdeck-take-the-crown-2026-07-17",
+        "relationship": "competitive event texture"
+      },
+      "reason": "Expose competitive/cEDH ecosystem evidence without adding a dated event row."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-crowncity-corner-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-crowncity-corner-2026-07-17",
+        "relationship": "community/play-space signal"
+      },
+      "reason": "Expose open-table, Discord, weekly-game-night, and tournament signals on Crown City's Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-crowncity-boardgamecafefinder-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-crowncity-boardgamecafefinder-2026-07-17",
+        "relationship": "review/directory support"
+      },
+      "reason": "Expose active venue/rating context for Crown City."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena",
+        "source_id": "src-odyssey-official-about-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena",
+        "source_id": "src-odyssey-official-about-2026-07-17",
+        "relationship": "official venue/community positioning"
+      },
+      "reason": "Expose Odyssey's own description of play space, Magic community, casual Commander, and competitive events."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena",
+        "source_id": "src-odyssey-official-bulletin-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena",
+        "source_id": "src-odyssey-official-bulletin-2026-07-17",
+        "relationship": "source-health caution"
+      },
+      "reason": "Expose the official bulletin board as a stale/placeholder-like schedule surface rather than overtrusting it."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena",
+        "source_id": "src-odyssey-wanderlog-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena",
+        "source_id": "src-odyssey-wanderlog-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Expose review-derived support for Odyssey's large play area, broad community, and activity level."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula",
+        "source_id": "src-gamechest-linktree-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula",
+        "source_id": "src-gamechest-linktree-2026-07-17",
+        "relationship": "source-routing / branch identity"
+      },
+      "reason": "Expose Linktree as the useful branch-specific router for The Game Chest Promenade/Palos Verdes."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula",
+        "source_id": "src-gamechest-promenade-facebook-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula",
+        "source_id": "src-gamechest-promenade-facebook-2026-07-17",
+        "relationship": "branch social routing"
+      },
+      "reason": "Expose branch Facebook routing for later MTG/social replay."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula",
+        "source_id": "src-gamechest-palosverdespulse-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula",
+        "source_id": "src-gamechest-palosverdespulse-2026-07-17",
+        "relationship": "active branch/venue context"
+      },
+      "reason": "Expose secondary evidence that the Promenade/Palos Verdes branch is an active venue surface, not a generic Game Chest result."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "a-and-n-collectibles"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "A & N now reads as a real MTG/Commander candidate rather than a generic sports-card listing: Wizards already shows Monday, Wednesday, and Friday Commander, while review mirrors mention weekly Magic, draft, prerelease, Commander, MTG inventory, staff help, and play-space/welcoming signals. The main cautions are distance, mixed sports-card/TCG emphasis, and a review-mirror conflict about whether it is ideal for in-store play."
+      },
+      "reason": "Upgrade A & N from thin packet/repo status to a candidate-grade Places assessment while preserving remaining uncertainty."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "crown-city-games"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Crown City has stronger planning value than its prior thin shell suggested. Existing Wizards rows cover friendly Commander and cEDH, while Frontline, Corner, Board Game Cafe Finder, and TopDeck support a broad tabletop community, open-table identity, newcomer/accessibility themes, and a serious competitive/cEDH ecosystem. The unresolved question is whether the friendly Commander lane is socially easy for a solo arrival."
+      },
+      "reason": "Upgrade Crown City's Places assessment with event and community-quality context."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "odyssey-games-pasadena"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Odyssey is a substantial Magic venue with strong physical infrastructure: the official site describes a 9,000-square-foot store, open tables, Magic events, casual Commander, competitive play, and a friendly/growing community. Existing Wizards rows cover Monday and Friday Casual Commander. The assessment is bounded by a solo-arrival caution from preserved review evidence and by the official bulletin board's stale/placeholder-like Magic schedule surface."
+      },
+      "reason": "Upgrade Odyssey's Places assessment while preserving the social-fit caution."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "the-game-chest-promenade-on-the-peninsula"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "The Game Chest Promenade is a credible distinct branch with useful branch-specific routing through the official Linktree, Facebook, Discord path, and Wizards listing. The current actionable Magic evidence remains the Tuesday Casual Commander row. Branch-specific Magic/community texture is still thin, so this should stay a modest candidate pending Facebook/Discord replay rather than being promoted on Game Chest brand evidence alone."
+      },
+      "reason": "Clarify The Game Chest Promenade's branch/source-routing status and keep its planning assessment appropriately bounded."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "high",
+        "positives": [
+          "Existing Wizards/EventLink rows already show Monday, Wednesday, and Friday Commander anchors.",
+          "Review-derived evidence mentions weekly Magic, draft, prerelease, Commander, MTG inventory, and staff help.",
+          "Multiple sources support an active card-shop environment rather than a purely retail listing."
+        ],
+        "cautions": [
+          "San Dimas distance makes this a deliberate trip from Los Alamitos.",
+          "The store appears to mix sports cards and TCGs, so Magic community focus needs practical confirmation.",
+          "One review/editorial mirror frames the shop as less ideal for in-store play, conflicting with other Commander/play-space signals."
+        ],
+        "open_questions": [
+          "Which Commander night is best for a first solo visit?",
+          "Is there a current Discord, Facebook group, or other coordination surface?",
+          "Is the in-store-play caution stale, narrow, or a real current drawback?"
+        ]
+      },
+      "reason": "Create/update A & N's Places-page evaluation fields from the planning-quality assessment pass."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.8,
+        "confidence": "high",
+        "positives": [
+          "Existing Wizards/EventLink rows cover friendly Commander, FNM Friendly Commander, and cEDH.",
+          "Independent community/place sources support open gaming, weekly game nights, Discord/community depth, and a broad tabletop ecosystem.",
+          "TopDeck evidence shows a serious competitive/cEDH layer, which helps explain the Monday cEDH signal."
+        ],
+        "cautions": [
+          "Pasadena distance makes this a planned trip rather than a default local option.",
+          "Competitive/cEDH energy may or may not match the user's preferred casual Commander lane.",
+          "Solo-arrival friendliness still needs a bounded Discord or firsthand check."
+        ],
+        "open_questions": [
+          "Are Wednesday/Friday Friendly Commander nights easy for a solo arrival?",
+          "Does the Discord support LFG, pod formation, or repeat-player coordination?",
+          "How separated are friendly Commander and competitive/cEDH communities in practice?"
+        ]
+      },
+      "reason": "Create/update Crown City's Places-page evaluation fields from the planning-quality assessment pass."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.5,
+        "confidence": "high",
+        "positives": [
+          "Official site supports a large 9,000-square-foot play space, open tables, and an active Magic community.",
+          "Official language explicitly spans casual Commander through competitive events.",
+          "Existing Wizards/EventLink rows give Monday and Friday Casual Commander anchors."
+        ],
+        "cautions": [
+          "Pasadena distance makes this a deliberate trip.",
+          "The official bulletin board was not a clean current Magic schedule surface during this pass.",
+          "Preserved review evidence raises a possible solo-arrival / established-group integration caution."
+        ],
+        "open_questions": [
+          "Does Discord or staff help newcomers find pods?",
+          "Are Monday and Friday Casual Commander nights casual in practice?",
+          "Is the cliquishness caution isolated, stale, or representative?"
+        ]
+      },
+      "reason": "Create/update Odyssey's Places-page evaluation fields from the planning-quality assessment pass."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.1,
+        "confidence": "medium",
+        "positives": [
+          "Existing Wizards/EventLink row gives a Tuesday Casual Commander anchor.",
+          "Official Linktree separates Promenade/Palos Verdes branch routing from other Game Chest branches.",
+          "Branch Facebook and Discord paths are visible enough to support future targeted replay."
+        ],
+        "cautions": [
+          "Branch-specific Magic/community texture remains thin.",
+          "Multi-branch Game Chest search results can conflate stores.",
+          "Tuesday-only Commander is less aligned with the user's Friday-Sunday opportunity pattern."
+        ],
+        "open_questions": [
+          "Does the Promenade/Palos Verdes Discord show Commander turnout or LFG behavior?",
+          "Does the branch Facebook show current Magic schedule graphics?",
+          "Is Tuesday Casual Commander strong enough to justify the drive?"
+        ]
+      },
+      "reason": "Create/update Game Chest Promenade's Places-page evaluation fields from the planning-quality assessment pass."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "change-planning-quality-places-assessment-pass-a-2026-07-17"
+      },
+      "fields": {
+        "id": "change-planning-quality-places-assessment-pass-a-2026-07-17",
+        "detected_at": "2026-07-17T23:30:00Z",
+        "change_type": "research",
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "summary": "Completed planning-quality Places assessment pass for A & N Collectibles, Crown City Games, Odyssey Games - Pasadena, and The Game Chest - Promenade on the Peninsula; enriched evidence and assessment recommendations without adding event rows.",
+        "review_status": "proposed"
+      },
+      "reason": "Leave a visible durable Updates marker for this assessment/evidence enrichment batch."
+    }
+  ]
+}
