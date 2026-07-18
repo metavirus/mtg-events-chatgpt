@@ -217,6 +217,56 @@ The proposal should:
 - insert one proposed research-change marker;
 - not add or change event rows.
 
+## Applied checkpoint
+
+Status: applied to Supabase after user approval on 2026-07-18.
+
+Proposal:
+
+- `supabase/proposals/socal-coretcg-magicandmonsters-main-pass-2026-07-18.json`
+
+Generated SQL artifact:
+
+- `supabase/proposals/socal-coretcg-magicandmonsters-main-pass-2026-07-18.sql`
+
+Validation level used: lean. The write was source/evidence/assessment-only plus
+one event-source corroboration link; no local preview, hosted smoke test, or
+full deterministic export was run.
+
+Pre-write validation:
+
+- Proposal validation passed with 29 operations.
+- Confirmed no `event_series` or `event_occurrences` rows were added or changed
+  by the proposal.
+
+Writes performed:
+
+- Added 8 source records / venue Evidence links across SoCalMagic, CoreTCG, and
+  Magic and Monsters.
+- Updated inspected source check dates for existing Facebook/site/events/
+  Instagram sources.
+- Updated 3 venue assessment-note / last-verified records.
+- Upserted 3 Places evaluation rows:
+  - CoreTCG: C+ / 3.1 / medium confidence / neutral.
+  - Magic and Monsters: B- / 3.6 / medium confidence / neutral.
+  - SoCalMagic: C / 2.7 / high confidence / deprioritized.
+- Added 1 event-source corroboration link from the CoreTCG Instagram schedule to
+  the existing Friday 4:30 PM CoreTCG Commander row.
+- Inserted and then accepted the research-change marker
+  `socal-coretcg-magicandmonsters-main-pass-2026-07-18`.
+
+Post-write verification:
+
+- All 3 venues now show `last_verified = 2026-07-18`.
+- All 8 new venue Evidence links are present.
+- All 3 evaluation rows are present with the expected grades/scores/statuses.
+- CoreTCG Instagram schedule source is linked to the existing CoreTCG Friday
+  4:30 PM event row as corroboration only.
+- Affected event-series count for these three venues remained 7, confirming no
+  event-series rows were added or removed.
+- Duplicate event-occurrence check returned 0 rows.
+- Research-change row is marked `accepted`.
+
 ## Remaining TBDs
 
 - SoCalMagic: if the user ever wants to reconsider it, verify whether `No proxy`
