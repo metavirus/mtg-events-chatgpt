@@ -199,3 +199,32 @@ Prepare a controlled Supabase proposal that:
 - adds one research-change marker;
 - does not add or change event records;
 - does not change schema, auth, RLS, app code, or canonical JSON manually.
+
+## Applied checkpoint
+
+Applied: 2026-07-17 after user approval.
+
+Applied proposal:
+
+- `supabase/proposals/packet-source-evidence-backfill-2026-07-17.json`
+
+Live Supabase writes performed:
+
+- 4 `sources` rows:
+  - `src-tilted-keepup-2026-07-17`
+  - `src-tilted-mapquest-2026-07-17`
+  - `src-buddies-yelp-2026-07-17`
+  - `src-byo-laist-boyle-heights-beat-2026-07-17`
+- 4 `entity_sources` rows linking those sources to the relevant venues.
+- 1 `research_changes` marker:
+  - `packet-source-evidence-backfill-2026-07-17`
+
+Verification:
+
+- Proposal validation passed before write: 9 operations.
+- Touched source count verified: 4.
+- Touched entity-source count verified: 4.
+- Duplicate event-occurrence check remained clean: 0 duplicate
+  series/date/time groups.
+
+No event rows, schema/auth/RLS, app code, or canonical JSON were changed.
