@@ -1,0 +1,515 @@
+{
+  "proposal_id": "status-conflict-event-assessment-pass-d-2026-07-17",
+  "description": "Status-conflict event and Places assessment proposal for Tilted Gaming, Grails Gone Wild, and B.Y.O.GAMES LLC. Adds source/evidence and evaluation rows, updates venue assessment notes, and marks one likely duplicate Tilted Commander series inactive. No new event rows are added.",
+  "created_at": "2026-07-17T19:45:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-tilted-official-events-2026-07-17"
+      },
+      "fields": {
+        "id": "src-tilted-official-events-2026-07-17",
+        "label": "Tilted Gaming official events page",
+        "url": "https://tiltedgamingtcg.com/pages/events",
+        "source_type": "eventsPage",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official current operation, events infrastructure, Discord routing, store hours, and Magic schedule support for Tilted."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-grails-tcgplayer-2026-07-17"
+      },
+      "fields": {
+        "id": "src-grails-tcgplayer-2026-07-17",
+        "label": "Grails Gone Wild TCGplayer seller profile",
+        "url": "https://www.tcgplayer.com/sellers/Grails-Gone-Wild/44a32529",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve active commerce/MTG inventory signal without treating it as proof of in-person play."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-grails-bbb-2026-07-17"
+      },
+      "fields": {
+        "id": "src-grails-bbb-2026-07-17",
+        "label": "BBB profile for Grails Gone Wild Toys and Collectibles",
+        "url": "https://www.bbb.org/us/ca/torrance/profile/collectibles/grails-gone-wild-toys-and-collectibles-1216-1292042",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve physical-business identity and address support for the Grails status read."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-grails-mapquest-2026-07-17"
+      },
+      "fields": {
+        "id": "src-grails-mapquest-2026-07-17",
+        "label": "MapQuest / Yelp-derived listing for Grails Gone Wild",
+        "url": "https://www.mapquest.com/us/california/grails-gone-wild-651263908",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve closed/unclear physical-location conflict for Grails."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-grails-findyourlgs-2026-07-17"
+      },
+      "fields": {
+        "id": "src-grails-findyourlgs-2026-07-17",
+        "label": "FindYourLGS Gardena-area listing including Grails Gone Wild",
+        "url": "https://findyourlgs.com/us/gardena",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve secondary local-game-store directory evidence while keeping status confidence bounded."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-byo-corner-2026-07-17"
+      },
+      "fields": {
+        "id": "src-byo-corner-2026-07-17",
+        "label": "Corner profile for B.Y.O.GAMES",
+        "url": "https://www.corner.inc/place/pvAgsrzyDZPE",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review/community/gaming-lounge signals for BYO."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-byo-mapquest-2026-07-17"
+      },
+      "fields": {
+        "id": "src-byo-mapquest-2026-07-17",
+        "label": "MapQuest / Yelp-derived listing for BYO Games",
+        "url": "https://www.mapquest.com/us/california/byo-games-456993249",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Yelp-derived venue-quality and status-conflict signal for BYO."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-byo-socal-gaming-expo-2026-07-17"
+      },
+      "fields": {
+        "id": "src-byo-socal-gaming-expo-2026-07-17",
+        "label": "SoCal Gaming Expo tabletop page listing BYO Games as MTG organizer",
+        "url": "https://socalgamingexpo.com/tabletop-gaming/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve BYO organizer/MTG depth signal from a passed expo without treating it as a current calendar event."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-byo-challonge-2026-07-17"
+      },
+      "fields": {
+        "id": "src-byo-challonge-2026-07-17",
+        "label": "Historical BYO Games Challonge event page",
+        "url": "https://challonge.com/40294snb",
+        "source_type": "community",
+        "health_status": "stale",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve historical event-organizer signal without promoting it as current calendar evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "source_id": "src-tilted-official-events-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "source_id": "src-tilted-official-events-2026-07-17",
+        "relationship": "official events/source-routing support"
+      },
+      "reason": "Attach Tilted official events-page evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-tcgplayer-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-tcgplayer-2026-07-17",
+        "relationship": "commerce/MTG inventory support"
+      },
+      "reason": "Attach Grails commerce evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-bbb-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-bbb-2026-07-17",
+        "relationship": "physical-business identity support"
+      },
+      "reason": "Attach Grails physical-business identity evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-mapquest-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-mapquest-2026-07-17",
+        "relationship": "status conflict signal"
+      },
+      "reason": "Attach Grails physical-status conflict evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-findyourlgs-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-findyourlgs-2026-07-17",
+        "relationship": "secondary directory/status signal"
+      },
+      "reason": "Attach secondary local game-store directory evidence for Grails."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-corner-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-corner-2026-07-17",
+        "relationship": "review/community fit signal"
+      },
+      "reason": "Attach BYO gaming-lounge/community evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-mapquest-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-mapquest-2026-07-17",
+        "relationship": "review/status conflict signal"
+      },
+      "reason": "Attach BYO Yelp-derived quality and status-conflict evidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-socal-gaming-expo-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-socal-gaming-expo-2026-07-17",
+        "relationship": "historical organizer/MTG depth signal"
+      },
+      "reason": "Attach BYO MTG organizer evidence as source/evidence-only context."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-challonge-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-challonge-2026-07-17",
+        "relationship": "historical event-organizer signal"
+      },
+      "reason": "Attach BYO historical organizer evidence without writing a current event."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "tilted-gaming"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Tilted Gaming now has stronger current-operation support from its official events page, which confirms the Cerritos location, current store hours, Discord routing, in-store signup policy, and Magic as part of its automatically updated monthly schedule ecosystem. Existing Wizards/EventLink data already covers the Friday 6 PM casual Commander anchor. The main cleanup is duplicate-series risk: keep the detailed Friday Night Magic Casual Tilted Commanders row active and mark the older Tilted Commanders row inactive as a duplicate/superseded snapshot. Tilted is very close and practically relevant, but the public positioning reads as a competitive multi-TCG hub, so Commander table culture, proxy norms, and solo-arrival friendliness still need a bounded Discord/social check before it becomes a top personal recommendation.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 3,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 3,
+          "scheduleReliability": 4,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Update Tilted with current official events/source-routing evidence and duplicate-event interpretation."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "grails-gone-wild"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Grails Gone Wild remains a status-conflicted planning lead. Wizards/EventLink already has a Sunday casual Commander row with useful casual-pod language, and TCGplayer supports active online MTG/collectibles commerce. BBB and directory surfaces support physical-business identity at the Torrance address, but a Yelp-derived map surface flags the location as closed and the obvious public footprint is stronger for collectibles/online commerce than for current in-person Magic community. Keep the existing Commander row visible as a source-backed lead, but do not treat Grails as a reliable personal planning venue without same-day status verification.",
+        "assessment": {
+          "commanderActivity": 3,
+          "meetupAccessibility": 1,
+          "communityContinuity": 2,
+          "newPlayerIntegration": 2,
+          "physicalEnvironment": 1,
+          "scheduleReliability": 2,
+          "homeGroupPotential": 2
+        }
+      },
+      "reason": "Replace Grails discovery placeholder with an explicit status-conflict assessment."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "b-y-o-games-llc"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "B.Y.O.GAMES is a nontraditional but interesting East LA gaming-lounge lead. Existing Wizards/EventLink rows already cover Tuesday and Wednesday Commander with unusually useful details: casual/warm-up/free-play language, four-player pod minimum, Bracket 3-4, no infinites, Rule Zero encouragement, and paid tournament structure. Public review/community surfaces describe a real gaming lounge with video games, card-game space, tournaments, friendly staff, and community/hangout value. SoCal Gaming Expo identifies BYO as a tabletop/MTG organizer for Limited and Commander, but that June 2026 event has passed and should stay source/evidence-only. The main caution is status/source conflict and distance: verify current operation and event details before driving there.",
+        "assessment": {
+          "commanderActivity": 4,
+          "meetupAccessibility": 3,
+          "communityContinuity": 4,
+          "newPlayerIntegration": 3,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 3,
+          "homeGroupPotential": 3
+        }
+      },
+      "reason": "Promote BYO from discovery placeholder to reviewed nontraditional-venue assessment with explicit status and event caveats."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.7,
+        "confidence": "high",
+        "positives": [
+          "Only about 6 miles from Los Alamitos, making repeat visits unusually practical.",
+          "Existing Wizards/EventLink data supports a Friday 6 PM casual Commander anchor.",
+          "Official events page confirms current store operation, hours, Discord routing, in-store signup policy, and Magic schedule infrastructure.",
+          "Paid seat / raffle / promo language may help unaffiliated players enter a defined event rather than cold-approaching tables."
+        ],
+        "cautions": [
+          "Public store positioning reads as a competitive multi-TCG hub, so casual Commander texture is not guaranteed.",
+          "Two existing Commander rows appear to describe the same Friday 6 PM event; one should be inactive to avoid calendar duplication.",
+          "Proxy norms, bracket expectations, pod formation, and actual turnout remain unverified.",
+          "Discord is routed but not yet surveyed."
+        ],
+        "open_questions": [
+          "Does the Discord have active Commander/LFG/event coordination?",
+          "Is Friday Commander actually casual Bracket 2/3 friendly in practice?",
+          "Does the $5 seat solve solo-arrival friction or simply reserve space?",
+          "Are proxies allowed for the casual Commander event?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Tilted after current official events/source-routing check."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "C",
+        "fit_score": 2.7,
+        "confidence": "low",
+        "positives": [
+          "Existing Wizards/EventLink data supports a Sunday casual Commander lead.",
+          "The existing Commander text describes local weekly pods, casual play, participation pack/promo, and raffle structure.",
+          "TCGplayer supports active MTG/collectibles commerce.",
+          "BBB/directory surfaces support a physical-business identity history at the Torrance address."
+        ],
+        "cautions": [
+          "Physical storefront status is conflicted; a Yelp-derived map source flags the location as closed.",
+          "Current public footprint is stronger for online commerce/collectibles than for in-person Magic community.",
+          "Do not rely on the Sunday Commander row for travel without same-day verification.",
+          "No current store-controlled social/calendar surface was confirmed in this pass."
+        ],
+        "open_questions": [
+          "Is the Torrance physical location currently open to the public?",
+          "Is the Wizards Sunday Commander listing still operationally valid?",
+          "Is Grails now primarily online/commerce rather than an in-person play venue?",
+          "What store-controlled source, if any, currently confirms local play?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for Grails that preserve event lead value but clearly deprioritize due to status conflict."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.5,
+        "confidence": "medium",
+        "positives": [
+          "Existing Wizards/EventLink rows support Tuesday and Wednesday Commander.",
+          "Event text includes useful pod/minimum-player, Rule Zero, Bracket 3-4, and no-infinites language.",
+          "Review/community sources describe a real gaming lounge with tournaments, hangout/community value, and friendly staff.",
+          "SoCal Gaming Expo evidence supports BYO as an MTG/tabletop organizer, though the expo itself is historical."
+        ],
+        "cautions": [
+          "Distance is about 17.5 miles, so it needs stronger confirmation than nearby stores before planning a trip.",
+          "Public status signals conflict; one Yelp-derived surface flags the business closed while other sources point to current/recent operation.",
+          "No-proxy / Bracket 4-type language may make the event less compatible depending on current practice.",
+          "The venue is a mixed gaming lounge, not a Magic-dedicated store."
+        ],
+        "open_questions": [
+          "Is BYO currently open and running the Tuesday/Wednesday Commander rows as listed?",
+          "Do Tuesday and Wednesday serve different player pools or formats?",
+          "Does the no-proxy language apply to all current Commander play?",
+          "Is there a usable Discord/social route for solo arrivals and current schedules?"
+        ]
+      },
+      "reason": "Create Places-page evaluation fields for BYO as a promising but verify-before-travel nontraditional venue."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "tilted-commanders-weekly"
+      },
+      "fields": {
+        "venue_id": "tilted-gaming",
+        "title": "Tilted Commanders",
+        "format": "Commander",
+        "event_type": "casual",
+        "bracket": "unspecified",
+        "recurrence": {
+          "dayOfWeek": 5,
+          "frequency": "weekly",
+          "startTime": "18:00"
+        },
+        "default_start_time": "18:00",
+        "start_date": "2026-07-24",
+        "entry_fee": 5,
+        "currency": "USD",
+        "confidence": "high",
+        "event_status": "inactive",
+        "details": "Inactive duplicate/superseded snapshot. Use `tilted-gaming-friday-night-magic-casual-tilted-commanders-5` as the active Friday 6 PM Tilted Commander series because it carries the fuller current Wizards/EventLink details.",
+        "last_verified": "2026-07-17"
+      },
+      "reason": "Avoid showing two Tilted Friday 6 PM Commander rows for the same practical event."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "status-conflict-event-assessment-pass-d-2026-07-17"
+      },
+      "fields": {
+        "id": "status-conflict-event-assessment-pass-d-2026-07-17",
+        "detected_at": "2026-07-17T19:45:00-07:00",
+        "change_type": "evaluation_update",
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "summary": "Status-conflict pass D checked Tilted, Grails, and B.Y.O. for both calendar implications and Places assessment implications; it proposes source/evidence and evaluation updates plus one Tilted duplicate Commander cleanup, without adding new event rows.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable update marker for this status-conflict event and assessment pass."
+    }
+  ]
+}
