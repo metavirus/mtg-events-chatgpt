@@ -1,0 +1,548 @@
+{
+  "proposal_id": "finch-kingslayer-cardboard-event-completion-2026-07-18",
+  "description": "PROPOSED. Event-completion pass for Finch and Sparrow Games, Kingslayer Games - Fountain Valley, and Cardboard Games after fresh Wizards/EventLink pull. Adds missing current/future WPN-supported Magic events, clarifies Finch's Friday FNM row, retires one unsupported Finch Standard row, refreshes WPN source freshness, and preserves Cardboard's already-cataloged rows. No canonical JSON, app code, schema/auth/RLS, or personal preference changes.",
+  "created_at": "2026-07-18T12:45:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-6718"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Fresh Wizards/EventLink pull inspected for Finch and Sparrow Games."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-7819"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Fresh Wizards/EventLink pull inspected for Kingslayer Games - Fountain Valley."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-17086"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Fresh Wizards/EventLink pull inspected for Cardboard Games."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "finch-sparrow-booster-draft-standard-sets"
+      },
+      "fields": {
+        "title": "Magic: the Gathering Draft Nights!",
+        "entry_fee": 28.0,
+        "details": "Fresh Wizards/EventLink pull confirms recurring Wednesday 7:00 PM Magic draft nights at Finch and Sparrow Games with $28 entry. This remains a current limited-format planning lane.",
+        "last_verified": "2026-07-18",
+        "venue_id": "finch-sparrow"
+      },
+      "reason": "Refresh existing Finch draft row with current WPN title, fee, and verification."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-booster-draft-standard-sets",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-booster-draft-standard-sets",
+        "occurrence_id": null,
+        "relationship": "fresh Wizards/EventLink evidence"
+      },
+      "reason": "Attach fresh WPN provenance to the updated Finch draft row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "finch-sparrow-modern-kombat"
+      },
+      "fields": {
+        "entry_fee": 15.0,
+        "details": "Fresh Wizards/EventLink pull confirms recurring Tuesday 7:00 PM Modern Kombat at Finch and Sparrow Games with $15 entry. This is lower personal priority than Commander/draft/prerelease but supports Finch's broad active Magic footprint.",
+        "last_verified": "2026-07-18",
+        "venue_id": "finch-sparrow"
+      },
+      "reason": "Refresh existing Finch Tuesday Modern row with current WPN fee and verification."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-modern-kombat",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-modern-kombat",
+        "occurrence_id": null,
+        "relationship": "fresh Wizards/EventLink evidence"
+      },
+      "reason": "Attach fresh WPN provenance to the updated Finch Tuesday Modern row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "finch-sparrow-fnm-at-finch-and-sparrow"
+      },
+      "fields": {
+        "title": "Friday Modern Kombat",
+        "format": "Modern",
+        "event_type": "constructed",
+        "bracket": "all",
+        "entry_fee": 15.0,
+        "confidence": "high",
+        "details": "Fresh Wizards/EventLink pull clarifies Finch's Friday 7:00 PM Magic/FNM lane as Modern Kombat with $15 entry. This replaces the prior generic FNM label; it is useful as Magic-program context but is lower personal priority than Commander, draft, or prerelease.",
+        "last_verified": "2026-07-18",
+        "venue_id": "finch-sparrow"
+      },
+      "reason": "Clarify an existing generic Finch FNM row using current WPN event title/format."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-fnm-at-finch-and-sparrow",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-fnm-at-finch-and-sparrow",
+        "occurrence_id": null,
+        "relationship": "fresh Wizards/EventLink evidence"
+      },
+      "reason": "Attach fresh WPN provenance to the clarified Finch Friday Modern row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "finch-sparrow-pauper-night-1-19-00"
+      },
+      "fields": {
+        "id": "finch-sparrow-pauper-night-1-19-00",
+        "venue_id": "finch-sparrow",
+        "title": "Pauper Night!",
+        "format": "Pauper",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 1,
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-20",
+        "end_date": "2026-08-03",
+        "entry_fee": 10.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists Monday 7:00 PM Pauper Night at Finch and Sparrow Games with $10 entry, visible for July 20, July 27, and August 3, 2026. Treat as a short-run current Magic signal rather than an indefinite recurring row.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current source-supported Finch Pauper event signal missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-pauper-night-1-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-pauper-night-1-19-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed Finch Pauper row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "finch-sparrow-mtg-standard-constructed"
+      },
+      "fields": {
+        "event_status": "inactive",
+        "end_date": "2026-07-18",
+        "details": "Previously cataloged from Finch's official event calendar as Monday 7:00 PM MTG Standard Constructed. Fresh Wizards/EventLink pull on July 18, 2026 did not surface this row; the current Monday WPN evidence instead shows cEDH Workshop and short-run Pauper Night. Retired from active planning pending future official replay.",
+        "last_verified": "2026-07-18",
+        "venue_id": "finch-sparrow"
+      },
+      "reason": "Avoid leaving an unsupported open-ended Finch Standard row visible in the planning calendar."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "finch-sparrow-commanderfest-6-14-30"
+      },
+      "fields": {
+        "last_verified": "2026-07-18",
+        "venue_id": "finch-sparrow"
+      },
+      "reason": "Fresh WPN pull reconfirmed Saturday Commanderfest at 2:30 PM."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-commanderfest-6-14-30",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6718",
+        "series_id": "finch-sparrow-commanderfest-6-14-30",
+        "occurrence_id": null,
+        "relationship": "fresh Wizards/EventLink evidence"
+      },
+      "reason": "Attach fresh WPN provenance to the reconfirmed Finch Commanderfest row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "kingslayer-games-fountain-valley-fountain-valley-wednesday-m"
+      },
+      "fields": {
+        "last_verified": "2026-07-18",
+        "venue_id": "kingslayer-games-fountain-valley"
+      },
+      "reason": "Fresh WPN pull reconfirmed Wednesday Commander Slay Pass for Kingslayer Fountain Valley."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-games-fountain-valley-fountain-valley-wednesday-m",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-games-fountain-valley-fountain-valley-wednesday-m",
+        "occurrence_id": null,
+        "relationship": "fresh Wizards/EventLink evidence"
+      },
+      "reason": "Attach fresh WPN provenance to the reconfirmed Kingslayer Wednesday Commander row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "kingslayer-games-fountain-valley-fountain-valley-mtg-fnm-com"
+      },
+      "fields": {
+        "last_verified": "2026-07-18",
+        "venue_id": "kingslayer-games-fountain-valley"
+      },
+      "reason": "Fresh WPN pull reconfirmed Friday Commander Slay Pass for Kingslayer Fountain Valley."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-games-fountain-valley-fountain-valley-mtg-fnm-com",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-games-fountain-valley-fountain-valley-mtg-fnm-com",
+        "occurrence_id": null,
+        "relationship": "fresh Wizards/EventLink evidence"
+      },
+      "reason": "Attach fresh WPN provenance to the reconfirmed Kingslayer Friday Commander row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "kingslayer-fv-sunday-standard-0-12-00"
+      },
+      "fields": {
+        "id": "kingslayer-fv-sunday-standard-0-12-00",
+        "venue_id": "kingslayer-games-fountain-valley",
+        "title": "Fountain Valley MTG Standard Sunday",
+        "format": "Standard",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 0,
+          "startTime": "12:00"
+        },
+        "default_start_time": "12:00",
+        "start_date": "2026-07-19",
+        "end_date": "2026-07-26",
+        "entry_fee": 10.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists Kingslayer Games - Fountain Valley Sunday 12:00 PM Standard with $10 entry, visible July 19 and July 26, 2026. Treat as a short-run current Magic signal unless future official evidence extends it.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog source-supported Kingslayer Fountain Valley Standard row missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-sunday-standard-0-12-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-sunday-standard-0-12-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed Kingslayer Standard row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "kingslayer-fv-pauper-tuesday-2-18-30"
+      },
+      "fields": {
+        "id": "kingslayer-fv-pauper-tuesday-2-18-30",
+        "venue_id": "kingslayer-games-fountain-valley",
+        "title": "Fountain Valley MTG Pauper Tuesday",
+        "format": "Pauper",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 2,
+          "startTime": "18:30"
+        },
+        "default_start_time": "18:30",
+        "start_date": "2026-07-21",
+        "end_date": "2026-07-28",
+        "entry_fee": 10.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists Kingslayer Games - Fountain Valley Tuesday 6:30 PM Pauper with $10 entry, visible July 21 and July 28, 2026. Treat as a short-run current Magic signal unless future official evidence extends it.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog source-supported Kingslayer Fountain Valley Pauper row missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-pauper-tuesday-2-18-30",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-pauper-tuesday-2-18-30",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed Kingslayer Pauper row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "kingslayer-fv-fnm-modern-5-18-30"
+      },
+      "fields": {
+        "id": "kingslayer-fv-fnm-modern-5-18-30",
+        "venue_id": "kingslayer-games-fountain-valley",
+        "title": "Fountain Valley MTG FNM Modern",
+        "format": "Modern",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 5,
+          "startTime": "18:30"
+        },
+        "default_start_time": "18:30",
+        "start_date": "2026-07-24",
+        "end_date": "2026-07-31",
+        "entry_fee": 10.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists Kingslayer Games - Fountain Valley Friday 6:30 PM FNM Modern with $10 entry, visible July 24 and July 31, 2026. Treat as a short-run current Magic signal unless future official evidence extends it.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog source-supported Kingslayer Fountain Valley Modern row missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-fnm-modern-5-18-30",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-fnm-modern-5-18-30",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed Kingslayer Modern row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "kingslayer-fv-outlaws-draft-2026-07-24"
+      },
+      "fields": {
+        "id": "kingslayer-fv-outlaws-draft-2026-07-24",
+        "venue_id": "kingslayer-games-fountain-valley",
+        "title": "Fountain Valley MTG Outlaws of Thunder Junction Booster Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "18:30",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 25.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists a Friday, July 24, 2026 6:30 PM Outlaws of Thunder Junction booster draft at Kingslayer Games - Fountain Valley with $25 entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog source-supported dated Kingslayer Fountain Valley draft missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-outlaws-draft-2026-07-24",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-outlaws-draft-2026-07-24",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed Kingslayer Outlaws draft row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "kingslayer-fv-tarkir-draft-2026-07-31"
+      },
+      "fields": {
+        "id": "kingslayer-fv-tarkir-draft-2026-07-31",
+        "venue_id": "kingslayer-games-fountain-valley",
+        "title": "Fountain Valley MTG Tarkir: Dragonstorm Booster Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "18:30",
+        "start_date": "2026-07-31",
+        "end_date": null,
+        "entry_fee": 20.0,
+        "currency": "USD",
+        "details": "Fresh Wizards/EventLink pull lists a Friday, July 31, 2026 6:30 PM Tarkir: Dragonstorm booster draft at Kingslayer Games - Fountain Valley with $20 entry. Event copy notes 6:00 PM check-in and 6:30 PM start.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog source-supported dated Kingslayer Fountain Valley draft missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-tarkir-draft-2026-07-31",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-7819",
+        "series_id": "kingslayer-fv-tarkir-draft-2026-07-31",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink evidence"
+      },
+      "reason": "Attach WPN provenance to the proposed Kingslayer Tarkir draft row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "cardboard-games-cbg-commander-night-5-19-00"
+      },
+      "fields": {
+        "last_verified": "2026-07-18",
+        "venue_id": "cardboard-games"
+      },
+      "reason": "Fresh WPN pull reconfirmed Friday CBG Commander Night."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "cardboard-games-cbg-marvel-superheroes-draft-1-19-00"
+      },
+      "fields": {
+        "last_verified": "2026-07-18",
+        "venue_id": "cardboard-games"
+      },
+      "reason": "Fresh WPN pull reconfirmed Monday CBG Marvel Superheroes Draft."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "chg-2026-07-18-finch-kingslayer-cardboard-event-completion"
+      },
+      "fields": {
+        "id": "chg-2026-07-18-finch-kingslayer-cardboard-event-completion",
+        "detected_at": "2026-07-18T12:45:00-07:00",
+        "change_type": "new_event",
+        "entity_type": "event",
+        "entity_id": "finch-kingslayer-cardboard-event-completion",
+        "summary": "Fresh Wizards/EventLink completion pass added or refreshed current Magic event coverage for Finch and Sparrow, Kingslayer Fountain Valley, and Cardboard, including non-Commander formats where source-supported.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a visible Updates marker for the proposed event-completion batch."
+    }
+  ]
+}
