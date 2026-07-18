@@ -1248,7 +1248,22 @@ function renderChanges() {
 function changeRow(change) {
   const tone = changeTone(change);
   const route = changeRoute(change);
-  return `<article class="change-row"><div class="timeline-node ${tone}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><div class="change-title-row"><h3>${escapeHtml(change.summary)}</h3><span class="change-type-chip">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span></div><p>${escapeHtml(change.details || 'The research record was updated.')}</p><div class="change-clicklets"><button class="change-action" data-route="${route}">${route === 'events' ? 'Events' : route === 'research' ? 'Coverage' : 'Places'} →</button></div></div><span class="review-state">${escapeHtml(change.reviewStatus || 'recorded')}</span></article>`;
+  const title = changeTitle(change);
+  return `<article class="change-row"><div class="timeline-node ${tone}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><div class="change-title-row"><h3>${title}</h3><span class="change-type-chip">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span></div><p>${escapeHtml(change.details || 'The research record was updated.')}</p><div class="change-clicklets"><button class="change-action" data-route="${route}">${route === 'events' ? 'Events' : route === 'research' ? 'Coverage' : 'Places'} →</button></div></div><span class="review-state">${escapeHtml(change.reviewStatus || 'recorded')}</span></article>`;
+}
+
+function changeTitle(change) {
+  const summary = escapeHtml(change.summary || 'Research record updated');
+  if (change.entityType === 'venue' && store(change.entityId)) {
+    return `<button class="change-title-link" data-place-id="${escapeHtml(change.entityId)}">${summary}</button>`;
+  }
+  if ((change.entityType === 'event' || change.entityType === 'event_series') && eventById(change.entityId)) {
+    return `<button class="change-title-link" data-event-id="${escapeHtml(change.entityId)}">${summary}</button>`;
+  }
+  if (change.entityType === 'community' && DATA.communities.some((community) => community.id === change.entityId)) {
+    return `<button class="change-title-link" data-community-id="${escapeHtml(change.entityId)}">${summary}</button>`;
+  }
+  return summary;
 }
 
 function changeMatchesFilter(change, filter) {
