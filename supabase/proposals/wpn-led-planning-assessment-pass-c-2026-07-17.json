@@ -1,0 +1,506 @@
+{
+  "proposal_id": "wpn-led-planning-assessment-pass-c-2026-07-17",
+  "description": "Planning-quality Places assessment fill-in for Hobby Overflow, Joyful Toad TCG, Honey Pot Meadery, Requiem: Coffee, Tea, and Fantasy, and SoCalMagic. Adds venue evidence, venue evaluation rows, and targeted assessment-note updates. No event rows are added because existing Supabase records already cover the event implications.",
+  "created_at": "2026-07-17T23:55:00Z",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hobbyoverflow-keepup-2026-07-17"
+      },
+      "fields": {
+        "id": "src-hobbyoverflow-keepup-2026-07-17",
+        "label": "KeepUp review/directory mirror for Hobby Overflow",
+        "url": "https://www.keepupcards.com/shop/hobby-overflow-cypress-ca",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived family/new-player/community and multi-TCG support for Hobby Overflow."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-joyfultoad-official-site-2026-07-17"
+      },
+      "fields": {
+        "id": "src-joyfultoad-official-site-2026-07-17",
+        "label": "Joyful Toad TCG official website",
+        "url": "https://joyfultoadtcg.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve Joyful Toad's official store identity, Magic singles, hours, contact, and social/Discord routing."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-joyfultoad-tcdb-2026-07-17"
+      },
+      "fields": {
+        "id": "src-joyfultoad-tcdb-2026-07-17",
+        "label": "Trading Card Database profile for Joyful Toad TCG",
+        "url": "https://www.tcdb.com/CardShops.cfm?MODE=VIEW&ShopID=2625",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve secondary identity/source-routing support for Joyful Toad, including Facebook and Instagram references."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-joyfultoad-keepup-2026-07-17"
+      },
+      "fields": {
+        "id": "src-joyfultoad-keepup-2026-07-17",
+        "label": "KeepUp review/directory mirror for Joyful Toad TCG",
+        "url": "https://www.keepupcards.com/shop/joyful-toad-tcg-anaheim-ca",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived spacious-store, staff, selection, and new/returning-player support for Joyful Toad."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-requiem-weekly-events-2026-07-17"
+      },
+      "fields": {
+        "id": "src-requiem-weekly-events-2026-07-17",
+        "label": "Requiem official weekly events page",
+        "url": "https://www.requiemcafe.com/weeklyevents",
+        "source_type": "eventsPage",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve official Magic/tournament and weekly-event caveat language for Requiem."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-requiem-corner-2026-07-17"
+      },
+      "fields": {
+        "id": "src-requiem-corner-2026-07-17",
+        "label": "Corner profile for Requiem: Coffee, Tea, and Fantasy",
+        "url": "https://www.corner.inc/place/prMcHbA8dPV3?listId=352915de-ccdb-460a-b718-da83a5d642b0",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve fantasy-cafe, inclusive social-space, reservation/crowding, and broader gaming-environment signals for Requiem."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-requiem-wizard-gaming-meetup-2026-07-17"
+      },
+      "fields": {
+        "id": "src-requiem-wizard-gaming-meetup-2026-07-17",
+        "label": "Wizard Gaming Society Meetup surface for Requiem game nights",
+        "url": "https://www.meetup.com/wizard-gaming-society/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve broader meetup/community support for Requiem as a social gaming venue without treating it as MTG event proof."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-socalmagic-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "id": "src-socalmagic-loc8nearme-2026-07-17",
+        "label": "Loc8NearMe review/directory mirror for SoCalMagic",
+        "url": "https://www.loc8nearme.com/california/orange/socal-magic/7352712/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Preserve review-derived Magic dedication, friendly owner/staff, events, drafts, competitive Commander, and cash-only/practical signals for SoCalMagic."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "hobby-overflow",
+        "source_id": "src-hobbyoverflow-keepup-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "hobby-overflow",
+        "source_id": "src-hobbyoverflow-keepup-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Expose Hobby Overflow's review-derived community and beginner/family support on the Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg",
+        "source_id": "src-joyfultoad-official-site-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg",
+        "source_id": "src-joyfultoad-official-site-2026-07-17",
+        "relationship": "official venue/source-routing support"
+      },
+      "reason": "Expose Joyful Toad's official site and social/Discord routing."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg",
+        "source_id": "src-joyfultoad-tcdb-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg",
+        "source_id": "src-joyfultoad-tcdb-2026-07-17",
+        "relationship": "secondary identity/source-routing support"
+      },
+      "reason": "Expose secondary identity and social-routing support for Joyful Toad."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg",
+        "source_id": "src-joyfultoad-keepup-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg",
+        "source_id": "src-joyfultoad-keepup-2026-07-17",
+        "relationship": "review/fit signal"
+      },
+      "reason": "Expose Joyful Toad's review-derived spacious-store and staff/selection support."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy",
+        "source_id": "src-requiem-weekly-events-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy",
+        "source_id": "src-requiem-weekly-events-2026-07-17",
+        "relationship": "official weekly-event support"
+      },
+      "reason": "Expose Requiem's official weekly-event and schedule-caveat source."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy",
+        "source_id": "src-requiem-corner-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy",
+        "source_id": "src-requiem-corner-2026-07-17",
+        "relationship": "community/venue-fit signal"
+      },
+      "reason": "Expose Requiem's social-space, inclusive/fantasy venue, reservation, and crowding signals."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy",
+        "source_id": "src-requiem-wizard-gaming-meetup-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy",
+        "source_id": "src-requiem-wizard-gaming-meetup-2026-07-17",
+        "relationship": "broader gaming community support"
+      },
+      "reason": "Expose broader meetup/community support without treating it as Commander event proof."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "socalmagic",
+        "source_id": "src-socalmagic-loc8nearme-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "socalmagic",
+        "source_id": "src-socalmagic-loc8nearme-2026-07-17",
+        "relationship": "review/fit and caution signal"
+      },
+      "reason": "Expose SoCalMagic's strong Magic-store support while preserving practical fit cautions."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "hobby-overflow"
+      },
+      "fields": {
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Hobby Overflow remains one of the stronger nearby opportunity-breadth leads: the official site confirms a Cypress TCG store with regular tournaments, leagues, community events, MTG category routing, long evening hours, and social/DM routing. Review-derived evidence is especially strong for staff, family/new-player support, and friendly community tone, though the specific Commander culture still needs a Discord/social check."
+      },
+      "reason": "Refresh Hobby Overflow assessment notes with the current planning-quality read."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "joyful-toad-tcg"
+      },
+      "fields": {
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Joyful Toad is clearly active and better sourced than a raw discovery record: the official site exposes Magic singles, long daily hours, contact details, Facebook, Instagram, Discord, and Twitch routing. KeepUp supports a spacious store, friendly staff, good selection, and new/returning-player service. The remaining gap is Commander-specific texture beyond the Wizards/EventLink Commander Night row."
+      },
+      "reason": "Refresh Joyful Toad assessment notes with official/source-routing and review evidence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "honey-pot-meadery"
+      },
+      "fields": {
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Honey Pot Meadery remains one of the strongest non-store leads because its official Commander language directly supports relaxed drop-in multiplayer Commander, meeting the community, newer/returning player welcome, and loaner supplies. Existing Supabase records already cover Wednesday casual Commander plus league/special/prerelease opportunities. The main remaining uncertainty is lived turnout and whether league/special nights change the casual-open-play feel."
+      },
+      "reason": "Refresh Honey Pot assessment notes to distinguish strong solo-arrival language from remaining turnout/community unknowns."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "requiem-coffee-tea-and-fantasy"
+      },
+      "fields": {
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Requiem is a real Magic/fandom venue with strong social-space upside rather than a clean LGS-style Commander surface. The official weekly page confirms Magic the Gathering tournament activity but warns that weekly events can change around collaborations and special events. The venue/community evidence supports an inclusive fantasy-cafe game-night environment, while Commander turnout, pod formation, and reservation/crowding effects still need confirmation."
+      },
+      "reason": "Refresh Requiem assessment notes with current weekly-event and venue/community evidence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "socalmagic"
+      },
+      "fields": {
+        "last_verified": "2026-07-17",
+        "assessment_notes": "SoCalMagic is a real Magic-dedicated Orange store with strong community/inventory/event signals, but the repeated Wizards/EventLink `Commander all day / No proxy` language is a major personal-fit exclusion. If no-proxy applies broadly, this is probably not a good Commander target for the user despite the store's Magic strength and friendly/mom-and-pop review profile. Keep it cataloged and source-supported, but deprioritize for personal use unless future evidence narrows or mitigates the no-proxy rule."
+      },
+      "reason": "Make the no-proxy personal-fit exclusion explicit while preserving SoCalMagic as a real Magic venue."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "hobby-overflow"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "hobby-overflow",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.8,
+        "confidence": "high",
+        "positives": [
+          "Very close Cypress location with official TCG, tournament, league, community-event, and MTG category routing.",
+          "Review-derived evidence supports friendly staff, family/new-player support, and welcoming community tone.",
+          "Existing Wizards/EventLink row provides a casual Commander anchor."
+        ],
+        "cautions": [
+          "Commander-specific social texture is still thinner than the broader TCG/family/community evidence.",
+          "Official site points to social/DM routing rather than a clean public Commander calendar.",
+          "Need to confirm whether casual Commander is a real social lane rather than merely a listed slot."
+        ],
+        "open_questions": [
+          "Does Discord or Instagram show recurring Commander turnout or LFG behavior?",
+          "Is the Commander night easy for a solo adult player to join?",
+          "Are power/proxy expectations stated anywhere?"
+        ]
+      },
+      "reason": "Add missing Places-page evaluation fields for Hobby Overflow."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "Official site confirms active store infrastructure, Magic singles, long daily hours, and social/Discord routing.",
+          "Review-derived evidence supports spacious store, friendly staff, strong selection, and new/returning-player help.",
+          "Existing Wizards/EventLink row gives a Commander Night anchor."
+        ],
+        "cautions": [
+          "Public evidence is stronger for broad TCG activity than Commander-specific community texture.",
+          "No current public source in this pass confirmed Commander turnout, proxy norms, or pod formation.",
+          "Distance is manageable but not enough by itself to outrank better-sourced Commander venues."
+        ],
+        "open_questions": [
+          "Does the Discord show Commander LFG or regular turnout?",
+          "Is Commander Night casual, competitive, or mixed in practice?",
+          "Does Instagram/Facebook post MTG schedule graphics or mostly broader TCG content?"
+        ]
+      },
+      "reason": "Add missing Places-page evaluation fields for Joyful Toad."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "honey-pot-meadery"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "honey-pot-meadery",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B+",
+        "fit_score": 4.1,
+        "confidence": "high",
+        "positives": [
+          "Official Commander wording directly supports relaxed drop-in multiplayer, meeting the community, and newer/returning player welcome.",
+          "Loaner supplies and free-to-play casual Wednesday structure are unusually strong solo-arrival signals.",
+          "Existing records already preserve a richer event stream including casual Commander, league, special, and prerelease-like opportunities."
+        ],
+        "cautions": [
+          "Non-store venue may have different turnout patterns than an LGS.",
+          "League and special events may change the feel of the casual open-play lane.",
+          "Actual pod formation and repeat-player continuity still need firsthand or community-channel confirmation."
+        ],
+        "open_questions": [
+          "How many Commander players actually show up on typical Wednesdays?",
+          "Are league nights welcoming to drop-ins or mostly existing participants?",
+          "Does the community persist across weeks enough to support repeat friendships?"
+        ]
+      },
+      "reason": "Add missing Places-page evaluation fields for Honey Pot Meadery."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "medium",
+        "positives": [
+          "Official weekly-events page confirms Magic the Gathering tournament activity in a broader fantasy/gaming venue.",
+          "Venue/community evidence supports inclusive social-space, board-game, fandom, and game-night energy.",
+          "Existing Wizards/EventLink row provides a Commander Mondays anchor."
+        ],
+        "cautions": [
+          "Weekly events are explicitly subject to change around collaborations and special events.",
+          "Reservation, crowding, and cafe-event dynamics may affect solo-arrival usability.",
+          "Commander turnout and pod formation are not yet well evidenced."
+        ],
+        "open_questions": [
+          "Do Commander Mondays reliably fire during collaboration periods?",
+          "Are MTG players using the space as a repeat community or just an occasional themed night?",
+          "Does the venue require reservations or timing strategy for a comfortable solo visit?"
+        ]
+      },
+      "reason": "Add missing Places-page evaluation fields for Requiem."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "socalmagic"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "socalmagic",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "C",
+        "fit_score": 2.7,
+        "confidence": "high",
+        "positives": [
+          "Review-derived evidence supports a real Magic-dedicated store with friendly owners, events, drafts, and community continuity.",
+          "Existing Wizards/EventLink rows show frequent Commander availability.",
+          "Strong Magic inventory and mom-and-pop store identity make it worth preserving in the catalog."
+        ],
+        "cautions": [
+          "Repeated `No proxy` event language is probably a major personal-fit exclusion for the user.",
+          "Competitive Commander and cash-only/practical constraints may not match the desired casual Bracket 2/3 social fit.",
+          "The venue should not be promoted for personal use unless future evidence narrows or mitigates the no-proxy rule."
+        ],
+        "open_questions": [
+          "Does `No proxy` apply to all Commander play or only specific listed events?",
+          "Are there proxy-friendly casual tables outside the formal event language?",
+          "Does Facebook provide a current mitigation or house-rule explanation?"
+        ]
+      },
+      "reason": "Add missing Places-page evaluation fields for SoCalMagic and encode the no-proxy personal-fit exclusion."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "wpn-led-planning-assessment-pass-c-2026-07-17"
+      },
+      "fields": {
+        "id": "wpn-led-planning-assessment-pass-c-2026-07-17",
+        "detected_at": "2026-07-17T23:55:00Z",
+        "change_type": "evaluation_update",
+        "entity_type": "venue",
+        "entity_id": "hobby-overflow",
+        "summary": "Completed WPN-led planning assessment pass for Hobby Overflow, Joyful Toad TCG, Honey Pot Meadery, Requiem, and SoCalMagic; added Places-page evaluation recommendations and preserved SoCalMagic no-proxy as a major personal-fit exclusion.",
+        "review_status": "proposed"
+      },
+      "reason": "Leave a durable Updates marker for this planning assessment pass."
+    }
+  ]
+}
