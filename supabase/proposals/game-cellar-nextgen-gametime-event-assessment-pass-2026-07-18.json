@@ -1,0 +1,540 @@
+{
+  "proposal_id": "game-cellar-nextgen-gametime-event-assessment-pass-2026-07-18",
+  "description": "Bounded 3-store corrected-method event/assessment pass for The Game Cellar, Next-Gen Games, and It's GameTime. Adds current source-supported Magic event coverage that is missing from Supabase, captures Next-Gen's official Discord route as evidence with content replay TBD, and preserves uncertainty where exact format or turnout remains unknown. This proposal does not change schema/auth/RLS/app code or canonical JSON.",
+  "created_at": "2026-07-18T02:00:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-13567"},
+      "fields": {"health_status": "current", "last_checked": "2026-07-18"},
+      "reason": "Wizards/EventLink export contains current July-September 2026 The Game Cellar Commander Party and Hobbit prerelease records."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-9747"},
+      "fields": {"health_status": "current", "last_checked": "2026-07-18"},
+      "reason": "Wizards/EventLink export contains current July-October 2026 Next-Gen Magic rows beyond the already captured Wednesday Commander series."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-9054"},
+      "fields": {"health_status": "current", "last_checked": "2026-07-18"},
+      "reason": "Wizards/EventLink export still supports It's GameTime Sunday Casual Commander rows in the checked July-August 2026 window."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-nextgen-discord-route-2026-07-18"},
+      "fields": {
+        "id": "src-nextgen-discord-route-2026-07-18",
+        "label": "Next-Gen Games official Discord route",
+        "url": "https://discord.com/invite/DxfmsR8",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Next-Gen's official site links this Discord as a community route. The route is useful for future turnout, LFG, proxy, solo-arrival, and event-reliability replay, but Discord content was not inspected in this pass."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "next-gen-games", "source_id": "src-nextgen-discord-route-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "source_id": "src-nextgen-discord-route-2026-07-18",
+        "relationship": "official Discord route captured / content replay TBD"
+      },
+      "reason": "Make the official community route visible as Evidence without overclaiming inspected Discord content."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "game-cellar-hobbit-prerelease-2026"},
+      "fields": {
+        "id": "game-cellar-hobbit-prerelease-2026",
+        "venue_id": "the-game-cellar",
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-12",
+        "entry_fee": 35.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists eight finite The Hobbit prerelease sealed occurrences at The Game Cellar from August 7-12, 2026. Event copy says pack prizing is based on participation.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog source-supported prerelease/sealed coverage that was missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "game-cellar-marvel-super-heroes-commander-party-2026-07-31"},
+      "fields": {
+        "id": "game-cellar-marvel-super-heroes-commander-party-2026-07-31",
+        "venue_id": "the-game-cellar",
+        "title": "Marvel Super Heroes Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-07-31",
+        "end_date": "2026-07-31",
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists a Friday, July 31, 2026 Marvel Super Heroes Commander Party at The Game Cellar at 7:00 PM with $5 entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Make a clear dated Commander Party visible for planning."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "game-cellar-hobbit-commander-party-2026"},
+      "fields": {
+        "id": "game-cellar-hobbit-commander-party-2026",
+        "venue_id": "the-game-cellar",
+        "title": "The Hobbit Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-08-21",
+        "end_date": "2026-09-18",
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists The Hobbit Commander Party occurrences at The Game Cellar on August 21 and September 18, 2026 at 7:00 PM with $5 entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Make finite Commander Party dates visible without modeling them as weekly recurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "next-gen-saturday-draft"},
+      "fields": {
+        "id": "next-gen-saturday-draft",
+        "venue_id": "next-gen-games",
+        "title": "Saturday Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 6, "startTime": "12:00"},
+        "default_start_time": "12:00",
+        "start_date": "2026-07-18",
+        "end_date": null,
+        "entry_fee": 25.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Saturday Draft at Next-Gen Games at 12:00 PM, with $25 entry and 32-player capacity in the checked export window.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog a current weekly draft lane missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "next-gen-saturday-afternoon-draft"},
+      "fields": {
+        "id": "next-gen-saturday-afternoon-draft",
+        "venue_id": "next-gen-games",
+        "title": "Saturday Afternoon Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 6, "startTime": "16:00"},
+        "default_start_time": "16:00",
+        "start_date": "2026-07-18",
+        "end_date": null,
+        "entry_fee": 25.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Saturday Afternoon Draft at Next-Gen Games at 4:00 PM, with $25 entry and 32-player capacity in the checked export window.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog a second current Saturday draft lane missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "next-gen-standard-showdown"},
+      "fields": {
+        "id": "next-gen-standard-showdown",
+        "venue_id": "next-gen-games",
+        "title": "Standard Showdown",
+        "format": "Standard",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 1, "startTime": "19:30"},
+        "default_start_time": "19:30",
+        "start_date": "2026-07-20",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Monday Standard Showdown at Next-Gen Games at 7:30 PM with $5 entry in the checked export window.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog a current constructed Magic lane for store-activity completeness."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "next-gen-legacy-thursday"},
+      "fields": {
+        "id": "next-gen-legacy-thursday",
+        "venue_id": "next-gen-games",
+        "title": "Legacy Thursday",
+        "format": "Legacy",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 4, "startTime": "19:30"},
+        "default_start_time": "19:30",
+        "start_date": "2026-07-23",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Legacy Thursday at Next-Gen Games at 7:30 PM with $5 entry and 32-player capacity in the checked export window.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog a current constructed Magic lane for store-activity completeness."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "next-gen-friday-night-magic-modern"},
+      "fields": {
+        "id": "next-gen-friday-night-magic-modern",
+        "venue_id": "next-gen-games",
+        "title": "Friday Night Magic Modern",
+        "format": "Modern",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "19:30"},
+        "default_start_time": "19:30",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Friday Night Magic Modern at Next-Gen Games at 7:30 PM with $5 entry in the checked export window.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog a current FNM/Modern constructed lane for store-activity completeness."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "next-gen-all-day-sunday-commander"},
+      "fields": {
+        "id": "next-gen-all-day-sunday-commander",
+        "venue_id": "next-gen-games",
+        "title": "All Day Sunday Commander",
+        "format": "Commander",
+        "event_type": "commander",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 0, "startTime": "11:00"},
+        "default_start_time": "11:00",
+        "start_date": "2026-07-19",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists All Day Sunday Commander at Next-Gen Games with $5 entry and 64-player capacity. The export's local scheduled time renders as 11:00 PM, which conflicts with the all-day title and store hours. This row uses Next-Gen's official Sunday opening time, 11:00 AM, as a planning proxy and records that assumption.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Make the clear current Sunday Commander signal visible while preserving the start-time ambiguity."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "next-gen-two-headed-giant-commander-2026"},
+      "fields": {
+        "id": "next-gen-two-headed-giant-commander-2026",
+        "venue_id": "next-gen-games",
+        "title": "Two Headed Giant Commander",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "12:00",
+        "start_date": "2026-07-26",
+        "end_date": "2026-08-30",
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists Two Headed Giant Commander specials at Next-Gen Games on July 26 and August 30, 2026 at 12:00 PM. The two records show different entry-fee amounts, so dated occurrences preserve the exact fee where known.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Make finite Commander specials visible without modeling them as weekly recurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "next-gen-marvel-super-heroes-commander-party-2026-08-02"},
+      "fields": {
+        "id": "next-gen-marvel-super-heroes-commander-party-2026-08-02",
+        "venue_id": "next-gen-games",
+        "title": "Marvel Super Heroes Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "12:00",
+        "start_date": "2026-08-02",
+        "end_date": "2026-08-02",
+        "entry_fee": 40.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists a Sunday, August 2, 2026 Marvel Super Heroes Commander Party at Next-Gen Games at 12:00 PM with $40 entry and 64-player capacity.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Make a current dated Commander Party visible for planning."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "its-gametime-friday-night-magic"},
+      "fields": {
+        "id": "its-gametime-friday-night-magic",
+        "venue_id": "it-s-gametime",
+        "title": "Friday Night Magic",
+        "format": "Magic",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "20:00"},
+        "default_start_time": "20:00",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "It's GameTime's official site lists Friday Night Magic at 8:00 PM. The site does not specify the format, registration, entry fee, or whether this appears in Wizards/EventLink, so keep this as a medium-confidence recurring FNM/Magic signal rather than normalizing it as Commander, draft, or sealed.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Make a store-controlled recurring Friday Magic signal visible while preserving format uncertainty."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-prerelease-2026-08-07-14-00"},
+      "fields": {"id": "game-cellar-hobbit-prerelease-2026-08-07-14-00", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_date": "2026-08-07", "start_time": "14:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": null, "details": "Wizards/EventLink event 11136625 confirms The Hobbit Prerelease at The Game Cellar on Friday, August 7, 2026 at 2:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-prerelease-2026-08-07-19-00"},
+      "fields": {"id": "game-cellar-hobbit-prerelease-2026-08-07-19-00", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_date": "2026-08-07", "start_time": "19:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": null, "details": "Wizards/EventLink event 11136626 confirms The Hobbit Prerelease at The Game Cellar on Friday, August 7, 2026 at 7:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-prerelease-2026-08-08-12-00"},
+      "fields": {"id": "game-cellar-hobbit-prerelease-2026-08-08-12-00", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_date": "2026-08-08", "start_time": "12:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": null, "details": "Wizards/EventLink event 11136627 confirms The Hobbit Prerelease at The Game Cellar on Saturday, August 8, 2026 at 12:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-prerelease-2026-08-08-17-00"},
+      "fields": {"id": "game-cellar-hobbit-prerelease-2026-08-08-17-00", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_date": "2026-08-08", "start_time": "17:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": null, "details": "Wizards/EventLink event 11136628 confirms The Hobbit Prerelease at The Game Cellar on Saturday, August 8, 2026 at 5:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-prerelease-2026-08-09-12-00"},
+      "fields": {"id": "game-cellar-hobbit-prerelease-2026-08-09-12-00", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_date": "2026-08-09", "start_time": "12:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": null, "details": "Wizards/EventLink event 11136629 confirms The Hobbit Prerelease at The Game Cellar on Sunday, August 9, 2026 at 12:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-prerelease-2026-08-09-17-00"},
+      "fields": {"id": "game-cellar-hobbit-prerelease-2026-08-09-17-00", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_date": "2026-08-09", "start_time": "17:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": null, "details": "Wizards/EventLink event 11136630 confirms The Hobbit Prerelease at The Game Cellar on Sunday, August 9, 2026 at 5:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-prerelease-2026-08-12-14-00"},
+      "fields": {"id": "game-cellar-hobbit-prerelease-2026-08-12-14-00", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_date": "2026-08-12", "start_time": "14:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": null, "details": "Wizards/EventLink event 11136631 confirms The Hobbit Prerelease at The Game Cellar on Wednesday, August 12, 2026 at 2:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-prerelease-2026-08-12-19-00"},
+      "fields": {"id": "game-cellar-hobbit-prerelease-2026-08-12-19-00", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_date": "2026-08-12", "start_time": "19:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": null, "details": "Wizards/EventLink event 11136632 confirms The Hobbit Prerelease at The Game Cellar on Wednesday, August 12, 2026 at 7:00 PM."},
+      "reason": "Add exact dated prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-marvel-super-heroes-commander-party-2026-07-31-19-00"},
+      "fields": {"id": "game-cellar-marvel-super-heroes-commander-party-2026-07-31-19-00", "series_id": "game-cellar-marvel-super-heroes-commander-party-2026-07-31", "occurrence_date": "2026-07-31", "start_time": "19:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 5.00, "capacity": null, "details": "Wizards/EventLink event 11136651 confirms Marvel Super Heroes Commander Party at The Game Cellar on Friday, July 31, 2026 at 7:00 PM."},
+      "reason": "Add exact dated Commander Party occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-commander-party-2026-08-21-19-00"},
+      "fields": {"id": "game-cellar-hobbit-commander-party-2026-08-21-19-00", "series_id": "game-cellar-hobbit-commander-party-2026", "occurrence_date": "2026-08-21", "start_time": "19:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 5.00, "capacity": null, "details": "Wizards/EventLink event 11136657 confirms The Hobbit Commander Party at The Game Cellar on Friday, August 21, 2026 at 7:00 PM."},
+      "reason": "Add exact dated Commander Party occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "game-cellar-hobbit-commander-party-2026-09-18-19-00"},
+      "fields": {"id": "game-cellar-hobbit-commander-party-2026-09-18-19-00", "series_id": "game-cellar-hobbit-commander-party-2026", "occurrence_date": "2026-09-18", "start_time": "19:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 5.00, "capacity": null, "details": "Wizards/EventLink event 11136659 confirms The Hobbit Commander Party at The Game Cellar on Friday, September 18, 2026 at 7:00 PM."},
+      "reason": "Add exact dated Commander Party occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "next-gen-two-headed-giant-commander-2026-07-26-12-00"},
+      "fields": {"id": "next-gen-two-headed-giant-commander-2026-07-26-12-00", "series_id": "next-gen-two-headed-giant-commander-2026", "occurrence_date": "2026-07-26", "start_time": "12:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 5.00, "capacity": null, "details": "Wizards/EventLink event 11270799 confirms Two Headed Giant Commander at Next-Gen Games on Sunday, July 26, 2026 at 12:00 PM."},
+      "reason": "Add exact dated Commander special occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "next-gen-two-headed-giant-commander-2026-08-30-12-00"},
+      "fields": {"id": "next-gen-two-headed-giant-commander-2026-08-30-12-00", "series_id": "next-gen-two-headed-giant-commander-2026", "occurrence_date": "2026-08-30", "start_time": "12:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 10.00, "capacity": null, "details": "Wizards/EventLink event 11270800 confirms Two Headed Giant Commander at Next-Gen Games on Sunday, August 30, 2026 at 12:00 PM."},
+      "reason": "Add exact dated Commander special occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "next-gen-marvel-super-heroes-commander-party-2026-08-02-12-00"},
+      "fields": {"id": "next-gen-marvel-super-heroes-commander-party-2026-08-02-12-00", "series_id": "next-gen-marvel-super-heroes-commander-party-2026-08-02", "occurrence_date": "2026-08-02", "start_time": "12:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 40.00, "capacity": 64, "details": "Wizards/EventLink event 11081434 confirms Marvel Super Heroes Commander Party at Next-Gen Games on Sunday, August 2, 2026 at 12:00 PM."},
+      "reason": "Add exact dated Commander Party occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-13567", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-13567", "series_id": "game-cellar-hobbit-prerelease-2026", "occurrence_id": null, "relationship": "Wizards/EventLink finite prerelease evidence"},
+      "reason": "Attach WPN evidence to The Game Cellar Hobbit prerelease series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-13567", "series_id": "game-cellar-marvel-super-heroes-commander-party-2026-07-31", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-13567", "series_id": "game-cellar-marvel-super-heroes-commander-party-2026-07-31", "occurrence_id": null, "relationship": "Wizards/EventLink dated Commander Party evidence"},
+      "reason": "Attach WPN evidence to The Game Cellar Marvel Commander Party series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-13567", "series_id": "game-cellar-hobbit-commander-party-2026", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-13567", "series_id": "game-cellar-hobbit-commander-party-2026", "occurrence_id": null, "relationship": "Wizards/EventLink dated Commander Party evidence"},
+      "reason": "Attach WPN evidence to The Game Cellar Hobbit Commander Party series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9747", "series_id": "next-gen-saturday-draft", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-9747", "series_id": "next-gen-saturday-draft", "occurrence_id": null, "relationship": "Wizards/EventLink recurring draft evidence"},
+      "reason": "Attach WPN evidence to Next-Gen Saturday Draft."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9747", "series_id": "next-gen-saturday-afternoon-draft", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-9747", "series_id": "next-gen-saturday-afternoon-draft", "occurrence_id": null, "relationship": "Wizards/EventLink recurring draft evidence"},
+      "reason": "Attach WPN evidence to Next-Gen Saturday Afternoon Draft."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9747", "series_id": "next-gen-standard-showdown", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-9747", "series_id": "next-gen-standard-showdown", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Standard evidence"},
+      "reason": "Attach WPN evidence to Next-Gen Standard Showdown."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9747", "series_id": "next-gen-legacy-thursday", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-9747", "series_id": "next-gen-legacy-thursday", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Legacy evidence"},
+      "reason": "Attach WPN evidence to Next-Gen Legacy Thursday."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9747", "series_id": "next-gen-friday-night-magic-modern", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-9747", "series_id": "next-gen-friday-night-magic-modern", "occurrence_id": null, "relationship": "Wizards/EventLink recurring FNM Modern evidence"},
+      "reason": "Attach WPN evidence to Next-Gen Friday Night Magic Modern."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9747", "series_id": "next-gen-all-day-sunday-commander", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-9747", "series_id": "next-gen-all-day-sunday-commander", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Commander evidence with planning-time caveat"},
+      "reason": "Attach WPN evidence to Next-Gen Sunday Commander."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9747", "series_id": "next-gen-two-headed-giant-commander-2026", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-9747", "series_id": "next-gen-two-headed-giant-commander-2026", "occurrence_id": null, "relationship": "Wizards/EventLink dated Commander special evidence"},
+      "reason": "Attach WPN evidence to Next-Gen Two Headed Giant Commander."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9747", "series_id": "next-gen-marvel-super-heroes-commander-party-2026-08-02", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-9747", "series_id": "next-gen-marvel-super-heroes-commander-party-2026-08-02", "occurrence_id": null, "relationship": "Wizards/EventLink dated Commander Party evidence"},
+      "reason": "Attach WPN evidence to Next-Gen Marvel Commander Party."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-itsgametime-official-schedule-2026-07-17", "series_id": "its-gametime-friday-night-magic", "occurrence_id": null},
+      "fields": {"source_id": "src-itsgametime-official-schedule-2026-07-17", "series_id": "its-gametime-friday-night-magic", "occurrence_id": null, "relationship": "official site recurring FNM evidence"},
+      "reason": "Attach official site schedule evidence to It's GameTime Friday Night Magic."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {"id": "game-cellar-nextgen-gametime-event-assessment-pass-2026-07-18"},
+      "fields": {
+        "id": "game-cellar-nextgen-gametime-event-assessment-pass-2026-07-18",
+        "detected_at": "2026-07-18T02:00:00-07:00",
+        "change_type": "event_update",
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "summary": "Proposed bounded event/assessment replay for The Game Cellar, Next-Gen Games, and It's GameTime. The pass surfaces missing Game Cellar prerelease/Commander Party dates, Next-Gen draft/constructed/Commander special coverage, It's GameTime Friday FNM, and a Next-Gen Discord route captured for later community replay.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable proposed update marker before any live write."
+    }
+  ]
+}
