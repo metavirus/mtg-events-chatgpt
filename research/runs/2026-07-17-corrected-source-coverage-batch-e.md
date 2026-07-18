@@ -1,188 +1,200 @@
 # Corrected source coverage batch E - Grails, Buddies, Tilted
 
 Date: 2026-07-17  
-Pass type: mixed corrective pass
+Pass type: mixed corrective pass; Tilted escalated to corrected main-pass
+acceptance test
 
-- Grails Gone Wild: targeted correction audit after the Instagram/source-sweep
-  methodology change. This is not a completed main store pass.
-- Buddies Collectibles: micro-backfill / source-disposition audit.
-- Tilted Gaming: micro-backfill / source-disposition audit.
+Status: revised proposal prepared; no live Supabase write applied.
 
-Validation level planned for any write: **lean**. The expected durable changes
-are source/evidence and Places-assessment support only. No event rows, schema,
-auth, RLS, app code, or canonical JSON edits are proposed.
+## Why the original Batch E conclusion failed
 
-## Standing correction applied in this pass
+The original pass said Tilted's event record already existed and narrowed the
+remaining question to Evidence and Places-page clarity. That conclusion was
+wrong for two linked reasons:
 
-Every source that materially affects fit, confidence, status, cautions, open
-questions, source routing, or event conclusions must be either captured as
-Evidence, already captured, or explicitly dispositioned. A store pass cannot
-use packet-derived or obvious-search evidence as private background reasoning
-while leaving the user-visible Evidence tab thin.
+1. Commander presence was mistaken for event-format completeness. Once one
+   supported Friday Commander series was found, the pass did not continue
+   through draft, prerelease/sealed, FNM, and special Magic signals.
+2. Source attachment and source-route discovery were mistaken for source-content
+   reconciliation. Tilted's official events page and Wizards locator were in
+   Evidence, but their material event contents were not compared against the
+   series and occurrences actually present in Supabase.
 
-## Grails Gone Wild / GGW Cards N Collects
+The correction also requires reading the useful context around an event
+calendar, including contact and community buttons. The direct Discord route
+under Tilted's calendar was operationally relevant and should not have remained
+implicit inside a generic events-page source.
 
-Current disposition: **targeted correction stands; main pass still required**.
+The sentence `No new event row is recommended` is withdrawn. Tilted is now
+classified as `corrected main pass required`, not `pass stands` or an Evidence
+micro-backfill.
 
-What was reviewed:
+## Tilted Gaming - complete source-to-event reconciliation
 
-- Existing Supabase evidence already includes the corrected Grails source set:
-  official GGW Cards N Collects storefront, Instagram, KeepUp, Card Shop Hub,
-  Ravensburger/Lorcana, TCGplayer, BBB, MapQuest/Yelp-derived status conflict,
-  FindYourLGS, and Wizards/EventLink.
-- The Instagram correction already applied at commit `6025220` supports the
-  Grails/GGW identity and visible TCG/MTG activity through September 2025,
-  including a stale July 2025 Magic prerelease signal.
-- Current/current-looking non-Instagram sources support the narrower conclusion
-  that Grails is likely an active TCG storefront, not that July 2026 weekly
-  Commander is independently confirmed by store social content.
+### Sources inspected
 
-Event implications:
+- Official homepage and weekly spotlight:
+  https://tiltedgamingtcg.com/
+- Official event-calendar page and embedded Google Calendar:
+  https://tiltedgamingtcg.com/pages/events
+- Direct Discord invite displayed under the public events calendar:
+  https://discord.com/invite/V8rxm8wPcA
+- Live Wizards/EventLink API results for organization `18067`, checked
+  2026-07-17 using the repository's API-first Wizards method.
+- Live Supabase event series, dated occurrences, venue sources, and event-source
+  relationships for `tilted-gaming`.
 
-- Existing Sunday casual Commander remains an active source-backed lead because
-  it is already in the app from Wizards/EventLink-derived data.
-- No new event write is recommended from this audit.
-- Event conclusion remains **event TBD for reliability**, not no-event: replay
-  current Wizards/EventLink or store-controlled current social evidence before
-  recommending Grails as a reliable trip.
+### Important source contradiction
 
-Places assessment implications:
+Tilted's official homepage weekly spotlight visibly lists:
 
-- The conservative C+ / medium-confidence discovery read remains appropriate.
-- Do not promote Grails to fully reviewed from this targeted correction alone.
-- The useful user-facing synthesis is: likely active TCG storefront; old closed
-  flag weakened; Magic/Commander currentness still unresolved.
+- Friday, July 17: `Friday Night Magic`, $5, 32 seats;
+- Sunday, July 19: `Tilted Magic Draft!`, $22, 16 seats.
 
-Source coverage:
+The official events page describes an automatically updated monthly calendar,
+but its embedded Google Calendar rendered July 2026 as empty during this check.
+The empty embed is therefore a source-health contradiction, not proof that no
+events exist. The live Wizards feed independently returns current Tilted Magic
+events and supplies the usable planning facts below.
 
-- Official site: already captured; supports GGW storefront/alias route, but
-  not detailed current MTG calendar truth.
-- Instagram: already captured; inspected; supports identity and stale MTG/TCG
-  activity through September 2025, not July 2026 Commander.
-- Facebook: checked/disposition remains not material or not readily useful in
-  this targeted correction.
-- Discord/community route: no reliable current Grails Discord route captured;
-  deeper replay TBD only if Grails is promoted.
-- Wizards/EventLink: already captured; supports the existing Commander lead.
-- Reviews: already captured through direct/mirror/status-conflict sources.
-- Other useful sources: already captured through TCGplayer, BBB, directories,
-  Card Shop Hub, KeepUp, and Ravensburger.
+The events-page section also places a direct Discord button beside the store's
+phone contact. That makes Discord a material event/community-support route for
+questions, coordination, player texture, and a possible later community replay,
+not merely a generic social link. It is not currently a distinct Supabase
+Evidence record. The revised proposal captures the invite; Discord content was
+not entered or read in this correction, so its disposition is `Discord route
+captured / content replay TBD`.
+
+### Current live Wizards inventory
+
+| Local date/time | Wizards ID | Event | Material facts |
+| --- | --- | --- | --- |
+| Sun Jul 19, 3:00 PM | `11181552` | Tilted Draft | Casual booster draft; $22; 16 max; packs per win; four-player minimum; players vote between a three-set chaotic draft and one-set draft; in-store first-come signup. |
+| Fri Jul 24, 6:00 PM | `11152862` | Friday Night Magic Casual Tilted Commanders | Casual Commander/FNM; $5; 32 seats; raffles/promos; in-store seat requirement. |
+| Sun Jul 26, 3:00 PM | `11181553` | Tilted Draft | Same explicitly weekly Sunday draft structure as July 19. |
+| Fri Jul 31, 6:00 PM | `11353827` | Marvel Super Heroes Commander Party | Casual Commander Party plus regular Commander; $5; stated 32 max; hourly raffles and attendance-based store-credit/pack rewards. |
+| Fri Aug 7, 6:00 PM | `11270972` | The Hobbit Prerelease | Casual sealed prerelease; $40; 32 max; in-store first-come signup. |
+
+All UTC timestamps were converted using the source's
+`America/Los_Angeles` time zone.
+
+### Supabase and app state before the proposed correction
+
+Supabase contains:
+
+- one active weekly Friday 6:00 PM `Friday Night Magic Casual Tilted
+  Commanders` series;
+- one inactive duplicate/superseded Friday Commander series;
+- no Tilted dated occurrences;
+- no Tilted draft series;
+- no Tilted Commander Party series/occurrence;
+- no Tilted Hobbit prerelease series/occurrence.
+
+Because the app reads this Supabase state, it can project the recurring Friday
+Commander row but cannot show the missing Sunday draft or the two dated special
+events. The inactive duplicate remains historical cleanup context and should
+not be reactivated.
+
+### Signal-by-signal disposition
+
+| Signal | Classification | Proposed treatment |
+| --- | --- | --- |
+| Friday casual Commander/FNM | Already represented accurately | Keep the detailed active series; refresh verification/confidence and attach official-homepage corroboration. Do not create a duplicate series. |
+| Older `Tilted Commanders` row | Duplicate presentation | Keep inactive as the accepted superseded snapshot. |
+| Sunday `Tilted Draft` | Missing recurring series and missing dated occurrences | Add one weekly Sunday 3:00 PM Draft series plus confirmed July 19 and July 26 occurrences. Recurrence is supported by the source text `Every Sunday` and two visible Wizards dates. |
+| Marvel Super Heroes Commander Party | Missing dated occurrence | Add a one-time special Commander series and confirmed July 31 occurrence. Do not manufacture recurrence. |
+| The Hobbit prerelease | Missing dated occurrence | Add a one-time sealed prerelease series and confirmed August 7 occurrence. Do not manufacture recurrence. |
+| Empty official Google Calendar embed | Ambiguous/source-health issue | Preserve as a caution in the closure record; do not use it to negate the homepage or live Wizards listings. |
+
+### Format coverage closure
+
+- Commander: **found** - existing Friday casual Commander/FNM series is
+  represented; July 31 Commander Party is missing and proposed.
+- Draft: **found** - weekly Sunday draft and two confirmed dates are missing and
+  proposed.
+- Prerelease/sealed: **found** - August 7 Hobbit prerelease is missing and
+  proposed.
+- Other Magic/FNM/specials: **found** - Friday FNM is already represented
+  through the Commander series; Commander Party is proposed. No separate
+  non-Commander FNM series is justified by the inspected source contents.
+
+### Places assessment correction
+
+Tilted's planning value is materially stronger than the prior Commander-only
+read: it is close to Los Alamitos and currently exposes Commander, recurring
+draft, a Commander Party, and a high-priority prerelease. The same sources also
+show structured in-store signup, limited seats, prize support, and competitive
+multi-TCG positioning.
+
+Proposed direction:
+
+- research status: `reviewed` -> `discovery` in the current schema, with the
+  explicit closure label `corrected main pass required`;
+- fit: `B / 3.7` -> `B+ / 4.0` because the current format breadth adds real
+  personal planning value;
+- confidence: remain `high` for operation and event facts, while explicitly
+  preserving uncertainty about casual/proxy/solo-arrival culture;
+- do not call the store fully reviewed until the remaining ordinary
+  social/community portion of the main pass is closed.
+
+### Corrected closure record
+
+```text
+Store: Tilted Gaming
+Pass type: corrected main-pass acceptance test; full main pass still required
+
+Official site: inspected/captured - homepage supports current FNM and Sunday Draft; event page supports operation, signup, hours, Discord routing, and an empty-embed contradiction
+Instagram: official route identified; content replay remains part of the bounded main-pass completion
+Facebook: official route identified; not material to this event correction
+Discord/community: direct invite inspected on the events page and proposed as event/community-support Evidence; content replay TBD and not represented as inspected
+Wizards/EventLink: inspected/captured - five current listings reconciled individually
+Reviews: prior direct/mirror evidence remains captured; not reopened in this event correction
+Other material sources: official Linktree remains proposed as source-routing Evidence
+
+Places synthesis: nearby multi-TCG store with stronger Magic format breadth than the prior Commander-only assessment showed; good planning value but structured/competitive posture
+Supabase event comparison: Friday Commander represented; Sunday Draft, Commander Party, and Hobbit prerelease missing
+Commander: found - existing Friday series plus missing July 31 Commander Party
+Draft: found - missing weekly Sunday series and July 19/26 occurrences
+Prerelease/sealed: found - missing August 7 Hobbit prerelease
+Other Magic/FNM/specials: found - Friday FNM represented by the Commander/FNM series; no unsupported extra recurrence created
+Remaining decision-changing TBD: social/Discord content, proxy norms, Commander power mix, pod formation, solo-arrival experience, and the empty official calendar embed
+Final planning disposition: corrected main pass required; revised event proposal ready, not yet applied
+```
+
+## Grails Gone Wild
+
+The prior targeted source correction remains partial/discovery and is not
+reopened here. No new Grails write is included in the revised proposal. Its
+bounded main-store completion pass remains separately queued.
 
 ## Buddies Collectibles
 
-Current disposition: **micro-backfill useful; event record already present**.
+The original micro-backfill conclusion remains valid. The revised proposal
+still adds the already-reviewed Whatnot commerce/community-scale Evidence and
+clarifies the Places assessment without treating marketplace activity as event
+proof. No new Buddies event signal was found or manufactured in this correction.
 
-What was reviewed:
+## Revised proposal and validation gate
 
-- Official site and terms pages support current store identity, in-store/online
-  operation, Gardena address, and a strong commerce/live-stream posture.
-- The official site includes Magic among English TCG products and has weekly
-  tournament infrastructure, but the public product page does not by itself
-  describe the Friday Commander details.
-- Direct Yelp evidence is already captured in Supabase as
-  `src-buddies-yelp-2026-07-17`. It is material: 4.5-star / review-scale
-  evidence, current hours/status texture, and visible review themes around
-  friendly/helpful staff, selection, atmosphere, tables, and tournaments being
-  welcoming/fun.
-- Google/Yelp-derived mirrors are already captured through KeepUp and Card Shop
-  Hub. They are useful secondary support, not replacements for direct Yelp.
-- Whatnot is a material commerce/community-scale source: the public profile
-  shows substantial live-selling footprint and many upcoming shows, mostly
-  non-MTG. It supports commerce scale and live-break emphasis, not organized
-  in-person Magic proof.
+Revised proposal:
 
-Event implications:
+- `supabase/proposals/corrected-source-coverage-batch-e-2026-07-17.json`
 
-- Existing Friday casual Commander event remains the write-now event already in
-  the app.
-- No new event row is recommended from this audit.
-- Tournament/live-commerce sources do not prove additional MTG calendar events.
+Validation level: **standard**, because event series and occurrences are now
+proposed.
 
-Places assessment implications:
+Before any live write:
 
-- The existing B- / medium-confidence read remains directionally right.
-- The direct Yelp signal makes the store-quality side better supported than the
-  Evidence tab previously made obvious.
-- The main caution remains that the store looks commerce/live-break heavy, so
-  Friday Commander may be useful but the lived in-store Commander culture still
-  needs Discord or field texture before promotion.
+- validate the proposal against live Supabase;
+- recheck affected IDs and duplicate keys;
+- show the user this reconciliation and obtain explicit approval.
 
-Source coverage:
+After an approved write:
 
-- Official site: already captured; supports current identity, TCG/MTG product
-  depth, and live-commerce orientation.
-- Instagram: route likely exists through Linktree/social routing; content
-  replay not needed for this micro-backfill unless Buddies is promoted.
-- Facebook: not material in this pass.
-- Discord/community route: Linktree already captured; Discord survey remains
-  TBD for community texture.
-- Wizards/EventLink: already captured; supports the Friday Commander event.
-- Reviews: direct Yelp already captured; KeepUp/Card Shop Hub already captured.
-- Other useful sources: Whatnot should be captured as Evidence because it
-  supports commerce scale and live-break orientation.
+- verify Tilted's affected series, occurrences, and source relationships;
+- run targeted duplicate checks;
+- confirm Today, Events, and Places show the corrected Tilted event set;
+- confirm unrelated event records remain unchanged.
 
-## Tilted Gaming
-
-Current disposition: **micro-backfill useful; event record already present**.
-
-What was reviewed:
-
-- Official events page is already captured and remains the strongest source for
-  current operation, address/hours, store-controlled event infrastructure,
-  Discord routing, in-store signup requirement, and a competitive multi-TCG
-  identity including MTG.
-- Existing Wizards/EventLink records already support the active Friday casual
-  Commander event and the inactive duplicate cleanup.
-- Review mirrors are already captured through KeepUp and MapQuest/Yelp-derived
-  sources. Public Apple/Yahoo-style review surfaces also support current
-  identity, hours, high review sentiment, customer-service strength, and broad
-  TCG activity.
-- Linktree is a material missing source-router: it cleanly confirms the
-  store-controlled social, Discord, Instagram, Facebook, app, review, and
-  website routes, and states Tilted is a Cerritos cards/collectibles shop with
-  MTG among its weekly-event TCGs.
-
-Event implications:
-
-- Existing Friday casual Commander remains the active write-now event already
-  in the app.
-- No new event row is recommended from this audit.
-- Public source routing reinforces that Discord/social replay could help with
-  turnout, power level, and solo-arrival texture, but that is a future targeted
-  deep replay rather than a prerequisite to retaining the current event.
-
-Places assessment implications:
-
-- The existing B / high-confidence read remains supported.
-- Confidence is high because several independent source families agree on
-  operation, branch identity, MTG activity, store infrastructure, and review
-  quality.
-- Do not overstate solo-arrival or casual/proxy comfort: the official framing
-  still says competitive TCG hub, in-store signup, and seats can fill.
-
-Source coverage:
-
-- Official site/events page: already captured; supports operation, events,
-  address, hours, Discord, and in-store signup.
-- Instagram: route found through Linktree; content replay TBD only if promoted.
-- Facebook: route found through Linktree; not inspected in this micro-backfill.
-- Discord/community route: route found through official events page and
-  Linktree; Discord survey remains targeted-deep-replay TBD.
-- Wizards/EventLink: already captured; supports active Friday Commander.
-- Reviews: already captured through review mirrors; Apple/Yahoo-style public
-  review surfaces support the same positive store-quality read.
-- Other useful sources: Linktree should be captured as Evidence because it is a
-  high-value official source-routing record.
-
-## Proposed durable action
-
-Prepare a lean Supabase proposal:
-
-- add Buddies Whatnot as venue Evidence;
-- add Tilted Linktree as venue Evidence;
-- update Buddies and Tilted evaluation/assessment text only enough to make the
-  already-used review/source-router reasoning visible;
-- add a research-change marker for this corrected source-coverage batch.
-
-Do not add or change event rows in this batch. Do not apply live writes until
-the user approves the proposal.
+No live Supabase write, canonical JSON edit, schema/auth/RLS change, or app-code
+change occurred during this correction.

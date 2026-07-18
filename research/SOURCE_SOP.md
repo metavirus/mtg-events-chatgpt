@@ -751,6 +751,12 @@ Before closing a first pass, confirm:
 - source routing classified
 - MTG focus assessed separately from Commander fit
 - strongest near-term actionable MTG events surfaced or explicitly stated absent
+- source contents reconciled against the event series and dated occurrences
+  actually present in Supabase; attaching a source is not event reconciliation
+- material event-page context inspected, including registration, contact,
+  Discord/community, and source-routing controls surrounding the calendar
+- explicit format coverage recorded for Commander, draft, prerelease/sealed,
+  and other Magic/FNM/special events
 - no unnecessary rabbit hole taken
 - result classified: `discovery`, `reviewed`, or `deepened`
 
@@ -778,7 +784,11 @@ Reviews: inspected/disposition/result
 Other material sources: inspected/disposition/result
 
 Places synthesis:
-Event disposition:
+Supabase event comparison: source facts versus represented series/occurrences
+Commander: found / absent / unresolved - disposition
+Draft: found / absent / unresolved - disposition
+Prerelease/sealed: found / absent / unresolved - disposition
+Other Magic/FNM/specials: found / absent / unresolved - disposition
 Remaining decision-changing TBD:
 Final planning disposition:
 ```
@@ -788,6 +798,13 @@ For each source line, say what the source actually supports. Do not let
 material, inspect enough content to support or reject the relevant Places and
 Events conclusions.
 
+`Absent` is valid only after the relevant current sources were inspected. It
+must not mean that the format was absent from an intake packet, omitted from a
+prior Commander-led pass, or missing from Supabase. A captured source is not
+proof that its event contents were inspected, and inspected event contents are
+not reconciled until they have been compared with the live Supabase series and
+occurrences.
+
 ## Required self-audit before moving on
 
 Ask:
@@ -795,6 +812,11 @@ Ask:
 - Did I use the existing known best modality for each source?
 - Did I re-learn something I should have treated as settled process?
 - Did I go deeper than first-pass needs?
+- Did Commander presence prematurely close the event search before draft,
+  prerelease/sealed, FNM, and special-event content was reconciled?
+- Does every material current event found in a source have an explicit
+  represented / missing / stale / duplicate / TBD disposition against
+  Supabase?
 - If I were him, would this feel complete enough to seriously consider the
   store and maybe add an event to my calendar?
 

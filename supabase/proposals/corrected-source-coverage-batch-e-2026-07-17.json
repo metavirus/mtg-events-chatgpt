@@ -1,15 +1,13 @@
 {
   "proposal_id": "corrected-source-coverage-batch-e-2026-07-17",
-  "description": "Lean evidence and assessment-support proposal for corrected source coverage on Grails Gone Wild, Buddies Collectibles, and Tilted Gaming. Grails requires no new write because the targeted correction is already applied and remains partial/discovery. Buddies receives a Whatnot commerce/community-scale Evidence link; Tilted receives official Linktree source-routing Evidence. Buddies and Tilted Places assessments are lightly clarified to make review/source-router reasoning visible. No event rows, schema, auth, RLS, app code, or canonical JSON changes.",
+  "description": "Revised Batch E proposal. Buddies receives a lean Evidence/assessment clarification. Tilted is corrected from an incomplete Commander-only read to a source-to-Supabase event reconciliation: preserve the existing Friday Commander/FNM series, add the supported weekly Sunday Draft with July 19 and July 26 occurrences, add the July 31 Marvel Super Heroes Commander Party, add the August 7 Hobbit prerelease, attach source-specific provenance, and downgrade research closure to corrected-main-pass-required/discovery until the remaining ordinary social/community sweep is complete. No Grails write, schema/auth/RLS/app-code change, or canonical JSON edit is proposed.",
   "created_at": "2026-07-17T23:20:00-07:00",
   "author": "Codex Project Steward",
   "operations": [
     {
       "action": "insert",
       "table": "sources",
-      "key": {
-        "id": "src-buddies-whatnot-2026-07-17"
-      },
+      "key": {"id": "src-buddies-whatnot-2026-07-17"},
       "fields": {
         "id": "src-buddies-whatnot-2026-07-17",
         "label": "Buddies Collectibles Whatnot profile",
@@ -18,30 +16,19 @@
         "health_status": "current",
         "last_checked": "2026-07-17"
       },
-      "reason": "Capture the material commerce/community-scale source that supports Buddies' live-break and broad TCG-commerce orientation without treating it as in-person Magic event proof."
+      "reason": "Capture commerce/community scale without treating it as in-person Magic event proof."
     },
     {
       "action": "insert",
       "table": "entity_sources",
-      "key": {
-        "entity_type": "venue",
-        "entity_id": "buddies-collectibles",
-        "source_id": "src-buddies-whatnot-2026-07-17"
-      },
-      "fields": {
-        "entity_type": "venue",
-        "entity_id": "buddies-collectibles",
-        "source_id": "src-buddies-whatnot-2026-07-17",
-        "relationship": "commerce/community-scale signal"
-      },
+      "key": {"entity_type": "venue", "entity_id": "buddies-collectibles", "source_id": "src-buddies-whatnot-2026-07-17"},
+      "fields": {"entity_type": "venue", "entity_id": "buddies-collectibles", "source_id": "src-buddies-whatnot-2026-07-17", "relationship": "commerce/community-scale signal"},
       "reason": "Make the live-commerce/source-scale signal visible in the Buddies Evidence tab."
     },
     {
       "action": "insert",
       "table": "sources",
-      "key": {
-        "id": "src-tilted-linktree-2026-07-17"
-      },
+      "key": {"id": "src-tilted-linktree-2026-07-17"},
       "fields": {
         "id": "src-tilted-linktree-2026-07-17",
         "label": "Tilted Gaming official Linktree",
@@ -50,43 +37,78 @@
         "health_status": "current",
         "last_checked": "2026-07-17"
       },
-      "reason": "Capture the official source-routing record that links Tilted's Discord, Instagram, Facebook, website, reviews, apps, and contact routes."
+      "reason": "Capture the official source-routing record for Discord, Instagram, Facebook, reviews, apps, and the website."
     },
     {
       "action": "insert",
       "table": "entity_sources",
-      "key": {
-        "entity_type": "venue",
-        "entity_id": "tilted-gaming",
-        "source_id": "src-tilted-linktree-2026-07-17"
-      },
+      "key": {"entity_type": "venue", "entity_id": "tilted-gaming", "source_id": "src-tilted-linktree-2026-07-17"},
+      "fields": {"entity_type": "venue", "entity_id": "tilted-gaming", "source_id": "src-tilted-linktree-2026-07-17", "relationship": "official social/community source routing"},
+      "reason": "Make Tilted's official social and Discord routing visible in Evidence."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-tilted-official-homepage-2026-07-17"},
       "fields": {
-        "entity_type": "venue",
-        "entity_id": "tilted-gaming",
-        "source_id": "src-tilted-linktree-2026-07-17",
-        "relationship": "official social/community source-routing support"
+        "id": "src-tilted-official-homepage-2026-07-17",
+        "label": "Tilted Gaming official homepage weekly event spotlight",
+        "url": "https://tiltedgamingtcg.com/",
+        "source_type": "eventsPage",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
       },
-      "reason": "Make Tilted's official social and Discord routing visible in the Evidence tab."
+      "reason": "Capture the store-controlled weekly spotlight that visibly lists July 17 Friday Night Magic and July 19 Tilted Magic Draft."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-tilted-discord-route-2026-07-17"},
+      "fields": {
+        "id": "src-tilted-discord-route-2026-07-17",
+        "label": "Tilted Gaming Discord invite from official events page",
+        "url": "https://discord.com/invite/V8rxm8wPcA",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture the direct event/community-support route displayed under Tilted's public calendar; route verified, Discord content not inspected."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "tilted-gaming", "source_id": "src-tilted-discord-route-2026-07-17"},
+      "fields": {"entity_type": "venue", "entity_id": "tilted-gaming", "source_id": "src-tilted-discord-route-2026-07-17", "relationship": "event/community support route; content replay TBD"},
+      "reason": "Make the official Discord route visible without claiming its server content was reviewed."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "tilted-gaming", "source_id": "src-tilted-official-homepage-2026-07-17"},
+      "fields": {"entity_type": "venue", "entity_id": "tilted-gaming", "source_id": "src-tilted-official-homepage-2026-07-17", "relationship": "official weekly event spotlight"},
+      "reason": "Make the store-controlled event spotlight visible in Tilted's Evidence tab."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-18067"},
+      "fields": {"health_status": "current", "last_checked": "2026-07-17"},
+      "reason": "Record the live API-first replay that returned five current Tilted Magic listings."
     },
     {
       "action": "update",
       "table": "venues",
-      "key": {
-        "id": "buddies-collectibles"
-      },
+      "key": {"id": "buddies-collectibles"},
       "fields": {
         "last_verified": "2026-07-17",
         "assessment_notes": "Buddies Collectibles remains a useful but commerce-heavy Gardena TCG lead. The official site supports current identity, in-store/online operation, Magic product depth, weekly tournament infrastructure, and a strong live-stream/live-commerce posture. The direct Yelp page and Google/Yelp-derived mirrors support a generally positive store-quality read: helpful/friendly staff, strong selection, open tables, and some tournament/community warmth. Whatnot reinforces that Buddies has meaningful live-commerce/community scale, but mostly as a commerce signal rather than proof of in-person Magic play. The Friday casual Commander event remains the actionable MTG calendar lead from Wizards/EventLink; the main remaining planning unknown is lived Commander turnout, proxy/power expectations, and solo-arrival comfort, best resolved by Discord or a targeted community-texture replay."
       },
-      "reason": "Clarify that direct Yelp/review and Whatnot signals support the Places assessment while keeping event proof anchored to Wizards/EventLink."
+      "reason": "Make direct review and Whatnot reasoning visible while keeping event proof anchored to Wizards/EventLink."
     },
     {
       "action": "upsert",
       "table": "evaluations",
-      "key": {
-        "entity_type": "venue",
-        "entity_id": "buddies-collectibles"
-      },
+      "key": {"entity_type": "venue", "entity_id": "buddies-collectibles"},
       "fields": {
         "entity_type": "venue",
         "entity_id": "buddies-collectibles",
@@ -99,90 +121,262 @@
           "Wizards/EventLink supports a Friday casual Commander event already visible in the calendar.",
           "Direct Yelp and review mirrors support generally positive store-quality signals: friendly/helpful staff, strong selection, tables, and some tournament/community warmth.",
           "Official site supports current Gardena identity, Magic product depth, weekly tournament infrastructure, and in-store/online operation.",
-          "Official Linktree routes to Discord, Instagram, Twitch, Whatnot, and other community/social surfaces for future deeper replay.",
-          "Whatnot supports meaningful commerce/community scale, reinforcing that this is an active TCG business even though it is not event proof."
+          "Whatnot supports meaningful commerce/community scale without serving as event proof."
         ],
         "cautions": [
-          "The store's public footprint is strongly commerce/live-break oriented, so it may not automatically translate into a relaxed in-store Commander scene.",
-          "Public official tournament infrastructure is generic and does not independently describe the Friday Commander texture beyond the Wizards/EventLink event row.",
+          "The public footprint is strongly commerce/live-break oriented, which may not translate into a relaxed in-store Commander scene.",
           "Discord/community texture has not been surveyed, leaving turnout, proxy norms, power expectations, and solo-arrival comfort unresolved.",
           "Review and marketplace sources support fit/confidence, not canonical event facts."
         ],
         "open_questions": [
           "How many people regularly attend Friday casual Commander?",
-          "Is the Friday Commander environment newcomer/solo friendly, or mostly regulars?",
-          "What are the current proxy, pod-forming, and power-level norms?",
-          "Does Discord provide enough public/community signal to promote or deprioritize Buddies?"
+          "Is the Friday environment newcomer/solo friendly, or mostly regulars?",
+          "What are the current proxy, pod-forming, and power-level norms?"
         ]
       },
-      "reason": "Make the direct review and live-commerce evidence visible in the user-facing Places assessment without changing the fit grade."
+      "reason": "Make review and live-commerce evidence visible without changing the accepted fit grade."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "tilted-gaming-friday-night-magic-casual-tilted-commanders-5"},
+      "fields": {"venue_id": "tilted-gaming", "confidence": "high", "last_verified": "2026-07-17"},
+      "reason": "The live Wizards replay confirms the July 24 Friday 6 PM Commander/FNM listing, and the official homepage independently shows July 17 Friday Night Magic."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-tilted-official-homepage-2026-07-17", "series_id": "tilted-gaming-friday-night-magic-casual-tilted-commanders-5", "occurrence_id": null},
+      "fields": {"source_id": "src-tilted-official-homepage-2026-07-17", "series_id": "tilted-gaming-friday-night-magic-casual-tilted-commanders-5", "relationship": "store-controlled weekly FNM corroboration"},
+      "reason": "Attach the official weekly spotlight without creating a duplicate FNM series."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "tilted-gaming-sunday-magic-draft"},
+      "fields": {
+        "id": "tilted-gaming-sunday-magic-draft",
+        "venue_id": "tilted-gaming",
+        "title": "Tilted Magic Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 0, "startTime": "15:00"},
+        "default_start_time": "15:00",
+        "start_date": "2026-07-19",
+        "end_date": null,
+        "entry_fee": 22,
+        "currency": "USD",
+        "details": "Store-controlled and Wizards listings support a casual Magic draft every Sunday. Check-in is 2:30 PM for a 3:00 PM start, with 16 seats, packs per win, and a four-player minimum. Players vote before the event between a chaotic draft using one pack from each of three offered sets or a single-set three-pack draft. Seats are first come, first served in store; online interest does not reserve a place.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-17"
+      },
+      "reason": "Catalog the explicitly weekly Sunday draft that was omitted by the prior Commander-led reconciliation."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "tilted-gaming-sunday-magic-draft-2026-07-19--occurrence"},
+      "fields": {"id": "tilted-gaming-sunday-magic-draft-2026-07-19--occurrence", "series_id": "tilted-gaming-sunday-magic-draft", "occurrence_date": "2026-07-19", "start_time": "15:00", "end_time": null, "evidence_state": "corroborated", "occurrence_status": "confirmed", "entry_fee": 22, "capacity": 16, "details": "Wizards event 11181552; also visible in Tilted's official weekly event spotlight."},
+      "reason": "Preserve the first source-confirmed upcoming Sunday draft date."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "tilted-gaming-sunday-magic-draft-2026-07-26--occurrence"},
+      "fields": {"id": "tilted-gaming-sunday-magic-draft-2026-07-26--occurrence", "series_id": "tilted-gaming-sunday-magic-draft", "occurrence_date": "2026-07-26", "start_time": "15:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 22, "capacity": 16, "details": "Wizards event 11181553 confirms the second visible weekly Sunday draft date."},
+      "reason": "Preserve the second source-confirmed upcoming Sunday draft date."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18067", "series_id": "tilted-gaming-sunday-magic-draft", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-18067", "series_id": "tilted-gaming-sunday-magic-draft", "relationship": "live Wizards recurring draft evidence"},
+      "reason": "Attach the live Wizards record to the recurring draft series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-tilted-official-homepage-2026-07-17", "series_id": "tilted-gaming-sunday-magic-draft", "occurrence_id": null},
+      "fields": {"source_id": "src-tilted-official-homepage-2026-07-17", "series_id": "tilted-gaming-sunday-magic-draft", "relationship": "store-controlled weekly draft corroboration"},
+      "reason": "Attach Tilted's own weekly spotlight to the draft series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18067", "series_id": null, "occurrence_id": "tilted-gaming-sunday-magic-draft-2026-07-19--occurrence"},
+      "fields": {"source_id": "src-wpn-18067", "occurrence_id": "tilted-gaming-sunday-magic-draft-2026-07-19--occurrence", "relationship": "Wizards event 11181552 occurrence evidence"},
+      "reason": "Attach the exact Wizards occurrence evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-tilted-official-homepage-2026-07-17", "series_id": null, "occurrence_id": "tilted-gaming-sunday-magic-draft-2026-07-19--occurrence"},
+      "fields": {"source_id": "src-tilted-official-homepage-2026-07-17", "occurrence_id": "tilted-gaming-sunday-magic-draft-2026-07-19--occurrence", "relationship": "official weekly spotlight occurrence corroboration"},
+      "reason": "Record the store-controlled corroboration for July 19."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18067", "series_id": null, "occurrence_id": "tilted-gaming-sunday-magic-draft-2026-07-26--occurrence"},
+      "fields": {"source_id": "src-wpn-18067", "occurrence_id": "tilted-gaming-sunday-magic-draft-2026-07-26--occurrence", "relationship": "Wizards event 11181553 occurrence evidence"},
+      "reason": "Attach the exact Wizards occurrence evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "tilted-gaming-marvel-super-heroes-commander-party-2026-07-31"},
+      "fields": {
+        "id": "tilted-gaming-marvel-super-heroes-commander-party-2026-07-31",
+        "venue_id": "tilted-gaming",
+        "title": "Marvel Super Heroes Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "18:00",
+        "start_date": "2026-07-31",
+        "end_date": "2026-07-31",
+        "entry_fee": 5,
+        "currency": "USD",
+        "details": "Wizards lists a casual Marvel Super Heroes Commander Party plus regular casual Commander. Check-in is 5:00 PM for a 6:00 PM start, with a stated 32-player maximum, hourly raffles, and attendance-based store-credit or pack rewards. Seats are first come, first served in store.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-17"
+      },
+      "reason": "Catalog the current one-time Commander Party without manufacturing recurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "tilted-gaming-marvel-super-heroes-commander-party-2026-07-31--occurrence"},
+      "fields": {"id": "tilted-gaming-marvel-super-heroes-commander-party-2026-07-31--occurrence", "series_id": "tilted-gaming-marvel-super-heroes-commander-party-2026-07-31", "occurrence_date": "2026-07-31", "start_time": "18:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 5, "capacity": 32, "details": "Wizards event 11353827; UTC timestamp converted with America/Los_Angeles."},
+      "reason": "Preserve the exact source-confirmed Commander Party date."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18067", "series_id": "tilted-gaming-marvel-super-heroes-commander-party-2026-07-31", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-18067", "series_id": "tilted-gaming-marvel-super-heroes-commander-party-2026-07-31", "relationship": "Wizards branded special-event evidence"},
+      "reason": "Attach the live Wizards source to the one-time series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18067", "series_id": null, "occurrence_id": "tilted-gaming-marvel-super-heroes-commander-party-2026-07-31--occurrence"},
+      "fields": {"source_id": "src-wpn-18067", "occurrence_id": "tilted-gaming-marvel-super-heroes-commander-party-2026-07-31--occurrence", "relationship": "Wizards event 11353827 occurrence evidence"},
+      "reason": "Attach the exact dated Commander Party evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "tilted-gaming-the-hobbit-prerelease-2026-08-07"},
+      "fields": {
+        "id": "tilted-gaming-the-hobbit-prerelease-2026-08-07",
+        "venue_id": "tilted-gaming",
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "18:00",
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-07",
+        "entry_fee": 40,
+        "currency": "USD",
+        "details": "Wizards lists a casual Magic: The Gathering | The Hobbit sealed prerelease. Check-in is 5:30 PM for a 6:00 PM start, with a 32-player maximum and first-come in-store signup.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-17"
+      },
+      "reason": "Catalog the current high-priority prerelease without manufacturing recurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "tilted-gaming-the-hobbit-prerelease-2026-08-07--occurrence"},
+      "fields": {"id": "tilted-gaming-the-hobbit-prerelease-2026-08-07--occurrence", "series_id": "tilted-gaming-the-hobbit-prerelease-2026-08-07", "occurrence_date": "2026-08-07", "start_time": "18:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 40, "capacity": 32, "details": "Wizards event 11270972; UTC timestamp converted with America/Los_Angeles."},
+      "reason": "Preserve the exact source-confirmed Hobbit prerelease date."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18067", "series_id": "tilted-gaming-the-hobbit-prerelease-2026-08-07", "occurrence_id": null},
+      "fields": {"source_id": "src-wpn-18067", "series_id": "tilted-gaming-the-hobbit-prerelease-2026-08-07", "relationship": "Wizards prerelease evidence"},
+      "reason": "Attach the live Wizards source to the prerelease series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18067", "series_id": null, "occurrence_id": "tilted-gaming-the-hobbit-prerelease-2026-08-07--occurrence"},
+      "fields": {"source_id": "src-wpn-18067", "occurrence_id": "tilted-gaming-the-hobbit-prerelease-2026-08-07--occurrence", "relationship": "Wizards event 11270972 occurrence evidence"},
+      "reason": "Attach the exact dated prerelease evidence."
     },
     {
       "action": "update",
       "table": "venues",
-      "key": {
-        "id": "tilted-gaming"
-      },
+      "key": {"id": "tilted-gaming"},
       "fields": {
-        "last_verified": "2026-07-17",
         "website": "https://tiltedgamingtcg.com/",
-        "assessment_notes": "Tilted Gaming is a current Cerritos TCG store with unusually strong source agreement for branch identity and operation. The official events page supports current hours, address, Discord routing, in-store signup, and weekly/special event infrastructure across MTG and other competitive TCGs. Wizards/EventLink already supports the Friday casual Commander row, and the duplicate Commander series has been closed. The official Linktree adds clean source routing to Discord, Instagram, Facebook, reviews, apps, and the website. Review mirrors and public review surfaces support good service/store-quality signals. Keep Tilted visible as a high-confidence nearby candidate, but do not treat the competitive-hub framing as solved casual comfort: Commander turnout, power/proxy norms, and solo-arrival feel still need Discord or social texture if the store is promoted."
+        "events_url": "https://tiltedgamingtcg.com/pages/events",
+        "instagram": "https://www.instagram.com/tilted.gaming.ca/",
+        "research_status": "discovery",
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Tilted Gaming requires a corrected main pass because earlier work mistook one Commander series for complete Magic-event coverage. The live first-party/Wizards reconciliation now shows a broader and personally useful mix: Friday casual Commander/FNM, a weekly Sunday draft, a July 31 Marvel Super Heroes Commander Party, and an August 7 Hobbit prerelease. At roughly six miles away, that format breadth materially improves its planning value. The official site also confirms current operation, hours, in-store first-come signup, limited seats, and competitive multi-TCG positioning. A direct Discord invite appears under the public calendar beside the phone contact and is captured as an event/community-support route; its content was not inspected and remains a named replay TBD. The embedded Google Calendar rendered empty during this check despite the homepage and Wizards listings, so it is a source-health caution rather than negative event evidence. Keep Tilted in corrected-main-pass-required/discovery status until Instagram/Discord/community texture, proxy norms, Commander power mix, and solo-arrival behavior receive the remaining bounded review."
       },
-      "reason": "Clarify source-router and review support while preserving the already accepted duplicate cleanup and event facts."
+      "reason": "Correct the event-completeness failure and prevent the venue from remaining marked adequately reviewed before the remaining main-pass surfaces close."
     },
     {
       "action": "upsert",
       "table": "evaluations",
-      "key": {
-        "entity_type": "venue",
-        "entity_id": "tilted-gaming"
-      },
+      "key": {"entity_type": "venue", "entity_id": "tilted-gaming"},
       "fields": {
         "entity_type": "venue",
         "entity_id": "tilted-gaming",
-        "research_status": "reviewed",
+        "research_status": "discovery",
         "candidate_status": "neutral",
-        "fit_grade": "B",
-        "fit_score": 3.7,
+        "fit_grade": "B+",
+        "fit_score": 4.0,
         "confidence": "high",
         "positives": [
-          "Official events page supports current Cerritos operation, hours, address, Discord routing, in-store signup, and MTG-inclusive event infrastructure.",
-          "Wizards/EventLink supports the active Friday casual Commander event already visible in the calendar.",
-          "Official Linktree captures the source-routing map for Discord, Instagram, Facebook, reviews, apps, and the website.",
-          "Review mirrors and public review surfaces support strong store-quality and customer-service signals.",
-          "Duplicate Commander cleanup is already complete, leaving the fuller active Friday row as the planning record."
+          "Only about six miles from Los Alamitos, making repeat visits practical.",
+          "Current Wizards and store-controlled evidence supports Friday casual Commander/FNM plus a weekly Sunday draft.",
+          "Current dated specials include a Marvel Super Heroes Commander Party and a high-priority Hobbit prerelease.",
+          "Official sources provide clear hours, address, a direct Discord event-support route, signup rules, capacity, fees, and event structure.",
+          "Paid structured events and first-come signup create a defined entry path for unaffiliated players."
         ],
         "cautions": [
           "Official positioning is a competitive multi-TCG hub, so casual/proxy comfort should not be assumed.",
-          "Event signup is in-store and seats may fill, which matters for solo arrival and first visits.",
-          "Discord/social content was routed but not deeply surveyed in this micro-backfill.",
-          "Commander turnout, power level, and proxy expectations remain unresolved."
+          "Seats require in-store signup and may fill; arriving early matters.",
+          "The official embedded Google Calendar rendered empty despite current homepage and Wizards listings.",
+          "The Discord route is captured, but Instagram and Discord content have not been inspected sufficiently for Commander turnout, power mix, pod formation, or solo-arrival culture.",
+          "Research closure remains corrected main pass required despite high confidence in operation and event facts."
         ],
         "open_questions": [
           "How casual is the Friday Commander crowd in practice?",
           "Are proxies accepted or discouraged?",
-          "Does the Discord show newcomer-friendly LFG or mostly competitive regulars?",
-          "How early would a solo player need to arrive to secure a seat?"
+          "Does Discord provide newcomer-friendly LFG or mostly tournament logistics?",
+          "How reliable is the weekly draft turnout above the four-player minimum?",
+          "Why is the official embedded calendar empty while the homepage and Wizards feed list events?"
         ]
       },
-      "reason": "Make the social-router and review-surface support explicit in the Places evaluation while preserving the B/high-confidence read."
+      "reason": "Reflect the newly reconciled format breadth while separating high event-fact confidence from incomplete social/main-pass closure."
     },
     {
       "action": "insert",
       "table": "research_changes",
-      "key": {
-        "id": "corrected-source-coverage-batch-e-2026-07-17"
-      },
+      "key": {"id": "corrected-source-coverage-batch-e-2026-07-17"},
       "fields": {
         "id": "corrected-source-coverage-batch-e-2026-07-17",
         "detected_at": "2026-07-17T23:20:00-07:00",
-        "change_type": "source_update",
+        "change_type": "event_update",
         "entity_type": "venue",
-        "entity_id": "buddies-collectibles",
-        "summary": "Corrected source-coverage audit for Grails, Buddies, and Tilted: Grails targeted correction stands as partial/discovery; Buddies direct Yelp was already captured and Whatnot should be added as commerce/community-scale Evidence; Tilted official Linktree should be added as source-routing Evidence. No event rows are proposed.",
+        "entity_id": "tilted-gaming",
+        "summary": "Corrected a Commander-only event-coverage failure at Tilted Gaming. The revised proposal preserves the existing Friday Commander/FNM series, adds supported Sunday draft dates, a Marvel Commander Party, and a Hobbit prerelease, and marks Tilted corrected-main-pass-required until remaining social/community questions close.",
         "review_status": "proposed"
       },
-      "reason": "Create a durable update marker for the corrected source-coverage batch."
+      "reason": "Create a durable proposed update marker without implying the live write has occurred."
     }
   ]
 }

@@ -423,6 +423,11 @@ claims without reopening the whole packet.
 - Keep secondary-signal capture bounded: give photos/reviews/space clues a quick
   best-efforts pass, but do not let them turn into open-ended rabbit holes
   during routine store research.
+- Run a targeted format-completeness audit after the Tilted correction is
+  accepted. Prioritize older records where Commander exists but draft,
+  prerelease/sealed, FNM, Commander Party, or other store-controlled/Wizards
+  Magic content may never have been reconciled. This is a bounded later audit,
+  not authorization for broad re-research now.
 - Maintain this file whenever we defer or discover meaningful future work.
 - Maintain `CURRENT_FRONTIER.md` for current tranche status.
 - Maintain run folders for each substantive research pass.

@@ -80,7 +80,7 @@ pass before relying on the Sunday Commander lead for travel.
 | Crown City Games | mostly complete - named closure gaps | Planning-quality pass A | current records | Friendly vs cEDH split; Discord/LFG | Optional community texture | Medium |
 | Odyssey Games - Pasadena | mostly complete - named closure gaps | Planning-quality pass A | current records | Solo-arrival caution; Discord/social reality | Optional community texture | Medium |
 | The Game Chest - Promenade on the Peninsula | mostly complete - named closure gaps | Planning-quality pass A | current record | Branch Facebook/Discord Magic texture | Optional branch-specific replay | Low |
-| Tilted Gaming | mostly complete - named closure gaps | Status-conflict pass D plus packet evidence backfill | current record | Commander turnout/power expectations; Discord/social texture | Micro-backfill if high priority | Medium |
+| Tilted Gaming | corrected main pass required | Batch E correction found unreconciled first-party/Wizards Draft, Commander Party, and prerelease signals | current Commander only; event proposal pending | Apply/verify missing event coverage; then finish ordinary social/community texture | Corrected main-pass acceptance test, then bounded completion | High |
 | B.Y.O.GAMES LLC | mostly complete - named closure gaps | Status-conflict pass D plus LAist evidence backfill | current records | Current operation; Tuesday vs Wednesday Commander; no-proxy context | Micro-backfill/status check if planning-relevant | Medium |
 | Buddies Collectibles | mostly complete - named closure gaps | Packet evidence backfill; reviewed evaluation already present | current record | Current operation/status contradiction; Magic emphasis | Micro-backfill with direct review/source coverage | Medium |
 | Shadow Realm Collectibles | mostly complete - named closure gaps | Nearby thin-store assessment pass | current record | Corrected main-pass coverage line and source depth | Corrected micro/main pass if prioritized | Medium |
@@ -126,8 +126,10 @@ Recommended first direct batch:
   correction deliberately did not finish.
 - Buddies Collectibles: micro-backfill current-source coverage and verify the
   direct Yelp/source signals are represented cleanly.
-- Tilted Gaming: micro-backfill the Commander/social texture gap if quick; keep
-  duplicate cleanup closed.
+- Tilted Gaming: corrected main-pass acceptance test. Reconcile every current
+  official/Wizards Magic format against Supabase before returning to the
+  ordinary social/community texture gap; keep the duplicate Commander cleanup
+  closed.
 
 Why this is next: these three are where the corrected methodology most directly
 intersects recent user-visible trust concerns: obvious-source capture,
