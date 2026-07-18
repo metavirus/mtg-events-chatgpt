@@ -226,5 +226,8 @@ Verification:
 - Touched entity-source count verified: 4.
 - Duplicate event-occurrence check remained clean: 0 duplicate
   series/date/time groups.
+- Follow-up status correction applied after user approval: research-change
+  marker `packet-source-evidence-backfill-2026-07-17` now has
+  `review_status = accepted`.
 
 No event rows, schema/auth/RLS, app code, or canonical JSON were changed.
