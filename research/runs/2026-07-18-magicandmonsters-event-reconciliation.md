@@ -125,18 +125,21 @@ generate every calendar day.
 
 ## Places assessment recommendation
 
-Magic and Monsters stays a plausible but watch/verify candidate rather than a
-try-immediately target.
+Magic and Monsters should move down as a personal planning candidate. The
+Discord discovery improves our evidence confidence, but the content itself is
+negative for fit: the store explicitly moved Magic off the regular weekly
+schedule.
 
 The assessment should improve in one respect: Discord is no longer merely
 `route found / not inspected`. It is an inspected, useful source showing a
 large organized server and clear store communication.
 
 The assessment should become more cautious in another respect: Magic's current
-regular schedule is weaker than the older Places note implied. The best current
-read is that MTG is supported through daily drop-in Commander/open play and
-occasional special events, while regular structured MTG events are not currently
-well represented on the official calendar.
+regular schedule is materially weaker than the older Places note implied. The
+best current read is that MTG is supported through daily drop-in Commander/open
+play and occasional special events, while regular structured MTG events are not
+currently part of the store's summer schedule and are not represented on the
+official calendar.
 
 ## Proposed Supabase write
 

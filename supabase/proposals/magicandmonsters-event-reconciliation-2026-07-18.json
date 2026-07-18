@@ -1,6 +1,6 @@
 {
   "proposal_id": "magicandmonsters-event-reconciliation-2026-07-18",
-  "description": "Targeted Magic and Monsters event reconciliation. Retires the existing Commander Free Play row from the active calendar because current store-controlled Discord schedule evidence says MTG is no longer on the regular weekly schedule, while daily drop-in Commander remains supported as play-space context rather than a reliable projected weekly calendar event.",
+  "description": "Targeted Magic and Monsters event reconciliation. Retires the existing Commander Free Play row from the active calendar and lowers the Places fit assessment because current store-controlled Discord schedule evidence says MTG is no longer on the regular weekly schedule, while daily drop-in Commander remains supported as play-space context rather than a reliable projected weekly calendar event.",
   "created_at": "2026-07-18T12:30:00-07:00",
   "author": "Codex Project Steward",
   "operations": [
@@ -145,7 +145,7 @@
       },
       "fields": {
         "last_verified": "2026-07-18",
-        "assessment_notes": "Magic and Monsters remains a real Magic/TCG-focused Mission Viejo candidate with unusually good source routing: official site, official calendar, Instagram, Linktree, reviews, and an inspected Discord server. The event read is now clearer but more nuanced. The official web calendar shows no MTG listings in the checked July-to-September future pages, while a current EventLink/CardCommunity mirror supports Saturday 6 PM Commander Free Play. The store Discord is the strongest current source for interpretation: its May 31, 2026 summer schedule says Magic: The Gathering is no longer on the regular weekly schedule, but daily drop-in Commander/EDH play space remains supported and prerelease, promotional, and cEDH events may still appear. That makes Magic and Monsters useful to watch for drop-in Commander and special MTG events, but not a clean structured weekly Magic target without a same-week check."
+        "assessment_notes": "Magic and Monsters remains a real TCG-focused Mission Viejo store with unusually good source routing: official site, official calendar, Instagram, Linktree, reviews, and an inspected Discord server. The event read is now clearer and less favorable for personal MTG planning. The official web calendar shows no MTG listings in the checked July-to-September future pages, while a current EventLink/CardCommunity mirror supports Saturday 6 PM Commander Free Play. The store Discord is the strongest current source for interpretation: its May 31, 2026 summer schedule says Magic: The Gathering is no longer on the regular weekly schedule, though daily drop-in Commander/EDH play space remains supported and prerelease, promotional, and cEDH events may still appear. Explicitly moving MTG off the regular schedule lowers the store's personal fit; treat it as a watch/special-event candidate, not a regular structured Magic target."
       },
       "reason": "Update venue synthesis after inspecting Magic and Monsters Discord schedule channels and reconciling them with official calendar and EventLink evidence."
     },
@@ -161,19 +161,20 @@
         "entity_id": "magic-and-monsters",
         "research_status": "reviewed",
         "candidate_status": "neutral",
-        "fit_grade": "B-",
-        "fit_score": 3.5,
+        "fit_grade": "C+",
+        "fit_score": 3.1,
         "confidence": "medium",
         "positives": [
           "Official site supports a real active TCG storefront with MTG singles and sealed product.",
           "Discord is now inspected and shows a large organized server with game-specific schedule channels.",
-          "Store-controlled Discord says daily drop-in Commander/EDH play space remains supported even though MTG is no longer on the regular weekly schedule.",
+          "Store-controlled Discord says daily drop-in Commander/EDH play space remains supported.",
           "EventLink/CardCommunity currently supports a Saturday 6 PM Commander Free Play signal, but it is weaker than the newer store-controlled Discord schedule for calendar projection."
         ],
         "cautions": [
           "Mission Viejo distance means the store needs a stronger event/social reason before becoming a default personal target.",
           "Official July-to-September 2026 calendar pages checked in this pass showed no MTG/Commander listings.",
-          "Store Discord says MTG is no longer on the regular weekly schedule, so structured weekly Magic should not be assumed from old schedule text.",
+          "Store Discord explicitly says MTG is no longer on the regular weekly schedule, which is a negative personal-fit signal.",
+          "Daily drop-in Commander is less useful than a reliable structured event for solo-arrival planning.",
           "Friday FNM remains unresolved: Instagram says Friday FNM, but current Discord and official calendar do not confirm a current Friday Magic calendar event."
         ],
         "open_questions": [
