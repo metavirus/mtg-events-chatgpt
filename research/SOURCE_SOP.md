@@ -93,6 +93,123 @@ branch, former location, predecessor, or ambiguous address, record the conflict
 and route the next check to official branch-specific sources before applying
 the signal to a venue or event.
 
+## Baseline source sweep for ordinary store passes
+
+The ChatGPT packet is an intake aid and source lead. It is not the research
+universe and it is not a substitute for Codex doing a reasonable baseline pass
+on each store.
+
+Every ordinary store research pass must include a lightweight but systematic
+baseline sweep:
+
+1. Search the store name, location, and likely aliases.
+2. Check the official website or official storefront.
+3. Check readily discoverable store-controlled social routes, especially
+   Instagram and Facebook.
+4. Check public community routes, including Discord or Linktree when available.
+5. Check Wizards/EventLink and other relevant organized-play or registration
+   calendars.
+6. Check Google- and Yelp-derived review surfaces for fit, atmosphere,
+   operation status, and solo-arrival signals.
+7. Check relevant marketplace or game-locator surfaces when they help establish
+   identity, activity, inventory, or event capability.
+
+This is a minimum discovery sweep, not permission for unlimited archaeology.
+Use reasonable search effort and stop when the readily discoverable surfaces
+have been found and dispositioned.
+
+For every relevant source discovered directly, supplied by the packet, or
+surfaced by a user, give it one durable disposition:
+
+- captured as Evidence;
+- already captured;
+- not material;
+- inaccessible or unverifiable;
+- stale/historical;
+- identity mismatch;
+- TBD for a specifically named deeper replay.
+
+No source that materially influences fit, confidence, status, cautions, open
+questions, or event conclusions may remain only in private reasoning or a run
+note. It must be visible as structured Evidence or explicitly dispositioned.
+
+Each store pass must answer both:
+
+- **Places:** What does the evidence say about store quality, personal fit,
+  confidence, positives, cautions, status, and open questions?
+- **Events:** What current Commander, draft, prerelease/sealed, or notable Magic
+  signals should be written now, marked TBD, classified stale, or recorded as
+  absent after checking reasonable routes?
+
+End each store with a compact source-coverage line:
+
+- Official site: checked/captured
+- Instagram: checked/captured
+- Facebook: checked/no useful result
+- Discord/community route: checked/TBD
+- Wizards/EventLink: checked/captured
+- Reviews: checked/captured
+- Other useful sources: checked/captured
+
+"Not found" is acceptable. Silently unexamined is not. Automated or recurring
+research agents must produce the same source-coverage and disposition record so
+their completeness can be audited without the user repeating the searches.
+
+Do not recommend unattended recurring research until this manual method has
+completed several batches without obvious-source omissions.
+
+## Pass types and completion standards
+
+Label every research batch with its pass type:
+
+- **Discovery / triage:** source intake, identity/status sorting, or deciding
+  whether a record deserves a real pass. It may locate routes without fully
+  reading them, but every material route still needs a disposition.
+- **Main store pass:** the normal useful store-research unit. It must find the
+  reasonable baseline sources, inspect accessible useful content, extract
+  concrete facts and decision-relevant signals, compare contradictions,
+  synthesize Places and Events conclusions, and capture material sources as
+  Evidence.
+- **Targeted deep replay:** a promoted or correction-focused pass for a named
+  issue such as Discord community texture, Instagram schedule replay, branch
+  identity, recurring-event normalization, or status conflict.
+
+A main store pass is not complete merely because source routes were found. For
+Instagram, Facebook, review sites, official calendars, Discord, and similar
+sources, "found" is not normally enough. If the content is accessible with
+reasonable effort, inspect enough recent and representative material to answer
+the current research questions.
+
+For store-controlled social accounts, inspect enough to answer:
+
+- whether the account is current and actively posting;
+- whether it represents the correct store and location;
+- recent MTG activity;
+- Commander, draft, prerelease/sealed, or special-event signals;
+- event frequency and recency;
+- photos or descriptions relevant to play space and attendance;
+- casual versus competitive orientation;
+- community interaction or turnout signals;
+- links to Discord, registration, calendars, or other authoritative routes;
+- relocation, closure, online-only, or identity clues.
+
+For review sources, inspect enough relevant material to identify recurring
+patterns rather than only the aggregate rating. Look for staff, space,
+cleanliness, crowding, welcoming atmosphere, event reliability, pricing,
+regulars, newcomers, and solo-arrival signals. Treat individual reviews
+cautiously and distinguish recurring patterns from isolated claims.
+
+Use `content replay TBD` only when:
+
+- the source is inaccessible or blocked;
+- identity cannot be confirmed;
+- inspection would require disproportionate effort;
+- the content volume requires a deliberately deeper pass;
+- or the remaining question is nonessential to the present assessment.
+
+Do not use TBD merely to defer ordinary reading of an accessible, relevant
+source during a main pass.
+
 ## Evidence capture rule
 
 Evidence is not just event proof. It is any source that materially supports a

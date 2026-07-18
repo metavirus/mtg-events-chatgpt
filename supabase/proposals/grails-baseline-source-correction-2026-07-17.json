@@ -1,0 +1,236 @@
+{
+  "proposal_id": "grails-baseline-source-correction-2026-07-17",
+  "description": "Lean corrective proposal for Grails Gone Wild / GGW Cards N Collects after baseline source sweep methodology correction. Adds readily discoverable official, social, review/directory, and non-MTG organized-play evidence; updates the Places assessment to reflect likely active TCG storefront status while preserving MTG Commander replay TBD. Instagram content was inspected: it supports GGW identity and a stale July 2025 MTG prerelease signal, not current weekly Commander. No event records are added or changed.",
+  "created_at": "2026-07-17T22:10:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-grails-ggwcardsncollects-official-2026-07-17"
+      },
+      "fields": {
+        "id": "src-grails-ggwcardsncollects-official-2026-07-17",
+        "label": "GGW Cards N Collects official storefront",
+        "url": "https://www.ggwcardsncollects.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture the current official/storefront route surfaced by Grails/GGW alias research."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-grails-instagram-2026-07-17"
+      },
+      "fields": {
+        "id": "src-grails-instagram-2026-07-17",
+        "label": "Grails Gone Wild Instagram profile",
+        "url": "https://www.instagram.com/grailsgonewild/",
+        "source_type": "instagram",
+        "health_status": "stale",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture the readily discoverable store-controlled social profile; visible content supports GGW identity and a July 2025 MTG prerelease, but not current weekly Commander."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-grails-keepup-ggw-2026-07-17"
+      },
+      "fields": {
+        "id": "src-grails-keepup-ggw-2026-07-17",
+        "label": "KeepUp profile for Ggw Cards N Collects",
+        "url": "https://www.keepupcards.com/shop/ggw-cards-n-collects-torrance-ca",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture current alias, address/phone, MTG games-available signal, hours, online store routing, and review texture."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-grails-cardshophub-ggw-2026-07-17"
+      },
+      "fields": {
+        "id": "src-grails-cardshophub-ggw-2026-07-17",
+        "label": "Card Shop Hub profile for Ggw Cards N Collects",
+        "url": "https://cardshophub.com/states/ca/torrance/ggw-cards-n-collects/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture current alias, address/phone, TCG-shop classification, hours, and website routing."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-grails-ravensburger-lorcana-2026-07-17"
+      },
+      "fields": {
+        "id": "src-grails-ravensburger-lorcana-2026-07-17",
+        "label": "Ravensburger Play event for GGW toys",
+        "url": "https://tcg.ravensburgerplay.com/events/455510",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture current non-MTG organized-play capability and GGW identity at the same address without treating it as MTG calendar proof."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-ggwcardsncollects-official-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-ggwcardsncollects-official-2026-07-17",
+        "relationship": "current official storefront / alias route"
+      },
+      "reason": "Attach the current official/storefront route to the Grails venue."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-instagram-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-instagram-2026-07-17",
+        "relationship": "store-controlled Instagram; stale MTG/event signal"
+      },
+      "reason": "Attach the missed Instagram source after inspecting accessible content."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-keepup-ggw-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-keepup-ggw-2026-07-17",
+        "relationship": "current alias/review/activity signal"
+      },
+      "reason": "Attach current alias and review/activity evidence for Grails/GGW."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-cardshophub-ggw-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-cardshophub-ggw-2026-07-17",
+        "relationship": "current alias/directory/status signal"
+      },
+      "reason": "Attach current directory/status support for the GGW alias."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-ravensburger-lorcana-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-grails-ravensburger-lorcana-2026-07-17",
+        "relationship": "non-MTG organized-play capability signal"
+      },
+      "reason": "Attach current organized-play evidence while keeping MTG event proof separate."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "grails-gone-wild"
+      },
+      "fields": {
+        "last_verified": "2026-07-17",
+        "assessment_notes": "Grails Gone Wild should now be read as a Grails/GGW Cards N Collects alias cluster rather than a simple maybe-closed record. Current directory/review routes point to GGW Cards N Collects at the same Torrance phone/address, with a storefront route, hours, MTG among games available, and review texture. Instagram also supports the same store/location and linked storefront route, and it shows a July 2025 Edge of Eternities prerelease plus other TCG event/product activity, but the latest visible post is September 2025 and the visible sample does not confirm current weekly Commander. This weakens the older physical-status concern from the MapQuest closed flag, but it does not prove the existing Sunday MTG Commander row is currently operational. Keep Grails visible as an active-TCG-store lead and preserve the Commander row as a source-backed lead, but replay current MTG/EventLink or store-controlled social evidence before recommending it as a reliable personal Commander trip."
+      },
+      "reason": "Replace overly pessimistic status-conflict wording with the updated alias/current-storefront read."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.0,
+        "confidence": "medium",
+        "positives": [
+          "Current GGW Cards N Collects alias sources point to the same Torrance phone/address and support active TCG-store operation.",
+          "KeepUp and Card Shop Hub list current hours and TCG-shop activity, with MTG included among games available.",
+          "Instagram confirms the store-controlled Grails/GGW route, same Torrance location, storefront link, and a July 2025 Edge of Eternities prerelease post.",
+          "Ravensburger/Lorcana evidence supports current organized-play capability at GGW toys, though not MTG calendar truth.",
+          "Existing Wizards/EventLink data still supports a Sunday casual Commander lead worth replaying rather than discarding.",
+          "TCGplayer supports active MTG/collectibles commerce."
+        ],
+        "cautions": [
+          "The existing Sunday Commander row still needs current MTG/EventLink or store-controlled replay before relying on it for travel.",
+          "The older MapQuest/Yelp-derived closed flag remains a conflict signal, though it is weakened by current GGW alias evidence.",
+          "Instagram's visible MTG evidence is stale/historical: the Edge of Eternities prerelease post was July 23, 2025 for July 25/26, 2025.",
+          "The latest visible Instagram post is September 2025 and appears Lorcana/product-oriented, so Instagram does not currently support ongoing weekly Commander.",
+          "Current evidence supports an active TCG storefront more strongly than it supports a proven casual Commander community."
+        ],
+        "open_questions": [
+          "Is the Wizards Sunday Commander listing still operationally valid?",
+          "Does Grails/GGW currently promote MTG Commander, draft, prerelease/sealed, or other Magic play outside the stale July 2025 Instagram prerelease post?",
+          "What is the current in-store Magic community texture and solo-arrival comfort?",
+          "Should the public display name eventually shift from Grails Gone Wild to GGW Cards N Collects, or preserve both as aliases?"
+        ]
+      },
+      "reason": "Calibrate the Places evaluation after the baseline source sweep found stronger current-storefront evidence but not current MTG Commander confirmation."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "grails-baseline-source-correction-2026-07-17"
+      },
+      "fields": {
+        "id": "grails-baseline-source-correction-2026-07-17",
+        "detected_at": "2026-07-17T22:10:00-07:00",
+        "change_type": "source_update",
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "summary": "Baseline source sweep correction found current GGW Cards N Collects alias evidence, inspected Instagram content, review/directory support, and non-MTG organized-play evidence for Grails; proposed assessment treats it as likely active TCG storefront while classifying Instagram MTG evidence as stale and Commander as replay TBD.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable update marker for the Grails source-sweep correction."
+    }
+  ]
+}
