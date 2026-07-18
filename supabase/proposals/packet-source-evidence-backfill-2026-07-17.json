@@ -1,0 +1,153 @@
+{
+  "proposal_id": "packet-source-evidence-backfill-2026-07-17",
+  "description": "Lean Evidence backfill for packet-derived source signals that influenced Places assessment reasoning but were not visible as Evidence. Adds direct/mainstream review or journalism sources for Tilted Gaming, Buddies Collectibles, and B.Y.O.GAMES LLC. No event records, schema/auth/RLS, app code, or canonical JSON are changed.",
+  "created_at": "2026-07-17T21:20:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-tilted-keepup-2026-07-17"
+      },
+      "fields": {
+        "id": "src-tilted-keepup-2026-07-17",
+        "label": "KeepUp review mirror for Tilted Gaming",
+        "url": "https://www.keepupcards.com/shop/tilted-gaming-cerritos-ca",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture the packet-derived Google-review mirror signal used to understand Tilted's active TCG/store-quality picture."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-tilted-mapquest-2026-07-17"
+      },
+      "fields": {
+        "id": "src-tilted-mapquest-2026-07-17",
+        "label": "MapQuest / Yelp-derived listing for Tilted Gaming",
+        "url": "https://www.mapquest.com/us/california/tilted-gaming-777729997",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture accessible Yelp-derived review/status texture for Tilted, including friendly atmosphere and TCG/Magic support signals."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-buddies-yelp-2026-07-17"
+      },
+      "fields": {
+        "id": "src-buddies-yelp-2026-07-17",
+        "label": "Yelp page for Buddies Collectibles",
+        "url": "https://www.yelp.com/biz/buddies-collectibles-gardena",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture the direct mainstream review source for Buddies rather than relying only on secondary review mirrors."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-byo-laist-boyle-heights-beat-2026-07-17"
+      },
+      "fields": {
+        "id": "src-byo-laist-boyle-heights-beat-2026-07-17",
+        "label": "LAist / Boyle Heights Beat profile of B.Y.O.GAMES",
+        "url": "https://laist.com/news/los-angeles-activities/bring-your-own-games-byo-games-east-la-los-angeles",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-17"
+      },
+      "reason": "Capture local-journalism evidence supporting BYO's third-place/community-lounge read and financial/status caution."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "source_id": "src-tilted-keepup-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "source_id": "src-tilted-keepup-2026-07-17",
+        "relationship": "Google-derived review/store-quality signal"
+      },
+      "reason": "Make Tilted's packet-derived review signal visible on the Places Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "source_id": "src-tilted-mapquest-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "source_id": "src-tilted-mapquest-2026-07-17",
+        "relationship": "Yelp-derived review/status signal"
+      },
+      "reason": "Make Tilted's accessible Yelp-derived review/status support visible on the Places Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-yelp-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-buddies-yelp-2026-07-17",
+        "relationship": "direct Yelp review/fit signal"
+      },
+      "reason": "Attach the direct Yelp page as first-class evidence for Buddies' store-quality, comfort, and review-texture read."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-laist-boyle-heights-beat-2026-07-17"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-laist-boyle-heights-beat-2026-07-17",
+        "relationship": "local journalism/community and status signal"
+      },
+      "reason": "Attach the local-journalism source that supports BYO's community-lounge assessment and status caution."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "packet-source-evidence-backfill-2026-07-17"
+      },
+      "fields": {
+        "id": "packet-source-evidence-backfill-2026-07-17",
+        "detected_at": "2026-07-17T21:20:00-07:00",
+        "change_type": "source_update",
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "summary": "Packet-source disposition audit identified source signals that influenced Places reasoning but were not visible as Evidence; proposed backfill adds Tilted review mirrors, Buddies direct Yelp, and BYO local journalism. No event records changed.",
+        "review_status": "proposed"
+      },
+      "reason": "Record the process correction and make the evidence-backfill proposal visible in Updates after approval."
+    }
+  ]
+}

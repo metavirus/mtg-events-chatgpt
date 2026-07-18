@@ -57,6 +57,12 @@ Wizards/EventLink, registration systems, and store-controlled event posts.
 Use review and marketplace sources for fit, confidence, warnings, identity, and
 prioritization:
 
+- **Direct mainstream review surfaces** such as Yelp and Google Maps / Google
+  Business Profile are first-class Places assessment evidence when accessible.
+  Capture them as clickable Evidence when they materially support fit,
+  confidence, cautions, open questions, status, identity, play-space texture,
+  solo-arrival comfort, service risk, or community feel. Do not rely on a mirror
+  as the main review source when the direct mainstream page is available.
 - **Google-derived mirrors** such as KeepUp, Card Shop Hub, Card Shops Finder,
   CardShows.io, PokemonCard.info, and Board Game Cafe Finder are useful for
   rough ratings, review excerpts, play-space/community signals, and identity
@@ -112,6 +118,12 @@ surface should become clickable Evidence when it contributes meaningful
 store-quality, solo-arrival, play-space, service-risk, pricing, inventory,
 community, or identity signals.
 
+When both a direct Yelp / Google-style page and a review mirror exist, prefer
+the direct page as the durable Evidence record. Keep mirrors as secondary
+support, fallback access, or conflict signals. A thin directory can still be
+useful, but it should not quietly carry the same weight as a mainstream review
+surface.
+
 Do not attach every low-value search result. If a source was merely glanced at
 and rejected, it can stay out of structured Evidence. If it shaped the store
 read, preserve it.
@@ -131,6 +143,24 @@ Run notes may summarize why a source mattered, but the app-facing Evidence tab
 should carry the clickable trail whenever the source materially influenced the
 assessment. The user should not have to trust a fit/caution synthesis that has
 no visible source trail.
+
+### Packet-derived source disposition rule
+
+ChatGPT packet findings are intake leads, not canonical truth. However, any
+packet-derived source signal used in Codex reasoning must receive a durable
+disposition before the batch is closed:
+
+- captured as Evidence;
+- already captured;
+- not accessible / no-use;
+- not material;
+- TBD for deeper replay.
+
+Do not use ChatGPT packet evidence as background reasoning while leaving it
+invisible. If a packet-derived Google, Yelp, review mirror, marketplace,
+Linktree, social, locator, or source-map signal affects fit, confidence,
+cautions, open questions, status, identity, or source routing, either attach it
+as structured Evidence or record why it was not attached.
 
 ## Confidence handling
 
