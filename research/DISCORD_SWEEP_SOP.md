@@ -38,6 +38,43 @@ Classify each server as one of:
 
 Once classified, do not rediscover this from scratch every time.
 
+## Discord/community status ladder
+
+Track Discord/community status separately from the store's overall research
+status. A venue may be well assessed while its Discord remains thin, private, or
+not worth regular checking; conversely, a Discord may be important enough to
+monitor even when the store page does not need a deep research pass.
+
+Use these statuses in run notes, source relationships, assessment notes, or
+future structured fields when the source is material:
+
+- `not found`
+  - No Discord or comparable community route was found during the baseline
+    sweep.
+- `route found / not inspected`
+  - A Discord, Linktree, Facebook group, or similar community route was found
+    and captured when material, but content was not meaningfully reviewed.
+- `first-pass weak`
+  - A bounded first pass found little usable MTG, event-reliability, LFG,
+    newcomer, proxy, turnout, or community-fit signal, or the route appears
+    inactive, sparse, inaccessible, off-topic, or not branch-specific.
+- `first-pass useful`
+  - A bounded first pass found useful planning signals such as current activity,
+    MTG discussion, event reminders, LFG, turnout clues, proxy/casual/competitive
+    texture, prerelease chatter, or staff/community coordination.
+- `deep-reviewed`
+  - The route has been reviewed enough to materially support confidence, fit,
+    event reliability, cautions, open questions, or recurring monitoring
+    priority.
+- `monitor regularly`
+  - The route is important enough for future daily or weekly checks because it
+    may reveal current events, schedule changes, cancellations, turnout,
+    prerelease details, or this-week planning signals.
+
+Do not promote everything to `monitor regularly`. Reserve that status for routes
+that have already shown ongoing planning value, belong to a favorite or strong
+candidate, or are the best known operational source for a store/community.
+
 ## First-pass bounded survey order
 
 Use this order every time:

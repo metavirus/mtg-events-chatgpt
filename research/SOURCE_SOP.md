@@ -147,6 +147,14 @@ store-fit and event-reliability conclusions. Do not claim Discord/community
 content supports fit, turnout, proxy practice, solo arrival, draft reliability,
 or event reliability unless that content was actually inspected.
 
+Discord/community routes should also receive a lightweight operational status
+separate from the venue's overall research status. Use the Discord/community
+status ladder in `research/DISCORD_SWEEP_SOP.md` to distinguish a route that was
+merely found from one that is useful, deeply reviewed, or worth recurring
+monitoring. This is a subject-matter tracking aid, not a promotion requirement:
+a store can be reviewed while its Discord remains `route found / not inspected`
+or `first-pass weak`, as long as that limitation is visible.
+
 Each store pass must answer both:
 
 - **Places:** What does the evidence say about store quality, personal fit,
@@ -160,7 +168,7 @@ End each store with a compact source-coverage line:
 - Official site: checked/captured
 - Instagram: checked/captured
 - Facebook: checked/no useful result
-- Discord/community route: inspected / captured-TBD / not found / inaccessible / not material
+- Discord/community route: inspected / captured-TBD / not found / inaccessible / not material; status if applicable
 - Wizards/EventLink: checked/captured
 - Reviews: checked/captured
 - Other useful sources: checked/captured
