@@ -1,6 +1,6 @@
 {
   "proposal_id": "nearby-high-value-completion-pass-2026-07-18",
-  "description": "Bounded nearby high-value completion pass for Hobby Overflow, Requiem, and Spellhold Games. Hobby Overflow requires no new writes. Requiem gets missing Wednesday Magic and Friday Night Magic rows. Spellhold gets missing broad weekly Magic format coverage and The Hobbit prerelease dated occurrences, plus source/evidence support and an assessment recalibration. No schema/auth/RLS/app-code or canonical JSON edits are proposed.",
+  "description": "ACCEPTED/APPLIED. Bounded nearby high-value completion pass for Hobby Overflow, Requiem, and Spellhold Games. Hobby Overflow required no new writes. Requiem received missing Wednesday Magic and Friday Night Magic rows. Spellhold received missing broad weekly Magic format coverage and The Hobbit prerelease dated occurrences, plus source/evidence support and an assessment recalibration. No schema/auth/RLS/app-code or canonical JSON edits were made.",
   "created_at": "2026-07-18T09:00:00-07:00",
   "author": "Codex Project Steward",
   "operations": [
@@ -477,7 +477,7 @@
         "candidate_status": "neutral",
         "fit_grade": "B-",
         "fit_score": 3.6,
-        "confidence": "medium-high",
+        "confidence": "medium",
         "positives": [
           "Wizards/EventLink shows a broad current weekly Magic schedule across Commander, Modern, Legacy, Standard, Pioneer, Draft, Premodern, and Pauper.",
           "Official site supports active operation, MTG inventory depth, online singles/sealed catalog, and weekly/special-event routing.",
@@ -506,8 +506,8 @@
         "change_type": "event_update",
         "entity_type": "venue",
         "entity_id": "spellhold-games",
-        "summary": "Proposed nearby completion pass for Hobby Overflow, Requiem, and Spellhold. Hobby Overflow needs no new rows; Requiem gets missing Wednesday Magic and FNM rows; Spellhold gets broad weekly Magic format coverage and The Hobbit prerelease dates, with a Places assessment recalibration.",
-        "review_status": "proposed"
+        "summary": "Accepted nearby completion pass for Hobby Overflow, Requiem, and Spellhold. Hobby Overflow needed no new rows; Requiem received missing Wednesday Magic and FNM rows; Spellhold received broad weekly Magic format coverage and The Hobbit prerelease dates, with a Places assessment recalibration.",
+        "review_status": "accepted"
       },
       "reason": "Create a durable update marker before any live write."
     }

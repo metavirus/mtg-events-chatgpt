@@ -84,11 +84,23 @@ Spellhold should be recalibrated upward for Magic-overall activity and schedule 
 
 ## Proposal
 
-Prepared proposal:
+Applied proposal:
 
 - `supabase/proposals/nearby-high-value-completion-pass-2026-07-18.json`
 
-The proposal is event-heavy but bounded to this three-store tranche. It updates source freshness, captures Spellhold official-site / review-directory evidence, adds missing Requiem and Spellhold event series, adds Spellhold Hobbit prerelease dated occurrences, and marks the update as proposed.
+The proposal is event-heavy but bounded to this three-store tranche. It updates source freshness, captures Spellhold official-site / review-directory evidence, adds missing Requiem and Spellhold event series, adds Spellhold Hobbit prerelease dated occurrences, and marks the update as accepted.
 
 No canonical JSON edits are part of this proposal.
 
+Applied on 2026-07-18 after user approval.
+
+Post-write verification:
+
+- Requiem now has two added active weekly Magic rows: Wednesday Magic and Friday Night Magic.
+- Spellhold now has seven added active weekly Magic rows: Monday Modern, Tuesday Legacy, Wednesday Standard Showdown, Thursday Pioneer, Friday Night Magic Draft, Premodern Friday, and Sunday Pauper.
+- Spellhold now has one active The Hobbit Prerelease series with five confirmed future dated occurrences: August 7 at 7:00 PM, August 8 at 12:00 PM and 4:00 PM, and August 9 at 12:00 PM and 4:00 PM.
+- The 10 new event series have 10 WPN/EventLink provenance links.
+- Spellhold's three new Evidence links are present: official site, CardShows review/directory profile, and CardCommunity/EventLink Commander mirror.
+- Spellhold's Places evaluation is present as B-, 3.6, medium confidence, reviewed.
+- Duplicate occurrence groups for `(series_id, occurrence_date, start_time)`: 0.
+- No local preview was run, per the routine data-write overhead rule.
