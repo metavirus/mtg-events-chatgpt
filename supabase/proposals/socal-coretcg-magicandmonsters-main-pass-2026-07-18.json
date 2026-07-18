@@ -1,0 +1,400 @@
+{
+  "proposal_id": "socal-coretcg-magicandmonsters-main-pass-2026-07-18",
+  "description": "Bounded source/evidence/assessment refresh for SoCalMagic, CoreTCG, and Magic and Monsters under the corrected main-store method. Adds missing source-route Evidence, captures Discord route statuses without overclaiming content, adds Magic and Monsters' missing Places evaluation row, and updates assessment notes. No event rows, schema/auth/RLS/app code, or canonical JSON changes are proposed.",
+  "created_at": "2026-07-18T09:15:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-socalmagic-mapquest-yelp-2026-07-18"},
+      "fields": {
+        "id": "src-socalmagic-mapquest-yelp-2026-07-18",
+        "label": "MapQuest / Yelp-derived listing for SoCalMagic",
+        "url": "https://www.mapquest.com/us/california/socal-magic-303837307",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Preserve direct Yelp-derived SoCalMagic review evidence, including friendly LGS/inventory positives and a Commander house-rule caution."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "socalmagic", "source_id": "src-socalmagic-mapquest-yelp-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "socalmagic",
+        "source_id": "src-socalmagic-mapquest-yelp-2026-07-18",
+        "relationship": "Yelp-derived review/fit and Commander house-rule caution signal"
+      },
+      "reason": "Expose a direct review-derived source that supports both SoCalMagic's real Magic-store strengths and its personal-fit cautions."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-social-socalmagic-facebook-2026-07-15"},
+      "fields": {"last_checked": "2026-07-18"},
+      "reason": "Facebook visible slice was rechecked; no mitigating no-proxy language was found in the bounded read."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "socalmagic"},
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "SoCalMagic remains a real Magic-dedicated Orange store with strong inventory, review, and event signals, but the repeated Wizards/EventLink `Commander all day / No proxy` language remains a major personal-fit exclusion. A bounded recheck found no quick mitigating source that narrows the no-proxy rule. Direct Yelp-derived review evidence supports both sides of the read: friendly/mom-and-pop Magic-store positives and Commander house-rule concerns. Keep SoCalMagic cataloged as an important Magic venue, but deprioritized for Kavi's personal Commander planning unless future evidence shows proxy-friendly casual tables or narrows the no-proxy rule to a specific event lane."
+      },
+      "reason": "Refresh SoCalMagic with direct review evidence while preserving the no-proxy personal-fit conclusion."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "socalmagic"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "socalmagic",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "C",
+        "fit_score": 2.7,
+        "confidence": "high",
+        "positives": [
+          "Repeated Wizards/EventLink rows show frequent Commander availability.",
+          "Review-derived evidence supports a real Magic-dedicated store with friendly owner/staff, inventory depth, events, drafts, and community continuity.",
+          "Direct Yelp-derived evidence strengthens the read that this is a real LGS, not a weak or generic listing."
+        ],
+        "cautions": [
+          "Repeated `No proxy` event language remains a likely major personal-fit exclusion.",
+          "Yelp-derived review text also flags unusual Commander house-rule concerns.",
+          "No bounded-source mitigation was found that narrows the no-proxy rule to a less relevant event lane."
+        ],
+        "open_questions": [
+          "Does `No proxy` apply to all Commander play or only specific formal/listed events?",
+          "Are there proxy-friendly casual tables outside the formal event language?",
+          "Would the user ever want to try SoCalMagic despite the proxy limitation?"
+        ]
+      },
+      "reason": "Keep fit low and confidence high while making the review-source support and no-proxy uncertainty explicit."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-coretcg-linktree-2026-07-18"},
+      "fields": {
+        "id": "src-coretcg-linktree-2026-07-18",
+        "label": "CoreTCG official Linktree",
+        "url": "https://linktr.ee/coretcg",
+        "source_type": "socialRouter",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "CoreTCG Linktree is the clearest official router for website, Discord, TCGplayer, buylist, socials, and local tournament schedule."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "coretcg", "source_id": "src-coretcg-linktree-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "source_id": "src-coretcg-linktree-2026-07-18",
+        "relationship": "official source-routing support"
+      },
+      "reason": "Make CoreTCG's official source-routing surface visible as Evidence."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-coretcg-instagram-schedule-2026-07-18"},
+      "fields": {
+        "id": "src-coretcg-instagram-schedule-2026-07-18",
+        "label": "CoreTCG April 2026 Instagram weekly tournament schedule",
+        "url": "https://www.instagram.com/p/DXMuJsxke25/",
+        "source_type": "social",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Store-controlled schedule post says April 2026 updates and shows weekly tournaments including Friday Magic at 4:30 PM."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "coretcg", "source_id": "src-coretcg-instagram-schedule-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "source_id": "src-coretcg-instagram-schedule-2026-07-18",
+        "relationship": "store-controlled weekly tournament schedule evidence"
+      },
+      "reason": "Expose the current-ish Instagram schedule post as Evidence for CoreTCG's Friday Magic anchor."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-coretcg-instagram-schedule-2026-07-18", "series_id": "coretcg-coretcg-commander-5-16-30"},
+      "fields": {
+        "source_id": "src-coretcg-instagram-schedule-2026-07-18",
+        "series_id": "coretcg-coretcg-commander-5-16-30",
+        "relationship": "corroborates Friday Magic 4:30 PM schedule; does not by itself specify Commander"
+      },
+      "reason": "Attach the Instagram schedule as corroborating support for the existing Friday 4:30 PM Magic event without over-normalizing it into a separate event."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-coretcg-discord-route-2026-07-18"},
+      "fields": {
+        "id": "src-coretcg-discord-route-2026-07-18",
+        "label": "CoreTCG Tournament Discord invite",
+        "url": "https://discord.gg/coretcg",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Invite page confirms Core TCG Server with 14,447 members and 2,601 online; content was not inspected because joining would require an account-side effect."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "coretcg", "source_id": "src-coretcg-discord-route-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "source_id": "src-coretcg-discord-route-2026-07-18",
+        "relationship": "Discord route found / not inspected; large event/community route"
+      },
+      "reason": "Capture the first-class Discord/community route while avoiding unsupported claims about LFG, turnout, or solo-arrival texture."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-coretcg-official-site-2026-07-17"},
+      "fields": {"last_checked": "2026-07-18"},
+      "reason": "Official site was rechecked and still supports active retail identity, hours, Magic product depth, Events/Facebook routing, and Discord routing."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "coretcg"},
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "CoreTCG is clearly an active, high-scale Pasadena TCG retailer with substantial Magic product depth, official source routing, a Friday Magic schedule anchor, and a large Discord route. The April 16, 2026 Instagram schedule post shows Friday Magic at 4:30 PM and says the April schedule otherwise stayed the same, which corroborates the existing Friday 4:30 PM Wizards/EventLink Commander row without proving additional MTG formats. The Discord invite is large, but content has not been inspected because accepting the invite would join a third-party server. Treat CoreTCG as real Magic infrastructure with useful event coverage, but still not a proven casual Bracket 2/3 solo-arrival Commander fit until Discord/LFG texture or in-store experience is reviewed."
+      },
+      "reason": "Refresh CoreTCG with Linktree, Instagram schedule, and Discord-route evidence while preserving casual-fit uncertainty."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "coretcg"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "coretcg",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.1,
+        "confidence": "medium",
+        "positives": [
+          "Official site and Linktree support a large active TCG/Magic retailer with strong source routing.",
+          "Instagram schedule post corroborates Friday Magic at 4:30 PM, matching the existing Friday 4:30 PM event anchor.",
+          "Discord route is real and large, supporting community/event infrastructure even though content remains uninspected."
+        ],
+        "cautions": [
+          "Discord content has not been inspected, so LFG, solo-arrival texture, proxy norms, and casual Commander fit remain unknown.",
+          "Review-derived corpus includes recurring service, pricing, and order-handling complaints.",
+          "Large retailer/tournament identity may not translate into relaxed Bracket 2/3 Commander comfort."
+        ],
+        "open_questions": [
+          "Does the Discord support casual LFG or mostly tournament logistics?",
+          "Is Friday Magic/Commander socially accessible for a solo arrival?",
+          "Are prerelease/draft opportunities more relevant here than Commander?"
+        ]
+      },
+      "reason": "Slightly improve confidence from corroborating source-routing evidence while keeping fit and Discord-content limits explicit."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-magicandmonsters-site-2026-07-15"},
+      "fields": {"last_checked": "2026-07-18"},
+      "reason": "Official site was rechecked and continues to support active storefront, MTG singles, and MTG sealed product."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-magicandmonsters-events-2026-07-15"},
+      "fields": {"last_checked": "2026-07-18"},
+      "reason": "Official event calendar was rechecked; July 2026 visible calendar/list showed non-MTG events but no current MTG entry in the reviewed slice."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-social-magicandmonsters-instagram-2026-07-15"},
+      "fields": {"last_checked": "2026-07-18"},
+      "reason": "Instagram was rechecked and supports current activity plus Monday YGO-MTG / Friday FNM schedule signals."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-magicandmonsters-linktree-2026-07-18"},
+      "fields": {
+        "id": "src-magicandmonsters-linktree-2026-07-18",
+        "label": "Magic and Monsters official Linktree",
+        "url": "https://linktr.ee/magicandmonsters",
+        "source_type": "socialRouter",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Official Linktree exposes Instagram, Facebook, online store, shop location, Google Reviews, Threads, and Discord routing."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "magic-and-monsters", "source_id": "src-magicandmonsters-linktree-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "source_id": "src-magicandmonsters-linktree-2026-07-18",
+        "relationship": "official source-routing support"
+      },
+      "reason": "Make Magic and Monsters' current source router visible as Evidence."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-magicandmonsters-discord-route-2026-07-18"},
+      "fields": {
+        "id": "src-magicandmonsters-discord-route-2026-07-18",
+        "label": "Magic and Monsters community Discord invite",
+        "url": "https://discord.gg/t2uQByUBZ7",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Invite page confirms Magic & Monsters Discord with 944 members and 129 online; content was not inspected because joining would require an account-side effect."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "magic-and-monsters", "source_id": "src-magicandmonsters-discord-route-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "source_id": "src-magicandmonsters-discord-route-2026-07-18",
+        "relationship": "Discord route found / not inspected; community route"
+      },
+      "reason": "Capture the Discord/community route while avoiding unsupported claims about turnout, LFG, or Commander texture."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-magicandmonsters-yahoo-yelp-2026-07-18"},
+      "fields": {
+        "id": "src-magicandmonsters-yahoo-yelp-2026-07-18",
+        "label": "Yahoo Local / Yelp-derived listing for Magic and Monsters",
+        "url": "https://local.yahoo.com/info-94182464-magic-and-monsters-mission-viejo/",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Preserve Yelp-derived review evidence for selection, staff, TCG activity, and some online/inventory accuracy cautions."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "magic-and-monsters", "source_id": "src-magicandmonsters-yahoo-yelp-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "source_id": "src-magicandmonsters-yahoo-yelp-2026-07-18",
+        "relationship": "Yelp-derived review/fit signal"
+      },
+      "reason": "Expose review-derived store quality, community, staff, and caution signals."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-magicandmonsters-cardshows-2026-07-18"},
+      "fields": {
+        "id": "src-magicandmonsters-cardshows-2026-07-18",
+        "label": "CardShows / Google-derived listing for Magic and Monsters",
+        "url": "https://cardshows.io/shops/magic-monsters-mission-viejo",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Preserve Google-derived store identity, rating scale, TCG specialty, and product-focus support."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "magic-and-monsters", "source_id": "src-magicandmonsters-cardshows-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "source_id": "src-magicandmonsters-cardshows-2026-07-18",
+        "relationship": "Google-derived identity/review/activity support"
+      },
+      "reason": "Expose secondary Google-derived review/activity support without treating it as event proof."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "magic-and-monsters"},
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "Magic and Monsters remains a real Magic/TCG-focused Mission Viejo candidate with stronger source routing than previously visible: official site, official events page, Instagram, Facebook, Linktree, review surfaces, and a sizable Discord route. The current official calendar is live but complicates the event read because the July 2026 visible slice shows Pokemon, Yu-Gi-Oh!, Vendetta, and Star Wars events, with no MTG/Commander entries in the reviewed week/month. Instagram still supports Magic activity through profile schedule language (`Monday: YGO-MTG`, `Friday: FNM`) and recent Marvel Super Heroes Magic product/prerelease-style promotion, while Wizards/EventLink already supports Friday Commander Free Play. Treat the existing Commander row as represented but needing targeted event replay before relying on Friday FNM/Commander as fully reconciled. Places fit improves because reviews and social routing point to an active, welcoming TCG shop, but distance and event-calendar mismatch keep it in watch/verify rather than try-immediately."
+      },
+      "reason": "Refresh Magic and Monsters assessment with current Linktree, Discord route, official calendar, Instagram, and review evidence."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "magic-and-monsters"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "medium",
+        "positives": [
+          "Official site supports a real active TCG storefront with MTG singles and sealed product.",
+          "Instagram and Linktree show active social/source routing, including Monday YGO-MTG, Friday FNM, daily open play, and a community Discord route.",
+          "Review-derived and Google-derived sources support strong store identity, staff/community positives, and broad TCG activity.",
+          "Existing Wizards/EventLink row supports Friday Commander Free Play."
+        ],
+        "cautions": [
+          "Mission Viejo distance means the store needs a stronger event/social reason before becoming a default personal target.",
+          "Official July 2026 event calendar currently shows non-MTG events in the reviewed slice and no MTG/Commander entry, creating an event-source mismatch.",
+          "Discord content has not been inspected, so turnout, LFG, proxy norms, and solo-arrival texture remain unknown.",
+          "Some review-derived sources include pricing/trade-in or online inventory accuracy cautions."
+        ],
+        "open_questions": [
+          "Is Friday FNM currently Commander, broader MTG free play, or a stale/omitted calendar item?",
+          "Does the Discord support casual LFG or useful event reliability signals?",
+          "Is Monday YGO-MTG meaningful for Magic players, and does the store currently support draft/prerelease/sealed beyond WPN?",
+          "Would a planned visit be worth the distance compared with closer options?"
+        ]
+      },
+      "reason": "Add missing Places-page evaluation fields for Magic and Monsters using the corrected main-pass evidence."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {"id": "socal-coretcg-magicandmonsters-main-pass-2026-07-18"},
+      "fields": {
+        "id": "socal-coretcg-magicandmonsters-main-pass-2026-07-18",
+        "detected_at": "2026-07-18T09:15:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "summary": "Proposed bounded source/evidence/assessment refresh for SoCalMagic, CoreTCG, and Magic and Monsters. The pass captures direct review/source-router/Discord-route evidence, preserves SoCalMagic's no-proxy personal-fit exclusion, corroborates CoreTCG Friday Magic, and flags Magic and Monsters' official-calendar versus WPN/Instagram event mismatch for targeted replay.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable proposed update marker before any live write."
+    }
+  ]
+}
