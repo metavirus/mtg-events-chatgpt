@@ -1,0 +1,255 @@
+{
+  "proposal_id": "finch-sparrow-corrected-event-backfill-2026-07-18",
+  "description": "Corrected Finch and Sparrow event backfill after applying the main-store-pass methodology. The store-controlled TCGplayer Pro event calendar shows additional current Magic lanes beyond the already-captured Commander/cEDH/Birdcage records: Sunday casual play, Wednesday Standard-set draft, Friday FNM, Monday Standard, and Tuesday Modern. This proposal adds those event series, refreshes Finch event-calendar provenance, conservatively updates the Places assessment, and does not change schema/auth/RLS/app code or canonical JSON.",
+  "created_at": "2026-07-18T00:30:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-finch-events"},
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "The official TCGplayer Pro event calendar rendered current July/August 2026 Finch event listings in browser, including several Magic lanes not yet represented in Supabase."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "finch-sparrow-sunday-casual-play"},
+      "fields": {
+        "id": "finch-sparrow-sunday-casual-play",
+        "venue_id": "finch-sparrow",
+        "title": "Finch and Sparrow Casual Play",
+        "format": "Magic",
+        "event_type": "casual",
+        "bracket": "unspecified",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 0, "startTime": "12:00"},
+        "default_start_time": "12:00",
+        "start_date": "2026-07-19",
+        "end_date": null,
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "Finch's official event calendar lists a recurring Sunday Finch and Sparrow Casual Play entry. The calendar does not display a specific time, so 12:00 PM is a planning proxy based on Finch's listed Sunday opening time, not a sourced event start. Treat this as a store-controlled open/casual Magic signal and a promising Sunday planning route, but do not infer that it is specifically Commander-heavy. User field notes separately suggest Sunday has had a more freeform casual Commander vibe than Saturday, but the best Commander arrival window remains an open question.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Make the official Sunday casual/open-play signal visible in the calendar while preserving format uncertainty."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "finch-sparrow-booster-draft-standard-sets"},
+      "fields": {
+        "id": "finch-sparrow-booster-draft-standard-sets",
+        "venue_id": "finch-sparrow",
+        "title": "Booster Draft - Standard Sets",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 3, "startTime": "19:00"},
+        "default_start_time": "19:00",
+        "start_date": "2026-07-22",
+        "end_date": null,
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "Finch's official event calendar lists a recurring Wednesday 7:00 PM Booster Draft - Standard Sets event. This is a current draft lane and should be visible for limited-format planning.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog the current store-controlled weekly draft signal that was missed by Commander-focused reconciliation."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "finch-sparrow-fnm-at-finch-and-sparrow"},
+      "fields": {
+        "id": "finch-sparrow-fnm-at-finch-and-sparrow",
+        "venue_id": "finch-sparrow",
+        "title": "FNM at Finch and Sparrow",
+        "format": "Magic",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "19:00"},
+        "default_start_time": "19:00",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "Finch's official event calendar lists a recurring Friday 7:00 PM FNM at Finch and Sparrow entry. The pass did not confirm the exact FNM format, so this should be treated as a current Magic/FNM planning signal rather than normalized as Commander, draft, or sealed.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog the current store-controlled FNM signal without over-normalizing its format."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "finch-sparrow-mtg-standard-constructed"},
+      "fields": {
+        "id": "finch-sparrow-mtg-standard-constructed",
+        "venue_id": "finch-sparrow",
+        "title": "MTG Standard Constructed",
+        "format": "Standard",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 1, "startTime": "19:00"},
+        "default_start_time": "19:00",
+        "start_date": "2026-07-20",
+        "end_date": null,
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "Finch's official event calendar lists a recurring Monday 7:00 PM MTG Standard Constructed event. This is probably lower personal priority than Commander, draft, or prerelease, but it supports the store's broader active Magic footprint.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog a current store-controlled constructed Magic lane for completeness and store-activity context."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "finch-sparrow-modern-kombat"},
+      "fields": {
+        "id": "finch-sparrow-modern-kombat",
+        "venue_id": "finch-sparrow",
+        "title": "Modern Kombat",
+        "format": "Modern",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 2, "startTime": "19:00"},
+        "default_start_time": "19:00",
+        "start_date": "2026-07-21",
+        "end_date": null,
+        "entry_fee": null,
+        "currency": "USD",
+        "details": "Finch's official event calendar lists a recurring Tuesday 7:00 PM Modern Kombat event. This is probably lower personal priority than Commander, draft, or prerelease, but it supports the store's broader active Magic footprint.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog a current store-controlled constructed Magic lane for completeness and store-activity context."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-finch-events", "series_id": "finch-sparrow-sunday-casual-play", "occurrence_id": null},
+      "fields": {"source_id": "src-finch-events", "series_id": "finch-sparrow-sunday-casual-play", "relationship": "official calendar recurring casual-play evidence"},
+      "reason": "Attach the store-controlled event calendar to the Sunday casual-play series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-finch-events", "series_id": "finch-sparrow-booster-draft-standard-sets", "occurrence_id": null},
+      "fields": {"source_id": "src-finch-events", "series_id": "finch-sparrow-booster-draft-standard-sets", "relationship": "official calendar recurring draft evidence"},
+      "reason": "Attach the store-controlled event calendar to the weekly draft series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-finch-events", "series_id": "finch-sparrow-fnm-at-finch-and-sparrow", "occurrence_id": null},
+      "fields": {"source_id": "src-finch-events", "series_id": "finch-sparrow-fnm-at-finch-and-sparrow", "relationship": "official calendar recurring FNM evidence"},
+      "reason": "Attach the store-controlled event calendar to the FNM series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-finch-events", "series_id": "finch-sparrow-mtg-standard-constructed", "occurrence_id": null},
+      "fields": {"source_id": "src-finch-events", "series_id": "finch-sparrow-mtg-standard-constructed", "relationship": "official calendar recurring Standard evidence"},
+      "reason": "Attach the store-controlled event calendar to the Standard series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-finch-events", "series_id": "finch-sparrow-modern-kombat", "occurrence_id": null},
+      "fields": {"source_id": "src-finch-events", "series_id": "finch-sparrow-modern-kombat", "relationship": "official calendar recurring Modern evidence"},
+      "reason": "Attach the store-controlled event calendar to the Modern series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-finch-events", "series_id": "finch-sparrow-commander-nite-4-19-00", "occurrence_id": null},
+      "fields": {"source_id": "src-finch-events", "series_id": "finch-sparrow-commander-nite-4-19-00", "relationship": "store-controlled calendar corroboration"},
+      "reason": "Record that Finch's own event calendar now independently corroborates the Thursday Commander lane."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-finch-events", "series_id": "finch-sparrow-commanderfest-6-14-30", "occurrence_id": null},
+      "fields": {"source_id": "src-finch-events", "series_id": "finch-sparrow-commanderfest-6-14-30", "relationship": "store-controlled calendar corroboration"},
+      "reason": "Record that Finch's own event calendar now independently corroborates the Saturday Commanderfest lane."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-finch-events", "series_id": "finch-sparrow-cedh-workshop-1-18-00", "occurrence_id": null},
+      "fields": {"source_id": "src-finch-events", "series_id": "finch-sparrow-cedh-workshop-1-18-00", "relationship": "store-controlled calendar corroboration"},
+      "reason": "Record that Finch's own event calendar corroborates the Monday cEDH/competitive-testing lane, though the calendar labels it CEDH Mondays."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "finch-sparrow"},
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-18",
+        "assessment_notes": "Finch and Sparrow remains one of the strongest nearby Magic candidates, with a clearer event picture after the corrected source pass. Supabase already captures Thursday Commander Nite, Saturday Commanderfest, Monday cEDH Workshop, and the July 25 Birdcage VII cEDH special. Finch's own current TCGplayer Pro event calendar also shows Sunday Finch and Sparrow Casual Play, Wednesday Booster Draft - Standard Sets, Friday FNM, Monday Standard, and Tuesday Modern through the current July/August calendar window. This broadens Finch from a Commander/cEDH split into a close, active multi-lane Magic hub. For personal planning, the Sunday casual-play display time should be treated as a 12:00 PM opening-time proxy, not a sourced event start; the best casual path still needs care because Sunday is officially visible but not proven Commander-specific, Saturday Commanderfest has structured/timed pods per user field note, and Thursday Commander table texture remains less directly observed. Keep Birdcage/cEDH as store-character and competitive opportunity rather than the user's default fit."
+      },
+      "reason": "Reflect the current official event calendar while preserving unresolved casual/Commander texture questions."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "finch-sparrow"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "finch-sparrow",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B+",
+        "fit_score": 4.0,
+        "confidence": "high",
+        "positives": [
+          "Only about five miles from Los Alamitos, making repeat visits practical.",
+          "Current official calendar plus existing Wizards/EventLink-derived records support multiple live Magic lanes: Thursday Commander, Saturday Commanderfest, Sunday casual play, Wednesday draft, Friday FNM, Monday cEDH, Monday Standard, and Tuesday Modern.",
+          "User field notes give direct lived texture: Saturday uses structured random pods/loose rounds, while Sunday has had a more freeform casual vibe.",
+          "WPN Premium status, active official site, Instagram/source routing, and store-controlled event calendar create a strong operational source stack.",
+          "The Wednesday draft and Sunday casual/open-play signal make Finch more useful than a Commander-only read suggested."
+        ],
+        "cautions": [
+          "Birdcage, Fish Bowl, and cEDH-forward promotion are meaningful store-character signals but are not the default casual fit.",
+          "Sunday casual play is officially visible and can use Finch's 12:00 PM opening time as a planning proxy, but the source does not prove it is Commander-specific or identify the best actual arrival window.",
+          "Saturday Commanderfest may be structured and timed enough to feel different from relaxed open play.",
+          "Discord was previously inspected and rated low-usefulness for current Commander intelligence, so pre-arrival coordination still relies more on site/social/user observation than active public LFG evidence.",
+          "Friday FNM, Monday Standard, and Tuesday Modern support store activity but are probably lower personal priority than Commander, draft, or prerelease."
+        ],
+        "open_questions": [
+          "How Commander-heavy is Sunday Finch and Sparrow Casual Play in current practice?",
+          "What is the best Sunday casual/open-play arrival window?",
+          "What is the current Thursday Commander table texture, bracket mix, and proxy expectation?",
+          "Does Finch have a current prerelease/sealed route not visible in this pass?"
+        ]
+      },
+      "reason": "Upgrade the Places-page read based on current official calendar breadth plus prior user field notes, without erasing the remaining casual/Commander texture unknowns."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {"id": "finch-sparrow-corrected-event-backfill-2026-07-18"},
+      "fields": {
+        "id": "finch-sparrow-corrected-event-backfill-2026-07-18",
+        "detected_at": "2026-07-18T00:30:00-07:00",
+        "change_type": "event_update",
+        "entity_type": "venue",
+        "entity_id": "finch-sparrow",
+        "summary": "Corrected Finch and Sparrow event coverage after a full-format event-calendar check. The proposal adds official Sunday casual play, Wednesday draft, Friday FNM, Monday Standard, and Tuesday Modern lanes while preserving the distinction between casual planning value and cEDH/Birdcage store-character signals.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable proposed update marker before any live write."
+    }
+  ]
+}
