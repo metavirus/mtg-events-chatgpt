@@ -105,7 +105,7 @@ pass before relying on the Sunday Commander lead for travel.
 | Magic and Monsters | older/light work - corrected main pass required | July 15 first pass | current record | Full event-stream refinement and closure record | Corrected main pass; likely useful | Medium |
 | Paper Hero's Games - Huntington Beach | older/light work - corrected main pass required | Existing reviewed/discovery snapshot | current record | Determine actionable Commander nights | Corrected main pass if planning-relevant | Low |
 | Card Arena | older/light work - corrected main pass required | Wizards/discovery snapshot | current record | Exact-address/source discovery and full main pass | Corrected main pass if planning-relevant | Low |
-| Grails Gone Wild | status/identity conflict | Targeted Grails source correction | event TBD | Current Magic/Commander, direct reviews, ordinary source surfaces | Bounded corrected main pass | Medium |
+| Grails Gone Wild | mostly complete - named closure gaps | Batch E plus 2026-07-18 re-anchor | current record | Sunday Commander turnout, community texture, alias/display-name decision | Optional main-pass completion if planning-relevant | Medium |
 | The Game Chest - Irvine | status/identity conflict | Batch A Alton/Spectrum clarification | current record | Current branch-specific assessment and Spectrum history | Branch-aware main pass if relevant | Low |
 | The Comic Bug | status/identity conflict | Packet ingest structural disposition | current record | Historical Manhattan Beach/current branch status | Branch/status main pass if relevant | Low |
 | Alamo Drafthouse Cinema Downtown Los Angeles | status/identity conflict | Packet ingest structural disposition | current record | Whether cinema-hosted Magic is practical/current | Venue-practicality pass if relevant | Low |
@@ -115,26 +115,29 @@ pass before relying on the Sunday Commander lead for travel.
 | DXN Provisions | intentionally low-priority/no-action | Packet ingest structural disposition | current record | Low visible Magic priority; mixed-hobby source routing | Revisit only if new current signal appears | Low |
 | Revenge Of | intentionally low-priority/no-action | Packet ingest structural disposition | current record | Low visible Magic emphasis; comic/pop-culture venue | Revisit only if new current Magic signal appears | Low |
 
-## Recommended First Batch After This Checkpoint
+## Post-checkpoint tranche re-anchor - 2026-07-18
 
-Recommended validation level: Lean, unless event rows are proposed after source
-inspection reveals clear current event facts.
+The original "Recommended First Batch After This Checkpoint" named Grails Gone
+Wild, Buddies Collectibles, and Tilted Gaming. That recommendation is now stale.
 
-Recommended first direct batch:
+Current live Supabase and accepted run notes already show:
 
-- Grails Gone Wild: complete the bounded main pass that the targeted Instagram
-  correction deliberately did not finish.
-- Buddies Collectibles: micro-backfill current-source coverage and verify the
-  direct Yelp/source signals are represented cleanly.
-- Tilted Gaming: corrected main-pass acceptance test. Reconcile every current
-  official/Wizards Magic format against Supabase before returning to the
-  ordinary social/community texture gap; keep the duplicate Commander cleanup
-  closed.
+- Grails has current WPN-backed Sunday Commander, alias/status evidence, stale
+  Instagram disposition, and a conservative Places assessment.
+- Buddies has direct Yelp/review, Linktree, Discord, Whatnot, official-site, WPN
+  evidence, plus Friday/Saturday Commander rows and a current Places synthesis.
+- Tilted has the corrected event-format reconciliation applied: Friday
+  Commander/FNM, weekly Sunday Draft, Marvel Commander Party, Hobbit prerelease,
+  inactive duplicate cleanup, official source evidence, and Discord route
+  capture without overclaiming content inspection.
 
-Why this is next: these three are where the corrected methodology most directly
-intersects recent user-visible trust concerns: obvious-source capture,
-source-content inspection, and preserving event signals without overstating
-planning reliability.
+See `research/runs/2026-07-18-grails-buddies-tilted-reanchor.md`.
 
-Do not start this batch automatically from the checkpoint. It is the next
-research tranche to run once this documentation checkpoint is accepted.
+Do not keep recommending Grails/Buddies/Tilted as the default next batch unless
+one of their named TBDs is deliberately selected.
+
+Recommended next ordinary batch should instead come from still-thin,
+planning-relevant records such as Shadow Realm Collectibles, TK Collectibles,
+Games For Meeple, GXGAMERS, Otaku Vault, or LVLUP GAMING TCG, with validation
+level chosen up front: lean for evidence/assessment-only, standard if event
+series or occurrences are written.
