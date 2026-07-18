@@ -1,0 +1,206 @@
+{
+  "proposal_id": "magicandmonsters-event-reconciliation-2026-07-18",
+  "description": "Targeted Magic and Monsters event reconciliation. Retires the existing Commander Free Play row from the active calendar because current store-controlled Discord schedule evidence says MTG is no longer on the regular weekly schedule, while daily drop-in Commander remains supported as play-space context rather than a reliable projected weekly calendar event.",
+  "created_at": "2026-07-18T12:30:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-magicandmonsters-discord-route-2026-07-18"
+      },
+      "fields": {
+        "label": "Magic and Monsters Discord server",
+        "url": "https://discord.gg/PQZCKPhhg",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Replace the earlier route-only invite with the current Instagram-supplied Discord invite and record that the server/channel content was inspected read-only after user approval."
+    },
+    {
+      "action": "upsert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "source_id": "src-magicandmonsters-discord-route-2026-07-18"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "source_id": "src-magicandmonsters-discord-route-2026-07-18",
+        "relationship": "Discord inspected; large organized community route with shop-schedule and mtg-schedule channels"
+      },
+      "reason": "Make the inspected Discord status visible in Places Evidence without overclaiming deeper turnout or solo-arrival conclusions."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-magicandmonsters-cardcommunity-commander-2026-07-18"
+      },
+      "fields": {
+        "id": "src-magicandmonsters-cardcommunity-commander-2026-07-18",
+        "label": "CardCommunity / EventLink mirror — Magic and Monsters Commander Free Play",
+        "url": "https://cardcommunity.org/event/cab1ccd5-5d4a-413c-9d76-a1e0e5a09bb0",
+        "source_type": "wpn",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture the current accessible mirror showing Magic and Monsters Commander Free Play on Saturday, July 25, 2026 at 6 PM, with prior Saturday occurrences."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-magicandmonsters-cardcommunity-commander-2026-07-18",
+        "series_id": "magic-and-monsters-commander-free-play-5-18-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-magicandmonsters-cardcommunity-commander-2026-07-18",
+        "series_id": "magic-and-monsters-commander-free-play-5-18-00",
+        "occurrence_id": null,
+        "relationship": "EventLink mirror supports Saturday 6 PM Commander Free Play signal; retained as evidence but superseded for calendar projection by store-controlled Discord regular-schedule caveat"
+      },
+      "reason": "Tie the current Saturday Commander signal to the retired event-series row without treating it as enough for a reliable weekly calendar projection."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-magicandmonsters-discord-route-2026-07-18",
+        "series_id": "magic-and-monsters-commander-free-play-5-18-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-magicandmonsters-discord-route-2026-07-18",
+        "series_id": "magic-and-monsters-commander-free-play-5-18-00",
+        "occurrence_id": null,
+        "relationship": "Discord inspected; May 31 2026 shop-schedule says MTG is no longer on the regular weekly schedule but daily Commander drop-in play space continues"
+      },
+      "reason": "Attach the cautionary store-controlled Discord schedule evidence to the event row."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-magicandmonsters-events-2026-07-15",
+        "series_id": "magic-and-monsters-commander-free-play-5-18-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-magicandmonsters-events-2026-07-15",
+        "series_id": "magic-and-monsters-commander-free-play-5-18-00",
+        "occurrence_id": null,
+        "relationship": "Official calendar checked through future pages; no MTG/Commander listing surfaced, so this is cautionary non-corroboration"
+      },
+      "reason": "Preserve the official-calendar absence as a planning caution rather than silently ignoring it."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-social-magicandmonsters-instagram-2026-07-15",
+        "series_id": "magic-and-monsters-commander-free-play-5-18-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-social-magicandmonsters-instagram-2026-07-15",
+        "series_id": "magic-and-monsters-commander-free-play-5-18-00",
+        "occurrence_id": null,
+        "relationship": "Instagram profile supports broad Magic/FNM/source routing but does not resolve current Friday Commander"
+      },
+      "reason": "Connect Instagram's useful but non-decisive event signal to the reconciliation."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "magic-and-monsters-commander-free-play-5-18-00"
+      },
+      "fields": {
+        "venue_id": "magic-and-monsters",
+        "title": "Commander Free Play",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 5,
+          "startTime": "18:00"
+        },
+        "default_start_time": "18:00",
+        "start_date": "2026-07-17",
+        "details": "Retired from active calendar after targeted replay. The store Discord's May 31, 2026 summer schedule says Magic is no longer on the regular weekly schedule, while daily drop-in Commander/EDH play space remains supported and special MTG events may still appear. EventLink/CardCommunity currently mirrors Saturday 6 PM Commander Free Play, but that signal conflicts with the store-controlled schedule and official calendar absence, so it is preserved as evidence rather than projected as a reliable weekly planning event.",
+        "confidence": "medium",
+        "event_status": "inactive",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Remove the existing Commander series from the active calendar because the current store-controlled Discord schedule supersedes the older/ambiguous weekly Magic schedule, while preserving the row and evidence history."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "magic-and-monsters"
+      },
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "Magic and Monsters remains a real Magic/TCG-focused Mission Viejo candidate with unusually good source routing: official site, official calendar, Instagram, Linktree, reviews, and an inspected Discord server. The event read is now clearer but more nuanced. The official web calendar shows no MTG listings in the checked July-to-September future pages, while a current EventLink/CardCommunity mirror supports Saturday 6 PM Commander Free Play. The store Discord is the strongest current source for interpretation: its May 31, 2026 summer schedule says Magic: The Gathering is no longer on the regular weekly schedule, but daily drop-in Commander/EDH play space remains supported and prerelease, promotional, and cEDH events may still appear. That makes Magic and Monsters useful to watch for drop-in Commander and special MTG events, but not a clean structured weekly Magic target without a same-week check."
+      },
+      "reason": "Update venue synthesis after inspecting Magic and Monsters Discord schedule channels and reconciling them with official calendar and EventLink evidence."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.5,
+        "confidence": "medium",
+        "positives": [
+          "Official site supports a real active TCG storefront with MTG singles and sealed product.",
+          "Discord is now inspected and shows a large organized server with game-specific schedule channels.",
+          "Store-controlled Discord says daily drop-in Commander/EDH play space remains supported even though MTG is no longer on the regular weekly schedule.",
+          "EventLink/CardCommunity currently supports a Saturday 6 PM Commander Free Play signal, but it is weaker than the newer store-controlled Discord schedule for calendar projection."
+        ],
+        "cautions": [
+          "Mission Viejo distance means the store needs a stronger event/social reason before becoming a default personal target.",
+          "Official July-to-September 2026 calendar pages checked in this pass showed no MTG/Commander listings.",
+          "Store Discord says MTG is no longer on the regular weekly schedule, so structured weekly Magic should not be assumed from old schedule text.",
+          "Friday FNM remains unresolved: Instagram says Friday FNM, but current Discord and official calendar do not confirm a current Friday Magic calendar event."
+        ],
+        "open_questions": [
+          "Does Saturday 6 PM Commander Free Play reliably fire as an EventLink event, or has it effectively become drop-in/open-play availability?",
+          "What does Friday FNM currently mean, if anything, after the summer 2026 schedule change?",
+          "How useful is the Discord for actual LFG, solo arrival, proxy norms, and turnout?",
+          "Would a planned visit be worth the distance compared with closer options?"
+        ]
+      },
+      "reason": "Refresh Places assessment after resolving that Discord content is inspected and that the MTG schedule is less regular than previously implied."
+    },
+    {
+      "action": "upsert",
+      "table": "research_changes",
+      "key": {
+        "id": "magicandmonsters-event-reconciliation-2026-07-18"
+      },
+      "fields": {
+        "id": "magicandmonsters-event-reconciliation-2026-07-18",
+        "detected_at": "2026-07-18T12:30:00-07:00",
+        "change_type": "event_reconciliation",
+        "entity_type": "event_series",
+        "entity_id": "magic-and-monsters-commander-free-play-5-18-00",
+        "summary": "Proposed Magic and Monsters event reconciliation: retire Commander Free Play from the active calendar because store Discord says MTG is no longer on the regular weekly schedule; preserve daily Commander drop-in support and Saturday EventLink signal as evidence/TBD rather than projected weekly calendar truth.",
+        "review_status": "proposed"
+      },
+      "reason": "Add reviewable Updates entry for the proposed Magic and Monsters calendar correction."
+    }
+  ]
+}
