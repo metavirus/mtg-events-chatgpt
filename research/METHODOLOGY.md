@@ -45,6 +45,11 @@ sources, not decorative extras.
    proxy restrictions or permissions when stated, pod formation, pairings, timed
    rounds, fees, prizes, capacity, and
    solo-arrival guidance.
+   Every store pass should explicitly classify current MTG event signals as
+   `write now`, `event TBD`, `no event`, or `stale/historical` using the
+   event-signal disposition rule in `research/SOURCE_SOP.md`. Assessment-focused
+   or lean batches still require event hunting; the guardrail is only against
+   placing fuzzy or stale claims on the calendar.
 9. Check community discussions and reviews for explicitly anecdotal evidence about
    attendance, accessibility, competitiveness, regulars, and physical space.
 10. Record every source attempted, including failures and no-result checks.

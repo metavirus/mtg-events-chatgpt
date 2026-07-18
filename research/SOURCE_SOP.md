@@ -17,6 +17,10 @@ If a pass deviates from this SOP, the run note must say why.
    rather than improvising a new workflow mid-pass.
 6. Event-seeking is cross-surface work. Do not assume the most important MTG
    events will appear on only one source.
+7. Every store pass has two parallel responsibilities: Places assessment /
+   evidence implications and current MTG event / calendar implications. Lean
+   validation or an "assessment batch" label must never be interpreted as
+   permission to skip event hunting.
 
 ## Source hierarchy by job
 
@@ -249,6 +253,29 @@ The exit note should answer:
 - whether Places assessment fields should change;
 - how confident the current read is and why;
 - what single later check would most likely change the judgment.
+
+### Event-signal disposition rule
+
+For each store in every research batch, actively check current MTG event and
+calendar implications. Do this even when the batch is primarily framed around
+Places assessment or lean validation.
+
+Classify event signals explicitly:
+
+- `write now`: current, source-supported event or recurring series suitable for
+  the calendar.
+- `event TBD`: plausible MTG event signal, but not confirmed enough for the
+  calendar yet.
+- `no event`: reasonable event routes were checked and no current MTG signal
+  was found.
+- `stale/historical`: old or inactive signal; preserve as context but do not
+  show as active planning.
+
+If a current official, store-controlled, Wizards/EventLink, registration, or
+operational social event signal is found, propose the event write so it can
+appear in the calendar. The guardrail is against fuzzy, stale, weak, or
+unsupported claims polluting the calendar; it is not a reason to avoid finding
+events.
 
 ### TBD taxonomy
 
