@@ -6,7 +6,7 @@ const SUPABASE = {
 };
 
 const AUTH_REDIRECT_URL = 'https://metavirus.github.io/mtg-events-chatgpt/';
-const personalAuth = { client: null, user: null, status: 'local', message: '' };
+const personalAuth = { client: null, user: null, status: 'local', message: '', sendingLink: false };
 
 const COMMUNITY_SEED = [
   {
@@ -1899,20 +1899,38 @@ async function sendMagicLink(inputId) {
     toast('Enter a valid email address');
     return;
   }
+  if (personalAuth.sendingLink) return;
   if (!personalAuth.client) {
     toast('Sign-in service is unavailable; preferences remain local');
     return;
   }
-  const { error } = await personalAuth.client.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: AUTH_REDIRECT_URL }
-  });
-  if (error) {
-    console.warn('Magic-link request failed.', error);
-    toast('Could not send the sign-in link');
-    return;
+  personalAuth.sendingLink = true;
+  const button = document.querySelector(`[data-action="send-magic-link"][data-input="${CSS.escape(inputId)}"]`);
+  if (button) {
+    button.disabled = true;
+    button.textContent = 'Sending...';
   }
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">Email sent</span></div><h1 id="drawerTitle">Check your email</h1><p class="drawer-lead">Open the sign-in link on the device where you want to use the app.</p><section class="drawer-section"><p>Your current browser preferences remain safe while you complete sign-in.</p></section>`);
+  try {
+    const { error } = await personalAuth.client.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: AUTH_REDIRECT_URL }
+    });
+    if (error) {
+      console.warn('Magic-link request failed.', error);
+      const message = /rate limit|over_email_send_rate_limit|429/i.test(`${error.message || ''} ${error.code || ''}`)
+        ? 'Too many sign-in emails. Wait a bit, then try again.'
+        : 'Could not send the sign-in link';
+      toast(message);
+      return;
+    }
+    openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">Email sent</span></div><h1 id="drawerTitle">Check your email</h1><p class="drawer-lead">Open the sign-in link on the device where you want to use the app.</p><section class="drawer-section"><p>Your current browser preferences remain safe while you complete sign-in.</p></section>`);
+  } finally {
+    personalAuth.sendingLink = false;
+    if (button) {
+      button.disabled = false;
+      button.textContent = 'Email me a sign-in link';
+    }
+  }
 }
 
 async function signOutPersonalAccount() {
