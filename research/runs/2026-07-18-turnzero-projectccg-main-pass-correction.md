@@ -3,7 +3,7 @@
 Date: 2026-07-18  
 Pass type: main-store correction after WPN-first event pass  
 Validation level proposed: lean if assessment/evidence-only; standard if the Turn Zero Canadian Highlander event is later normalized into calendar rows  
-Status: proposal prepared; not applied
+Status: applied to live Supabase after Kavi approval
 
 ## Why this correction exists
 
@@ -112,9 +112,9 @@ Canadian Highlander: material event/community signal, but not written now becaus
 Event write now: no.  
 Event TBD: decide whether to add dated future Canadian Highlander occurrences once cadence can be safely anchored.
 
-## Proposal
+## Proposal and applied result
 
-Prepared:
+Prepared and applied:
 
 - `supabase/proposals/turnzero-projectccg-main-pass-correction-2026-07-18.json`
 
@@ -125,6 +125,25 @@ Proposal summary:
 - Keeps Alhambra conservative instead of prematurely marking it fully reviewed.
 - Captures Canlandex as Turn Zero evidence and marks Canadian Highlander as event/community TBD rather than a calendar write.
 - Refreshes Turn Zero assessment notes around the stale schedule image and Discord/source-routing reality.
+
+Applied result:
+
+- Added ProjectCCG Discord as visible Evidence for ProjectCCG - Santa Ana and ProjectCCG - Alhambra.
+- Added Canlandex as visible Turn Zero Evidence.
+- Updated Turn Zero, ProjectCCG - Santa Ana, and ProjectCCG - Alhambra Places assessments.
+- Added the accepted Updates marker `turnzero-projectccg-main-pass-correction-2026-07-18`.
+- No event series, event occurrences, app code, schema/auth/RLS, canonical JSON, or generated JSON export artifacts were changed.
+
+Lean validation performed:
+
+- Live Supabase precheck confirmed the three referenced venues existed and the two proposed source IDs/update marker did not already exist.
+- Post-write verification confirmed the three Evidence links exist.
+- Post-write verification confirmed the three evaluation rows:
+  - ProjectCCG - Santa Ana: `B`, `3.9`, medium confidence, reviewed.
+  - Turn Zero Games: `B-`, `3.6`, medium confidence, reviewed.
+  - ProjectCCG - Alhambra: `C+`, `3.2`, medium confidence, discovery.
+- Post-write verification confirmed the update marker is accepted.
+- Local proposal validator was not authoritative because local JSON fallback is stale relative to live Supabase after the prior ProjectCCG Alhambra write.
 
 ## Remaining TBDs
 

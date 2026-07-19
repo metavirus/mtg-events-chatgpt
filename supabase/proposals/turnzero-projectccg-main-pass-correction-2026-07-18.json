@@ -2,6 +2,8 @@
   "proposal_id": "turnzero-projectccg-main-pass-correction-2026-07-18",
   "description": "Main-pass correction after the WPN-first Turn Zero/CoreTCG/Aki/ProjectCCG event batch. Captures ProjectCCG Discord as inspected community evidence, adds a Santa Ana Places evaluation, improves Alhambra and Turn Zero assessment notes, and preserves Turn Zero Canadian Highlander as a material event/community TBD rather than over-projecting an every-other-Saturday calendar row. No schema/auth/RLS/app code or canonical JSON changes are proposed.",
   "created_at": "2026-07-18T22:10:00-07:00",
+  "status": "applied",
+  "applied_at": "2026-07-18T22:30:00-07:00",
   "author": "Codex Project Steward",
   "operations": [
     {
