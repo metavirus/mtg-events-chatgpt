@@ -509,7 +509,6 @@ function handleClick(event) {
   if (event.target.closest('#coverageButton')) return navigate('research');
   if (event.target.closest('#toggleHighlights')) return toggleHighlightsRail();
   if (event.target.closest('#drawerClose') || event.target.id === 'drawerScrim') return closeDrawer();
-  if (event.target.closest('.banner-close')) return document.getElementById('coverageBanner').remove();
   if (event.target.closest('#activityLogButton')) return openActivityLog();
   if (event.target.closest('#openQuickNote')) return openQuickNote();
   if (event.target.closest('#mobileMenu') || event.target.closest('#mobileMore')) return document.querySelector('.side-rail').classList.toggle('mobile-open');
@@ -780,7 +779,12 @@ function rangeForView() {
     const start = fridayWeekStart(state.date);
     return { start, end: endOfDay(addDays(start, 6)) };
   }
-  return { start: new Date(state.date.getFullYear(), state.date.getMonth(), 1), end: endOfDay(new Date(state.date.getFullYear(), state.date.getMonth() + 1, 0)) };
+  const start = rollingMonthStart(state.date);
+  return { start, end: endOfDay(addDays(start, 34)) };
+}
+
+function rollingMonthStart(date) {
+  return startOfDay(addDays(date, -date.getDay()));
 }
 
 function fridayWeekStart(date) {
@@ -828,13 +832,14 @@ function fitScore(event) {
   if (event.bracket === '3' || /bracket 3|casual|open play/i.test(`${event.bracket} ${event.title} ${event.details}`)) score += 9;
   if (event.bracket === '2') score += 5;
   if (isCompetitive(event)) score -= 30;
-  if (/no prox/i.test(`${event.details} ${place.assessmentNotes}`)) score -= 12;
+  if (hasExplicitNoProxy(event)) score -= 24;
   if (isSpecial(event) && /prerelease|sealed/i.test(`${event.title} ${event.eventType}`)) score += 8;
   return Math.max(0, Math.min(100, Math.round(score)));
 }
 
 function fitLabel(event) {
   const score = fitScore(event);
+  if (hasExplicitNoProxy(event)) return { label: 'Poor fit · no proxy', tone: 'coral' };
   if (isCompetitive(event)) return { label: 'Competitive lane', tone: 'coral' };
   if (score >= 78) return { label: 'Strong fit', tone: 'mint' };
   if (score >= 64) return { label: 'Promising', tone: 'sky' };
@@ -853,7 +858,7 @@ function renderCalendar() {
   const { start, end } = rangeForView();
   const events = buildOccurrences(start, end);
   const label = state.view === 'month'
-    ? state.date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })
+    ? `${start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`
     : state.view === 'week'
       ? `${start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`
       : 'From today onward';
@@ -951,6 +956,7 @@ function formatClass(event) {
 }
 
 function compactEventCue(event, fit, evidence) {
+  if (hasExplicitNoProxy(event)) return { label: 'No proxy', className: 'cue-caution' };
   if (isCompetitive(event)) return { label: 'Check first', className: 'cue-caution' };
   if (fit.tone === 'mint') return { label: 'Best fit', className: 'cue-best' };
   if (fit.tone === 'sky') return { label: 'Promising', className: 'cue-promising' };
@@ -959,11 +965,101 @@ function compactEventCue(event, fit, evidence) {
 }
 
 function formatShort(event) {
-  if (/prerelease/i.test(`${event.title} ${event.eventType}`)) return 'PR';
-  if (/sealed|limited/i.test(`${event.format} ${event.eventType}`)) return 'SE';
-  if (/draft/i.test(`${event.format} ${event.eventType}`)) return 'DR';
+  const text = `${event.title || ''} ${event.format || ''} ${event.eventType || ''}`;
+  if (/prerelease/i.test(text)) return 'PR';
+  if (/sealed|limited/i.test(text)) return 'SE';
+  if (/draft/i.test(text)) return 'DR';
   if (isCompetitive(event)) return 'C4';
-  return 'EDH';
+  if (/commander|edh/i.test(text)) return 'EDH';
+  if (/standard/i.test(text)) return 'STD';
+  if (/modern/i.test(text)) return 'MOD';
+  if (/pioneer/i.test(text)) return 'PIO';
+  if (/pauper/i.test(text)) return 'PAU';
+  if (/legacy/i.test(text)) return 'LEG';
+  if (/fnm|friday night magic/i.test(text)) return 'FNM';
+  return 'MTG';
+}
+
+function hasExplicitNoProxy(event) {
+  const place = store(event.storeId);
+  return /no prox(?:y|ies)/i.test(`${event.title || ''} ${event.details || ''} ${place?.assessmentNotes || ''}`);
+}
+
+function eventPlanningGroup(event) {
+  const placeHidden = !!state.personal.hidden[`place:${event.storeId}`];
+  if (placeHidden || hasExplicitNoProxy(event)) return 'maybe';
+  if (isCompetitive(event)) return 'verify';
+  const fit = fitLabel(event);
+  if (fit.tone === 'mint') return 'best';
+  if (fit.tone === 'sky') return 'promising';
+  if (evidenceLabel(event).tone === 'amber' || event.confidence === 'low' || !eventStartTime(event)) return 'verify';
+  return 'maybe';
+}
+
+const EVENT_GROUPS = [
+  { id: 'best', label: 'Best fits', tone: 'mint' },
+  { id: 'promising', label: 'Promising', tone: 'sky' },
+  { id: 'verify', label: 'Verify / check first', tone: 'amber' },
+  { id: 'maybe', label: 'Maybe / lower priority', tone: 'slate' }
+];
+
+function eventFormatBucket(event) {
+  const text = `${event.title || ''} ${event.format || ''} ${event.eventType || ''}`;
+  if (/prerelease|sealed|limited/i.test(text)) return 'Limited';
+  if (/draft/i.test(text)) return 'Draft';
+  if (/fnm|friday night magic/i.test(text)) return 'FNM';
+  if (/commander|edh/i.test(text)) return 'Commander';
+  if (/party|special/i.test(text)) return 'Special';
+  return 'Other';
+}
+
+function formatMix(events, limit = 3) {
+  const counts = events.reduce((result, event) => {
+    const bucket = eventFormatBucket(event);
+    result[bucket] = (result[bucket] || 0) + 1;
+    return result;
+  }, {});
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1] || compareText(a[0], b[0]))
+    .slice(0, limit)
+    .map(([label, count]) => `${count} ${label}`)
+    .join(' · ');
+}
+
+function eventPlanningSort(a, b) {
+  return compareText(eventStartTime(a), eventStartTime(b)) || compareText(a.title, b.title);
+}
+
+function groupedDayEvents(events, options = {}) {
+  const { compact = true, drawer = false } = options;
+  return EVENT_GROUPS.map((group) => {
+    const items = events.filter((event) => eventPlanningGroup(event) === group.id).sort(eventPlanningSort);
+    if (!items.length) return '';
+    const open = drawer ? ['best', 'promising'].includes(group.id) : group.id === 'best';
+    return `<details class="event-priority-group group-${group.id}" ${open ? 'open' : ''}>
+      <summary><span><i class="group-dot ${group.tone}"></i><strong>${group.label}</strong></span><span>${items.length}</span></summary>
+      <div class="event-priority-items">${items.map((event) => eventCard(event, compact)).join('')}</div>
+    </details>`;
+  }).join('');
+}
+
+function monthHighlightScore(event) {
+  const groupRank = { best: 400, promising: 300, verify: 200, maybe: 100 }[eventPlanningGroup(event)];
+  const datedBonus = event.occurrenceStatus === 'confirmed' ? 45 : 0;
+  const specialBonus = /prerelease|sealed|limited|draft|party|special/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 35 : 0;
+  const routinePenalty = event.recurrence?.frequency === 'weekly' ? 8 : 0;
+  return groupRank + datedBonus + specialBonus + fitScore(event) - routinePenalty;
+}
+
+function monthHighlights(events, limit = 3) {
+  return [...events].sort((a, b) => monthHighlightScore(b) - monthHighlightScore(a) || eventPlanningSort(a, b)).slice(0, limit);
+}
+
+function dayMoreLabel(events, visibleEvents) {
+  const hidden = events.length - visibleEvents.length;
+  if (hidden <= 0) return '';
+  const mix = formatMix(events, 2);
+  return `${hidden} more${mix ? ` · ${mix}` : ''}`;
 }
 
 function renderWeek(events, start) {
@@ -971,31 +1067,31 @@ function renderWeek(events, start) {
   document.getElementById('calendarContent').innerHTML = `<div class="week-helper"><span>${weekendCount} Fri-Sun matches this week</span><span>Weekend columns are emphasized for planning.</span></div><div class="week-grid">${Array.from({ length: 7 }, (_, index) => {
     const date = addDays(start, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
-    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
+    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}${dayEvents.length ? `<small>${dayEvents.length} events · ${formatMix(dayEvents, 2)}</small>` : ''}</header><div>${groupedDayEvents(dayEvents) || '<p class="no-events">No matching events</p>'}</div></section>`;
   }).join('')}</div>`;
 }
 
 function renderMonth(events) {
-  const first = new Date(state.date.getFullYear(), state.date.getMonth(), 1);
-  const gridStart = addDays(first, -first.getDay());
+  const gridStart = rollingMonthStart(state.date);
   let html = `<div class="month-grid">${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => `<div class="month-label">${day}</div>`).join('')}`;
-  for (let index = 0; index < 42; index++) {
+  for (let index = 0; index < 35; index++) {
     const date = addDays(gridStart, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
-    html += `<section class="month-cell ${date.getMonth() !== state.date.getMonth() ? 'outside' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${dayEvents.slice(0, 3).map((event) => eventCard(event, true)).join('')}${dayEvents.length > 3 ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">+${dayEvents.length - 3} more</button>` : ''}</div></section>`;
+    const highlights = monthHighlights(dayEvents);
+    html += `<section class="month-cell ${date < startOfDay(new Date()) ? 'past' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${highlights.map((event) => eventCard(event, true)).join('')}${dayEvents.length > highlights.length ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">${dayMoreLabel(dayEvents, highlights)}</button>` : ''}</div></section>`;
   }
   document.getElementById('calendarContent').innerHTML = `${html}</div>`;
 }
 
 function moveDate(direction) {
-  if (state.view === 'month') state.date = new Date(state.date.getFullYear(), state.date.getMonth() + direction, 1);
+  if (state.view === 'month') state.date = addDays(state.date, direction * 28);
   else if (state.view === 'week') state.date = addDays(state.date, direction * 7);
   else state.date = addDays(state.date, direction * 14);
   renderCalendar();
 }
 
 function moveEventCatalogDate(direction) {
-  if (state.eventCatalogView === 'month') state.eventCatalogDate = new Date(state.eventCatalogDate.getFullYear(), state.eventCatalogDate.getMonth() + direction, 1);
+  if (state.eventCatalogView === 'month') state.eventCatalogDate = addDays(state.eventCatalogDate, direction * 28);
   else state.eventCatalogDate = addDays(state.eventCatalogDate, direction * 7);
   renderEventCatalog();
 }
@@ -1114,8 +1210,8 @@ function renderEventCatalog() {
 
 function eventCatalogRange() {
   if (state.eventCatalogView === 'month') {
-    const start = new Date(state.eventCatalogDate.getFullYear(), state.eventCatalogDate.getMonth(), 1);
-    return { start, end: endOfDay(new Date(start.getFullYear(), start.getMonth() + 1, 0)) };
+    const start = rollingMonthStart(state.eventCatalogDate);
+    return { start, end: endOfDay(addDays(start, 34)) };
   }
   const start = fridayWeekStart(state.eventCatalogDate);
   return { start, end: endOfDay(addDays(start, 6)) };
@@ -1126,7 +1222,7 @@ function updateEventCatalogDateNav(range) {
   const label = document.getElementById('eventCatalogDateLabel');
   if (!nav || !label) return;
   nav.classList.toggle('hidden', state.eventCatalogView === 'list');
-  if (state.eventCatalogView === 'month') label.textContent = range.start.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  if (state.eventCatalogView === 'month') label.textContent = `${range.start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${range.end.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
   else label.textContent = `${range.start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${range.end.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
 }
 
@@ -1158,18 +1254,18 @@ function renderEventCatalogWeek(events, start) {
   return `<div class="week-grid event-catalog-week">${Array.from({ length: 7 }, (_, index) => {
     const date = addDays(weekStart, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
-    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${dayEvents.map((event) => eventCard(event, true)).join('') || '<p class="no-events">No matching events</p>'}</div></section>`;
+    return `<section class="week-column ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}${dayEvents.length ? `<small>${dayEvents.length} events · ${formatMix(dayEvents, 2)}</small>` : ''}</header><div>${groupedDayEvents(dayEvents) || '<p class="no-events">No matching events</p>'}</div></section>`;
   }).join('')}</div>`;
 }
 
 function renderEventCatalogMonth(events, start) {
-  const first = new Date(start.getFullYear(), start.getMonth(), 1);
-  const gridStart = addDays(first, -first.getDay());
+  const gridStart = rollingMonthStart(start);
   let html = `<div class="month-grid event-catalog-month">${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => `<div class="month-label">${day}</div>`).join('')}`;
-  for (let index = 0; index < 42; index++) {
+  for (let index = 0; index < 35; index++) {
     const date = addDays(gridStart, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
-    html += `<section class="month-cell ${date.getMonth() !== start.getMonth() ? 'outside' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${dayEvents.slice(0, 3).map((event) => eventCard(event, true)).join('')}${dayEvents.length > 3 ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">+${dayEvents.length - 3} more</button>` : ''}</div></section>`;
+    const highlights = monthHighlights(dayEvents);
+    html += `<section class="month-cell ${date < startOfDay(new Date()) ? 'past' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${highlights.map((event) => eventCard(event, true)).join('')}${dayEvents.length > highlights.length ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">${dayMoreLabel(dayEvents, highlights)}</button>` : ''}</div></section>`;
   }
   return `${html}</div>`;
 }
@@ -1396,7 +1492,8 @@ function openDay(dayDate) {
   if (!dayDate) return;
   const date = parseDate(dayDate);
   const events = buildOccurrences(startOfDay(date), endOfDay(date));
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Calendar day</span><span class="status-chip slate">${events.length} events</span></div><h1 id="drawerTitle">${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</h1><p class="drawer-lead">Every matching event currently visible for this date.</p><section class="drawer-section day-drawer-list">${events.length ? events.map((event) => eventCard(event)).join('') : '<p class="muted-copy">No events match the active filters for this day.</p>'}</section>`);
+  const mix = formatMix(events);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Calendar day</span><span class="status-chip slate">${events.length} events</span></div><h1 id="drawerTitle">${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</h1><p class="drawer-lead">${mix || 'Every matching event currently visible for this date.'}</p><section class="drawer-section day-drawer-groups">${events.length ? groupedDayEvents(events, { compact: false, drawer: true }) : '<p class="muted-copy">No events match the active filters for this day.</p>'}</section>`);
 }
 
 function eventFitExplanation(event, place) {

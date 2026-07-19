@@ -230,6 +230,9 @@ claims without reopening the whole packet.
 
 - Calendar-first default view with scrolling upcoming events.
 - Weekly and monthly calendar modes.
+- Parked design question: whether Events should gain a separate "Top picks this
+  week" surface above the calendar. The user deliberately deferred this while
+  Week/Month grouping and scanability are evaluated; do not add it by default.
 - Daily dashboard / landscape view for what is newly relevant right now.
 - Store detail pane with source links, address, and event history.
 - Group detail pane separate from store detail pane.
