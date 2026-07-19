@@ -5,6 +5,9 @@ const SUPABASE = {
   publishableKey: 'sb_publishable_So6NutzmRqZnWIRis9uI1g_E1AT06Wm'
 };
 
+const AUTH_REDIRECT_URL = 'https://metavirus.github.io/mtg-events-chatgpt/';
+const personalAuth = { client: null, user: null, status: 'local', message: '' };
+
 const COMMUNITY_SEED = [
   {
     id: 'legendary-creature-club',
@@ -142,6 +145,7 @@ async function load() {
       state.dataSource = 'supabase';
       state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
       initialize();
+      await initializePersonalAuth();
       return;
     } catch (error) {
       console.warn('Supabase read failed; falling back to JSON snapshot.', error);
@@ -153,6 +157,168 @@ async function load() {
   await loadFromJson();
   state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
   initialize();
+  await initializePersonalAuth();
+}
+
+async function initializePersonalAuth() {
+  if (!window.supabase?.createClient) {
+    personalAuth.status = 'local';
+    personalAuth.message = 'Account service unavailable; preferences remain on this device.';
+    updateAuthChrome();
+    return;
+  }
+  personalAuth.client = window.supabase.createClient(SUPABASE.url, SUPABASE.publishableKey, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'implicit' }
+  });
+  personalAuth.client.auth.onAuthStateChange((event, session) => {
+    window.setTimeout(() => handleAuthSession(session, event), 0);
+  });
+  const { data, error } = await personalAuth.client.auth.getSession();
+  if (error) {
+    personalAuth.status = 'local';
+    personalAuth.message = 'Could not restore sign-in; preferences remain on this device.';
+    updateAuthChrome();
+    return;
+  }
+  await handleAuthSession(data.session, 'INITIAL_SESSION');
+}
+
+async function handleAuthSession(session, event) {
+  const nextUser = session?.user || null;
+  if (!nextUser) {
+    personalAuth.user = null;
+    personalAuth.status = 'local';
+    personalAuth.message = 'Saved on this device';
+    updateAuthChrome();
+    return;
+  }
+  if (personalAuth.user?.id === nextUser.id && event === 'INITIAL_SESSION' && personalAuth.status === 'synced') return;
+  personalAuth.user = nextUser;
+  personalAuth.status = 'syncing';
+  personalAuth.message = 'Syncing preferences…';
+  updateAuthChrome();
+  try {
+    await syncPersonalState();
+    personalAuth.status = 'synced';
+    personalAuth.message = 'Saved to your account';
+  } catch (error) {
+    console.warn('Personal preference sync failed; local state remains active.', error);
+    personalAuth.status = 'error';
+    personalAuth.message = 'Saved locally — account sync unavailable';
+  }
+  updateAuthChrome();
+  renderAll();
+}
+
+async function syncPersonalState() {
+  const [{ data: preferences, error: preferenceError }, { data: notes, error: noteError }] = await Promise.all([
+    personalAuth.client.from('entity_preferences').select('*'),
+    personalAuth.client.from('personal_notes').select('*')
+  ]);
+  if (preferenceError) throw preferenceError;
+  if (noteError) throw noteError;
+  const remoteIsEmpty = !preferences.length && !notes.length;
+  if (remoteIsEmpty) {
+    await importLocalPersonalState();
+    return;
+  }
+  applyRemotePersonalState(preferences, notes);
+}
+
+async function importLocalPersonalState() {
+  const preferenceRows = personalPreferenceRows();
+  const noteRows = personalNoteRows();
+  if (preferenceRows.length) {
+    const { error } = await personalAuth.client.from('entity_preferences').upsert(preferenceRows, { onConflict: 'user_id,entity_type,entity_id' });
+    if (error) throw error;
+  }
+  if (noteRows.length) {
+    const { error } = await personalAuth.client.from('personal_notes').upsert(noteRows, { onConflict: 'user_id,entity_type,entity_id' });
+    if (error) throw error;
+  }
+}
+
+function personalPreferenceRows() {
+  const keys = new Set([
+    ...Object.keys(state.personal.favorites || {}),
+    ...Object.keys(state.personal.hidden || {}),
+    ...Object.keys(state.personal.ratings || {})
+  ]);
+  const rows = [...keys].map((key) => {
+    const target = personalTarget(key);
+    if (!target) return null;
+    return {
+      user_id: personalAuth.user.id,
+      entity_type: target.entityType,
+      entity_id: target.entityId,
+      is_favorite: !!state.personal.favorites[key],
+      visibility_preference: state.personal.hidden[key] ? 'deprioritize' : 'normal',
+      rating: state.personal.ratings[key] || null,
+      updated_at: new Date().toISOString()
+    };
+  }).filter(Boolean);
+  return [...new Map(rows.map((row) => [`${row.entity_type}:${row.entity_id}`, row])).values()];
+}
+
+function personalNoteRows() {
+  const rows = Object.entries(state.personal.notes || {}).map(([key, value]) => {
+    const target = personalTarget(key);
+    if (!target || !String(value).trim()) return null;
+    return {
+      user_id: personalAuth.user.id,
+      entity_type: target.entityType,
+      entity_id: target.entityId,
+      note_text: String(value).trim(),
+      updated_at: new Date().toISOString()
+    };
+  }).filter(Boolean);
+  return [...new Map(rows.map((row) => [`${row.entity_type}:${row.entity_id}`, row])).values()];
+}
+
+function applyRemotePersonalState(preferences, notes) {
+  for (const collection of ['favorites', 'hidden', 'ratings', 'notes']) {
+    for (const key of Object.keys(state.personal[collection] || {})) {
+      if (key.startsWith('place:') || key.startsWith('event:')) delete state.personal[collection][key];
+    }
+  }
+  for (const row of preferences) {
+    const key = localPersonalKey(row.entity_type, row.entity_id);
+    if (!key) continue;
+    if (row.is_favorite) state.personal.favorites[key] = true;
+    if (row.visibility_preference !== 'normal') state.personal.hidden[key] = true;
+    if (row.rating) state.personal.ratings[key] = row.rating;
+  }
+  for (const row of notes) {
+    const key = localPersonalKey(row.entity_type, row.entity_id);
+    if (key) state.personal.notes[key] = row.note_text;
+  }
+  savePersonal();
+}
+
+function personalTarget(key) {
+  const separator = key.indexOf(':');
+  if (separator < 1) return null;
+  const prefix = key.slice(0, separator);
+  const rawId = key.slice(separator + 1);
+  if (prefix === 'place') return { entityType: 'venue', entityId: rawId };
+  if (prefix === 'community') return { entityType: 'community', entityId: rawId };
+  if (prefix === 'event') {
+    const event = DATA.events.find((item) => item.id === rawId || item.seriesId === rawId);
+    return { entityType: 'event_series', entityId: event?.seriesId || rawId };
+  }
+  return null;
+}
+
+function localPersonalKey(entityType, entityId) {
+  if (entityType === 'venue') return `place:${entityId}`;
+  if (entityType === 'community') return `community:${entityId}`;
+  if (entityType === 'event_series') return `event:${entityId}`;
+  if (entityType === 'event_occurrence') return `event:${entityId}`;
+  return null;
+}
+
+function eventPreferenceKey(event) {
+  return `event:${event?.seriesId || event?.id}`;
 }
 
 async function loadFromJson() {
@@ -594,10 +760,15 @@ function handleAction(action, element) {
   if (action === 'show-source-records') return navigate('places');
   if (action === 'show-format-balance') return navigate('events');
   if (action === 'save-note') return saveNote(element.dataset.entity, element.dataset.input);
+  if (action === 'send-magic-link') return sendMagicLink(element.dataset.input);
+  if (action === 'sign-out') return signOutPersonalAccount();
   if (action === 'show-log') return openActivityLog();
   if (action === 'dismiss-drawer') return closeDrawer();
   if (action === 'toggle-place-hidden') return toggleHidden(`place:${element.dataset.placeId}`);
-  if (action === 'toggle-event-hidden') return toggleHidden(`event:${element.dataset.eventId}`);
+  if (action === 'toggle-event-hidden') {
+    const event = DATA.events.find((item) => item.id === element.dataset.eventId);
+    return toggleHidden(event ? eventPreferenceKey(event) : `event:${element.dataset.eventId}`);
+  }
 }
 
 function navigate(route) {
@@ -788,7 +959,7 @@ function eventMatchesSharedFilters(event, options = {}) {
   if (numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
   if (state.filters.onlyFree && Number(event.entryFee || 0) !== 0) return false;
   if (hideCompetitive && isCompetitive(event)) return false;
-  if (state.favoritesOnly && !state.personal.favorites[`event:${event.id}`] && !state.personal.favorites[`place:${place.id}`]) return false;
+  if (state.favoritesOnly && !state.personal.favorites[eventPreferenceKey(event)] && !state.personal.favorites[`place:${place.id}`]) return false;
   if (includeSearch && state.search) {
     const haystack = [
       event.title,
@@ -822,7 +993,7 @@ function eventMatchesPreset(event, preset) {
   if (preset === 'weekend') return isWeekend(event.occurrenceDate);
   if (preset === 'specials') return /prerelease|sealed|limited/i.test(`${event.title} ${event.format} ${event.eventType}`);
   if (preset === 'draft') return /draft/i.test(`${event.title} ${event.format} ${event.eventType}`);
-  if (preset === 'favorites') return !!state.personal.favorites[`event:${event.id}`] || !!state.personal.favorites[`place:${event.storeId}`];
+  if (preset === 'favorites') return !!state.personal.favorites[eventPreferenceKey(event)] || !!state.personal.favorites[`place:${event.storeId}`];
   return true;
 }
 
@@ -964,7 +1135,7 @@ function rankedTodayLeads(events) {
 function todayLeadScore(event) {
   const place = store(event.storeId);
   const daysAway = Math.max(0, Math.round((startOfDay(event.occurrenceDate) - startOfDay(new Date())) / 86400000));
-  const favoriteBonus = state.personal.favorites[`event:${event.id}`] || state.personal.favorites[`place:${event.storeId}`] ? 18 : 0;
+  const favoriteBonus = state.personal.favorites[eventPreferenceKey(event)] || state.personal.favorites[`place:${event.storeId}`] ? 18 : 0;
   const weekendBonus = isWeekend(event.occurrenceDate) ? 10 : 0;
   const reviewedBonus = place?.researchStatus === 'partial' ? 8 : 0;
   const confidenceBonus = event.confidence === 'high' ? 8 : event.confidence === 'medium' ? 3 : 0;
@@ -992,8 +1163,8 @@ function eventCard(event, compact = false, options = {}) {
   const place = store(event.storeId);
   const fit = fitLabel(event);
   const evidence = evidenceLabel(event);
-  const favoriteKey = `event:${event.id}`;
-  const hiddenKey = `event:${event.id}`;
+  const favoriteKey = eventPreferenceKey(event);
+  const hiddenKey = favoriteKey;
   const isFavorite = !!state.personal.favorites[favoriteKey];
   const isHidden = !!state.personal.hidden[hiddenKey];
   const fee = event.entryFee == null ? 'Fee unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`;
@@ -1025,7 +1196,7 @@ function formatClass(event) {
 
 function compactEventCue(event, fit, evidence) {
   if (isPrereleaseOrSealed(event)) return { label: /prerelease/i.test(`${event.title} ${event.eventType}`) ? 'Prerelease' : 'Limited', className: 'cue-limited' };
-  if (state.personal.hidden[`event:${event.id}`]) return { label: 'Hidden', className: 'cue-hidden' };
+  if (state.personal.hidden[eventPreferenceKey(event)]) return { label: 'Hidden', className: 'cue-hidden' };
   if (hasExplicitNoProxy(event)) return { label: 'No proxy', className: 'cue-hidden' };
   if (isCompetitive(event)) return { label: 'Check first', className: 'cue-caution' };
   if (fit.tone === 'mint') return { label: 'Best fit', className: 'cue-best' };
@@ -1057,7 +1228,7 @@ function hasExplicitNoProxy(event) {
 
 function eventPlanningGroup(event) {
   const placeHidden = !!state.personal.hidden[`place:${event.storeId}`];
-  const eventHidden = !!state.personal.hidden[`event:${event.id}`];
+  const eventHidden = !!state.personal.hidden[eventPreferenceKey(event)];
   if (eventHidden || placeHidden || hasExplicitNoProxy(event)) return 'hidden';
   if (isPrereleaseOrSealed(event)) return 'limited';
   if (isCompetitive(event)) return 'verify';
@@ -1391,7 +1562,7 @@ function eventCatalogMatches(events) {
 function eventCatalogPriority(event) {
   const reviewedBonus = store(event.storeId)?.researchStatus === 'partial' ? 8 : 0;
   const specialBonus = isSpecial(event) ? 10 : 0;
-  const favoriteBonus = state.personal.favorites[`place:${event.storeId}`] || state.personal.favorites[`event:${event.id}`] ? 14 : 0;
+  const favoriteBonus = state.personal.favorites[`place:${event.storeId}`] || state.personal.favorites[eventPreferenceKey(event)] ? 14 : 0;
   const competitivePenalty = isCompetitive(event) ? 18 : 0;
   return fitScore(event) * 10 + reviewedBonus + specialBonus + favoriteBonus - competitivePenalty;
 }
@@ -1671,18 +1842,19 @@ function openEvent(id, occurrenceDate) {
   const src = source(event.sourceId);
   const fit = fitLabel({ ...event, occurrenceDate: occurrence });
   const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: !event.recurrence && (event.date || event.startDate) ? 'confirmed' : 'projected' });
-  const favorite = state.personal.favorites[`event:${event.id}`];
-  const hidden = state.personal.hidden[`event:${event.id}`];
+  const personalKey = eventPreferenceKey(event);
+  const favorite = state.personal.favorites[personalKey];
+  const hidden = state.personal.hidden[personalKey];
   const interested = state.personal.interested[`${event.id}:${dateKey(occurrence)}`];
   const calendarUrl = googleCalendarUrl(event, place, occurrence);
-  openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="event:${event.id}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="thumb-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Restore event priority' : 'Deprioritize event series'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1><button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
+  openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${personalKey}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="thumb-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Restore event priority' : 'Deprioritize event series'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1><button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
     <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(eventStartTime(event))}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
     <div class="drawer-action-grid"><a class="primary-button" href="${calendarUrl}" target="_blank" rel="noreferrer">Add to Google Calendar ↗</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button></div>
     <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(event.details || 'The current source provides only a minimal event listing.')}</p></section>
     <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
     <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Address</span><strong>${escapeHtml(place.address)}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>
     <section class="drawer-section"><p class="eyebrow">Evidence</p><h2>Source trail</h2>${src ? sourceRow(src, true) : '<p class="muted-copy">No normalized source link is attached yet.</p>'}</section>
-    <section class="drawer-section"><p class="eyebrow">Your memory</p><h2>Note on this series</h2>${noteComposer(`event:${event.id}`, 'What should future-you remember about this event?')}</section>`);
+    <section class="drawer-section"><p class="eyebrow">Your private note</p><h2>Note on this series</h2>${noteComposer(personalKey, 'What should future-you remember about this event?')}</section>`);
 }
 
 function openDay(dayDate) {
@@ -1721,13 +1893,110 @@ function openCommunity(id) {
   openDrawer(`<div class="drawer-kicker"><span class="community-symbol small">◎</span><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><span class="status-chip slate">Community record</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${id}" aria-label="${favorite ? 'Remove community from' : 'Add community to'} favorites" title="Favorite community">${heartIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(community.name)}</h1><p class="drawer-lead">${escapeHtml(community.region)}</p><section class="drawer-section"><p class="eyebrow">Current synthesis</p><h2>Why this group matters</h2><p>${escapeHtml(community.summary)}</p></section><section class="drawer-section"><p class="eyebrow">How to use this</p><h2>${escapeHtml(community.signal)}</h2><p>Community records help find people, organizers, and recurring social patterns. They stay separate from store records so a Discord or meetup group does not accidentally become a fake venue.</p></section><section class="drawer-section"><p class="eyebrow">Open research question</p><h2>What we still need</h2><p>${escapeHtml(community.nextQuestion)}</p></section>${noteComposer(`community:${id}`, 'Add a personal note about this community...')}`);
 }
 
+async function sendMagicLink(inputId) {
+  const email = document.getElementById(inputId)?.value.trim();
+  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+    toast('Enter a valid email address');
+    return;
+  }
+  if (!personalAuth.client) {
+    toast('Sign-in service is unavailable; preferences remain local');
+    return;
+  }
+  const { error } = await personalAuth.client.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: AUTH_REDIRECT_URL }
+  });
+  if (error) {
+    console.warn('Magic-link request failed.', error);
+    toast('Could not send the sign-in link');
+    return;
+  }
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">Email sent</span></div><h1 id="drawerTitle">Check your email</h1><p class="drawer-lead">Open the sign-in link on the device where you want to use the app.</p><section class="drawer-section"><p>Your current browser preferences remain safe while you complete sign-in.</p></section>`);
+}
+
+async function signOutPersonalAccount() {
+  if (personalAuth.client) await personalAuth.client.auth.signOut();
+  personalAuth.user = null;
+  personalAuth.status = 'local';
+  personalAuth.message = 'Saved on this device';
+  updateAuthChrome();
+  closeDrawer();
+  toast('Signed out · preferences remain on this device');
+}
+
+async function persistPreference(key) {
+  if (!personalAuth.user || !personalAuth.client) return;
+  const target = personalTarget(key);
+  if (!target) return;
+  const row = {
+    user_id: personalAuth.user.id,
+    entity_type: target.entityType,
+    entity_id: target.entityId,
+    is_favorite: !!state.personal.favorites[key],
+    visibility_preference: state.personal.hidden[key] ? 'deprioritize' : 'normal',
+    rating: state.personal.ratings[key] || null,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = await personalAuth.client.from('entity_preferences').upsert(row, { onConflict: 'user_id,entity_type,entity_id' });
+  recordPersonalWriteResult(error);
+}
+
+async function persistPersonalNote(key, value) {
+  if (!personalAuth.user || !personalAuth.client) return;
+  const target = personalTarget(key);
+  if (!target) return;
+  let error;
+  if (value) {
+    ({ error } = await personalAuth.client.from('personal_notes').upsert({
+      user_id: personalAuth.user.id,
+      entity_type: target.entityType,
+      entity_id: target.entityId,
+      note_text: value,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id,entity_type,entity_id' }));
+  } else {
+    ({ error } = await personalAuth.client.from('personal_notes').delete().eq('entity_type', target.entityType).eq('entity_id', target.entityId));
+  }
+  recordPersonalWriteResult(error);
+}
+
+function recordPersonalWriteResult(error) {
+  if (error) {
+    console.warn('Personal state write failed; local value remains active.', error);
+    personalAuth.status = 'error';
+    personalAuth.message = 'Saved locally — account sync unavailable';
+  } else {
+    personalAuth.status = 'synced';
+    personalAuth.message = 'Saved to your account';
+  }
+  updateAuthChrome();
+}
+
+function personalSaveToast(label) {
+  return personalAuth.user ? `${label} to your account` : `${label} on this device`;
+}
+
+function updateAuthChrome() {
+  const button = document.getElementById('openQuickNote');
+  if (!button) return;
+  button.textContent = personalAuth.user ? (personalAuth.user.email?.[0] || 'K').toUpperCase() : 'K';
+  button.classList.toggle('signed-in', !!personalAuth.user);
+  button.setAttribute('aria-label', personalAuth.user ? 'Open signed-in personal preferences' : 'Sign in to save personal preferences');
+  button.title = personalAuth.message || 'Personal preferences';
+}
+
 function openActivityLog() {
   const activity = state.personal.activity || [];
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip slate">Private on this device</span></div><h1 id="drawerTitle">Activity log</h1><p class="drawer-lead">A quiet record of favorites, ratings, notes, and planning actions.</p><section class="drawer-section"><div class="activity-list">${activity.length ? activity.map((item) => `<div class="activity-row"><span>${activityIcon(item.type)}</span><div><strong>${escapeHtml(item.label || item.type)}</strong><small>${new Date(item.at).toLocaleString()}</small></div></div>`).join('') : '<p class="muted-copy">No personal actions yet. Favorite a place or add a note and it will appear here.</p>'}</div></section><section class="drawer-section"><p class="field-help">For this initial build, personal state is stored in this browser. The interface is designed for the private cross-device persistence layer planned for hosting.</p></section>`);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip ${personalAuth.user ? 'mint' : 'slate'}">${escapeHtml(personalAuth.message || 'Saved on this device')}</span></div><h1 id="drawerTitle">Activity log</h1><p class="drawer-lead">A quiet record of favorites, ratings, notes, and planning actions.</p><section class="drawer-section"><div class="activity-list">${activity.length ? activity.map((item) => `<div class="activity-row"><span>${activityIcon(item.type)}</span><div><strong>${escapeHtml(item.label || item.type)}</strong><small>${new Date(item.at).toLocaleString()}</small></div></div>`).join('') : '<p class="muted-copy">No personal actions yet. Favorite a place or add a note and it will appear here.</p>'}</div></section><section class="drawer-section"><p class="field-help">Research facts stay separate from this personal activity and preference state.</p></section>`);
 }
 
 function openQuickNote() {
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Personal</span></div><h1 id="drawerTitle">Quick note</h1><p class="drawer-lead">Capture something before it disappears from memory.</p><section class="drawer-section">${noteComposer('general:inbox', 'A store to revisit, a player-group clue, a future question...')}</section>`);
+  if (personalAuth.user) {
+    openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">Signed in</span></div><h1 id="drawerTitle">Personal preferences</h1><p class="drawer-lead">${escapeHtml(personalAuth.user.email || 'Your personal account')}</p><section class="drawer-section"><p class="eyebrow">Account saving</p><h2>${escapeHtml(personalAuth.message || 'Saved to your account')}</h2><p>Venue and event-series favorites, deprioritize choices, ratings, and private notes follow this sign-in. Research facts remain separate.</p></section><section class="drawer-section"><button class="soft-button" data-action="sign-out">Sign out</button></section>`);
+    return;
+  }
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Personal use</span></div><h1 id="drawerTitle">Sign in to save preferences</h1><p class="drawer-lead">Use one email magic link so favorites, deprioritize choices, and private notes follow you across browsers.</p><section class="drawer-section auth-form"><label for="personalEmail">Email</label><input id="personalEmail" type="email" autocomplete="email" placeholder="you@example.com"><button class="primary-button" data-action="send-magic-link" data-input="personalEmail">Email me a sign-in link</button><p class="field-help">Without sign-in, the app still works and saves only on this device.</p></section>`);
 }
 
 function activityIcon(type) { return type === 'favorite' ? '♥' : type === 'rating' ? '★' : type === 'note' ? '✎' : '✓'; }
@@ -1735,19 +2004,22 @@ function activityIcon(type) { return type === 'favorite' ? '♥' : type === 'rat
 function noteComposer(entity, placeholder) {
   const note = state.personal.notes[entity] || '';
   const id = `note-${entity.replace(/[^a-z0-9]/gi, '-')}`;
-  return `<div class="note-composer"><textarea id="${id}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(note)}</textarea><div><span>${note ? 'Saved note · edit anytime' : 'Private working note'}</span><button class="soft-button" data-action="save-note" data-entity="${escapeHtml(entity)}" data-input="${id}">Save note</button></div></div>`;
+  const saveLabel = personalAuth.user ? (personalAuth.status === 'error' ? 'Saved locally — sync unavailable' : 'Private · saved to your account') : 'Private · saved on this device';
+  return `<div class="note-composer"><textarea id="${id}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(note)}</textarea><div><span>${saveLabel}</span><button class="soft-button" data-action="save-note" data-entity="${escapeHtml(entity)}" data-input="${id}">Save note</button></div></div>`;
 }
 
 function saveNote(entity, inputId) {
   const value = document.getElementById(inputId)?.value.trim() || '';
   state.personal.notes[entity] = value;
   savePersonal({ type: 'note', label: value ? `Updated note for ${entity.split(':')[1]}` : `Cleared note for ${entity.split(':')[1]}` });
-  toast('Note saved');
+  void persistPersonalNote(entity, value);
+  toast(personalSaveToast('Note saved'));
 }
 
 function setRating(entity, rating) {
   state.personal.ratings[entity] = rating;
   savePersonal({ type: 'rating', label: `Rated ${entity.split(':')[1]} ${rating} stars` });
+  void persistPreference(entity);
   renderPlaces();
   toast(`Rating saved: ${rating} stars`);
 }
@@ -1755,6 +2027,7 @@ function setRating(entity, rating) {
 function toggleFavorite(key) {
   state.personal.favorites[key] = !state.personal.favorites[key];
   savePersonal({ type: 'favorite', label: `${state.personal.favorites[key] ? 'Followed' : 'Unfollowed'} ${key.split(':')[1]}` });
+  void persistPreference(key);
   renderCurrentRoute();
   toast(state.personal.favorites[key] ? 'Added to favorites' : 'Removed from favorites');
 }
@@ -1762,6 +2035,7 @@ function toggleFavorite(key) {
 function toggleHidden(key) {
   state.personal.hidden[key] = !state.personal.hidden[key];
   savePersonal({ type: 'preference', label: `${state.personal.hidden[key] ? 'Deprioritized' : 'Restored'} ${key.split(':')[1]}` });
+  void persistPreference(key);
   renderCurrentRoute();
   toast(state.personal.hidden[key] ? 'Deprioritized in your view' : 'Restored to normal priority');
 }
