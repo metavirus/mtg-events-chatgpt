@@ -1220,17 +1220,15 @@ function placeResearchLabel(place) {
 
 function placeEvaluationSummary(place) {
   const evaluation = normalizedEvaluation(place);
-  const hidden = !!state.personal.hidden[`place:${place.id}`];
   return `<div class="evaluation-summary" aria-label="Current place evaluation">
     <button class="evaluation-tile" data-action="explain-scores"><span>Personal fit</span><strong>${escapeHtml(evaluation.fitGrade)}</strong><small>${Number(evaluation.fitScore).toFixed(1)} / 5 · promise for you</small></button>
     <button class="evaluation-tile" data-action="explain-scores"><span>Confidence</span><strong>${escapeHtml(evaluation.confidence)}</strong><small>How strongly the evidence supports that read</small></button>
     <button class="evaluation-tile" data-action="explain-scores"><span>Research depth</span><strong>${escapeHtml(placeResearchLabel(place))}</strong><small>${evaluation.candidateStatus === 'promoted' ? 'Promoted candidate' : evaluation.candidateStatus === 'working' ? 'Working candidate' : 'Discovery candidate'}</small></button>
   </div>
-  <section class="preference-note ${hidden ? 'warning' : ''}"><p><strong>${hidden ? 'You deprioritized this place.' : 'Research and preference are separate.'}</strong> ${hidden ? 'It stays in the research record and the Deprioritized bucket, but should not be treated as a default recommendation.' : 'Favorites, ratings, and deprioritize choices affect your view without changing the underlying venue assessment.'}</p></section>
   <section class="detail-section assessment-snapshot"><div><p class="eyebrow">Pluses</p><ul>${evaluation.positives.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No strong positive factors are recorded yet.</li>'}</ul></div><div><p class="eyebrow">Cautions</p><ul>${evaluation.cautions.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No specific caution has been recorded yet.</li>'}</ul></div><div><p class="eyebrow">Open questions</p><ul>${evaluation.openQuestions.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No open question is recorded yet.</li>'}</ul></div></section>`;
 }
 
-function placeHoursSummary(place) {
+function placeHoursChip(place) {
   const hours = place.hours || normalizePlaceHours();
   const sourceItem = hours.sourceId ? source(hours.sourceId) : null;
   const today = new Date().getDay();
@@ -1239,12 +1237,19 @@ function placeHoursSummary(place) {
   const status = temporary?.status || hours.status || 'unknown';
   const tone = status === 'verified' ? 'mint' : status === 'variable' ? 'amber' : status === 'stale' ? 'coral' : 'slate';
   const label = temporary?.label || hoursStatusLabel(status);
-  const todayLabel = temporary?.label || formatHoursSlots(todaySlots) || (status === 'unknown' ? 'Unknown today' : 'Check before going');
+  const todayLabel = temporary?.label || formatHoursSlots(todaySlots) || (status === 'unknown' ? 'Hours unknown' : 'Check hours');
   const note = temporary?.note || hours.note || hoursStatusNote(status);
   const sourceLine = sourceItem
     ? `<a href="${escapeHtml(sourceItem.url)}" target="_blank" rel="noreferrer">${escapeHtml(sourceItem.label)} ↗</a>`
     : 'No hours source captured yet';
-  return `<section class="detail-section hours-section"><div class="section-title-row"><div><p class="eyebrow">Store hours</p><h3>${escapeHtml(todayLabel)}</h3></div><span class="status-chip ${tone}">${escapeHtml(label)}</span></div><p class="analysis-copy">${escapeHtml(note)}</p><div class="hours-meta"><span>Last checked: ${escapeHtml(hours.lastVerified || place.lastVerified || 'Unknown')}</span><span>${sourceLine}</span></div>${hoursWeekGrid(hours.weekly)}</section>`;
+  return `<details class="hours-popover">
+    <summary><span class="status-dot ${tone}"></span><span>${escapeHtml(todayLabel)}</span><em>${escapeHtml(label)}</em></summary>
+    <div class="hours-popover-panel">
+      <p>${escapeHtml(note)}</p>
+      <div class="hours-meta"><span>Last checked: ${escapeHtml(hours.lastVerified || place.lastVerified || 'Unknown')}</span><span>${sourceLine}</span></div>
+      ${hoursWeekGrid(hours.weekly)}
+    </div>
+  </details>`;
 }
 
 function dayKeyName(index) {
@@ -1404,7 +1409,7 @@ function renderPlaceDetail(place) {
   const favorite = !!state.personal.favorites[`place:${place.id}`];
   const hidden = !!state.personal.hidden[`place:${place.id}`];
   const rating = state.personal.ratings[`place:${place.id}`] || 0;
-  container.innerHTML = `<div class="detail-hero"><div class="detail-identity"><span class="large-avatar">${initials(place.name)}</span><div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${hidden ? '<span class="status-chip coral">Deprioritized by you</span>' : ''}${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><div class="detail-preference-actions"><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place" title="Favorite">${favorite ? '♥' : '♡'}</button><button class="thumb-button large ${hidden ? 'active' : ''}" data-action="toggle-place-hidden" data-place-id="${place.id}" aria-label="${hidden ? 'Restore priority' : 'Deprioritize place'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">👎︎</button></div></div>
+  container.innerHTML = `<div class="detail-hero"><div class="detail-identity"><span class="large-avatar">${initials(place.name)}</span><div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${hidden ? '<span class="status-chip coral">Deprioritized by you</span>' : ''}${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><div class="detail-hero-aside">${placeHoursChip(place)}<div class="detail-preference-actions"><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place" title="Favorite">${favorite ? '♥' : '♡'}</button><button class="thumb-button large ${hidden ? 'active' : ''}" data-action="toggle-place-hidden" data-place-id="${place.id}" aria-label="${hidden ? 'Restore priority' : 'Deprioritize place'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">👎︎</button></div></div></div>
     <div class="detail-actions"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a>${place.website ? `<a class="soft-button" href="${escapeHtml(place.website)}" target="_blank" rel="noreferrer">Website ↗</a>` : ''}${place.instagram ? `<a class="soft-button" href="${escapeHtml(place.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>` : ''}</div>
     <div class="detail-tabs" role="tablist" aria-label="Place details"><button class="${state.selectedPlaceTab === 'overview' ? 'active' : ''}" data-place-tab="overview" role="tab" aria-selected="${state.selectedPlaceTab === 'overview'}">Overview</button><button class="${state.selectedPlaceTab === 'events' ? 'active' : ''}" data-place-tab="events" role="tab" aria-selected="${state.selectedPlaceTab === 'events'}">Events <span>${placeEvents.length}</span></button><button class="${state.selectedPlaceTab === 'evidence' ? 'active' : ''}" data-place-tab="evidence" role="tab" aria-selected="${state.selectedPlaceTab === 'evidence'}">Evidence <span>${sources.length}</span></button></div>
     <div class="place-tab-content">${placeTabContent(place, placeEvents, sources, rating)}</div>`;
@@ -1418,7 +1423,7 @@ function placeTabContent(place, placeEvents, sources, rating) {
   if (state.selectedPlaceTab === 'evidence') {
     return `<section class="detail-section tab-intro"><p class="eyebrow">Evidence coverage</p><h3>${sources.length} connected sources</h3><p class="analysis-copy">Sources are retained separately from the analyst synthesis. A strong venue can have a weak social channel, and silence on one source is not proof that an event does not exist.</p></section><section class="detail-section"><div class="source-health-summary"><div><span>Research status</span><strong>${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</strong></div><div><span>Last venue check</span><strong>${escapeHtml(place.lastVerified || 'Unknown')}</strong></div><div><span>Source count</span><strong>${sources.length}</strong></div></div><div class="source-list evidence-list">${sources.length ? sources.map((item) => sourceRow(item, true)).join('') : '<p class="muted-copy">No normalized sources are linked yet.</p>'}</div></section><section class="detail-section"><p class="eyebrow">Interpretive boundary</p><h3>What remains uncertain</h3><p class="analysis-copy">Fields not stated by the connected sources remain unknown. In particular, proxy policy, pod formation, typical power level, and solo-arrival experience should not be inferred from silence.</p></section>`;
   }
-  return `${placeEvaluationSummary(place)}${placeHoursSummary(place)}<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Why it’s on the radar</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p></section>
+  return `${placeEvaluationSummary(place)}<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Why it’s on the radar</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p></section>
     <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Fit dimensions</p><h3>Current working assessment</h3></div><button class="why-button" data-action="explain-scores">Why these scores?</button></div><div class="score-bars">${assessmentBars(place)}</div></section>
     <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Known schedule</p><h3>Event series</h3></div><button class="text-button" data-place-tab="events">See all events</button></div><div class="series-list">${placeEvents.length ? placeEvents.slice(0, 4).map((event) => seriesRow(event)).join('') : '<p class="muted-copy">No normalized event series yet. This is not proof that the venue has no Magic events.</p>'}</div></section>
     <section class="detail-section two-column-section"><div><p class="eyebrow">Personal continuity</p><h3>Your rating & notes</h3><div class="rating-row" aria-label="Rate this place">${[1,2,3,4,5].map((value) => `<button class="star ${value <= rating ? 'active' : ''}" data-rating="${value}" data-entity="place:${place.id}" aria-label="${value} stars">★</button>`).join('')}</div>${noteComposer(`place:${place.id}`, 'What did it feel like in person?')}</div><div><p class="eyebrow">Source map</p><h3>${sources.length} connected sources</h3><div class="source-list">${sources.slice(0, 5).map((item) => sourceRow(item)).join('') || '<p class="muted-copy">Source mapping incomplete.</p>'}</div><button class="text-button evidence-jump" data-place-tab="evidence">Review all evidence →</button></div></section>`;
