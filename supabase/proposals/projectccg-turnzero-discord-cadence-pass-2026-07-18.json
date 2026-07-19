@@ -2,7 +2,8 @@
   "proposal_id": "projectccg-turnzero-discord-cadence-pass-2026-07-18",
   "description": "Ledger-based targeted Discord/cadence follow-up for ProjectCCG - Santa Ana and Turn Zero Games. Captures Turn Zero's direct Discord invite as Evidence, clarifies Turn Zero Canadian Highlander remains cadence TBD rather than a calendar write, and narrows ProjectCCG Santa Ana's Discord assessment to operational/community usefulness without overclaiming uninspected MTG-channel content. No event rows, schema/auth/RLS, app code, canonical JSON, or generated export artifacts are proposed.",
   "created_at": "2026-07-18T23:40:00-07:00",
-  "status": "proposed",
+  "status": "applied",
+  "applied_at": "2026-07-18T23:58:00-07:00",
   "author": "Codex Project Steward",
   "validation_level": "lean",
   "operations": [
