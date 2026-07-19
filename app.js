@@ -497,7 +497,7 @@ function handleClick(event) {
   }
 
   const eventTrigger = event.target.closest('[data-event-id]');
-  if (eventTrigger && !event.target.closest('[data-favorite]') && !event.target.closest('[data-place-id]')) {
+  if (eventTrigger && !event.target.closest('[data-favorite]') && !event.target.closest('[data-place-id]') && !event.target.closest('[data-action]')) {
     const occurrenceDate = eventTrigger.dataset.date;
     return openEvent(eventTrigger.dataset.eventId, occurrenceDate);
   }
@@ -596,6 +596,7 @@ function handleAction(action, element) {
   if (action === 'show-log') return openActivityLog();
   if (action === 'dismiss-drawer') return closeDrawer();
   if (action === 'toggle-place-hidden') return toggleHidden(`place:${element.dataset.placeId}`);
+  if (action === 'toggle-event-hidden') return toggleHidden(`event:${element.dataset.eventId}`);
 }
 
 function navigate(route) {
@@ -954,7 +955,7 @@ function renderAgenda(events, start) {
 
 function rankedTodayLeads(events) {
   return [...events]
-    .filter((event) => !isCompetitive(event))
+    .filter((event) => !isCompetitive(event) && eventPlanningGroup(event) !== 'hidden')
     .sort((a, b) => todayLeadScore(b) - todayLeadScore(a) || a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b)));
 }
 
@@ -982,16 +983,18 @@ function eventCard(event, compact = false, options = {}) {
   const fit = fitLabel(event);
   const evidence = evidenceLabel(event);
   const favoriteKey = `event:${event.id}`;
+  const hiddenKey = `event:${event.id}`;
   const isFavorite = !!state.personal.favorites[favoriteKey];
+  const isHidden = !!state.personal.hidden[hiddenKey];
   const fee = event.entryFee == null ? 'Fee unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`;
   const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
   const dateNote = occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
   if (compact) {
     const cue = compactEventCue(event, fit, evidence);
-    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
+    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
   }
   const limitedChip = isPrereleaseOrSealed(event) ? '<span class="status-chip limited">Prerelease / sealed</span>' : '';
-  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
+  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
     <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
@@ -999,7 +1002,7 @@ function eventCard(event, compact = false, options = {}) {
       <div class="event-chips">${limitedChip}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="meta-chip">${fee}</span>${event.bracket && event.bracket !== 'unspecified' ? `<span class="meta-chip">Bracket ${escapeHtml(event.bracket)}</span>` : '<span class="meta-chip muted-chip">Bracket unknown</span>'}</div>
       <p>${escapeHtml(truncate(event.details || 'Details are limited in the current source.', 175))}</p>
     </div>
-    <div class="event-actions"><button class="heart-button ${isFavorite ? 'active' : ''}" data-favorite="${favoriteKey}" aria-label="${isFavorite ? 'Remove from' : 'Add to'} favorites">${isFavorite ? '♥' : '♡'}</button><span class="open-cue">Open details →</span></div>
+    <div class="event-actions"><div class="event-preference-actions"><button class="heart-button ${isFavorite ? 'active' : ''}" data-favorite="${favoriteKey}" aria-label="${isFavorite ? 'Remove from' : 'Add to'} favorites" title="Favorite series">${isFavorite ? '♥' : '♡'}</button><button class="thumb-button ${isHidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${escapeHtml(event.id)}" aria-label="${isHidden ? 'Restore event priority' : 'Deprioritize event series'}" title="${isHidden ? 'Restore priority' : 'Deprioritize'}">👎︎</button></div><span class="open-cue">Open details →</span></div>
   </article>`;
 }
 
@@ -1012,7 +1015,8 @@ function formatClass(event) {
 
 function compactEventCue(event, fit, evidence) {
   if (isPrereleaseOrSealed(event)) return { label: /prerelease/i.test(`${event.title} ${event.eventType}`) ? 'Prerelease' : 'Limited', className: 'cue-limited' };
-  if (hasExplicitNoProxy(event)) return { label: 'No proxy', className: 'cue-caution' };
+  if (state.personal.hidden[`event:${event.id}`]) return { label: 'Hidden', className: 'cue-hidden' };
+  if (hasExplicitNoProxy(event)) return { label: 'No proxy', className: 'cue-hidden' };
   if (isCompetitive(event)) return { label: 'Check first', className: 'cue-caution' };
   if (fit.tone === 'mint') return { label: 'Best fit', className: 'cue-best' };
   if (fit.tone === 'sky') return { label: 'Promising', className: 'cue-promising' };
@@ -1043,7 +1047,8 @@ function hasExplicitNoProxy(event) {
 
 function eventPlanningGroup(event) {
   const placeHidden = !!state.personal.hidden[`place:${event.storeId}`];
-  if (placeHidden || hasExplicitNoProxy(event)) return 'maybe';
+  const eventHidden = !!state.personal.hidden[`event:${event.id}`];
+  if (eventHidden || placeHidden || hasExplicitNoProxy(event)) return 'hidden';
   if (isPrereleaseOrSealed(event)) return 'limited';
   if (isCompetitive(event)) return 'verify';
   const fit = fitLabel(event);
@@ -1058,7 +1063,8 @@ const EVENT_GROUPS = [
   { id: 'best', label: 'Best fits', tone: 'mint' },
   { id: 'promising', label: 'Promising', tone: 'sky' },
   { id: 'verify', label: 'Verify / check first', tone: 'amber' },
-  { id: 'maybe', label: 'Maybe / lower priority', tone: 'slate' }
+  { id: 'maybe', label: 'Maybe / lower priority', tone: 'slate' },
+  { id: 'hidden', label: 'Hidden / poor fit', tone: 'coral' }
 ];
 
 function eventFormatBucket(event) {
@@ -1105,7 +1111,7 @@ function groupedDayEvents(events, options = {}) {
 }
 
 function monthHighlightScore(event) {
-  const groupRank = { limited: 450, best: 400, promising: 300, verify: 200, maybe: 100 }[eventPlanningGroup(event)];
+  const groupRank = { limited: 450, best: 400, promising: 300, verify: 200, maybe: 100, hidden: 0 }[eventPlanningGroup(event)];
   const datedBonus = event.occurrenceStatus === 'confirmed' ? 45 : 0;
   const specialBonus = isPrereleaseOrSealed(event) ? 75 : /draft|party|special/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 35 : 0;
   const routinePenalty = event.recurrence?.frequency === 'weekly' ? 8 : 0;
@@ -1648,11 +1654,12 @@ function openEvent(id, occurrenceDate) {
   const fit = fitLabel({ ...event, occurrenceDate: occurrence });
   const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: !event.recurrence && (event.date || event.startDate) ? 'confirmed' : 'projected' });
   const favorite = state.personal.favorites[`event:${event.id}`];
+  const hidden = state.personal.hidden[`event:${event.id}`];
   const interested = state.personal.interested[`${event.id}:${dateKey(occurrence)}`];
   const calendarUrl = googleCalendarUrl(event, place, occurrence);
   openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1><button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
     <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(eventStartTime(event))}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
-    <div class="drawer-action-grid"><a class="primary-button" href="${calendarUrl}" target="_blank" rel="noreferrer">Add to Google Calendar ↗</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button><button class="heart-button labeled ${favorite ? 'active' : ''}" data-favorite="event:${event.id}">${favorite ? '♥ Following series' : '♡ Follow series'}</button></div>
+    <div class="drawer-action-grid"><a class="primary-button" href="${calendarUrl}" target="_blank" rel="noreferrer">Add to Google Calendar ↗</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button><button class="heart-button labeled ${favorite ? 'active' : ''}" data-favorite="event:${event.id}">${favorite ? '♥ Following series' : '♡ Follow series'}</button><button class="thumb-button labeled ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}">${hidden ? '👎︎ Hidden' : '👎︎ Deprioritize'}</button></div>
     <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(event.details || 'The current source provides only a minimal event listing.')}</p></section>
     <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
     <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Address</span><strong>${escapeHtml(place.address)}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>

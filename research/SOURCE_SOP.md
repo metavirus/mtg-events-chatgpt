@@ -391,6 +391,14 @@ proxy-friendly, or power-matching statement is a positive signal. An explicit
 restriction or hostile practice is a negative signal. Otherwise record the
 field as unstated and score the store from the evidence that actually exists.
 
+For this project, explicit `no proxy` emphasis is a major negative personal-fit
+signal. Preserve the event record if it is current and source-supported, but
+rank it as poor fit / hidden for the user's planning view rather than letting it
+compete with proxy-friendly or proxy-unstated Commander options. If a store's
+ordinary Commander posture appears to emphasize no-proxy play, propose a
+Places evaluation downgrade in the research write; do not silently compensate
+for it with generic MTG activity volume.
+
 Confidence measures support for the judgment being made; it is not a checklist
 penalty for every fact a store could theoretically disclose. A store can earn a
 clear fit grade and be promoted on strong schedule, distance, format, activity,

@@ -264,12 +264,13 @@ claims without reopening the whole packet.
   including a one-time migration of existing browser preferences.
 - Ensure favorites, ratings, notes, and follow-up flags have clear behavioral
   impact rather than feeling bolted on.
-- Add negative preference controls, likely thumb-down actions, for stores, event
-  series, and possibly individual events.
-- Thumb-down actions should hide or deprioritize items in recommendation/event
-  views without overwriting the underlying research truth.
-- Add an explicit hidden/deprioritized bucket so avoided items are not
-  mysteriously gone.
+- Negative preference controls now exist for stores and event series. Continue
+  monitoring whether individual dated occurrences need separate per-date
+  thumbs-down later.
+- Thumb-down actions should keep hiding or deprioritizing items in
+  recommendation/event views without overwriting the underlying research truth.
+- The event calendar now has an explicit hidden / poor-fit bucket so avoided or
+  no-proxy items are retained without competing for prominent planning slots.
 - Revisit the top-level `Favorites` control so it either has a clear global job
   or is redesigned/removed.
 - Ensure the top-level favorites control produces a visible effect on all
