@@ -1,0 +1,222 @@
+{
+  "proposal_id": "turnzero-projectccg-main-pass-correction-2026-07-18",
+  "description": "Main-pass correction after the WPN-first Turn Zero/CoreTCG/Aki/ProjectCCG event batch. Captures ProjectCCG Discord as inspected community evidence, adds a Santa Ana Places evaluation, improves Alhambra and Turn Zero assessment notes, and preserves Turn Zero Canadian Highlander as a material event/community TBD rather than over-projecting an every-other-Saturday calendar row. No schema/auth/RLS/app code or canonical JSON changes are proposed.",
+  "created_at": "2026-07-18T22:10:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-projectccg-discord-route-2026-07-18"},
+      "fields": {
+        "id": "src-projectccg-discord-route-2026-07-18",
+        "label": "ProjectCCG Online Community Discord",
+        "url": "https://discord.com/channels/1436522338572046501/@home",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "ProjectCCG Discord was accessible and inspected at bounded first-pass depth. It supports a real two-store Alhambra/Santa Ana community route with branch-specific OC channels and MTG channels."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "projectccg-santa-ana", "source_id": "src-projectccg-discord-route-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "source_id": "src-projectccg-discord-route-2026-07-18",
+        "relationship": "Discord inspected; branch-specific OC and MTG community/event support"
+      },
+      "reason": "Expose the inspected ProjectCCG Discord as visible Evidence for the Santa Ana/OC branch."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "projectccg-alhambra", "source_id": "src-projectccg-discord-route-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-alhambra",
+        "source_id": "src-projectccg-discord-route-2026-07-18",
+        "relationship": "Discord inspected; official two-store community route, Alhambra-specific content still needs targeted replay"
+      },
+      "reason": "Attach the same two-store ProjectCCG Discord to Alhambra while preserving that the bounded read was more OC-specific than Alhambra-specific."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-turnzero-canlandex-canlander-2026-07-18"},
+      "fields": {
+        "id": "src-turnzero-canlandex-canlander-2026-07-18",
+        "label": "Canlandex listing for Turn Zero Games Canadian Highlander",
+        "url": "https://canlandex.com/events",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Canlandex lists Turn Zero Games as a California Canadian Highlander venue with every-other-Saturday 1:00 PM play and a Discord route. This is a material proxy-friendly competitive-casual Magic signal, but it should not be normalized as weekly because the app only models simple weekly recurrence cleanly."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "turn-zero-games", "source_id": "src-turnzero-canlandex-canlander-2026-07-18"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-turnzero-canlandex-canlander-2026-07-18",
+        "relationship": "Canadian Highlander event/community signal; event write TBD because cadence is every other Saturday"
+      },
+      "reason": "Make the proxy-friendly Canadian Highlander signal visible as Evidence without over-projecting it into the calendar."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-turnzero-linktree-2026-07-17"},
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Turn Zero Linktree was rechecked; it still routes to official website, Discord, and card-selling surfaces, but its linked current schedule image currently behaves as a stale/dead schedule surface."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "turn-zero-games"},
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "Turn Zero Games remains one of the clearest Magic-focused LA stores in the dataset. Official Linktree still routes to website, Discord, and card-selling intake and advertises the Discord community, but the linked current schedule image is stale/dead in this pass. Wizards/EventLink already supports Commander, FNM Modern, and future prerelease coverage. Canlandex adds a material Canadian Highlander signal: every-other-Saturday 1:00 PM play with a Discord route, which is especially relevant because it points to proxy-friendly competitive-casual Magic. Do not normalize that as a weekly calendar row without a biweekly-safe representation or dated confirmation. Treat Turn Zero as a strong watch/possible-try store, with Discord/content replay still the next decision-changing check for solo arrival and Commander texture."
+      },
+      "reason": "Reflect the corrected source-routing read and preserve the Canadian Highlander signal without polluting the calendar."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "turn-zero-games"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "medium",
+        "positives": [
+          "Official Linktree supports strong source routing to website, Discord, and store intake surfaces.",
+          "Wizards/EventLink supports Commander, FNM Modern, and future prerelease coverage.",
+          "Canlandex supports an every-other-Saturday Canadian Highlander signal with proxy-friendly competitive-casual relevance.",
+          "Review-derived evidence continues to support active tables, free play space, beginner support, and a sizable Magic community."
+        ],
+        "cautions": [
+          "Distance from Los Alamitos makes this worthwhile mainly if the community/event fit proves strong.",
+          "The linked current schedule image from Linktree appears stale/dead in this pass.",
+          "Canadian Highlander is not Commander and should not be over-weighted as direct Commander fit.",
+          "Discord content has not been inspected in this pass, so LFG, proxy norms for Commander, and solo-arrival mechanics remain unresolved."
+        ],
+        "open_questions": [
+          "Does the Turn Zero Discord have usable LFG or Commander coordination for solo arrivals?",
+          "Is Commander casual, competitive, or mixed in practice?",
+          "Can the Canadian Highlander cadence be represented safely as dated future occurrences or a biweekly recurrence?"
+        ]
+      },
+      "reason": "Slightly improve Turn Zero's planning read from the Canadian Highlander and source-routing signals while preserving the unresolved Discord/Commander texture."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "projectccg-santa-ana"},
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "ProjectCCG - Santa Ana / OC now reads as a strong nearby Magic planning candidate rather than just an identity/status record. Wizards/EventLink supports multiple active MTG lanes: Tuesday and Friday Commander, Sunday Commander, Sunday Draft, and Tuesday/Friday Standard Showdown. The inspected ProjectCCG Discord materially improves confidence: it is a real ProjectCCG two-store community with branch-specific OC channels, OC staff announcements, OC event posts, MTG announcements, same-week Standard/Commander discussion, and July 18 Commander pod interest. The Discord also shows store-operation corrections and closures, making it useful for reliability checks. The main limits are ordinary fit details: proxy friendliness, pod formation, and casual-versus-competitive Commander texture still need deeper Discord/player replay before treating it as a sure try."
+      },
+      "reason": "Promote the Santa Ana branch from identity-only notes to a planning-quality Places assessment using inspected Discord and existing WPN event coverage."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "projectccg-santa-ana"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.9,
+        "confidence": "medium",
+        "positives": [
+          "Close enough to be practical at about 13.4 miles from Los Alamitos.",
+          "Wizards/EventLink supports several active MTG lanes: Commander, Draft, and Standard Showdown.",
+          "Discord first pass shows a real branch-specific OC community route with staff announcements, OC event posts, and MTG discussion.",
+          "MTG discussion was active in the same week, including Standard locals chatter and a July 18 Commander pod signal.",
+          "Discord appears useful for operational reliability because staff announce closures, schedule changes, and event updates there."
+        ],
+        "cautions": [
+          "Discord first pass supports activity and coordination, but not yet proxy policy, pod-formation mechanics, or solo-arrival comfort.",
+          "The same-week Discord closure notes show the branch is operationally communicative, but also reinforce the need to check Discord before traveling.",
+          "Sunday Commander versus Sunday Draft/Commander-draft wording needs continued care because the source surfaces can describe overlapping Sunday Magic lanes."
+        ],
+        "open_questions": [
+          "Are Tuesday/Friday/Sunday Commander pods casual, competitive, or mixed?",
+          "Are proxies acceptable in Commander, and are pods formed in a way that works for solo arrival?",
+          "Does Sunday 4 PM function as ordinary Commander, draft, Commander draft, or multiple concurrent lanes?",
+          "Should the ProjectCCG Discord become a regular monitoring source for same-week changes?"
+        ]
+      },
+      "reason": "Create the missing Places-page evaluation for Santa Ana based on branch-safe event coverage and inspected Discord/community evidence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "projectccg-alhambra"},
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "ProjectCCG - Alhambra remains the main ProjectCCG storefront identity from the official website and WPN store 15983. WPN supports free Wednesday 5:00 PM Magic Commander Night at Alhambra. The inspected ProjectCCG Discord supports a real two-store community route, but this bounded read was more OC-specific than Alhambra-specific; Alhambra should therefore keep a conservative discovery-level status until branch-specific social, Discord, review, and in-store texture are replayed. Treat Alhambra as real and active, but less immediately practical than Santa Ana because of distance and thinner branch-specific fit evidence."
+      },
+      "reason": "Attach the ProjectCCG Discord context to Alhambra without overstating the OC-heavy Discord read as an Alhambra main pass."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "projectccg-alhambra"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-alhambra",
+        "research_status": "discovery",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "Official ProjectCCG site and WPN store 15983 support an active Alhambra/main-branch identity.",
+          "WPN lists free Wednesday 5:00 PM Magic Commander Night.",
+          "ProjectCCG Discord supports a real two-store community route."
+        ],
+        "cautions": [
+          "The bounded Discord read was more OC-specific than Alhambra-specific.",
+          "At roughly 20 miles away, Alhambra needs stronger branch-specific fit evidence before becoming a priority.",
+          "Branch-specific social, review, Discord, and solo-arrival texture remain unresolved."
+        ],
+        "open_questions": [
+          "Does the Alhambra Wednesday Commander night have meaningful turnout and casual fit?",
+          "Which ProjectCCG Discord channels are actually used for Alhambra/local LA coordination?",
+          "Are there Alhambra draft, prerelease, or special-event lanes beyond the current WPN Commander row?"
+        ]
+      },
+      "reason": "Improve Alhambra's Places assessment after the Discord correction while avoiding a premature reviewed classification."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {"id": "turnzero-projectccg-main-pass-correction-2026-07-18"},
+      "fields": {
+        "id": "turnzero-projectccg-main-pass-correction-2026-07-18",
+        "detected_at": "2026-07-18T22:10:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "summary": "Proposed main-pass correction for Turn Zero and ProjectCCG: capture inspected ProjectCCG Discord as visible Evidence, add a Santa Ana Places evaluation, keep Alhambra conservative, and preserve Turn Zero Canadian Highlander as a material proxy-friendly event/community TBD rather than over-projecting a biweekly calendar row.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable proposed update marker before any live write."
+    }
+  ]
+}
