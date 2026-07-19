@@ -464,6 +464,8 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .change-row h3 { flex: 1; margin: 0; font: 560 12px var(--display); line-height: 1.45; letter-spacing: -.01em; }
 .change-title-link { display: inline; padding: 0; border: 0; background: none; color: inherit; font: inherit; line-height: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; }
 .change-title-link:hover { color: var(--sky); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.change-inline-target { display: inline; padding: 0; border: 0; background: none; color: var(--sky); font: inherit; line-height: inherit; text-align: left; cursor: pointer; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.change-inline-target:hover { color: #b9ddff; }
 .change-type-chip { flex: 0 0 auto; max-width: 150px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.025); color: var(--muted); font: 700 8px var(--font); letter-spacing: .08em; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .change-row p { color: var(--muted); font-size: 10px; margin: 0; line-height: 1.45; }
 .change-clicklets { display: flex; flex-wrap: wrap; gap: 6px; }

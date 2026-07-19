@@ -348,6 +348,7 @@ function mapResearchChange(item) {
     entityType: item.entity_type,
     entityId: item.entity_id,
     summary: item.summary,
+    details: item.details,
     reviewStatus: item.review_status
   };
 }
@@ -1505,10 +1506,9 @@ function renderChanges() {
 
 function changeRow(change) {
   const tone = changeTone(change);
-  const route = changeRoute(change);
   const title = changeTitle(change);
   const status = reviewStatusDisplay(change);
-  return `<article class="change-row"><div class="timeline-node ${tone}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><div class="change-title-row"><h3>${title}</h3><span class="change-type-chip">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span></div><p>${escapeHtml(change.details || 'The research record was updated.')}</p><div class="change-clicklets"><button class="change-action" data-route="${route}">${route === 'events' ? 'Events' : route === 'research' ? 'Coverage' : 'Places'} →</button></div></div><span class="review-state ${status.tone}">${status.label}</span></article>`;
+  return `<article class="change-row"><div class="timeline-node ${tone}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><div class="change-title-row"><h3>${title}</h3><span class="change-type-chip">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span></div><p>${linkifyChangeText(change.details || 'The research record was updated.')}</p><div class="change-clicklets">${changeTargetButtons(change)}</div></div><span class="review-state ${status.tone}">${status.label}</span></article>`;
 }
 
 function reviewStatusDisplay(change) {
@@ -1520,17 +1520,67 @@ function reviewStatusDisplay(change) {
 }
 
 function changeTitle(change) {
-  const summary = escapeHtml(change.summary || 'Research record updated');
-  if (change.entityType === 'venue' && store(change.entityId)) {
-    return `<button class="change-title-link" data-place-id="${escapeHtml(change.entityId)}">${summary}</button>`;
+  const rawSummary = change.summary || 'Research record updated';
+  const summary = linkifyChangeText(rawSummary);
+  const escapedSummary = escapeHtml(rawSummary);
+  if (summary !== escapedSummary) return summary;
+  return escapedSummary;
+}
+
+function changeTargetButtons(change) {
+  const route = changeRoute(change);
+  return `<button class="change-action" data-route="${route}">${route === 'events' ? 'Events' : route === 'research' ? 'Coverage' : 'Places'} →</button>`;
+}
+
+function linkifyChangeText(rawText = '') {
+  const candidates = changeLinkCandidates();
+  if (!candidates.length) return escapeHtml(rawText);
+  const pattern = new RegExp(candidates.map((item) => escapeRegExp(item.label)).join('|'), 'gi');
+  let html = '';
+  let lastIndex = 0;
+  for (const match of rawText.matchAll(pattern)) {
+    const label = match[0];
+    const index = match.index ?? 0;
+    const candidate = candidates.find((item) => item.label.toLowerCase() === label.toLowerCase());
+    if (!candidate) continue;
+    html += escapeHtml(rawText.slice(lastIndex, index));
+    html += candidateLink(candidate, label);
+    lastIndex = index + label.length;
   }
-  if ((change.entityType === 'event' || change.entityType === 'event_series') && eventById(change.entityId)) {
-    return `<button class="change-title-link" data-event-id="${escapeHtml(change.entityId)}">${summary}</button>`;
-  }
-  if (change.entityType === 'community' && DATA.communities.some((community) => community.id === change.entityId)) {
-    return `<button class="change-title-link" data-community-id="${escapeHtml(change.entityId)}">${summary}</button>`;
-  }
-  return summary;
+  html += escapeHtml(rawText.slice(lastIndex));
+  return html;
+}
+
+function changeLinkCandidates() {
+  const seen = new Set();
+  const add = (label, html) => {
+    const clean = (label || '').trim();
+    const key = clean.toLowerCase();
+    if (clean.length < 4 || seen.has(key)) return null;
+    seen.add(key);
+    return { label: clean, html };
+  };
+  return [
+    ...DATA.stores.map((place) => add(place.name, (label) => `<button class="change-inline-target" data-place-id="${escapeHtml(place.id)}">${escapeHtml(label)}</button>`)),
+    ...COMMUNITY_SEED.map((community) => add(community.name, (label) => `<button class="change-inline-target" data-community-id="${escapeHtml(community.id)}">${escapeHtml(label)}</button>`)),
+    ...DATA.sources
+      .filter((item) => item.url && safeSourceLinkLabel(item.label))
+      .map((item) => add(item.label, (label) => `<a class="change-inline-target" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">${escapeHtml(label)}</a>`))
+  ].filter(Boolean).sort((a, b) => b.label.length - a.label.length);
+}
+
+function safeSourceLinkLabel(label = '') {
+  const clean = label.trim();
+  if (clean.length < 10) return false;
+  return !/^(instagram|facebook|discord|website|wizards|yelp|google|eventlink)$/i.test(clean);
+}
+
+function candidateLink(candidate, label) {
+  return candidate.html(label);
+}
+
+function escapeRegExp(value = '') {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function changeMatchesFilter(change, filter) {
