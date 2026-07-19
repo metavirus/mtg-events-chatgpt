@@ -3,6 +3,7 @@
 Date: 2026-07-18  
 Pass type: WPN-first event completion, proposal only  
 Validation level proposed for apply: standard, because event-series and event-occurrence rows would change
+Status: applied to live Supabase after Kavi approval
 
 ## Scope
 
@@ -156,6 +157,23 @@ Use standard validation:
 - Verify no duplicate event occurrences for the touched series.
 - Verify no unrelated venue/event rows changed.
 - Skip local preview unless an anomaly appears; live/app behavior can be checked after commit/deploy if needed.
+
+## Applied result
+
+Applied to live Supabase after Kavi approved the revised proposal.
+
+Post-write validation:
+
+- ProjectCCG - Alhambra exists as a separate discovery-level venue.
+- ProjectCCG - Santa Ana / OC remains separate.
+- Proposed event series exist for Turn Zero, CoreTCG, Aki, ProjectCCG Santa Ana, and ProjectCCG Alhambra.
+- WPN event-source links exist for the new proposed series.
+- Dated occurrence counts match the proposal:
+  - Turn Zero Hobbit prerelease: 5 occurrences, August 7-9, 2026.
+  - Turn Zero Reality Fracture prerelease: 5 occurrences, September 25-27, 2026.
+  - CoreTCG Hobbit prerelease: 1 occurrence, August 7, 2026.
+- Duplicate occurrence check for touched dated-event series returned no duplicates.
+- No local preview was run; this was skipped under the user's validation-efficiency rule because the write validated cleanly through direct Supabase checks.
 
 ## Remaining TBDs
 
