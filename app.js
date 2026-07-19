@@ -631,12 +631,21 @@ function formatFreshnessDate(value) {
   if (Number.isNaN(date.getTime())) return value;
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
 }
+function formatFreshnessDateTime(value) {
+  const text = String(value || '');
+  const hasTime = /T\d{2}:\d{2}/.test(text);
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(text) ? parseDate(text) : new Date(text);
+  if (Number.isNaN(date.getTime())) return value;
+  const dateLabel = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  if (!hasTime) return dateLabel;
+  return `${dateLabel}, ${date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+}
 function updateFreshnessMini() {
   const container = document.getElementById('freshnessMini');
   if (!container) return;
   const latest = latestDataTimestamp();
   const sourceLabel = state.dataSource === 'supabase' ? 'Supabase live data' : state.dataSource === 'json' ? 'JSON fallback' : 'JSON recovery fallback';
-  const latestLabel = latest ? formatFreshnessDate(latest) : 'No dated record';
+  const latestLabel = latest ? formatFreshnessDateTime(latest) : 'No dated record';
   container.innerHTML = `<span class="status-dot"></span><span>${sourceLabel}<br><strong>${escapeHtml(latestLabel)}</strong></span>`;
 }
 function eventStartTime(event) { return event.recurrence?.startTime || event.startTime; }
