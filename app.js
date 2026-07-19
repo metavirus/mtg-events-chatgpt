@@ -924,12 +924,16 @@ function renderAgenda(events, start) {
   const container = document.getElementById('calendarContent');
   if (!events.length) return container.innerHTML = emptyState('No events match this view', 'Try widening the distance, research status, or confidence filters.');
   const groups = Object.groupBy ? Object.groupBy(events, (event) => dateKey(event.occurrenceDate)) : events.reduce((acc, event) => ((acc[dateKey(event.occurrenceDate)] ||= []).push(event), acc), {});
-  const bestBets = rankedTodayLeads(events).slice(0, 5);
+  const todayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(new Date()));
+  const spotlightEvents = todayEvents.length ? todayEvents : events;
+  const bestBets = rankedTodayLeads(spotlightEvents).slice(0, 5);
   const bestIds = new Set(bestBets.map(todayLeadKey));
+  const spotlightTitle = todayEvents.length ? "Today's strongest leads" : 'Next strong leads';
+  const spotlightNote = todayEvents.length ? `${todayEvents.length} today` : 'Nothing matching today';
   let html = `<div class="agenda-intro"><div><span class="live-dot"></span><strong>${events.length} opportunities</strong> in this window</div><span>Scroll toward future dates</span></div>`;
   if (bestBets.length) {
     html += `<section class="today-best-bets" aria-label="Best near-term bets">
-      <div class="today-section-heading"><div><p class="eyebrow mint">Best bets</p><h2>Strong near-term leads</h2></div><span>${bestBets.length} highlighted</span></div>
+      <div class="today-section-heading"><div><p class="eyebrow mint">Best bets</p><h2>${spotlightTitle}</h2></div><span>${spotlightNote}</span></div>
       <div class="best-bet-grid">${bestBets.map((event) => eventCard(event, false, { showDate: true, emphasize: true })).join('')}</div>
     </section>
     <div class="today-section-heading full-catalog-heading"><div><p class="eyebrow">Full catalog</p><h2>Everything still visible</h2></div><span>${events.length} matching</span></div>`;
