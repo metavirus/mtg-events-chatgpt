@@ -1,0 +1,181 @@
+{
+  "proposal_id": "projectccg-turnzero-discord-cadence-pass-2026-07-18",
+  "description": "Ledger-based targeted Discord/cadence follow-up for ProjectCCG - Santa Ana and Turn Zero Games. Captures Turn Zero's direct Discord invite as Evidence, clarifies Turn Zero Canadian Highlander remains cadence TBD rather than a calendar write, and narrows ProjectCCG Santa Ana's Discord assessment to operational/community usefulness without overclaiming uninspected MTG-channel content. No event rows, schema/auth/RLS, app code, canonical JSON, or generated export artifacts are proposed.",
+  "created_at": "2026-07-18T23:40:00-07:00",
+  "status": "proposed",
+  "author": "Codex Project Steward",
+  "validation_level": "lean",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-turnzero-discord-route-2026-07-18"
+      },
+      "fields": {
+        "id": "src-turnzero-discord-route-2026-07-18",
+        "label": "Turn Zero Games Discord invite",
+        "url": "https://discord.gg/anRuFcAhFS",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Turn Zero's official Linktree routes to this Discord invite. The invite resolves to Turn Zero Games and showed about 1,922 members and 350 online during this check. Content was not inspected, so this is route/community-scale evidence only."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-turnzero-discord-route-2026-07-18"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-turnzero-discord-route-2026-07-18",
+        "relationship": "official Discord route captured; invite metadata verified; content replay TBD"
+      },
+      "reason": "Make Turn Zero's first-class community route visible as Evidence without claiming Discord content supports fit or event reliability."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-turnzero-linktree-2026-07-17"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Turn Zero Linktree was rechecked. It still supports official source routing, while the linked current schedule image remains stale/dead and should not be treated as current schedule proof."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-turnzero-canlandex-canlander-2026-07-18"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Canlandex remains a material Turn Zero Canadian Highlander source, but this pass did not establish a safe future-date anchor for normalized occurrences."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "turn-zero-games"
+      },
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "Turn Zero Games remains one of the clearest Magic-focused LA stores in the dataset. Official Linktree still routes to website, Discord, and card-selling intake, but the linked current schedule image behaves like a stale/dead schedule surface and should not be used as current schedule proof. The direct Discord invite resolves to Turn Zero Games and showed about 1,922 members and 350 online during this check; that supports community scale and a real route, but Discord content was not inspected, so LFG, proxy norms, Commander texture, and solo-arrival mechanics remain TBD. Wizards/EventLink already supports Commander, FNM Modern, and future prerelease coverage. Canlandex continues to add a material Canadian Highlander signal: every-other-Saturday 1:00 PM play with a Discord route, which is proxy-friendly competitive-casual Magic context but not direct Commander fit. Do not normalize Canadian Highlander as a weekly calendar row without a biweekly-safe representation or dated future confirmation."
+      },
+      "reason": "Clarify the difference between route/community-scale evidence, inspected content, and cadence-safe event writing."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "medium",
+        "positives": [
+          "Official Linktree supports strong source routing to website, Discord, and store intake surfaces.",
+          "Direct Discord invite metadata supports a sizable Turn Zero community route, with about 1,922 members and 350 online at the time of this check.",
+          "Wizards/EventLink supports Commander, FNM Modern, and future prerelease coverage.",
+          "Canlandex supports an every-other-Saturday Canadian Highlander signal with proxy-friendly competitive-casual relevance.",
+          "Review-derived evidence continues to support active tables, free play space, beginner support, and a sizable Magic community."
+        ],
+        "cautions": [
+          "Distance from Los Alamitos makes this worthwhile mainly if the community/event fit proves strong.",
+          "The linked current schedule image from Linktree appears stale/dead and should not be treated as current schedule proof.",
+          "Canadian Highlander is not Commander and should not be over-weighted as direct Commander fit.",
+          "Discord invite metadata was verified, but Discord content has not been inspected, so LFG, proxy norms for Commander, and solo-arrival mechanics remain unresolved.",
+          "Canadian Highlander should not be written to the calendar until a future-date anchor or biweekly-safe representation is available."
+        ],
+        "open_questions": [
+          "Does the Turn Zero Discord have usable LFG or Commander coordination for solo arrivals?",
+          "Is Commander casual, competitive, or mixed in practice?",
+          "Can the Canadian Highlander cadence be represented safely as dated future occurrences or a biweekly recurrence?"
+        ]
+      },
+      "reason": "Preserve Turn Zero's current planning read while distinguishing Discord route evidence from inspected community content and keeping Canadian Highlander as cadence TBD."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "projectccg-santa-ana"
+      },
+      "fields": {
+        "last_verified": "2026-07-18",
+        "assessment_notes": "ProjectCCG - Santa Ana / OC remains a strong nearby Magic planning candidate. Wizards/EventLink supports multiple active MTG lanes: Tuesday and Friday Commander, Sunday Commander, Sunday Draft, and Tuesday/Friday Standard Showdown. The ProjectCCG Discord remains material and branch-specific: OC announcements showed staff operational updates such as closures, early closes, power-outage reopening, and other same-week store communications, while OC questions showed active staff/customer traffic. That makes Discord useful for reliability checks before travel. This pass did not successfully extract fresh MTG announcement/discussion content beyond the prior accepted read, so proxy policy, pod formation, casual-versus-competitive Commander texture, and solo-arrival comfort remain deeper Discord/player-texture TBDs. Do not overclaim the Discord as deep-reviewed MTG fit evidence yet."
+      },
+      "reason": "Keep ProjectCCG Santa Ana's Discord status useful but bounded: operationally valuable and first-pass useful, not deep-reviewed for Commander fit."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.9,
+        "confidence": "medium",
+        "positives": [
+          "Close enough to be practical at about 13.4 miles from Los Alamitos.",
+          "Wizards/EventLink supports several active MTG lanes: Commander, Draft, and Standard Showdown.",
+          "Discord first pass shows a real branch-specific OC community route with staff announcements, OC event posts, and MTG channels.",
+          "OC announcements are useful for operational reliability because staff post closures, early closes, power-outage reopening, and same-week store updates.",
+          "OC questions show active staff/customer traffic, reducing concern that the branch is only a thin WPN listing."
+        ],
+        "cautions": [
+          "Discord first pass supports activity and coordination, but not yet proxy policy, pod-formation mechanics, or solo-arrival comfort.",
+          "This pass did not successfully extract fresh MTG announcement/discussion content beyond the prior accepted read, so do not treat Discord as deep-reviewed MTG fit evidence.",
+          "The same-week operational update pattern is helpful, but also means Discord should be checked before traveling.",
+          "Sunday Commander versus Sunday Draft/Commander-draft wording needs continued care because the source surfaces can describe overlapping Sunday Magic lanes."
+        ],
+        "open_questions": [
+          "Are Tuesday/Friday/Sunday Commander pods casual, competitive, or mixed?",
+          "Are proxies acceptable in Commander, and are pods formed in a way that works for solo arrival?",
+          "Does Sunday 4 PM function as ordinary Commander, draft, Commander draft, or multiple concurrent lanes?",
+          "Should the ProjectCCG Discord become a regular monitoring source for same-week changes?"
+        ]
+      },
+      "reason": "Clarify the ProjectCCG Santa Ana Discord finding without changing the existing fit grade or confidence."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "projectccg-turnzero-discord-cadence-pass-2026-07-18"
+      },
+      "fields": {
+        "id": "projectccg-turnzero-discord-cadence-pass-2026-07-18",
+        "detected_at": "2026-07-18T23:40:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "summary": "Proposed ledger-based Discord/cadence update: capture Turn Zero's direct Discord invite as route/community-scale Evidence, preserve Canadian Highlander as cadence TBD instead of a calendar write, and refine ProjectCCG Santa Ana Discord conclusions as first-pass useful for operations but not deep-reviewed for Commander fit.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable proposed update marker before any live write."
+    }
+  ]
+}
