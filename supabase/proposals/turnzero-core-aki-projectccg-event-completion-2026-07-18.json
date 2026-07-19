@@ -1,0 +1,546 @@
+{
+  "proposal_id": "turnzero-core-aki-projectccg-event-completion-2026-07-18",
+  "description": "WPN-first event-completion proposal for Turn Zero Games, CoreTCG, Aki Collectibles, ProjectCCG - Santa Ana, and ProjectCCG - Alhambra. Adds source-supported future recurring or dated events that are missing from the calendar, refreshes WPN source checked dates, and treats plain ProjectCCG WPN store 15983 as the Alhambra/main branch while keeping Santa Ana/OC separate.",
+  "created_at": "2026-07-18T17:20:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-8425"},
+      "fields": {"id": "src-wpn-8425", "last_checked": "2026-07-18"},
+      "reason": "Fresh Wizards/EventLink pull checked Turn Zero Games through 2026-09-30."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-11989"},
+      "fields": {"id": "src-wpn-11989", "last_checked": "2026-07-18"},
+      "reason": "Fresh Wizards/EventLink pull checked CoreTCG through 2026-09-30."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-19392"},
+      "fields": {"id": "src-wpn-19392", "last_checked": "2026-07-18"},
+      "reason": "Fresh Wizards/EventLink pull checked Aki Collectibles through 2026-09-30."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-20273"},
+      "fields": {"id": "src-wpn-20273", "last_checked": "2026-07-18"},
+      "reason": "Fresh Wizards/EventLink pull checked ProjectCCG - Santa Ana through 2026-09-30."
+    },
+    {
+      "action": "insert",
+      "table": "venues",
+      "fields": {
+        "id": "projectccg-alhambra",
+        "name": "ProjectCCG - Alhambra",
+        "city": "Alhambra",
+        "address": "39 S Garfield Ave, Alhambra, CA, 91801, United States",
+        "phone": "(626) 703-4076",
+        "website": "https://projectccg.com",
+        "events_url": "https://locator.wizards.com/store/15983",
+        "instagram": null,
+        "wpn_premium": false,
+        "distance_miles": 20.38,
+        "operating_status": "open",
+        "research_status": "discovery",
+        "last_verified": "2026-07-18",
+        "assessment_notes": "Created as a separate ProjectCCG Alhambra/main-branch venue after official ProjectCCG site and WPN store 15983 both identify 39 S Garfield Ave, Alhambra. Treat Santa Ana/OC events separately under ProjectCCG - Santa Ana. WPN lists free Wednesday 5:00 PM Magic Commander Night at the Alhambra store; broader fit, Discord/community texture, and branch-specific social evidence still need a proper main pass.",
+        "assessment": {"commanderActivity": 3, "homeGroupPotential": 2, "communityContinuity": 2, "meetupAccessibility": 2, "physicalEnvironment": 3, "scheduleReliability": 3, "newPlayerIntegration": 2}
+      },
+      "reason": "Create a separate ProjectCCG Alhambra/main-branch record so plain ProjectCCG WPN events are not incorrectly attached to Santa Ana/OC."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "fields": {
+        "id": "src-wpn-15983",
+        "label": "Wizards Store & Event Locator - ProjectCCG - Alhambra",
+        "url": "https://locator.wizards.com/store/15983",
+        "source_type": "wpn",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Capture WPN store 15983 as the ProjectCCG Alhambra event source."
+    },
+    {
+      "action": "upsert",
+      "table": "sources",
+      "key": {"id": "src-projectccg-about-alhambra-2026-07-17"},
+      "fields": {
+        "id": "src-projectccg-about-alhambra-2026-07-17",
+        "label": "ProjectCCG official about page listing Alhambra identity",
+        "url": "https://projectccg.com/pages/about-us",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Official ProjectCCG site still supports 39 S Garfield Ave, Alhambra as the main listed location."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "fields": {"entity_type": "venue", "entity_id": "projectccg-alhambra", "source_id": "src-wpn-15983", "relationship": "WPN store/event listing for ProjectCCG Alhambra"},
+      "reason": "Attach WPN store 15983 to the new Alhambra venue."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "fields": {"entity_type": "venue", "entity_id": "projectccg-alhambra", "source_id": "src-projectccg-about-alhambra-2026-07-17", "relationship": "official website identity/address evidence for ProjectCCG Alhambra"},
+      "reason": "Attach official ProjectCCG site identity evidence to the new Alhambra venue."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-alhambra",
+        "research_status": "discovery",
+        "candidate_status": "neutral",
+        "fit_grade": "C",
+        "fit_score": 3.0,
+        "confidence": "medium",
+        "positives": [
+          "Official ProjectCCG site and WPN store 15983 both support an active Alhambra/main-branch identity.",
+          "WPN lists free Wednesday 5:00 PM Magic Commander Night with promo-on-entry language.",
+          "Separate venue record prevents Alhambra events from contaminating the Santa Ana/OC branch."
+        ],
+        "cautions": [
+          "This is not a full main-store pass; branch-specific social, Discord, review, and in-store texture remain unresolved.",
+          "Twenty-mile distance makes it less immediately practical than closer Commander options unless the event/community quality proves strong."
+        ],
+        "open_questions": [
+          "Is Wednesday Commander at Alhambra casual, proxy-friendly, and welcoming for solo arrival?",
+          "Do ProjectCCG social/Discord channels distinguish Alhambra from OC clearly enough for ongoing monitoring?",
+          "Are there additional Alhambra draft, prerelease, or special-event lanes outside the current WPN Commander row?"
+        ]
+      },
+      "reason": "Give the new Alhambra venue a conservative Places-page assessment rather than leaving it as an opaque event host."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "turn-zero-games-turn-zero-games-commander-night-3-11-00"},
+      "fields": {
+        "id": "turn-zero-games-turn-zero-games-commander-night-3-11-00",
+        "venue_id": "turn-zero-games",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Fresh Wizards/EventLink still supports Turn Zero Wednesday 11:00 AM Commander Free Play."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "turn-zero-games-friday-night-magic-modern"},
+      "fields": {
+        "id": "turn-zero-games-friday-night-magic-modern",
+        "venue_id": "turn-zero-games",
+        "community_id": null,
+        "title": "Friday Night Magic Turn Zero Games Modern",
+        "format": "Modern",
+        "event_type": "constructed",
+        "bracket": null,
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "19:15"},
+        "default_start_time": "19:15",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 5.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Friday 7:15 PM FNM Modern at Turn Zero Games with $5 entry and 32 capacity in the checked window.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog source-supported Turn Zero FNM Modern row missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {"source_id": "src-wpn-8425", "series_id": "turn-zero-games-friday-night-magic-modern", "occurrence_id": null, "relationship": "Wizards/EventLink recurring FNM Modern evidence"},
+      "reason": "Attach WPN provenance to Turn Zero FNM Modern."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "turn-zero-games-hobbit-prerelease-2026"},
+      "fields": {
+        "id": "turn-zero-games-hobbit-prerelease-2026",
+        "venue_id": "turn-zero-games",
+        "community_id": null,
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": null,
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": 50.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists five Turn Zero Games The Hobbit prerelease sealed events across August 7-9, 2026.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current Turn Zero Hobbit prerelease coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {"source_id": "src-wpn-8425", "series_id": "turn-zero-games-hobbit-prerelease-2026", "occurrence_id": null, "relationship": "Wizards/EventLink dated prerelease evidence"},
+      "reason": "Attach WPN provenance to Turn Zero Hobbit prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-hobbit-prerelease-2026-08-07-19-00", "series_id": "turn-zero-games-hobbit-prerelease-2026", "occurrence_date": "2026-08-07", "start_time": "19:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": 32, "details": "Wizards/EventLink event 11002128 confirms The Hobbit Prerelease at Turn Zero Games on Friday, August 7, 2026 at 7:00 PM."},
+      "reason": "Add future Turn Zero Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-hobbit-prerelease-2026-08-08-13-00", "series_id": "turn-zero-games-hobbit-prerelease-2026", "occurrence_date": "2026-08-08", "start_time": "13:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": 32, "details": "Wizards/EventLink event 11002142 confirms The Hobbit Prerelease at Turn Zero Games on Saturday, August 8, 2026 at 1:00 PM."},
+      "reason": "Add future Turn Zero Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-hobbit-prerelease-2026-08-08-18-00", "series_id": "turn-zero-games-hobbit-prerelease-2026", "occurrence_date": "2026-08-08", "start_time": "18:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": 32, "details": "Wizards/EventLink event 11002171 confirms The Hobbit Prerelease at Turn Zero Games on Saturday, August 8, 2026 at 6:00 PM."},
+      "reason": "Add future Turn Zero Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-hobbit-prerelease-2026-08-09-13-00", "series_id": "turn-zero-games-hobbit-prerelease-2026", "occurrence_date": "2026-08-09", "start_time": "13:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": 32, "details": "Wizards/EventLink event 11002143 confirms The Hobbit Prerelease at Turn Zero Games on Sunday, August 9, 2026 at 1:00 PM."},
+      "reason": "Add future Turn Zero Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-hobbit-prerelease-2026-08-09-18-00", "series_id": "turn-zero-games-hobbit-prerelease-2026", "occurrence_date": "2026-08-09", "start_time": "18:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": 32, "details": "Wizards/EventLink event 11002172 confirms The Hobbit Prerelease at Turn Zero Games on Sunday, August 9, 2026 at 6:00 PM."},
+      "reason": "Add future Turn Zero Hobbit prerelease occurrence."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "turn-zero-games-reality-fracture-prerelease-2026"},
+      "fields": {
+        "id": "turn-zero-games-reality-fracture-prerelease-2026",
+        "venue_id": "turn-zero-games",
+        "community_id": null,
+        "title": "Reality Fracture Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": null,
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-09-25",
+        "end_date": "2026-09-27",
+        "entry_fee": 35.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists five Turn Zero Games Reality Fracture prerelease sealed events across September 25-27, 2026, including a Sunday 2-Headed Sealed event.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog future Turn Zero Reality Fracture prerelease coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {"source_id": "src-wpn-8425", "series_id": "turn-zero-games-reality-fracture-prerelease-2026", "occurrence_id": null, "relationship": "Wizards/EventLink dated prerelease evidence"},
+      "reason": "Attach WPN provenance to Turn Zero Reality Fracture prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-reality-fracture-prerelease-2026-09-25-19-00", "series_id": "turn-zero-games-reality-fracture-prerelease-2026", "occurrence_date": "2026-09-25", "start_time": "19:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": 32, "details": "Wizards/EventLink event 11413743 confirms Reality Fracture Prerelease at Turn Zero Games on Friday, September 25, 2026 at 7:00 PM."},
+      "reason": "Add future Turn Zero Reality Fracture prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-reality-fracture-prerelease-2026-09-26-13-00", "series_id": "turn-zero-games-reality-fracture-prerelease-2026", "occurrence_date": "2026-09-26", "start_time": "13:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": 32, "details": "Wizards/EventLink event 11413754 confirms Reality Fracture Prerelease at Turn Zero Games on Saturday, September 26, 2026 at 1:00 PM."},
+      "reason": "Add future Turn Zero Reality Fracture prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-reality-fracture-prerelease-2026-09-26-18-00", "series_id": "turn-zero-games-reality-fracture-prerelease-2026", "occurrence_date": "2026-09-26", "start_time": "18:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": 32, "details": "Wizards/EventLink event 11413767 confirms Reality Fracture Prerelease at Turn Zero Games on Saturday, September 26, 2026 at 6:00 PM."},
+      "reason": "Add future Turn Zero Reality Fracture prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-reality-fracture-prerelease-2026-09-27-13-00", "series_id": "turn-zero-games-reality-fracture-prerelease-2026", "occurrence_date": "2026-09-27", "start_time": "13:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 35.00, "capacity": 32, "details": "Wizards/EventLink event 11413755 confirms Reality Fracture Prerelease at Turn Zero Games on Sunday, September 27, 2026 at 1:00 PM."},
+      "reason": "Add future Turn Zero Reality Fracture prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "turn-zero-games-reality-fracture-prerelease-2026-09-27-18-00", "series_id": "turn-zero-games-reality-fracture-prerelease-2026", "occurrence_date": "2026-09-27", "start_time": "18:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": 32, "details": "Wizards/EventLink event 11413789 confirms Reality Fracture 2-Headed Sealed at Turn Zero Games on Sunday, September 27, 2026 at 6:00 PM."},
+      "reason": "Add future Turn Zero Reality Fracture prerelease occurrence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "coretcg-coretcg-commander-5-16-30"},
+      "fields": {"id": "coretcg-coretcg-commander-5-16-30", "venue_id": "coretcg", "last_verified": "2026-07-18"},
+      "reason": "Fresh Wizards/EventLink still supports CoreTCG Friday 4:30 PM Commander."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "coretcg-hobbit-prerelease-2026"},
+      "fields": {
+        "id": "coretcg-hobbit-prerelease-2026",
+        "venue_id": "coretcg",
+        "community_id": null,
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": null,
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-07",
+        "entry_fee": 50.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists a CoreTCG Hobbit prerelease on Friday, August 7, 2026, with registration at 4:00 PM, deck building at 4:30 PM, tournament start at 5:00 PM, and $50 entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog CoreTCG's future Hobbit prerelease row missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {"source_id": "src-wpn-11989", "series_id": "coretcg-hobbit-prerelease-2026", "occurrence_id": null, "relationship": "Wizards/EventLink dated prerelease evidence"},
+      "reason": "Attach WPN provenance to CoreTCG Hobbit prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "fields": {"id": "coretcg-hobbit-prerelease-2026-08-07-17-00", "series_id": "coretcg-hobbit-prerelease-2026", "occurrence_date": "2026-08-07", "start_time": "17:00", "end_time": null, "evidence_state": "single_source", "occurrence_status": "confirmed", "entry_fee": 50.00, "capacity": null, "details": "Wizards/EventLink event 11128208 confirms The Hobbit Pre-Release at CoreTCG on Friday, August 7, 2026, tournament start 5:00 PM."},
+      "reason": "Add future CoreTCG Hobbit prerelease occurrence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "aki-collectibles-commander-night-6-17-00"},
+      "fields": {"id": "aki-collectibles-commander-night-6-17-00", "venue_id": "aki-collectibles", "last_verified": "2026-07-18"},
+      "reason": "Fresh Wizards/EventLink still supports Aki Saturday 5:00 PM Commander Night."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "aki-collectibles-friday-night-magic-commander"},
+      "fields": {
+        "id": "aki-collectibles-friday-night-magic-commander",
+        "venue_id": "aki-collectibles",
+        "community_id": null,
+        "title": "Friday Night Magic At Aki Collectibles",
+        "format": "Commander",
+        "event_type": "casual",
+        "bracket": null,
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "17:00"},
+        "default_start_time": "17:00",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 0.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Friday 5:00 PM Friday Night Magic Commander at Aki Collectibles, described as drop-in commander games.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog current Aki Friday Commander/FNM row missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {"source_id": "src-wpn-19392", "series_id": "aki-collectibles-friday-night-magic-commander", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Friday Commander evidence"},
+      "reason": "Attach WPN provenance to Aki Friday Commander."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "projectccg-santa-ana-projectccg-oc-commander-nights-2-19-00"},
+      "fields": {
+        "id": "projectccg-santa-ana-projectccg-oc-commander-nights-2-19-00",
+        "venue_id": "projectccg-santa-ana",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 2, "startTime": "18:30"},
+        "default_start_time": "18:30",
+        "start_date": "2026-07-21",
+        "details": "Fresh Wizards/EventLink pull lists Tuesday ProjectCCG - OC Commander Nights at 6:30 PM, not 7:00 PM, with no entry fee other than Companion signup and random promo support while supplies last.",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Refresh ProjectCCG Santa Ana Tuesday Commander time from current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "projectccg-santa-ana-projectccg-oc-commander-nights-5-19-00"},
+      "fields": {
+        "id": "projectccg-santa-ana-projectccg-oc-commander-nights-5-19-00",
+        "venue_id": "projectccg-santa-ana",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "18:30"},
+        "default_start_time": "18:30",
+        "start_date": "2026-07-24",
+        "details": "Fresh Wizards/EventLink pull lists Friday ProjectCCG - OC Commander Nights at 6:30 PM, not 7:00 PM, with no entry fee other than Companion signup and random promo support while supplies last.",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Refresh ProjectCCG Santa Ana Friday Commander time from current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "projectccg-santa-ana-projectccg-oc-commander-nights-0-16-00"},
+      "fields": {"id": "projectccg-santa-ana-projectccg-oc-commander-nights-0-16-00", "venue_id": "projectccg-santa-ana", "last_verified": "2026-07-18"},
+      "reason": "Fresh Wizards/EventLink still supports ProjectCCG Santa Ana Sunday 4:00 PM Commander Nights."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "projectccg-santa-ana-project-ccg-oc-draft-nights"},
+      "fields": {
+        "id": "projectccg-santa-ana-project-ccg-oc-draft-nights",
+        "venue_id": "projectccg-santa-ana",
+        "community_id": null,
+        "title": "Project CCG - OC - Draft Nights",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": null,
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 0, "startTime": "16:00"},
+        "default_start_time": "16:00",
+        "start_date": "2026-07-19",
+        "end_date": null,
+        "entry_fee": 25.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Sunday 4:00 PM Project CCG - OC Draft Nights at ProjectCCG - Santa Ana, with entry depending on booster set and pack-per-win prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog branch-safe ProjectCCG Santa Ana draft coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {"source_id": "src-wpn-20273", "series_id": "projectccg-santa-ana-project-ccg-oc-draft-nights", "occurrence_id": null, "relationship": "Wizards/EventLink recurring draft evidence"},
+      "reason": "Attach WPN provenance to ProjectCCG Santa Ana draft nights."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "projectccg-santa-ana-tuesday-standard-showdown"},
+      "fields": {
+        "id": "projectccg-santa-ana-tuesday-standard-showdown",
+        "venue_id": "projectccg-santa-ana",
+        "community_id": null,
+        "title": "Project CCG - OC - Standard Showdown",
+        "format": "Standard",
+        "event_type": "standard_showdown",
+        "bracket": null,
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 2, "startTime": "18:30"},
+        "default_start_time": "18:30",
+        "start_date": "2026-07-21",
+        "end_date": null,
+        "entry_fee": 10.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Tuesday 6:30 PM Standard Showdown at ProjectCCG - Santa Ana with $10 entry and copy saying the event fires consistently.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog branch-safe ProjectCCG Santa Ana Tuesday Standard Showdown missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {"source_id": "src-wpn-20273", "series_id": "projectccg-santa-ana-tuesday-standard-showdown", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Standard Showdown evidence"},
+      "reason": "Attach WPN provenance to ProjectCCG Santa Ana Tuesday Standard Showdown."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "projectccg-santa-ana-friday-standard-showdown"},
+      "fields": {
+        "id": "projectccg-santa-ana-friday-standard-showdown",
+        "venue_id": "projectccg-santa-ana",
+        "community_id": null,
+        "title": "Project CCG - OC - Standard Showdown",
+        "format": "Standard",
+        "event_type": "standard_showdown",
+        "bracket": null,
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "18:30"},
+        "default_start_time": "18:30",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 10.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists recurring Friday 6:30 PM Standard Showdown at ProjectCCG - Santa Ana with $10 entry and copy saying the event fires consistently.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog branch-safe ProjectCCG Santa Ana Friday Standard Showdown missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {"source_id": "src-wpn-20273", "series_id": "projectccg-santa-ana-friday-standard-showdown", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Standard Showdown evidence"},
+      "reason": "Attach WPN provenance to ProjectCCG Santa Ana Friday Standard Showdown."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "projectccg-alhambra-magic-commander-night"},
+      "fields": {
+        "id": "projectccg-alhambra-magic-commander-night",
+        "venue_id": "projectccg-alhambra",
+        "community_id": null,
+        "title": "Magic Commander Night",
+        "format": "Commander",
+        "event_type": "casual",
+        "bracket": null,
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 3, "startTime": "17:00"},
+        "default_start_time": "17:00",
+        "start_date": "2026-07-22",
+        "end_date": null,
+        "entry_fee": 0.00,
+        "currency": "USD",
+        "details": "Wizards/EventLink store 15983 lists recurring Wednesday 5:00 PM Magic Commander Night at ProjectCCG, 39 S Garfield Ave, Alhambra, with free entry and promo-on-entry language.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-18"
+      },
+      "reason": "Catalog the plain ProjectCCG WPN Commander row under the new Alhambra/main-branch venue rather than attaching it to Santa Ana/OC."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "fields": {"source_id": "src-wpn-15983", "series_id": "projectccg-alhambra-magic-commander-night", "occurrence_id": null, "relationship": "Wizards/EventLink recurring Commander evidence for ProjectCCG Alhambra"},
+      "reason": "Attach WPN provenance to ProjectCCG Alhambra Commander."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "fields": {
+        "id": "change-2026-07-18-turnzero-core-aki-projectccg-event-completion",
+        "detected_at": "2026-07-18T17:20:00-07:00",
+        "change_type": "new_event",
+        "entity_type": "event_series",
+        "entity_id": "turn-zero-games-friday-night-magic-modern",
+        "summary": "Proposed WPN-first event-completion pass for Turn Zero, CoreTCG, Aki, ProjectCCG Santa Ana, and ProjectCCG Alhambra. Adds missing future Modern, prerelease, Friday Commander, Draft, Standard Showdown, and Alhambra Commander calendar rows where branch-safe.",
+        "review_status": "proposed"
+      },
+      "reason": "Record the proposed bounded event-completion pass for Updates visibility."
+    }
+  ]
+}
