@@ -1,15 +1,16 @@
 # Current Frontier
 
-Last updated: 2026-07-18
+Last updated: 2026-07-19
 
-## Pre-auth product checkpoint
+## Personal-state checkpoint
 
 The clean product baseline immediately before authenticated personal-state work
 is commit `72689dd` on `codex/reconcile-wizards`. The branch was clean, pushed,
 and synchronized before this checkpoint was recorded.
 
-The next bounded tranche is **personal preference persistence with simple
-Supabase email magic-link authentication**. Its accepted scope is:
+Authenticated personal preference persistence is now implemented and live. The
+accepted implementation uses simple Supabase email magic-link authentication
+and keeps the scope personal-use sized:
 
 - one personal email-auth account and minimal sign-in/sign-out UI;
 - durable venue favorite and deprioritize preferences;
@@ -23,14 +24,15 @@ Supabase email magic-link authentication**. Its accepted scope is:
 - research truth remaining public/read-only and structurally separate from all
   personal preferences and notes.
 
-Keep this personal-use implementation lean. Do not add profiles, passwords,
-sharing, social features, workflow requests, scheduled agents, a generalized
-sync engine, or elaborate failover. Validate the actual hosted magic-link flow,
-cross-refresh persistence, one second-browser/device sign-in, preference and
-note CRUD, RLS isolation, and graceful local-only behavior when signed out.
+Validation on 2026-07-19 confirmed that the hosted app can sign in and write
+user-scoped venue/event-series preferences and notes into Supabase. Observed
+rows included Finch and Sparrow venue notes, Finch event-series notes, and
+favorite preferences. The app still keeps browser-local state as the signed-out
+or write-failure fallback.
 
-If the auth tranche loses continuity, return to the tagged pre-auth checkpoint
-rather than reconstructing these decisions from chat.
+If auth email sends temporarily fail, check Supabase Auth logs first. The built
+in Supabase sender can rate-limit magic-link emails during testing; the app now
+surfaces that state instead of a generic failure.
 
 ## Permanent rollback checkpoint: personal-use deployment
 
@@ -131,12 +133,10 @@ event sources remain preferred for exact event facts.
 
 Immediate next tranche:
 
-1. Implement the bounded authenticated personal-preference and private-note
-   tranche defined in the pre-auth checkpoint above.
-2. Do not resume research inside that product tranche; all remaining research
+1. Do not resume research inside the personal-state closeout; all remaining research
    stays durable in `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md` and the other
    existing trackers.
-3. After acceptance, return to the ledger rather than reconstructing research
+2. After acceptance, return to the ledger rather than reconstructing research
    priorities from task memory.
 
 Execution model:

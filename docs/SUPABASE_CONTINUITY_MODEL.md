@@ -1,6 +1,6 @@
 # Supabase Continuity Model
 
-Last updated: 2026-07-17
+Last updated: 2026-07-19
 
 ## Purpose
 
@@ -38,15 +38,18 @@ It must not be writable from the browser.
 
 ### 2. Personal continuity
 
-This is the user's private cross-device state. It affects ranking,
+This is the user's signed-in cross-device state. It affects ranking,
 presentation, and memory, but never overwrites research truth.
 
-Expected durable records:
+Implemented durable records:
 
 - favorites
 - thumbs-down / hidden / deprioritized items
 - one-to-five ratings
 - personal notes
+
+Expected later records:
+
 - interested / attended / skipped states
 - update-read state
 - lightweight personal activity history
@@ -118,17 +121,17 @@ The safe current rule is:
 
 ## Browser-local state during transition
 
-The current browser-local adapter is only a transitional stand-in.
+The browser-local adapter is now the signed-out and write-failure fallback.
 
 It is still useful because it lets us:
 
-- test favorite and thumbs-down behavior;
-- test event/venue ranking effects;
-- test notes and quiet activity-log UX;
-- validate whether the interaction model is actually worth preserving.
+- preserve preference actions when the user is signed out;
+- keep the app usable if Supabase personal-state reads or writes fail;
+- support a one-time import into the signed-in account when remote state is
+  empty.
 
-But it should now be treated as temporary scaffolding, not a final storage
-answer.
+It is no longer the intended durable storage answer for favorites,
+deprioritize choices, ratings, or private notes.
 
 ## Cutover sequence
 
@@ -140,12 +143,14 @@ Current sequence:
    explicit recovery path.
 3. Research has resumed through controlled Supabase writes in small direct
    batches.
-4. Add authenticated personal/workflow table reads in a later gate.
-5. Import or migrate existing browser-local personal state once.
-6. Turn on hosted writes for favorites, thumbs-down, ratings, notes,
-   update-read state, and `Ask Codex` requests.
-7. Validate that hosted personal state survives refresh, browser change, and
-   device change.
+4. Authenticated personal-state reads and writes are implemented for favorites,
+   thumbs-down/deprioritize choices, ratings, and private notes.
+5. Existing browser-local personal state imports once when the signed-in remote
+   state is empty.
+6. Hosted personal-state persistence has been validated against live Supabase
+   rows.
+7. Workflow/request data, update-read state, and richer visit history remain
+   deferred.
 8. Only after the corrected manual research method has completed several clean
    batches should unattended recurring research be considered.
 
@@ -155,7 +160,8 @@ This contract implies a few design decisions:
 
 - a favorite should change ranking and monitoring, not just paint a heart;
 - a thumbs-down should hide or demote without deleting research truth;
-- notes should live on the server so they are not trapped in one browser;
+- notes now live on the server when signed in so they are not trapped in one
+  browser;
 - `Updates` unread state should be durable;
 - an in-app note like "check store X" should become a real queued request, not
   just an ephemeral comment in local storage;

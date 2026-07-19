@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-07-18
+Last updated: 2026-07-19
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -14,18 +14,17 @@ Use it for:
 
 ## Active next-up
 
-- The immediate bounded product tranche is authenticated personal preference
-  persistence at the pre-auth baseline commit `72689dd`: Supabase email magic
-  link, user-scoped venue/event preferences, and one private personal note per
-  target. Use the existing `entity_preferences` model with the smallest needed
-  note-field addition; keep browser-local state only as a simple fallback and
-  one-time import source.
-- Keep this tranche personal-use sized: no profiles, password system, sharing,
-  workflow requests, scheduled agents, generalized synchronization engine, or
-  research work. Research facts must remain unchanged by personal actions.
+- Authenticated personal preference persistence is implemented and live. The
+  hosted app uses Supabase email magic links, user-scoped venue/event-series
+  preferences, and one private personal note per target, with browser-local
+  state retained as a signed-out or failure fallback.
+- 2026-07-19 validation confirmed signed-in Supabase rows for venue notes,
+  event-series notes, and favorites. Research facts remain unchanged by
+  personal actions.
 - Remaining research is already durable in
   `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md` and the existing packet/TBD
-  trackers. Resume from those records only after the auth tranche is accepted.
+  trackers. Resume from those records only after the personal-state checkpoint
+  is accepted.
 
 - The permanent personal-use deployment baseline is commit `dd44e20`, tagged
   `checkpoint/personal-use-deployed-supabase-default-2026-07-17`. If future work
@@ -60,8 +59,8 @@ Use it for:
   display as `PROPOSED`, and midnight UTC timestamps render as the prior evening
   in Pacific time. This is not blocking; later clean up applied statuses and use
   local-safe timestamps for user-visible update entries.
-- Migrate canonical research, personal continuity, and async request data in
-  explicit reversible stages.
+- Migrate canonical research and personal continuity in explicit reversible
+  stages. Async request/workflow data remains deferred.
 - Treat `docs/UX_MEGA_REVISION_SCOPE.md` as the accepted local UX scope that has
   now been substantially completed, not as the default current execution queue.
 - Use `docs/SUPABASE_CONTINUITY_MODEL.md` as the plain-language contract for
