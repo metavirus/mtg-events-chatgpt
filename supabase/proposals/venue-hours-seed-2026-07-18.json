@@ -1,0 +1,147 @@
+{
+  "proposal_id": "venue-hours-seed-2026-07-18",
+  "description": "Lean representative venue-hours seed for five high-use stores. Adds structured hours only; no event, assessment, schema/auth/RLS, app-code, or canonical JSON changes. JSON fallback export is intentionally deferred because Supabase is the live operational source and this is a routine low-risk hours update.",
+  "created_at": "2026-07-18T23:55:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-magicandmonsters-card-shop-hub-hours-2026-07-18"},
+      "fields": {
+        "id": "src-magicandmonsters-card-shop-hub-hours-2026-07-18",
+        "label": "Card Shop Hub listing for Magic and Monsters hours",
+        "url": "https://cardshophub.com/stores/magic-and-monsters",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-07-18"
+      },
+      "reason": "Card Shop Hub provides a current-looking Magic and Monsters hours listing that agrees with another secondary directory; capture it as visible Evidence rather than hiding it in notes."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "source_id": "src-magicandmonsters-card-shop-hub-hours-2026-07-18"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "source_id": "src-magicandmonsters-card-shop-hub-hours-2026-07-18",
+        "relationship": "secondary directory hours source; useful for planning but check before relying"
+      },
+      "reason": "Make the hours source reachable from the Magic and Monsters Evidence tab."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "collectors-lounge-cypress"},
+      "fields": {
+        "venue_id": "collectors-lounge-cypress",
+        "status": "variable",
+        "weekly_hours": {
+          "6": [{"open": "12:00", "close": "22:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-collectorslounge-site-2026-07-14",
+        "last_verified": "2026-07-18",
+        "notes": "Official site exposed only an 'Open today' hours block at check time; Saturday 12 PM-10 PM is captured as a partial planning aid, with full weekly hours still needing confirmation."
+      },
+      "reason": "Seed partial official hours for a favorite/high-value venue while preserving that the full routine schedule is not yet captured."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "coretcg"},
+      "fields": {
+        "venue_id": "coretcg",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "11:00", "close": "20:00"}],
+          "1": [{"open": "11:00", "close": "20:00"}],
+          "2": [{"open": "11:00", "close": "20:00"}],
+          "3": [{"open": "11:00", "close": "20:00"}],
+          "4": [{"open": "11:00", "close": "20:00"}],
+          "5": [{"open": "11:00", "close": "20:00"}],
+          "6": [{"open": "11:00", "close": "20:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-coretcg-official-site-2026-07-17",
+        "last_verified": "2026-07-18",
+        "notes": "Official FAQ lists Monday-Sunday 11 AM-8 PM."
+      },
+      "reason": "Seed official weekly hours for a frequently surfaced event venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "finch-sparrow"},
+      "fields": {
+        "venue_id": "finch-sparrow",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "12:00", "close": "22:00"}],
+          "1": [{"open": "12:00", "close": "22:00"}],
+          "2": [{"open": "12:00", "close": "22:00"}],
+          "3": [{"open": "12:00", "close": "22:00"}],
+          "4": [{"open": "12:00", "close": "22:00"}],
+          "5": [{"open": "12:00", "close": "22:00"}],
+          "6": [{"open": "12:00", "close": "22:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-finch-homepage-2026-07-14",
+        "last_verified": "2026-07-18",
+        "notes": "Official site lists open 7 days a week, 12 PM-10 PM PST."
+      },
+      "reason": "Seed official weekly hours for a high-priority local venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "jjs-collectibles"},
+      "fields": {
+        "venue_id": "jjs-collectibles",
+        "status": "variable",
+        "weekly_hours": {
+          "0": [{"open": "12:00", "close": "21:00"}],
+          "1": [{"open": "12:00", "close": "22:00"}],
+          "2": [{"open": "12:00", "close": "22:00"}],
+          "3": [{"open": "12:00", "close": "22:00"}],
+          "4": [{"open": "12:00", "close": "22:00"}],
+          "5": [{"open": "12:00", "close": "22:00"}],
+          "6": [{"open": "12:00", "close": "22:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-jjs-keepup-reviews-2026-07-18",
+        "last_verified": "2026-07-18",
+        "notes": "KeepUp directory lists Monday-Saturday 12 PM-10 PM and Sunday 12 PM-9 PM; treat as directory-derived and check before relying for a special trip."
+      },
+      "reason": "Seed useful planning hours for a recently improved nearby candidate, while marking the source as directory-derived rather than official."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "magic-and-monsters"},
+      "fields": {
+        "venue_id": "magic-and-monsters",
+        "status": "variable",
+        "weekly_hours": {
+          "0": [{"open": "11:00", "close": "18:00"}],
+          "1": [{"open": "11:00", "close": "22:00"}],
+          "2": [{"open": "11:00", "close": "22:00"}],
+          "3": [{"open": "11:00", "close": "22:00"}],
+          "4": [{"open": "11:00", "close": "22:00"}],
+          "5": [{"open": "11:00", "close": "22:00"}],
+          "6": [{"open": "11:00", "close": "22:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-magicandmonsters-card-shop-hub-hours-2026-07-18",
+        "last_verified": "2026-07-18",
+        "notes": "Card Shop Hub and Loc8NearMe agree on Monday-Saturday 11 AM-10 PM and Sunday 11 AM-6 PM; conflicting directory hours exist, so treat as useful but check before relying."
+      },
+      "reason": "Seed current-looking secondary hours for a venue whose official site did not expose a clear weekly hours block during this pass."
+    }
+  ]
+}
