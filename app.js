@@ -723,6 +723,7 @@ function isCompetitive(event) {
   if (/(separate from|rather than|not|outside of)[^.]{0,80}cedh/i.test(details)) return false;
   return /cedh|competitive|optimized|rcq|championship/i.test(details);
 }
+function isPrereleaseOrSealed(event) { return /prerelease|sealed|limited/i.test(`${event.eventType} ${event.title} ${event.format}`); }
 function isSpecial(event) { return /prerelease|sealed|draft|limited|party|special/i.test(`${event.eventType} ${event.title} ${event.format}`); }
 function isWeekend(date) { return [5, 6, 0].includes(date.getDay()); }
 
@@ -833,7 +834,7 @@ function fitScore(event) {
   if (event.bracket === '2') score += 5;
   if (isCompetitive(event)) score -= 30;
   if (hasExplicitNoProxy(event)) score -= 24;
-  if (isSpecial(event) && /prerelease|sealed/i.test(`${event.title} ${event.eventType}`)) score += 8;
+  if (isPrereleaseOrSealed(event)) score += 14;
   return Math.max(0, Math.min(100, Math.round(score)));
 }
 
@@ -911,7 +912,7 @@ function todayLeadScore(event) {
   const weekendBonus = isWeekend(event.occurrenceDate) ? 10 : 0;
   const reviewedBonus = place?.researchStatus === 'partial' ? 8 : 0;
   const confidenceBonus = event.confidence === 'high' ? 8 : event.confidence === 'medium' ? 3 : 0;
-  const specialBonus = /prerelease|sealed|limited/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 14 : isSpecial(event) ? 8 : 0;
+  const specialBonus = isPrereleaseOrSealed(event) ? 24 : isSpecial(event) ? 8 : 0;
   const commanderBonus = /commander|edh/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 8 : 0;
   const draftBonus = /draft/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 4 : 0;
   const discoveryPenalty = place?.researchStatus === 'wizards-discovery' ? 10 : 0;
@@ -934,14 +935,15 @@ function eventCard(event, compact = false, options = {}) {
   const dateNote = occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
   if (compact) {
     const cue = compactEventCue(event, fit, evidence);
-    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
+    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
   }
-  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
+  const limitedChip = isPrereleaseOrSealed(event) ? '<span class="status-chip limited">Prerelease / sealed</span>' : '';
+  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
     <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
       <button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">${escapeHtml(place.name)} <span>· ${distanceLabel(place)}</span></button>
-      <div class="event-chips"><span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="meta-chip">${fee}</span>${event.bracket && event.bracket !== 'unspecified' ? `<span class="meta-chip">Bracket ${escapeHtml(event.bracket)}</span>` : '<span class="meta-chip muted-chip">Bracket unknown</span>'}</div>
+      <div class="event-chips">${limitedChip}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="meta-chip">${fee}</span>${event.bracket && event.bracket !== 'unspecified' ? `<span class="meta-chip">Bracket ${escapeHtml(event.bracket)}</span>` : '<span class="meta-chip muted-chip">Bracket unknown</span>'}</div>
       <p>${escapeHtml(truncate(event.details || 'Details are limited in the current source.', 175))}</p>
     </div>
     <div class="event-actions"><button class="heart-button ${isFavorite ? 'active' : ''}" data-favorite="${favoriteKey}" aria-label="${isFavorite ? 'Remove from' : 'Add to'} favorites">${isFavorite ? '♥' : '♡'}</button><span class="open-cue">Open details →</span></div>
@@ -956,6 +958,7 @@ function formatClass(event) {
 }
 
 function compactEventCue(event, fit, evidence) {
+  if (isPrereleaseOrSealed(event)) return { label: /prerelease/i.test(`${event.title} ${event.eventType}`) ? 'Prerelease' : 'Limited', className: 'cue-limited' };
   if (hasExplicitNoProxy(event)) return { label: 'No proxy', className: 'cue-caution' };
   if (isCompetitive(event)) return { label: 'Check first', className: 'cue-caution' };
   if (fit.tone === 'mint') return { label: 'Best fit', className: 'cue-best' };
@@ -988,6 +991,7 @@ function hasExplicitNoProxy(event) {
 function eventPlanningGroup(event) {
   const placeHidden = !!state.personal.hidden[`place:${event.storeId}`];
   if (placeHidden || hasExplicitNoProxy(event)) return 'maybe';
+  if (isPrereleaseOrSealed(event)) return 'limited';
   if (isCompetitive(event)) return 'verify';
   const fit = fitLabel(event);
   if (fit.tone === 'mint') return 'best';
@@ -997,6 +1001,7 @@ function eventPlanningGroup(event) {
 }
 
 const EVENT_GROUPS = [
+  { id: 'limited', label: 'Prerelease / sealed', tone: 'limited' },
   { id: 'best', label: 'Best fits', tone: 'mint' },
   { id: 'promising', label: 'Promising', tone: 'sky' },
   { id: 'verify', label: 'Verify / check first', tone: 'amber' },
@@ -1035,7 +1040,7 @@ function groupedDayEvents(events, options = {}) {
   return EVENT_GROUPS.map((group) => {
     const items = events.filter((event) => eventPlanningGroup(event) === group.id).sort(eventPlanningSort);
     if (!items.length) return '';
-    const open = drawer ? ['best', 'promising'].includes(group.id) : group.id === 'best';
+    const open = drawer ? ['limited', 'best', 'promising'].includes(group.id) : ['limited', 'best'].includes(group.id);
     return `<details class="event-priority-group group-${group.id}" ${open ? 'open' : ''}>
       <summary><span><i class="group-dot ${group.tone}"></i><strong>${group.label}</strong></span><span>${items.length}</span></summary>
       <div class="event-priority-items">${items.map((event) => eventCard(event, compact)).join('')}</div>
@@ -1044,9 +1049,9 @@ function groupedDayEvents(events, options = {}) {
 }
 
 function monthHighlightScore(event) {
-  const groupRank = { best: 400, promising: 300, verify: 200, maybe: 100 }[eventPlanningGroup(event)];
+  const groupRank = { limited: 450, best: 400, promising: 300, verify: 200, maybe: 100 }[eventPlanningGroup(event)];
   const datedBonus = event.occurrenceStatus === 'confirmed' ? 45 : 0;
-  const specialBonus = /prerelease|sealed|limited|draft|party|special/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 35 : 0;
+  const specialBonus = isPrereleaseOrSealed(event) ? 75 : /draft|party|special/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 35 : 0;
   const routinePenalty = event.recurrence?.frequency === 'weekly' ? 8 : 0;
   return groupRank + datedBonus + specialBonus + fitScore(event) - routinePenalty;
 }
