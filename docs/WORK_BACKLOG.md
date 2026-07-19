@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-07-17
+Last updated: 2026-07-18
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -13,6 +13,19 @@ Use it for:
 - process improvements that protect continuity.
 
 ## Active next-up
+
+- The immediate bounded product tranche is authenticated personal preference
+  persistence at the pre-auth baseline commit `72689dd`: Supabase email magic
+  link, user-scoped venue/event preferences, and one private personal note per
+  target. Use the existing `entity_preferences` model with the smallest needed
+  note-field addition; keep browser-local state only as a simple fallback and
+  one-time import source.
+- Keep this tranche personal-use sized: no profiles, password system, sharing,
+  workflow requests, scheduled agents, generalized synchronization engine, or
+  research work. Research facts must remain unchanged by personal actions.
+- Remaining research is already durable in
+  `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md` and the existing packet/TBD
+  trackers. Resume from those records only after the auth tranche is accepted.
 
 - The permanent personal-use deployment baseline is commit `dd44e20`, tagged
   `checkpoint/personal-use-deployed-supabase-default-2026-07-17`. If future work

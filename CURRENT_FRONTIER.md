@@ -1,6 +1,36 @@
 # Current Frontier
 
-Last updated: 2026-07-17
+Last updated: 2026-07-18
+
+## Pre-auth product checkpoint
+
+The clean product baseline immediately before authenticated personal-state work
+is commit `72689dd` on `codex/reconcile-wizards`. The branch was clean, pushed,
+and synchronized before this checkpoint was recorded.
+
+The next bounded tranche is **personal preference persistence with simple
+Supabase email magic-link authentication**. Its accepted scope is:
+
+- one personal email-auth account and minimal sign-in/sign-out UI;
+- durable venue favorite and deprioritize preferences;
+- durable event-series and, where specifically appropriate, dated-occurrence
+  favorite and deprioritize preferences;
+- one private personal note field per venue, event series, or dated occurrence;
+- existing browser-local state retained only as an immediate signed-out/failure
+  fallback and one-time import source;
+- Supabase `entity_preferences` as the signed-in durable store, protected by
+  user-scoped RLS;
+- research truth remaining public/read-only and structurally separate from all
+  personal preferences and notes.
+
+Keep this personal-use implementation lean. Do not add profiles, passwords,
+sharing, social features, workflow requests, scheduled agents, a generalized
+sync engine, or elaborate failover. Validate the actual hosted magic-link flow,
+cross-refresh persistence, one second-browser/device sign-in, preference and
+note CRUD, RLS isolation, and graceful local-only behavior when signed out.
+
+If the auth tranche loses continuity, return to the tagged pre-auth checkpoint
+rather than reconstructing these decisions from chat.
 
 ## Permanent rollback checkpoint: personal-use deployment
 
@@ -101,15 +131,13 @@ event sources remain preferred for exact event facts.
 
 Immediate next tranche:
 
-1. Use `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md` as the finite research
-   queue and closure-audit baseline.
-2. Address any safety corrections first if the ledger names one.
-3. Then run the first small corrective/main-pass batch from the ledger, using
-   the corrected main-pass method in `research/SOURCE_SOP.md`.
-4. Use `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` with the graduated
-   Lean/Standard/Full validation level that matches the batch risk.
-5. Keep generated JSON as recovery/export output, not a manual canonical editing
-   surface.
+1. Implement the bounded authenticated personal-preference and private-note
+   tranche defined in the pre-auth checkpoint above.
+2. Do not resume research inside that product tranche; all remaining research
+   stays durable in `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md` and the other
+   existing trackers.
+3. After acceptance, return to the ledger rather than reconstructing research
+   priorities from task memory.
 
 Execution model:
 
