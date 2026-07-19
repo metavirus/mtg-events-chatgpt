@@ -978,7 +978,7 @@ function todayLeadKey(event) {
 }
 
 function eventCard(event, compact = false, options = {}) {
-  const { showDate = false, emphasize = false, catalog = false } = options;
+  const { showDate = false, emphasize = false, catalog = false, dense = false } = options;
   const place = store(event.storeId);
   const fit = fitLabel(event);
   const evidence = evidenceLabel(event);
@@ -994,7 +994,7 @@ function eventCard(event, compact = false, options = {}) {
     return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
   }
   const limitedChip = isPrereleaseOrSealed(event) ? '<span class="status-chip limited">Prerelease / sealed</span>' : '';
-  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
+  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${dense ? 'dense-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
     <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
@@ -1095,7 +1095,7 @@ function eventPlanningSort(a, b) {
 }
 
 function groupedDayEvents(events, options = {}) {
-  const { compact = true, drawer = false } = options;
+  const { compact = true, drawer = false, dense = false } = options;
   const crowded = events.length > 12;
   return EVENT_GROUPS.map((group) => {
     const items = events.filter((event) => eventPlanningGroup(event) === group.id).sort(eventPlanningSort);
@@ -1105,9 +1105,17 @@ function groupedDayEvents(events, options = {}) {
     const mix = drawer ? formatMix(items, 2) : '';
     return `<details class="event-priority-group group-${group.id}" ${open ? 'open' : ''}>
       <summary><span><i class="group-dot ${group.tone}"></i><strong>${group.label}</strong>${mix ? `<em>${escapeHtml(mix)}</em>` : ''}</span><span>${items.length}</span></summary>
-      <div class="event-priority-items">${items.map((event) => eventCard(event, compact)).join('')}</div>
+      <div class="event-priority-items">${items.map((event) => eventCard(event, compact, { dense })).join('')}</div>
     </details>`;
   }).join('');
+}
+
+function dayGroupCounts(events) {
+  return EVENT_GROUPS
+    .map((group) => ({ ...group, count: events.filter((event) => eventPlanningGroup(event) === group.id).length }))
+    .filter((group) => group.count)
+    .map((group) => `<span class="day-group-pill group-${group.id}"><i class="group-dot ${group.tone}"></i>${group.count} ${escapeHtml(group.label)}</span>`)
+    .join('');
 }
 
 function monthHighlightScore(event) {
@@ -1672,7 +1680,8 @@ function openDay(dayDate) {
   const date = parseDate(dayDate);
   const events = buildOccurrences(startOfDay(date), endOfDay(date));
   const mix = formatMix(events);
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Calendar day</span><span class="status-chip slate">${events.length} events</span></div><h1 id="drawerTitle">${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</h1><p class="drawer-lead">${mix || 'Every matching event currently visible for this date.'}</p><section class="drawer-section day-drawer-groups">${events.length ? groupedDayEvents(events, { compact: false, drawer: true }) : '<p class="muted-copy">No events match the active filters for this day.</p>'}</section>`);
+  const groupCounts = dayGroupCounts(events);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Calendar day</span><span class="status-chip slate">${events.length} events</span></div><h1 id="drawerTitle">${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</h1><p class="drawer-lead">${mix || 'Every matching event currently visible for this date.'}</p>${groupCounts ? `<div class="day-group-counts">${groupCounts}</div>` : ''}<section class="drawer-section day-drawer-groups">${events.length ? groupedDayEvents(events, { compact: false, drawer: true, dense: true }) : '<p class="muted-copy">No events match the active filters for this day.</p>'}</section>`);
 }
 
 function eventFitExplanation(event, place) {
