@@ -61,6 +61,7 @@ const state = {
   filters: {
     research: ['partial', 'wizards-discovery'],
     confidence: ['high', 'medium', 'low'],
+    planningGroups: ['limited', 'best', 'promising', 'verify', 'maybe', 'hidden'],
     distance: 30,
     hideCompetitive: true,
     onlyFree: false
@@ -783,6 +784,7 @@ function eventMatchesSharedFilters(event, options = {}) {
   if (!place) return false;
   if (!state.filters.research.includes(place.researchStatus)) return false;
   if (!state.filters.confidence.includes(event.confidence)) return false;
+  if (state.filters.planningGroups && !state.filters.planningGroups.includes(eventPlanningGroup(event))) return false;
   if (numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
   if (state.filters.onlyFree && Number(event.entryFee || 0) !== 0) return false;
   if (hideCompetitive && isCompetitive(event)) return false;
@@ -1848,6 +1850,7 @@ function closeFilters() {
 function applyFilters() {
   state.filters.research = [...document.querySelectorAll('input[name="research"]:checked')].map((input) => input.value);
   state.filters.confidence = [...document.querySelectorAll('input[name="confidence"]:checked')].map((input) => input.value);
+  state.filters.planningGroups = [...document.querySelectorAll('input[name="planningGroup"]:checked')].map((input) => input.value);
   state.filters.distance = Number(document.getElementById('distanceFilter').value);
   state.filters.hideCompetitive = document.getElementById('hideCompetitive').checked;
   state.filters.onlyFree = document.getElementById('onlyFree').checked;
@@ -1856,8 +1859,8 @@ function applyFilters() {
 }
 
 function resetFilters() {
-  state.filters = { research: ['partial', 'wizards-discovery'], confidence: ['high', 'medium', 'low'], distance: 30, hideCompetitive: true, onlyFree: false };
-  document.querySelectorAll('input[name="research"], input[name="confidence"]').forEach((input) => input.checked = true);
+  state.filters = { research: ['partial', 'wizards-discovery'], confidence: ['high', 'medium', 'low'], planningGroups: ['limited', 'best', 'promising', 'verify', 'maybe', 'hidden'], distance: 30, hideCompetitive: true, onlyFree: false };
+  document.querySelectorAll('input[name="research"], input[name="confidence"], input[name="planningGroup"]').forEach((input) => input.checked = true);
   document.getElementById('distanceFilter').value = 30;
   document.getElementById('distanceValue').textContent = '30 miles';
   document.getElementById('hideCompetitive').checked = true;
@@ -1868,6 +1871,7 @@ function activeFilterCount() {
   let count = 0;
   if (state.filters.research.length < 2) count++;
   if (state.filters.confidence.length < 3) count++;
+  if ((state.filters.planningGroups || []).length < 6) count++;
   if (state.filters.distance !== 30) count++;
   if (!state.filters.hideCompetitive) count++;
   if (state.filters.onlyFree) count++;
