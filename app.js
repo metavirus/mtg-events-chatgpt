@@ -98,6 +98,25 @@ function latestChangeTimestamp() {
   }, '');
 }
 
+function latestAcceptedChangeTimestamp() {
+  return DATA.changes.reduce((latest, change) => {
+    if ((change?.reviewStatus || '').toLowerCase() !== 'accepted') return latest;
+    const at = change?.detectedAt || '';
+    return at > latest ? at : latest;
+  }, '');
+}
+
+function latestDataTimestamp() {
+  const values = [
+    latestAcceptedChangeTimestamp(),
+    latestChangeTimestamp(),
+    ...DATA.stores.map((place) => place.lastVerified),
+    ...DATA.events.map((event) => event.lastVerified),
+    ...DATA.sources.map((item) => item.lastChecked)
+  ].filter(Boolean);
+  return values.sort().at(-1) || '';
+}
+
 function unreadChangesCount() {
   const seenAt = state.personal.updatesSeenAt || '';
   return DATA.changes.filter((change) => (change?.detectedAt || '') > seenAt).length;
@@ -589,6 +608,7 @@ function updateChrome() {
     highlightsToggle.title = state.highlightsCollapsed ? 'Open side panel' : 'Collapse side panel';
     highlightsToggle.textContent = state.highlightsCollapsed ? '←' : '→';
   }
+  updateFreshnessMini();
 }
 
 function source(id) { return DATA.sources.find((item) => item.id === id); }
@@ -604,6 +624,20 @@ function formatTime(value) {
   if (!value) return 'Time TBD';
   const [hours, minutes] = value.split(':').map(Number);
   return new Date(2000, 0, 1, hours, minutes).toLocaleTimeString([], { hour: 'numeric', minute: minutes ? '2-digit' : undefined });
+}
+function formatFreshnessDate(value) {
+  const text = String(value || '');
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(text) ? parseDate(text) : new Date(text);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function updateFreshnessMini() {
+  const container = document.getElementById('freshnessMini');
+  if (!container) return;
+  const latest = latestDataTimestamp();
+  const sourceLabel = state.dataSource === 'supabase' ? 'Supabase live data' : state.dataSource === 'json' ? 'JSON fallback' : 'JSON recovery fallback';
+  const latestLabel = latest ? formatFreshnessDate(latest) : 'No dated record';
+  container.innerHTML = `<span class="status-dot"></span><span>${sourceLabel}<br><strong>${escapeHtml(latestLabel)}</strong></span>`;
 }
 function eventStartTime(event) { return event.recurrence?.startTime || event.startTime; }
 function escapeHtml(value = '') { return String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]); }
@@ -1237,10 +1271,11 @@ function renderCommunities() {
 function renderChanges() {
   const allItems = [...DATA.changes].sort((a, b) => compareText(b.detectedAt, a.detectedAt));
   const items = allItems.filter((change) => changeMatchesFilter(change, state.changeFilter));
-  const latest = allItems[0]?.detectedAt ? new Date(allItems[0].detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'None yet';
+  const latestAccepted = latestAcceptedChangeTimestamp();
+  const latest = latestAccepted ? formatFreshnessDate(latestAccepted) : allItems[0]?.detectedAt ? formatFreshnessDate(allItems[0].detectedAt) : 'None yet';
   document.getElementById('changeList').innerHTML = `<div class="change-summary">
     <div><span>Visible updates</span><strong>${items.length}<small> / ${allItems.length}</small></strong><p>Use filters to separate planning-relevant changes from background research.</p></div>
-    <div><span>Latest record</span><strong>${escapeHtml(latest)}</strong><p>Opening Updates marks the current batch as seen on this device.</p></div>
+    <div><span>Latest accepted record</span><strong>${escapeHtml(latest)}</strong><p>Pending proposal rows remain labeled until accepted in the research workflow.</p></div>
     <div><span>Current filter</span><strong>${changeFilterLabel(state.changeFilter)}</strong><p>${changeFilterHelp(state.changeFilter)}</p></div>
   </div>${items.length ? items.map((change) => changeRow(change)).join('') : emptyState('No updates in this filter', 'Try All updates or a different triage category.')}`;
 }
@@ -1249,7 +1284,16 @@ function changeRow(change) {
   const tone = changeTone(change);
   const route = changeRoute(change);
   const title = changeTitle(change);
-  return `<article class="change-row"><div class="timeline-node ${tone}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><div class="change-title-row"><h3>${title}</h3><span class="change-type-chip">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span></div><p>${escapeHtml(change.details || 'The research record was updated.')}</p><div class="change-clicklets"><button class="change-action" data-route="${route}">${route === 'events' ? 'Events' : route === 'research' ? 'Coverage' : 'Places'} →</button></div></div><span class="review-state">${escapeHtml(change.reviewStatus || 'recorded')}</span></article>`;
+  const status = reviewStatusDisplay(change);
+  return `<article class="change-row"><div class="timeline-node ${tone}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><div class="change-title-row"><h3>${title}</h3><span class="change-type-chip">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span></div><p>${escapeHtml(change.details || 'The research record was updated.')}</p><div class="change-clicklets"><button class="change-action" data-route="${route}">${route === 'events' ? 'Events' : route === 'research' ? 'Coverage' : 'Places'} →</button></div></div><span class="review-state ${status.tone}">${status.label}</span></article>`;
+}
+
+function reviewStatusDisplay(change) {
+  const value = (change.reviewStatus || '').toLowerCase();
+  if (value === 'accepted') return { label: 'Accepted', tone: 'accepted' };
+  if (value === 'proposed') return { label: 'Pending proposal', tone: 'pending' };
+  if (value === 'rejected' || value === 'declined') return { label: 'Not accepted', tone: 'rejected' };
+  return { label: value ? value.replaceAll('_', ' ') : 'Recorded', tone: 'recorded' };
 }
 
 function changeTitle(change) {

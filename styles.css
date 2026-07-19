@@ -380,12 +380,14 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .rating-row { display: flex; gap: 3px; margin: 10px 0 14px; }
 .star { border: 0; background: none; color: #343c53; font-size: 20px; cursor: pointer; padding: 1px; }
 .star:hover, .star.active { color: var(--amber); }
-.source-list { display: grid; gap: 5px; }
-.source-row { min-height: 45px; display: grid; grid-template-columns: 30px 1fr auto; gap: 9px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; background: rgba(255,255,255,.018); }
+.source-list { display: grid; gap: 5px; min-width: 0; overflow-wrap: anywhere; }
+.source-row { min-height: 45px; display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 9px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; background: rgba(255,255,255,.018); }
 .source-row:hover { border-color: var(--line-strong); }
-.source-row > span:nth-child(2) { display: flex; flex-direction: column; }
-.source-row strong { font-size: 9px; }
-.source-row small { color: var(--muted); font-size: 7px; }
+.source-row > span:nth-child(2) { display: flex; flex-direction: column; min-width: 0; }
+.source-row strong { font-size: 9px; overflow-wrap: anywhere; }
+.source-row small { color: var(--muted); font-size: 7px; overflow-wrap: anywhere; }
+.source-row.prominent { grid-template-columns: 32px minmax(0, 1fr) auto; }
+.evidence-list { min-width: 0; overflow-wrap: anywhere; }
 .source-icon { width: 27px; height: 27px; border-radius: 7px; display: grid; place-items: center; background: var(--panel-3); color: var(--sky); }
 .muted-copy { color: var(--muted); font-size: 11px; }
 
@@ -436,6 +438,9 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .change-action { width: fit-content; border: 1px solid rgba(92,181,255,.24); border-radius: 999px; background: rgba(92,181,255,.06); color: var(--sky); padding: 4px 9px; font: 700 9px var(--font); cursor: pointer; }
 .change-action:hover { border-color: rgba(92,181,255,.45); background: rgba(92,181,255,.11); }
 .review-state { color: var(--muted-2); font-size: 9px; text-transform: uppercase; margin-top: 4px; }
+.review-state.accepted { color: var(--mint); }
+.review-state.pending { color: var(--amber); }
+.review-state.rejected { color: var(--coral); }
 
 .research-stats { display: grid; grid-template-columns: 1.25fr repeat(3, 1fr); gap: 11px; margin-bottom: 14px; }
 .research-stat { min-height: 145px; padding: 17px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); display: flex; flex-direction: column; text-align: left; }
