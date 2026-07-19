@@ -262,6 +262,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .event-priority-group > summary > span { display: flex; align-items: center; gap: 5px; min-width: 0; }
 .event-priority-group > summary > span:last-child { min-width: 20px; justify-content: center; padding: 2px 5px; border-radius: 999px; background: rgba(255,255,255,.045); font-variant-numeric: tabular-nums; }
 .event-priority-group > summary strong { color: #dbe1ef; font-size: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.event-priority-group > summary em { color: var(--muted-2); font-size: 8px; font-style: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .event-priority-group[open] > summary { border-bottom: 1px solid rgba(255,255,255,.045); }
 .group-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); flex: 0 0 auto; }
 .group-dot.mint { background: var(--mint); }.group-dot.sky { background: var(--sky); }.group-dot.amber, .group-dot.limited { background: var(--amber); }.group-dot.slate { background: var(--muted); }
@@ -271,9 +272,11 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .month-cell { min-height: 142px; padding: 7px; border: 1px solid var(--line); border-radius: 8px; background: rgba(17,22,37,.72); }
 .month-cell.weekend-cell { background: rgba(139,124,255,.035); }
 .month-cell.past { opacity: .46; }
-.month-cell > header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.month-cell > header { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 5px; }
 .month-cell > header span { font: 700 11px var(--display); }
+.month-cell > header div { min-width: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
 .month-cell > header em { font-size: 7px; color: var(--violet); font-style: normal; }
+.month-cell > header small { max-width: 100%; color: var(--muted-2); font-size: 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .month-cell > div { display: grid; gap: 4px; }
 .more-day { width: 100%; padding: 4px 2px; border: 0; background: none; color: var(--sky); font-size: 8px; line-height: 1.25; text-align: left; cursor: pointer; }
 

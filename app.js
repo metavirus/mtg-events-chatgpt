@@ -1085,12 +1085,15 @@ function eventPlanningSort(a, b) {
 
 function groupedDayEvents(events, options = {}) {
   const { compact = true, drawer = false } = options;
+  const crowded = events.length > 12;
   return EVENT_GROUPS.map((group) => {
     const items = events.filter((event) => eventPlanningGroup(event) === group.id).sort(eventPlanningSort);
     if (!items.length) return '';
-    const open = drawer ? ['limited', 'best', 'promising'].includes(group.id) : ['limited', 'best'].includes(group.id);
+    const openGroups = drawer && !crowded ? ['limited', 'best', 'promising'] : ['limited', 'best'];
+    const open = openGroups.includes(group.id);
+    const mix = drawer ? formatMix(items, 2) : '';
     return `<details class="event-priority-group group-${group.id}" ${open ? 'open' : ''}>
-      <summary><span><i class="group-dot ${group.tone}"></i><strong>${group.label}</strong></span><span>${items.length}</span></summary>
+      <summary><span><i class="group-dot ${group.tone}"></i><strong>${group.label}</strong>${mix ? `<em>${escapeHtml(mix)}</em>` : ''}</span><span>${items.length}</span></summary>
       <div class="event-priority-items">${items.map((event) => eventCard(event, compact)).join('')}</div>
     </details>`;
   }).join('');
@@ -1105,7 +1108,11 @@ function monthHighlightScore(event) {
 }
 
 function monthHighlights(events, limit = 3) {
-  return [...events].sort((a, b) => monthHighlightScore(b) - monthHighlightScore(a) || eventPlanningSort(a, b)).slice(0, limit);
+  const sorted = [...events].sort((a, b) => monthHighlightScore(b) - monthHighlightScore(a) || eventPlanningSort(a, b));
+  const stronger = sorted.filter((event) => ['limited', 'best', 'promising'].includes(eventPlanningGroup(event)));
+  const verify = sorted.filter((event) => eventPlanningGroup(event) === 'verify');
+  const lower = sorted.filter((event) => eventPlanningGroup(event) === 'maybe');
+  return [...stronger, ...verify, ...lower].slice(0, limit);
 }
 
 function dayMoreLabel(events, visibleEvents) {
@@ -1131,7 +1138,7 @@ function renderMonth(events) {
     const date = addDays(gridStart, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
     const highlights = monthHighlights(dayEvents);
-    html += `<section class="month-cell ${date < startOfDay(new Date()) ? 'past' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${highlights.map((event) => eventCard(event, true)).join('')}${dayEvents.length > highlights.length ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">${dayMoreLabel(dayEvents, highlights)}</button>` : ''}</div></section>`;
+    html += `<section class="month-cell ${date < startOfDay(new Date()) ? 'past' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span><div>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}${dayEvents.length ? `<small>${dayEvents.length} · ${formatMix(dayEvents, 1)}</small>` : ''}</div></header><div>${highlights.map((event) => eventCard(event, true)).join('')}${dayEvents.length > highlights.length ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">${dayMoreLabel(dayEvents, highlights)}</button>` : ''}</div></section>`;
   }
   document.getElementById('calendarContent').innerHTML = `${html}</div>`;
 }
@@ -1376,7 +1383,7 @@ function renderEventCatalogMonth(events, start) {
     const date = addDays(gridStart, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
     const highlights = monthHighlights(dayEvents);
-    html += `<section class="month-cell ${date < startOfDay(new Date()) ? 'past' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}</header><div>${highlights.map((event) => eventCard(event, true)).join('')}${dayEvents.length > highlights.length ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">${dayMoreLabel(dayEvents, highlights)}</button>` : ''}</div></section>`;
+    html += `<section class="month-cell ${date < startOfDay(new Date()) ? 'past' : ''} ${isWeekend(date) ? 'weekend-cell' : ''}"><header><span>${date.getDate()}</span><div>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}${dayEvents.length ? `<small>${dayEvents.length} · ${formatMix(dayEvents, 1)}</small>` : ''}</div></header><div>${highlights.map((event) => eventCard(event, true)).join('')}${dayEvents.length > highlights.length ? `<button class="more-day" data-action="day-popover" data-day-date="${dateKey(date)}">${dayMoreLabel(dayEvents, highlights)}</button>` : ''}</div></section>`;
   }
   return `${html}</div>`;
 }
