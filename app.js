@@ -144,8 +144,8 @@ async function load() {
       await loadFromSupabase();
       state.dataSource = 'supabase';
       state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
-      initialize();
       await initializePersonalAuth();
+      initialize();
       return;
     } catch (error) {
       console.warn('Supabase read failed; falling back to JSON snapshot.', error);
@@ -156,8 +156,8 @@ async function load() {
   }
   await loadFromJson();
   state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
-  initialize();
   await initializePersonalAuth();
+  initialize();
 }
 
 async function initializePersonalAuth() {
