@@ -7,6 +7,8 @@ JSON snapshot remains available as explicit recovery/export fallback.
 
 - `migrations/0001_initial_schema.sql` creates the research, personal, and
   agent-request tables, indexes, triggers, grants, and row-level security.
+- `migrations/20260719020241_add_venue_hours.sql` adds the optional
+  source-backed venue-hours table used by Places.
 - `seed/0001_current_snapshot.sql` is generated from the current canonical JSON
   by `scripts/generate_supabase_seed.py`.
 - `scripts/verify_supabase_parity.py` compares the imported row IDs with the

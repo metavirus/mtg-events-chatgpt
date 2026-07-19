@@ -160,6 +160,14 @@ async function loadFromJson() {
     if (!response.ok) throw new Error(`Could not load ${key}.json`);
     DATA[key] = await response.json();
   }
+  DATA.stores = DATA.stores.map(normalizeJsonPlace);
+}
+
+function normalizeJsonPlace(place) {
+  return {
+    ...place,
+    hours: normalizePlaceHours(place.hours || place.assessment?.hours)
+  };
 }
 
 async function loadFromSupabase() {
@@ -172,17 +180,19 @@ async function loadFromSupabase() {
     supabaseRows('event_occurrences'),
     supabaseRows('event_sources'),
     supabaseRows('evaluations'),
-    supabaseRows('research_changes')
+    supabaseRows('research_changes'),
+    supabaseRowsOptional('venue_hours')
   ]);
-  const [venues, communities, sources, entitySources, series, occurrences, eventSources, evaluations, changes] = tables;
+  const [venues, communities, sources, entitySources, series, occurrences, eventSources, evaluations, changes, venueHours] = tables;
   const evaluationByEntity = new Map(evaluations.map((item) => [`${item.entity_type}:${item.entity_id}`, item]));
+  const hoursByVenue = new Map(venueHours.map((item) => [item.venue_id, item]));
   const sourceIdsByEntity = groupValues(entitySources, (item) => `${item.entity_type}:${item.entity_id}`, (item) => item.source_id);
   const sourcesBySeries = groupValues(eventSources.filter((item) => item.series_id), (item) => item.series_id, (item) => item.source_id);
   const sourcesByOccurrence = groupValues(eventSources.filter((item) => item.occurrence_id), (item) => item.occurrence_id, (item) => item.source_id);
   const seriesById = new Map(series.map((item) => [item.id, item]));
   const occurrenceSeriesIds = new Set(occurrences.map((item) => item.series_id));
 
-  DATA.stores = venues.map((item) => mapVenue(item, sourceIdsByEntity, evaluationByEntity));
+  DATA.stores = venues.map((item) => mapVenue(item, sourceIdsByEntity, evaluationByEntity, hoursByVenue));
   DATA.sources = sources.map(mapSource);
   DATA.changes = changes.map(mapResearchChange);
   DATA.events = [
@@ -211,6 +221,15 @@ async function supabaseRows(table) {
   return response.json();
 }
 
+async function supabaseRowsOptional(table) {
+  try {
+    return await supabaseRows(table);
+  } catch (error) {
+    console.warn(`Optional Supabase table ${table} is not available yet.`, error);
+    return [];
+  }
+}
+
 function groupValues(items, keyFn, valueFn) {
   const grouped = new Map();
   for (const item of items) {
@@ -221,7 +240,9 @@ function groupValues(items, keyFn, valueFn) {
   return grouped;
 }
 
-function mapVenue(item, sourceIdsByEntity, evaluationByEntity) {
+function mapVenue(item, sourceIdsByEntity, evaluationByEntity, hoursByVenue = new Map()) {
+  const assessment = item.assessment || {};
+  const hours = hoursByVenue.get(item.id);
   return {
     id: item.id,
     name: item.name,
@@ -238,9 +259,36 @@ function mapVenue(item, sourceIdsByEntity, evaluationByEntity) {
     researchStatus: normalizeResearchStatusForUi(item.research_status),
     researchStage: item.research_status,
     evaluation: mapEvaluation(evaluationByEntity.get(`venue:${item.id}`)),
-    assessment: item.assessment || {},
+    assessment,
+    hours: normalizePlaceHours(hours ? mapVenueHours(hours) : assessment.hours),
     assessmentNotes: item.assessment_notes || '',
     sourceIds: sourceIdsByEntity.get(`venue:${item.id}`) || []
+  };
+}
+
+function mapVenueHours(item) {
+  return {
+    status: item.status,
+    weekly: item.weekly_hours,
+    temporary: item.temporary_updates,
+    sourceId: item.source_id,
+    lastVerified: item.last_verified,
+    note: item.notes
+  };
+}
+
+function normalizePlaceHours(value) {
+  const hours = value && typeof value === 'object' ? value : {};
+  const status = ['verified', 'variable', 'stale', 'unknown'].includes(hours.status) ? hours.status : 'unknown';
+  const weekly = hours.weekly && typeof hours.weekly === 'object' ? hours.weekly : {};
+  const temporary = Array.isArray(hours.temporary) ? hours.temporary : [];
+  return {
+    status,
+    weekly,
+    temporary,
+    sourceId: hours.sourceId || '',
+    lastVerified: hours.lastVerified || '',
+    note: hours.note || ''
   };
 }
 
@@ -1182,6 +1230,59 @@ function placeEvaluationSummary(place) {
   <section class="detail-section assessment-snapshot"><div><p class="eyebrow">Pluses</p><ul>${evaluation.positives.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No strong positive factors are recorded yet.</li>'}</ul></div><div><p class="eyebrow">Cautions</p><ul>${evaluation.cautions.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No specific caution has been recorded yet.</li>'}</ul></div><div><p class="eyebrow">Open questions</p><ul>${evaluation.openQuestions.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No open question is recorded yet.</li>'}</ul></div></section>`;
 }
 
+function placeHoursSummary(place) {
+  const hours = place.hours || normalizePlaceHours();
+  const sourceItem = hours.sourceId ? source(hours.sourceId) : null;
+  const today = new Date().getDay();
+  const todaySlots = hours.weekly?.[String(today)] || hours.weekly?.[dayKeyName(today)] || [];
+  const temporary = activeTemporaryHours(hours.temporary);
+  const status = temporary?.status || hours.status || 'unknown';
+  const tone = status === 'verified' ? 'mint' : status === 'variable' ? 'amber' : status === 'stale' ? 'coral' : 'slate';
+  const label = temporary?.label || hoursStatusLabel(status);
+  const todayLabel = temporary?.label || formatHoursSlots(todaySlots) || (status === 'unknown' ? 'Unknown today' : 'Check before going');
+  const note = temporary?.note || hours.note || hoursStatusNote(status);
+  const sourceLine = sourceItem
+    ? `<a href="${escapeHtml(sourceItem.url)}" target="_blank" rel="noreferrer">${escapeHtml(sourceItem.label)} ↗</a>`
+    : 'No hours source captured yet';
+  return `<section class="detail-section hours-section"><div class="section-title-row"><div><p class="eyebrow">Store hours</p><h3>${escapeHtml(todayLabel)}</h3></div><span class="status-chip ${tone}">${escapeHtml(label)}</span></div><p class="analysis-copy">${escapeHtml(note)}</p><div class="hours-meta"><span>Last checked: ${escapeHtml(hours.lastVerified || place.lastVerified || 'Unknown')}</span><span>${sourceLine}</span></div>${hoursWeekGrid(hours.weekly)}</section>`;
+}
+
+function dayKeyName(index) {
+  return ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][index];
+}
+
+function hoursStatusLabel(status) {
+  if (status === 'verified') return 'Verified hours';
+  if (status === 'variable') return 'Check first';
+  if (status === 'stale') return 'Stale hours';
+  return 'Hours unknown';
+}
+
+function hoursStatusNote(status) {
+  if (status === 'verified') return 'These hours have a captured source and recent enough verification to use for ordinary planning.';
+  if (status === 'variable') return 'Hours appear to vary or depend on the event/source. Check the linked source before relying on them.';
+  if (status === 'stale') return 'These hours are preserved for context, but they are old enough that they should not be treated as current.';
+  return 'No structured weekly hours have been captured yet. Event times may still be valid, but ordinary opening hours need a source-backed pass.';
+}
+
+function formatHoursSlots(slots) {
+  const list = Array.isArray(slots) ? slots : [];
+  if (!list.length) return '';
+  if (list.some((slot) => slot?.closed)) return 'Closed today';
+  return list.map((slot) => `${formatTime(slot.open)}-${formatTime(slot.close)}`).join(', ');
+}
+
+function activeTemporaryHours(items) {
+  const today = dateKey(new Date());
+  return (items || []).find((item) => (!item.startDate || item.startDate <= today) && (!item.endDate || item.endDate >= today));
+}
+
+function hoursWeekGrid(weekly = {}) {
+  const hasHours = Object.keys(weekly || {}).length > 0;
+  if (!hasHours) return '';
+  return `<div class="hours-week">${Array.from({ length: 7 }, (_, index) => `<div><span>${dayKeyName(index).slice(0, 3)}</span><strong>${escapeHtml(formatHoursSlots(weekly[String(index)] || weekly[dayKeyName(index)]) || 'Unknown')}</strong></div>`).join('')}</div>`;
+}
+
 function renderEventCatalog() {
   const catalogRange = eventCatalogRange();
   const rawStart = state.eventCatalogView === 'list' ? startOfDay(new Date()) : catalogRange.start;
@@ -1317,7 +1418,7 @@ function placeTabContent(place, placeEvents, sources, rating) {
   if (state.selectedPlaceTab === 'evidence') {
     return `<section class="detail-section tab-intro"><p class="eyebrow">Evidence coverage</p><h3>${sources.length} connected sources</h3><p class="analysis-copy">Sources are retained separately from the analyst synthesis. A strong venue can have a weak social channel, and silence on one source is not proof that an event does not exist.</p></section><section class="detail-section"><div class="source-health-summary"><div><span>Research status</span><strong>${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</strong></div><div><span>Last venue check</span><strong>${escapeHtml(place.lastVerified || 'Unknown')}</strong></div><div><span>Source count</span><strong>${sources.length}</strong></div></div><div class="source-list evidence-list">${sources.length ? sources.map((item) => sourceRow(item, true)).join('') : '<p class="muted-copy">No normalized sources are linked yet.</p>'}</div></section><section class="detail-section"><p class="eyebrow">Interpretive boundary</p><h3>What remains uncertain</h3><p class="analysis-copy">Fields not stated by the connected sources remain unknown. In particular, proxy policy, pod formation, typical power level, and solo-arrival experience should not be inferred from silence.</p></section>`;
   }
-  return `${placeEvaluationSummary(place)}<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Why it’s on the radar</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p></section>
+  return `${placeEvaluationSummary(place)}${placeHoursSummary(place)}<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Why it’s on the radar</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p></section>
     <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Fit dimensions</p><h3>Current working assessment</h3></div><button class="why-button" data-action="explain-scores">Why these scores?</button></div><div class="score-bars">${assessmentBars(place)}</div></section>
     <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Known schedule</p><h3>Event series</h3></div><button class="text-button" data-place-tab="events">See all events</button></div><div class="series-list">${placeEvents.length ? placeEvents.slice(0, 4).map((event) => seriesRow(event)).join('') : '<p class="muted-copy">No normalized event series yet. This is not proof that the venue has no Magic events.</p>'}</div></section>
     <section class="detail-section two-column-section"><div><p class="eyebrow">Personal continuity</p><h3>Your rating & notes</h3><div class="rating-row" aria-label="Rate this place">${[1,2,3,4,5].map((value) => `<button class="star ${value <= rating ? 'active' : ''}" data-rating="${value}" data-entity="place:${place.id}" aria-label="${value} stars">★</button>`).join('')}</div>${noteComposer(`place:${place.id}`, 'What did it feel like in person?')}</div><div><p class="eyebrow">Source map</p><h3>${sources.length} connected sources</h3><div class="source-list">${sources.slice(0, 5).map((item) => sourceRow(item)).join('') || '<p class="muted-copy">Source mapping incomplete.</p>'}</div><button class="text-button evidence-jump" data-place-tab="evidence">Review all evidence →</button></div></section>`;
@@ -1325,7 +1426,7 @@ function placeTabContent(place, placeEvents, sources, rating) {
 
 function assessmentBars(place) {
   const labels = { commanderActivity: 'Commander activity', meetupAccessibility: 'Solo-arrival access', communityContinuity: 'Community continuity', newPlayerIntegration: 'New-player integration', physicalEnvironment: 'Physical environment', scheduleReliability: 'Schedule reliability', homeGroupPotential: 'Home-pod potential' };
-  return Object.entries(place.assessment || {}).map(([key, value]) => `<div class="score-row"><span>${labels[key] || key}</span><div class="score-track"><i style="width:${value * 20}%"></i></div><strong>${value}/5</strong></div>`).join('');
+  return Object.entries(place.assessment || {}).filter(([, value]) => typeof value === 'number').map(([key, value]) => `<div class="score-row"><span>${labels[key] || key}</span><div class="score-track"><i style="width:${value * 20}%"></i></div><strong>${value}/5</strong></div>`).join('');
 }
 
 function scoreBreakdown(place) {
@@ -1347,7 +1448,7 @@ function scoreBreakdown(place) {
     scheduleReliability: 'How dependable the recurring schedule looks across official and secondary surfaces.',
     homeGroupPotential: 'Whether the place seems promising for meeting nearby people you might play with again.'
   };
-  return Object.entries(place.assessment || {}).map(([key, value]) => `
+  return Object.entries(place.assessment || {}).filter(([, value]) => typeof value === 'number').map(([key, value]) => `
     <div class="dimension-card">
       <div class="dimension-head">
         <strong>${labels[key] || key}</strong>

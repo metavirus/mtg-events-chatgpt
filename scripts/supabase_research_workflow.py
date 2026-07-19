@@ -109,6 +109,16 @@ TABLES: dict[str, dict[str, Any]] = {
         "arrays": {"positives", "cautions", "open_questions"},
         "identity_name": "evaluation",
     },
+    "venue_hours": {
+        "id": ["venue_id"],
+        "required_insert": ["venue_id"],
+        "fields": {
+            "venue_id", "status", "weekly_hours", "temporary_updates",
+            "source_id", "last_verified", "notes",
+        },
+        "jsonb": {"weekly_hours", "temporary_updates"},
+        "identity_name": "venue hours",
+    },
     "research_changes": {
         "id": ["id"],
         "required_insert": [
@@ -143,6 +153,7 @@ ENUMS = {
     "evaluations.entity_type": {"venue", "community"},
     "evaluations.research_status": {"discovery", "reviewed", "deepened"},
     "evaluations.candidate_status": {"promoted", "neutral", "deprioritized"},
+    "venue_hours.status": {"verified", "variable", "stale", "unknown"},
 }
 
 DATE_FIELDS = {
@@ -277,6 +288,7 @@ def load_local_snapshot() -> dict[str, list[dict[str, Any]]]:
         "entity_sources": entity_sources,
         "event_sources": event_sources,
         "evaluations": evaluations,
+        "venue_hours": [],
         "research_changes": changes,
     }
 
@@ -291,6 +303,7 @@ def load_export_snapshot(output_dir: Path) -> dict[str, list[dict[str, Any]]]:
         "event_occurrences": "event_occurrences.json",
         "event_sources": "event_sources.json",
         "evaluations": "evaluations.json",
+        "venue_hours": "venue_hours.json",
         "research_changes": "changes.json",
     }
     snapshot: dict[str, list[dict[str, Any]]] = {}
@@ -452,6 +465,9 @@ def validate_relationships(index: int, table: str, fields: dict[str, Any], index
             require("venues", fields.get("entity_id"), "venue")
         elif entity_type == "community":
             require("communities", fields.get("entity_id"), "community")
+    elif table == "venue_hours":
+        require("venues", fields.get("venue_id"), "venue")
+        require("sources", fields.get("source_id"), "source")
     elif table == "research_changes":
         entity_type = fields.get("entity_type")
         entity_id = fields.get("entity_id")
@@ -596,6 +612,7 @@ def export_supabase(output_dir: Path) -> None:
         "event_occurrences.json": "event_occurrences",
         "event_sources.json": "event_sources",
         "evaluations.json": "evaluations",
+        "venue_hours.json": "venue_hours",
         "changes.json": "research_changes",
         "dataset_metadata.json": "dataset_metadata",
     }
