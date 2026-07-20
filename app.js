@@ -59,6 +59,7 @@ const state = {
   search: '',
   selectedPlaceId: null,
   selectedPlaceTab: 'overview',
+  communitySurfaceFilter: 'priority',
   placeFilter: 'all',
   placeSort: 'name',
   filters: {
@@ -732,6 +733,13 @@ function handleClick(event) {
     state.placeSort = placeSort.dataset.placeSort;
     document.querySelectorAll('[data-place-sort]').forEach((button) => button.classList.toggle('active', button === placeSort));
     renderPlaces();
+    return;
+  }
+
+  const communityFilter = event.target.closest('[data-community-filter]');
+  if (communityFilter) {
+    state.communitySurfaceFilter = communityFilter.dataset.communityFilter;
+    renderCommunities();
     return;
   }
 
@@ -1847,6 +1855,8 @@ function renderCommunities() {
   const communities = state.favoritesOnly ? COMMUNITY_SEED.filter((community) => state.personal.favorites[`community:${community.id}`]) : COMMUNITY_SEED;
   const surfaces = communitySurfaces();
   const visibleSurfaces = state.favoritesOnly ? surfaces.filter((surface) => state.personal.favorites[`venue:${surface.place?.id}`] || state.personal.favorites[`community:${surface.community?.id}`]) : surfaces;
+  const prioritySurfaces = visibleSurfaces.filter((surface) => surface.priorityScore >= 70).slice(0, 7);
+  const filteredSurfaces = filterCommunitySurfaces(visibleSurfaces);
   const needsReplay = surfaces.filter((surface) => surface.replayStatus === 'needs_replay').length;
   const inspected = surfaces.filter((surface) => surface.replayStatus === 'inspected').length;
   const followed = COMMUNITY_SEED.filter((community) => state.personal.favorites[`community:${community.id}`]).length;
@@ -1854,13 +1864,12 @@ function renderCommunities() {
     <div><span>Formal groups</span><strong>${COMMUNITY_SEED.length}</strong><p>Independent or regional community records remain separate from venues.</p></div>
     <div><span>Venue-linked surfaces</span><strong>${surfaces.length}</strong><p>Discords, Linktrees, socials, Meetups, and community discussions already captured as Evidence.</p></div>
     <div><span>Replay queue</span><strong>${needsReplay} TBD · ${inspected} inspected</strong><p>Route captured does not mean content has been read or proven useful.</p></div>
-  </div><section class="community-section"><div class="section-title-row"><div><p class="eyebrow">Formal / regional</p><h2>Communities as groups</h2></div><span class="status-chip slate">${followed} followed</span></div><div class="community-card-grid">${communities.map((community) => {
+  </div>${communitySurfaceSection('Inspect next', 'Highest-value existing routes to check first for coordination, turnout, proxy policy, cancellations, LFG, or source-conflict resolution.', prioritySurfaces, { priority: true })}
+  <section class="community-section"><div class="section-title-row"><div><p class="eyebrow">Formal / regional</p><h2>Communities as groups</h2></div><span class="status-chip slate">${followed} followed</span></div><div class="community-card-grid">${communities.map((community) => {
     const favorite = state.personal.favorites[`community:${community.id}`];
     return `<article class="community-card" data-community-id="${community.id}" tabindex="0"><div class="community-card-top"><span class="community-symbol">◎</span><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${community.id}" aria-label="${favorite ? 'Remove community from' : 'Add community to'} favorites" title="Favorite community">${heartIcon()}</button></div><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><h2>${escapeHtml(community.name)}</h2><p class="community-region">${escapeHtml(community.region)}</p><p>${escapeHtml(community.summary)}</p><div class="community-tags">${community.formats.map((format) => `<span class="meta-chip">${format}</span>`).join('')}<span class="meta-chip">${community.channel}</span></div><div class="community-facts"><div><span>Linked to</span><strong>Regional / organizer surface</strong></div><div><span>Content status</span><strong>${community.status === 'partial' ? 'Partially inspected' : 'Discovery lead'}</strong></div></div><div class="community-next"><span>Next check</span><p>${escapeHtml(community.nextQuestion)}</p></div><span class="open-cue">Open community profile →</span></article>`;
   }).join('') || emptyState('No communities match', 'Try turning off Favorites or adding a community to your followed list first.')}</div></section>
-  ${communitySurfaceSection('Needs replay', 'Captured routes whose content has not been inspected enough to support fit or reliability conclusions.', visibleSurfaces.filter((surface) => surface.replayStatus === 'needs_replay'))}
-  ${communitySurfaceSection('Inspected or synthesized', 'Community/social surfaces with accepted synthesis or concrete inspected content already in Evidence.', visibleSurfaces.filter((surface) => surface.replayStatus === 'inspected'))}
-  ${communitySurfaceSection('Low-value or stale routes', 'Useful context, but not currently strong enough to drive planning without another pass.', visibleSurfaces.filter((surface) => surface.replayStatus === 'stale_or_low'))}`;
+  <section class="community-section"><div class="section-title-row"><div><p class="eyebrow slate">Route queue</p><h2>All captured surfaces</h2><p class="muted-copy">Collapsed by default; use this when you need the underlying inventory.</p></div></div><details class="community-route-queue"><summary>Browse ${filteredSurfaces.length} filtered route${filteredSurfaces.length === 1 ? '' : 's'}</summary>${communitySurfaceFilters()}<div class="community-surface-list">${filteredSurfaces.length ? filteredSurfaces.map(communitySurfaceCard).join('') : '<p class="muted-copy">No surfaces match this filter.</p>'}</div></details></section>`;
 }
 
 function communitySurfaces() {
@@ -1873,7 +1882,7 @@ function communitySurfaces() {
       const key = `${place.id}:${src.id}`;
       if (seen.has(key)) continue;
       seen.add(key);
-      surfaces.push({ id: key, source: src, place, ...communitySurfaceMeta(src, place) });
+      surfaces.push(completeCommunitySurface({ id: key, source: src, place, ...communitySurfaceMeta(src, place) }));
     }
   }
   for (const community of COMMUNITY_SEED) {
@@ -1883,10 +1892,15 @@ function communitySurfaces() {
       const key = `${community.id}:${src.id}`;
       if (seen.has(key)) continue;
       seen.add(key);
-      surfaces.push({ id: key, source: src, community, ...communitySurfaceMeta(src, null, community) });
+      surfaces.push(completeCommunitySurface({ id: key, source: src, community, ...communitySurfaceMeta(src, null, community) }));
     }
   }
   return surfaces.sort((a, b) => communitySurfaceRank(b) - communitySurfaceRank(a) || compareText(a.source.label, b.source.label));
+}
+
+function completeCommunitySurface(surface) {
+  const priorityScore = communityPriorityScore(surface);
+  return { ...surface, priorityScore, priorityReason: communityPriorityReason(surface, priorityScore) };
 }
 
 function isCommunitySurfaceSource(src) {
@@ -1934,12 +1948,65 @@ function communitySurfaceRank(surface) {
   const kindScore = surface.kind === 'Discord' ? 40 : surface.kind === 'Linktree/router' ? 28 : ['Meetup', 'Instagram', 'Facebook'].includes(surface.kind) ? 22 : 12;
   const statusScore = surface.replayStatus === 'needs_replay' ? 20 : surface.replayStatus === 'inspected' ? 16 : 4;
   const signalScore = surface.relatedSignals.length ? 15 : 0;
-  return kindScore + statusScore + signalScore;
+  return kindScore + statusScore + signalScore + communityPriorityScore(surface);
 }
 
-function communitySurfaceSection(title, copy, surfaces) {
+function communityPriorityScore(surface) {
+  const place = surface.place;
+  const text = `${surface.source.label || ''} ${surface.source.url || ''} ${place?.assessmentNotes || ''}`.toLowerCase();
+  let score = 0;
+  if (place?.distance != null && Number(place.distance) <= 12) score += 22;
+  if (place?.researchStatus === 'partial') score += 10;
+  if (place && (normalizedEvaluation(place)?.fitScore || 0) >= 3.8) score += 18;
+  if (state.personal.favorites[`place:${place?.id}`] || state.personal.favorites[`community:${surface.community?.id}`]) score += 25;
+  if (surface.kind === 'Discord') score += 24;
+  if (surface.replayStatus === 'needs_replay') score += 16;
+  if (surface.relatedSignals.length) score += 20;
+  if (/source|stale|conflict|calendar|event|tournament|announcement|commander|draft|prerelease|proxy|lfg/.test(text)) score += 14;
+  if (surface.replayStatus === 'stale_or_low') score -= 18;
+  return score;
+}
+
+function communityPriorityReason(surface, score) {
+  const place = surface.place;
+  const text = `${surface.source.label || ''} ${surface.source.url || ''}`.toLowerCase();
+  if (surface.relatedSignals.length) return 'Linked to an active Signal.';
+  if (surface.kind === 'Discord' && /magic and monsters/i.test(place?.name || '')) return 'Likely to clarify current MTG commitment after source-health concerns.';
+  if (surface.kind === 'Discord' && /projectccg/i.test(place?.name || '')) return 'Likely to reveal branch-specific coordination and event reliability.';
+  if (surface.kind === 'Discord' && /jjs|jj's/i.test(place?.name || '')) return 'Already yielded Magic announcement/event graphics, so it is a high-signal route.';
+  if (surface.kind === 'Discord' && place?.distance != null && Number(place.distance) <= 12) return 'Nearby Discord route could answer turnout, proxy, and cancellation questions quickly.';
+  if (/linktr/.test(text)) return 'Router may expose the real calendar, Discord, or registration path.';
+  if (/meetup|reddit|community discussion/.test(text)) return 'Community surface may explain where people coordinate outside store calendars.';
+  if (place && (normalizedEvaluation(place)?.fitScore || 0) >= 3.8) return 'High-fit venue; community route may change whether it is worth trying soon.';
+  if (score >= 70) return 'Good mix of relevance, route type, and unresolved coordination value.';
+  return 'Useful context, but not a top inspection target unless this venue becomes relevant.';
+}
+
+function filterCommunitySurfaces(surfaces) {
+  const filter = state.communitySurfaceFilter;
+  if (filter === 'discord') return surfaces.filter((surface) => surface.kind === 'Discord');
+  if (filter === 'needs') return surfaces.filter((surface) => surface.replayStatus === 'needs_replay');
+  if (filter === 'inspected') return surfaces.filter((surface) => surface.replayStatus === 'inspected');
+  if (filter === 'nearby') return surfaces.filter((surface) => surface.priorityScore >= 70);
+  if (filter === 'low') return surfaces.filter((surface) => surface.replayStatus === 'stale_or_low' || surface.priorityScore < 45);
+  return surfaces.filter((surface) => surface.priorityScore >= 45).slice(0, 18);
+}
+
+function communitySurfaceFilters() {
+  const filters = [
+    ['priority', 'High value'],
+    ['discord', 'Discord only'],
+    ['needs', 'Needs replay'],
+    ['inspected', 'Inspected'],
+    ['nearby', 'Nearby / fit'],
+    ['low', 'Low priority']
+  ];
+  return `<div class="community-filter-row">${filters.map(([value, label]) => `<button class="${state.communitySurfaceFilter === value ? 'active' : ''}" data-community-filter="${value}">${label}</button>`).join('')}</div>`;
+}
+
+function communitySurfaceSection(title, copy, surfaces, options = {}) {
   if (!surfaces.length) return '';
-  return `<section class="community-section"><div class="section-title-row"><div><p class="eyebrow ${title === 'Needs replay' ? 'amber' : title === 'Inspected or synthesized' ? 'mint' : 'coral'}">${surfaces.length} surface${surfaces.length === 1 ? '' : 's'}</p><h2>${escapeHtml(title)}</h2><p class="muted-copy">${escapeHtml(copy)}</p></div></div><div class="community-surface-list">${surfaces.map(communitySurfaceCard).join('')}</div></section>`;
+  return `<section class="community-section ${options.priority ? 'community-priority-section' : ''}"><div class="section-title-row"><div><p class="eyebrow ${options.priority ? 'mint' : title === 'Needs replay' ? 'amber' : title === 'Inspected or synthesized' ? 'mint' : 'coral'}">${surfaces.length} route${surfaces.length === 1 ? '' : 's'}</p><h2>${escapeHtml(title)}</h2><p class="muted-copy">${escapeHtml(copy)}</p></div></div><div class="community-surface-list ${options.priority ? 'priority-list' : ''}">${surfaces.map(communitySurfaceCard).join('')}</div></section>`;
 }
 
 function communitySurfaceCard(surface) {
@@ -1958,7 +2025,7 @@ function communitySurfaceCard(surface) {
   return `<article class="community-surface-card">
     <div class="community-surface-head"><span class="community-symbol small">${communitySurfaceIcon(surface.kind)}</span><div><h3>${escapeHtml(surface.source.label)}</h3><p>${targetButton}</p></div><span class="status-chip ${status.tone}">${status.label}</span></div>
     <div class="community-facts"><div><span>Surface type</span><strong>${escapeHtml(surface.kind)}</strong></div><div><span>Last checked</span><strong>${escapeHtml(surface.source.lastChecked || 'Unknown')}</strong></div><div><span>Monitoring status</span><strong>${escapeHtml(surface.suggestedAction)}</strong></div></div>
-    <p>${escapeHtml(surface.whyCare)}</p>
+    <p><strong>${escapeHtml(surface.priorityReason)}</strong> ${escapeHtml(surface.whyCare)}</p>
     <div class="community-tags"><span class="meta-chip">${escapeHtml(surface.source.status || 'unknown')}</span>${signalLinks}<a class="meta-chip link-chip" href="${escapeHtml(surface.source.url)}" target="_blank" rel="noreferrer">Open source ↗</a></div>
   </article>`;
 }
