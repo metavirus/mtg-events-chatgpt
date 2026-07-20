@@ -3,7 +3,7 @@
 - Date: 2026-07-20
 - Mode: bounded manual Discord pilot
 - Scope: top high-value Communities routes only
-- Live writes: none
+- Live writes: approved subset applied after user acceptance
 - Browser interaction: read-only; no messages, reactions, voice, settings, or social interaction
 
 ## Purpose
@@ -177,4 +177,20 @@ Prepare one reviewable Supabase proposal:
 - Add one low-pressure, resolved ProjectCCG operational Signal or source/community note so the useful cancellation/reopen pattern is preserved without crowding the Signals landing page.
 - Do not add JJ's rows from this pilot because the relevant JJ's event/evidence/assessment material was already accepted and applied.
 
-No live Supabase write was performed in this pilot.
+## Applied subset
+
+After user acceptance, the useful subset was applied through a lean Supabase
+write:
+
+- applied one Magic & Monsters source-health Signal;
+- updated the Magic & Monsters Discord entity-source relationship to record the
+  inspected Summer 2026 source-health finding;
+- updated the ProjectCCG Santa Ana Discord entity-source relationship to record
+  that the route has inspected operational, cancellation/reopening, MTG
+  announcement, and community-texture value;
+- did not insert the ProjectCCG July 17-19 closure/reopen item as a Signal,
+  because it was resolved and should not occupy landing-page attention;
+- did not write JJ's changes, because the relevant JJ's Discord/event/evidence
+  material was already captured in the accepted JJ's cleanup.
+
+Readback confirmed only the Magic & Monsters pilot Signal was inserted.

@@ -2,7 +2,8 @@
   "proposal_id": "discord-pilot-communities-inspect-next-2026-07-20",
   "description": "Reviewable proposal from the bounded Communities Inspect Next Discord pilot. Adds only small Signals/source-community follow-up records for findings that remain useful after the pilot. No live writes have been performed.",
   "created_at": "2026-07-20T16:05:00-07:00",
-  "status": "proposed",
+  "status": "applied_subset",
+  "applied_at": "2026-07-20T16:25:00-07:00",
   "author": "Codex Project Steward",
   "validation_level": "lean",
   "scope": {
@@ -72,7 +73,9 @@
         "promotion_target": "community_note",
         "dedupe_key": "projectccg-santa-ana:discord:closure-reopen:2026-07-17-19"
       },
-      "reason": "This preserves the pilot learning without making a resolved historical closure a prominent active Signal."
+      "reason": "This preserves the pilot learning without making a resolved historical closure a prominent active Signal.",
+      "disposition": "not_applied",
+      "disposition_reason": "The user clarified that resolved July 17-19 closure/reopen/cancellation history should not become a landing-page Signal unless it has current planning relevance. The useful learning was preserved by updating the ProjectCCG source relationship instead."
     },
     {
       "action": "update",
@@ -85,7 +88,8 @@
       "fields": {
         "relationship": "inspected Discord route; supports operational alerts, cancellations/reopening notes, MTG announcements, and community texture; continue monitoring for same-day reliability and Commander/LFG evidence"
       },
-      "reason": "ProjectCCG Discord is no longer merely a captured route. The pilot inspected concrete channels and found operational and MTG/community evidence."
+      "reason": "ProjectCCG Discord is no longer merely a captured route. The pilot inspected concrete channels and found operational and MTG/community evidence.",
+      "disposition": "applied"
     },
     {
       "action": "update",
@@ -98,7 +102,8 @@
       "fields": {
         "relationship": "inspected Discord route; #shop-schedule supports Summer 2026 source-health warning that MTG is no longer on the regular schedule while drop-in Commander remains possible"
       },
-      "reason": "Magic & Monsters Discord content was inspected and materially affects how current routine MTG schedule evidence should be interpreted."
+      "reason": "Magic & Monsters Discord content was inspected and materially affects how current routine MTG schedule evidence should be interpreted.",
+      "disposition": "applied"
     }
   ],
   "no_write_dispositions": [
@@ -108,7 +113,7 @@
         "src-jjs-discord-magic-announcements-2026-07-18",
         "src-jjs-discord-commander-channel-2026-07-18"
       ],
-      "disposition": "already captured",
+      "disposition": "already captured / not applied",
       "reason": "The pilot confirmed current JJ's Magic announcements and Commander-channel guidance, but the relevant future-event, evidence, and Places assessment writes were already accepted in known-store-cleanup-jjs-krazy-kingslayer-2026-07-18."
     }
   ],
@@ -118,5 +123,12 @@
     "Verify affected rows by ID.",
     "Verify Signals page does not promote the stale ProjectCCG closure note as an Act first card.",
     "No deterministic JSON export, local preview, hosted deploy, or broad duplicate scan is required unless an anomaly appears."
+  ],
+  "applied_subset_summary": [
+    "Applied Magic & Monsters source-health signal `signal-magicandmonsters-discord-mtg-regular-schedule-source-health-2026-07-20`.",
+    "Updated Magic & Monsters Discord entity-source relationship to reflect inspected Summer 2026 source-health evidence.",
+    "Updated ProjectCCG Santa Ana Discord entity-source relationship to reflect inspected operational/MTG/community usefulness.",
+    "Did not insert the ProjectCCG stale closure/reopen Signal because the resolved issue should not occupy Signals landing-page real estate.",
+    "Did not change JJ's because its relevant Discord/evidence/event implications were already captured in the accepted JJ's cleanup."
   ]
 }
