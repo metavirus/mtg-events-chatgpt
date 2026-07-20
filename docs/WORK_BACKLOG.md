@@ -240,6 +240,10 @@ claims without reopening the whole packet.
 
 ### User-facing features
 
+- Signals foundation is implemented as a minimal read-only Supabase model.
+  Remaining selected work is a small first-class Signals UI, followed by a
+  Communities refresh; seed only honest existing findings and keep survey
+  automation deferred.
 - Calendar-first default view with scrolling upcoming events.
 - Weekly and monthly calendar modes.
 - Parked design question: whether Events should gain a separate "Top picks this

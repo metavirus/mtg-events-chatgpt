@@ -1,6 +1,23 @@
 # Current Frontier
 
-Last updated: 2026-07-19
+Last updated: 2026-07-20
+
+## Signals foundation checkpoint
+
+Broad research is paused while the accepted Signals and Communities product
+direction is built in bounded tranches. The design contract lives in
+`docs/SIGNALS_AND_COMMUNITIES_DESIGN_CHECKPOINT.md`.
+
+The minimal Supabase `signals` receiving model is now live and checked in. It
+stores source-linked, expiring, deduplicable observations with explicit
+priority, lifecycle, confidence, related-entity context, suggested action, and
+promotion intent. Signals remain separate from canonical events, research
+truth, Updates, and personal state. Browser clients have read-only access; no
+automation, seeded records, or Signals UI has been added yet.
+
+The next bounded product tranche is a small Signals UI backed by this table and
+seeded only with a few honest existing findings. Do not resume broad research
+or build Discord/browser automation as part of that tranche.
 
 ## Personal-state checkpoint
 

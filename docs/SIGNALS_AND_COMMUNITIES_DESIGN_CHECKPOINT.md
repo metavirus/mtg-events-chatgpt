@@ -2,6 +2,10 @@
 
 Last updated: 2026-07-20
 
+Implementation status: the minimal Supabase Signals receiving model is now
+implemented. The Signals UI, seeded records, Communities refresh, and survey
+automation remain separate later tranches.
+
 ## Purpose
 
 Signals is a new first-class product layer, not a renamed Updates page and not
