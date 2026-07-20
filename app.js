@@ -1845,17 +1845,131 @@ function seriesRow(event) {
 
 function renderCommunities() {
   const communities = state.favoritesOnly ? COMMUNITY_SEED.filter((community) => state.personal.favorites[`community:${community.id}`]) : COMMUNITY_SEED;
-  const partial = COMMUNITY_SEED.filter((community) => community.status === 'partial').length;
-  const discovery = COMMUNITY_SEED.length - partial;
+  const surfaces = communitySurfaces();
+  const visibleSurfaces = state.favoritesOnly ? surfaces.filter((surface) => state.personal.favorites[`venue:${surface.place?.id}`] || state.personal.favorites[`community:${surface.community?.id}`]) : surfaces;
+  const needsReplay = surfaces.filter((surface) => surface.replayStatus === 'needs_replay').length;
+  const inspected = surfaces.filter((surface) => surface.replayStatus === 'inspected').length;
   const followed = COMMUNITY_SEED.filter((community) => state.personal.favorites[`community:${community.id}`]).length;
   document.getElementById('communityGrid').innerHTML = `<div class="community-overview">
-    <div><span>Coverage</span><strong>${partial} partial · ${discovery} discovery</strong><p>Communities are leads and synthesis, not venue records.</p></div>
-    <div><span>Your follows</span><strong>${followed} followed</strong><p>Favorites keep promising groups visible when Favorites-only is on.</p></div>
-    <div><span>Next useful pass</span><strong>Normalize cadence</strong><p>Current unknowns focus on meetup rhythm, hosts, and newcomer path.</p></div>
-  </div>${communities.map((community) => {
+    <div><span>Formal groups</span><strong>${COMMUNITY_SEED.length}</strong><p>Independent or regional community records remain separate from venues.</p></div>
+    <div><span>Venue-linked surfaces</span><strong>${surfaces.length}</strong><p>Discords, Linktrees, socials, Meetups, and community discussions already captured as Evidence.</p></div>
+    <div><span>Replay queue</span><strong>${needsReplay} TBD · ${inspected} inspected</strong><p>Route captured does not mean content has been read or proven useful.</p></div>
+  </div><section class="community-section"><div class="section-title-row"><div><p class="eyebrow">Formal / regional</p><h2>Communities as groups</h2></div><span class="status-chip slate">${followed} followed</span></div><div class="community-card-grid">${communities.map((community) => {
     const favorite = state.personal.favorites[`community:${community.id}`];
-    return `<article class="community-card" data-community-id="${community.id}" tabindex="0"><div class="community-card-top"><span class="community-symbol">◎</span><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${community.id}" aria-label="${favorite ? 'Remove community from' : 'Add community to'} favorites" title="Favorite community">${heartIcon()}</button></div><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><h2>${escapeHtml(community.name)}</h2><p class="community-region">${escapeHtml(community.region)}</p><p>${escapeHtml(community.summary)}</p><div class="community-tags">${community.formats.map((format) => `<span class="meta-chip">${format}</span>`).join('')}<span class="meta-chip">${community.channel}</span></div><div class="community-signal"><span>Signal</span><strong>${escapeHtml(community.signal)}</strong></div><div class="community-next"><span>Next check</span><p>${escapeHtml(community.nextQuestion)}</p></div><span class="open-cue">Open community profile →</span></article>`;
-  }).join('') || emptyState('No communities match', 'Try turning off Favorites or adding a community to your followed list first.')}`;
+    return `<article class="community-card" data-community-id="${community.id}" tabindex="0"><div class="community-card-top"><span class="community-symbol">◎</span><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${community.id}" aria-label="${favorite ? 'Remove community from' : 'Add community to'} favorites" title="Favorite community">${heartIcon()}</button></div><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><h2>${escapeHtml(community.name)}</h2><p class="community-region">${escapeHtml(community.region)}</p><p>${escapeHtml(community.summary)}</p><div class="community-tags">${community.formats.map((format) => `<span class="meta-chip">${format}</span>`).join('')}<span class="meta-chip">${community.channel}</span></div><div class="community-facts"><div><span>Linked to</span><strong>Regional / organizer surface</strong></div><div><span>Content status</span><strong>${community.status === 'partial' ? 'Partially inspected' : 'Discovery lead'}</strong></div></div><div class="community-next"><span>Next check</span><p>${escapeHtml(community.nextQuestion)}</p></div><span class="open-cue">Open community profile →</span></article>`;
+  }).join('') || emptyState('No communities match', 'Try turning off Favorites or adding a community to your followed list first.')}</div></section>
+  ${communitySurfaceSection('Needs replay', 'Captured routes whose content has not been inspected enough to support fit or reliability conclusions.', visibleSurfaces.filter((surface) => surface.replayStatus === 'needs_replay'))}
+  ${communitySurfaceSection('Inspected or synthesized', 'Community/social surfaces with accepted synthesis or concrete inspected content already in Evidence.', visibleSurfaces.filter((surface) => surface.replayStatus === 'inspected'))}
+  ${communitySurfaceSection('Low-value or stale routes', 'Useful context, but not currently strong enough to drive planning without another pass.', visibleSurfaces.filter((surface) => surface.replayStatus === 'stale_or_low'))}`;
+}
+
+function communitySurfaces() {
+  const seen = new Set();
+  const surfaces = [];
+  for (const place of DATA.stores) {
+    for (const sourceId of place.sourceIds || []) {
+      const src = source(sourceId);
+      if (!src || !isCommunitySurfaceSource(src)) continue;
+      const key = `${place.id}:${src.id}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      surfaces.push({ id: key, source: src, place, ...communitySurfaceMeta(src, place) });
+    }
+  }
+  for (const community of COMMUNITY_SEED) {
+    for (const sourceId of community.sourceIds || []) {
+      const src = source(sourceId);
+      if (!src || !isCommunitySurfaceSource(src)) continue;
+      const key = `${community.id}:${src.id}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      surfaces.push({ id: key, source: src, community, ...communitySurfaceMeta(src, null, community) });
+    }
+  }
+  return surfaces.sort((a, b) => communitySurfaceRank(b) - communitySurfaceRank(a) || compareText(a.source.label, b.source.label));
+}
+
+function isCommunitySurfaceSource(src) {
+  const text = `${src.label || ''} ${src.url || ''} ${src.type || ''}`.toLowerCase();
+  if (/discord|linktr|meetup|reddit|community discussion|group|server/.test(text)) return true;
+  if (/instagram|facebook/.test(text)) return src.status === 'current' || /synthesis|content|weekly|event|announcement|lineup|stale/.test(text);
+  return false;
+}
+
+function communitySurfaceMeta(src, place, community) {
+  const text = `${src.label || ''} ${src.url || ''} ${src.type || ''}`.toLowerCase();
+  const isDiscord = /discord/.test(text);
+  const isSynthesis = /synthesis|content|channel|announcements|commander channel|promo image/.test(text) && !/route|invite|landing/.test(text);
+  const isRouteOnly = /route|invite|landing|linktree/.test(text) || (isDiscord && !isSynthesis);
+  const isStale = src.status === 'stale' || /stale|historical|reddit discussion|community discussion/.test(text);
+  const relatedSignals = DATA.signals.filter((signal) => {
+    if (signal.sourceId === src.id) return true;
+    if (place && signal.relatedEntityType === 'venue' && signal.relatedEntityId === place.id) return true;
+    if (community && signal.relatedEntityType === 'community' && signal.relatedEntityId === community.id) return true;
+    return false;
+  });
+  const replayStatus = isStale ? 'stale_or_low' : isSynthesis ? 'inspected' : isRouteOnly ? 'needs_replay' : src.status === 'current' ? 'needs_replay' : 'stale_or_low';
+  return {
+    kind: isDiscord ? 'Discord' : /linktr/.test(text) ? 'Linktree/router' : /instagram/.test(text) ? 'Instagram' : /facebook/.test(text) ? 'Facebook' : /meetup/.test(text) ? 'Meetup' : /reddit/.test(text) ? 'Reddit/community discussion' : 'Community surface',
+    replayStatus,
+    relatedSignals,
+    whyCare: communitySurfaceWhyCare(src, replayStatus),
+    suggestedAction: replayStatus === 'inspected' ? 'Use as accepted context; refresh only when planning needs it.' : replayStatus === 'needs_replay' ? 'First-pass content replay when this venue/community becomes planning-relevant.' : 'Keep as context; do not spend cycles unless a new source/update appears.'
+  };
+}
+
+function communitySurfaceWhyCare(src, replayStatus) {
+  const text = `${src.label || ''} ${src.url || ''}`.toLowerCase();
+  if (/discord/.test(text)) return replayStatus === 'inspected'
+    ? 'Discord content can reveal turnout, event reliability, proxy texture, and newcomer/solo-arrival fit.'
+    : 'A Discord route exists, but its content should not be treated as evidence until replayed.';
+  if (/linktr/.test(text)) return 'Router pages often reveal the useful Discord, calendar, registration, and branch-specific social paths.';
+  if (/instagram|facebook/.test(text)) return 'Store-controlled social routes can surface announcements, event graphics, cancellations, and current activity.';
+  if (/meetup/.test(text)) return 'Meetup surfaces can reveal off-store coordination, RSVP texture, and recurring social play.';
+  if (/reddit|community discussion/.test(text)) return 'Community discussion is context for reputation and fit, not canonical event proof.';
+  return 'This is a communication or community-adjacent route tied to an accepted record.';
+}
+
+function communitySurfaceRank(surface) {
+  const kindScore = surface.kind === 'Discord' ? 40 : surface.kind === 'Linktree/router' ? 28 : ['Meetup', 'Instagram', 'Facebook'].includes(surface.kind) ? 22 : 12;
+  const statusScore = surface.replayStatus === 'needs_replay' ? 20 : surface.replayStatus === 'inspected' ? 16 : 4;
+  const signalScore = surface.relatedSignals.length ? 15 : 0;
+  return kindScore + statusScore + signalScore;
+}
+
+function communitySurfaceSection(title, copy, surfaces) {
+  if (!surfaces.length) return '';
+  return `<section class="community-section"><div class="section-title-row"><div><p class="eyebrow ${title === 'Needs replay' ? 'amber' : title === 'Inspected or synthesized' ? 'mint' : 'coral'}">${surfaces.length} surface${surfaces.length === 1 ? '' : 's'}</p><h2>${escapeHtml(title)}</h2><p class="muted-copy">${escapeHtml(copy)}</p></div></div><div class="community-surface-list">${surfaces.map(communitySurfaceCard).join('')}</div></section>`;
+}
+
+function communitySurfaceCard(surface) {
+  const target = surface.place || surface.community;
+  const targetButton = surface.place
+    ? `<button class="change-inline-target" data-place-id="${escapeHtml(surface.place.id)}">${escapeHtml(surface.place.name)}</button>`
+    : surface.community
+      ? `<button class="change-inline-target" data-community-id="${escapeHtml(surface.community.id)}">${escapeHtml(surface.community.name)}</button>`
+      : 'Unlinked';
+  const status = surface.replayStatus === 'inspected'
+    ? { label: 'Content inspected', tone: 'mint' }
+    : surface.replayStatus === 'needs_replay'
+      ? { label: 'Route captured / replay TBD', tone: 'amber' }
+      : { label: 'Low-value or stale', tone: 'slate' };
+  const signalLinks = surface.relatedSignals.slice(0, 2).map((signal) => `<span class="meta-chip">${escapeHtml(signal.categoryLabel || signal.category || 'Signal')}</span>`).join('');
+  return `<article class="community-surface-card">
+    <div class="community-surface-head"><span class="community-symbol small">${communitySurfaceIcon(surface.kind)}</span><div><h3>${escapeHtml(surface.source.label)}</h3><p>${targetButton}</p></div><span class="status-chip ${status.tone}">${status.label}</span></div>
+    <div class="community-facts"><div><span>Surface type</span><strong>${escapeHtml(surface.kind)}</strong></div><div><span>Last checked</span><strong>${escapeHtml(surface.source.lastChecked || 'Unknown')}</strong></div><div><span>Monitoring status</span><strong>${escapeHtml(surface.suggestedAction)}</strong></div></div>
+    <p>${escapeHtml(surface.whyCare)}</p>
+    <div class="community-tags"><span class="meta-chip">${escapeHtml(surface.source.status || 'unknown')}</span>${signalLinks}<a class="meta-chip link-chip" href="${escapeHtml(surface.source.url)}" target="_blank" rel="noreferrer">Open source ↗</a></div>
+  </article>`;
+}
+
+function communitySurfaceIcon(kind) {
+  if (kind === 'Discord') return '◇';
+  if (kind === 'Linktree/router') return '↗';
+  if (kind === 'Instagram') return '◎';
+  if (kind === 'Facebook') return 'f';
+  if (kind === 'Meetup') return 'm';
+  return '•';
 }
 
 function renderChanges() {

@@ -492,6 +492,9 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .community-overview span, .community-next span { display: block; color: var(--muted); font-size: 8px; text-transform: uppercase; letter-spacing: .07em; }
 .community-overview strong { display: block; margin: 4px 0; font: 800 15px var(--display); }
 .community-overview p, .community-next p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.community-section { grid-column: 1 / -1; display: grid; gap: 12px; padding-top: 6px; }
+.community-section .section-title-row { align-items: end; border-top: 1px solid var(--line); padding-top: 18px; }
+.community-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .community-card { min-height: 340px; padding: 21px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(145deg, var(--panel-2), #101522); cursor: pointer; display: flex; flex-direction: column; transition: .18s ease; }
 .community-card:hover { transform: translateY(-2px); border-color: var(--line-strong); box-shadow: var(--shadow); }
 .community-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
@@ -506,6 +509,19 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .community-signal strong { font-size: 10px; }
 .community-next { margin-top: 11px; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.018); }
 .community-card .open-cue { margin-top: auto; padding-top: 18px; color: var(--sky); }
+.community-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.community-card .community-facts { grid-template-columns: 1fr; }
+.community-facts div { padding: 9px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.018); }
+.community-facts span { display: block; color: var(--muted); font-size: 8px; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+.community-facts strong { color: var(--text); font-size: 10px; line-height: 1.35; }
+.community-surface-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.community-surface-card { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(145deg, rgba(20, 27, 44, .92), rgba(13, 18, 30, .95)); display: grid; gap: 11px; }
+.community-surface-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 11px; align-items: start; }
+.community-surface-head h3 { margin: 0 0 4px; font: 800 15px var(--display); letter-spacing: -.02em; }
+.community-surface-head p { margin: 0; color: var(--muted); font-size: 10px; }
+.community-surface-card > p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+.link-chip { color: var(--sky); text-decoration: none; }
+.link-chip:hover { border-color: rgba(92,181,255,.45); background: rgba(92,181,255,.1); }
 
 .change-filters { margin: 0 0 14px; justify-content: flex-start; }
 .change-timeline { position: relative; max-width: 1050px; }
@@ -651,6 +667,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
   .rail-section { min-width: 0; }
   .catalog-grid { grid-template-columns: 1fr; }
   .community-grid { grid-template-columns: repeat(2, 1fr); }
+  .community-card-grid, .community-surface-list { grid-template-columns: 1fr; }
   .quick-chips { width: 100%; margin-left: 0; order: 3; }
 }
 
@@ -667,7 +684,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
   .rail-collapse-row { justify-content: flex-start; }
   .master-detail { grid-template-columns: 1fr; }
   .master-pane { position: static; max-height: 420px; }
-  .score-bars, .two-column-section, .research-grid, .evaluation-summary, .assessment-snapshot, .dimension-grid, .community-overview, .change-summary { grid-template-columns: 1fr; }
+  .score-bars, .two-column-section, .research-grid, .evaluation-summary, .assessment-snapshot, .dimension-grid, .community-overview, .community-grid, .community-card-grid, .community-surface-list, .community-facts, .change-summary { grid-template-columns: 1fr; }
   .research-stats { grid-template-columns: 1fr 1fr; }
   .mobile-nav { display: grid; position: fixed; z-index: 50; left: 10px; right: 10px; bottom: 10px; grid-template-columns: repeat(5, 1fr); min-height: 61px; border: 1px solid var(--line-strong); border-radius: 15px; background: rgba(14,18,31,.94); backdrop-filter: blur(18px); box-shadow: var(--shadow); padding: 5px; }
   .mobile-nav button { border: 0; border-radius: 9px; background: none; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 8px; }
