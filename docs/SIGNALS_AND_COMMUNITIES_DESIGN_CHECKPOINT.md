@@ -93,6 +93,20 @@ Expected categories include:
   or WPN is current;
 - ambiguous but potentially important findings that need user judgment.
 
+Signals priority is about attention required, not merely importance as data.
+`Act first` should be reserved for actionable items: cancellations, closures,
+changed hours, deadlines, capacity, strong new opportunities, direct mentions,
+or user-judgment items that affect near-term planning.
+
+Negative fit signals usually belong in ranking, filtering, Places cautions, or
+event annotations rather than prominent Signals cards. A no-proxy or competitive
+signal should normally suppress, downrank, hide, or annotate the affected event
+according to personal preferences. It should appear in Signals only when it
+changes something important or requires a decision, such as a favorite event
+gaining a new disqualifier, a nearby store changing proxy policy, or a previously
+proxy-friendly event becoming no-proxy. Routine known negatives should not
+occupy prominent Signals real estate.
+
 Expected lifecycle states include:
 
 - `new`

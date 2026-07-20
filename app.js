@@ -902,7 +902,7 @@ function renderSignals() {
   if (!container) return;
   const signals = rankedSignals();
   const activeSignals = signals.filter((signal) => !['dismissed', 'stale'].includes(signal.status));
-  const urgent = activeSignals.filter((signal) => ['urgent', 'high'].includes(signal.priority));
+  const urgent = activeSignals.filter(isActFirstSignal);
   const followUp = activeSignals.filter((signal) => !urgent.includes(signal) && (signal.status === 'needs_followup' || ['source_health', 'community_activity'].includes(signal.category)));
   const watch = activeSignals.filter((signal) => !urgent.includes(signal) && !followUp.includes(signal));
   const stale = signals.filter((signal) => ['dismissed', 'stale'].includes(signal.status));
@@ -919,7 +919,7 @@ function renderSignals() {
       <article><span class="status-dot slate"></span><strong>${followUp.length}</strong><small>follow-up routes</small></article>
     </div>
     <div class="signals-board">
-      ${signalGroup('Act first', 'High-signal cautions or opportunities that should shape planning now.', urgent, 'coral')}
+      ${signalGroup('Act first', 'Actionable cancellations, deadlines, strong opportunities, or judgment calls that should shape near-term planning.', urgent, 'coral')}
       ${signalGroup('Follow up', 'Useful routes, source-health issues, or community surfaces that deserve a bounded next look.', followUp, 'amber')}
       ${signalGroup('Watch list', 'Real but lower-pressure signals to keep visible without turning this into an inbox.', watch, 'mint')}
       ${stale.length ? signalGroup('Closed or stale', 'Retained for context, but not currently asking for attention.', stale, 'slate') : ''}
@@ -928,6 +928,12 @@ function renderSignals() {
 
 function rankedSignals() {
   return [...DATA.signals].sort((a, b) => signalRank(b) - signalRank(a) || String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt)));
+}
+
+function isActFirstSignal(signal) {
+  if (!['urgent', 'high'].includes(signal.priority)) return false;
+  if (signal.category === 'venue_fit' && !['needs_followup', 'needs_judgment'].includes(signal.status)) return false;
+  return true;
 }
 
 function signalRank(signal) {
