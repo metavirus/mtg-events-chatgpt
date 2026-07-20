@@ -1,4 +1,4 @@
-const DATA = { stores: [], events: [], sources: [], changes: [] };
+const DATA = { stores: [], events: [], sources: [], changes: [], signals: [] };
 
 const SUPABASE = {
   url: 'https://pyvftzsodzwfqncjbmbc.supabase.co',
@@ -45,7 +45,7 @@ const COMMUNITY_SEED = [
 ];
 
 const state = {
-  route: 'today',
+  route: 'signals',
   view: 'agenda',
   date: startOfDay(new Date()),
   agendaDays: 42,
@@ -328,6 +328,7 @@ async function loadFromJson() {
     DATA[key] = await response.json();
   }
   DATA.stores = DATA.stores.map(normalizeJsonPlace);
+  DATA.signals = [];
 }
 
 function normalizeJsonPlace(place) {
@@ -348,9 +349,10 @@ async function loadFromSupabase() {
     supabaseRows('event_sources'),
     supabaseRows('evaluations'),
     supabaseRows('research_changes'),
-    supabaseRowsOptional('venue_hours')
+    supabaseRowsOptional('venue_hours'),
+    supabaseRowsOptional('signals')
   ]);
-  const [venues, communities, sources, entitySources, series, occurrences, eventSources, evaluations, changes, venueHours] = tables;
+  const [venues, communities, sources, entitySources, series, occurrences, eventSources, evaluations, changes, venueHours, signals] = tables;
   const evaluationByEntity = new Map(evaluations.map((item) => [`${item.entity_type}:${item.entity_id}`, item]));
   const hoursByVenue = new Map(venueHours.map((item) => [item.venue_id, item]));
   const sourceIdsByEntity = groupValues(entitySources, (item) => `${item.entity_type}:${item.entity_id}`, (item) => item.source_id);
@@ -362,6 +364,7 @@ async function loadFromSupabase() {
   DATA.stores = venues.map((item) => mapVenue(item, sourceIdsByEntity, evaluationByEntity, hoursByVenue));
   DATA.sources = sources.map(mapSource);
   DATA.changes = changes.map(mapResearchChange);
+  DATA.signals = signals.map(mapSignal);
   DATA.events = [
     ...series.filter((item) => !occurrenceSeriesIds.has(item.id)).map((item) => mapEventSeries(item, sourcesBySeries)),
     ...occurrences.map((item) => mapEventOccurrence(item, seriesById.get(item.series_id), sourcesByOccurrence))
@@ -517,6 +520,28 @@ function mapResearchChange(item) {
     summary: item.summary,
     details: item.details,
     reviewStatus: item.review_status
+  };
+}
+
+function mapSignal(item) {
+  return {
+    id: item.id,
+    category: item.category || '',
+    priority: item.priority || 'normal',
+    status: item.status || 'new',
+    sourceId: item.source_id || '',
+    capturedAt: item.captured_at || '',
+    observedAt: item.observed_at || '',
+    expiresAt: item.expires_at || '',
+    relatedEntityType: item.related_entity_type || '',
+    relatedEntityId: item.related_entity_id || '',
+    summary: item.summary || '',
+    details: item.details || '',
+    evidenceUrl: item.evidence_url || '',
+    confidence: item.confidence || '',
+    suggestedAction: item.suggested_action || '',
+    promotionTarget: item.promotion_target || '',
+    dedupeKey: item.dedupe_key || ''
   };
 }
 
@@ -784,11 +809,12 @@ function navigate(route) {
 }
 
 function routeFromHash() {
-  const route = location.hash.replace('#', '') || 'today';
-  navigate(document.querySelector(`[data-route-panel="${route}"]`) ? route : 'today');
+  const route = location.hash.replace('#', '') || 'signals';
+  navigate(document.querySelector(`[data-route-panel="${route}"]`) ? route : 'signals');
 }
 
 function renderAll() {
+  renderSignals();
   renderCalendar();
   renderHighlights();
   renderEventCatalog();
@@ -800,6 +826,7 @@ function renderAll() {
 }
 
 function renderCurrentRoute() {
+  if (state.route === 'signals') renderSignals();
   if (state.route === 'today') { renderCalendar(); renderHighlights(); }
   if (state.route === 'events') renderEventCatalog();
   if (state.route === 'places') renderPlaces();
@@ -869,6 +896,140 @@ function updateFreshnessMini() {
   const latestLabel = latest ? formatFreshnessDateTime(latest) : 'No dated record';
   container.innerHTML = `<span class="status-dot"></span><span>${sourceLabel}<br><strong>${escapeHtml(latestLabel)}</strong></span>`;
 }
+
+function renderSignals() {
+  const container = document.getElementById('signalsContent');
+  if (!container) return;
+  const signals = rankedSignals();
+  const activeSignals = signals.filter((signal) => !['dismissed', 'stale'].includes(signal.status));
+  const urgent = activeSignals.filter((signal) => ['urgent', 'high'].includes(signal.priority));
+  const followUp = activeSignals.filter((signal) => !urgent.includes(signal) && (signal.status === 'needs_followup' || ['source_health', 'community_activity'].includes(signal.category)));
+  const watch = activeSignals.filter((signal) => !urgent.includes(signal) && !followUp.includes(signal));
+  const stale = signals.filter((signal) => ['dismissed', 'stale'].includes(signal.status));
+
+  if (!signals.length) {
+    container.innerHTML = emptyState('No signals yet', 'Signals will appear here when a real source, community route, fit caution, or opportunity deserves attention.');
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="signals-overview">
+      <article><span class="live-dot"></span><strong>${activeSignals.length}</strong><small>active signals</small></article>
+      <article><span class="status-dot amber"></span><strong>${urgent.length}</strong><small>act-first items</small></article>
+      <article><span class="status-dot slate"></span><strong>${followUp.length}</strong><small>follow-up routes</small></article>
+    </div>
+    <div class="signals-board">
+      ${signalGroup('Act first', 'High-signal cautions or opportunities that should shape planning now.', urgent, 'coral')}
+      ${signalGroup('Follow up', 'Useful routes, source-health issues, or community surfaces that deserve a bounded next look.', followUp, 'amber')}
+      ${signalGroup('Watch list', 'Real but lower-pressure signals to keep visible without turning this into an inbox.', watch, 'mint')}
+      ${stale.length ? signalGroup('Closed or stale', 'Retained for context, but not currently asking for attention.', stale, 'slate') : ''}
+    </div>`;
+}
+
+function rankedSignals() {
+  return [...DATA.signals].sort((a, b) => signalRank(b) - signalRank(a) || String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt)));
+}
+
+function signalRank(signal) {
+  const priority = { urgent: 100, high: 85, normal: 55, low: 25 }[signal.priority] || 40;
+  const category = {
+    operational: 28,
+    event_opportunity: 26,
+    registration: 24,
+    source_health: 20,
+    community_activity: 18,
+    venue_fit: 16,
+    needs_judgment: 14,
+    product_trust: 12
+  }[signal.category] || 10;
+  const status = { new: 12, needs_followup: 10, reviewed: 3, promoted: 2, dismissed: -30, stale: -35 }[signal.status] || 0;
+  return priority + category + status;
+}
+
+function signalGroup(title, copy, signals, tone) {
+  return `<section class="signal-group ${tone}">
+    <div class="section-title-row">
+      <div><p class="eyebrow ${tone === 'coral' ? 'coral' : tone === 'amber' ? 'amber' : tone === 'mint' ? 'mint' : ''}">${signals.length} signal${signals.length === 1 ? '' : 's'}</p><h2>${escapeHtml(title)}</h2></div>
+    </div>
+    <p class="signal-group-copy">${escapeHtml(copy)}</p>
+    <div class="signal-stack">${signals.length ? signals.map(signalCard).join('') : '<p class="muted-copy">Nothing here right now.</p>'}</div>
+  </section>`;
+}
+
+function signalCard(signal) {
+  const related = signalRelatedTarget(signal);
+  const sourceItem = source(signal.sourceId);
+  const sourceUrl = signal.evidenceUrl || sourceItem?.url || '';
+  const sourceLabel = sourceItem?.label || (sourceUrl ? 'Source link' : 'Source not linked');
+  const isExternal = /^https?:\/\//i.test(sourceUrl);
+  return `<article class="signal-card ${signalTone(signal)}">
+    <div class="signal-card-main">
+      <div class="signal-card-kicker">
+        <span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span>
+        <span class="status-chip slate">${escapeHtml(signalPriorityLabel(signal.priority))}</span>
+        <span class="status-chip ${signal.status === 'needs_followup' ? 'amber' : signal.status === 'new' ? 'mint' : 'slate'}">${escapeHtml(signal.status.replaceAll('_', ' '))}</span>
+      </div>
+      <h3>${escapeHtml(signal.summary)}</h3>
+      ${related ? `<div class="signal-related">${related}</div>` : ''}
+      <p>${escapeHtml(signal.details || 'No additional detail recorded yet.')}</p>
+      <div class="signal-meta">
+        <span>Confidence: <strong>${escapeHtml(signal.confidence || 'unknown')}</strong></span>
+        <span>Captured: <strong>${escapeHtml(formatFreshnessDateTime(signal.capturedAt))}</strong></span>
+      </div>
+    </div>
+    <aside class="signal-action">
+      <span>Suggested action</span>
+      <strong>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</strong>
+      ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" ${isExternal ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(sourceLabel)} ↗</a>` : `<small>${escapeHtml(sourceLabel)}</small>`}
+    </aside>
+  </article>`;
+}
+
+function signalRelatedTarget(signal) {
+  if (signal.relatedEntityType === 'venue') {
+    const place = store(signal.relatedEntityId);
+    if (place) return `<button class="change-inline-target" data-place-id="${escapeHtml(place.id)}">${escapeHtml(place.name)}</button>`;
+  }
+  if (signal.relatedEntityType === 'community') {
+    const community = COMMUNITY_SEED.find((item) => item.id === signal.relatedEntityId);
+    if (community) return `<button class="change-inline-target" data-community-id="${escapeHtml(community.id)}">${escapeHtml(community.name)}</button>`;
+  }
+  if (signal.relatedEntityType === 'event_series' || signal.relatedEntityType === 'event_occurrence') {
+    const event = eventById(signal.relatedEntityId) || DATA.events.find((item) => item.seriesId === signal.relatedEntityId);
+    if (event) return `<button class="change-inline-target" data-event-id="${escapeHtml(event.id)}">${escapeHtml(event.title)}</button>`;
+  }
+  return signal.relatedEntityId ? `<span class="meta-chip">${escapeHtml(signal.relatedEntityType || 'related')}: ${escapeHtml(signal.relatedEntityId)}</span>` : '';
+}
+
+function signalTone(signal) {
+  if (signal.priority === 'urgent' || signal.priority === 'high') return 'coral';
+  if (signal.category === 'source_health' || signal.status === 'needs_followup') return 'amber';
+  if (signal.category === 'community_activity') return 'sky';
+  if (signal.category === 'venue_fit') return 'mint';
+  return 'slate';
+}
+
+function signalCategoryLabel(category = '') {
+  const labels = {
+    operational: 'Operational',
+    event_opportunity: 'Opportunity',
+    registration: 'Registration',
+    source_health: 'Source health',
+    community_activity: 'Community route',
+    venue_fit: 'Fit caution',
+    needs_judgment: 'Needs judgment',
+    product_trust: 'Product trust'
+  };
+  return labels[category] || category.replaceAll('_', ' ') || 'Signal';
+}
+
+function signalPriorityLabel(priority = '') {
+  if (priority === 'urgent') return 'urgent';
+  if (priority === 'high') return 'high priority';
+  if (priority === 'low') return 'low priority';
+  return 'normal priority';
+}
+
 function eventStartTime(event) { return event.recurrence?.startTime || event.startTime; }
 function escapeHtml(value = '') { return String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]); }
 function truncate(value = '', length = 150) { return value.length > length ? `${value.slice(0, length).trim()}...` : value; }

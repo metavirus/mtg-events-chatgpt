@@ -15,13 +15,14 @@
 <body>
   <div class="app-shell">
     <aside class="side-rail" aria-label="Primary navigation">
-      <a class="brand" href="#today" data-route-link="today" aria-label="MTG Events home">
+      <a class="brand" href="#signals" data-route-link="signals" aria-label="MTG Events home">
         <span class="brand-mark" aria-hidden="true">M</span>
         <span class="brand-copy"><strong>MTG Events</strong><small>SoCal Magic</small></span>
       </a>
 
       <nav class="primary-nav">
-        <button class="nav-item active" data-route="today"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.5"></circle><path d="M10 10 13 8"></path><path d="M10 4.5v1.5"></path></svg></span><span>Today</span></button>
+        <button class="nav-item active" data-route="signals"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.8v2.4"></path><path d="M10 14.8v2.4"></path><path d="M2.8 10h2.4"></path><path d="M14.8 10h2.4"></path><circle cx="10" cy="10" r="3.4"></circle><path d="m12.4 7.6 2-2"></path></svg></span><span>Signals</span></button>
+        <button class="nav-item" data-route="today"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.5"></circle><path d="M10 10 13 8"></path><path d="M10 4.5v1.5"></path></svg></span><span>Today</span></button>
         <button class="nav-item" data-route="events"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6.5h10"></path><path d="M5 10h10"></path><path d="M5 13.5h10"></path></svg></span><span>Events</span></button>
         <button class="nav-item" data-route="places"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5 10 3.5l6.5 5"></path><path d="M5.5 8v8h9V8"></path></svg></span><span>Places</span></button>
         <button class="nav-item" data-route="communities"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="2.25"></circle><circle cx="13" cy="8.75" r="1.9"></circle><path d="M3.8 15c.8-2 2.4-3 4.2-3s3.4 1 4.2 3"></path><path d="M11.5 14.8c.5-1.4 1.6-2.2 3-2.2 1.2 0 2.1.5 2.8 1.6"></path></svg></span><span>Communities</span></button>
@@ -52,7 +53,26 @@
       </header>
 
       <main id="mainContent">
-        <section class="route-panel active" id="route-today" data-route-panel="today">
+        <section class="route-panel active" id="route-signals" data-route-panel="signals">
+          <div class="page-heading signals-heading">
+            <div>
+              <p class="eyebrow">Attention layer</p>
+              <h1>Signals</h1>
+              <p class="heading-subtitle">Fresh source, community, event, and fit findings that deserve attention without becoming another noisy inbox.</p>
+            </div>
+            <div class="heading-actions">
+              <button class="soft-button" data-route="today">Today</button>
+              <button class="soft-button" data-route="events">Events</button>
+            </div>
+          </div>
+          <div class="coverage-banner subtle signals-intro">
+            <span class="coverage-icon">i</span>
+            <div><strong>Signals are not canonical facts by themselves.</strong><span> They are triaged observations that can become event proposals, Places updates, community notes, or no-action items.</span></div>
+          </div>
+          <div id="signalsContent"></div>
+        </section>
+
+        <section class="route-panel" id="route-today" data-route-panel="today">
           <div class="page-heading today-heading">
             <div>
               <p class="eyebrow" id="todayEyebrow">Your Magic landscape</p>
@@ -60,7 +80,7 @@
               <p class="heading-subtitle">Upcoming opportunities from today forward, reconciled across the sources we have checked.</p>
             </div>
             <div class="heading-actions">
-              <button class="soft-button signals-button always-visible" data-action="show-highlights-hub">Signals</button>
+              <button class="soft-button signals-button always-visible" data-route="signals">Signals</button>
               <button class="soft-button" id="jumpWeekend">Weekend</button>
               <button class="primary-button" id="openFilters"><span aria-hidden="true">&#8801;</span> Filters <span id="activeFilterCount" class="button-count hidden">0</span></button>
             </div>
@@ -174,10 +194,10 @@
   </div>
 
   <nav class="mobile-nav" aria-label="Mobile navigation">
-    <button class="active" data-route="today"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.5"></circle><path d="M10 10 13 8"></path><path d="M10 4.5v1.5"></path></svg></span>Today</button>
+    <button class="active" data-route="signals"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.8v2.4"></path><path d="M10 14.8v2.4"></path><path d="M2.8 10h2.4"></path><path d="M14.8 10h2.4"></path><circle cx="10" cy="10" r="3.4"></circle><path d="m12.4 7.6 2-2"></path></svg></span>Signals</button>
+    <button data-route="today"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.5"></circle><path d="M10 10 13 8"></path><path d="M10 4.5v1.5"></path></svg></span>Today</button>
     <button data-route="events"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6.5h10"></path><path d="M5 10h10"></path><path d="M5 13.5h10"></path></svg></span>Events</button>
     <button data-route="places"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5 10 3.5l6.5 5"></path><path d="M5.5 8v8h9V8"></path></svg></span>Places</button>
-    <button data-route="communities"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="2.25"></circle><circle cx="13" cy="8.75" r="1.9"></circle><path d="M3.8 15c.8-2 2.4-3 4.2-3s3.4 1 4.2 3"></path><path d="M11.5 14.8c.5-1.4 1.6-2.2 3-2.2 1.2 0 2.1.5 2.8 1.6"></path></svg></span>Groups</button>
     <button id="mobileMore"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><circle cx="5" cy="10" r="1.5"></circle><circle cx="10" cy="10" r="1.5"></circle><circle cx="15" cy="10" r="1.5"></circle></svg></span>More</button>
   </nav>
 
