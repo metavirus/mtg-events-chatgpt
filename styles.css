@@ -110,6 +110,8 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .signals-overview strong { font: 800 26px/1 var(--display); letter-spacing: -.04em; }
 .signals-overview small { color: var(--muted); }
 .signals-board { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: 14px; align-items: start; }
+.signal-toolbar { margin: -2px 0 14px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(16, 22, 36, .72); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.signal-toolbar p { margin: 0; color: var(--muted); font-size: 12px; }
 .signal-group { border: 1px solid var(--line); border-radius: var(--radius); background: rgba(17, 22, 37, .72); padding: 15px; display: grid; gap: 10px; }
 .signal-group.coral { border-color: rgba(241, 119, 120, .28); background: linear-gradient(145deg, rgba(241, 119, 120, .08), rgba(17, 22, 37, .72)); }
 .signal-group.amber { border-color: rgba(243, 183, 95, .25); }
@@ -133,6 +135,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .signal-action strong { color: #fff; font-size: 12px; line-height: 1.35; }
 .signal-action a { color: var(--sky); font-weight: 700; overflow-wrap: anywhere; }
 .signal-action small { overflow-wrap: anywhere; }
+.signal-read-button { justify-self: start; min-height: 30px; padding-inline: 10px; font-size: 11px; }
 
 .calendar-toolbar { min-height: 57px; padding: 8px; display: flex; gap: 13px; align-items: center; flex-wrap: wrap; border: 1px solid var(--line); background: rgba(17, 22, 37, .72); border-radius: 13px; margin-bottom: 18px; }
 .view-switcher { display: flex; padding: 3px; border-radius: 10px; background: #0a0e18; border: 1px solid var(--line); }
@@ -728,6 +731,8 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
   .day-marker strong { font-size: 17px; }
   .event-card { grid-template-columns: 1fr auto; padding: 12px; }
   .signals-overview { grid-template-columns: 1fr; }
+  .signal-toolbar { align-items: stretch; flex-direction: column; }
+  .signal-toolbar .soft-button { width: 100%; }
   .signal-card { grid-template-columns: 1fr; }
   .signal-action { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: 11px; }
   .hours-week { grid-template-columns: 1fr 1fr; }

@@ -144,12 +144,13 @@ Current sequence:
 3. Research has resumed through controlled Supabase writes in small direct
    batches.
 4. Authenticated personal-state reads and writes are implemented for favorites,
-   thumbs-down/deprioritize choices, ratings, and private notes.
+   thumbs-down/deprioritize choices, ratings, private notes, and per-user
+   Signals read-state.
 5. Existing browser-local personal state imports once when the signed-in remote
    state is empty.
 6. Hosted personal-state persistence has been validated against live Supabase
    rows.
-7. Workflow/request data, update-read state, and richer visit history remain
+7. Workflow/request data, durable `Updates` unread state, and richer visit history remain
    deferred.
 8. Only after the corrected manual research method has completed several clean
    batches should unattended recurring research be considered.
@@ -162,7 +163,10 @@ This contract implies a few design decisions:
 - a thumbs-down should hide or demote without deleting research truth;
 - notes now live on the server when signed in so they are not trapped in one
   browser;
-- `Updates` unread state should be durable;
+- Signals read-state is a personal overlay: marking a signal read hides it from
+  the landing surface for that signed-in user without changing the signal,
+  source, event, place, or research record;
+- `Updates` unread state should become durable later;
 - an in-app note like "check store X" should become a real queued request, not
   just an ephemeral comment in local storage;
 - research evidence and personal judgment must remain visibly separate.

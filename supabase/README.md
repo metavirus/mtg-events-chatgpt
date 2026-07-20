@@ -12,6 +12,9 @@ JSON snapshot remains available as explicit recovery/export fallback.
 - `migrations/20260720214959_add_signals_foundation.sql` adds the minimal
   read-only Signals receiving model. Signals remain reviewable observations,
   separate from canonical events, research truth, Updates, and personal state.
+- `migrations/20260720233000_add_signal_user_states.sql` adds private,
+  authenticated per-user read-state for Signals so handled items can be hidden
+  without mutating the underlying signal record.
 - `seed/0001_current_snapshot.sql` is generated from the current canonical JSON
   by `scripts/generate_supabase_seed.py`.
 - `scripts/verify_supabase_parity.py` compares the imported row IDs with the

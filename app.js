@@ -55,6 +55,7 @@ const state = {
   eventCatalogDate: startOfDay(new Date()),
   changeFilter: 'all',
   favoritesOnly: false,
+  showReadSignals: false,
   highlightsCollapsed: false,
   search: '',
   selectedPlaceId: null,
@@ -77,14 +78,14 @@ state.dataSource = 'loading';
 function loadPersonal() {
   try {
     const saved = JSON.parse(localStorage.getItem('mana-radar-personal')) || {};
-    return { ...defaultPersonal(), ...saved, hidden: saved.hidden || {} };
+    return { ...defaultPersonal(), ...saved, hidden: saved.hidden || {}, signalRead: saved.signalRead || {} };
   } catch (_) {
     return defaultPersonal();
   }
 }
 
 function defaultPersonal() {
-  return { favorites: {}, hidden: {}, ratings: {}, notes: {}, interested: {}, activity: [], updatesSeenAt: null };
+  return { favorites: {}, hidden: {}, ratings: {}, notes: {}, signalRead: {}, interested: {}, activity: [], updatesSeenAt: null };
 }
 
 function savePersonal(action) {
@@ -212,29 +213,36 @@ async function handleAuthSession(session, event) {
 }
 
 async function syncPersonalState() {
-  const [{ data: preferences, error: preferenceError }, { data: notes, error: noteError }] = await Promise.all([
+  const [{ data: preferences, error: preferenceError }, { data: notes, error: noteError }, { data: signalStates, error: signalStateError }] = await Promise.all([
     personalAuth.client.from('entity_preferences').select('*'),
-    personalAuth.client.from('personal_notes').select('*')
+    personalAuth.client.from('personal_notes').select('*'),
+    personalAuth.client.from('signal_user_states').select('*')
   ]);
   if (preferenceError) throw preferenceError;
   if (noteError) throw noteError;
-  const remoteIsEmpty = !preferences.length && !notes.length;
+  if (signalStateError) throw signalStateError;
+  const remoteIsEmpty = !preferences.length && !notes.length && !signalStates.length;
   if (remoteIsEmpty) {
     await importLocalPersonalState();
     return;
   }
-  applyRemotePersonalState(preferences, notes);
+  applyRemotePersonalState(preferences, notes, signalStates);
 }
 
 async function importLocalPersonalState() {
   const preferenceRows = personalPreferenceRows();
   const noteRows = personalNoteRows();
+  const signalRows = personalSignalStateRows();
   if (preferenceRows.length) {
     const { error } = await personalAuth.client.from('entity_preferences').upsert(preferenceRows, { onConflict: 'user_id,entity_type,entity_id' });
     if (error) throw error;
   }
   if (noteRows.length) {
     const { error } = await personalAuth.client.from('personal_notes').upsert(noteRows, { onConflict: 'user_id,entity_type,entity_id' });
+    if (error) throw error;
+  }
+  if (signalRows.length) {
+    const { error } = await personalAuth.client.from('signal_user_states').upsert(signalRows, { onConflict: 'user_id,signal_id' });
     if (error) throw error;
   }
 }
@@ -276,10 +284,20 @@ function personalNoteRows() {
   return [...new Map(rows.map((row) => [`${row.entity_type}:${row.entity_id}`, row])).values()];
 }
 
-function applyRemotePersonalState(preferences, notes) {
-  for (const collection of ['favorites', 'hidden', 'ratings', 'notes']) {
+function personalSignalStateRows() {
+  const now = new Date().toISOString();
+  return Object.keys(state.personal.signalRead || {}).map((signalId) => ({
+    user_id: personalAuth.user.id,
+    signal_id: signalId,
+    read_at: state.personal.signalRead[signalId] || now,
+    updated_at: now
+  }));
+}
+
+function applyRemotePersonalState(preferences, notes, signalStates = []) {
+  for (const collection of ['favorites', 'hidden', 'ratings', 'notes', 'signalRead']) {
     for (const key of Object.keys(state.personal[collection] || {})) {
-      if (key.startsWith('place:') || key.startsWith('event:')) delete state.personal[collection][key];
+      if (collection === 'signalRead' || key.startsWith('place:') || key.startsWith('event:')) delete state.personal[collection][key];
     }
   }
   for (const row of preferences) {
@@ -292,6 +310,9 @@ function applyRemotePersonalState(preferences, notes) {
   for (const row of notes) {
     const key = localPersonalKey(row.entity_type, row.entity_id);
     if (key) state.personal.notes[key] = row.note_text;
+  }
+  for (const row of signalStates) {
+    if (row.signal_id && row.read_at) state.personal.signalRead[row.signal_id] = row.read_at;
   }
   savePersonal();
 }
@@ -796,6 +817,9 @@ function handleAction(action, element) {
   if (action === 'send-magic-link') return sendMagicLink(element.dataset.input);
   if (action === 'sign-out') return signOutPersonalAccount();
   if (action === 'show-log') return openActivityLog();
+  if (action === 'toggle-read-signals') { state.showReadSignals = !state.showReadSignals; return renderSignals(); }
+  if (action === 'mark-signal-read') return setSignalRead(element.dataset.signalId, true);
+  if (action === 'restore-signal') return setSignalRead(element.dataset.signalId, false);
   if (action === 'dismiss-drawer') return closeDrawer();
   if (action === 'toggle-place-hidden') return toggleHidden(`place:${element.dataset.placeId}`);
   if (action === 'toggle-event-hidden') {
@@ -909,11 +933,13 @@ function renderSignals() {
   const container = document.getElementById('signalsContent');
   if (!container) return;
   const signals = rankedSignals();
-  const activeSignals = signals.filter((signal) => !['dismissed', 'stale'].includes(signal.status));
+  const readSignals = signals.filter((signal) => isSignalRead(signal.id));
+  const activeSignals = signals.filter((signal) => !['dismissed', 'stale'].includes(signal.status) && !isSignalRead(signal.id));
   const urgent = activeSignals.filter(isActFirstSignal);
   const followUp = activeSignals.filter((signal) => !urgent.includes(signal) && (signal.status === 'needs_followup' || ['source_health', 'community_activity'].includes(signal.category)));
   const watch = activeSignals.filter((signal) => !urgent.includes(signal) && !followUp.includes(signal));
-  const stale = signals.filter((signal) => ['dismissed', 'stale'].includes(signal.status));
+  const stale = signals.filter((signal) => ['dismissed', 'stale'].includes(signal.status) && !isSignalRead(signal.id));
+  const hiddenSignals = readSignals.filter((signal) => !['dismissed', 'stale'].includes(signal.status));
 
   if (!signals.length) {
     container.innerHTML = emptyState('No signals yet', 'Signals will appear here when a real source, community route, fit caution, or opportunity deserves attention.');
@@ -924,13 +950,18 @@ function renderSignals() {
     <div class="signals-overview">
       <article><span class="live-dot"></span><strong>${activeSignals.length}</strong><small>active signals</small></article>
       <article><span class="status-dot amber"></span><strong>${urgent.length}</strong><small>act-first items</small></article>
-      <article><span class="status-dot slate"></span><strong>${followUp.length}</strong><small>follow-up routes</small></article>
+      <article><span class="status-dot slate"></span><strong>${readSignals.length}</strong><small>marked read</small></article>
+    </div>
+    <div class="signal-toolbar">
+      <p>${readSignals.length ? `${readSignals.length} signal${readSignals.length === 1 ? '' : 's'} hidden from the main view.` : 'Mark handled signals read to keep this page quiet.'}</p>
+      ${readSignals.length ? `<button class="soft-button" data-action="toggle-read-signals">${state.showReadSignals ? 'Hide read signals' : 'Show read signals'}</button>` : ''}
     </div>
     <div class="signals-board">
       ${signalGroup('Act first', 'Actionable cancellations, deadlines, strong opportunities, or judgment calls that should shape near-term planning.', urgent, 'coral')}
       ${signalGroup('Follow up', 'Useful routes, source-health issues, or community surfaces that deserve a bounded next look.', followUp, 'amber')}
       ${signalGroup('Watch list', 'Real but lower-pressure signals to keep visible without turning this into an inbox.', watch, 'mint')}
       ${stale.length ? signalGroup('Closed or stale', 'Retained for context, but not currently asking for attention.', stale, 'slate') : ''}
+      ${state.showReadSignals && hiddenSignals.length ? signalGroup('Read / hidden', 'You marked these handled. Restore one if it should return to Signals.', hiddenSignals, 'slate') : ''}
     </div>`;
 }
 
@@ -976,6 +1007,7 @@ function signalCard(signal) {
   const sourceUrl = signal.evidenceUrl || sourceItem?.url || '';
   const sourceLabel = sourceItem?.label || (sourceUrl ? 'Source link' : 'Source not linked');
   const isExternal = /^https?:\/\//i.test(sourceUrl);
+  const read = isSignalRead(signal.id);
   return `<article class="signal-card ${signalTone(signal)}">
     <div class="signal-card-main">
       <div class="signal-card-kicker">
@@ -995,8 +1027,13 @@ function signalCard(signal) {
       <span>Suggested action</span>
       <strong>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</strong>
       ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" ${isExternal ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(sourceLabel)} ↗</a>` : `<small>${escapeHtml(sourceLabel)}</small>`}
+      <button class="soft-button signal-read-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>
     </aside>
   </article>`;
+}
+
+function isSignalRead(signalId) {
+  return !!state.personal.signalRead?.[signalId];
 }
 
 function signalRelatedTarget(signal) {
@@ -2327,6 +2364,23 @@ async function persistPersonalNote(key, value) {
   recordPersonalWriteResult(error);
 }
 
+async function persistSignalReadState(signalId, read) {
+  if (!personalAuth.user || !personalAuth.client) return;
+  let error;
+  if (read) {
+    const now = new Date().toISOString();
+    ({ error } = await personalAuth.client.from('signal_user_states').upsert({
+      user_id: personalAuth.user.id,
+      signal_id: signalId,
+      read_at: state.personal.signalRead[signalId] || now,
+      updated_at: now
+    }, { onConflict: 'user_id,signal_id' }));
+  } else {
+    ({ error } = await personalAuth.client.from('signal_user_states').delete().eq('user_id', personalAuth.user.id).eq('signal_id', signalId));
+  }
+  recordPersonalWriteResult(error);
+}
+
 function recordPersonalWriteResult(error) {
   if (error) {
     console.warn('Personal state write failed; local value remains active.', error);
@@ -2404,6 +2458,20 @@ function toggleHidden(key) {
   void persistPreference(key);
   renderCurrentRoute();
   toast(state.personal.hidden[key] ? 'Deprioritized in your view' : 'Restored to normal priority');
+}
+
+function setSignalRead(signalId, read) {
+  const signal = DATA.signals.find((item) => item.id === signalId);
+  if (!signal) return;
+  if (read) {
+    state.personal.signalRead[signalId] = new Date().toISOString();
+  } else {
+    delete state.personal.signalRead[signalId];
+  }
+  savePersonal({ type: 'signal', label: `${read ? 'Marked read' : 'Restored'} signal: ${signal.summary}` });
+  void persistSignalReadState(signalId, read);
+  renderSignals();
+  toast(read ? personalSaveToast('Signal marked read') : personalSaveToast('Signal restored'));
 }
 
 function toggleInterested(key) {
