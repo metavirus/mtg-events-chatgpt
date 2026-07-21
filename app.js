@@ -9,6 +9,7 @@ const AUTH_REDIRECT_URL = 'https://metavirus.github.io/mtg-events-chatgpt/';
 const DATA_FETCH_TIMEOUT_MS = 9000;
 const AUTH_STARTUP_TIMEOUT_MS = 5000;
 const personalAuth = { client: null, user: null, status: 'local', message: '', sendingLink: false };
+let appInitialized = false;
 
 const COMMUNITY_SEED = [
   {
@@ -143,25 +144,27 @@ function compareText(a, b, options = { sensitivity: 'base' }) {
 
 async function load() {
   const dataSource = new URLSearchParams(window.location.search).get('data');
-  if (dataSource !== 'json') {
-    try {
-      await loadFromSupabase();
-      state.dataSource = 'supabase';
-      state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
-      initialize();
-      initializePersonalAuthAfterRender();
-      return;
-    } catch (error) {
-      console.warn('Supabase read failed; falling back to JSON snapshot.', error);
-      state.dataSource = 'json-fallback';
-    }
-  } else {
-    state.dataSource = 'json';
-  }
+  state.dataSource = dataSource === 'json' ? 'json' : 'json-fallback';
   await loadFromJson();
   state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
   initialize();
   initializePersonalAuthAfterRender();
+  if (dataSource !== 'json') upgradeToSupabaseAfterRender();
+}
+
+async function upgradeToSupabaseAfterRender() {
+  try {
+    await loadFromSupabase();
+    state.dataSource = 'supabase';
+    if (!DATA.stores.some((place) => place.id === state.selectedPlaceId)) {
+      state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
+    }
+    renderAll();
+  } catch (error) {
+    console.warn('Supabase read failed; keeping JSON snapshot active.', error);
+    state.dataSource = 'json-fallback';
+    renderAll();
+  }
 }
 
 function initializePersonalAuthAfterRender() {
@@ -667,7 +670,10 @@ function occurrenceConfidence(evidenceState, fallback) {
 
 function initialize() {
   document.body.dataset.dataSource = state.dataSource;
-  bindStaticEvents();
+  if (!appInitialized) {
+    bindStaticEvents();
+    appInitialized = true;
+  }
   routeFromHash();
   renderAll();
 }
