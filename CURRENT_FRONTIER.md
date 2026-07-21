@@ -1,8 +1,20 @@
 # Current Frontier
 
-Last updated: 2026-07-20
+Last updated: 2026-07-21
 
 ## Discord monitoring-map checkpoint
+
+Current accepted Discord safety checkpoint:
+`docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`.
+
+Discord content surveying remains paused except for explicitly approved guarded
+pilots. The current accepted rule treats ephemeral Discord interstitials and
+`members/@me?lurker=true` requests as safety/navigation conditions, not research
+findings: block/log the request, close the isolated read context, reopen the
+same mapped channel URL once by direct navigation, and continue only if it opens
+cleanly under guard. Do not click through, do not allow the request
+automatically, and do not downgrade route value merely because the transient
+condition appeared.
 
 The first structured Discord/community monitoring map is now live in Supabase.
 Migration `20260721025750_add_discord_monitoring_map.sql` adds service-only
@@ -98,17 +110,18 @@ technically plausible, but it still requires separate approval and must remain
 bounded to read-only extraction. See
 `research/runs/2026-07-20-discord-real-shell-safety-test.md`.
 
-The first tiny content-read pilot was attempted after shell-safety acceptance
-and failed closed before message extraction. The dedicated isolated profile was
-redirected to Discord login for the mapped Paper Hero channel, so no route
-identity, message content, or research finding was available. The guard
-heartbeat was present, editable focus was absent, mutating controls were
-disabled, and Discord telemetry-style `science` POSTs were blocked/logged. No
-external Discord state changed and no Signals/events/sources were created. The
-next Discord step is isolated-profile login/setup by the user followed by a
-rerun of the same one-channel pilot, or else continuing to treat Discord content
-as paused/manual-assisted. See
-`research/runs/2026-07-21-discord-readonly-content-pilot.md`.
+The first tiny content-read pilot was attempted after shell-safety acceptance.
+It failed closed at login, then failed closed again after isolated-profile setup:
+the Paper Hero shell identity was proven, but Discord attempted a blocked
+membership/lurker request before content extraction. A subsequent Collectors
+Lounge shell attempt showed the same pattern. No message content was read, no
+research finding was produced, no Signals/events/sources were created, and no
+external Discord state changed. See
+`research/runs/2026-07-21-discord-readonly-content-pilot.md` and
+`docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`.
+
+Separate current issue: the user reports that the app does not work. Treat that
+as app triage next, not as a Discord research continuation.
 
 ## Signals foundation checkpoint
 

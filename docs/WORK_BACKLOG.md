@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-07-19
+Last updated: 2026-07-21
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -14,23 +14,22 @@ Use it for:
 
 ## Active next-up
 
-- Discord agent browsing remains paused, but manual-open/screenshot review is
-  only a temporary fallback. The autonomous target and proof sequence are in
-  `docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`. The local fixture proof
-  passed 8/8 checks without opening Discord. The production-form guard module,
-  ignored dedicated profile workspace, and local production-guard proof now
-  exist. The protocol-only real-Discord shell test has now passed for the mapped
-  Paper Hero route using non-message shell identity evidence: final URL route
-  IDs match the mapped guild/channel IDs, Discord's app shell mounts, guard
-  heartbeat is present, mutating controls remain disabled, and a Discord-shaped
-  mutation request is blocked/logged. No message-content inspection, research
-  survey, Signal creation, source/event update, route promotion, or access-mode
-  promotion is authorized. The first tiny content-read pilot failed closed
-  because the dedicated isolated profile was redirected to Discord login before
-  message extraction. The next safety tranche, only if selected and explicitly
-  approved, is user one-time login/setup in the isolated profile followed by a
-  rerun of the same one-channel guarded content pilot, or else keeping Discord
-  content review paused/manual-assisted.
+- Discord agent browsing remains paused except for explicitly approved guarded
+  pilots. The current accepted safety baseline is recorded in
+  `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`. The local fixture
+  proof passed, the production guard exists, shell identity can be proven without
+  reading messages, and the first content-read pilots failed closed without
+  reading content or changing external Discord state. Paper Hero and Collectors
+  both proved shell identity but triggered blocked `members/@me?lurker=true`
+  behavior before content extraction. Treat that as an ephemeral
+  safety/navigation condition, not a research finding or route-value downgrade:
+  block/log, close the isolated read context, reopen the same mapped URL once by
+  direct navigation, and proceed only if it opens cleanly under guard. No broad
+  Discord survey is authorized.
+
+- Current user-reported blocker: the app does not work. Treat this as the next
+  separate app triage lane after the Discord safety checkpoint, not as Discord
+  research.
 
 - Authenticated personal preference persistence is implemented and live. The
   hosted app uses Supabase email magic links, user-scoped venue/event-series
