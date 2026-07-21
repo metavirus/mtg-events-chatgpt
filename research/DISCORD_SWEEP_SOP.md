@@ -58,6 +58,28 @@ Default uncertain Discord routes to `manual_open_required`,
 `route_only_tbd`, or `blocked_unsafe_method`; never default them to "try the
 browser."
 
+## Ephemeral Discord interstitial handling
+
+Discord sometimes shows or triggers a transient server/channel visibility state
+even when the same route later opens directly. A guarded pass may see the
+correct server/channel shell while Discord attempts a
+`members/@me?lurker=true`-style request before message content is readable.
+
+Do not click through that state, accept an invite, join, select roles, or allow
+the membership/lurker request automatically.
+
+Allowed narrow recovery:
+
+1. block/log the attempted membership/lurker request;
+2. close the isolated Discord-read browser context;
+3. reopen the exact same mapped channel URL once by direct navigation;
+4. continue only if the route opens without any gated/interstitial state,
+   mutating request, editable focus, or enabled mutating control.
+
+If the same gated/interstitial condition recurs after one close-and-retry,
+record the channel as blocked for that run and leave the durable route value
+unchanged unless repeated safe checks show the route is not worth monitoring.
+
 ### Hard prohibitions
 
 Do not:

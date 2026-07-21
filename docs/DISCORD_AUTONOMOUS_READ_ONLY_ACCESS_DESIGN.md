@@ -146,6 +146,25 @@ An autonomous run must stop the affected channel when any of these occurs:
 
 Failure means a recorded blocked result and no improvisation.
 
+### Ephemeral interstitial exception
+
+Discord sometimes presents a transient visibility/interstitial state for a
+server or channel even when the same direct route later resolves normally. This
+does not make it safe for Codex to click through, join, accept, select roles, or
+allow a `members/@me?lurker=true`-style request.
+
+The safe recovery is a bounded retry, not interaction:
+
+1. block and log the attempted membership/lurker request;
+2. close the isolated Discord-read context;
+3. reopen the exact same mapped channel URL once by direct navigation;
+4. proceed only if the shell and content are visible without any mutating
+   request, gate, editable focus, or enabled mutating control.
+
+If the retry sees the same condition, the route remains blocked for that run.
+The quiet/blocked run result must not automatically downgrade the route's
+long-term value.
+
 ## Small next proof-of-safety test
 
 The first test must not open Discord or inspect real Discord content.
