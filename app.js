@@ -6,6 +6,8 @@ const SUPABASE = {
 };
 
 const AUTH_REDIRECT_URL = 'https://metavirus.github.io/mtg-events-chatgpt/';
+const DATA_FETCH_TIMEOUT_MS = 9000;
+const AUTH_STARTUP_TIMEOUT_MS = 5000;
 const personalAuth = { client: null, user: null, status: 'local', message: '', sendingLink: false };
 
 const COMMUNITY_SEED = [
@@ -146,8 +148,8 @@ async function load() {
       await loadFromSupabase();
       state.dataSource = 'supabase';
       state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
-      await initializePersonalAuth();
       initialize();
+      initializePersonalAuthAfterRender();
       return;
     } catch (error) {
       console.warn('Supabase read failed; falling back to JSON snapshot.', error);
@@ -158,8 +160,24 @@ async function load() {
   }
   await loadFromJson();
   state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
-  await initializePersonalAuth();
   initialize();
+  initializePersonalAuthAfterRender();
+}
+
+function initializePersonalAuthAfterRender() {
+  withTimeout(initializePersonalAuth(), AUTH_STARTUP_TIMEOUT_MS, 'Personal preference sync timed out').catch((error) => {
+    console.warn('Personal preference startup failed; local state remains active.', error);
+    personalAuth.status = 'local';
+    personalAuth.message = 'Saved on this device';
+    updateAuthChrome();
+  });
+}
+
+function withTimeout(promise, timeoutMs, message) {
+  return new Promise((resolve, reject) => {
+    const timeout = window.setTimeout(() => reject(new Error(message)), timeoutMs);
+    promise.then(resolve, reject).finally(() => window.clearTimeout(timeout));
+  });
 }
 
 async function initializePersonalAuth() {
@@ -402,15 +420,25 @@ async function loadFromSupabase() {
 }
 
 async function supabaseRows(table) {
-  const response = await fetch(`${SUPABASE.url}/rest/v1/${table}?select=*`, {
+  const response = await fetchWithTimeout(`${SUPABASE.url}/rest/v1/${table}?select=*`, {
     headers: {
       apikey: SUPABASE.publishableKey,
       Authorization: `Bearer ${SUPABASE.publishableKey}`
     },
     cache: 'no-store'
-  });
+  }, DATA_FETCH_TIMEOUT_MS);
   if (!response.ok) throw new Error(`Supabase could not load ${table}`);
   return response.json();
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = DATA_FETCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
 
 async function supabaseRowsOptional(table) {
