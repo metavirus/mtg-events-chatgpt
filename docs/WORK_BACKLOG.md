@@ -20,9 +20,12 @@ Use it for:
   passed 8/8 checks without opening Discord. The production-form guard module,
   ignored dedicated profile workspace, and local production-guard proof now
   exist. The next safety tranche, only if selected and explicitly approved, is
-  to run the protocol-only real-Discord shell test plan in
-  `docs/DISCORD_REAL_SHELL_TEST_PLAN.md`. No message-content inspection,
-  research survey, Signal creation, or access-mode promotion is authorized.
+  to improve the protocol-only real-Discord shell test's shell-identity
+  detection without reading messages. The first shell test opened the mapped
+  Paper Hero URL safely and blocked a Discord-shaped mutation request, but
+  failed closed because expected shell markers were absent. No message-content
+  inspection, research survey, Signal creation, or access-mode promotion is
+  authorized.
 
 - Authenticated personal preference persistence is implemented and live. The
   hosted app uses Supabase email magic links, user-scoped venue/event-series

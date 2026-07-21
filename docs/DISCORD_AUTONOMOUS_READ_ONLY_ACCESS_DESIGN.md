@@ -198,3 +198,10 @@ live Discord session and does not authorize Discord access.
 The next possible step is the separately approved shell test in
 `docs/DISCORD_REAL_SHELL_TEST_PLAN.md`. That test must not inspect message
 content or create research findings.
+
+That shell test was attempted once against the mapped Paper Hero Discord route
+and failed closed because the checker did not detect enough server/channel/main
+shell markers. The guard itself loaded, mutating controls were not enabled, and
+a Discord-shaped mutation request was blocked/logged. No message content was
+read and no route was promoted. The next iteration should improve shell
+identity detection while preserving the no-message-content boundary.

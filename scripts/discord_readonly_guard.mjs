@@ -172,6 +172,51 @@ async function readDiscordSafetyState(page, options = {}) {
   }, selector);
 }
 
+async function readDiscordShellSafetyState(page, options = {}) {
+  const selector = options.selector || defaultMutationSelector;
+  return page.evaluate((mutationSelector) => {
+    const active = document.activeElement;
+    const activeEditable = active instanceof Element && (
+      active.matches('input, textarea, [contenteditable="true"], [role="textbox"], [data-slate-editor="true"]')
+    );
+    const enabledMutators = [...document.querySelectorAll(mutationSelector)].filter((element) => {
+      const editable = element.getAttribute('contenteditable') === 'true';
+      const disabled = 'disabled' in element ? element.disabled : element.getAttribute('aria-disabled') === 'true';
+      return editable || !disabled;
+    });
+    const loginGate = Boolean(document.querySelector('[name="email"], [name="password"], form[action*="login" i]'));
+    const inviteOrRoleGate = Boolean(document.querySelector([
+      '[aria-label*="Join" i]',
+      '[aria-label*="Accept Invite" i]',
+      '[aria-label*="Invite" i]',
+      '[aria-label*="Role" i]',
+      '[aria-label*="Verify" i]',
+      '[data-list-item-id*="roles" i]'
+    ].join(',')));
+    const shellMarkers = {
+      guildShell: Boolean(document.querySelector('[aria-label*="Servers" i], [data-list-id*="guilds" i]')),
+      channelShell: Boolean(document.querySelector('[aria-label*="Channels" i], [data-list-id*="channels" i]')),
+      mainShell: Boolean(document.querySelector('main, [role="main"], [aria-label*="Messages" i]'))
+    };
+    return {
+      url: location.href,
+      host: location.hostname,
+      title: document.title,
+      heartbeat: window.__discordReadonlyGuard || null,
+      activeEditable,
+      enabledMutatorCount: enabledMutators.length,
+      enabledMutatorLabels: enabledMutators.slice(0, 10).map((element) => (
+        element.getAttribute('aria-label') ||
+        element.getAttribute('data-mutation-control') ||
+        element.tagName
+      )),
+      hasLoginGate: loginGate,
+      hasInviteGate: inviteOrRoleGate,
+      shellMarkers
+    };
+  }, selector);
+}
+
 function assertDiscordReadOnlyState(state, options = {}) {
   const guardVersion = options.guardVersion || 'discord-readonly-v1';
   const requireDiscordHost = options.requireDiscordHost !== false;
@@ -222,6 +267,7 @@ export {
   installDiscordReadOnlyGuards,
   isDiscordMutationRequest,
   readDiscordSafetyState,
+  readDiscordShellSafetyState,
   readonlyPageGuardBootstrap,
   assertDiscordReadOnlyState
 };
