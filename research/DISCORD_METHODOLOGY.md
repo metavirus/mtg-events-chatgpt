@@ -235,6 +235,39 @@ For weekly passes:
 Use deeper periodic reviews for new servers, new channels, reorganized roles,
 previously inaccessible surfaces, or unexplained cross-source conflicts.
 
+## Access and watch-plan memory
+
+Discord research should not repeatedly rediscover the same access mechanics.
+When a route is materially useful, future work should preserve both:
+
+1. what to monitor; and
+2. how to access it.
+
+At minimum, run notes or future structured tables should distinguish:
+
+- **surface/route:** the Discord or community surface exists and is linked to a
+  venue or community; this alone does not imply content has been inspected;
+- **access modality:** preferred browser/session or URL, joined/invite status,
+  access state, user action required, known server/channel/message URLs, last
+  successful and failed access method, and whether the route is suitable for an
+  automated or manual survey;
+- **channel watch plan:** which channels are worth monitoring, their purpose,
+  priority, cadence, expected signal types, access status, noise level, last
+  checked marker, and last useful signal;
+- **survey observations:** what one run found, including useful findings, quiet
+  channels, inaccessible channels, noisy channels, and the inspected time
+  window.
+
+A quiet Discord check is a run observation, not a landing-page Signal and not a
+permanent downgrade by itself. Discord signal value is intermittent. A route
+should be deprioritized only when repeated checks, low venue relevance, and low
+yield together show that it is not worth regular monitoring.
+
+Future survey agents should read the route/access/channel plan before opening
+Discord, use the last known working access method first, try only one
+reasonable fallback on failure, record blocked/TBD cleanly, and avoid turning
+access recovery into a research side quest.
+
 ## Completion criteria
 
 A Discord pass is complete only when:

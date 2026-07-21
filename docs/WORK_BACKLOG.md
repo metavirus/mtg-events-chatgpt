@@ -467,6 +467,17 @@ claims without reopening the whole packet.
   Signals should regain a more prominent default surface without restoring the
   fixed right-side pane that consumed calendar width. This is not a current
   blocker.
+- Future Discord/community monitoring should be built from the documented
+  four-layer model before any daily/weekly automation is attempted:
+  community surface / route, access modality, channel watch plan, and survey
+  observations / Signals. Preserve route value separately from one quiet run:
+  a quiet check is an observation, not a permanent downgrade or prominent
+  Signal by itself. Before recurring Discord work, add the smallest durable
+  representation needed to remember joined/invite/browser access, monitored
+  channels, priority/cadence, expected signal types, last checked, last useful
+  signal, and blocked/TBD access notes. See
+  `docs/SIGNALS_AND_COMMUNITIES_DESIGN_CHECKPOINT.md` and
+  `research/DISCORD_METHODOLOGY.md`.
 
 ## Done when
 

@@ -153,6 +153,135 @@ If Discord/community content is not inspected, the app and data should say so:
 route captured / content replay TBD. Do not claim turnout, vibe, event
 reliability, or fit support unless the content itself was actually reviewed.
 
+## Future Discord/community monitoring model
+
+The accepted Discord pilots show that Discord can produce high-value findings,
+but they also show an access-cost problem. A future daily/weekly survey should
+not rediscover basic mechanics every run: which browser session works, whether
+the server is joined, whether an invite is valid, which channel is role-gated,
+or which channel is actually worth checking.
+
+Future work should therefore model Discord/community monitoring in four
+separate layers.
+
+### 1. Community surface / route
+
+This records that a communication surface exists and is linked to a venue or
+community. It does not imply content has been inspected.
+
+Examples:
+
+- ProjectCCG Online Community Discord exists and is linked to ProjectCCG / MTG
+  OC.
+- Tilted Gaming Discord route exists from the official events page.
+- Paper Hero has a Huntington Beach Magic channel visible from its Discord
+  server.
+
+### 2. Access modality
+
+This records how the route should be accessed next time, so the agent does not
+repeat browser, invite, and role-discovery work.
+
+Fields or concepts to preserve later:
+
+- preferred access surface: in-app browser, Chrome, direct URL, invite URL,
+  public discovery page, external source link, unknown;
+- joined status: joined, not joined, unknown;
+- invite status: valid invite, expired invite, accept-invite required, no invite
+  known;
+- access status: accessible, public landing only, role-gated,
+  permission-gated, login required, blocked, unknown;
+- user action required: none, join server, accept invite, choose roles, request
+  access, use different browser/session, manual handoff;
+- known internal target: server URL, channel URL, channel id/name, message URL
+  if available;
+- last successful access method;
+- last failed access method and reason;
+- last access checked time;
+- suitability: automated survey, manual survey only, blocked/TBD;
+- route notes such as `use in-app browser session, not Chrome`, `public
+  discovery page accessible but internal content not visible`, or `joined
+  server but MTG channel is role-gated`.
+
+### 3. Channel watch plan
+
+This records which channels inside a surface are worth monitoring.
+
+Fields or concepts to preserve later:
+
+- server/community surface id;
+- channel name and channel id or direct URL;
+- channel type: announcements, events, schedule, Commander, draft, prerelease,
+  LFG, rules, general, admin, marketplace, other;
+- monitor priority: urgent, high, medium, low, ignore;
+- monitor cadence: daily, weekly, occasional, manual-only, paused;
+- reason to monitor;
+- expected signal types: cancellations, closures, hours/access, prerelease,
+  draft, Commander, LFG, proxy policy, power level, turnout, solo-arrival,
+  source conflict, registration/capacity, etc.;
+- access status for that channel: readable, role-gated, requires channel
+  selection, inaccessible, noisy, archived, unknown;
+- noise level;
+- last checked;
+- last useful signal;
+- last seen message/timestamp when available;
+- active or paused state.
+
+### 4. Survey observations and Signals
+
+A survey observation is not the same thing as a Signal.
+
+For each manual, daily, weekly, or targeted run, preserve:
+
+- which routes/channels were checked;
+- which were quiet;
+- which were inaccessible;
+- which were noisy;
+- which had useful findings;
+- what timestamp/window was inspected;
+- whether the result should affect monitoring cadence.
+
+Only genuinely useful observations should become Signals. Quiet Discord checks
+should create run observations, not landing-page Signals. A quiet current run
+does not mean the route is permanently low-value; Discord value is intermittent.
+Cancellations, schedule changes, LFG posts, turnout clues, proxy/power notes,
+and special-event details may appear only occasionally.
+
+Keep these concepts distinct:
+
+- route value: whether the route is worth monitoring at all;
+- access state: whether we can inspect it and how;
+- channel watch priority: which channels deserve attention;
+- current run result: what this inspection found;
+- signal yield history: whether useful findings have appeared over time;
+- Signals: sparse attention-worthy items for the app landing page.
+
+Possible later tables or model concepts:
+
+- `community_surfaces` or `discord_servers`;
+- `discord_access_profiles`;
+- `discord_channel_watchlist`;
+- `discord_survey_runs`;
+- `discord_channel_observations`;
+- existing `signals`, created only for attention-worthy findings.
+
+Future daily/weekly agent behavior should:
+
+- read the route/channel/access plan first;
+- use the known working browser/session/access method first;
+- inspect only active or due channels;
+- prioritize badge/mention, announcement, event, schedule, Commander, draft,
+  prerelease, LFG, and high-value source-health channels;
+- if access fails, try one reasonable fallback, then record a clean blocked/TBD
+  result instead of spiraling;
+- record quiet checks as observations;
+- create sparse Signals only for useful findings;
+- update last checked, last seen, and last useful-signal markers;
+- suggest watchlist/access-plan changes separately.
+
+This is future design/backlog documentation only. Do not build automation,
+browser-login persistence, or a broad Discord survey until explicitly selected.
+
 ## Communities direction
 
 Communities should become the social and coordination layer of the app. It
