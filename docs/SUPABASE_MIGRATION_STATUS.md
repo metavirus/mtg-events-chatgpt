@@ -1,6 +1,6 @@
 # Supabase Migration Status
 
-Last updated: 2026-07-17
+Last updated: 2026-07-20
 
 This file is the quick checkpoint for the Supabase migration. Use it before
 touching the data layer so future tasks do not rediscover the same state.
@@ -21,6 +21,28 @@ touching the data layer so future tasks do not rediscover the same state.
 - Representative raw-data and read-adapter parity are accepted at repair commit
   `813c0f2`; the default-source cutover was made after controlled research-write
   safety and pilot rollback were accepted.
+- Authenticated personal preferences/notes, Signals, per-user Signal read state,
+  venue hours, and the first Discord monitoring map have since been added in
+  bounded migrations.
+
+## Discord monitoring map
+
+Migration `20260721025750_add_discord_monitoring_map.sql` adds:
+
+- `discord_access_profiles`: route-level access method, joined/access/gate
+  state, route value, cadence, last useful result, and next internal target;
+- `discord_channel_watchlist`: channel-level priority, cadence, expected signal
+  types, access/noise state, and monitoring status.
+
+The live pilot contains 3 access profiles and 8 channel-watch rows for Magic &
+Monsters, ProjectCCG Online Community, and JJ's Collectibles. Existing
+`sources` remain the route registry; existing `signals` remain the sparse
+attention surface.
+
+Both new tables are intentionally operational/service-only: RLS is enabled,
+all privileges are revoked from `anon` and `authenticated`, and CRUD is granted
+only to `service_role`. No browser operational-monitoring access was added.
+See `research/runs/2026-07-20-discord-monitoring-map-pilot.md`.
 
 ## Imported snapshot counts
 

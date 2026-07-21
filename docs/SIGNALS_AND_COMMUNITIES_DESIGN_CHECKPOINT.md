@@ -279,8 +279,12 @@ Future daily/weekly agent behavior should:
 - update last checked, last seen, and last useful-signal markers;
 - suggest watchlist/access-plan changes separately.
 
-This is future design/backlog documentation only. Do not build automation,
-browser-login persistence, or a broad Discord survey until explicitly selected.
+The first bounded implementation is now complete: service-only
+`discord_access_profiles` and `discord_channel_watchlist` tables contain a
+3-route / 8-channel pilot from already accepted work. Survey observations stay
+in run notes for now, and only genuinely useful findings should enter
+`signals`. Do not build automation, browser-login persistence, or a broad
+Discord survey until explicitly selected.
 
 ## Communities direction
 

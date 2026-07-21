@@ -2,6 +2,26 @@
 
 Last updated: 2026-07-20
 
+## Discord monitoring-map checkpoint
+
+The first structured Discord/community monitoring map is now live in Supabase.
+Migration `20260721025750_add_discord_monitoring_map.sql` adds service-only
+`discord_access_profiles` and `discord_channel_watchlist` tables without
+granting browser clients operational-monitoring access.
+
+The pilot maps 3 already accepted Discord routes and 8 channel watch targets:
+Magic & Monsters, ProjectCCG Online Community, and JJ's Collectibles. It
+preserves the last working signed-in browser access, joined/access state,
+observed gates, route value, cadence, high-value channels, expected signal
+types, noise level, and last useful result. No new Discord research was
+performed for the seed.
+
+This is a receiving and continuity layer, not automation. Scheduled surveys,
+browser-login persistence, broad Discord coverage, and structured survey
+history remain deferred. Future Discord passes should start from this map and
+write only sparse attention-worthy findings into `signals`. See
+`research/runs/2026-07-20-discord-monitoring-map-pilot.md`.
+
 ## Signals foundation checkpoint
 
 Broad research is paused while the accepted Signals and Communities product
@@ -15,9 +35,9 @@ promotion intent. Signals remain separate from canonical events, research
 truth, Updates, and personal state. Browser clients have read-only access; no
 automation, seeded records, or Signals UI has been added yet.
 
-The next bounded product tranche is a small Signals UI backed by this table and
-seeded only with a few honest existing findings. Do not resume broad research
-or build Discord/browser automation as part of that tranche.
+The Signals UI and bounded Communities surfaces have since been implemented.
+Do not add filler Signals; future monitoring findings should remain sparse,
+current, and planning-useful.
 
 ## Personal-state checkpoint
 
