@@ -2,6 +2,20 @@
 
 Last updated: 2026-07-21
 
+## ChatGPT-Codex coordination checkpoint
+
+The ordinary ChatGPT-to-Codex coordination proof is accepted. Future
+ChatGPT-originated intake should use the Supabase coordination queue:
+`coordination_items`, `coordination_sources`, `coordination_activity`, and
+`public.submit_coordination_item(...)`.
+
+The accepted governance boundary is proportionate to this one-user hobby
+project: ChatGPT's connector is technically write-capable, but routine
+coordination instructions limit it to non-canonical queue submissions. Codex
+reviews queue items and promotes accepted material separately through the
+controlled canonical-write workflow. The old PR/mailbox/file sideload path is
+historical fallback only.
+
 ## Discord monitoring-map checkpoint
 
 Current accepted Discord safety checkpoint:

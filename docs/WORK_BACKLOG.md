@@ -14,6 +14,12 @@ Use it for:
 
 ## Active next-up
 
+- ChatGPT-to-Codex coordination has moved to Supabase. New ordinary ChatGPT
+  source leads, findings, questions, and proposals should be submitted as
+  non-canonical coordination queue records, preferably through
+  `public.submit_coordination_item(...)`. The legacy PR/mailbox/intake files
+  remain historical fallback only.
+
 - Discord agent browsing remains paused except for explicitly approved guarded
   pilots. The current accepted safety baseline is recorded in
   `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`. The local fixture

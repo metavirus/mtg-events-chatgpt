@@ -11,7 +11,8 @@ The repository has already completed these stabilization steps:
 - imported earlier-AI materials are deprecated as active authority;
 - text-integrity guardrails added;
 - full-repo text-integrity audit passes;
-- ChatGPT sideload lane established with mailbox/intake/changelog rules;
+- ChatGPT-to-Codex coordination now uses the Supabase coordination queue;
+  the old mailbox/intake/changelog lane is historical fallback only;
 - recent research/SOP checkpoint published;
 - local UX pass accepted on `codex/reconcile-wizards`;
 - personal-use deployment accepted at `dd44e20`, tagged
@@ -39,8 +40,7 @@ See also:
 - `docs/LEGACY_MATERIALS.md`
 - `docs/DIRECTION_AUDIT_2026-07-15.md`
 - `docs/REPO_SANITY_AUDIT_2026-07-15.md`
-- `docs/chatgpt-sideload-sop.md`
-- `docs/agent-mailbox.md`
+- `docs/CHATGPT_CODEX_COORDINATION_CAPABILITY_PROOF.md`
 - `docs/SUPABASE_MIGRATION_STATUS.md`
 - `docs/MODEL_USAGE_GUIDE.md`
 

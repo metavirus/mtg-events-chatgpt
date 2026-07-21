@@ -1,5 +1,11 @@
 # Async Intake Queue
 
+Historical status: superseded as the default ChatGPT-to-Codex intake channel on
+2026-07-21. New ordinary ChatGPT submissions should use the Supabase
+coordination queue described in
+`docs/CHATGPT_CODEX_COORDINATION_CAPABILITY_PROOF.md`. This file remains
+archive/recovery context for pre-Supabase packet intake.
+
 This queue accepts sourced discoveries, research questions, product ideas,
 small corrections, and user requests from ChatGPT, Codex, or the future app.
 It is triage input, not canonical data and not authorization to execute risky

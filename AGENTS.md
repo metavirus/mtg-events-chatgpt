@@ -32,38 +32,27 @@ warning; use the documented continuity-failure criteria. Resume directly after
 an isolated compaction when the target remains clear, and retire an unhealthy
 task only after preserving the exact working state and bounding its successor.
 
-## ChatGPT Sideload Coordination
+## ChatGPT-Codex Supabase Coordination
+
+The active ordinary ChatGPT-to-Codex handoff path is the Supabase coordination
+queue, not branch/PR/mailbox/file choreography.
 
 Before handling work originating in ordinary ChatGPT, read:
 
-- `docs/chatgpt-sideload-sop.md`
-- `docs/chatgpt-changelog.md`
-- `docs/agent-mailbox.md`
-- `docs/ASYNC_INTAKE.md`
+- `docs/CHATGPT_CODEX_COORDINATION_CAPABILITY_PROOF.md`
 
-Ordinary ChatGPT may make documentary edits, maintain the mailbox/intake queue,
-and make small source-supported corrections to existing records in
-`stores.json`, `events.json`, `sources.json`, or `changes.json` when the schema,
-IDs, and formatting conventions remain unchanged. It must not create canonical
-entities, change app behavior or schemas, edit crawler/deployment code, edit
-generated `output/wizards/*` files, perform bulk rewrites, or delete records.
+Ordinary ChatGPT may read the shared queue and may submit non-canonical intake
+items through `public.submit_coordination_item(...)`. Those submissions can
+include source leads, research findings, questions, or proposals, but they are
+not canonical research truth. Codex must review and separately promote accepted
+material through the controlled Supabase research-write workflow.
 
-After any canonical-data edit, validate all four JSON files. Record every
-ChatGPT-originated change in `docs/chatgpt-changelog.md`, including sources,
-files changed, validation performed or unavailable, risks, and requested Codex
-follow-up. Prefer a `chatgpt-data-update/YYYY-MM-DD-short-description` branch
-and pull request; do not commit directly to `main` unless the user expressly
-authorizes it. If the GitHub integration cannot create a branch or PR, first
-follow the connector recovery checklist in `docs/chatgpt-sideload-sop.md`.
-Only fall back to read-only handoff mode after that recovery path has been
-attempted or when the user explicitly declines it. Never substitute a direct
-edit to `main` or an existing Codex branch.
+ChatGPT must not revise canonical venues, events, sources, evaluations,
+Signals, personal state, schema, auth, RLS, branches, Edge Functions, generated
+exports, crawler/deployment code, or app behavior unless the user gives a
+separate explicit bounded instruction.
 
-Important coordination rule: a ChatGPT branch or PR by itself is not enough
-communication. If ordinary ChatGPT creates off-branch work that needs Codex
-review, it must also leave a mailbox message in `docs/agent-mailbox.md`
-stating what changed, where it lives, why Codex should care, whether it is
-visible only on the ChatGPT branch/PR, and what Codex action is requested.
-Likewise, if Codex writes a mailbox message that ChatGPT is expected to see
-promptly, that mailbox update should be pushed; a local-only mailbox commit is
-not operationally delivered.
+Legacy file-based sideload coordination is historical fallback only. The files
+`docs/chatgpt-sideload-sop.md`, `docs/chatgpt-changelog.md`,
+`docs/agent-mailbox.md`, and `docs/ASYNC_INTAKE.md` remain useful archive and
+recovery context, but they are no longer the default communication lane.

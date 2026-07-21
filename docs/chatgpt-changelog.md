@@ -1,5 +1,10 @@
 # ChatGPT Sideload Changelog
 
+Historical status: superseded as the default coordination ledger on 2026-07-21.
+New ordinary ChatGPT-to-Codex coordination should use the Supabase queue
+described in `docs/CHATGPT_CODEX_COORDINATION_CAPABILITY_PROOF.md`. Preserve
+this file as archive/recovery context for the earlier sideload era.
+
 Purpose: This file records repository and data changes made from ordinary
 ChatGPT sessions so Codex can audit them later. Entries remain pending until a
 Codex audit explicitly changes their status.

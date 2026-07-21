@@ -1,5 +1,10 @@
 # Codex-ChatGPT Mailbox
 
+Historical status: superseded as the default handoff channel on 2026-07-21.
+New ordinary ChatGPT-to-Codex intake should use the Supabase coordination queue
+described in `docs/CHATGPT_CODEX_COORDINATION_CAPABILITY_PROOF.md`. This file
+remains archive/recovery context for the earlier PR/mailbox workflow.
+
 This is the compact handoff channel between Codex and ordinary ChatGPT. It is
 not canonical app data and not the durable work backlog. Keep messages short;
 move actionable work to `docs/ASYNC_INTAKE.md` and record repository edits in

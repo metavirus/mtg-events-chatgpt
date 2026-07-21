@@ -1,5 +1,11 @@
 # ChatGPT Sideload SOP
 
+Historical status: superseded as the default coordination workflow on
+2026-07-21. Use the Supabase coordination queue described in
+`docs/CHATGPT_CODEX_COORDINATION_CAPABILITY_PROOF.md` for new ordinary
+ChatGPT-to-Codex intake. This file remains archive/recovery guidance for old
+branch, PR, mailbox, and file-based sideload work.
+
 ## Purpose
 
 This SOP lets an ordinary ChatGPT session with GitHub access perform narrow,
