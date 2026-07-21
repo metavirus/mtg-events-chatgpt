@@ -1,31 +1,44 @@
 # ChatGPT-Codex Coordination Capability Proof
 
-Status: proof infrastructure deployed; ordinary ChatGPT round trip awaits the
-one-time private GPT Action setup.
+Status: direct connector read proof passed; lean coordination queue deployed;
+ChatGPT submission and Codex disposition remain to complete the round trip.
 
 ## Capability finding
 
-Codex has a direct authenticated Supabase connector. Ordinary personal ChatGPT
-does not inherit that connector merely because Codex has it.
+Both Codex and the user's ordinary ChatGPT session have an installed,
+authenticated Supabase management connector. The ChatGPT connector exposes
+arbitrary SQL, migrations, branch operations, project management, and Edge
+Function deployment. A live read-only test proved that ChatGPT can query the
+temporary coordination table directly.
 
-For a personal ChatGPT Pro account, a custom MCP app is currently limited to
-read/search actions. It therefore cannot be the coordination write path.
+The connector's underlying credential type is not visible. Its current tool
+surface has no visible table, schema, RPC, operation, or read-only restriction.
+It is therefore capable of coordination reads and writes, but it does not
+satisfy the project's structural rule that routine ChatGPT intake must be
+unable to mutate canonical research truth.
 
-The smallest viable personal-account path is a private custom GPT Action that
-calls one narrow authenticated Supabase Edge Function. GPT Actions can call an
-external OpenAPI-described endpoint using an API key, although the custom GPT
-must use a non-Pro model that supports Actions.
+For this one-user hobby project, the user accepted a proportionate governance
+boundary instead of introducing another connector and authentication path:
 
-This is a one-time setup surface, not a return to branch, PR, or mailbox
-coordination. On ChatGPT web, the private GPT can also be invoked from an
-ordinary conversation with `@`, allowing the active conversation to hand a
-structured result to the queue.
+- ChatGPT may read the coordination queue.
+- ChatGPT may submit only through `public.submit_coordination_item` and may
+  write only non-canonical coordination records.
+- ChatGPT is never instructed to revise canonical research truth.
+- Codex reviews queue submissions and separately promotes accepted material
+  through the controlled canonical-write workflow.
+- The installed connector remains technically broad; the table-only limit is
+  an operating rule rather than a connector-enforced permission boundary.
+
+Supabase's hosted MCP supports stricter project/read-only configuration if this
+project later needs hardening. That additional machinery is intentionally
+deferred as disproportionate here.
 
 Current product references:
 
 - [Developer mode, apps, and full MCP connectors in ChatGPT](https://help.openai.com/en/articles/12584461-developer-mode-apps-and-full-mcp-connectors-in-chatgpt-beta)
 - [Configuring actions in GPTs](https://help.openai.com/en/articles/9442513)
 - [Creating and editing GPTs](https://help.openai.com/en/articles/8554397-creating-a-gpt/)
+- [Supabase MCP Server configuration and security guidance](https://supabase.com/docs/guides/ai-tools/mcp)
 
 ## Temporary proof surface
 
@@ -50,6 +63,29 @@ The live proof currently contains one assignment targeted to ChatGPT:
 `e5b038cf-ef90-45c0-953d-2a45a36c0152`. Its bounded request is to return one
 structured finding with one exact source URL already known to the project,
 without broad research or canonical writes.
+
+ChatGPT successfully read this row through its installed Supabase connector,
+without a branch, PR, mailbox path, or repository file location. No ChatGPT
+write has been authorized or performed yet.
+
+## Lean coordination queue
+
+The accepted operational model is now deployed:
+
+- `coordination_items`: assignments, findings, questions, proposals, status,
+  entity context, confidence, recommended action, and disposition;
+- `coordination_sources`: exact source URLs and what each inspected or
+  discovered source supports;
+- `coordination_activity`: append-only lifecycle and conversation history;
+- `submit_coordination_item(...)`: one validated helper that creates an item,
+  its initial activity row, and up to 20 attached sources atomically.
+
+The helper rejects unknown source fields, invalid enums, malformed JSON,
+oversized payloads, and duplicate deduplication keys. Browser roles have no
+table privileges. Queue rows remain non-canonical until Codex promotes them.
+
+The first real assignment is ready at
+`e2a17098-e5da-462e-b823-40ac73213ee7`.
 
 ## Security boundary
 
@@ -90,26 +126,22 @@ Supabase Data API access and cannot be used to write canonical research tables.
 These checks prove the infrastructure boundary. They do not substitute for the
 ordinary ChatGPT round trip required below.
 
-## Required one-time ChatGPT setup
+## Setup requirement
 
-1. Create a private custom GPT on ChatGPT web.
-2. In its Actions configuration, import
-   `docs/chatgpt-coordination-capability-action.yaml`.
-3. Select API-key authentication using Bearer auth.
-4. Copy the proof credential from the ignored local file
-   `work/coordination-capability/action-bearer-token.txt` into the private
-   Action configuration. Do not paste it into chat or commit it.
-5. Use a non-Pro model that supports Actions; Actions are not available in Pro
-   mode.
-6. Keep the GPT private for this proof.
+No additional ChatGPT setup is required. Both sides use their existing
+authenticated Supabase connectors. The private Action and temporary Edge
+Function are no longer the recommended operating path and should be retired
+after the direct-connector round trip is accepted.
 
 ## Round-trip acceptance test
 
 After setup:
 
-1. Codex appends one bounded assignment targeted to ChatGPT.
-2. ChatGPT reads it through `listCoordinationProofItems` without a branch, PR,
-   or repository file location.
+1. Codex appends one bounded assignment targeted to ChatGPT. Complete in the
+   final queue.
+2. ChatGPT reads it without a branch, PR, or repository file location.
+   Pending for the final-queue assignment; direct connector access was already
+   proven against the temporary proof row.
 3. ChatGPT appends a structured finding with at least one exact source URL in
    its payload.
 4. Codex reads the finding and appends one follow-up or disposition.
@@ -122,6 +154,7 @@ built and the legacy mailbox/sideload procedure be marked historical.
 
 ## Current stop condition
 
-Do not mark the old coordination mechanism legacy yet. The access path is
-viable in design, but the ordinary ChatGPT Action round trip still requires the
-one-time private GPT setup and live acceptance test.
+Do not mark the old coordination mechanism legacy yet. The schema and first
+assignment are ready, but ChatGPT must submit the finding and observe Codex's
+disposition before the temporary proof surface and old coordination mechanism
+are retired.
