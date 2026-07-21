@@ -22,6 +22,12 @@ as a hard safety boundary.
 Until a pass explicitly satisfies this protocol, **all Discord browser
 surveying is paused**.
 
+Manual opening and screenshot/paste review are temporary emergency fallbacks,
+not the intended long-term product workflow. The autonomous target is recorded
+in `docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`: a dedicated isolated
+profile, a narrow navigation/extraction-only capability, page-level input
+suppression, and network-level mutation blocking. None is certified yet.
+
 ### Discord access modes
 
 Every Discord route or channel in the monitoring map must carry an explicit
@@ -82,6 +88,10 @@ cannot be verified, do not use it.
 
 If the active browser-control surface does not expose a true direct-navigation
 API for the selected Discord tab, Discord inspection is blocked for that pass.
+
+Direct navigation alone does not certify autonomous surveying. Promotion to
+`direct_navigation_verified` also requires the accepted proof sequence in
+`docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`.
 
 ### Preflight checklist
 

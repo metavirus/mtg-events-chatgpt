@@ -56,6 +56,14 @@ the only safe Discord workflow is: the user manually opens the exact
 channel/message or supplies a screenshot/paste, and Codex reads/analyzes visible
 content only.
 
+That manual workflow is explicitly temporary. The durable target is autonomous
+read-only surveying through a dedicated isolated Discord profile with a narrow
+navigation/extraction-only capability, page-level input suppression, and
+network-level mutation blocking. The options, failure-closed contract, and
+local-fixture-first proof plan are recorded in
+`docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`. No live Discord test has
+been authorized, and no route is yet `direct_navigation_verified`.
+
 ## Signals foundation checkpoint
 
 Broad research is paused while the accepted Signals and Communities product

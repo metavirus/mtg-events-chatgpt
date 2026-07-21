@@ -14,6 +14,13 @@ Use it for:
 
 ## Active next-up
 
+- Discord agent browsing remains paused, but manual-open/screenshot review is
+  only a temporary fallback. The autonomous target and proof sequence are in
+  `docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`. The next Discord safety
+  tranche is a local fixture test of the isolated-profile/read-only-wrapper/
+  page-guard/network-guard design; it must not open Discord or inspect real
+  Discord content.
+
 - Authenticated personal preference persistence is implemented and live. The
   hosted app uses Supabase email magic links, user-scoped venue/event-series
   preferences, and one private personal note per target, with browser-local
