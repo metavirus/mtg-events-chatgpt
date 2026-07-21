@@ -1,0 +1,99 @@
+{
+  "proposal_id": "jjs-discord-map-validation-events-2026-07-20",
+  "description": "Reviewable JJ's Collectibles Garden Grove event/source proposal from the map-driven Discord validation pass. Orange branch facts remain a named identity TBD. No live research write has been performed.",
+  "created_at": "2026-07-20T19:30:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-jjs-discord-magic-announcements-2026-07-18"},
+      "fields": {"id": "src-jjs-discord-magic-announcements-2026-07-18", "health_status": "current", "last_checked": "2026-07-20"},
+      "reason": "A current July 20 schedule post was inspected in the mapped Magic announcements channel."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-jjs-discord-commander-channel-2026-07-18"},
+      "fields": {"id": "src-jjs-discord-commander-channel-2026-07-18", "health_status": "current", "last_checked": "2026-07-20"},
+      "reason": "The mapped Commander channel was successfully inspected; this run was quiet but the route remains accessible."
+    },
+    {
+      "action": "update",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "jjs-collectibles", "source_id": "src-jjs-discord-magic-announcements-2026-07-18"},
+      "fields": {"entity_type": "venue", "entity_id": "jjs-collectibles", "source_id": "src-jjs-discord-magic-announcements-2026-07-18", "relationship": "inspected current Discord Magic announcements; supports Garden Grove weekly/special event facts through July 26, 2026 and exposes a distinct Orange schedule that remains branch-identity TBD"},
+      "reason": "Preserve what the July 20 inspection supports without merging Orange facts into Garden Grove."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "jjs-collectibles-casual-commander-tuesday-at-jjs-2-19-00"},
+      "fields": {"id": "jjs-collectibles-casual-commander-tuesday-at-jjs-2-19-00", "venue_id": "jjs-collectibles", "bracket": "high-power", "details": "JJ's Garden Grove current weekly post lists Tuesday Night Casual Commander at 7:00 PM, $5 entry, open play, with Bracket 4/5 encouraged. Preserve the store's casual label, but treat the explicit high-bracket guidance as a poor-fit caution for personal ranking.", "last_verified": "2026-07-20"},
+      "reason": "The current store-controlled schedule materially changes the personal-fit interpretation of the existing Tuesday Commander row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "jjs-precon-commander-night-2026-07-23"},
+      "fields": {"id": "jjs-precon-commander-night-2026-07-23", "venue_id": "jjs-collectibles", "default_start_time": "19:00", "entry_fee": 10, "currency": "USD", "details": "JJ's Garden Grove July 20 Discord schedule confirms Pre-Con Commander Night on Thursday, July 23 at 7:00 PM with $10 entry for preconstructed or upgraded-preconstructed decks; registration code 4ZQRG3G.", "confidence": "high", "last_verified": "2026-07-20"},
+      "reason": "Fill the previously missing time and fee from the current branch-specific schedule post."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "jjs-marvel-super-heroes-draft-2026-07-24"},
+      "fields": {"id": "jjs-marvel-super-heroes-draft-2026-07-24", "venue_id": "jjs-collectibles", "community_id": null, "title": "Marvel Super Heroes Draft", "format": "Draft", "event_type": "draft", "bracket": "all", "recurrence": null, "default_start_time": "19:00", "start_date": "2026-07-24", "end_date": "2026-07-24", "entry_fee": 25, "currency": "USD", "details": "JJ's Garden Grove current weekly Discord post lists a Marvel Super Heroes draft on Friday, July 24 at 7:00 PM for $25; registration code 65QRE8M.", "confidence": "high", "event_status": "active", "last_verified": "2026-07-20"},
+      "reason": "Current dated draft opportunity from a store-controlled branch-specific schedule."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-jjs-discord-magic-announcements-2026-07-18", "series_id": "jjs-marvel-super-heroes-draft-2026-07-24", "occurrence_id": null},
+      "fields": {"source_id": "src-jjs-discord-magic-announcements-2026-07-18", "series_id": "jjs-marvel-super-heroes-draft-2026-07-24", "occurrence_id": null, "relationship": "Current JJ's Garden Grove Discord schedule confirms date, time, fee, title, and registration code"},
+      "reason": "Link the dated draft to the inspected Discord evidence."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "jjs-casual-commander-2026-07-25"},
+      "fields": {"id": "jjs-casual-commander-2026-07-25", "venue_id": "jjs-collectibles", "community_id": null, "title": "Casual Commander", "format": "Commander", "event_type": "commander", "bracket": "all", "recurrence": null, "default_start_time": "19:00", "start_date": "2026-07-25", "end_date": "2026-07-25", "entry_fee": 5, "currency": "USD", "details": "JJ's Garden Grove current weekly Discord post lists Casual Commander on Saturday, July 25 at 7:00 PM for $5, with open play at the player's favorite bracket; registration code 564RWN5.", "confidence": "high", "event_status": "active", "last_verified": "2026-07-20"},
+      "reason": "Current dated weekend Commander opportunity with branch, time, fee, and open-play texture."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-jjs-discord-magic-announcements-2026-07-18", "series_id": "jjs-casual-commander-2026-07-25", "occurrence_id": null},
+      "fields": {"source_id": "src-jjs-discord-magic-announcements-2026-07-18", "series_id": "jjs-casual-commander-2026-07-25", "occurrence_id": null, "relationship": "Current JJ's Garden Grove Discord schedule confirms date, time, fee, open-play bracket language, and registration code"},
+      "reason": "Link the dated Commander event to the inspected Discord evidence."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "jjs-standard-2026-07-26"},
+      "fields": {"id": "jjs-standard-2026-07-26", "venue_id": "jjs-collectibles", "community_id": null, "title": "Standard", "format": "Standard", "event_type": "constructed", "bracket": "all", "recurrence": null, "default_start_time": "15:00", "start_date": "2026-07-26", "end_date": "2026-07-26", "entry_fee": 0, "currency": "USD", "details": "JJ's Garden Grove current weekly Discord post lists free Standard on Sunday, July 26 at 3:00 PM; registration code QMYQZ53.", "confidence": "high", "event_status": "active", "last_verified": "2026-07-20"},
+      "reason": "Current dated non-Commander event opportunity."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-jjs-discord-magic-announcements-2026-07-18", "series_id": "jjs-standard-2026-07-26", "occurrence_id": null},
+      "fields": {"source_id": "src-jjs-discord-magic-announcements-2026-07-18", "series_id": "jjs-standard-2026-07-26", "occurrence_id": null, "relationship": "Current JJ's Garden Grove Discord schedule confirms date, time, free entry, and registration code"},
+      "reason": "Link the dated Standard event to the inspected Discord evidence."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {"id": "jjs-pauper-2026-07-26"},
+      "fields": {"id": "jjs-pauper-2026-07-26", "venue_id": "jjs-collectibles", "community_id": null, "title": "Pauper", "format": "Pauper", "event_type": "constructed", "bracket": "all", "recurrence": null, "default_start_time": "18:30", "start_date": "2026-07-26", "end_date": "2026-07-26", "entry_fee": 0, "currency": "USD", "details": "JJ's Garden Grove current weekly Discord post lists free Pauper on Sunday, July 26 at 6:30 PM; registration code PPZGWWW.", "confidence": "high", "event_status": "active", "last_verified": "2026-07-20"},
+      "reason": "Current dated non-Commander event opportunity."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-jjs-discord-magic-announcements-2026-07-18", "series_id": "jjs-pauper-2026-07-26", "occurrence_id": null},
+      "fields": {"source_id": "src-jjs-discord-magic-announcements-2026-07-18", "series_id": "jjs-pauper-2026-07-26", "occurrence_id": null, "relationship": "Current JJ's Garden Grove Discord schedule confirms date, time, free entry, and registration code"},
+      "reason": "Link the dated Pauper event to the inspected Discord evidence."
+    }
+  ]
+}

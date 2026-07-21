@@ -44,6 +44,15 @@ all privileges are revoked from `anon` and `authenticated`, and CRUD is granted
 only to `service_role`. No browser operational-monitoring access was added.
 See `research/runs/2026-07-20-discord-monitoring-map-pilot.md`.
 
+Migration `20260721032849_refine_discord_monitoring_resume_markers.sql` records
+the first map-driven validation result: all 8 pilot channels now have stable
+IDs/direct URLs, `last_checked_at` distinguishes multiple inspections on one
+date, and `last_seen_message_at` provides a lightweight resume boundary without
+conflating the newest message with a useful signal. ProjectCCG is recorded as
+role/channel-gated but accessible to the existing joined account. No survey
+history or automation tables were added. See
+`research/runs/2026-07-20-discord-monitoring-map-validation.md`.
+
 ## Imported snapshot counts
 
 These counts were verified after the seed load:

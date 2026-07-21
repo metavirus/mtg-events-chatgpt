@@ -286,6 +286,12 @@ in run notes for now, and only genuinely useful findings should enter
 `signals`. Do not build automation, browser-login persistence, or a broad
 Discord survey until explicitly selected.
 
+The first map-driven manual validation reached all 8 channels. It justified
+timestamped check and last-seen-message resume markers plus four missing direct
+channel links; it did not justify a survey-history table, persistent-login work,
+or additional automation schema. Quiet checks remain per-run observations and
+do not lower durable route value by themselves.
+
 ## Communities direction
 
 Communities should become the social and coordination layer of the app. It
