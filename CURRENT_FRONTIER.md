@@ -74,6 +74,17 @@ all failed closed. No Discord page or session was accessed. See
 the local guard contract, not Discord compatibility, and does not promote any
 route to `direct_navigation_verified`.
 
+Production-form safety hardening now exists, still without opening Discord.
+The reusable guard module in `scripts/discord_readonly_guard.mjs` provides
+direct-channel shell navigation only, page-level composer/mutating-control
+suppression, editable-focus checks, and Discord mutation request blocking/logging.
+The ignored dedicated local workspace under `work/discord-readonly/` was created
+by `scripts/discord_readonly_profile_setup.mjs`; no profile session, cookies, or
+Discord content are committed. The production guard passed a local fixture proof
+in `scripts/discord_readonly_production_guard_proof.mjs`. The tiny real-Discord
+shell test plan is recorded in `docs/DISCORD_REAL_SHELL_TEST_PLAN.md` but has not
+been run and remains unauthorized. Real Discord surveying remains paused.
+
 ## Signals foundation checkpoint
 
 Broad research is paused while the accepted Signals and Communities product

@@ -177,3 +177,24 @@ This checkpoint does not create the profile, install guards, inspect Discord,
 run a live test, certify routes, build scheduling, or change Supabase access
 modes. Existing routes retain their current safe modes until the proof sequence
 succeeds.
+
+## 2026-07-20 hardening update
+
+The first two implementation proofs are complete without opening Discord.
+
+- Local fixture proof:
+  `research/runs/2026-07-20-discord-readonly-local-fixture-proof.md`
+- Production-form hardening:
+  `research/runs/2026-07-20-discord-readonly-production-hardening.md`
+
+The reusable guard lives in `scripts/discord_readonly_guard.mjs`. It provides
+the narrow shell-navigation surface, document-start input suppression,
+editable-focus checks, and mutation request blocking/logging.
+
+The dedicated workspace scaffold lives under ignored `work/discord-readonly/`
+and is created by `scripts/discord_readonly_profile_setup.mjs`. It is not a
+live Discord session and does not authorize Discord access.
+
+The next possible step is the separately approved shell test in
+`docs/DISCORD_REAL_SHELL_TEST_PLAN.md`. That test must not inspect message
+content or create research findings.

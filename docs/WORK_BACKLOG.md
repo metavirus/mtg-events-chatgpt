@@ -17,10 +17,12 @@ Use it for:
 - Discord agent browsing remains paused, but manual-open/screenshot review is
   only a temporary fallback. The autonomous target and proof sequence are in
   `docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`. The local fixture proof
-  passed 8/8 checks without opening Discord. The next safety tranche, only if
-  selected, is to build the dedicated profile plus versioned page/network guard
-  implementation before proposing a separately approved real-Discord shell
-  identity-only test. No content survey or access-mode promotion is authorized.
+  passed 8/8 checks without opening Discord. The production-form guard module,
+  ignored dedicated profile workspace, and local production-guard proof now
+  exist. The next safety tranche, only if selected and explicitly approved, is
+  to run the protocol-only real-Discord shell test plan in
+  `docs/DISCORD_REAL_SHELL_TEST_PLAN.md`. No message-content inspection,
+  research survey, Signal creation, or access-mode promotion is authorized.
 
 - Authenticated personal preference persistence is implemented and live. The
   hosted app uses Supabase email magic links, user-scoped venue/event-series

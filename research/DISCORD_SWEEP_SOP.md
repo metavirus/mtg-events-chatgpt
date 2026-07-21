@@ -93,6 +93,11 @@ Direct navigation alone does not certify autonomous surveying. Promotion to
 `direct_navigation_verified` also requires the accepted proof sequence in
 `docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`.
 
+Current implementation note: the local production-form guard module and ignored
+profile workspace now exist, and the guard has passed a local fixture proof. The
+real-Discord shell test plan in `docs/DISCORD_REAL_SHELL_TEST_PLAN.md` has not
+been run. No route is `direct_navigation_verified`.
+
 ### Preflight checklist
 
 Before any Discord pass, confirm and record:
