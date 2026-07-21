@@ -126,3 +126,66 @@ Options to consider before any retry:
 
 Do not promote any route or resume broad Discord surveying from these failed
 closed pilots.
+
+## Follow-up: approved one-retry rule and mapped-route proof attempts
+
+After the Paper Hero failure, the safety protocol was refined to handle the
+known ephemeral Discord membership/lurker interstitial without clicking through
+or allowing the request:
+
+1. block and log the `members/@me?lurker=true` request;
+2. close the isolated read context;
+3. reopen the exact same mapped channel URL once by direct navigation;
+4. continue only if the route opens cleanly under guard;
+5. if the same gate recurs, mark the channel `blocked_for_this_run` without
+   downgrading the route's durable long-term value.
+
+The harness was updated to implement that one-retry rule and then tested
+against three exact mapped channels that were expected to be good candidates for
+a tiny content-read proof:
+
+| Route | Mapped channel URL | Outcome | Content read? | External Discord state changed? |
+| --- | --- | --- | --- | --- |
+| JJ's Collectibles `#magic-announcements` | `https://discord.com/channels/1055756955043495946/1354561517160239296` | Route identity proved on both attempts; membership/lurker request recurred after retry; marked `blocked_for_this_run`. | No | No |
+| Magic & Monsters `#shop-schedule` | `https://discord.com/channels/690253341330374772/928555906017398785` | Route identity proved on both attempts; membership/lurker request recurred after retry; marked `blocked_for_this_run`. | No | No |
+| Collectors Lounge Cypress `#mtg-announcements-and-events` | `https://discord.com/channels/1128125427257454672/1128125617683050597` | Route identity proved on both attempts; membership/lurker request recurred after retry; marked `blocked_for_this_run`. | No | No |
+
+Across all three follow-up attempts:
+
+- the dedicated isolated Discord-read profile was used;
+- navigation used only exact mapped channel URLs;
+- no typing or pasting into Discord occurred;
+- the guard heartbeat was present;
+- no editable element had focus;
+- no enabled composer/send/reply/react/upload/join/settings controls were
+  detected;
+- the route IDs matched the target guild/channel IDs;
+- Discord telemetry-style `science` POSTs and the membership/lurker request were
+  blocked/logged;
+- no message content was extracted;
+- no Signals, event rows, source notes, route promotions, or research findings
+  were created;
+- no external Discord state changed.
+
+### Current blocker
+
+The blocker is no longer route recovery or shell identity. The guarded browser
+can reach the intended Discord shells and prove the target route, but Discord
+attempts a membership/lurker-style request before message content becomes safely
+readable. Under the accepted safety rules, that request is not allowed
+automatically.
+
+That means the lane is safe but not yet content-useful. Before a tiny 3-5
+channel survey can run, one of these must happen:
+
+1. the isolated profile must be manually made a full member/visible participant
+   for the target servers so the same direct-channel URLs open without the
+   `members/@me?lurker=true` request; or
+2. the project must make a deliberate safety decision that the specific
+   Discord membership/lurker request is acceptable to allow in a narrowly
+   guarded context; or
+3. a different non-mutating read path must be designed.
+
+Until one of those is accepted, the monitoring map remains useful for exact
+targets, but guarded content-read surveying remains blocked before message
+inspection.
