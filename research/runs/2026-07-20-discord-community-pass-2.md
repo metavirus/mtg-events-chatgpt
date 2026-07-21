@@ -207,3 +207,28 @@ Lean/standard verification:
 - The two Paper Hero event-series rows read back correctly.
 - Paper Hero event-source relationships read back correctly.
 - Duplicate Paper Hero event-series check by venue/title/day/time returned no duplicates.
+
+## Monitoring-map checkpoint
+
+After the JJ's bounded proposal gate was handled separately, the accepted pass-2
+Discord routes were encoded into the operational Discord monitoring map:
+
+- Collectors Lounge - Cypress Discord
+- Hobby Overflow Discord
+- Krazy Nick's Games Discord
+- Kingslayer Games Discord
+- Paper Hero's Games Discord
+
+This added 5 access profiles and 9 channel-watch rows to
+`discord_access_profiles` and `discord_channel_watchlist`, bringing the live map
+to 8 access profiles and 17 watch rows. The expansion preserves route value,
+current-run yield, access state, priority channels, expected signal types,
+cadence, last checked date, and last useful signal date separately. Quiet or
+stale observations remain run-level facts, not permanent route downgrades.
+
+Direct channel URL coverage is honest rather than invented: Paper Hero's
+Huntington Beach Magic channel has a stable direct channel URL; Kingslayer has a
+stable server/discovery ID; Collectors, Hobby Overflow, Krazy Nick's, and some
+Kingslayer channel-level direct IDs should be recovered on the next map-driven
+check because the older Discord run notes preserved channel names and findings
+but not stable channel URLs.

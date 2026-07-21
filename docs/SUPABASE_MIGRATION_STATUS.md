@@ -34,8 +34,8 @@ Migration `20260721025750_add_discord_monitoring_map.sql` adds:
 - `discord_channel_watchlist`: channel-level priority, cadence, expected signal
   types, access/noise state, and monitoring status.
 
-The live pilot contains 3 access profiles and 8 channel-watch rows for Magic &
-Monsters, ProjectCCG Online Community, and JJ's Collectibles. Existing
+The initial live pilot contained 3 access profiles and 8 channel-watch rows for
+Magic & Monsters, ProjectCCG Online Community, and JJ's Collectibles. Existing
 `sources` remain the route registry; existing `signals` remain the sparse
 attention surface.
 
@@ -52,6 +52,16 @@ conflating the newest message with a useful signal. ProjectCCG is recorded as
 role/channel-gated but accessible to the existing joined account. No survey
 history or automation tables were added. See
 `research/runs/2026-07-20-discord-monitoring-map-validation.md`.
+
+Migration `20260721035326_expand_discord_monitoring_map_pass2.sql` expands the
+map with 5 accepted Discord/community pass-2 routes and 9 watch rows:
+Collectors Lounge - Cypress, Hobby Overflow, Krazy Nick's Games, Kingslayer
+Games, and Paper Hero's Games. The live map now has 8 access profiles and 17
+channel-watch rows. Paper Hero's Huntington Beach Magic channel has a stable
+direct channel URL; Kingslayer has a stable server/discovery ID. For Collectors,
+Hobby Overflow, Krazy Nick's, and Kingslayer channel-level IDs/URLs were not
+preserved in the older run notes, so the next map-driven check should recover
+those direct targets instead of rediscovering route value from scratch.
 
 ## Imported snapshot counts
 

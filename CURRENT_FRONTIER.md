@@ -9,18 +9,29 @@ Migration `20260721025750_add_discord_monitoring_map.sql` adds service-only
 `discord_access_profiles` and `discord_channel_watchlist` tables without
 granting browser clients operational-monitoring access.
 
-The pilot maps 3 already accepted Discord routes and 8 channel watch targets:
-Magic & Monsters, ProjectCCG Online Community, and JJ's Collectibles. It
-preserves the last working signed-in browser access, joined/access state,
-observed gates, route value, cadence, high-value channels, expected signal
-types, noise level, and last useful result. No new Discord research was
-performed for the seed.
+The monitoring map now covers 8 already accepted Discord routes and 17 channel
+watch targets. It began with Magic & Monsters, ProjectCCG Online Community, and
+JJ's Collectibles, then expanded to Collectors Lounge - Cypress, Hobby Overflow,
+Krazy Nick's Games, Kingslayer Games, and Paper Hero's Games after the accepted
+pass-2 Discord/community work. It preserves the last working signed-in browser
+access, joined/access state, observed gates, route value, cadence, high-value
+channels, expected signal types, noise level, last checked date, and last useful
+result. No new Discord research was performed for the expansion; it encoded
+already accepted findings.
+
+Known map gap: Paper Hero's Huntington Beach Magic channel has a direct channel
+URL and Kingslayer has a stable server/discovery ID, but some older accepted
+Discord passes preserved channel names/findings without channel URLs. The next
+map-driven check should recover those direct channel IDs as it goes, not
+rediscover the route value from scratch.
 
 This is a receiving and continuity layer, not automation. Scheduled surveys,
 browser-login persistence, broad Discord coverage, and structured survey
 history remain deferred. Future Discord passes should start from this map and
 write only sparse attention-worthy findings into `signals`. See
-`research/runs/2026-07-20-discord-monitoring-map-pilot.md`.
+`research/runs/2026-07-20-discord-monitoring-map-pilot.md`,
+`research/runs/2026-07-20-discord-monitoring-map-validation.md`, and
+`research/runs/2026-07-20-discord-community-pass-2.md`.
 
 ## Signals foundation checkpoint
 
