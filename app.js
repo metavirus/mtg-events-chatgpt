@@ -48,6 +48,24 @@ const COMMUNITY_SEED = [
 ];
 
 const EVENT_CATALOG_PAGE_SIZE = 36;
+const WEEKDAY_INDEX = {
+  sunday: 0,
+  sun: 0,
+  monday: 1,
+  mon: 1,
+  tuesday: 2,
+  tue: 2,
+  tues: 2,
+  wednesday: 3,
+  wed: 3,
+  thursday: 4,
+  thu: 4,
+  thurs: 4,
+  friday: 5,
+  fri: 5,
+  saturday: 6,
+  sat: 6
+};
 
 const state = {
   route: 'signals',
@@ -663,8 +681,20 @@ function mapEventOccurrence(item, series, sourcesByOccurrence) {
 function normalizeRecurrence(value, defaultStartTime) {
   if (!value) return null;
   const recurrence = { ...value };
+  if (recurrence.dayOfWeek == null && typeof recurrence.weekday === 'string') {
+    const normalizedWeekday = recurrence.weekday.trim().toLowerCase();
+    if (Object.hasOwn(WEEKDAY_INDEX, normalizedWeekday)) recurrence.dayOfWeek = WEEKDAY_INDEX[normalizedWeekday];
+  }
+  if (recurrence.dayOfWeek != null) recurrence.dayOfWeek = Number(recurrence.dayOfWeek);
   if (!recurrence.startTime && defaultStartTime) recurrence.startTime = normalizeTime(defaultStartTime);
   return recurrence;
+}
+
+function validWeeklyDayOfWeek(event) {
+  const dayOfWeek = event.recurrence?.dayOfWeek;
+  if (Number.isInteger(dayOfWeek) && dayOfWeek >= 0 && dayOfWeek <= 6) return dayOfWeek;
+  console.warn(`Skipping event series with invalid weekly recurrence: ${event.id} (${event.title})`);
+  return null;
 }
 
 function normalizeTime(value) {
@@ -1284,8 +1314,10 @@ function buildOccurrences(start, end, applyFilters = true) {
   for (const event of DATA.events) {
     if (event.status !== 'active') continue;
     if (event.recurrence?.frequency === 'weekly') {
-      let cursor = startOfDay(start);
-      while (cursor.getDay() !== event.recurrence.dayOfWeek) cursor = addDays(cursor, 1);
+      const dayOfWeek = validWeeklyDayOfWeek(event);
+      if (dayOfWeek == null) continue;
+      const firstOffset = (dayOfWeek - start.getDay() + 7) % 7;
+      let cursor = addDays(startOfDay(start), firstOffset);
       const earliest = event.startDate ? startOfDay(parseDate(event.startDate)) : startOfDay(start);
       const latest = event.endDate ? endOfDay(parseDate(event.endDate)) : null;
       while (cursor <= end) {
