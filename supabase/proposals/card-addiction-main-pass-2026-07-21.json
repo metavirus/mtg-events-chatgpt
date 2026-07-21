@@ -1,0 +1,371 @@
+{
+  "proposal_id": "card-addiction-main-pass-2026-07-21",
+  "description": "Add Card Addiction as a real Anaheim TCG store discovered during a missing-store audit. Capture official, social-route, organized-play, review, directory, hours, and assessment evidence. No event rows are added because no current MTG event calendar proof was found.",
+  "created_at": "2026-07-21T15:10:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "venues",
+      "key": {
+        "id": "card-addiction"
+      },
+      "fields": {
+        "id": "card-addiction",
+        "name": "Card Addiction",
+        "city": "Anaheim",
+        "address": "1538 N State College Blvd, Anaheim, CA 92806",
+        "phone": "(714) 817-7876",
+        "website": "https://card-addiction.com/",
+        "events_url": null,
+        "instagram": "https://www.instagram.com/card.addiction_com/",
+        "wpn_premium": false,
+        "distance_miles": 9.8,
+        "operating_status": "open",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-21",
+        "assessment_notes": "Friend-suggested Anaheim store confirmed as a real TCG storefront through official site, Lorcana organized-play locator, Yelp, Card Shop Hub, and Loc8NearMe. Add as a landscape candidate with Magic/TCG/play-space review signals, but do not add MTG events yet because no current store-controlled/Wizards/EventLink MTG schedule was found.",
+        "assessment": {
+          "summary": "Real Anaheim TCG store with useful review and directory support, but current Magic event coverage remains unresolved.",
+          "sourceCoverage": "Official site/contact inspected; official Instagram/Facebook routes captured for later content replay; Lorcana organized-play locator confirms physical organized-play/retail identity; Yelp/Card Shop Hub/Loc8NearMe provide review and hours texture; no current Wizards/EventLink MTG hit found.",
+          "eventSignal": "event TBD"
+        }
+      },
+      "reason": "Card Addiction is absent from the operational dataset but external sources support a real Anaheim TCG store worth tracking."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-card-addiction-official-site-2026-07-21"
+      },
+      "fields": {
+        "id": "src-card-addiction-official-site-2026-07-21",
+        "label": "Card Addiction official website/contact page",
+        "url": "https://card-addiction.com/pages/contact-us-1",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-21"
+      },
+      "reason": "Official store-controlled contact page confirms the website and routes to Instagram and Facebook."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-card-addiction-instagram-route-2026-07-21"
+      },
+      "fields": {
+        "id": "src-card-addiction-instagram-route-2026-07-21",
+        "label": "Card Addiction official Instagram route",
+        "url": "https://www.instagram.com/card.addiction_com/",
+        "source_type": "social",
+        "health_status": "unknown",
+        "last_checked": "2026-07-21"
+      },
+      "reason": "Official contact page links the Instagram route; content replay remains TBD."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-card-addiction-facebook-route-2026-07-21"
+      },
+      "fields": {
+        "id": "src-card-addiction-facebook-route-2026-07-21",
+        "label": "Card Addiction official Facebook route",
+        "url": "https://www.facebook.com/Card-Addictioncom-109956884644504",
+        "source_type": "social",
+        "health_status": "unknown",
+        "last_checked": "2026-07-21"
+      },
+      "reason": "Official contact page links the Facebook route; content replay remains TBD."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-card-addiction-lorcana-locator-2026-07-21"
+      },
+      "fields": {
+        "id": "src-card-addiction-lorcana-locator-2026-07-21",
+        "label": "Disney Lorcana Play Network listing for Card Addiction",
+        "url": "https://tcg.ravensburgerplay.com/stores/53b8892e-e114-4be1-923a-86f5e1bd5269",
+        "source_type": "organizedPlayLocator",
+        "health_status": "current",
+        "last_checked": "2026-07-21"
+      },
+      "reason": "Non-MTG organized-play locator confirms physical store identity, address, phone, and organized-play/retail capability."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-card-addiction-yelp-2026-07-21"
+      },
+      "fields": {
+        "id": "src-card-addiction-yelp-2026-07-21",
+        "label": "Yelp profile for Card Addiction",
+        "url": "https://www.yelp.com/biz/card-addiction-anaheim",
+        "source_type": "review",
+        "health_status": "current",
+        "last_checked": "2026-07-21"
+      },
+      "reason": "Yelp provides review texture, hours, address confirmation, and direct TCG/Magic/player-hangout signals with pricing/service cautions."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-card-addiction-card-shop-hub-2026-07-21"
+      },
+      "fields": {
+        "id": "src-card-addiction-card-shop-hub-2026-07-21",
+        "label": "Card Shop Hub listing for Card Addiction",
+        "url": "https://cardshophub.com/states/ca/anaheim/card-addiction/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-07-21"
+      },
+      "reason": "Card Shop Hub identifies Card Addiction as an Anaheim TCG shop and provides Google-derived review/hours texture."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-card-addiction-loc8nearme-2026-07-21"
+      },
+      "fields": {
+        "id": "src-card-addiction-loc8nearme-2026-07-21",
+        "label": "Loc8NearMe listing for Card Addiction",
+        "url": "https://www.loc8nearme.com/california/anaheim/card-addiction/5081941/",
+        "source_type": "reviewMirror",
+        "health_status": "current",
+        "last_checked": "2026-07-21"
+      },
+      "reason": "Loc8NearMe provides secondary review and hours texture, including recent play-space and Magic/TCG mentions."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-official-site-2026-07-21"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-official-site-2026-07-21",
+        "relationship": "official storefront/contact source; confirms store-controlled website and social routes, but not a current MTG event calendar"
+      },
+      "reason": "Make the official site visible as evidence on the Card Addiction Place page."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-instagram-route-2026-07-21"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-instagram-route-2026-07-21",
+        "relationship": "official Instagram route captured from the store site; content replay TBD before using it for event or fit conclusions"
+      },
+      "reason": "Preserve the official social route rather than leaving it as private reasoning."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-facebook-route-2026-07-21"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-facebook-route-2026-07-21",
+        "relationship": "official Facebook route captured from the store site; content replay TBD before using it for event or fit conclusions"
+      },
+      "reason": "Preserve the official social route rather than leaving it as private reasoning."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-lorcana-locator-2026-07-21"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-lorcana-locator-2026-07-21",
+        "relationship": "non-MTG organized-play locator; supports real physical store and event-hosting capability, not MTG event truth"
+      },
+      "reason": "Capture organized-play capability while keeping MTG event conclusions separate."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-yelp-2026-07-21"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-yelp-2026-07-21",
+        "relationship": "direct review surface; supports address/hours, TCG and Magic mentions, play-space/community texture, and pricing/service cautions"
+      },
+      "reason": "Make the review evidence visible because it materially informs fit and confidence."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-card-shop-hub-2026-07-21"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-card-shop-hub-2026-07-21",
+        "relationship": "secondary TCG directory; supports Card Addiction as an Anaheim TCG shop with Google-derived rating/hours texture"
+      },
+      "reason": "Capture the directory evidence that helped explain the WPN/EventLink blind spot."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-loc8nearme-2026-07-21"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "source_id": "src-card-addiction-loc8nearme-2026-07-21",
+        "relationship": "secondary review/hours mirror; supports play-space, tournament, parking, and broad TCG/Magic texture"
+      },
+      "reason": "Capture a useful secondary review surface while treating it as non-canonical for exact event facts."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "Official website, Lorcana organized-play listing, Yelp, Card Shop Hub, and Loc8NearMe all support a real Anaheim TCG storefront.",
+          "Review evidence names Magic/TCG activity and describes a place where people can play, with some friendly-community/helpfulness signals.",
+          "Reasonably close Anaheim location makes it worth keeping in the planning landscape even without current MTG event rows."
+        ],
+        "cautions": [
+          "No current store-controlled, Wizards/EventLink, Discord, or event-platform MTG schedule was found in this bounded pass.",
+          "Review texture is mixed, with recurring usefulness signals but also pricing/service complaints.",
+          "Official site appears more commerce/contact oriented than event-calendar oriented."
+        ],
+        "open_questions": [
+          "Does the official Instagram or Facebook currently advertise Magic events, Commander nights, draft, prerelease, or casual play?",
+          "Is there a Discord/community route or other operational channel for current events?",
+          "Do Magic events currently fire in practice, and are they casual/solo-arrival friendly?"
+        ]
+      },
+      "reason": "Add a conservative Places assessment that captures the store's legitimacy without overclaiming current MTG event support."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "card-addiction"
+      },
+      "fields": {
+        "venue_id": "card-addiction",
+        "status": "variable",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "14:00",
+              "close": "22:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "14:00",
+              "close": "22:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "14:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "14:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "14:00",
+              "close": "24:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "14:00",
+              "close": "24:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "14:00",
+              "close": "24:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-card-addiction-yelp-2026-07-21",
+        "last_verified": "2026-07-21",
+        "notes": "Yelp and Card Shop Hub/Loc8NearMe agree on Monday-Thursday 2 PM-10 PM and Friday-Sunday 2 PM-midnight. Treat as review/directory-derived and check before relying for a special trip."
+      },
+      "reason": "Seed useful planning hours while preserving that the source is review/directory-derived rather than an official hours page."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "card-addiction-added-2026-07-21"
+      },
+      "fields": {
+        "id": "card-addiction-added-2026-07-21",
+        "detected_at": "2026-07-21T15:10:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "summary": "Added Card Addiction as a real Anaheim TCG store after a user-supplied lead exposed a WPN/EventLink-first discovery gap. Captured official site/social routes, Lorcana organized-play identity, Yelp/review-directory evidence, and conservative Places assessment; no current MTG event rows were added.",
+        "review_status": "accepted"
+      },
+      "reason": "Make the new venue addition and missed-store root cause visible in Updates."
+    }
+  ]
+}
