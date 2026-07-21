@@ -213,3 +213,12 @@ The next iteration, if approved, should be a tiny content-read pilot that proves
 bounded extraction can read only the intended channel content without exposing
 any mutating capability. It should not create Signals, source updates, event
 updates, or route promotions until the user accepts the safety result.
+
+The first tiny content-read pilot was attempted on 2026-07-21 and failed closed
+before any message extraction. The dedicated isolated profile redirected to the
+Discord login page for the mapped Paper Hero route. The guard heartbeat was
+present, mutating controls were disabled, editable focus was absent, and
+telemetry-style Discord `science` POST requests were blocked/logged. No message
+content was read and no external Discord state changed. The next implementation
+dependency is one-time user login/setup inside the dedicated isolated profile
+before rerunning the same single-channel content pilot.

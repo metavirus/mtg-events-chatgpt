@@ -98,6 +98,18 @@ technically plausible, but it still requires separate approval and must remain
 bounded to read-only extraction. See
 `research/runs/2026-07-20-discord-real-shell-safety-test.md`.
 
+The first tiny content-read pilot was attempted after shell-safety acceptance
+and failed closed before message extraction. The dedicated isolated profile was
+redirected to Discord login for the mapped Paper Hero channel, so no route
+identity, message content, or research finding was available. The guard
+heartbeat was present, editable focus was absent, mutating controls were
+disabled, and Discord telemetry-style `science` POSTs were blocked/logged. No
+external Discord state changed and no Signals/events/sources were created. The
+next Discord step is isolated-profile login/setup by the user followed by a
+rerun of the same one-channel pilot, or else continuing to treat Discord content
+as paused/manual-assisted. See
+`research/runs/2026-07-21-discord-readonly-content-pilot.md`.
+
 ## Signals foundation checkpoint
 
 Broad research is paused while the accepted Signals and Communities product

@@ -25,9 +25,12 @@ Use it for:
   heartbeat is present, mutating controls remain disabled, and a Discord-shaped
   mutation request is blocked/logged. No message-content inspection, research
   survey, Signal creation, source/event update, route promotion, or access-mode
-  promotion is authorized. The next safety tranche, only if selected and
-  explicitly approved, is a tiny content-read pilot that preserves the same
-  read-only boundaries.
+  promotion is authorized. The first tiny content-read pilot failed closed
+  because the dedicated isolated profile was redirected to Discord login before
+  message extraction. The next safety tranche, only if selected and explicitly
+  approved, is user one-time login/setup in the isolated profile followed by a
+  rerun of the same one-channel guarded content pilot, or else keeping Discord
+  content review paused/manual-assisted.
 
 - Authenticated personal preference persistence is implemented and live. The
   hosted app uses Supabase email magic links, user-scoped venue/event-series

@@ -236,6 +236,36 @@ async function readDiscordShellSafetyState(page, options = {}) {
   }, { mutationSelector: selector, expectedRoute });
 }
 
+async function extractDiscordVisibleMessages(page, options = {}) {
+  const limit = options.limit || 10;
+  const maxCharactersPerMessage = options.maxCharactersPerMessage || 1000;
+  return page.evaluate(({ limit, maxCharactersPerMessage }) => {
+    const isVisible = (element) => {
+      const rect = element.getBoundingClientRect();
+      const style = window.getComputedStyle(element);
+      return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+    };
+    const normalize = (value) => value.replace(/\s+/g, ' ').trim();
+    const candidates = [
+      ...document.querySelectorAll('[id^="chat-messages-"], [role="article"]')
+    ].filter(isVisible);
+
+    return candidates.slice(-limit).map((element) => {
+      const text = normalize(element.innerText || '');
+      const timestamp = element.querySelector('time')?.getAttribute('datetime') ||
+        element.querySelector('time')?.textContent?.trim() ||
+        null;
+      const author = element.querySelector('[class*="username"], [data-author-id], h3 span')?.textContent?.trim() || null;
+      return {
+        timestamp,
+        author,
+        text: text.slice(0, maxCharactersPerMessage),
+        truncated: text.length > maxCharactersPerMessage
+      };
+    }).filter((message) => message.text);
+  }, { limit, maxCharactersPerMessage });
+}
+
 function assertDiscordReadOnlyState(state, options = {}) {
   const guardVersion = options.guardVersion || 'discord-readonly-v1';
   const requireDiscordHost = options.requireDiscordHost !== false;
@@ -285,6 +315,7 @@ export {
   discordMutationPathPatterns,
   installDiscordReadOnlyGuards,
   isDiscordMutationRequest,
+  extractDiscordVisibleMessages,
   readDiscordSafetyState,
   readDiscordShellSafetyState,
   readonlyPageGuardBootstrap,
