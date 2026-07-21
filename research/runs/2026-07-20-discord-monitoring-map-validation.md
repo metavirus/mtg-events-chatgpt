@@ -102,8 +102,16 @@ necessary.
 
 - JJ's current Garden Grove schedule facts are preserved in the reviewable
   proposal `supabase/proposals/jjs-discord-map-validation-events-2026-07-20.json`.
-- The proposal is not a live write. It keeps branch-ambiguous Orange facts as a
-  TBD and proposes only source-supported Garden Grove corrections/additions.
+- The proposal was applied live on 2026-07-20 after validation against a fresh
+  Supabase export. It kept branch-ambiguous Orange facts as a TBD and applied
+  only source-supported Garden Grove corrections/additions.
+- Applied JJ's changes: refreshed the two Discord source check dates, clarified
+  the Magic announcements relationship, marked Tuesday Commander as high-power
+  because the current post encouraged Bracket 4/5, filled July 23 Precon time
+  and fee, and added July 24 Marvel draft, July 25 Casual Commander, July 26
+  Standard, and July 26 Pauper rows.
+- Post-write verification confirmed the affected event/source rows and found no
+  duplicate event occurrences.
 - ProjectCCG and Magic & Monsters produced no new actionable landing-page
   Signal. Quiet or already-captured evidence was not promoted merely to fill
   Signals.

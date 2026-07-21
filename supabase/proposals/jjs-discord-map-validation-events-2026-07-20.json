@@ -3,6 +3,9 @@
   "description": "Reviewable JJ's Collectibles Garden Grove event/source proposal from the map-driven Discord validation pass. Orange branch facts remain a named identity TBD. No live research write has been performed.",
   "created_at": "2026-07-20T19:30:00-07:00",
   "author": "Codex Project Steward",
+  "status": "applied",
+  "applied_at": "2026-07-20T20:55:00-07:00",
+  "applied_notes": "Applied after validation against a fresh live Supabase export. Scope remained JJ's Garden Grove only; the Orange schedule stayed branch-identity TBD. Post-write readback confirmed affected series/source rows and no duplicate event occurrences.",
   "operations": [
     {
       "action": "update",
