@@ -19,11 +19,12 @@ channels, expected signal types, noise level, last checked date, and last useful
 result. No new Discord research was performed for the expansion; it encoded
 already accepted findings.
 
-Known map gap: Paper Hero's Huntington Beach Magic channel has a direct channel
-URL and Kingslayer has a stable server/discovery ID, but some older accepted
-Discord passes preserved channel names/findings without channel URLs. The next
-map-driven check should recover those direct channel IDs as it goes, not
-rediscover the route value from scratch.
+Known map gap narrowed: Paper Hero's Huntington Beach Magic channel already had
+a direct channel URL; the follow-up direct-target recovery pass added direct
+URLs for Collectors Lounge - Cypress, Krazy Nick's Games, and Kingslayer Games
+watched channels. Hobby Overflow remains medium route value but is currently
+invite-gated/blocked for channel-level monitoring until the user accepts the
+invite in the relevant browser session or supplies a direct channel URL.
 
 This is a receiving and continuity layer, not automation. Scheduled surveys,
 browser-login persistence, broad Discord coverage, and structured survey
@@ -31,7 +32,9 @@ history remain deferred. Future Discord passes should start from this map and
 write only sparse attention-worthy findings into `signals`. See
 `research/runs/2026-07-20-discord-monitoring-map-pilot.md`,
 `research/runs/2026-07-20-discord-monitoring-map-validation.md`, and
-`research/runs/2026-07-20-discord-community-pass-2.md`.
+`research/runs/2026-07-20-discord-community-pass-2.md`. The direct-target
+maintenance pass is recorded in
+`research/runs/2026-07-20-discord-direct-target-recovery.md`.
 
 ## Signals foundation checkpoint
 

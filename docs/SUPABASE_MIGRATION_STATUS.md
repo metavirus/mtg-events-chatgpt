@@ -63,6 +63,15 @@ Hobby Overflow, Krazy Nick's, and Kingslayer channel-level IDs/URLs were not
 preserved in the older run notes, so the next map-driven check should recover
 those direct targets instead of rediscovering route value from scratch.
 
+Migration `20260721042613_recover_discord_channel_direct_targets.sql` performs
+that first direct-target recovery pass. Collectors Lounge - Cypress, Krazy
+Nick's Games, and Kingslayer Games now have direct URLs for the active watched
+channels. Hobby Overflow is preserved as medium route value but currently
+invite-gated/blocked for channel-level monitoring because the saved invite
+opened to an `Accept Invite` gate in the signed-in browser; no join was
+performed. See
+`research/runs/2026-07-20-discord-direct-target-recovery.md`.
+
 ## Imported snapshot counts
 
 These counts were verified after the seed load:
