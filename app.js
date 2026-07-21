@@ -1714,7 +1714,7 @@ function renderEventCatalog() {
   const rawEvents = buildOccurrences(rawStart, rawEnd);
   const events = eventCatalogMatches(rawEvents);
   updateEventCatalogDateNav(catalogRange);
-  document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${new Set(events.map((event) => event.storeId)).size}</strong><span>places represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>${state.eventCatalogFilter === 'best' ? 'Best-fit ordering' : 'Recommended first'}</strong><span>${state.eventCatalogView === 'list' ? 'full catalog list' : state.eventCatalogView === 'week' ? 'weekly layout' : 'monthly layout'}</span></div>`;
+  document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${new Set(events.map((event) => event.storeId)).size}</strong><span>places represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>${state.eventCatalogFilter === 'best' ? 'Best-fit ordering' : 'Chronological catalog'}</strong><span>${state.eventCatalogView === 'list' ? 'full catalog list' : state.eventCatalogView === 'week' ? 'weekly layout' : 'monthly layout'}</span></div>`;
   if (!events.length) {
     document.getElementById('eventCatalog').innerHTML = emptyState('No catalog matches', 'Clear filters or search terms to restore events.');
     return;
@@ -1727,7 +1727,7 @@ function renderEventCatalog() {
     document.getElementById('eventCatalog').innerHTML = renderEventCatalogMonth(events, catalogRange.start);
     return;
   }
-  const recommended = events.slice(0, 6);
+  const recommended = diversifiedRecommendedEvents(events, 6);
   document.getElementById('eventCatalog').innerHTML = `<section class="catalog-featured" aria-label="Recommended events">
     <div class="today-section-heading"><div><p class="eyebrow mint">Recommended first</p><h2>High-signal events to scan first</h2></div><span>${recommended.length} surfaced</span></div>
     <div class="catalog-grid prioritized-grid">${recommended.map((event) => eventCard(event, false, { showDate: true, emphasize: true, catalog: true })).join('')}</div>
@@ -1765,10 +1765,32 @@ function eventCatalogMatches(events) {
   } else if (state.eventCatalogFilter === 'draft') {
     filtered = filtered.filter((event) => /draft/i.test(`${event.title} ${event.format} ${event.eventType}`));
   }
-  const sorter = state.eventCatalogFilter === 'all' || state.eventCatalogFilter === 'best'
+  const sorter = state.eventCatalogFilter === 'best'
     ? (a, b) => eventCatalogPriority(b) - eventCatalogPriority(a) || a.occurrenceDate - b.occurrenceDate
     : (a, b) => a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b));
   return [...filtered].sort(sorter);
+}
+
+function diversifiedRecommendedEvents(events, limit = 6) {
+  const selected = [];
+  const seenSeries = new Set();
+  const storeCounts = {};
+  const candidates = [...events].sort((a, b) => eventCatalogPriority(b) - eventCatalogPriority(a) || a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b)));
+  for (const event of candidates) {
+    const seriesKey = eventPreferenceKey(event);
+    if (seenSeries.has(seriesKey)) continue;
+    if ((storeCounts[event.storeId] || 0) >= 2) continue;
+    selected.push(event);
+    seenSeries.add(seriesKey);
+    storeCounts[event.storeId] = (storeCounts[event.storeId] || 0) + 1;
+    if (selected.length >= limit) return selected;
+  }
+  for (const event of candidates) {
+    if (selected.some((item) => todayLeadKey(item) === todayLeadKey(event))) continue;
+    selected.push(event);
+    if (selected.length >= limit) return selected;
+  }
+  return selected;
 }
 
 function eventCatalogPriority(event) {
