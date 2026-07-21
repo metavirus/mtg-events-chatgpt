@@ -144,27 +144,33 @@ function compareText(a, b, options = { sensitivity: 'base' }) {
 
 async function load() {
   const dataSource = new URLSearchParams(window.location.search).get('data');
-  state.dataSource = dataSource === 'json' ? 'json' : 'json-fallback';
-  await loadFromJson();
-  state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
+  if (dataSource === 'json') {
+    state.dataSource = 'json';
+    await loadFromJson();
+    state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
+    initialize();
+    initializePersonalAuthAfterRender();
+    return;
+  }
+
+  state.dataSource = 'loading';
   initialize();
   initializePersonalAuthAfterRender();
-  if (dataSource !== 'json') upgradeToSupabaseAfterRender();
+  loadSupabaseAfterRender();
 }
 
-async function upgradeToSupabaseAfterRender() {
+async function loadSupabaseAfterRender() {
   try {
     await loadFromSupabase();
     state.dataSource = 'supabase';
-    if (!DATA.stores.some((place) => place.id === state.selectedPlaceId)) {
-      state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
-    }
-    renderAll();
+    state.selectedPlaceId = DATA.stores.some((place) => place.id === state.selectedPlaceId)
+      ? state.selectedPlaceId
+      : placesByName()[0]?.id || DATA.stores[0]?.id;
   } catch (error) {
-    console.warn('Supabase read failed; keeping JSON snapshot active.', error);
-    state.dataSource = 'json-fallback';
-    renderAll();
+    console.warn('Supabase read failed; no automatic JSON recovery fallback will be used.', error);
+    state.dataSource = 'supabase-error';
   }
+  renderAll();
 }
 
 function initializePersonalAuthAfterRender() {
@@ -958,8 +964,16 @@ function updateFreshnessMini() {
   const container = document.getElementById('freshnessMini');
   if (!container) return;
   const latest = latestDataTimestamp();
-  const sourceLabel = state.dataSource === 'supabase' ? 'Supabase live data' : state.dataSource === 'json' ? 'JSON fallback' : 'JSON recovery fallback';
-  const latestLabel = latest ? formatFreshnessDateTime(latest) : 'No dated record';
+  const sourceLabels = {
+    supabase: 'Supabase live data',
+    json: 'JSON fallback',
+    loading: 'Supabase live data',
+    'supabase-error': 'Supabase unavailable'
+  };
+  const sourceLabel = sourceLabels[state.dataSource] || 'Research data';
+  const latestLabel = state.dataSource === 'loading'
+    ? 'Loading...'
+    : latest ? formatFreshnessDateTime(latest) : state.dataSource === 'supabase-error' ? 'Check connection' : 'No dated record';
   container.innerHTML = `<span class="status-dot"></span><span>${sourceLabel}<br><strong>${escapeHtml(latestLabel)}</strong></span>`;
 }
 
