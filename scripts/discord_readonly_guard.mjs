@@ -174,7 +174,8 @@ async function readDiscordSafetyState(page, options = {}) {
 
 async function readDiscordShellSafetyState(page, options = {}) {
   const selector = options.selector || defaultMutationSelector;
-  return page.evaluate((mutationSelector) => {
+  const expectedRoute = options.expectedRoute || null;
+  return page.evaluate(({ mutationSelector, expectedRoute }) => {
     const active = document.activeElement;
     const activeEditable = active instanceof Element && (
       active.matches('input, textarea, [contenteditable="true"], [role="textbox"], [data-slate-editor="true"]')
@@ -194,9 +195,26 @@ async function readDiscordShellSafetyState(page, options = {}) {
       '[data-list-item-id*="roles" i]'
     ].join(',')));
     const shellMarkers = {
+      appMount: Boolean(document.querySelector('#app-mount')),
       guildShell: Boolean(document.querySelector('[aria-label*="Servers" i], [data-list-id*="guilds" i]')),
       channelShell: Boolean(document.querySelector('[aria-label*="Channels" i], [data-list-id*="channels" i]')),
-      mainShell: Boolean(document.querySelector('main, [role="main"], [aria-label*="Messages" i]'))
+      mainShell: Boolean(document.querySelector('main, [role="main"], [aria-label*="Messages" i]')),
+      documentReady: document.readyState === 'complete' || document.readyState === 'interactive'
+    };
+    const routeMatch = location.pathname.match(/^\/channels\/(\d+)\/(\d+)/i);
+    const actualRoute = routeMatch ? {
+      guildId: routeMatch[1],
+      channelId: routeMatch[2]
+    } : null;
+    const routeIdentity = {
+      expected: expectedRoute,
+      actual: actualRoute,
+      matches: Boolean(
+        expectedRoute &&
+        actualRoute &&
+        expectedRoute.guildId === actualRoute.guildId &&
+        expectedRoute.channelId === actualRoute.channelId
+      )
     };
     return {
       url: location.href,
@@ -212,9 +230,10 @@ async function readDiscordShellSafetyState(page, options = {}) {
       )),
       hasLoginGate: loginGate,
       hasInviteGate: inviteOrRoleGate,
-      shellMarkers
+      shellMarkers,
+      routeIdentity
     };
-  }, selector);
+  }, { mutationSelector: selector, expectedRoute });
 }
 
 function assertDiscordReadOnlyState(state, options = {}) {

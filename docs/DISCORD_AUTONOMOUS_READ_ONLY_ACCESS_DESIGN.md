@@ -2,8 +2,9 @@
 
 Last updated: 2026-07-20
 
-Status: design checkpoint only. No live Discord test has been run and no
-Discord route is certified for agent-driven access.
+Status: design checkpoint plus proof sequence. A real Discord shell-safety test
+has passed without reading message content, but no content-read survey has been
+approved and no route is certified for research use.
 
 ## Product requirement
 
@@ -200,8 +201,15 @@ The next possible step is the separately approved shell test in
 content or create research findings.
 
 That shell test was attempted once against the mapped Paper Hero Discord route
-and failed closed because the checker did not detect enough server/channel/main
-shell markers. The guard itself loaded, mutating controls were not enabled, and
-a Discord-shaped mutation request was blocked/logged. No message content was
-read and no route was promoted. The next iteration should improve shell
-identity detection while preserving the no-message-content boundary.
+and initially failed closed because the checker did not detect enough
+server/channel/main shell markers. The follow-up shell-identity iteration now
+passes using non-message evidence: the final URL route IDs match the expected
+mapped guild/channel IDs and the Discord app shell mounts. The guard itself
+loaded, mutating controls were not enabled, editable focus was absent, and a
+Discord-shaped mutation request was blocked/logged. No message content was read
+and no route was promoted.
+
+The next iteration, if approved, should be a tiny content-read pilot that proves
+bounded extraction can read only the intended channel content without exposing
+any mutating capability. It should not create Signals, source updates, event
+updates, or route promotions until the user accepts the safety result.

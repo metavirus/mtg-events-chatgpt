@@ -18,6 +18,11 @@ const targetUrl = process.argv[2];
 if (!targetUrl || !/^https:\/\/discord(app)?\.com\/channels\/\d+\/\d+$/i.test(targetUrl)) {
   throw new Error('Pass one exact Discord channel URL as the only argument');
 }
+const targetRoute = targetUrl.match(/^https:\/\/discord(app)?\.com\/channels\/(\d+)\/(\d+)$/i);
+const expectedRoute = {
+  guildId: targetRoute[2],
+  channelId: targetRoute[3]
+};
 
 const workspaceRoot = path.resolve('work/discord-readonly');
 const profileDir = path.join(workspaceRoot, 'profile');
@@ -57,7 +62,7 @@ try {
 
   const page = await context.newPage();
   await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
-  const safety = await readDiscordShellSafetyState(page);
+  const safety = await readDiscordShellSafetyState(page, { expectedRoute });
   result.shell = {
     url: safety.url,
     host: safety.host,
@@ -68,7 +73,8 @@ try {
     enabledMutatorLabels: safety.enabledMutatorLabels,
     hasLoginGate: safety.hasLoginGate,
     hasInviteGate: safety.hasInviteGate,
-    shellMarkers: safety.shellMarkers
+    shellMarkers: safety.shellMarkers,
+    routeIdentity: safety.routeIdentity
   };
 
   await page.evaluate(async () => {
@@ -80,8 +86,12 @@ try {
     guardVersion: 'discord-readonly-v1'
   });
 
-  if (!Object.values(safety.shellMarkers || {}).some(Boolean)) {
-    throw new Error('expected Discord shell markers were not detected');
+  if (!safety.routeIdentity?.matches) {
+    throw new Error('expected Discord route identity was not preserved');
+  }
+
+  if (!safety.shellMarkers?.appMount) {
+    throw new Error('Discord app shell mount was not detected');
   }
 
   if (networkBlocks.length !== 1) throw new Error(`expected one blocked mutation proof request, saw ${networkBlocks.length}`);

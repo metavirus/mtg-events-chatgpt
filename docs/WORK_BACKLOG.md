@@ -19,13 +19,15 @@ Use it for:
   `docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`. The local fixture proof
   passed 8/8 checks without opening Discord. The production-form guard module,
   ignored dedicated profile workspace, and local production-guard proof now
-  exist. The next safety tranche, only if selected and explicitly approved, is
-  to improve the protocol-only real-Discord shell test's shell-identity
-  detection without reading messages. The first shell test opened the mapped
-  Paper Hero URL safely and blocked a Discord-shaped mutation request, but
-  failed closed because expected shell markers were absent. No message-content
-  inspection, research survey, Signal creation, or access-mode promotion is
-  authorized.
+  exist. The protocol-only real-Discord shell test has now passed for the mapped
+  Paper Hero route using non-message shell identity evidence: final URL route
+  IDs match the mapped guild/channel IDs, Discord's app shell mounts, guard
+  heartbeat is present, mutating controls remain disabled, and a Discord-shaped
+  mutation request is blocked/logged. No message-content inspection, research
+  survey, Signal creation, source/event update, route promotion, or access-mode
+  promotion is authorized. The next safety tranche, only if selected and
+  explicitly approved, is a tiny content-read pilot that preserves the same
+  read-only boundaries.
 
 - Authenticated personal preference persistence is implemented and live. The
   hosted app uses Supabase email magic links, user-scoped venue/event-series

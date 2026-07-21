@@ -85,15 +85,18 @@ in `scripts/discord_readonly_production_guard_proof.mjs`. The tiny real-Discord
 shell test plan is recorded in `docs/DISCORD_REAL_SHELL_TEST_PLAN.md` but has not
 been run and remains unauthorized. Real Discord surveying remains paused.
 
-The first real-Discord shell test has now been run, but it failed closed rather
-than certifying Discord compatibility. The dedicated isolated profile opened the
-mapped Paper Hero Discord URL by direct navigation, the guard heartbeat was
-present, no enabled mutating controls or editable focus were detected, and a
-Discord-shaped message POST was blocked/logged. However, the checker did not
-detect enough Discord server/channel/main shell markers to prove that the
-expected channel shell had rendered safely. No message content was inspected, no
-research artifacts were created, no external Discord state changed, and no route
-was promoted. See `research/runs/2026-07-20-discord-real-shell-safety-test.md`.
+The first real-Discord shell test initially failed closed because the checker
+did not detect enough Discord server/channel/main shell markers. The follow-up
+shell-identity iteration now passes the same Paper Hero route using non-message
+evidence: final URL route IDs match the mapped guild/channel IDs and the Discord
+app shell mounts, while the guard heartbeat remains present, editable focus is
+absent, enabled mutating controls are absent, and a Discord-shaped message POST
+is blocked/logged. No message content was inspected, no research artifacts were
+created, no external Discord state changed, no Signals/events/sources were
+created, and no route was promoted. This makes a later content-read pilot
+technically plausible, but it still requires separate approval and must remain
+bounded to read-only extraction. See
+`research/runs/2026-07-20-discord-real-shell-safety-test.md`.
 
 ## Signals foundation checkpoint
 

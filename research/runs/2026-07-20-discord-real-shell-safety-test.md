@@ -34,7 +34,7 @@ The runner:
 
 ## Result
 
-Final authoritative result: failed closed.
+Initial authoritative result: failed closed.
 
 Safety checks that passed:
 
@@ -72,3 +72,40 @@ The next safe step, if the user wants to continue this lane, is a second
 protocol-only shell iteration that improves shell identity detection without
 reading message text. It should still avoid Signals, events, research notes,
 source updates, and route promotion until accepted.
+
+## 2026-07-21 shell-identity rerun
+
+The shell-identity checker was revised to use non-message evidence:
+
+- final URL route IDs must match the selected mapped guild/channel IDs;
+- Discord's app shell mount must be present;
+- guard heartbeat, no editable focus, no enabled mutators, no login/invite gate,
+  and mutation blocking must still pass.
+
+The same Paper Hero route was rerun:
+`https://discord.com/channels/451625704723841024/1323064182660399184`.
+
+Rerun result: passed shell safety.
+
+What was proven:
+
+- the dedicated isolated profile opened;
+- direct navigation preserved the exact expected guild ID
+  `451625704723841024` and channel ID `1323064182660399184`;
+- the Discord app shell mounted;
+- the read-only guard heartbeat was present;
+- no editable element had focus;
+- no enabled composer or mutating controls were detected;
+- one Discord-shaped message POST was blocked and logged;
+- no external Discord state changed.
+
+What was still not done:
+
+- no Discord message content was read, extracted, summarized, stored, or used;
+- no research findings were created;
+- no Signals, events, sources, or monitoring-map access modes were changed;
+- no route was promoted to `direct_navigation_verified`.
+
+Decision after rerun: a later content-read pilot is now technically plausible,
+but still requires separate approval and should remain bounded to non-mutating
+read/extraction behavior.
