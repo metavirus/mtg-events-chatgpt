@@ -2194,8 +2194,33 @@ function changeTitle(change) {
 }
 
 function changeTargetButtons(change) {
+  const target = structuredChangeTarget(change);
+  if (target) return `<button class="change-action" ${target.attribute}>${escapeHtml(target.label)} →</button>`;
   const route = changeRoute(change);
-  return `<button class="change-action" data-route="${route}">${route === 'events' ? 'Events' : route === 'research' ? 'Coverage' : 'Places'} →</button>`;
+  return `<button class="change-action" data-route="${route}">${route === 'events' ? 'Browse events' : route === 'research' ? 'Coverage' : 'Browse places'} →</button>`;
+}
+
+function structuredChangeTarget(change) {
+  const type = (change.entityType || '').toLowerCase();
+  const id = change.entityId || '';
+  if (!id || type === 'dataset') return null;
+
+  if (type === 'venue') {
+    const place = store(id);
+    if (place) return { label: place.name, attribute: `data-place-id="${escapeHtml(id)}"` };
+  }
+
+  if (type === 'community') {
+    const community = COMMUNITY_SEED.find((item) => item.id === id);
+    if (community) return { label: community.name, attribute: `data-community-id="${escapeHtml(id)}"` };
+  }
+
+  if (type === 'event' || type === 'event_series' || type === 'event_occurrence') {
+    const event = eventById(id) || DATA.events.find((item) => item.seriesId === id);
+    if (event) return { label: event.title, attribute: `data-event-id="${escapeHtml(event.id)}"` };
+  }
+
+  return null;
 }
 
 function linkifyChangeText(rawText = '') {
