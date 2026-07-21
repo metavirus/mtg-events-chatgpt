@@ -1,0 +1,60 @@
+{
+  "proposal_id": "byo-commander-planning-time-correction-2026-07-21",
+  "description": "Narrow event hygiene correction for B.Y.O.GAMES LLC Commander Night rows: use the 4:00 PM doors/open-play time as the planning start while preserving 7:45 PM as the structured tournament/pod timing in notes.",
+  "created_at": "2026-07-21T00:00:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "b-y-o-games-llc-commander-night-casual-2-19-45"
+      },
+      "fields": {
+        "venue_id": "b-y-o-games-llc",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 2,
+          "startTime": "16:00"
+        },
+        "default_start_time": "16:00",
+        "details": "Doors/open play begin at 4:00 PM for casual games, warm-ups, and free-play. The structured tournament/pod timing appears to be 7:45 PM; four players minimum are needed to run a pod, entry is $10, Bracket 3-4, no infinites, and Rule Zero is strongly encouraged before games.",
+        "last_verified": "2026-07-21"
+      },
+      "reason": "For personal planning, the useful displayed start is when the player can arrive for casual/open-play activity. The prior 7:45 PM value is preserved in notes as the structured tournament/pod timing rather than used as the whole event's start."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "b-y-o-games-llc-commander-night-casual-3-19-45"
+      },
+      "fields": {
+        "venue_id": "b-y-o-games-llc",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 3,
+          "startTime": "16:00"
+        },
+        "default_start_time": "16:00",
+        "details": "Doors/open play begin at 4:00 PM for casual games, warm-ups, and free-play. The structured tournament/pod timing appears to be 7:45 PM; four players minimum are needed to run a pod, entry is $10, Bracket 3-4, no infinites, and Rule Zero is strongly encouraged before games.",
+        "last_verified": "2026-07-21"
+      },
+      "reason": "Apply the same planning-time correction to the parallel Wednesday BYO Commander row because it has the same source text and time semantics."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "fields": {
+        "id": "byo-commander-planning-time-correction-2026-07-21",
+        "detected_at": "2026-07-21T00:00:00-07:00",
+        "change_type": "event_update",
+        "entity_type": "event_series",
+        "entity_id": "b-y-o-games-llc-commander-night-casual-2-19-45",
+        "summary": "Adjusted B.Y.O.GAMES LLC Commander Night planning time from 7:45 PM to the 4:00 PM doors/open-play window, while preserving 7:45 PM as the structured tournament/pod timing in notes.",
+        "review_status": "accepted"
+      },
+      "reason": "Record the accepted event-hygiene correction without broadening into unrelated BYO research."
+    }
+  ]
+}
