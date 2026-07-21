@@ -36,6 +36,16 @@ write only sparse attention-worthy findings into `signals`. See
 maintenance pass is recorded in
 `research/runs/2026-07-20-discord-direct-target-recovery.md`.
 
+Discord browser surveying is currently paused pending the read-only
+social-surface safety protocol. A 2026-07-20 attempt to navigate inside a live
+Discord tab accidentally posted channel references into Krazy Nick's
+`#commander` from the user's account; the user deleted the accidental messages.
+No conclusions from that attempted survey should be used. Future Discord passes
+must use true direct URL navigation or another mechanically read-only method;
+keyboard typing/paste/navigation inside Discord message views is forbidden. See
+`research/runs/2026-07-20-discord-browser-safety-incident.md` and
+`research/DISCORD_SWEEP_SOP.md`.
+
 ## Signals foundation checkpoint
 
 Broad research is paused while the accepted Signals and Communities product

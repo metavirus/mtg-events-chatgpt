@@ -12,6 +12,81 @@ Discord is high value but expensive.
 Do not treat it as a place to browse freely.
 Treat it as a targeted signal surface.
 
+## Read-only social-surface safety protocol
+
+Discord is also a live social surface. A mistaken browser action can post,
+react, upload, reply, or otherwise change external state from the user's
+account. That risk is higher than ordinary website browsing and must be treated
+as a hard safety boundary.
+
+Until a pass explicitly satisfies this protocol, **all Discord browser
+surveying is paused**.
+
+### Hard prohibitions
+
+Do not:
+
+- type Discord URLs into any focused Discord tab where the message composer
+  might be active;
+- use paste, typing, keyboard shortcuts, or page-body interaction as a Discord
+  navigation method;
+- send text, upload files, react, reply, mark messages, join voice, change
+  settings, join servers, accept invites, or perform any other social action;
+- continue after focus, navigation, or access state becomes uncertain.
+
+If the only available way to reach a channel is typing or pasting into the
+Discord page, stop and mark the route blocked/TBD.
+
+### Required safe navigation method
+
+Open Discord channel URLs only through a navigation method that cannot submit
+text into the Discord page body, such as:
+
+- a browser-control API that directly opens a URL or new tab; or
+- a page/navigation API that directly sets the document location without
+  synthesizing keystrokes into the page.
+
+Address-bar keyboard simulation is not sufficient unless the tool can prove the
+browser chrome address field, not the Discord document, has focus. If that
+cannot be verified, do not use it.
+
+If the active browser-control surface does not expose a true direct-navigation
+API for the selected Discord tab, Discord inspection is blocked for that pass.
+
+### Preflight checklist
+
+Before any Discord pass, confirm and record:
+
+- Discord survey is read-only.
+- No message composer is focused.
+- No typed or pasted text will be sent into the Discord page body.
+- Every channel will be opened by direct URL navigation only.
+- If direct navigation fails, the route will be marked blocked/TBD instead of
+  improvising.
+- Any route requiring interaction that could write or expose the user's account
+  will stop for explicit user approval.
+
+### Focus check
+
+Before reading a Discord channel, verify that the current focus is not a message
+composer. Acceptable checks include a direct DOM focus check that confirms the
+active element is not a textbox/editor/composer, or a tool-level guarantee that
+the navigation/read operation does not depend on page focus.
+
+If focus cannot be verified, stop. Do not attempt to "carefully" type, paste,
+press Enter, or use shortcut navigation.
+
+### Incident response
+
+If any accidental external mutation happens:
+
+1. stop the pass immediately;
+2. do not continue research from the contaminated run;
+3. tell the user exactly what happened;
+4. do not attempt cleanup unless the user explicitly authorizes it;
+5. record a repo-backed incident note and prevention rule before any future
+   Discord browser work.
+
 ## When Discord should be checked
 
 Check Discord during a first pass only when:
