@@ -292,6 +292,15 @@ channel links; it did not justify a survey-history table, persistent-login work,
 or additional automation schema. Quiet checks remain per-run observations and
 do not lower durable route value by themselves.
 
+After the 2026-07-20 accidental Discord posting incident, monitoring-map routes
+and channels must also carry explicit safety access modes. A captured Discord
+route is not enough to authorize agent browsing. The accepted modes are:
+`manual_open_required`, `direct_navigation_verified`, `route_only_tbd`,
+`join_or_role_gate`, and `blocked_unsafe_method`. Until a protocol-only safety
+test proves a mechanically read-only direct-navigation method, all accessible
+Discord routes remain `manual_open_required`: the user opens the exact
+channel/message or supplies screenshot/paste, and Codex reads/analyzes only.
+
 ## Communities direction
 
 Communities should become the social and coordination layer of the app. It

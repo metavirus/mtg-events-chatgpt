@@ -72,6 +72,21 @@ opened to an `Accept Invite` gate in the signed-in browser; no join was
 performed. See
 `research/runs/2026-07-20-discord-direct-target-recovery.md`.
 
+Migration `20260721051504_add_discord_safe_access_modes.sql` adds hard safety
+fields to both monitoring-map tables:
+
+- `safe_access_mode`
+- `safe_access_notes`
+
+The allowed modes are `manual_open_required`, `direct_navigation_verified`,
+`route_only_tbd`, `join_or_role_gate`, and `blocked_unsafe_method`. Existing
+accessible rows are intentionally marked `manual_open_required` rather than
+`direct_navigation_verified`; no route is currently certified for agent-driven
+Discord navigation. Blocked or invite/role-gated rows are marked
+`join_or_role_gate`. The accepted operating pattern remains user-opened
+channel/message or screenshot/paste until a separate protocol-only safety test
+proves a mechanically read-only navigation method.
+
 ## Imported snapshot counts
 
 These counts were verified after the seed load:

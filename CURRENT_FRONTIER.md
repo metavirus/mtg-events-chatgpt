@@ -46,6 +46,16 @@ keyboard typing/paste/navigation inside Discord message views is forbidden. See
 `research/runs/2026-07-20-discord-browser-safety-incident.md` and
 `research/DISCORD_SWEEP_SOP.md`.
 
+Additional hard guardrails are now live in the monitoring map: both
+`discord_access_profiles` and `discord_channel_watchlist` have explicit
+`safe_access_mode` fields. Existing accessible routes/channels are deliberately
+`manual_open_required`, not `direct_navigation_verified`, because no safe
+agent-driven direct-navigation protocol has been demonstrated. Gated rows are
+`join_or_role_gate`. Until a separate protocol-only safety test is accepted,
+the only safe Discord workflow is: the user manually opens the exact
+channel/message or supplies a screenshot/paste, and Codex reads/analyzes visible
+content only.
+
 ## Signals foundation checkpoint
 
 Broad research is paused while the accepted Signals and Communities product

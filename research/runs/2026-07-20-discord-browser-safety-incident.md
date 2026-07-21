@@ -47,6 +47,20 @@ protocol:
 - if Discord asks for an interaction that could write, join, react, upload,
   reply, expose the account, or mutate state, stop and ask.
 
+Follow-up hardening added explicit Discord access modes to the Supabase
+monitoring map:
+
+- `manual_open_required`
+- `direct_navigation_verified`
+- `route_only_tbd`
+- `join_or_role_gate`
+- `blocked_unsafe_method`
+
+No current route is marked `direct_navigation_verified`. Until a separate
+protocol-only safety test proves a mechanically read-only navigation method,
+accessible Discord routes require the user to manually open the exact
+channel/message or provide screenshot/paste for Codex to read.
+
 ## Safe path required before future Discord inspection
 
 Before any future Discord browser pass, Codex must be able to explain the exact

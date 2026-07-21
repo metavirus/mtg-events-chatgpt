@@ -22,6 +22,36 @@ as a hard safety boundary.
 Until a pass explicitly satisfies this protocol, **all Discord browser
 surveying is paused**.
 
+### Discord access modes
+
+Every Discord route or channel in the monitoring map must carry an explicit
+safe access mode. "Read-only intent" is not an access mode.
+
+Use these values:
+
+- `manual_open_required`
+  - The current safe default for accessible Discord content. The user must open
+    the exact channel or message, or provide a screenshot/paste. Codex may only
+    read visible content and analyze it.
+- `direct_navigation_verified`
+  - Codex may open the exact direct URL only through a protocol-tested safe
+    navigation API that does not synthesize typing, pasting, or keyboard input
+    into Discord. No current route should be promoted to this mode until a
+    protocol-only safety test proves the method.
+- `route_only_tbd`
+  - A route exists, but the exact stable channel/message target or safe access
+    path is not recovered.
+- `join_or_role_gate`
+  - The route requires user action such as joining, accepting an invite,
+    selecting roles, or requesting access. Codex must stop.
+- `blocked_unsafe_method`
+  - The route is known, but current tooling cannot reach it without unsafe
+    interaction.
+
+Default uncertain Discord routes to `manual_open_required`,
+`route_only_tbd`, or `blocked_unsafe_method`; never default them to "try the
+browser."
+
 ### Hard prohibitions
 
 Do not:
@@ -58,9 +88,18 @@ API for the selected Discord tab, Discord inspection is blocked for that pass.
 Before any Discord pass, confirm and record:
 
 - Discord survey is read-only.
+- The exact route/channel target was selected from the monitoring map.
+- The target's `safe_access_mode` was checked.
+- The stop condition is named before beginning.
 - No message composer is focused.
 - No typed or pasted text will be sent into the Discord page body.
-- Every channel will be opened by direct URL navigation only.
+- No keyboard navigation will be used inside Discord message views.
+- No Discord controls will be clicked that can post, react, reply, upload, join,
+  change roles, change settings, or otherwise expose the user's account.
+- If `manual_open_required`, the user has manually opened the exact
+  channel/message or supplied a screenshot/paste.
+- If `direct_navigation_verified`, every channel will be opened only by the
+  previously verified direct-navigation method.
 - If direct navigation fails, the route will be marked blocked/TBD instead of
   improvising.
 - Any route requiring interaction that could write or expose the user's account
@@ -75,6 +114,22 @@ the navigation/read operation does not depend on page focus.
 
 If focus cannot be verified, stop. Do not attempt to "carefully" type, paste,
 press Enter, or use shortcut navigation.
+
+### Post-pass proof fields
+
+Every Discord run note must state:
+
+- route/channel inspected;
+- access mode used;
+- whether the user manually opened it;
+- whether Codex performed any Discord navigation;
+- useful findings, quiet result, blocked result, or gated result;
+- whether an unsafe/gated condition was encountered;
+- confirmation that no external Discord state was changed.
+
+Quiet channels should be recorded as quiet for that run only. Do not downgrade a
+route's durable value merely because a single bounded inspection found no
+useful signal.
 
 ### Incident response
 
