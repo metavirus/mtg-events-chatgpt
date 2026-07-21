@@ -47,6 +47,8 @@ const COMMUNITY_SEED = [
   }
 ];
 
+const EVENT_CATALOG_PAGE_SIZE = 36;
+
 const state = {
   route: 'signals',
   view: 'agenda',
@@ -56,6 +58,7 @@ const state = {
   eventCatalogView: 'list',
   eventCatalogFilter: 'all',
   eventCatalogDate: startOfDay(new Date()),
+  eventCatalogVisible: EVENT_CATALOG_PAGE_SIZE,
   changeFilter: 'all',
   favoritesOnly: false,
   showReadSignals: false,
@@ -688,6 +691,7 @@ function bindStaticEvents() {
   document.addEventListener('keydown', handleKeys);
   document.getElementById('globalSearch').addEventListener('input', (event) => {
     state.search = event.target.value.trim().toLowerCase();
+    resetEventCatalogVisible();
     renderCurrentRoute();
   });
   document.getElementById('placeSearch').addEventListener('input', renderPlaces);
@@ -721,6 +725,7 @@ function handleClick(event) {
   const catalogViewButton = event.target.closest('[data-event-catalog-view]');
   if (catalogViewButton) {
     state.eventCatalogView = catalogViewButton.dataset.eventCatalogView;
+    resetEventCatalogVisible();
     document.querySelectorAll('[data-event-catalog-view]').forEach((button) => button.classList.toggle('active', button === catalogViewButton));
     renderEventCatalog();
     return;
@@ -729,6 +734,7 @@ function handleClick(event) {
   const catalogFilterButton = event.target.closest('[data-event-catalog-filter]');
   if (catalogFilterButton) {
     state.eventCatalogFilter = toggledFilterValue(catalogFilterButton, 'eventCatalogFilter', 'all');
+    resetEventCatalogVisible();
     document.querySelectorAll('[data-event-catalog-filter]').forEach((button) => button.classList.toggle('active', button.dataset.eventCatalogFilter === state.eventCatalogFilter));
     renderEventCatalog();
     return;
@@ -808,7 +814,7 @@ function handleClick(event) {
   if (event.target.closest('#resetToday')) { state.date = startOfDay(new Date()); state.agendaDays = 42; return renderCalendar(); }
   if (event.target.closest('#prevEventCatalogRange')) return moveEventCatalogDate(-1);
   if (event.target.closest('#nextEventCatalogRange')) return moveEventCatalogDate(1);
-  if (event.target.closest('#resetEventCatalogRange')) { state.eventCatalogDate = startOfDay(new Date()); return renderEventCatalog(); }
+  if (event.target.closest('#resetEventCatalogRange')) { state.eventCatalogDate = startOfDay(new Date()); resetEventCatalogVisible(); return renderEventCatalog(); }
   if (event.target.closest('#jumpWeekend')) return jumpToWeekend();
   if (event.target.closest('#openFilters') || event.target.closest('[data-action="open-filters"]')) return openFilters();
   if (event.target.closest('[data-close-filters]')) return closeFilters();
@@ -828,6 +834,10 @@ function toggledFilterValue(button, datasetKey, defaultValue = 'all') {
   return value !== defaultValue && button.classList.contains('active') ? defaultValue : value;
 }
 
+function resetEventCatalogVisible() {
+  state.eventCatalogVisible = EVENT_CATALOG_PAGE_SIZE;
+}
+
 function handleKeys(event) {
   if (event.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
     event.preventDefault();
@@ -844,6 +854,7 @@ function handleAction(action, element) {
   if (action === 'open-filters') return openFilters();
   if (action === 'day-popover') return openDay(element.dataset.dayDate);
   if (action === 'load-more') { state.agendaDays += 28; return renderCalendar(); }
+  if (action === 'load-more-event-catalog') { state.eventCatalogVisible += EVENT_CATALOG_PAGE_SIZE; return renderEventCatalog(); }
   if (action === 'explain-scores') return openScoreExplanation(store(state.selectedPlaceId));
   if (action === 'show-highlights-hub') return openHighlightsHub();
   if (action === 'show-fresh-signals') return openFreshSignals();
@@ -1603,6 +1614,7 @@ function moveDate(direction) {
 function moveEventCatalogDate(direction) {
   if (state.eventCatalogView === 'month') state.eventCatalogDate = addDays(state.eventCatalogDate, direction * 28);
   else state.eventCatalogDate = addDays(state.eventCatalogDate, direction * 7);
+  resetEventCatalogVisible();
   renderEventCatalog();
 }
 
@@ -1766,13 +1778,16 @@ function renderEventCatalog() {
     return;
   }
   const recommended = diversifiedRecommendedEvents(events, 6);
+  const visibleCount = Math.min(state.eventCatalogVisible, events.length);
+  const visibleEvents = events.slice(0, visibleCount);
   document.getElementById('eventCatalog').innerHTML = `<section class="catalog-featured" aria-label="Recommended events">
     <div class="today-section-heading"><div><p class="eyebrow mint">Recommended first</p><h2>High-signal events to scan first</h2></div><span>${recommended.length} surfaced</span></div>
     <div class="catalog-grid prioritized-grid">${recommended.map((event) => eventCard(event, false, { showDate: true, emphasize: true, catalog: true })).join('')}</div>
   </section>
   <section class="catalog-all-events">
-    <div class="today-section-heading"><div><p class="eyebrow">Full catalog</p><h2>All matching events</h2></div><span>${events.length} total</span></div>
-    ${renderCatalogListGroups(events.slice(0, 120), recommended)}
+    <div class="today-section-heading"><div><p class="eyebrow">Full catalog</p><h2>All matching events</h2></div><span>${visibleCount} of ${events.length} shown</span></div>
+    ${renderCatalogListGroups(visibleEvents, recommended)}
+    ${visibleCount < events.length ? `<button class="load-more catalog-load-more" data-action="load-more-event-catalog"><span>&darr;</span><strong>Show next ${Math.min(EVENT_CATALOG_PAGE_SIZE, events.length - visibleCount)}</strong><small>${events.length - visibleCount} more matching events remain</small></button>` : ''}
   </section>`;
 }
 

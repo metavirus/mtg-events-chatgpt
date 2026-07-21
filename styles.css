@@ -241,6 +241,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .load-more:hover { border-color: var(--violet); color: #fff; }
 .load-more strong { font-size: 11px; }
 .load-more small { text-align: left; }
+.catalog-load-more { width: 100%; margin: 16px 0 0; }
 
 .highlights-rail { display: none; }
 .rail-collapse-row { display: flex; justify-content: flex-end; }
