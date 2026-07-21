@@ -120,8 +120,12 @@ external Discord state changed. See
 `research/runs/2026-07-21-discord-readonly-content-pilot.md` and
 `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`.
 
-Separate current issue: the user reports that the app does not work. Treat that
-as app triage next, not as a Discord research continuation.
+Separate app issue resolved: the reported app freeze/click failure was traced
+to malformed weekly recurrence data, not card rendering volume. Paper Hero's
+Friday draft and Saturday Pauper rows used legacy `weekday` strings without
+numeric `dayOfWeek`, which could hang Supabase occurrence construction before
+render limits applied. The two rows were corrected in Supabase and the app now
+guards weekly recurrence projection against malformed recurrence data.
 
 ## Signals foundation checkpoint
 
@@ -139,6 +143,21 @@ automation, seeded records, or Signals UI has been added yet.
 The Signals UI and bounded Communities surfaces have since been implemented.
 Do not add filler Signals; future monitoring findings should remain sparse,
 current, and planning-useful.
+
+## Current research/data checkpoint
+
+Card Addiction in Anaheim was added to live Supabase after a user-supplied lead
+exposed a WPN/EventLink-first discovery gap. The addition is documented in
+`research/runs/2026-07-21-card-addiction-main-pass-and-missed-store-sweep.md`
+and applied through
+`supabase/proposals/card-addiction-main-pass-2026-07-21.json`. The store is
+captured as a real TCG storefront with official, social-route, organized-play,
+review, directory, hours, and evaluation evidence. No event rows were added
+because no current store-controlled/Wizards/EventLink/Discord MTG calendar
+source was found in the bounded pass.
+
+The same run note now preserves a small missed-store candidate list for later
+landscape-confidence work rather than keeping those names in chat memory.
 
 ## Personal-state checkpoint
 

@@ -27,9 +27,17 @@ Use it for:
   direct navigation, and proceed only if it opens cleanly under guard. No broad
   Discord survey is authorized.
 
-- Current user-reported blocker: the app does not work. Treat this as the next
-  separate app triage lane after the Discord safety checkpoint, not as Discord
-  research.
+- Recent app blocker resolved: the Events/Today freeze was traced to two
+  malformed active weekly Paper Hero series with legacy `weekday` recurrence
+  values and no numeric `dayOfWeek`. The Supabase rows were corrected and the
+  app now fails closed on malformed weekly recurrence data instead of hanging.
+
+- Card Addiction has been added as a real Anaheim TCG store through
+  `supabase/proposals/card-addiction-main-pass-2026-07-21.json`. The
+  supporting main-pass/root-cause/missed-store sweep is durable in
+  `research/runs/2026-07-21-card-addiction-main-pass-and-missed-store-sweep.md`.
+  No event rows were added; Card Addiction's current MTG calendar remains a
+  named event/source TBD.
 
 - Authenticated personal preference persistence is implemented and live. The
   hosted app uses Supabase email magic links, user-scoped venue/event-series
