@@ -20,6 +20,12 @@ Use it for:
   `public.submit_coordination_item(...)`. The legacy PR/mailbox/intake files
   remain historical fallback only.
 
+- Coordination cleanup TBD: when a Supabase CLI/session with Edge Function
+  delete access is available, cleanly remove or disable the obsolete hosted
+  `coordination-capability` temporary proof function. Its repo source and
+  backing table are already gone; do not treat it as an active coordination
+  path.
+
 - Discord agent browsing remains paused except for explicitly approved guarded
   pilots. The current accepted safety baseline is recorded in
   `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`. The local fixture
