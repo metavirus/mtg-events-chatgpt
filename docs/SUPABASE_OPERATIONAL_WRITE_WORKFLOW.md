@@ -140,6 +140,20 @@ Unknown fields are rejected. Invalid enum values are rejected. Missing required
 fields are rejected. Invalid relationships are rejected. Duplicate stable
 identities and duplicate event occurrences are rejected before SQL is produced.
 
+### Updates targets
+
+For future `research_changes` rows, choose the most useful safe canonical
+target up front so Updates can navigate without guessing from prose.
+
+- Use `entity_type` / `entity_id` for the primary affected venue, community,
+  event series, or occurrence whenever one exists.
+- If a batch has several important targets, prefer separate focused change rows
+  over one broad row when that makes Updates more useful.
+- Use dataset-level or broad targets only when there is no honest specific
+  target.
+- Mentioned records in the summary/details may still be linkified by the app,
+  but that is a convenience fallback, not the primary navigation model.
+
 ## Required pre-write safety
 
 Before any live write, validate the proposal and confirm the chosen validation
