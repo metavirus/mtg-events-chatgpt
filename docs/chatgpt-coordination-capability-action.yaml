@@ -1,0 +1,104 @@
+openapi: 3.1.0
+info:
+  title: MTG Coordination Capability Proof
+  version: 0.1.0
+  description: >-
+    Temporary private action used only to prove a structured ChatGPT-Codex
+    coordination round trip. It cannot write canonical research data.
+servers:
+  - url: https://pyvftzsodzwfqncjbmbc.supabase.co/functions/v1/coordination-capability
+paths:
+  /health:
+    get:
+      operationId: checkCoordinationCapability
+      summary: Check whether the temporary coordination proof endpoint is ready.
+      responses:
+        "200":
+          description: Capability proof endpoint status.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /items:
+    get:
+      operationId: listCoordinationProofItems
+      summary: Read assignments and replies from the temporary coordination proof queue.
+      parameters:
+        - in: query
+          name: target
+          schema:
+            type: string
+            enum: [user, chatgpt, codex, steward, shared]
+        - in: query
+          name: parent_id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Matching proof items in chronological order.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+    post:
+      operationId: submitCoordinationProofItem
+      summary: Append one assignment, finding, follow-up, or disposition to the proof queue.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [phase, origin, target, title, payload]
+              properties:
+                phase:
+                  type: string
+                  enum: [assignment, finding, follow_up, disposition]
+                origin:
+                  type: string
+                  enum: [user, chatgpt, codex, steward]
+                target:
+                  type: string
+                  enum: [user, chatgpt, codex, steward, shared]
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 200
+                payload:
+                  type: object
+                  additionalProperties: true
+                parent_id:
+                  type: [string, "null"]
+                  format: uuid
+                deduplication_key:
+                  type: [string, "null"]
+                  maxLength: 200
+      responses:
+        "201":
+          description: Proof item appended.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "400":
+          description: Malformed or unknown input.
+        "409":
+          description: Duplicate submission.
+components:
+  securitySchemes:
+    coordinationProofKey:
+      type: http
+      scheme: bearer
+security:
+  - coordinationProofKey: []
+
