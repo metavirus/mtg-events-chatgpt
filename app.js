@@ -681,7 +681,6 @@ function initialize() {
     appInitialized = true;
   }
   routeFromHash();
-  renderAll();
 }
 
 function bindStaticEvents() {
@@ -886,15 +885,7 @@ function routeFromHash() {
 }
 
 function renderAll() {
-  renderSignals();
-  renderCalendar();
-  renderHighlights();
-  renderEventCatalog();
-  renderPlaces();
-  renderCommunities();
-  renderChanges();
-  renderResearch();
-  updateChrome();
+  renderCurrentRoute();
 }
 
 function renderCurrentRoute() {
