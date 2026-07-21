@@ -360,6 +360,11 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .catalog-event-card .open-cue { display: none; }
 .catalog-featured { margin-bottom: 18px; padding: 17px; border: 1px solid rgba(84,212,167,.2); border-radius: var(--radius); background: linear-gradient(145deg, rgba(84,212,167,.07), rgba(17,22,37,.82)); }
 .catalog-all-events { padding-top: 6px; border-top: 1px solid var(--line); }
+.catalog-day-list { display: grid; gap: 18px; }
+.catalog-day-section { display: grid; gap: 10px; }
+.catalog-day-section > header { position: sticky; top: 0; z-index: 2; padding: 9px 0 7px; border-top: 1px solid var(--line); background: linear-gradient(180deg, rgba(8, 11, 20, .98), rgba(8, 11, 20, .88)); display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+.catalog-day-section h3 { margin: 0; font: 800 18px/1.1 var(--display); letter-spacing: -.02em; }
+.catalog-day-section > header span { color: var(--muted); font-size: 11px; text-align: right; }
 .event-catalog-week,
 .event-catalog-month { margin-top: 8px; }
 .event-catalog-week { grid-template-columns: repeat(7, minmax(0, 1fr)); overflow-x: visible; }

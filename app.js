@@ -66,7 +66,7 @@ const state = {
   filters: {
     research: ['partial', 'wizards-discovery'],
     confidence: ['high', 'medium', 'low'],
-    planningGroups: ['limited', 'best', 'promising', 'verify', 'maybe', 'hidden'],
+    planningGroups: ['limited', 'best', 'promising', 'verify', 'maybe'],
     distance: 30,
     hideCompetitive: true,
     onlyFree: false
@@ -1162,7 +1162,7 @@ function isSpecial(event) { return /prerelease|sealed|draft|limited|party|specia
 function isWeekend(date) { return [5, 6, 0].includes(date.getDay()); }
 
 function eventMatchesSharedFilters(event, options = {}) {
-  const { includePreset = true, includeSearch = true, hideCompetitive = state.route === 'today' && state.filters.hideCompetitive } = options;
+  const { includePreset = true, includeSearch = true, hideCompetitive = state.filters.hideCompetitive } = options;
   const place = store(event.storeId);
   if (!place) return false;
   if (!state.filters.research.includes(place.researchStatus)) return false;
@@ -1441,9 +1441,8 @@ function hasExplicitNoProxy(event) {
 function eventPlanningGroup(event) {
   const placeHidden = !!state.personal.hidden[`place:${event.storeId}`];
   const eventHidden = !!state.personal.hidden[eventPreferenceKey(event)];
-  if (eventHidden || placeHidden || hasExplicitNoProxy(event)) return 'hidden';
+  if (eventHidden || placeHidden || hasExplicitNoProxy(event) || isCompetitive(event)) return 'hidden';
   if (isPrereleaseOrSealed(event)) return 'limited';
-  if (isCompetitive(event)) return 'verify';
   const fit = fitLabel(event);
   if (fit.tone === 'mint') return 'best';
   if (fit.tone === 'sky') return 'promising';
@@ -1734,8 +1733,30 @@ function renderEventCatalog() {
   </section>
   <section class="catalog-all-events">
     <div class="today-section-heading"><div><p class="eyebrow">Full catalog</p><h2>All matching events</h2></div><span>${events.length} total</span></div>
-    <div class="catalog-grid">${events.slice(0, 120).map((event) => eventCard(event, false, { showDate: true, emphasize: recommended.some((item) => todayLeadKey(item) === todayLeadKey(event)), catalog: true })).join('')}</div>
+    ${renderCatalogListGroups(events.slice(0, 120), recommended)}
   </section>`;
+}
+
+function renderCatalogListGroups(events, recommended = []) {
+  const recommendedKeys = new Set(recommended.map(todayLeadKey));
+  const groups = [];
+  for (const event of events) {
+    const key = dateKey(event.occurrenceDate);
+    let group = groups.at(-1);
+    if (!group || group.key !== key) {
+      group = { key, date: startOfDay(event.occurrenceDate), events: [] };
+      groups.push(group);
+    }
+    group.events.push(event);
+  }
+  return `<div class="catalog-day-list">${groups.map((group) => `
+    <section class="catalog-day-section">
+      <header>
+        <div><p class="eyebrow">${group.date.toLocaleDateString(undefined, { weekday: 'long' })}</p><h3>${group.date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}${dateKey(group.date) === dateKey(new Date()) ? ' · Today' : ''}</h3></div>
+        <span>${group.events.length} event${group.events.length === 1 ? '' : 's'} · ${formatMix(group.events, 2)}</span>
+      </header>
+      <div class="catalog-grid">${group.events.map((event) => eventCard(event, false, { showDate: true, emphasize: recommendedKeys.has(todayLeadKey(event)), catalog: true })).join('')}</div>
+    </section>`).join('')}</div>`;
 }
 
 function eventCatalogRange() {
@@ -1757,7 +1778,7 @@ function updateEventCatalogDateNav(range) {
 }
 
 function eventCatalogMatches(events) {
-  let filtered = events.filter((event) => eventMatchesSharedFilters(event, { includePreset: false, includeSearch: true, hideCompetitive: false }));
+  let filtered = events.filter((event) => eventMatchesSharedFilters(event, { includePreset: false, includeSearch: true }));
   if (state.eventCatalogFilter === 'commander') {
     filtered = filtered.filter((event) => /commander|edh/i.test(`${event.title} ${event.format} ${event.eventType}`));
   } else if (state.eventCatalogFilter === 'limited') {
@@ -2589,8 +2610,9 @@ function applyFilters() {
 }
 
 function resetFilters() {
-  state.filters = { research: ['partial', 'wizards-discovery'], confidence: ['high', 'medium', 'low'], planningGroups: ['limited', 'best', 'promising', 'verify', 'maybe', 'hidden'], distance: 30, hideCompetitive: true, onlyFree: false };
-  document.querySelectorAll('input[name="research"], input[name="confidence"], input[name="planningGroup"]').forEach((input) => input.checked = true);
+  state.filters = { research: ['partial', 'wizards-discovery'], confidence: ['high', 'medium', 'low'], planningGroups: ['limited', 'best', 'promising', 'verify', 'maybe'], distance: 30, hideCompetitive: true, onlyFree: false };
+  document.querySelectorAll('input[name="research"], input[name="confidence"]').forEach((input) => input.checked = true);
+  document.querySelectorAll('input[name="planningGroup"]').forEach((input) => input.checked = input.value !== 'hidden');
   document.getElementById('distanceFilter').value = 30;
   document.getElementById('distanceValue').textContent = '30 miles';
   document.getElementById('hideCompetitive').checked = true;
@@ -2601,7 +2623,7 @@ function activeFilterCount() {
   let count = 0;
   if (state.filters.research.length < 2) count++;
   if (state.filters.confidence.length < 3) count++;
-  if ((state.filters.planningGroups || []).length < 6) count++;
+  if ((state.filters.planningGroups || []).length !== 5 || state.filters.planningGroups.includes('hidden')) count++;
   if (state.filters.distance !== 30) count++;
   if (!state.filters.hideCompetitive) count++;
   if (state.filters.onlyFree) count++;
