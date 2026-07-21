@@ -69,6 +69,7 @@ const WEEKDAY_INDEX = {
 
 const state = {
   route: 'signals',
+  routeHistory: [],
   view: 'agenda',
   date: startOfDay(new Date()),
   agendaDays: 42,
@@ -733,6 +734,9 @@ function bindStaticEvents() {
 }
 
 function handleClick(event) {
+  const backButton = event.target.closest('#appBackButton');
+  if (backButton) return navigateBack();
+
   const routeButton = event.target.closest('[data-route]');
   if (routeButton) return navigate(routeButton.dataset.route);
 
@@ -908,8 +912,12 @@ function handleAction(action, element) {
   }
 }
 
-function navigate(route) {
+function navigate(route, options = {}) {
   if (!document.querySelector(`[data-route-panel="${route}"]`)) return;
+  if (!options.skipRouteHistory && state.route && state.route !== route) {
+    state.routeHistory.push(state.route);
+    state.routeHistory = state.routeHistory.slice(-25);
+  }
   state.route = route;
   if (route === 'changes') markChangesRead();
   history.replaceState(null, '', `#${route}`);
@@ -918,6 +926,12 @@ function navigate(route) {
   document.querySelector('.side-rail').classList.remove('mobile-open');
   renderCurrentRoute();
   document.querySelector('.workspace').scrollTo?.(0, 0);
+}
+
+function navigateBack() {
+  const previousRoute = state.routeHistory.pop();
+  if (previousRoute) return navigate(previousRoute, { skipRouteHistory: true });
+  if (state.route !== 'signals') return navigate('signals', { skipRouteHistory: true });
 }
 
 function routeFromHash() {
@@ -953,6 +967,12 @@ function updateChrome() {
   const changeNavCount = document.getElementById('changeNavCount');
   changeNavCount.textContent = unreadCount ? String(unreadCount) : '';
   changeNavCount.hidden = unreadCount === 0;
+  const backButton = document.getElementById('appBackButton');
+  if (backButton) {
+    const canGoBack = state.routeHistory.length > 0 || state.route !== 'signals';
+    backButton.disabled = !canGoBack;
+    backButton.title = canGoBack ? 'Back' : 'Already at the landing page';
+  }
   document.getElementById('todayEyebrow').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
   highlightsRail?.classList.toggle('collapsed', state.highlightsCollapsed);
   if (highlightsToggle) {
