@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" data-readonly-fixture="discord-safety-v1" data-access-state="ready">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Discord Read-Only Safety Fixture</title>
+  <style>
+    body { background: #11131a; color: #eef0f6; font: 16px/1.45 system-ui; margin: 0; }
+    main { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+    nav, section { padding: 24px; }
+    nav { background: #1a1d27; }
+    button, textarea, [contenteditable] { margin: 6px 0; padding: 8px; }
+    .message { border-top: 1px solid #343847; padding: 14px 0; }
+    .composer { border-top: 1px solid #343847; margin-top: 24px; padding-top: 16px; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav aria-label="Channels">
+      <h1 data-server-name>Fixture Games</h1>
+      <a href="/fixture.html" data-channel-link="#announcements"># announcements</a><br>
+      <a href="/fixture.html" data-channel-link="#commander"># commander</a>
+      <button data-mutation-control="join">Join server</button>
+      <button data-mutation-control="role">Choose role</button>
+      <button data-mutation-control="settings">Settings</button>
+    </nav>
+    <section aria-label="Channel content">
+      <header>
+        <h2 data-channel-name># announcements</h2>
+        <span data-channel-id>fixture-channel-1001</span>
+      </header>
+      <article class="message" data-message-id="m1" data-timestamp="2026-07-20T17:30:00-07:00">
+        <strong data-author>Fixture Staff</strong>
+        <p data-message-text>Friday draft begins at 7 PM. Registration closes at 6:45 PM.</p>
+        <button data-mutation-control="react">React</button>
+        <button data-mutation-control="reply">Reply</button>
+      </article>
+      <article class="message" data-message-id="m2" data-timestamp="2026-07-20T18:00:00-07:00">
+        <strong data-author>Fixture Staff</strong>
+        <p data-message-text>Saturday Commander remains on the normal schedule.</p>
+        <button data-mutation-control="react">React</button>
+        <button data-mutation-control="reply">Reply</button>
+      </article>
+      <div class="composer">
+        <div contenteditable="true" role="textbox" aria-label="Message #announcements" data-message-composer></div>
+        <textarea aria-label="Alternate composer" data-message-composer></textarea>
+        <input type="file" data-mutation-control="upload">
+        <button data-mutation-control="send">Send</button>
+      </div>
+    </section>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('state') === 'gated') {
+      document.documentElement.dataset.accessState = 'join_or_role_gate';
+    }
+    if (params.get('state') === 'unexpected') {
+      document.documentElement.dataset.readonlyFixture = 'unknown-layout-v2';
+    }
+
+    window.__fixtureMutationLog = [];
+    document.addEventListener('click', (event) => {
+      const control = event.target.closest('[data-mutation-control]');
+      if (!control) return;
+      window.__fixtureMutationLog.push({ kind: 'control', control: control.dataset.mutationControl });
+      fetch('https://discord-safety.invalid/mock-api/' + control.dataset.mutationControl, { method: 'POST', body: '{}' }).catch(() => {});
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && event.target.closest('[data-message-composer]')) {
+        window.__fixtureMutationLog.push({ kind: 'enter-submit' });
+        fetch('https://discord-safety.invalid/mock-api/messages', { method: 'POST', body: event.target.textContent || event.target.value }).catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>

@@ -64,6 +64,16 @@ local-fixture-first proof plan are recorded in
 `docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`. No live Discord test has
 been authorized, and no route is yet `direct_navigation_verified`.
 
+The first local-only proof tranche is now complete. A Discord-like fixture and
+capability-limited extraction harness passed 8/8 automated checks: route/message
+extraction worked; interaction methods were absent from the survey API; composer
+input and mutating controls were disabled; mutation requests were blocked and
+logged; and missing guards, editable focus, unexpected layout, and gated state
+all failed closed. No Discord page or session was accessed. See
+`research/runs/2026-07-20-discord-readonly-local-fixture-proof.md`. This proves
+the local guard contract, not Discord compatibility, and does not promote any
+route to `direct_navigation_verified`.
+
 ## Signals foundation checkpoint
 
 Broad research is paused while the accepted Signals and Communities product
