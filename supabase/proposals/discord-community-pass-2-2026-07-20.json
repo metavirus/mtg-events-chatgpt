@@ -1,0 +1,318 @@
+{
+  "proposal_id": "discord-community-pass-2-2026-07-20",
+  "description": "Reviewable proposal from bounded Discord/community content pass 2. No live writes have been performed. The proposal captures useful source/community-route findings and proposes two Paper Hero event-series additions where Discord evidence supports current or likely-current weekly events.",
+  "created_at": "2026-07-20T21:55:00-07:00",
+  "author": "Codex Project Steward",
+  "validation_level": "standard for event-series writes; lean for source/evidence/source-health notes",
+  "status": "applied",
+  "applied_at": "2026-07-20T22:15:00-07:00",
+  "scope": {
+    "inspected_routes": [
+      "Collectors Lounge - Cypress Discord",
+      "Hobby Overflow Discord",
+      "Krazy Nick's Games Discord",
+      "Kingslayer Games Discord",
+      "Paper Hero's Games Discord"
+    ],
+    "excluded": [
+      "No live Supabase writes performed",
+      "No broad Discord sweep",
+      "No global inbox or DMs",
+      "No social interactions",
+      "No canonical JSON edits",
+      "No app code changes"
+    ]
+  },
+  "operations": [
+    {
+      "action": "upsert",
+      "table": "sources",
+      "key": {
+        "id": "src-paper-heros-discord-magic-hb-2026-07-20"
+      },
+      "fields": {
+        "id": "src-paper-heros-discord-magic-hb-2026-07-20",
+        "label": "Paper Hero's Games Huntington Beach Discord Magic channel",
+        "url": "https://discord.com/channels/451625704723841024/1323064182660399184",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-20"
+      },
+      "reason": "The Huntington Beach Magic channel was inspected and contains current event reminders and schedule-change information."
+    },
+    {
+      "action": "upsert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "paper-heros-hb",
+        "source_id": "src-paper-heros-discord-magic-hb-2026-07-20"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "paper-heros-hb",
+        "source_id": "src-paper-heros-discord-magic-hb-2026-07-20",
+        "relationship": "inspected Discord Magic channel; supports Huntington Beach event reminders, weekly Pauper, Friday draft lead, Standard time-change lead, and future community/event monitoring"
+      },
+      "reason": "Paper Hero had no captured Discord evidence route in Supabase despite the route being accessible and material."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {
+        "id": "paper-heros-hb-saturday-pauper-6-19-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-saturday-pauper-6-19-00",
+        "venue_id": "paper-heros-hb",
+        "community_id": null,
+        "title": "Saturday Pauper",
+        "format": "Pauper",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "weekday": "saturday"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-11",
+        "end_date": null,
+        "entry_fee": 5,
+        "currency": "USD",
+        "details": "Paper Hero's Huntington Beach Discord Magic channel posted a July 11, 2026 reminder for the weekly Pauper tournament at 7:00 PM with $5 entry and store-credit prizing for top players.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-20"
+      },
+      "reason": "The Discord post explicitly describes this as a weekly Pauper tournament with time, entry, and prize structure; Paper Hero currently has only Thursday Commander represented."
+    },
+    {
+      "action": "upsert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-paper-heros-discord-magic-hb-2026-07-20",
+        "series_id": "paper-heros-hb-saturday-pauper-6-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-paper-heros-discord-magic-hb-2026-07-20",
+        "series_id": "paper-heros-hb-saturday-pauper-6-19-00",
+        "occurrence_id": null,
+        "relationship": "Discord bot reminder confirms weekly Saturday Pauper details visible in July 2026"
+      },
+      "reason": "Link the proposed Pauper series to the inspected Discord source."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {
+        "id": "paper-heros-hb-friday-fnm-booster-draft-5-18-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-friday-fnm-booster-draft-5-18-00",
+        "venue_id": "paper-heros-hb",
+        "community_id": null,
+        "title": "Friday Night Magic Booster Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "weekday": "friday"
+        },
+        "default_start_time": "18:00",
+        "start_date": "2026-07-10",
+        "end_date": null,
+        "entry_fee": 20,
+        "currency": "USD",
+        "details": "Paper Hero's Huntington Beach Discord Magic channel posted a July 10, 2026 Friday Night Magic booster draft reminder at 6:00 PM with $20 entry, pack-per-round-win prizing, and Magic Companion registration. Treat as a current draft lead; verify against official calendar/WPN if possible before relying on it as a durable weekly row.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-20"
+      },
+      "reason": "The Discord reminder is current and actionable, but it is phrased as a same-day FNM post rather than explicitly weekly; propose as medium-confidence unless confirmed during application review."
+    },
+    {
+      "action": "upsert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-paper-heros-discord-magic-hb-2026-07-20",
+        "series_id": "paper-heros-hb-friday-fnm-booster-draft-5-18-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-paper-heros-discord-magic-hb-2026-07-20",
+        "series_id": "paper-heros-hb-friday-fnm-booster-draft-5-18-00",
+        "occurrence_id": null,
+        "relationship": "Discord bot reminder confirms July 2026 Friday Night Magic booster draft lead"
+      },
+      "reason": "Link the proposed draft series to the inspected Discord source."
+    },
+    {
+      "action": "update",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "collectors-lounge-cypress",
+        "source_id": "src-collectors-discord-2026-07-14"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "collectors-lounge-cypress",
+        "source_id": "src-collectors-discord-2026-07-14",
+        "relationship": "inspected Discord route; current weekly schedule image observed July 19, 2026 confirms Friday casual Commander, Saturday optimized Commander, Sunday Marvel draft, signup codes, and same-day attendee coordination"
+      },
+      "reason": "Collectors Discord was re-inspected and proved current/high-value for weekly schedule and coordination checks."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-collectors-discord-2026-07-14"
+      },
+      "fields": {
+        "id": "src-collectors-discord-2026-07-14",
+        "health_status": "current",
+        "last_checked": "2026-07-20"
+      },
+      "reason": "The Discord route has current July 2026 schedule evidence."
+    },
+    {
+      "action": "update",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "hobby-overflow",
+        "source_id": "src-hobbyoverflow-discord-invite-2026-07-15"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "hobby-overflow",
+        "source_id": "src-hobbyoverflow-discord-invite-2026-07-15",
+        "relationship": "inspected Discord route; Magic channels show some activity and a March 2026 schedule image with Thursday Magic 5:30-9:00 PM, creating a source-health/time-verification TBD rather than a write-now calendar correction"
+      },
+      "reason": "Hobby Discord content was inspected and affects the confidence/open-question framing for current event time reliability."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-hobbyoverflow-discord-invite-2026-07-15"
+      },
+      "fields": {
+        "id": "src-hobbyoverflow-discord-invite-2026-07-15",
+        "health_status": "current",
+        "last_checked": "2026-07-20"
+      },
+      "reason": "The route is accessible and was inspected, though the specific Magic schedule evidence needs current verification before event correction."
+    },
+    {
+      "action": "update",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "krazy-nick-s-games",
+        "source_id": "src-kng-discord-2026-07-14"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "krazy-nick-s-games",
+        "source_id": "src-kng-discord-2026-07-14",
+        "relationship": "inspected Discord route; Commander channel supports real pod/turnout texture including June 2026 two-pod confirmation and July 2026 ad hoc availability questions; schedule channels sampled as stale"
+      },
+      "reason": "Krazy Discord should be visible as turnout/community evidence, not only a baseline route."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-kng-discord-2026-07-14"
+      },
+      "fields": {
+        "id": "src-kng-discord-2026-07-14",
+        "health_status": "current",
+        "last_checked": "2026-07-20"
+      },
+      "reason": "The Commander channel had current/recent visible activity in July 2026."
+    },
+    {
+      "action": "update",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-fountain-valley",
+        "source_id": "src-kingslayer-discord-route-2026-07-18"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-fountain-valley",
+        "source_id": "src-kingslayer-discord-route-2026-07-18",
+        "relationship": "inspected Discord route; Commander channel supports same-day pod coordination, branch-specific travel decisions, and whether enough players exist before driving; MTG announcements support recent prerelease/draft/multi-format awareness"
+      },
+      "reason": "Kingslayer Discord moved from captured route/content replay TBD to inspected, planning-useful community and MTG-announcement evidence."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-kingslayer-discord-route-2026-07-18"
+      },
+      "fields": {
+        "id": "src-kingslayer-discord-route-2026-07-18",
+        "health_status": "current",
+        "last_checked": "2026-07-20"
+      },
+      "reason": "The route remains accessible and produced useful July 2026 Commander coordination evidence."
+    }
+  ],
+  "no_write_dispositions": [
+    {
+      "entity_id": "collectors-lounge-cypress",
+      "disposition": "no new event write",
+      "reason": "Discord confirmed the current weekly schedule, but the Friday Commander, Saturday Optimized Commander, and Sunday Marvel draft rows already appear represented."
+    },
+    {
+      "entity_id": "hobby-overflow",
+      "disposition": "event TBD",
+      "reason": "A March schedule image conflicts with/complicates the current late Commander row, but it is too old to overwrite current event facts without a fresh official/WPN/store-controlled check."
+    },
+    {
+      "entity_id": "krazy-nick-s-games",
+      "disposition": "no new event write",
+      "reason": "Discord supports pod texture and monitoring value; current Krazy Commander, Modern, Pauper, Standard, prerelease, and special rows are already represented from WPN/EventLink."
+    },
+    {
+      "entity_id": "kingslayer-games-fountain-valley",
+      "disposition": "no new event write",
+      "reason": "Discord supports coordination and multi-format route value; current Fountain Valley Commander, Modern, Pauper, Standard, and draft rows are already represented."
+    },
+    {
+      "entity_id": "paper-heros-hb",
+      "disposition": "event TBD for Standard",
+      "reason": "Discord confirms a Standard time-change lead, but the sampled context does not cleanly establish the recurring weekday/location enough for a write without checking the official calendar/WPN."
+    }
+  ],
+  "post_write_validation_plan": [
+    "Validate proposed IDs and relationships against current Supabase state before applying.",
+    "Apply only approved operations.",
+    "Read back affected sources, entity_sources, and Paper Hero event_series/event_sources rows.",
+    "Check for duplicate Paper Hero event series by venue/title/day/time.",
+    "Check event_series row count changes match approved inserts/upserts.",
+    "No local preview, hosted smoke, broad duplicate scan, or deterministic JSON export unless the event writes are accepted and the user wants a refreshed recovery export."
+  ],
+  "applied_summary": [
+    "Captured Paper Hero's Huntington Beach Discord Magic channel as a current community Evidence/source route.",
+    "Added Paper Hero Saturday Pauper as a weekly active event series at 7:00 PM, $5 entry, high confidence.",
+    "Added Paper Hero Friday Night Magic Booster Draft as a weekly active event series at 6:00 PM, $20 entry, medium confidence pending future official calendar/WPN confirmation.",
+    "Updated Collectors, Hobby Overflow, Krazy Nick's, and Kingslayer Discord source relationships to reflect inspected content and specific planning value/TBDs.",
+    "Updated affected Discord source health/check dates to current / 2026-07-20.",
+    "Did not write Paper Hero Standard because the visible Discord evidence was a useful time-change lead but not clean enough for a recurring calendar row without official/WPN follow-up."
+  ],
+  "post_write_validation_performed": [
+    "Affected source rows read back correctly.",
+    "Affected entity-source relationships read back correctly.",
+    "Paper Hero event-series rows read back correctly.",
+    "Paper Hero event-source relationships read back correctly.",
+    "Duplicate Paper Hero event-series check by venue/title/day/time returned no rows."
+  ]
+}
