@@ -2291,6 +2291,7 @@ function linkifyChangeText(rawText = '') {
 
 function changeLinkCandidates() {
   const seen = new Set();
+  const aliasOwners = changeAliasOwners();
   const add = (label, html) => {
     const clean = (label || '').trim();
     const key = clean.toLowerCase();
@@ -2299,12 +2300,57 @@ function changeLinkCandidates() {
     return { label: clean, html };
   };
   return [
-    ...DATA.stores.map((place) => add(place.name, (label) => `<button class="change-inline-target" data-place-id="${escapeHtml(place.id)}">${escapeHtml(label)}</button>`)),
+    ...DATA.stores.flatMap((place) => placeChangeLinkLabels(place, aliasOwners).map((label) => add(label, (matchedLabel) => `<button class="change-inline-target" data-place-id="${escapeHtml(place.id)}">${escapeHtml(matchedLabel)}</button>`))),
     ...COMMUNITY_SEED.map((community) => add(community.name, (label) => `<button class="change-inline-target" data-community-id="${escapeHtml(community.id)}">${escapeHtml(label)}</button>`)),
     ...DATA.sources
       .filter((item) => item.url && safeSourceLinkLabel(item.label))
       .map((item) => add(item.label, (label) => `<a class="change-inline-target" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">${escapeHtml(label)}</a>`))
   ].filter(Boolean).sort((a, b) => b.label.length - a.label.length);
+}
+
+function changeAliasOwners() {
+  const owners = new Map();
+  for (const place of DATA.stores) {
+    for (const alias of rawPlaceAliases(place.name)) {
+      const key = alias.toLowerCase();
+      const owner = owners.get(key);
+      if (!owner) owners.set(key, place.id);
+      else if (owner !== place.id) owners.set(key, null);
+    }
+  }
+  return owners;
+}
+
+function placeChangeLinkLabels(place, aliasOwners) {
+  return rawPlaceAliases(place.name).filter((alias) => aliasOwners.get(alias.toLowerCase()) === place.id);
+}
+
+function rawPlaceAliases(name = '') {
+  const aliases = new Set();
+  const add = (value) => {
+    const clean = value.replace(/\s+/g, ' ').trim();
+    if (clean.length >= 4) aliases.add(clean);
+  };
+  const baseName = name.split(' - ')[0].trim();
+  const branchName = name.includes(' - ') ? name.split(' - ').slice(1).join(' - ').trim() : '';
+  const compactBase = placeAliasCompact(baseName);
+  add(name);
+  add(baseName);
+  add(compactBase);
+  if (branchName) {
+    add(`${baseName} ${branchName}`);
+    add(`${baseName} - ${branchName}`);
+    add(`${compactBase} ${branchName}`);
+    add(`${compactBase} - ${branchName}`);
+  }
+  return [...aliases];
+}
+
+function placeAliasCompact(name = '') {
+  return name
+    .replace(/\b(Games|Game|Collectibles|TCG|LLC|Inc\.?|Store|Stores)\b/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function safeSourceLinkLabel(label = '') {
