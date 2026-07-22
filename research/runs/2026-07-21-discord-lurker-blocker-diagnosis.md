@@ -76,12 +76,20 @@ setup, because that has already failed to change later behavior. Do not interpre
 this as evidence that Discord surveying is impossible; it means the current
 zero-mutation browser path cannot yet cross Discord's membership/hydration step.
 
-The safest next technical path is to keep the existing route map and guards,
-pause content reads, and investigate a genuinely non-mutating capture path or
-obtain stronger independent evidence about this exact endpoint before proposing
-an allowlist. If a later allowlist is ever proposed, it must be separately
-approved, limited to the exact expected guild/current-user/lurker request,
-logged, reversible, and tested first without message extraction.
+Accepted boundary `5e055e8`: browser-driven Discord content-read is now
+blocked/TBD for near-term work. Do not spend more implementation time trying to
+route around `members/@me?lurker=true` under the current browser-driven
+approach. Carry forward the route/channel map, route priorities, expected signal
+types, isolated profile concept, read-only guard/harness, blocker diagnosis, and
+the rule that quiet/blocked runs do not reduce long-term route value.
+
+Near-term Discord input should be limited to user-supplied screenshots/pastes or
+user-opened visible-content analysis. A future Discord lane may still pursue a
+genuinely non-mutating capture path or obtain stronger independent evidence
+about this exact endpoint before proposing an allowlist. If a later allowlist is
+ever proposed, it must be separately approved, limited to the exact expected
+guild/current-user/lurker request, logged, reversible, and tested first without
+message extraction.
 
 ## Result against tranche acceptance
 
@@ -90,4 +98,3 @@ logged, reversible, and tested first without message extraction.
 - No join, role, reaction, settings, or composer interaction: pass.
 - Blocker classified across multiple servers: pass.
 - Clear recommendation: keep content-read blocked/TBD; no allowlist yet.
-

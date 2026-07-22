@@ -2,9 +2,10 @@
 
 Date: 2026-07-21
 
-Status: Discord content surveying remains paused except for explicitly approved
-guarded pilots. This checkpoint records the current accepted safety baseline so
-future work does not reconstruct it from chat memory.
+Status: Browser-driven Discord content-read is blocked/TBD at accepted boundary
+`5e055e8`. This checkpoint records the current accepted safety baseline so
+future work does not reconstruct it from chat memory or keep trying to route
+around the same blocker.
 
 ## Accepted baseline
 
@@ -29,7 +30,16 @@ future work does not reconstruct it from chat memory.
 Discord remains a high-risk external-state surface. A read-only intention is not
 enough; the method must be mechanically constrained.
 
-Allowed only in an approved guarded pilot:
+Near-term allowed workflows:
+
+1. the user supplies a screenshot or paste;
+2. the user manually opens an exact Discord channel/message and asks Codex to
+   read only the visible content;
+3. a future separately approved access strategy is designed and accepted.
+
+The following guarded-browser method exists and remains useful infrastructure,
+but it is not currently approved for content reads because the Discord client
+attempts an undocumented `members/@me?lurker=true` request before extraction:
 
 1. use the dedicated isolated Discord-read profile;
 2. open exactly one mapped channel URL by direct navigation;
@@ -45,6 +55,8 @@ Forbidden:
 - clicking through Discord gates/interstitials;
 - allowing membership/lurker, join, role, reaction, reply, upload, send,
   settings, or other mutating requests automatically;
+- spending more implementation time trying to route around
+  `members/@me?lurker=true` under the current browser-driven approach;
 - broad Discord surveying;
 - treating quiet or blocked run results as long-term route-value downgrades.
 
@@ -90,8 +102,20 @@ and stronger evidence that its exact effect is acceptable. The diagnosis is
 recorded in
 `research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
-Do not resume broad Discord surveying until a tiny content-read pilot succeeds
-under guard and is separately accepted.
+Do not run additional Discord surveys, route recovery, or content-read pilots
+under the current browser-driven approach. Near-term product and research work
+should proceed without depending on Discord automation. Carry forward the route
+map, priorities, expected signal types, isolated profile concept, read-only
+guard/harness, blocker diagnosis, and the rule that quiet/blocked runs do not
+reduce long-term route value.
+
+Future Discord work should be one of:
+
+- manual screenshot/paste or user-opened visible-content analysis;
+- a separately approved non-browser or otherwise mechanically safer access
+  strategy;
+- a separate decision to evaluate a narrowly scoped allowlist, with stronger
+  evidence than currently exists.
 
 ## Separate active issue
 

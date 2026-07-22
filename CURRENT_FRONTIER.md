@@ -21,15 +21,21 @@ historical fallback only.
 Current accepted Discord safety checkpoint:
 `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`.
 
-Discord content surveying remains paused except for explicitly approved guarded
-pilots. The one-retry interstitial rule is implemented, but the guarded client
-still attempts `members/@me?lurker=true` before content extraction across five
-mapped servers. The route shells are authenticated and exact; a one-time manual
-open did not clear Collectors, and known joined/access anchors did not prevent
-the request on JJ's or Krazy Nick's. The exact web-client endpoint remains
-undocumented and state-changing-looking, so it is not allowlisted. Content-read
-automation is blocked/TBD while the route map and strict guard remain intact.
-See `research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
+Browser-driven Discord content-read is blocked/TBD at accepted boundary
+`5e055e8`. The one-retry interstitial rule is implemented, but the guarded
+client still attempts `members/@me?lurker=true` before content extraction across
+five mapped servers. The route shells are authenticated and exact; a one-time
+manual open did not clear Collectors, and known joined/access anchors did not
+prevent the request on JJ's or Krazy Nick's. The exact web-client endpoint
+remains undocumented and state-changing-looking, so it is not allowlisted. Do
+not spend more implementation time trying to route around that request under the
+current browser-driven approach. Carry forward the route/channel map, route
+priorities, expected signal types, isolated profile, read-only guard/harness,
+blocker diagnosis, and the rule that quiet/blocked runs do not reduce long-term
+route value. Near-term Discord input is manual screenshot/paste or user-opened
+visible-content analysis only, unless a separately approved different access
+strategy is accepted. See
+`research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
 The first structured Discord/community monitoring map is now live in Supabase.
 Migration `20260721025750_add_discord_monitoring_map.sql` adds service-only
@@ -703,9 +709,14 @@ older notes saying "repair Tweedy first" as current next work.
 
 ## Recommended next step
 
-Resume ordinary store research immediately from
-`docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`: address any safety correction
-first, then take the recommended 2-4 store corrective/main-pass batch. Do not
+Return to product/research work that improves usefulness without depending on
+Discord automation. The best next lanes are either:
+
+- dense Events usability polish using current data; or
+- a small corrected main-store research batch using non-Discord sources plus
+  existing Discord route metadata only.
+
+For research, resume from `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`. Do not
 launch workers/subagents unless the user explicitly approves a specific
 exceptional worker.
 
