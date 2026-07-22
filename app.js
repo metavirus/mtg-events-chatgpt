@@ -1257,6 +1257,17 @@ function isCompetitive(event) {
   if (/(separate from|rather than|not|outside of)[^.]{0,80}cedh/i.test(details)) return false;
   return /cedh|competitive|optimized|rcq|championship/i.test(details);
 }
+function isCommanderLike(event) {
+  return /commander|edh/i.test(`${event.title || ''} ${event.format || ''} ${event.eventType || ''}`);
+}
+function isHighPowerCommander(event) {
+  if (!isCommanderLike(event)) return false;
+  const bracket = String(event.bracket || '').toLowerCase();
+  if (/^(4|5|4\/5|high[-\s]?power|high[-\s]?powered)$/.test(bracket)) return true;
+  const details = String(event.details || '');
+  if (/(separate from|rather than|not|outside of)[^.]{0,100}(bracket\s*(4|5|4\/5)|high[-\s]?power|optimized|cedh)/i.test(details)) return false;
+  return /bracket\s*(4|5|4\/5)|4\/5\s*(encouraged|recommended)|high[-\s]?powered|high[-\s]?power|no[-\s]?holds[-\s]?barred/i.test(details);
+}
 function isPrereleaseOrSealed(event) { return /prerelease|sealed|limited/i.test(`${event.eventType} ${event.title} ${event.format}`); }
 function isSpecial(event) { return /prerelease|sealed|draft|limited|party|special/i.test(`${event.eventType} ${event.title} ${event.format}`); }
 function isWeekend(date) { return [5, 6, 0].includes(date.getDay()); }
@@ -1270,7 +1281,7 @@ function eventMatchesSharedFilters(event, options = {}) {
   if (state.filters.planningGroups && !state.filters.planningGroups.includes(eventPlanningGroup(event))) return false;
   if (numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
   if (state.filters.onlyFree && Number(event.entryFee || 0) !== 0) return false;
-  if (hideCompetitive && isCompetitive(event)) return false;
+  if (hideCompetitive && (isCompetitive(event) || isHighPowerCommander(event))) return false;
   if (state.favoritesOnly && !state.personal.favorites[eventPreferenceKey(event)] && !state.personal.favorites[`place:${place.id}`]) return false;
   if (includeSearch && state.search) {
     const haystack = [
@@ -1370,6 +1381,7 @@ function fitScore(event) {
   if (event.bracket === '3' || /bracket 3|casual|open play/i.test(`${event.bracket} ${event.title} ${event.details}`)) score += 9;
   if (event.bracket === '2') score += 5;
   if (isCompetitive(event)) score -= 30;
+  if (isHighPowerCommander(event)) score -= 28;
   if (hasExplicitNoProxy(event)) score -= 24;
   if (isPrereleaseOrSealed(event)) score += 14;
   return Math.max(0, Math.min(100, Math.round(score)));
@@ -1379,6 +1391,7 @@ function fitLabel(event) {
   const score = fitScore(event);
   if (hasExplicitNoProxy(event)) return { label: 'Poor fit · no proxy', tone: 'coral' };
   if (isCompetitive(event)) return { label: 'Competitive lane', tone: 'coral' };
+  if (isHighPowerCommander(event)) return { label: 'Poor fit · high power', tone: 'coral' };
   if (score >= 78) return { label: 'Strong fit', tone: 'mint' };
   if (score >= 64) return { label: 'Promising', tone: 'sky' };
   return { label: 'Worth a look', tone: 'slate' };
@@ -1504,7 +1517,7 @@ function eventCard(event, compact = false, options = {}) {
 function formatClass(event) {
   if (/prerelease|sealed|limited/i.test(`${event.format} ${event.eventType}`)) return 'format-limited';
   if (/draft/i.test(`${event.format} ${event.eventType}`)) return 'format-draft';
-  if (isCompetitive(event)) return 'format-competitive';
+  if (isCompetitive(event) || isHighPowerCommander(event)) return 'format-competitive';
   return 'format-commander';
 }
 
@@ -1512,6 +1525,7 @@ function compactEventCue(event, fit, evidence) {
   if (isPrereleaseOrSealed(event)) return { label: /prerelease/i.test(`${event.title} ${event.eventType}`) ? 'Prerelease' : 'Limited', className: 'cue-limited' };
   if (state.personal.hidden[eventPreferenceKey(event)]) return { label: 'Hidden', className: 'cue-hidden' };
   if (hasExplicitNoProxy(event)) return { label: 'No proxy', className: 'cue-hidden' };
+  if (isHighPowerCommander(event)) return { label: 'High power', className: 'cue-hidden' };
   if (isCompetitive(event)) return { label: 'Check first', className: 'cue-caution' };
   if (fit.tone === 'mint') return { label: 'Best fit', className: 'cue-best' };
   if (fit.tone === 'sky') return { label: 'Promising', className: 'cue-promising' };
@@ -1524,7 +1538,7 @@ function formatShort(event) {
   if (/prerelease/i.test(text)) return 'PR';
   if (/sealed|limited/i.test(text)) return 'SE';
   if (/draft/i.test(text)) return 'DR';
-  if (isCompetitive(event)) return 'C4';
+  if (isCompetitive(event) || isHighPowerCommander(event)) return 'C4';
   if (/commander|edh/i.test(text)) return 'EDH';
   if (/standard/i.test(text)) return 'STD';
   if (/modern/i.test(text)) return 'MOD';
@@ -1543,7 +1557,7 @@ function hasExplicitNoProxy(event) {
 function eventPlanningGroup(event) {
   const placeHidden = !!state.personal.hidden[`place:${event.storeId}`];
   const eventHidden = !!state.personal.hidden[eventPreferenceKey(event)];
-  if (eventHidden || placeHidden || hasExplicitNoProxy(event) || isCompetitive(event)) return 'hidden';
+  if (eventHidden || placeHidden || hasExplicitNoProxy(event) || isCompetitive(event) || isHighPowerCommander(event)) return 'hidden';
   if (isPrereleaseOrSealed(event)) return 'limited';
   const fit = fitLabel(event);
   if (fit.tone === 'mint') return 'best';
@@ -2488,6 +2502,7 @@ function openDay(dayDate) {
 
 function eventFitExplanation(event, place) {
   if (isCompetitive(event)) return 'The wording suggests cEDH, optimized, or tournament-style play outside your usual Bracket 2/3 preference.';
+  if (isHighPowerCommander(event)) return 'The wording suggests high-power or Bracket 4/5 Commander, so it belongs in the recoverable poor-fit bucket rather than competing with your usual casual Bracket 2/3 targets.';
   if (/open play|drop.?in|casual/i.test(`${event.title} ${event.details}`)) return 'The casual/open wording aligns with your preferred play style; solo-arrival mechanics may still be unknown.';
   if (isSpecial(event)) return 'This is the kind of infrequent limited or special event you asked to have highlighted.';
   return `The listing is relevant, but its power expectations and social structure need interpretation. ${distanceLabel(place, true)} keeps distance in the practical calculation.`;
