@@ -137,6 +137,21 @@ and changed no Discord state. The acknowledgement behavior is therefore not
 globally graduated, and both routes remain `manual_open_required`. See
 `research/runs/2026-07-21-discord-acknowledgement-state-machine-test.md`.
 
+The July 22 control diagnostic corrected the interpretation of that failure.
+The same persistent isolated profile produced an authenticated shell and a
+fully visible server rail after one bounded hydration wait; a rail-only capture
+also visually confirmed the folder/server icons. The former "no controls"
+result is therefore a transient shell-hydration/detection result, not a durable
+route-access conclusion. Long-term access mode and latest run result must be
+kept separate.
+
+The Collectors control still failed closed before content read because channel
+selection attempted `PATCH /api/v9/users/@me/settings-proto/2`. The guard
+blocked this client-settings mutation, unread/mention state remained unchanged,
+and no Discord state changed. ProjectCCG and Magic & Monsters were not retried.
+Do not allowlist this request or infer anything new about either target route
+from the control failure.
+
 - The same blocked membership/lurker request has now appeared across Paper
   Hero, JJ's, Magic & Monsters, Collectors Lounge, and Krazy Nick's.
 - Every tested route proved the expected authenticated server/channel shell

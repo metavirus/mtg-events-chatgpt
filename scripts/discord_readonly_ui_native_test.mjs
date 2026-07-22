@@ -31,7 +31,10 @@ const homeUrl = 'https://discord.com/channels/@me';
 const workspaceRoot = path.resolve('work/discord-readonly');
 const profileDir = path.join(workspaceRoot, 'profile');
 const logDir = path.join(workspaceRoot, 'logs');
+const screenshotDir = path.join(workspaceRoot, 'screenshots');
 await fs.mkdir(logDir, { recursive: true });
+await fs.mkdir(screenshotDir, { recursive: true });
+const profileMetadata = await fs.stat(profileDir);
 
 // Unlike the cold-link guard, this selector does not disable every button.
 // It disables message/content mutation surfaces while the runner exposes only
@@ -78,6 +81,11 @@ const result = {
   folderName,
   channelName,
   dedicatedProfileUsed: true,
+  configuredProfilePath: profileDir,
+  profilePersistenceExpected: true,
+  profileDirectoryCreatedAt: profileMetadata.birthtime.toISOString(),
+  profileDirectoryLastModifiedAtStart: profileMetadata.mtime.toISOString(),
+  viewport: { width: 1440, height: 900 },
   accessModality: 'discord_home_then_structural_sidebar_navigation',
   coldDeepLinkUsed: false,
   typingOrPastingUsed: false,
@@ -91,6 +99,11 @@ const result = {
   blockedRequests: [],
   blockedExpectedAcks: [],
   routeState: 'blocked_for_this_run',
+  longTermAccessModeChanged: false,
+  latestRunResult: 'blocked_for_this_run',
+  authenticatedShell: null,
+  serverRailHydration: null,
+  serverRailScreenshot: null,
   guildIndicatorBefore: null,
   guildIndicatorAfter: null,
   guildIndicatorUnchanged: null,
@@ -107,6 +120,7 @@ const result = {
 const context = await chromium.launchPersistentContext(profileDir, {
   headless: true,
   executablePath: browserExecutable,
+  viewport: result.viewport,
   args: ['--no-proxy-server']
 });
 
@@ -254,6 +268,81 @@ async function verifyStage(page, stageName, options = {}) {
   };
   result.stages.push(stage);
   return safety;
+}
+
+async function readAuthenticatedShellState(page) {
+  return page.evaluate(() => {
+    const visible = (element) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+    };
+    const loginFormVisible = [...document.querySelectorAll('input[type="email"], input[name="email"], form')]
+      .some((element) => visible(element) && /log\s*in|email/i.test(`${element.getAttribute('aria-label') || ''} ${element.textContent || ''}`));
+    const userAreaVisible = [...document.querySelectorAll('[aria-label], [data-list-id], nav')]
+      .some((element) => visible(element) && /user area|private channels|direct messages|guildsnav|servers/i.test(
+        `${element.getAttribute('aria-label') || ''} ${element.getAttribute('data-list-id') || ''}`
+      ));
+    return {
+      url: location.href,
+      loginFormVisible,
+      userAreaVisible,
+      authenticatedAccountShell: location.pathname.startsWith('/channels/') && userAreaVisible && !loginFormVisible
+    };
+  });
+}
+
+async function readServerRailState(page) {
+  return page.evaluate(() => {
+    const visible = (element) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+    };
+    const outsideMessages = (element) => !element.closest('main, [role="main"], [aria-label*="Messages" i], [data-message-composer], [role="textbox"]');
+    const roots = [...document.querySelectorAll('[data-list-id*="guilds" i], [aria-label*="Servers" i], nav')]
+      .filter((element) => visible(element) && outsideMessages(element));
+    const items = [...document.querySelectorAll('[data-list-item-id^="guildsnav___"], [role="treeitem"]')]
+      .filter((element) => visible(element) && outsideMessages(element));
+    const structural = items.map((element) => ({
+      id: element.getAttribute('data-list-item-id'),
+      ariaExpanded: element.getAttribute('aria-expanded'),
+      ariaLabel: element.getAttribute('aria-label'),
+      title: element.getAttribute('title'),
+      href: element.getAttribute('href') || element.querySelector('a[href]')?.getAttribute('href') || null
+    }));
+    const guildOrFolderItems = structural.filter((item) =>
+      /^guildsnav___(?:\d+|folder)/i.test(item.id || '') || item.ariaExpanded !== null
+    );
+    return {
+      rootCount: roots.length,
+      itemCount: structural.length,
+      guildOrFolderItemCount: guildOrFolderItems.length,
+      items: structural.slice(0, 40)
+    };
+  });
+}
+
+async function waitForServerRailHydration(page, timeoutMs = 10000) {
+  const started = Date.now();
+  let state = await readServerRailState(page);
+  while (Date.now() - started < timeoutMs && state.guildOrFolderItemCount === 0) {
+    await page.waitForTimeout(500);
+    state = await readServerRailState(page);
+  }
+  return {
+    ...state,
+    waitedMs: Date.now() - started,
+    hydrated: state.guildOrFolderItemCount > 0
+  };
+}
+
+async function captureServerRailScreenshot(page) {
+  const safeName = `server-rail-${new Date().toISOString().replace(/[:.]/g, '-')}.png`;
+  const screenshotPath = path.join(screenshotDir, safeName);
+  // This narrow clip contains only the server rail, excluding DMs/messages.
+  await page.screenshot({ path: screenshotPath, clip: { x: 0, y: 0, width: 96, height: result.viewport.height } });
+  return screenshotPath;
 }
 
 async function markAndInspectNavigation(page) {
@@ -449,9 +538,32 @@ try {
   requestStage = 'home_load';
   await page.goto(homeUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
   await verifyStage(page, 'discord_home_loaded');
+  result.authenticatedShell = await readAuthenticatedShellState(page);
+  if (!result.authenticatedShell.authenticatedAccountShell) {
+    throw new Error('authenticated Discord account shell was not proven');
+  }
+  requestStage = 'server_rail_hydration';
+  result.serverRailHydration = await waitForServerRailHydration(page);
+  result.serverRailScreenshot = await captureServerRailScreenshot(page);
+  if (!result.serverRailHydration.hydrated) {
+    throw new Error('server_rail_not_detected after bounded shell hydration');
+  }
 
   let navigation = await markAndInspectNavigation(page);
   result.stages.at(-1).navigation = navigation;
+
+  if (folderName.trim()) {
+    const hoverProof = await probeFolderTooltips(page);
+    result.folderTooltipProbes = hoverProof;
+    if (!hoverProof.uniqueMatch) {
+      throw new Error('folder tooltips do not uniquely prove the mapped folder');
+    }
+    navigation = {
+      ...navigation,
+      folderControlProven: true,
+      folderControlLabel: hoverProof.matches[0].tooltip
+    };
+  }
 
   if (navigation.visibleGuildAnchorCount !== 1) {
     if (!navigation.folderControlProven) {
@@ -499,9 +611,11 @@ try {
     result.findingCandidates = windowResult.findingCandidates;
     result.status = 'content_read_succeeded_safely';
     result.routeState = 'ui_native_read_verified';
+    result.latestRunResult = 'success';
   } else {
     result.status = 'shell_reached_safely';
     result.routeState = 'ui_native_shell_only';
+    result.latestRunResult = 'success';
   }
   result.guildIndicatorAfter = await readGuildIndicator(page);
   result.guildIndicatorUnchanged = JSON.stringify(result.guildIndicatorBefore) === JSON.stringify(result.guildIndicatorAfter);
@@ -515,6 +629,12 @@ try {
   if (blockedClassifications.includes('blocked_expected_ack')) result.routeState = 'blocked_ack_prevents_render';
   else if (/lurker|gate|join|verification/.test(error.message)) result.routeState = 'onboarding_required';
   else if (/mutation request/.test(error.message)) result.routeState = 'blocked_unexpected_mutation';
+  if (/server_rail_not_detected/.test(error.message)) result.latestRunResult = 'server_rail_not_detected';
+  else if (/folder-control count|folder tooltips|guild anchor/.test(error.message)) result.latestRunResult = 'navigation_selector_failure';
+  else if (blockedClassifications.includes('blocked_expected_ack')) result.latestRunResult = 'acknowledgement_blocked';
+  else if (blockedClassifications.includes('settings_mutation')) result.latestRunResult = 'client_settings_write_blocked';
+  else if (/lurker|gate|join|verification/.test(error.message)) result.latestRunResult = 'interstitial_or_gate';
+  else if (/mutation request/.test(error.message)) result.latestRunResult = 'unexpected_mutation_blocked';
   if (page && result.guildIndicatorBefore?.observable && !result.guildIndicatorAfter) {
     result.guildIndicatorAfter = await readGuildIndicator(page).catch(() => ({ observable: false }));
     result.guildIndicatorUnchanged = JSON.stringify(result.guildIndicatorBefore) === JSON.stringify(result.guildIndicatorAfter);

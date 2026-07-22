@@ -58,8 +58,13 @@ remain unchanged.
 
 ## Decision
 
-- Neither route graduates. Both remain `manual_open_required` and
-  `blocked_for_this_run` for this experiment.
+- Neither route graduates. The run result for both was
+  `server_rail_not_detected` / `blocked_for_this_run`; that transient result
+  does not itself establish or change a durable access mode.
+- The `manual_open_required` values already present in the monitoring map
+  reflect the earlier proven signed-in in-app-browser access path. They were
+  not newly justified by this failed run and must not be read as route
+  downgrades.
 - The acknowledgement remains blocked. The runner has a narrow, fail-closed
   `blocked_expected_ack` classification ready for a future bounded test, but
   this run did not exercise it and therefore does not globally graduate that
@@ -76,3 +81,34 @@ remain unchanged.
 - No blocked request received a successful response.
 - No Discord message content was read or stored.
 - No external Discord state changed.
+
+## Diagnostic control rerun (2026-07-22)
+
+The exact persistent isolated profile was confirmed as
+`work/discord-readonly/profile`. It was created on July 20 and was reused by
+the successful Collectors Lounge and JJ's runs; this diagnostic did not inspect
+cookies, credentials, tokens, or other private session data. The runner used a
+fixed 1440 x 900 viewport and proved an authenticated Discord account shell.
+
+Collectors Lounge was then used as the required control. After a bounded shell
+hydration wait of about 1.35 seconds, the server rail exposed 24 guild/folder
+items, including the exact Collectors guild ID. A rail-only screenshot
+confirmed that the Stores/Local folder and server icons were visibly present.
+This establishes that the earlier ProjectCCG/Magic & Monsters "no controls"
+result was a hydration/detection failure, not evidence that those routes had
+lost access.
+
+The Collectors control did not complete, so the two target routes were not
+retried. During exact channel selection Discord attempted:
+
+`PATCH /api/v9/users/@me/settings-proto/2`
+
+The guard blocked it. The request is now classified as a client-settings
+mutation, remains fatal, and was not allowlisted. No message content was read,
+the observable guild indicator stayed unchanged, and no external Discord state
+changed.
+
+Exact failure layer: authenticated profile and server-rail detection passed;
+guarded channel navigation stopped on a newly observed Discord client-settings
+write. This is a control/harness boundary, not a ProjectCCG or Magic & Monsters
+route result. Their long-term access modes and route values remain unchanged.

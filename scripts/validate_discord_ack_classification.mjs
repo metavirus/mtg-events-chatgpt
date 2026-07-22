@@ -11,6 +11,7 @@ const cases = [
   ['POST', 'https://discord.com/api/v9/invites/abc', 'invite_mutation'],
   ['PATCH', 'https://discord.com/api/v9/guilds/123/roles/456', 'role_mutation'],
   ['PATCH', 'https://discord.com/api/v9/users/@me/settings', 'settings_mutation'],
+  ['PATCH', 'https://discord.com/api/v9/users/@me/settings-proto/2', 'settings_mutation'],
   ['POST', 'https://discord.com/api/v9/science', 'telemetry']
 ];
 

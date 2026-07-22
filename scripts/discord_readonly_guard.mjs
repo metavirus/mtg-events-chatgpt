@@ -154,7 +154,7 @@ function classifyDiscordBlockedRequest(entry) {
   if (/\/roles(?:\/|$)/i.test(parsed.pathname)) {
     return { classification: 'role_mutation', normalizedEndpoint: '/api/v*/guilds/{guild_id}/roles/...' };
   }
-  if (/\/users\/@me\/settings(?:\/|$)/i.test(parsed.pathname)) {
+  if (/\/users\/@me\/settings(?:-proto)?(?:\/|$)/i.test(parsed.pathname)) {
     return { classification: 'settings_mutation', normalizedEndpoint: '/api/v*/users/@me/settings/...' };
   }
   return { classification: 'blocked_unexpected_mutation', normalizedEndpoint: parsed.pathname };

@@ -47,5 +47,12 @@
     "Confirm both safe_access_mode values remain manual_open_required.",
     "Confirm both last_seen_message_at values remain unchanged.",
     "Confirm no canonical research or app-data table changed."
-  ]
+  ],
+  "semantic_review_2026_07_22": {
+    "result": "The two no-control outcomes were transient run failures, not durable route downgrades.",
+    "safe_access_mode_review": "manual_open_required already represented the earlier proven signed-in in-app-browser access path; writing the same value in this proposal was a no-op and is not evidence supplied by the failed acknowledgement test.",
+    "latest_run_result": "server_rail_not_detected / blocked_for_this_run",
+    "map_correction_required": false,
+    "reason": "Readback preserves each route's earlier successful access method and long-term route value separately from last_failed_access_method. The July 22 Collectors control proved the isolated rail can hydrate, then failed on a separate blocked client-settings write before content read; ProjectCCG and Magic & Monsters were not retested."
+  }
 }
