@@ -22,13 +22,14 @@ Current accepted Discord safety checkpoint:
 `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`.
 
 Discord content surveying remains paused except for explicitly approved guarded
-pilots. The current accepted rule treats ephemeral Discord interstitials and
-`members/@me?lurker=true` requests as safety/navigation conditions, not research
-findings: block/log the request, close the isolated read context, reopen the
-same mapped channel URL once by direct navigation, and continue only if it opens
-cleanly under guard. Do not click through, do not allow the request
-automatically, and do not downgrade route value merely because the transient
-condition appeared.
+pilots. The one-retry interstitial rule is implemented, but the guarded client
+still attempts `members/@me?lurker=true` before content extraction across five
+mapped servers. The route shells are authenticated and exact; a one-time manual
+open did not clear Collectors, and known joined/access anchors did not prevent
+the request on JJ's or Krazy Nick's. The exact web-client endpoint remains
+undocumented and state-changing-looking, so it is not allowlisted. Content-read
+automation is blocked/TBD while the route map and strict guard remain intact.
+See `research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
 The first structured Discord/community monitoring map is now live in Supabase.
 Migration `20260721025750_add_discord_monitoring_map.sql` adds service-only
@@ -87,8 +88,9 @@ read-only surveying through a dedicated isolated Discord profile with a narrow
 navigation/extraction-only capability, page-level input suppression, and
 network-level mutation blocking. The options, failure-closed contract, and
 local-fixture-first proof plan are recorded in
-`docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`. No live Discord test has
-been authorized, and no route is yet `direct_navigation_verified`.
+`docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`. Guarded shell tests have
+since been authorized and completed; no route is yet approved for autonomous
+content-read surveying.
 
 The first local-only proof tranche is now complete. A Discord-like fixture and
 capability-limited extraction harness passed 8/8 automated checks: route/message
@@ -100,16 +102,17 @@ all failed closed. No Discord page or session was accessed. See
 the local guard contract, not Discord compatibility, and does not promote any
 route to `direct_navigation_verified`.
 
-Production-form safety hardening now exists, still without opening Discord.
+Production-form safety hardening now exists.
 The reusable guard module in `scripts/discord_readonly_guard.mjs` provides
 direct-channel shell navigation only, page-level composer/mutating-control
 suppression, editable-focus checks, and Discord mutation request blocking/logging.
 The ignored dedicated local workspace under `work/discord-readonly/` was created
 by `scripts/discord_readonly_profile_setup.mjs`; no profile session, cookies, or
 Discord content are committed. The production guard passed a local fixture proof
-in `scripts/discord_readonly_production_guard_proof.mjs`. The tiny real-Discord
-shell test plan is recorded in `docs/DISCORD_REAL_SHELL_TEST_PLAN.md` but has not
-been run and remains unauthorized. Real Discord surveying remains paused.
+in `scripts/discord_readonly_production_guard_proof.mjs`. The real-Discord shell
+test plan is recorded in `docs/DISCORD_REAL_SHELL_TEST_PLAN.md`; shell-only
+tests have since run under explicit approval. Real Discord surveying remains
+paused.
 
 The first real-Discord shell test initially failed closed because the checker
 did not detect enough Discord server/channel/main shell markers. The follow-up
@@ -125,14 +128,18 @@ bounded to read-only extraction. See
 `research/runs/2026-07-20-discord-real-shell-safety-test.md`.
 
 The first tiny content-read pilot was attempted after shell-safety acceptance.
-It failed closed at login, then failed closed again after isolated-profile setup:
-the Paper Hero shell identity was proven, but Discord attempted a blocked
-membership/lurker request before content extraction. A subsequent Collectors
-Lounge shell attempt showed the same pattern. No message content was read, no
+It failed closed at login, then failed closed again after isolated-profile setup.
+Follow-up guarded attempts on JJ's, Magic & Monsters, Collectors Lounge, and
+Krazy Nick's proved exact authenticated shells but encountered the same blocked
+membership/lurker request before content extraction. A one-time manual channel
+open did not prevent recurrence on Collectors. No message content was read, no
 research finding was produced, no Signals/events/sources were created, and no
 external Discord state changed. See
 `research/runs/2026-07-21-discord-readonly-content-pilot.md` and
-`docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`.
+`docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`. The bounded diagnosis
+keeps the request blocked and does not recommend an allowlist without stronger
+evidence; see
+`research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
 Separate app issue resolved: the reported app freeze/click failure was traced
 to malformed weekly recurrence data, not card rendering volume. Paper Hero's

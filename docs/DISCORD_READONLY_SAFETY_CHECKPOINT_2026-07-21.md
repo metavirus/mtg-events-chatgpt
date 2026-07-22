@@ -20,6 +20,9 @@ future work does not reconstruct it from chat memory.
 - `cc974af`: retry after isolated-profile setup reached the Paper Hero shell but
   blocked a `members/@me?lurker=true` request before content extraction.
 - `0fd3b93`: ephemeral Discord interstitial handling clarified.
+- `1ac0f99`: the approved one-retry rule was implemented and failed closed on
+  JJ's, Magic & Monsters, and Collectors without reading content or changing
+  Discord state.
 
 ## Current safety rule
 
@@ -65,10 +68,14 @@ priority change.
 
 ## Current operational state
 
-- Paper Hero's mapped channel shell was proven but is blocked for guarded content
-  reads until the membership/lurker/interstitial condition is resolved safely.
-- Collectors Lounge's mapped channel shell also proved route identity but hit
-  the same blocked membership/lurker condition during the next attempted pilot.
+- The same blocked membership/lurker request has now appeared across Paper
+  Hero, JJ's, Magic & Monsters, Collectors Lounge, and Krazy Nick's.
+- Every tested route proved the expected authenticated server/channel shell
+  before message extraction.
+- A manual one-time open did not resolve Collectors Lounge's later direct-URL
+  behavior. JJ's was already joined by the user, and the account previously had
+  posting access in Krazy Nick's, so a simple missing-login or never-joined
+  explanation is not sufficient.
 - No Discord message content was read by Codex in these guarded pilots.
 - No Signals, events, source notes, or research conclusions were created from
   the guarded pilots.
@@ -76,13 +83,12 @@ priority change.
 
 ## Next safe options
 
-Choose only one, explicitly:
-
-1. improve the guard/harness to implement the accepted one-close-and-retry rule
-   automatically, then rerun one tiny content pilot;
-2. have the user manually resolve a route's visibility/interstitial state in the
-   isolated profile, close the profile, then rerun one tiny content pilot;
-3. pause Discord automation and work on non-Discord app/research issues.
+Current decision: keep content-read automation blocked/TBD. The one-retry rule
+is already implemented, and merely opening a channel once has not cleared the
+request. Do not allowlist `members/@me?lurker=true` without separate approval
+and stronger evidence that its exact effect is acceptable. The diagnosis is
+recorded in
+`research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
 Do not resume broad Discord surveying until a tiny content-read pilot succeeds
 under guard and is separately accepted.

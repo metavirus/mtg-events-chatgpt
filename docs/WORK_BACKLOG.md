@@ -31,13 +31,13 @@ Use it for:
   `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`. The local fixture
   proof passed, the production guard exists, shell identity can be proven without
   reading messages, and the first content-read pilots failed closed without
-  reading content or changing external Discord state. Paper Hero and Collectors
-  both proved shell identity but triggered blocked `members/@me?lurker=true`
-  behavior before content extraction. Treat that as an ephemeral
-  safety/navigation condition, not a research finding or route-value downgrade:
-  block/log, close the isolated read context, reopen the same mapped URL once by
-  direct navigation, and proceed only if it opens cleanly under guard. No broad
-  Discord survey is authorized.
+  reading content or changing external Discord state. Paper Hero, JJ's, Magic &
+  Monsters, Collectors, and Krazy Nick's all proved shell identity but triggered
+  blocked `members/@me?lurker=true` behavior before content extraction. The
+  approved one-retry rule did not clear it, and a manual one-time open did not
+  prevent recurrence on Collectors. Keep content reads blocked/TBD; do not
+  allowlist the undocumented state-changing-looking request without separate
+  approval and stronger evidence. No broad Discord survey is authorized.
 
 - Recent app blocker resolved: the Events/Today freeze was traced to two
   malformed active weekly Paper Hero series with legacy `weekday` recurrence
