@@ -1589,17 +1589,24 @@ function eventPlanningSort(a, b) {
 }
 
 function groupedDayEvents(events, options = {}) {
-  const { compact = true, drawer = false, dense = false } = options;
+  const {
+    compact = true,
+    drawer = false,
+    dense = false,
+    cardOptions = {},
+    emphasizedKeys = new Set(),
+    openGroups: explicitOpenGroups
+  } = options;
   const crowded = events.length > 12;
   return EVENT_GROUPS.map((group) => {
     const items = events.filter((event) => eventPlanningGroup(event) === group.id).sort(eventPlanningSort);
     if (!items.length) return '';
-    const openGroups = drawer && !crowded ? ['limited', 'best', 'promising'] : ['limited', 'best'];
+    const openGroups = explicitOpenGroups || (drawer && !crowded ? ['limited', 'best', 'promising'] : ['limited', 'best']);
     const open = openGroups.includes(group.id);
     const mix = drawer ? formatMix(items, 2) : '';
     return `<details class="event-priority-group group-${group.id}" ${open ? 'open' : ''}>
       <summary><span><i class="group-dot ${group.tone}"></i><strong>${group.label}</strong>${mix ? `<em>${escapeHtml(mix)}</em>` : ''}</span><span>${items.length}</span></summary>
-      <div class="event-priority-items">${items.map((event) => eventCard(event, compact, { dense })).join('')}</div>
+      <div class="event-priority-items">${items.map((event) => eventCard(event, compact, { ...cardOptions, dense, emphasize: emphasizedKeys.has(todayLeadKey(event)) })).join('')}</div>
     </details>`;
   }).join('');
 }
@@ -1861,7 +1868,15 @@ function renderCatalogListGroups(events, recommended = []) {
         <div><p class="eyebrow">${group.date.toLocaleDateString(undefined, { weekday: 'long' })}</p><h3>${group.date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}${dateKey(group.date) === dateKey(new Date()) ? ' · Today' : ''}</h3></div>
         <span>${group.events.length} event${group.events.length === 1 ? '' : 's'} · ${formatMix(group.events, 2)}</span>
       </header>
-      <div class="catalog-grid">${group.events.map((event) => eventCard(event, false, { showDate: true, emphasize: recommendedKeys.has(todayLeadKey(event)), catalog: true })).join('')}</div>
+      <div class="day-group-counts catalog-day-counts">${dayGroupCounts(group.events)}</div>
+      <div class="catalog-day-groups">${groupedDayEvents(group.events, {
+        compact: false,
+        drawer: true,
+        dense: true,
+        cardOptions: { showDate: true, catalog: true },
+        emphasizedKeys: recommendedKeys,
+        openGroups: ['limited', 'best', 'promising']
+      })}</div>
     </section>`).join('')}</div>`;
 }
 
