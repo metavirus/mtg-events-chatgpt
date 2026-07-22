@@ -2134,13 +2134,19 @@ function communityPulseCard(signal) {
 }
 
 function uniqueCommunitySurfaceHubs(surfaces) {
-  const seen = new Set();
-  return surfaces.filter((surface) => {
+  const bestByHub = new Map();
+  surfaces.forEach((surface) => {
     const key = surface.place ? `place:${surface.place.id}` : surface.community ? `community:${surface.community.id}` : `source:${surface.source.id}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
+    const current = bestByHub.get(key);
+    const score = (isOpenableCommunityUrl(surface.source.url) ? 1000 : 0) + communitySurfaceRank(surface);
+    const currentScore = current ? (isOpenableCommunityUrl(current.source.url) ? 1000 : 0) + communitySurfaceRank(current) : -Infinity;
+    if (!current || score > currentScore) bestByHub.set(key, surface);
   });
+  return [...bestByHub.values()];
+}
+
+function isOpenableCommunityUrl(url) {
+  return /^https?:\/\//i.test(url || '');
 }
 
 function communityHubFromCommunity(community) {
@@ -2226,7 +2232,7 @@ function communityHubCard(hub) {
   const checked = hub.lastChecked ? formatFreshnessDate(hub.lastChecked) : 'Not recently checked';
   const openAction = hub.community
     ? `<button class="soft-button" data-community-id="${escapeHtml(hub.community.id)}">Open community</button>`
-    : hub.surface?.source?.url
+    : isOpenableCommunityUrl(hub.surface?.source?.url)
       ? `<a class="soft-button" href="${escapeHtml(hub.surface.source.url)}" target="_blank" rel="noreferrer">Open community ↗</a>`
       : '';
   const eventsAction = hub.surface?.place ? `<button class="soft-button" data-action="open-community-events" data-place-id="${escapeHtml(hub.surface.place.id)}">View linked events</button>` : '';
