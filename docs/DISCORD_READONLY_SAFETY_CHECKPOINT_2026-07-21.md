@@ -3,7 +3,10 @@
 Date: 2026-07-21
 
 Status: Cold-deep-link Discord content-read remains blocked/TBD at accepted
-boundary `5e055e8`. One guarded UI-native route is now proven separately below.
+boundary `5e055e8`. Guarded UI-native access is independently proven for
+Collectors Lounge and JJ's, but it did not graduate to a universal survey
+method because ProjectCCG and Magic & Monsters triggered blocked message
+acknowledgement requests during server selection.
 This checkpoint records the current safety baseline so future work does not
 reconstruct it from chat memory or keep trying the blocked path.
 
@@ -35,7 +38,7 @@ Near-term allowed workflows:
 1. the user supplies a screenshot or paste;
 2. the user manually opens an exact Discord channel/message and asks Codex to
    read only the visible content;
-3. the single mapped Collectors route may use its proven guarded UI-native path
+3. the mapped Collectors and JJ's routes may use their proven guarded UI-native paths
    during a separately approved bounded pass;
 4. another route may use guarded UI-native navigation only after its folder,
    guild, and channel identity are independently proven under the same protocol.
@@ -103,6 +106,20 @@ blocked, and other routes remain at their prior safety modes until independently
 proven. Broad surveying and automation remain unapproved. See
 `research/runs/2026-07-21-discord-ui-native-navigation-safety-test.md`.
 
+### Replication result
+
+The bounded replication pass independently proved JJ's `#magic-announcements`
+through `@me -> Stores/Local -> exact guild -> exact channel`, including a safe
+five-message read. ProjectCCG and Magic & Monsters failed closed during server
+selection when Discord attempted message acknowledgement POSTs. Those writes
+were blocked, their target content was not read, and their route values were not
+lowered.
+
+Therefore UI-native navigation remains a per-route verified capability, not a
+globally graduated survey method. Do not allowlist message acknowledgements to
+make blocked routes pass. See
+`research/runs/2026-07-21-discord-ui-native-replication-graduation.md`.
+
 - The same blocked membership/lurker request has now appeared across Paper
   Hero, JJ's, Magic & Monsters, Collectors Lounge, and Krazy Nick's.
 - Every tested route proved the expected authenticated server/channel shell
@@ -119,8 +136,8 @@ proven. Broad surveying and automation remain unapproved. See
 ## Next safe options
 
 Current decision: keep cold-deep-link content reads blocked/TBD and do not
-allowlist `members/@me?lurker=true`. The guarded UI-native path is proven only
-for the single Collectors route described above. The blocker diagnosis remains
+allowlist `members/@me?lurker=true` or message acknowledgement writes. Guarded
+UI-native paths are proven only for Collectors and JJ's. The blocker diagnosis remains
 recorded in `research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
 Do not treat this one-route proof as authorization for broad Discord surveys.

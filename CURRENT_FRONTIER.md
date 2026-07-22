@@ -24,12 +24,15 @@ Current accepted Discord safety checkpoint:
 Cold-deep-link Discord content-read remains blocked/TBD at accepted boundary
 `5e055e8`, and `members/@me?lurker=true` remains unallowlisted. A later
 protocol test proved one safer UI-native modality on Collectors Lounge:
-`Discord @me -> Stores/Local -> exact guild ID -> exact channel ID`. Its shell
-and separate bounded five-message read both passed under the isolated-profile
-guard without a lurker request or external state change. Only that mapped route
-is `ui_native_navigation_verified`; other routes retain their prior safety
-modes, and broad surveying/automation remain unapproved. See
+`Discord @me -> Stores/Local -> exact guild ID -> exact channel ID`. A bounded
+replication pass then independently proved the same guarded path for JJ's
+`#magic-announcements`. ProjectCCG and Magic & Monsters failed closed during
+server selection because Discord attempted message acknowledgement POSTs. No
+content was read on those routes and no external state changed. UI-native
+navigation therefore remains a per-route verified capability rather than a
+globally graduated survey method; broad surveying/automation remain unapproved. See
 `research/runs/2026-07-21-discord-ui-native-navigation-safety-test.md` and
+`research/runs/2026-07-21-discord-ui-native-replication-graduation.md` and
 `research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
 The first structured Discord/community monitoring map is now live in Supabase.
@@ -77,7 +80,8 @@ keyboard typing/paste/navigation inside Discord message views is forbidden. See
 Additional hard guardrails are now live in the monitoring map: both
 `discord_access_profiles` and `discord_channel_watchlist` have explicit
 `safe_access_mode` fields. Collectors Lounge now has the first
-`ui_native_navigation_verified` profile/channel; existing unproven accessible
+`ui_native_navigation_verified` profile/channel, and JJ's now has a second
+independently verified profile/channel. Existing unproven accessible
 routes remain `manual_open_required`, and gated rows remain
 `join_or_role_gate`. Cold deep links are not certified by the UI-native result.
 

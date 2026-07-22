@@ -1,0 +1,85 @@
+{
+  "proposal_id": "jjs-jumpstart-discord-detail-2026-07-21",
+  "description": "Narrow JJ's Collectibles event-detail proposal from the guarded UI-native Discord replication pass. The July 31 Jumpin' with Jumpstart event already exists; this proposal fills its current store-controlled time, fee, play structure, and source relationship without creating a duplicate event.",
+  "created_at": "2026-07-21T21:15:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-jjs-discord-magic-announcements-2026-07-18"
+      },
+      "fields": {
+        "id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "health_status": "current",
+        "last_checked": "2026-07-21"
+      },
+      "reason": "The mapped store-controlled Magic announcements channel was safely inspected through the isolated guarded UI-native path."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "jjs-jumpin-with-jumpstart-2026-07-31"
+      },
+      "fields": {
+        "id": "jjs-jumpin-with-jumpstart-2026-07-31",
+        "venue_id": "jjs-collectibles",
+        "default_start_time": "19:00",
+        "entry_fee": 25,
+        "currency": "USD",
+        "details": "JJ's Garden Grove Discord Magic announcement confirms Jumpin' with Jumpstart on Friday, July 31: $25 entry, 6:30 PM check-in, 7:00 PM start, two Marvel Jumpstart packs per participant, casual tournament play, prizing based on attendance, and registration code DWJD483.",
+        "confidence": "high",
+        "last_verified": "2026-07-21"
+      },
+      "reason": "Fill the existing dated event's previously missing current time, fee, and play details from a branch-safe store-controlled announcement."
+    },
+    {
+      "action": "update",
+      "table": "event_occurrences",
+      "key": {
+        "id": "jjs-jumpin-with-jumpstart-2026-07-31--occurrence"
+      },
+      "fields": {
+        "id": "jjs-jumpin-with-jumpstart-2026-07-31--occurrence",
+        "series_id": "jjs-jumpin-with-jumpstart-2026-07-31",
+        "occurrence_date": "2026-07-31",
+        "start_time": "19:00",
+        "entry_fee": 25,
+        "details": "Check-in begins at 6:30 PM; play starts at 7:00 PM. $25 entry. Two Marvel Jumpstart packs per participant; prizing is based on attendance. Registration code DWJD483."
+      },
+      "reason": "Make the confirmed dated occurrence planning-useful while preserving check-in separately from the event start."
+    },
+    {
+      "action": "update",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "series_id": "jjs-jumpin-with-jumpstart-2026-07-31",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "series_id": "jjs-jumpin-with-jumpstart-2026-07-31",
+        "occurrence_id": null,
+        "relationship": "Current JJ's Garden Grove Discord announcement confirms date, check-in, start time, fee, play structure, prizing basis, and registration code."
+      },
+      "reason": "Attach the structured event record to the exact inspected store-controlled source."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "fields": {
+        "id": "jjs-jumpstart-discord-detail-2026-07-21",
+        "detected_at": "2026-07-21T21:15:00-07:00",
+        "change_type": "event_update",
+        "entity_type": "event_series",
+        "entity_id": "jjs-jumpin-with-jumpstart-2026-07-31",
+        "summary": "JJ's current Discord announcement filled the July 31 Jumpin' with Jumpstart event's $25 entry, 6:30 PM check-in, 7:00 PM start, play structure, and registration code.",
+        "review_status": "proposed"
+      },
+      "reason": "Keep the event-detail proposal visible in the research change workflow pending approval."
+    }
+  ]
+}

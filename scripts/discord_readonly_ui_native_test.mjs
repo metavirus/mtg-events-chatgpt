@@ -20,6 +20,7 @@ const targetUrl = process.argv[2];
 const mode = process.argv[3] || 'shell';
 const serverName = process.argv[4] || '';
 const folderName = process.argv[5] || '';
+const channelName = process.argv[6] || '';
 const targetRoute = targetUrl?.match(/^https:\/\/discord(app)?\.com\/channels\/(\d+)\/(\d+)$/i);
 if (!targetRoute) throw new Error('Pass one exact mapped Discord channel URL');
 if (!['shell', 'content'].includes(mode)) throw new Error('Mode must be shell or content');
@@ -73,6 +74,7 @@ const result = {
   expectedRoute,
   serverName,
   folderName,
+  channelName,
   dedicatedProfileUsed: true,
   accessModality: 'discord_home_then_structural_sidebar_navigation',
   coldDeepLinkUsed: false,
@@ -89,6 +91,7 @@ const result = {
   messageWindow: null,
   usefulFindingPresent: null,
   usefulCategories: [],
+  findingCandidates: [],
   status: 'unknown',
   failureStage: null,
   failureReason: null
@@ -167,6 +170,22 @@ async function verifyStage(page, stageName, options = {}) {
   if (gateLabels.length) throw new Error(`visible join/verification gate: ${gateLabels.join(', ')}`);
   if (options.expectExactRoute && !safety.routeIdentity?.matches) {
     throw new Error('expected guild/channel route identity not reached');
+  }
+  if (options.expectExactRoute) {
+    const normalizeLabel = (value) => value.toLowerCase()
+      .replace(/discord/g, '')
+      .replace(/^#/, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+    const title = normalizeLabel(safety.title || '');
+    const expectedServer = normalizeLabel(serverName);
+    const expectedChannel = normalizeLabel(channelName);
+    if (!expectedServer || !title.includes(expectedServer)) {
+      throw new Error(`expected server label not proven in shell title: ${serverName}`);
+    }
+    if (!expectedChannel || !title.includes(expectedChannel)) {
+      throw new Error(`expected channel label not proven in shell title: ${channelName}`);
+    }
   }
   const lurker = networkBlocks.find(isLurkerRequest);
   if (lurker) throw new Error('members/@me?lurker=true request blocked');
@@ -345,20 +364,31 @@ async function classifyTinyWindow(page) {
     limit: 5,
     maxCharactersPerMessage: 1200
   });
-  const combined = messages.map((message) => message.text).join(' ').toLowerCase();
-  const categories = [
+  const patterns = [
     ['event', /\b(event|commander|draft|prerelease|sealed|fnm|tournament)\b/],
     ['cancellation_or_change', /\b(cancel|closed|closure|reschedul|changed?|tonight)\b/],
     ['fit_or_power', /\b(proxy|proxies|cedh|bracket|power level|casual|competitive)\b/],
     ['community_or_lfg', /\b(lfg|looking for|anyone want|pod|turnout|new player|beginner)\b/]
-  ].filter(([, pattern]) => pattern.test(combined)).map(([name]) => name);
+  ];
+  const findingCandidates = messages.flatMap((message) => {
+    const text = message.text.toLowerCase();
+    const categories = patterns.filter(([, pattern]) => pattern.test(text)).map(([name]) => name);
+    if (!categories.length) return [];
+    return [{
+      timestamp: message.timestamp || null,
+      categories,
+      text: message.text.slice(0, 500)
+    }];
+  }).slice(0, 3);
+  const categories = [...new Set(findingCandidates.flatMap((candidate) => candidate.categories))];
   const timestamps = messages.map((message) => message.timestamp).filter(Boolean);
   return {
     messageCount: messages.length,
     firstSeenMessageAt: timestamps[0] || null,
     lastSeenMessageAt: timestamps.at(-1) || null,
     usefulFindingPresent: categories.length > 0,
-    usefulCategories: categories
+    usefulCategories: categories,
+    findingCandidates
   };
 }
 
@@ -405,6 +435,7 @@ try {
     };
     result.usefulFindingPresent = windowResult.usefulFindingPresent;
     result.usefulCategories = windowResult.usefulCategories;
+    result.findingCandidates = windowResult.findingCandidates;
     result.status = 'content_read_succeeded_safely';
   } else {
     result.status = 'shell_reached_safely';

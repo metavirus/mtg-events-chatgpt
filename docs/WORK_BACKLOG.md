@@ -37,9 +37,12 @@ Use it for:
   approved one-retry rule did not clear it, and a manual one-time open did not
   prevent recurrence on Collectors. Do not allowlist the undocumented
   state-changing-looking request without separate approval and stronger
-  evidence. A guarded UI-native path has since passed shell and bounded-content
-  proof for Collectors Lounge only: `@me -> Stores/Local -> exact guild -> exact
-  channel`. No broad Discord survey is authorized. Preserve the route map,
+  evidence. Guarded UI-native paths have since passed shell and bounded-content
+  proof for Collectors Lounge and JJ's: `@me -> Stores/Local -> exact guild ->
+  exact channel`. The replication pass failed closed for ProjectCCG and Magic &
+  Monsters because Discord attempted message acknowledgement POSTs during
+  server selection. Do not allowlist those writes merely to make the routes
+  pass. No broad Discord survey is authorized. Preserve the route map,
   priorities, expected signal types, isolated profile, read-only guard, and
   quiet/blocked-run semantics. If separately approved, the next Discord step is
   a tiny pilot that independently proves the same path per selected route.
