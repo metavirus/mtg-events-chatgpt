@@ -26,7 +26,7 @@ Use it for:
   backing table are already gone; do not treat it as an active coordination
   path.
 
-- Browser-driven Discord content-read is blocked/TBD at accepted boundary
+- Cold-deep-link Discord content-read is blocked/TBD at accepted boundary
   `5e055e8`. The current accepted safety baseline is recorded in
   `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`. The local fixture
   proof passed, the production guard exists, shell identity can be proven without
@@ -35,15 +35,14 @@ Use it for:
   Monsters, Collectors, and Krazy Nick's all proved shell identity but triggered
   blocked `members/@me?lurker=true` behavior before content extraction. The
   approved one-retry rule did not clear it, and a manual one-time open did not
-  prevent recurrence on Collectors. Keep content reads blocked/TBD; do not
-  spend more implementation time trying to route around the undocumented
-  state-changing-looking request under the current browser-driven approach. Do
-  not allowlist it without separate approval and stronger evidence. No broad
-  Discord survey is authorized. Near-term Discord use is limited to
-  user-supplied screenshots/pastes or user-opened visible content, unless a
-  separately approved different access strategy is accepted. Preserve the route
-  map, priorities, expected signal types, isolated profile, read-only guard, and
-  quiet/blocked-run semantics for later.
+  prevent recurrence on Collectors. Do not allowlist the undocumented
+  state-changing-looking request without separate approval and stronger
+  evidence. A guarded UI-native path has since passed shell and bounded-content
+  proof for Collectors Lounge only: `@me -> Stores/Local -> exact guild -> exact
+  channel`. No broad Discord survey is authorized. Preserve the route map,
+  priorities, expected signal types, isolated profile, read-only guard, and
+  quiet/blocked-run semantics. If separately approved, the next Discord step is
+  a tiny pilot that independently proves the same path per selected route.
 
 - Recent app blocker resolved: the Events/Today freeze was traced to two
   malformed active weekly Paper Hero series with legacy `weekday` recurrence
@@ -523,9 +522,9 @@ claims without reopening the whole packet.
   `docs/SIGNALS_AND_COMMUNITIES_DESIGN_CHECKPOINT.md`,
   `research/DISCORD_METHODOLOGY.md`, and
   `research/runs/2026-07-20-discord-monitoring-map-pilot.md`. Current
-  browser-driven content-read is blocked at `5e055e8`, so the map should be used
-  only for manual screenshot/paste or user-opened visible-content analysis until
-  a different safe access strategy is separately approved.
+  cold-deep-link content-read remains blocked at `5e055e8`. Collectors Lounge
+  now has one separately proven `ui_native_navigation_verified` path; other
+  routes remain manual/gated/TBD until independently proven.
 
 ## Done when
 

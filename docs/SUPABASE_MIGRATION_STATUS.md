@@ -1,6 +1,6 @@
 # Supabase Migration Status
 
-Last updated: 2026-07-20
+Last updated: 2026-07-21
 
 This file is the quick checkpoint for the Supabase migration. Use it before
 touching the data layer so future tasks do not rediscover the same state.
@@ -78,14 +78,16 @@ fields to both monitoring-map tables:
 - `safe_access_mode`
 - `safe_access_notes`
 
-The allowed modes are `manual_open_required`, `direct_navigation_verified`,
-`route_only_tbd`, `join_or_role_gate`, and `blocked_unsafe_method`. Existing
-accessible rows are intentionally marked `manual_open_required` rather than
-`direct_navigation_verified`; no route is currently certified for agent-driven
-Discord navigation. Blocked or invite/role-gated rows are marked
-`join_or_role_gate`. The accepted operating pattern remains user-opened
-channel/message or screenshot/paste until a separate protocol-only safety test
-proves a mechanically read-only navigation method.
+The original allowed modes were `manual_open_required`,
+`direct_navigation_verified`, `route_only_tbd`, `join_or_role_gate`, and
+`blocked_unsafe_method`. Migration
+`20260722034600_add_discord_ui_native_access_mode.sql` adds the distinct
+`ui_native_navigation_verified` mode so a guarded Discord-home/sidebar path
+cannot be confused with a cold deep link. Collectors Lounge Cypress is the only
+profile/channel currently using that mode after its shell and bounded-content
+proof passed. Other accessible rows remain `manual_open_required`; blocked or
+invite/role-gated rows remain `join_or_role_gate`. See
+`research/runs/2026-07-21-discord-ui-native-navigation-safety-test.md`.
 
 ## Imported snapshot counts
 

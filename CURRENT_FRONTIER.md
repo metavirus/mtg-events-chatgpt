@@ -21,20 +21,15 @@ historical fallback only.
 Current accepted Discord safety checkpoint:
 `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`.
 
-Browser-driven Discord content-read is blocked/TBD at accepted boundary
-`5e055e8`. The one-retry interstitial rule is implemented, but the guarded
-client still attempts `members/@me?lurker=true` before content extraction across
-five mapped servers. The route shells are authenticated and exact; a one-time
-manual open did not clear Collectors, and known joined/access anchors did not
-prevent the request on JJ's or Krazy Nick's. The exact web-client endpoint
-remains undocumented and state-changing-looking, so it is not allowlisted. Do
-not spend more implementation time trying to route around that request under the
-current browser-driven approach. Carry forward the route/channel map, route
-priorities, expected signal types, isolated profile, read-only guard/harness,
-blocker diagnosis, and the rule that quiet/blocked runs do not reduce long-term
-route value. Near-term Discord input is manual screenshot/paste or user-opened
-visible-content analysis only, unless a separately approved different access
-strategy is accepted. See
+Cold-deep-link Discord content-read remains blocked/TBD at accepted boundary
+`5e055e8`, and `members/@me?lurker=true` remains unallowlisted. A later
+protocol test proved one safer UI-native modality on Collectors Lounge:
+`Discord @me -> Stores/Local -> exact guild ID -> exact channel ID`. Its shell
+and separate bounded five-message read both passed under the isolated-profile
+guard without a lurker request or external state change. Only that mapped route
+is `ui_native_navigation_verified`; other routes retain their prior safety
+modes, and broad surveying/automation remain unapproved. See
+`research/runs/2026-07-21-discord-ui-native-navigation-safety-test.md` and
 `research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
 The first structured Discord/community monitoring map is now live in Supabase.
@@ -81,13 +76,10 @@ keyboard typing/paste/navigation inside Discord message views is forbidden. See
 
 Additional hard guardrails are now live in the monitoring map: both
 `discord_access_profiles` and `discord_channel_watchlist` have explicit
-`safe_access_mode` fields. Existing accessible routes/channels are deliberately
-`manual_open_required`, not `direct_navigation_verified`, because no safe
-agent-driven direct-navigation protocol has been demonstrated. Gated rows are
-`join_or_role_gate`. Until a separate protocol-only safety test is accepted,
-the only safe Discord workflow is: the user manually opens the exact
-channel/message or supplies a screenshot/paste, and Codex reads/analyzes visible
-content only.
+`safe_access_mode` fields. Collectors Lounge now has the first
+`ui_native_navigation_verified` profile/channel; existing unproven accessible
+routes remain `manual_open_required`, and gated rows remain
+`join_or_role_gate`. Cold deep links are not certified by the UI-native result.
 
 That manual workflow is explicitly temporary. The durable target is autonomous
 read-only surveying through a dedicated isolated Discord profile with a narrow
@@ -95,8 +87,8 @@ navigation/extraction-only capability, page-level input suppression, and
 network-level mutation blocking. The options, failure-closed contract, and
 local-fixture-first proof plan are recorded in
 `docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`. Guarded shell tests have
-since been authorized and completed; no route is yet approved for autonomous
-content-read surveying.
+since been authorized and completed; one Collectors route has now passed a
+bounded content-read proof, but broad autonomous surveying remains unapproved.
 
 The first local-only proof tranche is now complete. A Discord-like fixture and
 capability-limited extraction harness passed 8/8 automated checks: route/message

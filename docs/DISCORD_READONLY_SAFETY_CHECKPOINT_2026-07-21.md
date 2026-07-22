@@ -2,10 +2,10 @@
 
 Date: 2026-07-21
 
-Status: Browser-driven Discord content-read is blocked/TBD at accepted boundary
-`5e055e8`. This checkpoint records the current accepted safety baseline so
-future work does not reconstruct it from chat memory or keep trying to route
-around the same blocker.
+Status: Cold-deep-link Discord content-read remains blocked/TBD at accepted
+boundary `5e055e8`. One guarded UI-native route is now proven separately below.
+This checkpoint records the current safety baseline so future work does not
+reconstruct it from chat memory or keep trying the blocked path.
 
 ## Accepted baseline
 
@@ -35,14 +35,18 @@ Near-term allowed workflows:
 1. the user supplies a screenshot or paste;
 2. the user manually opens an exact Discord channel/message and asks Codex to
    read only the visible content;
-3. a future separately approved access strategy is designed and accepted.
+3. the single mapped Collectors route may use its proven guarded UI-native path
+   during a separately approved bounded pass;
+4. another route may use guarded UI-native navigation only after its folder,
+   guild, and channel identity are independently proven under the same protocol.
 
-The following guarded-browser method exists and remains useful infrastructure,
-but it is not currently approved for content reads because the Discord client
-attempts an undocumented `members/@me?lurker=true` request before extraction:
+Cold direct-channel navigation is not approved for content reads because the
+Discord client attempts an undocumented `members/@me?lurker=true` request
+before extraction. The proven Collectors exception instead uses:
 
 1. use the dedicated isolated Discord-read profile;
-2. open exactly one mapped channel URL by direct navigation;
+2. open Discord `@me` and use structurally proven folder, guild, and channel
+   navigation only;
 3. keep page-level composer/mutating-control disabling active;
 4. keep network mutation blocking/logging active;
 5. verify guard heartbeat, expected route identity, no editable focus, and no
@@ -80,6 +84,25 @@ priority change.
 
 ## Current operational state
 
+### Guarded UI-native exception proven on Collectors Lounge
+
+The 2026-07-21 protocol test proved one narrower, safe access modality that
+avoids the cold-deep-link lurker behavior:
+
+`Discord @me -> Stores/Local -> exact guild ID -> exact channel ID`
+
+For Collectors Lounge Cypress `#mtg-announcements-and-events`, both the
+shell-only test and a separate bounded five-message read passed with the guard
+active, no editable focus, zero enabled mutating controls, no lurker request,
+no prohibited successful request, and no external Discord state change. The
+five-message window was quiet and did not produce research or app-data writes.
+
+Only that mapped profile/channel is recorded as
+`ui_native_navigation_verified`. Cold direct-channel navigation remains
+blocked, and other routes remain at their prior safety modes until independently
+proven. Broad surveying and automation remain unapproved. See
+`research/runs/2026-07-21-discord-ui-native-navigation-safety-test.md`.
+
 - The same blocked membership/lurker request has now appeared across Paper
   Hero, JJ's, Magic & Monsters, Collectors Lounge, and Krazy Nick's.
 - Every tested route proved the expected authenticated server/channel shell
@@ -95,23 +118,21 @@ priority change.
 
 ## Next safe options
 
-Current decision: keep content-read automation blocked/TBD. The one-retry rule
-is already implemented, and merely opening a channel once has not cleared the
-request. Do not allowlist `members/@me?lurker=true` without separate approval
-and stronger evidence that its exact effect is acceptable. The diagnosis is
-recorded in
-`research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
+Current decision: keep cold-deep-link content reads blocked/TBD and do not
+allowlist `members/@me?lurker=true`. The guarded UI-native path is proven only
+for the single Collectors route described above. The blocker diagnosis remains
+recorded in `research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
-Do not run additional Discord surveys, route recovery, or content-read pilots
-under the current browser-driven approach. Near-term product and research work
-should proceed without depending on Discord automation. Carry forward the route
-map, priorities, expected signal types, isolated profile concept, read-only
-guard/harness, blocker diagnosis, and the rule that quiet/blocked runs do not
-reduce long-term route value.
+Do not treat this one-route proof as authorization for broad Discord surveys.
+Carry forward the route map, priorities, expected signal types, isolated
+profile, read-only guard/harness, blocker diagnosis, and the rule that
+quiet/blocked runs do not reduce long-term route value.
 
 Future Discord work should be one of:
 
 - manual screenshot/paste or user-opened visible-content analysis;
+- a separately approved tiny UI-native pilot using independently proven mapped
+  routes and the same fail-closed guard;
 - a separately approved non-browser or otherwise mechanically safer access
   strategy;
 - a separate decision to evaluate a narrowly scoped allowlist, with stronger
