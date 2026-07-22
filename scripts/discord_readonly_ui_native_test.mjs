@@ -98,6 +98,7 @@ const result = {
   stages: [],
   blockedRequests: [],
   blockedExpectedAcks: [],
+  blockedExpectedClientSettings: [],
   routeState: 'blocked_for_this_run',
   longTermAccessModeChanged: false,
   latestRunResult: 'blocked_for_this_run',
@@ -170,6 +171,12 @@ async function expectedAckIsRouteBound(page, entry) {
     if (current?.[1] === guildId && current?.[2] === channelId) return true;
     return Boolean(document.querySelector(`a[href="/channels/${guildId}/${channelId}"]`));
   }, { guildId: expectedRoute.guildId, channelId: detail.channelId });
+}
+
+function expectedClientSettingIsNavigationBound(entry) {
+  const detail = classifyDiscordBlockedRequest(entry);
+  return detail.classification === 'blocked_expected_client_setting' &&
+    entry.requestContext === 'channel_selection';
 }
 
 async function readGuildIndicator(page) {
@@ -247,9 +254,17 @@ async function verifyStage(page, stageName, options = {}) {
       throw new Error('read-state acknowledgement could not be bound to the selected guild shell');
     }
   }
+  for (const entry of networkBlocks.filter((candidate) => classifyDiscordBlockedRequest(candidate).classification === 'blocked_expected_client_setting')) {
+    if (!expectedClientSettingIsNavigationBound(entry)) {
+      throw new Error('client-settings attempt occurred outside the exact expected channel-navigation stage');
+    }
+    if (!options.expectExactRoute || !safety.routeIdentity?.matches) {
+      throw new Error('client-settings attempt cannot continue without independently verified channel identity');
+    }
+  }
   const unexpectedBlocked = networkBlocks.find((entry) => {
     const classification = classifyDiscordBlockedRequest(entry).classification;
-    return !['telemetry', 'blocked_expected_ack'].includes(classification) && !isLurkerRequest(entry);
+    return !['telemetry', 'blocked_expected_ack', 'blocked_expected_client_setting'].includes(classification) && !isLurkerRequest(entry);
   });
   if (unexpectedBlocked) throw new Error(`unexpected mutation request blocked: ${unexpectedBlocked.method} ${unexpectedBlocked.url}`);
   if (prohibitedResponses.length) throw new Error('a prohibited mutation request received a response');
@@ -264,6 +279,7 @@ async function verifyStage(page, stageName, options = {}) {
     gateLabels,
     blockedRequestCount: networkBlocks.length,
     blockedExpectedAckCount: networkBlocks.filter((entry) => classifyDiscordBlockedRequest(entry).classification === 'blocked_expected_ack').length,
+    blockedExpectedClientSettingCount: networkBlocks.filter((entry) => classifyDiscordBlockedRequest(entry).classification === 'blocked_expected_client_setting').length,
     lurkerRequestObserved: false
   };
   result.stages.push(stage);
@@ -598,6 +614,7 @@ try {
   if (mode === 'content') {
     requestStage = 'message_rendering';
     const windowResult = await classifyTinyWindow(page);
+    await verifyStage(page, 'bounded_content_read_verified', { expectExactRoute: true, waitMs: 100 });
     result.messageContentInspected = true;
     result.messageWindow = {
       messageCount: windowResult.messageCount,
@@ -611,11 +628,15 @@ try {
     result.findingCandidates = windowResult.findingCandidates;
     result.status = 'content_read_succeeded_safely';
     result.routeState = 'ui_native_read_verified';
-    result.latestRunResult = 'success';
+    result.latestRunResult = networkBlocks.some((entry) => classifyDiscordBlockedRequest(entry).classification === 'blocked_expected_client_setting')
+      ? 'read_verified_with_blocked_client_state'
+      : (windowResult.usefulFindingPresent ? 'useful_finding' : 'quiet');
   } else {
     result.status = 'shell_reached_safely';
     result.routeState = 'ui_native_shell_only';
-    result.latestRunResult = 'success';
+    result.latestRunResult = networkBlocks.some((entry) => classifyDiscordBlockedRequest(entry).classification === 'blocked_expected_client_setting')
+      ? 'shell_verified_with_blocked_client_state'
+      : 'success';
   }
   result.guildIndicatorAfter = await readGuildIndicator(page);
   result.guildIndicatorUnchanged = JSON.stringify(result.guildIndicatorBefore) === JSON.stringify(result.guildIndicatorAfter);
@@ -626,13 +647,19 @@ try {
   result.failureStage = result.stages.at(-1)?.name || 'before_home_preflight';
   result.failureReason = error.message;
   const blockedClassifications = networkBlocks.map((entry) => classifyDiscordBlockedRequest(entry).classification);
-  if (blockedClassifications.includes('blocked_expected_ack')) result.routeState = 'blocked_ack_prevents_render';
+  const hasUnknownOrProhibited = networkBlocks.some((entry) =>
+    classifyDiscordBlockedRequest(entry).classification === 'blocked_unknown_or_prohibited_mutation' && !isLurkerRequest(entry)
+  );
+  if (hasUnknownOrProhibited) result.routeState = 'blocked_unknown_mutation';
+  else if (blockedClassifications.includes('blocked_expected_client_setting')) result.routeState = 'blocked_client_setting_prevents_render';
+  else if (blockedClassifications.includes('blocked_expected_ack')) result.routeState = 'blocked_ack_prevents_render';
   else if (/lurker|gate|join|verification/.test(error.message)) result.routeState = 'onboarding_required';
   else if (/mutation request/.test(error.message)) result.routeState = 'blocked_unexpected_mutation';
   if (/server_rail_not_detected/.test(error.message)) result.latestRunResult = 'server_rail_not_detected';
   else if (/folder-control count|folder tooltips|guild anchor/.test(error.message)) result.latestRunResult = 'navigation_selector_failure';
+  else if (hasUnknownOrProhibited) result.latestRunResult = 'blocked_unknown_mutation';
+  else if (blockedClassifications.includes('blocked_expected_client_setting')) result.latestRunResult = 'blocked_client_setting_prevents_render';
   else if (blockedClassifications.includes('blocked_expected_ack')) result.latestRunResult = 'acknowledgement_blocked';
-  else if (blockedClassifications.includes('settings_mutation')) result.latestRunResult = 'client_settings_write_blocked';
   else if (/lurker|gate|join|verification/.test(error.message)) result.latestRunResult = 'interstitial_or_gate';
   else if (/mutation request/.test(error.message)) result.latestRunResult = 'unexpected_mutation_blocked';
   if (page && result.guildIndicatorBefore?.observable && !result.guildIndicatorAfter) {
@@ -645,11 +672,13 @@ try {
     ...classifyDiscordBlockedRequest(entry),
     method: entry.method,
     hasBody: Boolean(entry.hasBody),
+    bodyByteLength: Number.isInteger(entry.bodyByteLength) ? entry.bodyByteLength : null,
     requestStage: entry.requestContext || null,
     blockedAt: entry.blockedAt,
     lurkerRequest: isLurkerRequest(entry)
   }));
   result.blockedExpectedAcks = result.blockedRequests.filter((entry) => entry.classification === 'blocked_expected_ack');
+  result.blockedExpectedClientSettings = result.blockedRequests.filter((entry) => entry.classification === 'blocked_expected_client_setting');
   result.prohibitedSuccessfulResponses = prohibitedResponses.map((entry) => ({
     method: entry.method,
     path: (() => { try { return `${new URL(entry.url).pathname}${new URL(entry.url).search}`; } catch { return entry.url; } })(),

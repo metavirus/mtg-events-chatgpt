@@ -152,6 +152,21 @@ and no Discord state changed. ProjectCCG and Magic & Monsters were not retried.
 Do not allowlist this request or infer anything new about either target route
 from the control failure.
 
+The subsequent blocked-client-state continuation tranche kept that exact PATCH
+blocked but made its attempted presence nonfatal only at the exact
+channel-selection stage after independent route verification. Variants, other
+settings routes, and unknown/prohibited mutations remain fatal. The runner
+records body presence and byte length only; it never records or interprets the
+opaque payload.
+
+Collectors, ProjectCCG, and Magic & Monsters then each reached the exact mapped
+channel and completed a bounded five-message read with guards active, unchanged
+unread indicators, and no Discord state change. ProjectCCG and Magic each
+attempted one message acknowledgement; both were blocked nonfatally. The
+settings PATCH did not recur, so the live nonfatal continuation path for that
+specific request remains unexercised rather than assumed. No route value or
+durable access mode was downgraded, and no research/data write was made.
+
 - The same blocked membership/lurker request has now appeared across Paper
   Hero, JJ's, Magic & Monsters, Collectors Lounge, and Krazy Nick's.
 - Every tested route proved the expected authenticated server/channel shell

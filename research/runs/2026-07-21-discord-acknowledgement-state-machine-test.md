@@ -112,3 +112,37 @@ Exact failure layer: authenticated profile and server-rail detection passed;
 guarded channel navigation stopped on a newly observed Discord client-settings
 write. This is a control/harness boundary, not a ProjectCCG or Magic & Monsters
 route result. Their long-term access modes and route values remain unchanged.
+
+## Blocked-client-state continuation test (2026-07-22)
+
+The guard now distinguishes three relevant mutation classes:
+
+- `blocked_expected_ack` for the exact message-acknowledgement endpoint;
+- `blocked_expected_client_setting` only for `PATCH` to the exact normalized
+  endpoint `/api/v9/users/@me/settings-proto/2` during channel selection; and
+- `blocked_unknown_or_prohibited_mutation` for other state-changing requests.
+
+Both recognized classes remain blocked before transmission. They may be
+nonfatal only after exact route identity and all page-safety checks pass. The
+runner records method, normalized endpoint, body-presence Boolean, body byte
+length, stage, and block time; it does not record the opaque body, headers,
+cookies, credentials, or tokens.
+
+| Route | Shell/content result | Blocked acknowledgement | Blocked client setting | Latest run result | Unread state | External state |
+| --- | --- | --- | --- | --- | --- | --- |
+| Collectors Lounge `#mtg-announcements-and-events` | Exact shell plus five-message bounded read succeeded | None | None attempted | `quiet` | Unchanged | Unchanged |
+| ProjectCCG `#mtg-announcements` | Exact shell plus five-message bounded read succeeded | One, blocked before transmission | None attempted | `useful_finding` (not promoted or written) | Unchanged | Unchanged |
+| Magic & Monsters `#shop-schedule` | Exact shell plus five-message bounded read succeeded | One, blocked before transmission | None attempted | `quiet` | Unchanged | Unchanged |
+
+Only telemetry plus the two recognized acknowledgement attempts occurred. No
+unknown/prohibited mutation was attempted. The exact settings PATCH did not
+recur in any of these runs, so its runtime nonfatal-continuation path is
+implemented and deterministically classified but is not claimed as exercised
+against a live recurrence. The earlier diagnostic remains proof that the PATCH
+was blocked. These later runs separately prove all three intended channels can
+render and support bounded reads when Discord does not make that attempt; they
+do not prove same-attempt rendering after the blocked PATCH.
+
+No research, Signal, Event, Source, Places, monitoring-map, or canonical data
+write was made. The ProjectCCG useful classification remains only in the local
+ignored safety log pending a separately authorized research review.

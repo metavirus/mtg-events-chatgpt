@@ -122,7 +122,7 @@ function classifyDiscordBlockedRequest(entry) {
   try {
     parsed = new URL(entry.url);
   } catch {
-    return { classification: 'blocked_unexpected_mutation', normalizedEndpoint: 'unparseable' };
+    return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'unparseable', normalizedEndpoint: 'unparseable' };
   }
   const ackMatch = parsed.pathname.match(/^\/api\/v\d+\/channels\/(\d+)\/messages\/(\d+)\/ack$/i);
   if (entry.method === 'POST' && ackMatch) {
@@ -133,31 +133,37 @@ function classifyDiscordBlockedRequest(entry) {
       messageId: ackMatch[2]
     };
   }
+  if (entry.method === 'PATCH' && /^\/api\/v\d+\/users\/@me\/settings-proto\/2$/i.test(parsed.pathname) && !parsed.search) {
+    return {
+      classification: 'blocked_expected_client_setting',
+      normalizedEndpoint: '/api/v*/users/@me/settings-proto/2'
+    };
+  }
   if (/\/guilds\/\d+\/members\/@me$/i.test(parsed.pathname) && parsed.searchParams.get('lurker') === 'true') {
-    return { classification: 'membership_or_lurker', normalizedEndpoint: '/api/v*/guilds/{guild_id}/members/@me?lurker=true' };
+    return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'membership_or_lurker', normalizedEndpoint: '/api/v*/guilds/{guild_id}/members/@me?lurker=true' };
   }
   if (/\/api\/v\d+\/science(?:\/|$)/i.test(parsed.pathname)) {
     return { classification: 'telemetry', normalizedEndpoint: '/api/v*/science' };
   }
   if (/\/reactions(?:\/|$)/i.test(parsed.pathname)) {
-    return { classification: 'reaction_mutation', normalizedEndpoint: '/api/v*/channels/{channel_id}/messages/{message_id}/reactions/...' };
+    return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'reaction', normalizedEndpoint: '/api/v*/channels/{channel_id}/messages/{message_id}/reactions/...' };
   }
   if (/\/messages(?:\/|$)/i.test(parsed.pathname)) {
-    return { classification: 'message_reply_or_edit_mutation', normalizedEndpoint: '/api/v*/channels/{channel_id}/messages/...' };
+    return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'message_reply_or_edit', normalizedEndpoint: '/api/v*/channels/{channel_id}/messages/...' };
   }
   if (/\/attachments(?:\/|$)/i.test(parsed.pathname)) {
-    return { classification: 'upload_mutation', normalizedEndpoint: '/api/v*/attachments/...' };
+    return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'upload', normalizedEndpoint: '/api/v*/attachments/...' };
   }
   if (/\/invites(?:\/|$)/i.test(parsed.pathname)) {
-    return { classification: 'invite_mutation', normalizedEndpoint: '/api/v*/invites/...' };
+    return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'invite', normalizedEndpoint: '/api/v*/invites/...' };
   }
   if (/\/roles(?:\/|$)/i.test(parsed.pathname)) {
-    return { classification: 'role_mutation', normalizedEndpoint: '/api/v*/guilds/{guild_id}/roles/...' };
+    return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'role', normalizedEndpoint: '/api/v*/guilds/{guild_id}/roles/...' };
   }
   if (/\/users\/@me\/settings(?:-proto)?(?:\/|$)/i.test(parsed.pathname)) {
-    return { classification: 'settings_mutation', normalizedEndpoint: '/api/v*/users/@me/settings/...' };
+    return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'other_settings', normalizedEndpoint: '/api/v*/users/@me/settings/...' };
   }
-  return { classification: 'blocked_unexpected_mutation', normalizedEndpoint: parsed.pathname };
+  return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'unknown', normalizedEndpoint: parsed.pathname };
 }
 
 async function installDiscordReadOnlyGuards(context, options = {}) {
@@ -173,10 +179,12 @@ async function installDiscordReadOnlyGuards(context, options = {}) {
     await context.route(pattern, async (route) => {
       const request = route.request();
       if (isDiscordMutationRequest(request.url(), request.method())) {
+        const bodyBuffer = request.postDataBuffer();
         networkBlocks.push({
           method: request.method().toUpperCase(),
           url: request.url(),
-          hasBody: Boolean(request.postData()),
+          hasBody: Boolean(bodyBuffer?.length),
+          bodyByteLength: bodyBuffer?.length ?? 0,
           requestContext: getRequestContext(),
           blockedAt: new Date().toISOString()
         });
