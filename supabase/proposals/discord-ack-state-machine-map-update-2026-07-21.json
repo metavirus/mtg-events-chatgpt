@@ -1,0 +1,51 @@
+{
+  "proposal_id": "discord-ack-state-machine-map-update-2026-07-21",
+  "status": "applied",
+  "applied_at": "2026-07-22T05:54:20Z",
+  "scope": "Operational Discord monitoring-map checkpoint only; no research, Event, Signal, Source, Places, assessment, schema, auth, RLS, or app-data write.",
+  "operation_count": 4,
+  "operations": [
+    {
+      "table": "discord_access_profiles",
+      "key": {"source_id": "src-projectccg-discord-route-2026-07-18"},
+      "changes": {
+        "last_failed_access_method": "isolated Discord-read profile: @me home shell rendered without server/folder controls; UI-native navigation could not begin",
+        "last_checked": "2026-07-21",
+        "safe_access_mode": "manual_open_required"
+      }
+    },
+    {
+      "table": "discord_channel_watchlist",
+      "key": {"id": "discord-watch-projectccg-mtg-announcements"},
+      "changes": {
+        "last_checked_at": "2026-07-22T05:45:52.555Z",
+        "safe_access_mode": "manual_open_required",
+        "last_seen_message_at": "unchanged"
+      }
+    },
+    {
+      "table": "discord_access_profiles",
+      "key": {"source_id": "src-magicandmonsters-discord-route-2026-07-18"},
+      "changes": {
+        "last_failed_access_method": "isolated Discord-read profile: @me home shell rendered without server/folder controls; UI-native navigation could not begin",
+        "last_checked": "2026-07-21",
+        "safe_access_mode": "manual_open_required"
+      }
+    },
+    {
+      "table": "discord_channel_watchlist",
+      "key": {"id": "discord-watch-magicandmonsters-shop-schedule"},
+      "changes": {
+        "last_checked_at": "2026-07-22T05:46:16.956Z",
+        "safe_access_mode": "manual_open_required",
+        "last_seen_message_at": "unchanged"
+      }
+    }
+  ],
+  "validation": [
+    "Read back the two profiles and two watch rows.",
+    "Confirm both safe_access_mode values remain manual_open_required.",
+    "Confirm both last_seen_message_at values remain unchanged.",
+    "Confirm no canonical research or app-data table changed."
+  ]
+}

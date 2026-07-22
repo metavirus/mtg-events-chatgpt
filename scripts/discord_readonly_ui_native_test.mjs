@@ -5,6 +5,7 @@ import process from 'node:process';
 
 import {
   assertDiscordReadOnlyState,
+  classifyDiscordBlockedRequest,
   extractDiscordVisibleMessages,
   installDiscordReadOnlyGuards,
   isDiscordMutationRequest,
@@ -64,6 +65,7 @@ const browserExecutable = process.env.DISCORD_PROOF_BROWSER ||
 const networkBlocks = [];
 const prohibitedResponses = [];
 const startedAt = new Date().toISOString();
+let requestStage = 'context_initialization';
 
 const result = {
   test: 'discord-readonly-ui-native-navigation',
@@ -87,6 +89,11 @@ const result = {
   folderExpansionRequired: false,
   stages: [],
   blockedRequests: [],
+  blockedExpectedAcks: [],
+  routeState: 'blocked_for_this_run',
+  guildIndicatorBefore: null,
+  guildIndicatorAfter: null,
+  guildIndicatorUnchanged: null,
   prohibitedSuccessfulResponses: [],
   messageWindow: null,
   usefulFindingPresent: null,
@@ -106,7 +113,8 @@ const context = await chromium.launchPersistentContext(profileDir, {
 await installDiscordReadOnlyGuards(context, {
   guardVersion: 'discord-readonly-ui-native-v1',
   selector: uiNativeMutationSelector,
-  networkBlocks
+  networkBlocks,
+  getRequestContext: () => requestStage
 });
 
 context.on('response', (response) => {
@@ -137,6 +145,37 @@ function isTelemetryOnly(entry) {
   } catch {
     return false;
   }
+}
+
+async function expectedAckIsRouteBound(page, entry) {
+  const detail = classifyDiscordBlockedRequest(entry);
+  if (detail.classification !== 'blocked_expected_ack') return false;
+  if (!['server_selection', 'channel_selection', 'message_rendering'].includes(entry.requestContext)) return false;
+  return page.evaluate(({ guildId, channelId }) => {
+    const current = location.pathname.match(/^\/channels\/(\d+)\/(\d+)/);
+    if (current?.[1] === guildId && current?.[2] === channelId) return true;
+    return Boolean(document.querySelector(`a[href="/channels/${guildId}/${channelId}"]`));
+  }, { guildId: expectedRoute.guildId, channelId: detail.channelId });
+}
+
+async function readGuildIndicator(page) {
+  return page.evaluate((guildId) => {
+    const target = document.querySelector(`[role="treeitem"][data-list-item-id="guildsnav___${guildId}"]`) ||
+      document.querySelector(`a[href^="/channels/${guildId}"]`);
+    if (!target) return { observable: false };
+    const labels = [...target.querySelectorAll('[aria-label], [title], [role="status"]')]
+      .map((element) => element.getAttribute('aria-label') || element.getAttribute('title') || element.textContent || '')
+      .map((value) => value.replace(/\s+/g, ' ').trim())
+      .filter((value) => /unread|mention|\b\d+\b/i.test(value))
+      .slice(0, 10);
+    return {
+      observable: true,
+      ariaLabel: target.getAttribute('aria-label') || null,
+      title: target.getAttribute('title') || null,
+      indicatorLabels: labels,
+      unreadMarkerCount: target.querySelectorAll('[class*="unread" i], [class*="mention" i], [class*="badge" i]').length
+    };
+  }, expectedRoute.guildId);
 }
 
 async function visibleGateLabels(page) {
@@ -189,7 +228,15 @@ async function verifyStage(page, stageName, options = {}) {
   }
   const lurker = networkBlocks.find(isLurkerRequest);
   if (lurker) throw new Error('members/@me?lurker=true request blocked');
-  const unexpectedBlocked = networkBlocks.find((entry) => !isTelemetryOnly(entry) && !isLurkerRequest(entry));
+  for (const entry of networkBlocks.filter((candidate) => classifyDiscordBlockedRequest(candidate).classification === 'blocked_expected_ack')) {
+    if (!await expectedAckIsRouteBound(page, entry)) {
+      throw new Error('read-state acknowledgement could not be bound to the selected guild shell');
+    }
+  }
+  const unexpectedBlocked = networkBlocks.find((entry) => {
+    const classification = classifyDiscordBlockedRequest(entry).classification;
+    return !['telemetry', 'blocked_expected_ack'].includes(classification) && !isLurkerRequest(entry);
+  });
   if (unexpectedBlocked) throw new Error(`unexpected mutation request blocked: ${unexpectedBlocked.method} ${unexpectedBlocked.url}`);
   if (prohibitedResponses.length) throw new Error('a prohibited mutation request received a response');
   const stage = {
@@ -202,6 +249,7 @@ async function verifyStage(page, stageName, options = {}) {
     routeIdentity: safety.routeIdentity,
     gateLabels,
     blockedRequestCount: networkBlocks.length,
+    blockedExpectedAckCount: networkBlocks.filter((entry) => classifyDiscordBlockedRequest(entry).classification === 'blocked_expected_ack').length,
     lurkerRequestObserved: false
   };
   result.stages.push(stage);
@@ -375,6 +423,7 @@ async function classifyTinyWindow(page) {
     const categories = patterns.filter(([, pattern]) => pattern.test(text)).map(([name]) => name);
     if (!categories.length) return [];
     return [{
+      messageId: message.messageId || null,
       timestamp: message.timestamp || null,
       categories,
       text: message.text.slice(0, 500)
@@ -384,6 +433,8 @@ async function classifyTinyWindow(page) {
   const timestamps = messages.map((message) => message.timestamp).filter(Boolean);
   return {
     messageCount: messages.length,
+    firstSeenMessageId: messages[0]?.messageId || null,
+    lastSeenMessageId: messages.at(-1)?.messageId || null,
     firstSeenMessageAt: timestamps[0] || null,
     lastSeenMessageAt: timestamps.at(-1) || null,
     usefulFindingPresent: categories.length > 0,
@@ -392,8 +443,10 @@ async function classifyTinyWindow(page) {
   };
 }
 
+let page = null;
 try {
-  const page = await context.newPage();
+  page = await context.newPage();
+  requestStage = 'home_load';
   await page.goto(homeUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
   await verifyStage(page, 'discord_home_loaded');
 
@@ -409,6 +462,7 @@ try {
     }
     result.folderExpansionRequired = true;
     result.stages.push({ name: 'folder_navigation_proof', navigation });
+    requestStage = 'folder_navigation';
     await controlledNavigationClick(page, 'folder');
     await verifyStage(page, 'folder_expanded');
     navigation = await markAndInspectNavigation(page);
@@ -416,20 +470,27 @@ try {
   }
 
   if (navigation.visibleGuildAnchorCount !== 1) throw new Error('mapped guild anchor is not uniquely visible after folder handling');
+  result.guildIndicatorBefore = await readGuildIndicator(page);
+  if (!result.guildIndicatorBefore.observable) throw new Error('target guild unread/mention state is not observable before navigation');
+  requestStage = 'server_selection';
   await controlledNavigationClick(page, 'guild', `/channels/${expectedRoute.guildId}`);
   await verifyStage(page, 'guild_selected');
 
   navigation = await markAndInspectNavigation(page);
   result.stages.at(-1).navigation = navigation;
   if (navigation.visibleChannelAnchorCount !== 1) throw new Error('mapped channel anchor is not uniquely visible after guild selection');
+  requestStage = 'channel_selection';
   await controlledNavigationClick(page, 'channel', `/channels/${expectedRoute.guildId}/${expectedRoute.channelId}`);
   await verifyStage(page, 'channel_selected', { expectExactRoute: true, waitMs: 2500 });
 
   if (mode === 'content') {
+    requestStage = 'message_rendering';
     const windowResult = await classifyTinyWindow(page);
     result.messageContentInspected = true;
     result.messageWindow = {
       messageCount: windowResult.messageCount,
+      firstSeenMessageId: windowResult.firstSeenMessageId,
+      lastSeenMessageId: windowResult.lastSeenMessageId,
       firstSeenMessageAt: windowResult.firstSeenMessageAt,
       lastSeenMessageAt: windowResult.lastSeenMessageAt
     };
@@ -437,20 +498,38 @@ try {
     result.usefulCategories = windowResult.usefulCategories;
     result.findingCandidates = windowResult.findingCandidates;
     result.status = 'content_read_succeeded_safely';
+    result.routeState = 'ui_native_read_verified';
   } else {
     result.status = 'shell_reached_safely';
+    result.routeState = 'ui_native_shell_only';
   }
+  result.guildIndicatorAfter = await readGuildIndicator(page);
+  result.guildIndicatorUnchanged = JSON.stringify(result.guildIndicatorBefore) === JSON.stringify(result.guildIndicatorAfter);
+  if (!result.guildIndicatorUnchanged) throw new Error('target guild unread/mention state changed during guarded read');
 } catch (error) {
   result.status = 'failed_closed';
+  result.routeState = 'blocked_for_this_run';
   result.failureStage = result.stages.at(-1)?.name || 'before_home_preflight';
   result.failureReason = error.message;
+  const blockedClassifications = networkBlocks.map((entry) => classifyDiscordBlockedRequest(entry).classification);
+  if (blockedClassifications.includes('blocked_expected_ack')) result.routeState = 'blocked_ack_prevents_render';
+  else if (/lurker|gate|join|verification/.test(error.message)) result.routeState = 'onboarding_required';
+  else if (/mutation request/.test(error.message)) result.routeState = 'blocked_unexpected_mutation';
+  if (page && result.guildIndicatorBefore?.observable && !result.guildIndicatorAfter) {
+    result.guildIndicatorAfter = await readGuildIndicator(page).catch(() => ({ observable: false }));
+    result.guildIndicatorUnchanged = JSON.stringify(result.guildIndicatorBefore) === JSON.stringify(result.guildIndicatorAfter);
+  }
+  if (result.guildIndicatorUnchanged === false) result.externalDiscordStateChanged = true;
 } finally {
   result.blockedRequests = networkBlocks.map((entry) => ({
+    ...classifyDiscordBlockedRequest(entry),
     method: entry.method,
-    path: (() => { try { return `${new URL(entry.url).pathname}${new URL(entry.url).search}`; } catch { return entry.url; } })(),
+    hasBody: Boolean(entry.hasBody),
+    requestStage: entry.requestContext || null,
     blockedAt: entry.blockedAt,
     lurkerRequest: isLurkerRequest(entry)
   }));
+  result.blockedExpectedAcks = result.blockedRequests.filter((entry) => entry.classification === 'blocked_expected_ack');
   result.prohibitedSuccessfulResponses = prohibitedResponses.map((entry) => ({
     method: entry.method,
     path: (() => { try { return `${new URL(entry.url).pathname}${new URL(entry.url).search}`; } catch { return entry.url; } })(),

@@ -35,6 +35,15 @@ globally graduated survey method; broad surveying/automation remain unapproved. 
 `research/runs/2026-07-21-discord-ui-native-replication-graduation.md` and
 `research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
+A follow-up state-machine experiment now classifies the exact message
+acknowledgement endpoint separately while continuing to block it. The bounded
+ProjectCCG and Magic & Monsters reruns did not reach that condition: the
+authenticated isolated client rendered Discord `@me` without any server/folder
+controls, so both runs failed closed before navigation and read no content.
+Acknowledgement-as-nonfatal therefore remains ungraduated, both routes remain
+`manual_open_required`, and route value is unchanged. See
+`research/runs/2026-07-21-discord-acknowledgement-state-machine-test.md`.
+
 The first structured Discord/community monitoring map is now live in Supabase.
 Migration `20260721025750_add_discord_monitoring_map.sql` adds service-only
 `discord_access_profiles` and `discord_channel_watchlist` tables without

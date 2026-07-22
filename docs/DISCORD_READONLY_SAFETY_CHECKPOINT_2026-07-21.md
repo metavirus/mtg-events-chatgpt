@@ -120,6 +120,23 @@ globally graduated survey method. Do not allowlist message acknowledgements to
 make blocked routes pass. See
 `research/runs/2026-07-21-discord-ui-native-replication-graduation.md`.
 
+### Acknowledgement state-machine experiment
+
+The exact predecessor requests are now classified as blocked message
+read-state acknowledgements rather than message creation/reply, reactions,
+uploads, membership/lurker, invites, roles, settings, presence, or telemetry.
+They remain blocked at the network layer. The runner records only method,
+normalized endpoint, channel/message IDs, body-presence Boolean, navigation
+stage, and block time; it does not record bodies, credentials, headers, cookies,
+tokens, or unrelated traffic.
+
+The bounded ProjectCCG and Magic & Monsters reruns could not exercise the new
+classification because the authenticated isolated `@me` shell exposed no
+server/folder controls. Both failed closed before navigation, read no content,
+and changed no Discord state. The acknowledgement behavior is therefore not
+globally graduated, and both routes remain `manual_open_required`. See
+`research/runs/2026-07-21-discord-acknowledgement-state-machine-test.md`.
+
 - The same blocked membership/lurker request has now appeared across Paper
   Hero, JJ's, Magic & Monsters, Collectors Lounge, and Krazy Nick's.
 - Every tested route proved the expected authenticated server/channel shell

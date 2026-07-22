@@ -46,6 +46,10 @@ For each inspected target:
 - Useful findings:
 - Quiet result:
 - Blocked/gated condition:
+- Blocked request classification (`blocked_expected_ack`, membership/lurker,
+  message/reply, reaction, upload, invite, role, settings, telemetry, or
+  unexpected):
+- Observable unread/mention state unchanged? yes/no/not observable
 - Suggested action:
 - Monitoring/resume note:
 

@@ -46,6 +46,13 @@ Use it for:
   priorities, expected signal types, isolated profile, read-only guard, and
   quiet/blocked-run semantics. If separately approved, the next Discord step is
   a tiny pilot that independently proves the same path per selected route.
+  The acknowledgement state-machine experiment now distinguishes an exact
+  blocked read-state acknowledgement from reply/reaction/upload and other
+  mutations, but the ProjectCCG and Magic & Monsters reruns failed earlier
+  because the isolated `@me` shell exposed no server/folder controls. Do not
+  graduate acknowledgement handling yet. A later bounded safety test may first
+  diagnose that isolated-profile guild-list hydration boundary without reading
+  messages or reducing route value.
 
 - Recent app blocker resolved: the Events/Today freeze was traced to two
   malformed active weekly Paper Hero series with legacy `weekday` recurrence

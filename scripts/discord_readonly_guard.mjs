@@ -117,10 +117,56 @@ function isDiscordMutationRequest(requestUrl, method) {
   return discordMutationPathPatterns.some((pattern) => pattern.test(parsed.pathname));
 }
 
+function classifyDiscordBlockedRequest(entry) {
+  let parsed;
+  try {
+    parsed = new URL(entry.url);
+  } catch {
+    return { classification: 'blocked_unexpected_mutation', normalizedEndpoint: 'unparseable' };
+  }
+  const ackMatch = parsed.pathname.match(/^\/api\/v\d+\/channels\/(\d+)\/messages\/(\d+)\/ack$/i);
+  if (entry.method === 'POST' && ackMatch) {
+    return {
+      classification: 'blocked_expected_ack',
+      normalizedEndpoint: '/api/v*/channels/{channel_id}/messages/{message_id}/ack',
+      channelId: ackMatch[1],
+      messageId: ackMatch[2]
+    };
+  }
+  if (/\/guilds\/\d+\/members\/@me$/i.test(parsed.pathname) && parsed.searchParams.get('lurker') === 'true') {
+    return { classification: 'membership_or_lurker', normalizedEndpoint: '/api/v*/guilds/{guild_id}/members/@me?lurker=true' };
+  }
+  if (/\/api\/v\d+\/science(?:\/|$)/i.test(parsed.pathname)) {
+    return { classification: 'telemetry', normalizedEndpoint: '/api/v*/science' };
+  }
+  if (/\/reactions(?:\/|$)/i.test(parsed.pathname)) {
+    return { classification: 'reaction_mutation', normalizedEndpoint: '/api/v*/channels/{channel_id}/messages/{message_id}/reactions/...' };
+  }
+  if (/\/messages(?:\/|$)/i.test(parsed.pathname)) {
+    return { classification: 'message_reply_or_edit_mutation', normalizedEndpoint: '/api/v*/channels/{channel_id}/messages/...' };
+  }
+  if (/\/attachments(?:\/|$)/i.test(parsed.pathname)) {
+    return { classification: 'upload_mutation', normalizedEndpoint: '/api/v*/attachments/...' };
+  }
+  if (/\/invites(?:\/|$)/i.test(parsed.pathname)) {
+    return { classification: 'invite_mutation', normalizedEndpoint: '/api/v*/invites/...' };
+  }
+  if (/\/roles(?:\/|$)/i.test(parsed.pathname)) {
+    return { classification: 'role_mutation', normalizedEndpoint: '/api/v*/guilds/{guild_id}/roles/...' };
+  }
+  if (/\/users\/@me\/settings(?:\/|$)/i.test(parsed.pathname)) {
+    return { classification: 'settings_mutation', normalizedEndpoint: '/api/v*/users/@me/settings/...' };
+  }
+  return { classification: 'blocked_unexpected_mutation', normalizedEndpoint: parsed.pathname };
+}
+
 async function installDiscordReadOnlyGuards(context, options = {}) {
   const guardVersion = options.guardVersion || 'discord-readonly-v1';
   const selector = options.selector || defaultMutationSelector;
   const networkBlocks = options.networkBlocks || [];
+  const getRequestContext = typeof options.getRequestContext === 'function'
+    ? options.getRequestContext
+    : () => null;
 
   await context.addInitScript(readonlyPageGuardBootstrap, { selector, guardVersion });
   for (const pattern of ['**://discord.com/**', '**://*.discord.com/**', '**://discordapp.com/**', '**://*.discordapp.com/**']) {
@@ -130,6 +176,8 @@ async function installDiscordReadOnlyGuards(context, options = {}) {
         networkBlocks.push({
           method: request.method().toUpperCase(),
           url: request.url(),
+          hasBody: Boolean(request.postData()),
+          requestContext: getRequestContext(),
           blockedAt: new Date().toISOString()
         });
         await route.abort('blockedbyclient');
@@ -251,12 +299,17 @@ async function extractDiscordVisibleMessages(page, options = {}) {
     ].filter(isVisible);
 
     return candidates.slice(-limit).map((element) => {
+      const idValue = element.id || element.getAttribute('data-list-item-id') || '';
+      const messageId = idValue.match(/(?:chat-messages-|chat-messages___)(?:\d+-)?(\d{15,})$/)?.[1] ||
+        idValue.match(/(\d{15,})$/)?.[1] ||
+        null;
       const text = normalize(element.innerText || '');
       const timestamp = element.querySelector('time')?.getAttribute('datetime') ||
         element.querySelector('time')?.textContent?.trim() ||
         null;
       const author = element.querySelector('[class*="username"], [data-author-id], h3 span')?.textContent?.trim() || null;
       return {
+        messageId,
         timestamp,
         author,
         text: text.slice(0, maxCharactersPerMessage),
@@ -310,6 +363,7 @@ function createReadOnlySurveySurface(context, options = {}) {
 }
 
 export {
+  classifyDiscordBlockedRequest,
   createReadOnlySurveySurface,
   defaultMutationSelector,
   discordMutationPathPatterns,
