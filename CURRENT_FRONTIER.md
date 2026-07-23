@@ -710,9 +710,11 @@ older notes saying "repair Tweedy first" as current next work.
   `Good Time`; no other current/upcoming item was visible in the bounded summary.
   The structurally unique Event Details control opened without changing unread
   or external Discord state, but a fully isolated detail-panel extraction is not
-  yet proven. A time-bounded Signal proposal exists and must expire rather than
-  be applied late. The existing watchlist can represent this surface with
-  `channel_type = events`; no schema addition is justified after one test.
+  yet proven. The expired GOOD Magic Signal was not applied. The live monitoring
+  map now includes a Community-linked Discord Source, a verified UI-native
+  access profile, and one high-priority weekly guild Events surface with
+  `channel_type = events` and `latest_run_result = useful`; no schema addition
+  was needed.
 
 ## Highest-value unresolved questions
 

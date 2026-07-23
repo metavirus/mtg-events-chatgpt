@@ -88,3 +88,18 @@ additional non-channel surfaces make the distinction operationally necessary.
 - External Discord state changed: **no**.
 - Live Supabase writes: **none**.
 
+## Accepted monitoring-map follow-through
+
+The user accepted the result as method proof and explicitly declined a late
+GOOD Magic Signal if the same-day opportunity was no longer useful. The
+bounded monitoring-map write added:
+
+- the Legendary Creature Club Discord as a Community-linked Source;
+- its proven guarded UI-native access profile; and
+- one high-priority guild-level `events` watch surface whose latest run result
+  is `useful` (the schema-equivalent value for `useful_signal_found`).
+
+The live readback confirmed one Source, one Community-to-Source relationship,
+one access profile, and one active high-priority Events watch surface with
+`latest_run_result = useful`. No Signal, Event, occurrence, app, or schema write
+was part of that follow-through.

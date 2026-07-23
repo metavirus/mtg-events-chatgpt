@@ -1,0 +1,127 @@
+{
+  "proposal_id": "legendary-creature-club-discord-events-monitoring-map-2026-07-22",
+  "description": "Add the proven Legendary Creature Club Discord route and guild-level Events surface to the operational monitoring map. This proposal does not insert the expired GOOD Magic Signal or any canonical Event row.",
+  "created_at": "2026-07-22T19:20:00-07:00",
+  "status": "applied",
+  "applied_at": "2026-07-22T19:24:00-07:00",
+  "author": "Codex Project Steward",
+  "validation_level": "lean",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-legendary-creature-club-discord-2026-07-22"
+      },
+      "fields": {
+        "id": "src-legendary-creature-club-discord-2026-07-22",
+        "label": "Legendary Creature Club Discord",
+        "url": "https://discord.com/channels/1113847610525093991/1113848477965893723",
+        "source_type": "community",
+        "health_status": "current",
+        "last_checked": "2026-07-22"
+      },
+      "reason": "The joined Legendary Creature Club server and its guild-level Events surface were safely reached through guarded UI-native navigation."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "community",
+        "entity_id": "legendary-creature-club",
+        "source_id": "src-legendary-creature-club-discord-2026-07-22"
+      },
+      "fields": {
+        "entity_type": "community",
+        "entity_id": "legendary-creature-club",
+        "source_id": "src-legendary-creature-club-discord-2026-07-22",
+        "relationship": "official community route; guarded Discord Events summary inspected and useful for short-lived community play signals"
+      },
+      "reason": "Makes the Discord route visible as structured Evidence for the canonical Legendary Creature Club Community."
+    },
+    {
+      "action": "insert",
+      "table": "discord_access_profiles",
+      "key": {
+        "source_id": "src-legendary-creature-club-discord-2026-07-22"
+      },
+      "fields": {
+        "source_id": "src-legendary-creature-club-discord-2026-07-22",
+        "server_id": "1113847610525093991",
+        "server_name": "Legendary Creature Club",
+        "access_state": "joined",
+        "content_access": "partial",
+        "role_gate": "none_observed",
+        "preferred_access_surface": "chrome",
+        "user_action_required": false,
+        "known_internal_target": "Discord Events guild surface via the unique Event Details control",
+        "last_successful_access_method": "Isolated Discord-read Chrome profile: Discord @me -> Stores/Local -> exact guild ID -> structurally unique Event Details control; bounded Events summary read passed.",
+        "last_failed_access_method": "Cold direct-channel navigation remains blocked/unverified; fully isolated event-detail panel extraction is not yet proven.",
+        "automation_suitability": "future_candidate",
+        "route_value": "high",
+        "monitoring_cadence": "weekly",
+        "monitoring_reason": "Nearby Long Beach/South Bay community whose Discord Events surface can expose short-lived one-off Magic opportunities outside store calendars.",
+        "last_checked": "2026-07-22",
+        "last_useful_signal_at": "2026-07-22",
+        "safe_access_mode": "ui_native_navigation_verified",
+        "safe_access_notes": "Start at Discord @me; verify the read-only guard; identify Stores/Local by unique hover tooltip; select guild 1113847610525093991; use only the structurally unique Event Details navigation control. RSVP/Interested and all mutating controls remain disabled. Summary read is proven; detail-panel extraction is not. Cold direct navigation remains blocked.",
+        "notes": "Discord Events is a guild-level surface, not a text channel. The July 22 run found GOOD Magic happening now at Good Time; the expired item is retained as method proof and is not being written as a live Signal."
+      },
+      "reason": "Preserves the proven safe route, durable route value, cadence, access limit, and latest useful result without rediscovery."
+    },
+    {
+      "action": "insert",
+      "table": "discord_channel_watchlist",
+      "key": {
+        "id": "discord-watch-legendary-creature-club-events"
+      },
+      "fields": {
+        "id": "discord-watch-legendary-creature-club-events",
+        "profile_source_id": "src-legendary-creature-club-discord-2026-07-22",
+        "channel_source_id": null,
+        "channel_id": null,
+        "channel_name": "Discord Events",
+        "channel_url": "https://discord.com/channels/1113847610525093991/1113848477965893723",
+        "channel_type": "events",
+        "priority": "high",
+        "cadence": "weekly",
+        "reason_to_monitor": "High-signal guild-level surface for current/upcoming community Magic events, especially same-day one-offs not present on store calendars.",
+        "expected_signal_types": [
+          "event_opportunity",
+          "same_day_activity",
+          "community_meetup",
+          "location_detail",
+          "format_or_fit_clue"
+        ],
+        "access_status": "accessible",
+        "noise_level": "low",
+        "last_checked": "2026-07-22",
+        "last_useful_signal_at": "2026-07-22",
+        "monitoring_status": "active",
+        "last_checked_at": "2026-07-23T02:01:25Z",
+        "last_seen_message_at": null,
+        "last_seen_message_id": null,
+        "latest_run_result": "useful",
+        "safe_access_mode": "ui_native_navigation_verified",
+        "safe_access_notes": "Guild-level Events surface: navigate from Discord @me through Stores/Local to exact guild ID, then use the unique Event Details control. There is intentionally no channel ID or message cursor. Cold deep link remains blocked.",
+        "notes": "Latest run result: useful_signal_found equivalent. Verified summary was Happening Now / GOOD Magic / Good Time. Do not infer full event details when only the summary is isolated reliably."
+      },
+      "reason": "Represents Discord Events using the existing events channel type without adding schema after a single proven surface test."
+    }
+  ],
+  "excluded": [
+    "No live GOOD Magic Signal because its same-day window has passed",
+    "No Event or occurrence write",
+    "No new monitoring schema",
+    "No additional Discord survey"
+  ],
+  "validation": {
+    "source_rows": 1,
+    "community_source_relationship_rows": 1,
+    "access_profile_rows": 1,
+    "events_surface_watch_rows": 1,
+    "latest_run_result": "useful",
+    "good_magic_signal_rows": 0,
+    "unrelated_schema_or_app_changes": 0
+  }
+}
