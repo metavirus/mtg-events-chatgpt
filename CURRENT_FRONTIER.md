@@ -44,7 +44,10 @@ Magic & Monsters were stale/already covered, and JJ's produced one current
 Orange weekly-schedule lead that remains branch-risky. A single reviewable
 Signal proposal was created; it was not applied. The monitoring map now stores
 independent last-seen message ID/time, check time, and latest run result.
-Broad/daily automation remains unapproved.
+Checkpoint `dd345d2` is the baseline for small manual or agent-assisted survey
+batches on those four routes only. Broad/daily automation remains unapproved;
+new routes require their own bounded UI-native proof. The JJ's Orange proposal
+stays unapplied until Orange and Garden Grove can be kept branch-safe.
 
 The first structured Discord/community monitoring map is now live in Supabase.
 Migration `20260721025750_add_discord_monitoring_map.sql` adds service-only

@@ -208,3 +208,18 @@ The first operational four-route survey completed on 2026-07-22. Independent
 message-ID, message-time, check-time, and per-run-result cursors are now live in
 the monitoring map. Quiet/stale outcomes remain per-run observations and do
 not reduce route value. Broad or daily automation is still unapproved.
+
+## Operating rule after `dd345d2`
+
+Small manual or agent-assisted Discord survey batches are now approved within
+the proven route set only: Collectors Lounge, JJ's, ProjectCCG, and Magic &
+Monsters. Each batch must use guarded UI-native navigation from Discord `@me`,
+exact mapped guild/channel IDs, bounded visible-message windows, independent
+monitoring-map cursors, and the existing fail-closed request classifications.
+Cold direct links remain identity metadata rather than an access method.
+
+This is not approval for broad autonomous or daily surveying. New routes must
+first pass the same bounded safety/access proof. Quiet results do not lower
+route value. The pending JJ's Orange finding must not be applied or attached to
+Garden Grove until the Orange branch identity is resolved well enough for a
+branch-safe disposition.
