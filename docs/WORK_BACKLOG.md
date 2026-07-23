@@ -14,6 +14,13 @@ Use it for:
 
 ## Active next-up
 
+- JJ's Orange branch/entity resolution: future JJ's Discord survey findings
+  that mention `Orange` must not be merged into Garden Grove. A 2026-07-23
+  non-Discord identity check found Garden Grove-only public JJ's identity and a
+  separate Orange-area Hidden Collectibles 2 / `jjscardemporium.com` lead, but
+  no clean official bridge. Resolve the Orange venue name/address/relationship
+  before any Signal or event proposal.
+
 - ChatGPT-to-Codex coordination has moved to Supabase. New ordinary ChatGPT
   source leads, findings, questions, and proposals should be submitted as
   non-canonical coordination queue records, preferably through

@@ -727,6 +727,14 @@ older notes saying "repair Tweedy first" as current next work.
   inspected windows. See
   `research/runs/2026-07-22-discord-operational-signal-survey.md` and proposal
   `supabase/proposals/discord-operational-survey-cursor-and-signal-review-2026-07-22.json`.
+- The bounded JJ's Orange identity-resolution tranche on 2026-07-23 did not find
+  branch-safe non-Discord evidence that `JJ's Orange` is a canonical JJ's
+  Collectibles branch. Public JJ's identity still points to Garden Grove, while
+  the strongest Orange-area lead points to Hidden Collectibles 2 /
+  `jjscardemporium.com`. Keep Orange Discord schedule findings as
+  branch-identity TBD; do not merge them into Garden Grove or create Orange event
+  rows until the Orange venue relationship is corroborated. See
+  `research/runs/2026-07-23-jjs-orange-identity-resolution.md`.
 
 ## Highest-value unresolved questions
 

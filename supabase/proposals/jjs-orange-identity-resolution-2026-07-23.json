@@ -1,0 +1,78 @@
+{
+  "proposal_id": "jjs-orange-identity-resolution-2026-07-23",
+  "description": "Narrow identity-resolution result for the JJ's Orange Discord schedule lead. This proposal intentionally contains no canonical event, venue, source, or Signal write because the Orange branch/entity relationship is not branch-safe yet.",
+  "created_at": "2026-07-23T00:00:00-07:00",
+  "author": "Codex Project Steward",
+  "status": "no_write_recommended",
+  "validation_level": "none_until_identity_resolved",
+  "scope": {
+    "question": "What does JJ's Orange mean for the JJ's Discord schedule lead?",
+    "included": [
+      "Existing repo/Supabase JJ's evidence",
+      "Existing Discord-derived Orange TBDs",
+      "Lightweight non-Discord public identity/source checks"
+    ],
+    "excluded": [
+      "No broad JJ's main pass",
+      "No new Discord survey",
+      "No canonical event ingestion",
+      "No Garden Grove merge",
+      "No app change"
+    ]
+  },
+  "identity_disposition": {
+    "classification": "still_unresolved_branch_identity_tbd",
+    "do_not_merge_with": "jjs-collectibles",
+    "do_not_create_events_for": "jjs-collectibles",
+    "do_not_create_place_yet": "jjs-collectibles-orange",
+    "working_hypothesis": "The Discord Orange schedule may refer to a separate Orange card-shop surface, possibly related to Hidden Collectibles 2 / jjscardemporium.com, but a clean official bridge to JJ's Collectibles was not found in this bounded pass."
+  },
+  "supporting_observations": [
+    {
+      "source": "live Supabase venues/events/sources",
+      "finding": "Canonical JJ's records remain Garden Grove-only; prior accepted work already kept Orange schedule material as branch-risky TBD.",
+      "disposition": "already_captured"
+    },
+    {
+      "source": "public JJ's directory/event-network checks",
+      "finding": "Public JJ's Collectibles identity found in this pass points to 11893 Valley View St, Garden Grove, CA 92845.",
+      "disposition": "supports Garden Grove identity only"
+    },
+    {
+      "source": "Hidden Collectibles 2 public directory checks",
+      "finding": "Orange card-shop lead exists at 3533 E Chapman Ave Unit H, Orange, CA 92869, with MapQuest listing jjscardemporium.com as website and public directory/review surfaces describing TCG activity.",
+      "disposition": "possible Orange lead, not branch-safe JJ's proof"
+    }
+  ],
+  "no_write_dispositions": [
+    {
+      "target": "signals",
+      "deduplication_key": "jjs-orange-current-week-schedule-2026-07-22",
+      "disposition": "do_not_apply_now",
+      "reason": "The Discord schedule was useful, but identity remains unresolved and the schedule may no longer be actionable by the time of review."
+    },
+    {
+      "target": "event_series",
+      "disposition": "do_not_create",
+      "reason": "Orange schedule rows are not safe to attach to Garden Grove and no branch-safe Orange venue exists yet."
+    },
+    {
+      "target": "venues",
+      "proposed_id": "jjs-collectibles-orange",
+      "disposition": "do_not_create_yet",
+      "reason": "A separate Orange card-shop lead exists, but this pass did not prove it is a JJ's Collectibles branch."
+    }
+  ],
+  "tbd_for_future_surveys": {
+    "label": "JJ's Orange branch/entity resolution",
+    "summary": "If JJ's Discord surfaces Orange schedule material again, do not attach it to Garden Grove. First identify the Orange venue name/address and corroborate the relationship through a non-Discord or store-controlled source.",
+    "would_resolve_with": [
+      "Official JJ's/Hidden source text linking Garden Grove and Orange as branches",
+      "Store-controlled website/social profile naming both locations",
+      "Wizards/EventLink or registration record for the Orange branch",
+      "Discord/store-controlled post with Orange location name/address plus non-Discord corroboration"
+    ]
+  },
+  "next_action": "If the user wants this unblocked, run a targeted identity check on Hidden Collectibles 2 / jjscardemporium.com and JJ's public/social surfaces, then revalidate any still-current Orange Discord schedule before proposing event rows.",
+  "live_writes_performed": false
+}
