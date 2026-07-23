@@ -1,0 +1,371 @@
+{
+  "proposal_id": "kingslayer-spellhold-lucky-shadow-main-pass-2026-07-23",
+  "description": "REVIEW ONLY / NOT APPLIED. Corrected four-store main-pass batch for Kingslayer Games - Fountain Valley, Spellhold Games, Lucky Seven Games, and Shadow Realm Collectibles. Fresh 2026-07-23 Wizards/EventLink pull confirms existing Kingslayer/Shadow coverage, corrects Spellhold Hobbit prerelease fee from $50 to $35, and surfaces missing Lucky Seven Pauper and FNM Draft event lanes. No canonical JSON edits.",
+  "created_at": "2026-07-23T00:00:00-07:00",
+  "author": "Codex Project Steward",
+  "validation_level": "standard",
+  "applied": false,
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-7819"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh 2026-07-23 Wizards/EventLink pull still supports Kingslayer Fountain Valley's branch-specific current Magic rows; no Lake Forest rows are included."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-6830"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh 2026-07-23 Wizards/EventLink pull still supports Spellhold's broad weekly calendar and corrects Hobbit prerelease fee/session details."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-17840"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh 2026-07-23 Wizards/EventLink pull supports Lucky Seven's existing Sunday/Monday Commander rows and newly surfaced Pauper/FNM Draft lanes."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-16787"
+      },
+      "fields": {
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh 2026-07-23 Wizards/EventLink pull still supports Shadow Realm's Monday Commander, Wednesday Standard Showdown, and Thursday Two-Headed Giant rows."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "lucky-seven-pauper-thursday-4-19-00"
+      },
+      "fields": {
+        "id": "lucky-seven-pauper-thursday-4-19-00",
+        "venue_id": "lucky-seven-games",
+        "title": "Pauper Tournament",
+        "format": "Pauper",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 4,
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-23",
+        "end_date": "2026-07-30",
+        "entry_fee": 5.0,
+        "currency": "USD",
+        "details": "Fresh 2026-07-23 Wizards/EventLink pull lists Lucky Seven Games Thursday 7:00 PM Pauper Tournament with $5 entry, 24-player cap, Regular REL, Swiss pairing, and store-credit prize-pool language. Visible July 23 and July 30, 2026; treat as a short-run current Pauper signal unless later official evidence extends it.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Catalog current Lucky Seven Pauper coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17840",
+        "series_id": "lucky-seven-pauper-thursday-4-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17840",
+        "series_id": "lucky-seven-pauper-thursday-4-19-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink short-run Thursday Pauper evidence"
+      },
+      "reason": "Attach WPN provenance to Lucky Seven Pauper."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "lucky-seven-fnm-draft-5-19-30"
+      },
+      "fields": {
+        "id": "lucky-seven-fnm-draft-5-19-30",
+        "venue_id": "lucky-seven-games",
+        "title": "Friday Night Magic Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 5,
+          "startTime": "19:30"
+        },
+        "default_start_time": "19:30",
+        "start_date": "2026-07-24",
+        "end_date": "2026-08-07",
+        "entry_fee": 25.0,
+        "currency": "USD",
+        "details": "Fresh 2026-07-23 Wizards/EventLink pull lists Lucky Seven Games Friday 7:30 PM FNM Draft with $25 entry, near-term 24-player cap, and draft/promo-pack prizing text. July 24 and July 31 rows mention choice between Open Archive or Marvel Draft; August 7 visible row brands this as Marvel Super Hero Draft Night. Treat as a short-run current draft lane unless later official evidence extends it.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Catalog current Lucky Seven FNM Draft coverage missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17840",
+        "series_id": "lucky-seven-fnm-draft-5-19-30",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17840",
+        "series_id": "lucky-seven-fnm-draft-5-19-30",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink short-run Friday FNM Draft evidence"
+      },
+      "reason": "Attach WPN provenance to Lucky Seven FNM Draft."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "spellhold-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "entry_fee": 35.0,
+        "details": "Fresh 2026-07-23 Wizards/EventLink pull lists five The Hobbit prerelease sealed sessions at Spellhold Games from August 7-9, 2026 with $35 entry, 42-player cap, and booster-pack prizing. Session times: Friday 7:00 PM; Saturday noon and 4:00 PM; Sunday noon and 4:00 PM.",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Correct Spellhold Hobbit prerelease fee/session summary from older $50 wording to current $35 Wizards/EventLink evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_occurrences",
+      "key": {
+        "id": "spellhold-hobbit-prerelease-2026-08-07-19-00"
+      },
+      "fields": {
+        "entry_fee": 35.0,
+        "capacity": 42,
+        "details": "Fresh 2026-07-23 Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Friday, August 7, 2026 at 7:00 PM with $35 entry and 42-player cap."
+      },
+      "reason": "Correct occurrence fee/capacity using current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_occurrences",
+      "key": {
+        "id": "spellhold-hobbit-prerelease-2026-08-08-12-00"
+      },
+      "fields": {
+        "entry_fee": 35.0,
+        "capacity": 42,
+        "details": "Fresh 2026-07-23 Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Saturday, August 8, 2026 at 12:00 PM with $35 entry and 42-player cap."
+      },
+      "reason": "Correct occurrence fee/capacity using current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_occurrences",
+      "key": {
+        "id": "spellhold-hobbit-prerelease-2026-08-08-16-00"
+      },
+      "fields": {
+        "entry_fee": 35.0,
+        "capacity": 42,
+        "details": "Fresh 2026-07-23 Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Saturday, August 8, 2026 at 4:00 PM with $35 entry and 42-player cap."
+      },
+      "reason": "Correct occurrence fee/capacity using current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_occurrences",
+      "key": {
+        "id": "spellhold-hobbit-prerelease-2026-08-09-12-00"
+      },
+      "fields": {
+        "entry_fee": 35.0,
+        "capacity": 42,
+        "details": "Fresh 2026-07-23 Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Sunday, August 9, 2026 at 12:00 PM with $35 entry and 42-player cap."
+      },
+      "reason": "Correct occurrence fee/capacity using current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_occurrences",
+      "key": {
+        "id": "spellhold-hobbit-prerelease-2026-08-09-16-00"
+      },
+      "fields": {
+        "entry_fee": 35.0,
+        "capacity": 42,
+        "details": "Fresh 2026-07-23 Wizards/EventLink confirms The Hobbit Prerelease at Spellhold Games on Sunday, August 9, 2026 at 4:00 PM with $35 entry and 42-player cap. Source description appears to repeat Saturday copy, but scheduled date/time and event title identify the Sunday 4:00 PM session."
+      },
+      "reason": "Correct occurrence fee/capacity using current WPN evidence while preserving the source-copy caveat."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "lucky-seven-games"
+      },
+      "fields": {
+        "research_status": "reviewed",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Lucky Seven now reads stronger than the older Commander-only-plus-thin-social assessment. Fresh Wizards/EventLink evidence supports Sunday/Monday free Casual Commander plus current Thursday Pauper and Friday FNM Draft lanes, so Lucky Seven is a real multi-format Magic venue rather than just a pair of Commander listings. The store remains a plausible but not yet top-tier personal candidate: public community/social texture is still thin, and solo-arrival, pod formation, proxy norms, and event turnout remain unresolved. Check current event routing before traveling, especially for non-Commander nights."
+      },
+      "reason": "Reflect fresh Wizards evidence that Lucky Seven has broader current Magic coverage than the existing Places read."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "lucky-seven-games"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lucky-seven-games",
+        "research_status": "reviewed",
+        "candidate_status": "promising",
+        "fit_grade": "B-",
+        "fit_score": 3.5,
+        "confidence": "medium",
+        "positives": [
+          "Fresh Wizards/EventLink supports Sunday and Monday free Casual Commander.",
+          "Fresh Wizards/EventLink also surfaces Thursday Pauper and Friday FNM Draft, improving confidence in broad current Magic activity.",
+          "Official website/source stack already supports an active TCG-first store with Magic inventory and event/tournament framing.",
+          "Free Commander and recurring multi-format Magic make it a plausible planning candidate."
+        ],
+        "cautions": [
+          "Public social/community texture remains thin compared with stronger candidates.",
+          "Solo-arrival support, pod formation, proxy policy, and Commander turnout remain unstated.",
+          "Friday Draft and Pauper listings use prize/promo-pack language, so non-Commander nights may be more structured than casual-social."
+        ],
+        "open_questions": [
+          "Does Lucky Seven have a Discord or other community route that helps players coordinate before arrival?",
+          "How reliably do Sunday/Monday Commander pods form?",
+          "Are proxy norms and power levels compatible with the user's Bracket 2/3 goals?",
+          "Does Friday Draft reliably fire, and how beginner/casual-friendly is it?"
+        ]
+      },
+      "reason": "Add a visible evaluation row for Lucky Seven now that event coverage is broader and planning confidence is improved."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-fountain-valley"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-fountain-valley",
+        "research_status": "reviewed",
+        "candidate_status": "promising",
+        "fit_grade": "B+",
+        "fit_score": 4.0,
+        "confidence": "high",
+        "positives": [
+          "Fresh Wizards/EventLink continues to support branch-specific Fountain Valley Commander, draft, Modern, Pauper, and Standard coverage.",
+          "Commander Slay Pass provides explicit structure, paid entry, pod-filling attempt, and house rules.",
+          "Distance is reasonable for a strong opportunity at about 10.5 miles.",
+          "Captured Discord route suggests a large Kingslayer community surface for future branch-aware survey."
+        ],
+        "cautions": [
+          "Kingslayer has Fountain Valley and Lake Forest branches; multi-location social or Discord evidence must not be merged without branch-specific support.",
+          "Commander fit depends on Slay Pass house rules and turnout remaining compatible.",
+          "Proxy norms and richer solo-arrival/community texture are still not proven by inspected content."
+        ],
+        "open_questions": [
+          "Does the Kingslayer Discord provide branch-specific Commander coordination for Fountain Valley?",
+          "How casual or competitive are Slay Pass pods in practice?",
+          "Do house rules create a good fit for the user's decks and expectations?"
+        ]
+      },
+      "reason": "Add a visible evaluation row for Kingslayer Fountain Valley while preserving branch-contamination cautions."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "spellhold-games"
+      },
+      "fields": {
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Spellhold continues to read as a broad, reliable Magic hub. Fresh Wizards/EventLink still supports Saturday open-play Commander, FNM Draft, Modern, Legacy, Standard Showdown, Pioneer, Premodern, Sunday Pauper, and The Hobbit prerelease sessions. The main planning correction from this pass is that the current Hobbit prerelease evidence shows $35 entry and explicit session times. Spellhold remains valuable for draft/prerelease/sealed and constructed play, while Commander personal fit still depends on unresolved proxy norms, pod formation, and solo-arrival texture."
+      },
+      "reason": "Refresh Spellhold assessment with current prerelease correction while preserving existing fit cautions."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "shadow-realm-collectibles"
+      },
+      "fields": {
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Shadow Realm remains a real nearby Bell Gardens Magic venue with current Wizards/EventLink support for Monday Commander Night, Wednesday Standard Showdown, and Thursday Two-Headed Giant Commander. No new event row emerged in this pass. The personal-fit caution remains important: the event copy leans structured and prize-oriented, with participation packs, prize-pool/top-placement language, and limited public evidence for relaxed casual pods, proxy norms, or solo-arrival comfort."
+      },
+      "reason": "Refresh Shadow Realm verification without changing the core fit interpretation."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "kingslayer-spellhold-lucky-shadow-main-pass-2026-07-23"
+      },
+      "fields": {
+        "id": "kingslayer-spellhold-lucky-shadow-main-pass-2026-07-23",
+        "detected_at": "2026-07-23T00:00:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "venue",
+        "entity_id": "lucky-seven-games",
+        "summary": "Proposed corrected four-store main pass for Kingslayer Fountain Valley, Spellhold, Lucky Seven, and Shadow Realm: add missing Lucky Seven Pauper/FNM Draft rows, correct Spellhold Hobbit prerelease fee to $35, refresh WPN source checks, and recalibrate Places reads without merging Kingslayer branches.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable proposed update marker before any live write."
+    }
+  ],
+  "no_write_decisions": [
+    {
+      "entity_id": "kingslayer-games-fountain-valley",
+      "decision": "No new event rows proposed; fresh WPN confirms already-modeled Fountain Valley coverage. Lake Forest rows excluded."
+    },
+    {
+      "entity_id": "shadow-realm-collectibles",
+      "decision": "No new event rows proposed; fresh WPN confirms already-modeled Monday Commander, Wednesday Standard, and Thursday Two-Headed Giant."
+    },
+    {
+      "entity_id": "spellhold-games",
+      "decision": "No new event series proposed; existing series/occurrences are updated for current prerelease fee/capacity details only."
+    }
+  ],
+  "tbd": [
+    "Kingslayer Fountain Valley Discord/community content can answer branch-specific turnout and solo-arrival questions only under the approved guarded UI-native Discord process.",
+    "Spellhold Commander proxy norms, pod formation, and solo-arrival friendliness remain unresolved.",
+    "Lucky Seven social/community route and review texture remain thin; future pass should look for Discord/community coordination and richer reviews.",
+    "Shadow Realm social/community content remains needed to decide whether prize-oriented EventLink copy reflects actual Commander vibe."
+  ]
+}
