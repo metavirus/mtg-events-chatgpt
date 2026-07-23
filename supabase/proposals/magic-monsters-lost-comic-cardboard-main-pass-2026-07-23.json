@@ -1,0 +1,869 @@
+{
+  "proposal_id": "magic-monsters-lost-comic-cardboard-main-pass-2026-07-23",
+  "description": "Corrected main-store pass for Magic and Monsters, Lost Planet, Comic Book Hideout, and Cardboard Games. Adds missing current event coverage where source-supported, repairs over-projected/stale event behavior, refreshes source-health notes, and recalibrates Places/evaluation reads. No canonical JSON or app-code changes are proposed.",
+  "created_at": "2026-07-23T08:55:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-7807"},
+      "fields": {
+        "id": "src-wpn-7807",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh 35-mile Wizards/EventLink pull rechecked Magic and Monsters and still shows Friday Commander Free Play, but that source remains in conflict with stronger store-controlled scheduling evidence."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-18910"},
+      "fields": {
+        "id": "src-wpn-18910",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull supports Lost Planet's current sequence of dated Friday specials, prereleases, Commander Party, and Level 2 Commander rows."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-8283"},
+      "fields": {
+        "id": "src-wpn-8283",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull confirms Comic Book Hideout's Sunday Commander and adds missing Thursday Commander / Friday Beginner Nights coverage."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-17086"},
+      "fields": {
+        "id": "src-wpn-17086",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull still supports Cardboard Games' existing Friday Commander and Monday draft rows."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-cardboardgames-calendar-2026-07-15"},
+      "fields": {
+        "id": "src-cardboardgames-calendar-2026-07-15",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Official Cardboard Games calendar continues to support the August Hobbit prerelease events with 1:00 PM to 5:00 PM times."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "magic-and-monsters-commander-free-play-5-18-00"},
+      "fields": {
+        "id": "magic-and-monsters-commander-free-play-5-18-00",
+        "venue_id": "magic-and-monsters",
+        "details": "Retired from active calendar after targeted replay. A fresh Wizards/EventLink pull on 2026-07-23 still shows Friday 6:00 PM Commander Free Play on July 24 and July 31 with free entry and 48-player capacity, but that signal conflicts with stronger store-controlled evidence: the official web calendar showed no MTG listings in the checked future pages, and the inspected store Discord's May 31, 2026 summer schedule says Magic is no longer on the regular weekly schedule. Preserve the WPN signal as a source-health contradiction and evidence/TBD, not as a reliable projected weekly planning event.",
+        "confidence": "medium",
+        "event_status": "inactive",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Keep Magic and Monsters Commander inactive while correcting the current WPN contradiction to Friday rather than the older Saturday mirror wording."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "comic-book-hideout-magic-under-the-stars-4-16-00"},
+      "fields": {
+        "id": "comic-book-hideout-magic-under-the-stars-4-16-00",
+        "venue_id": "comic-book-hideout",
+        "title": "Magic Under the Stars",
+        "format": "Commander",
+        "event_type": "casual",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 4, "startTime": "16:00"},
+        "default_start_time": "16:00",
+        "start_date": "2026-07-23",
+        "entry_fee": 0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Thursday 4:00 PM outdoor Commander on Comic Book Hideout's back patio. Event copy describes weekly Commander under the stars.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add missing WPN-supported Thursday Commander lane for Comic Book Hideout."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-8283", "series_id": "comic-book-hideout-magic-under-the-stars-4-16-00", "occurrence_id": null},
+      "fields": {
+        "source_id": "src-wpn-8283",
+        "series_id": "comic-book-hideout-magic-under-the-stars-4-16-00",
+        "occurrence_id": null,
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN/EventLink source to Comic Book Hideout Thursday Commander."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "comic-book-hideout-beginner-nights-5-16-00"},
+      "fields": {
+        "id": "comic-book-hideout-beginner-nights-5-16-00",
+        "venue_id": "comic-book-hideout",
+        "title": "Beginner Nights",
+        "format": "Magic",
+        "event_type": "casual",
+        "bracket": "all",
+        "recurrence": {"frequency": "weekly", "dayOfWeek": 5, "startTime": "16:00"},
+        "default_start_time": "16:00",
+        "start_date": "2026-07-24",
+        "entry_fee": 0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Friday 4:00 PM Beginner Nights. Event copy says players can come learn the game, borrow a deck, and do not need their own 60-card deck.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add missing WPN-supported Friday beginner Magic lane for Comic Book Hideout."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-8283", "series_id": "comic-book-hideout-beginner-nights-5-16-00", "occurrence_id": null},
+      "fields": {
+        "source_id": "src-wpn-8283",
+        "series_id": "comic-book-hideout-beginner-nights-5-16-00",
+        "occurrence_id": null,
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN/EventLink source to Comic Book Hideout Beginner Nights."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "comic-book-hideout-sunday-commander-0-12-00"},
+      "fields": {
+        "id": "comic-book-hideout-sunday-commander-0-12-00",
+        "venue_id": "comic-book-hideout",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Fresh WPN pull continues to support the existing Sunday Commander row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "lost-planet-friday-night-lvl-2-commander-5-19-00"},
+      "fields": {
+        "id": "lost-planet-friday-night-lvl-2-commander-5-19-00",
+        "venue_id": "lost-planet",
+        "details": "Retired as a weekly projection after the 2026-07-23 Wizards/EventLink pull. Fresh WPN rows show Level 2 Commander on specific Friday dates, but intervening Fridays are occupied by Commander Party, prerelease, Two-Headed Giant Commander, and Magic Presents specials. Preserve Level 2 Commander as dated rows rather than projecting every Friday.",
+        "confidence": "high",
+        "event_status": "inactive",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Avoid false weekly Friday projections for Lost Planet's rotating Friday Magic schedule."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "lost-planet-marvel-super-heroes-lvl-2-commander-party-2026-07-31"},
+      "fields": {
+        "id": "lost-planet-marvel-super-heroes-lvl-2-commander-party-2026-07-31",
+        "venue_id": "lost-planet",
+        "title": "Marvel Super Heroes Level 2 Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "2",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-07-31",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 11119087 lists a Friday, July 31, 2026 7:00 PM Marvel Super Heroes Level 2 Commander Party at Lost Planet with $10 entry and 24-player capacity.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add current dated Lost Planet Commander Party special from WPN/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "lost-planet-marvel-super-heroes-lvl-2-commander-party-2026-07-31--occurrence"},
+      "fields": {
+        "id": "lost-planet-marvel-super-heroes-lvl-2-commander-party-2026-07-31--occurrence",
+        "series_id": "lost-planet-marvel-super-heroes-lvl-2-commander-party-2026-07-31",
+        "occurrence_date": "2026-07-31",
+        "start_time": "19:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10,
+        "capacity": 24,
+        "details": "WPN/EventLink dated listing; Marvel Super Heroes Level 2 Commander Party."
+      },
+      "reason": "Create confirmed dated occurrence for Lost Planet July 31 Commander Party."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18910", "series_id": null, "occurrence_id": "lost-planet-marvel-super-heroes-lvl-2-commander-party-2026-07-31--occurrence"},
+      "fields": {
+        "source_id": "src-wpn-18910",
+        "series_id": null,
+        "occurrence_id": "lost-planet-marvel-super-heroes-lvl-2-commander-party-2026-07-31--occurrence",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN source to Lost Planet July 31 Commander Party occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "lost-planet-mtg-x-hobbit-afternoon-pod-prerelease-2026-08-07"},
+      "fields": {
+        "id": "lost-planet-mtg-x-hobbit-afternoon-pod-prerelease-2026-08-07",
+        "venue_id": "lost-planet",
+        "title": "MTG x Hobbit Prerelease — Afternoon Pod",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "12:30",
+        "start_date": "2026-08-07",
+        "entry_fee": 50,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 10980820 lists a Friday, August 7, 2026 12:30 PM MTG x Hobbit Sealed Deck Prerelease afternoon pod at Lost Planet with $50 entry and 16-player capacity.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add current dated Lost Planet Hobbit prerelease afternoon pod from WPN/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "lost-planet-mtg-x-hobbit-afternoon-pod-prerelease-2026-08-07--occurrence"},
+      "fields": {
+        "id": "lost-planet-mtg-x-hobbit-afternoon-pod-prerelease-2026-08-07--occurrence",
+        "series_id": "lost-planet-mtg-x-hobbit-afternoon-pod-prerelease-2026-08-07",
+        "occurrence_date": "2026-08-07",
+        "start_time": "12:30",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 50,
+        "capacity": 16,
+        "details": "WPN/EventLink dated listing; MTG x Hobbit Sealed Deck Prerelease afternoon pod."
+      },
+      "reason": "Create confirmed dated occurrence for Lost Planet August 7 afternoon prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18910", "series_id": null, "occurrence_id": "lost-planet-mtg-x-hobbit-afternoon-pod-prerelease-2026-08-07--occurrence"},
+      "fields": {
+        "source_id": "src-wpn-18910",
+        "series_id": null,
+        "occurrence_id": "lost-planet-mtg-x-hobbit-afternoon-pod-prerelease-2026-08-07--occurrence",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN source to Lost Planet August 7 afternoon prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "lost-planet-mtg-x-hobbit-evening-pod-prerelease-2026-08-07"},
+      "fields": {
+        "id": "lost-planet-mtg-x-hobbit-evening-pod-prerelease-2026-08-07",
+        "venue_id": "lost-planet",
+        "title": "MTG x Hobbit Prerelease — Evening Pod",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-08-07",
+        "entry_fee": 50,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 10980823 lists a Friday, August 7, 2026 7:00 PM MTG x Hobbit Sealed Deck Prerelease evening pod at Lost Planet with $50 entry and 24-player capacity.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add current dated Lost Planet Hobbit prerelease evening pod from WPN/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "lost-planet-mtg-x-hobbit-evening-pod-prerelease-2026-08-07--occurrence"},
+      "fields": {
+        "id": "lost-planet-mtg-x-hobbit-evening-pod-prerelease-2026-08-07--occurrence",
+        "series_id": "lost-planet-mtg-x-hobbit-evening-pod-prerelease-2026-08-07",
+        "occurrence_date": "2026-08-07",
+        "start_time": "19:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 50,
+        "capacity": 24,
+        "details": "WPN/EventLink dated listing; MTG x Hobbit Sealed Deck Prerelease evening pod."
+      },
+      "reason": "Create confirmed dated occurrence for Lost Planet August 7 evening prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18910", "series_id": null, "occurrence_id": "lost-planet-mtg-x-hobbit-evening-pod-prerelease-2026-08-07--occurrence"},
+      "fields": {
+        "source_id": "src-wpn-18910",
+        "series_id": null,
+        "occurrence_id": "lost-planet-mtg-x-hobbit-evening-pod-prerelease-2026-08-07--occurrence",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN source to Lost Planet August 7 evening prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "lost-planet-two-headed-giant-commander-the-hobbit-2026-08-14"},
+      "fields": {
+        "id": "lost-planet-two-headed-giant-commander-the-hobbit-2026-08-14",
+        "venue_id": "lost-planet",
+        "title": "Two Headed Giant Commander — The Hobbit",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-08-14",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 11119115 lists Friday, August 14, 2026 7:00 PM Two Headed Giant Commander The Hobbit at Lost Planet with $10 entry and 24-player capacity.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add current dated Lost Planet Two-Headed Giant Commander special from WPN/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "lost-planet-two-headed-giant-commander-the-hobbit-2026-08-14--occurrence"},
+      "fields": {
+        "id": "lost-planet-two-headed-giant-commander-the-hobbit-2026-08-14--occurrence",
+        "series_id": "lost-planet-two-headed-giant-commander-the-hobbit-2026-08-14",
+        "occurrence_date": "2026-08-14",
+        "start_time": "19:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10,
+        "capacity": 24,
+        "details": "WPN/EventLink dated listing; Two Headed Giant Commander The Hobbit."
+      },
+      "reason": "Create confirmed dated occurrence for Lost Planet August 14 Two-Headed Giant Commander."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18910", "series_id": null, "occurrence_id": "lost-planet-two-headed-giant-commander-the-hobbit-2026-08-14--occurrence"},
+      "fields": {
+        "source_id": "src-wpn-18910",
+        "series_id": null,
+        "occurrence_id": "lost-planet-two-headed-giant-commander-the-hobbit-2026-08-14--occurrence",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN source to Lost Planet August 14 Two-Headed Giant Commander occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "lost-planet-the-hobbit-commander-party-2026-08-21"},
+      "fields": {
+        "id": "lost-planet-the-hobbit-commander-party-2026-08-21",
+        "venue_id": "lost-planet",
+        "title": "The Hobbit Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-08-21",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 11119108 lists Friday, August 21, 2026 7:00 PM The Hobbit Commander Party at Lost Planet with $10 entry and 24-player capacity.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add current dated Lost Planet Hobbit Commander Party from WPN/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "lost-planet-the-hobbit-commander-party-2026-08-21--occurrence"},
+      "fields": {
+        "id": "lost-planet-the-hobbit-commander-party-2026-08-21--occurrence",
+        "series_id": "lost-planet-the-hobbit-commander-party-2026-08-21",
+        "occurrence_date": "2026-08-21",
+        "start_time": "19:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10,
+        "capacity": 24,
+        "details": "WPN/EventLink dated listing; The Hobbit Commander Party."
+      },
+      "reason": "Create confirmed dated occurrence for Lost Planet August 21 Commander Party."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18910", "series_id": null, "occurrence_id": "lost-planet-the-hobbit-commander-party-2026-08-21--occurrence"},
+      "fields": {
+        "source_id": "src-wpn-18910",
+        "series_id": null,
+        "occurrence_id": "lost-planet-the-hobbit-commander-party-2026-08-21--occurrence",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN source to Lost Planet August 21 Commander Party occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "lost-planet-friday-night-lvl-2-commander-2026-08-28"},
+      "fields": {
+        "id": "lost-planet-friday-night-lvl-2-commander-2026-08-28",
+        "venue_id": "lost-planet",
+        "title": "Friday Night Level 2 Commander",
+        "format": "Commander",
+        "event_type": "casual",
+        "bracket": "2",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-08-28",
+        "entry_fee": 5,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 10910981 lists Friday, August 28, 2026 7:00 PM Friday Night Level 2 Commander at Lost Planet with $5 entry and 24-player capacity. Event copy says Level 2 decks only.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Convert Lost Planet's recurring Level 2 Commander projection into a dated WPN-supported row."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "lost-planet-friday-night-lvl-2-commander-2026-08-28--occurrence"},
+      "fields": {
+        "id": "lost-planet-friday-night-lvl-2-commander-2026-08-28--occurrence",
+        "series_id": "lost-planet-friday-night-lvl-2-commander-2026-08-28",
+        "occurrence_date": "2026-08-28",
+        "start_time": "19:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 5,
+        "capacity": 24,
+        "details": "WPN/EventLink dated listing; Level 2 decks only."
+      },
+      "reason": "Create confirmed dated occurrence for Lost Planet August 28 Level 2 Commander."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18910", "series_id": null, "occurrence_id": "lost-planet-friday-night-lvl-2-commander-2026-08-28--occurrence"},
+      "fields": {
+        "source_id": "src-wpn-18910",
+        "series_id": null,
+        "occurrence_id": "lost-planet-friday-night-lvl-2-commander-2026-08-28--occurrence",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN source to Lost Planet August 28 Level 2 Commander occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "lost-planet-magic-presents-heart-of-the-mountain-2026-09-04"},
+      "fields": {
+        "id": "lost-planet-magic-presents-heart-of-the-mountain-2026-09-04",
+        "venue_id": "lost-planet",
+        "title": "Magic Presents: Heart of the Mountain",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-09-04",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 11119114 lists Friday, September 4, 2026 7:00 PM Magic Presents: Heart of the Mountain at Lost Planet with $10 entry and 24-player capacity.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add current dated Lost Planet Magic Presents special from WPN/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "lost-planet-magic-presents-heart-of-the-mountain-2026-09-04--occurrence"},
+      "fields": {
+        "id": "lost-planet-magic-presents-heart-of-the-mountain-2026-09-04--occurrence",
+        "series_id": "lost-planet-magic-presents-heart-of-the-mountain-2026-09-04",
+        "occurrence_date": "2026-09-04",
+        "start_time": "19:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10,
+        "capacity": 24,
+        "details": "WPN/EventLink dated listing; Magic Presents: Heart of the Mountain."
+      },
+      "reason": "Create confirmed dated occurrence for Lost Planet September 4 Magic Presents."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18910", "series_id": null, "occurrence_id": "lost-planet-magic-presents-heart-of-the-mountain-2026-09-04--occurrence"},
+      "fields": {
+        "source_id": "src-wpn-18910",
+        "series_id": null,
+        "occurrence_id": "lost-planet-magic-presents-heart-of-the-mountain-2026-09-04--occurrence",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN source to Lost Planet September 4 Magic Presents occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "lost-planet-friday-night-lvl-2-commander-2026-09-11"},
+      "fields": {
+        "id": "lost-planet-friday-night-lvl-2-commander-2026-09-11",
+        "venue_id": "lost-planet",
+        "title": "Friday Night Level 2 Commander",
+        "format": "Commander",
+        "event_type": "casual",
+        "bracket": "2",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-09-11",
+        "entry_fee": 5,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 10910983 lists Friday, September 11, 2026 7:00 PM Friday Night Level 2 Commander at Lost Planet with $5 entry and 24-player capacity. Event copy says Level 2 decks only.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Convert Lost Planet's recurring Level 2 Commander projection into a dated WPN-supported row."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "lost-planet-friday-night-lvl-2-commander-2026-09-11--occurrence"},
+      "fields": {
+        "id": "lost-planet-friday-night-lvl-2-commander-2026-09-11--occurrence",
+        "series_id": "lost-planet-friday-night-lvl-2-commander-2026-09-11",
+        "occurrence_date": "2026-09-11",
+        "start_time": "19:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 5,
+        "capacity": 24,
+        "details": "WPN/EventLink dated listing; Level 2 decks only."
+      },
+      "reason": "Create confirmed dated occurrence for Lost Planet September 11 Level 2 Commander."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18910", "series_id": null, "occurrence_id": "lost-planet-friday-night-lvl-2-commander-2026-09-11--occurrence"},
+      "fields": {
+        "source_id": "src-wpn-18910",
+        "series_id": null,
+        "occurrence_id": "lost-planet-friday-night-lvl-2-commander-2026-09-11--occurrence",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN source to Lost Planet September 11 Level 2 Commander occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "lost-planet-the-hobbit-commander-party-2026-09-18"},
+      "fields": {
+        "id": "lost-planet-the-hobbit-commander-party-2026-09-18",
+        "venue_id": "lost-planet",
+        "title": "The Hobbit Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "19:00",
+        "start_date": "2026-09-18",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 11119113 lists Friday, September 18, 2026 7:00 PM The Hobbit Commander Party at Lost Planet.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add current dated Lost Planet Hobbit Commander Party from WPN/EventLink."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "lost-planet-the-hobbit-commander-party-2026-09-18--occurrence"},
+      "fields": {
+        "id": "lost-planet-the-hobbit-commander-party-2026-09-18--occurrence",
+        "series_id": "lost-planet-the-hobbit-commander-party-2026-09-18",
+        "occurrence_date": "2026-09-18",
+        "start_time": "19:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10,
+        "details": "WPN/EventLink dated listing; The Hobbit Commander Party."
+      },
+      "reason": "Create confirmed dated occurrence for Lost Planet September 18 Commander Party."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-18910", "series_id": null, "occurrence_id": "lost-planet-the-hobbit-commander-party-2026-09-18--occurrence"},
+      "fields": {
+        "source_id": "src-wpn-18910",
+        "series_id": null,
+        "occurrence_id": "lost-planet-the-hobbit-commander-party-2026-09-18--occurrence",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN source to Lost Planet September 18 Commander Party occurrence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "cardboard-games-the-hobbit-prerelease-2026-08-08"},
+      "fields": {
+        "id": "cardboard-games-the-hobbit-prerelease-2026-08-08",
+        "venue_id": "cardboard-games",
+        "default_start_time": "13:00",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Fix structured time for Cardboard's August 8 Hobbit prerelease based on already-captured official calendar evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_occurrences",
+      "key": {"id": "cardboard-games-the-hobbit-prerelease-2026-08-08--occurrence"},
+      "fields": {
+        "id": "cardboard-games-the-hobbit-prerelease-2026-08-08--occurrence",
+        "start_time": "13:00",
+        "end_time": "17:00"
+      },
+      "reason": "Fix occurrence time for Cardboard's August 8 Hobbit prerelease so the app does not show Time TBD."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "cardboard-games-the-hobbit-prerelease-2026-08-09"},
+      "fields": {
+        "id": "cardboard-games-the-hobbit-prerelease-2026-08-09",
+        "venue_id": "cardboard-games",
+        "default_start_time": "13:00",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Fix structured time for Cardboard's August 9 Hobbit prerelease based on already-captured official calendar evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_occurrences",
+      "key": {"id": "cardboard-games-the-hobbit-prerelease-2026-08-09--occurrence"},
+      "fields": {
+        "id": "cardboard-games-the-hobbit-prerelease-2026-08-09--occurrence",
+        "start_time": "13:00",
+        "end_time": "17:00"
+      },
+      "reason": "Fix occurrence time for Cardboard's August 9 Hobbit prerelease so the app does not show Time TBD."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "magic-and-monsters"},
+      "fields": {
+        "id": "magic-and-monsters",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Magic and Monsters remains a real TCG-focused Mission Viejo store with unusually good source routing, but it is still a weaker personal MTG planning target than its generic WPN listing suggests. A fresh 2026-07-23 Wizards/EventLink pull still shows Friday 6:00 PM Commander Free Play on July 24 and July 31, 2026, but prior store-controlled evidence remains stronger: the official web calendar showed no MTG listings in checked future pages, and the inspected store Discord's May 31, 2026 summer schedule says Magic: The Gathering is no longer on the regular weekly schedule. Treat the WPN row as a source-health contradiction and verify-before-going lead, not as an active reliable weekly planning event. Daily/drop-in Commander may still be possible, and prerelease/promotional/cEDH items may appear, but the store is best treated as a watch/special-event candidate rather than a regular structured Magic destination."
+      },
+      "reason": "Refresh Magic and Monsters Places read while preserving the accepted conservative interpretation."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "magic-and-monsters"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.0,
+        "confidence": "medium",
+        "positives": [
+          "Official site, social routes, WPN, reviews, and an inspected Discord provide unusually good source coverage.",
+          "Fresh WPN still shows Friday Commander Free Play dates, so Magic has not vanished entirely from public event surfaces.",
+          "Store-controlled Discord previously supported daily/drop-in Commander or EDH play space."
+        ],
+        "cautions": [
+          "Store-controlled Discord says MTG is no longer on the regular weekly schedule, which lowers personal fit.",
+          "Official web calendar absence conflicts with WPN Commander Free Play rows.",
+          "Mission Viejo distance makes this a poor default target without a stronger current special-event reason.",
+          "Drop-in play is less reliable than a structured event for solo planning."
+        ],
+        "open_questions": [
+          "Does Friday Commander Free Play reliably fire despite the Discord schedule change?",
+          "Does Friday FNM currently mean anything actionable?",
+          "What Discord/community texture exists for actual LFG, turnout, proxies, and solo arrival?"
+        ]
+      },
+      "reason": "Keep Magic and Monsters as reviewed but conservative after fresh WPN conflict check."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "lost-planet"},
+      "fields": {
+        "id": "lost-planet",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Lost Planet remains a promising event-rich Torrance store, but the fresh 2026-07-23 Wizards/EventLink pull changes how its Friday programming should be represented. WPN shows a rotating sequence of dated Friday MTG items through September 2026: Marvel Super Heroes Level 2 Commander Party, Hobbit prerelease sealed pods, Two-Headed Giant Commander, The Hobbit Commander Party, Magic Presents, and specific Level 2 Commander dates. That supports writing dated events now and retiring the old weekly Friday Level 2 Commander projection so the calendar does not invent events on Fridays occupied by specials. Tuesday Commander remains supported by prior accepted monthly calendar/social evidence but was not refreshed by WPN in this pull, so it should remain active with a verify-current TBD rather than being retired. Lost Planet looks useful for someone willing to check the current calendar before going; proxy policy, Tuesday turnout, and solo-arrival/pod mechanics remain unresolved."
+      },
+      "reason": "Update Lost Planet Places read to reflect event-rich but rotating Friday WPN programming."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "lost-planet"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lost-planet",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.8,
+        "confidence": "medium",
+        "positives": [
+          "Fresh WPN/EventLink supports many current MTG events, including Commander specials, prereleases, and Magic Presents.",
+          "Prior public calendar/social evidence provides unusually useful event wording about pods, Level 2, and Two-Headed Giant Commander.",
+          "The store appears active and event-rich rather than merely a directory listing."
+        ],
+        "cautions": [
+          "Friday programming rotates, so a simple weekly Friday Commander read is misleading.",
+          "Tuesday Commander was not refreshed by the fresh WPN pull and should be verified against store calendar/social before a trip.",
+          "Proxy policy, pod formation, and solo-arrival comfort remain unresolved.",
+          "Torrance distance makes it worth checking current details before going."
+        ],
+        "open_questions": [
+          "Is Tuesday Commander still reliably current and well attended?",
+          "Do Friday specials displace routine Commander consistently?",
+          "Are proxies acceptable and are pods casual enough for the user's preferred play?"
+        ]
+      },
+      "reason": "Create/update Lost Planet evaluation after the corrected event-source pass."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "comic-book-hideout"},
+      "fields": {
+        "id": "comic-book-hideout",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Comic Book Hideout now reads as a stronger practical nearby Magic candidate than the current app event list showed. Fresh 2026-07-23 Wizards/EventLink confirms the existing Sunday noon Commander row and adds two missing weekly Magic lanes: Thursday 4:00 PM Magic Under the Stars outdoor/back-patio Commander and Friday 4:00 PM Beginner Nights with borrow-deck / learn-to-play language. This aligns with prior Instagram/social evidence that the store teaches Magic and supports beginner/new-player play. The store is still a mixed comic/TCG venue rather than a pure Magic shop, but current event support, approachability signals, and Google/review texture make it a real candidate for casual play. Check Thursday space/weather, turnout, proxy policy, and pod power before relying on it as a regular home base."
+      },
+      "reason": "Update Comic Book Hideout Places read after fresh WPN found missing weekly event lanes."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "comic-book-hideout"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "comic-book-hideout",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 4.0,
+        "confidence": "high",
+        "positives": [
+          "Fresh WPN/EventLink supports Sunday Commander plus missing Thursday Commander and Friday Beginner Nights.",
+          "Beginner Nights and prior Instagram language are unusually good new-player and welcoming-atmosphere signals.",
+          "Nearby enough to be practically relevant for a first visit.",
+          "Prior review/social texture supports a friendly mixed comic/TCG environment."
+        ],
+        "cautions": [
+          "Thursday Commander is described as back-patio/outdoor play, so weather/space reliability matters.",
+          "Proxy policy and power matching are not resolved.",
+          "The store is broader than Magic, so actual Magic turnout should still be checked before making it a regular target."
+        ],
+        "open_questions": [
+          "How reliably do Thursday and Sunday Commander fire?",
+          "What are the proxy and power expectations?",
+          "Does Beginner Night create useful community texture for solo arrival even if the user is not a beginner?"
+        ]
+      },
+      "reason": "Create/update Comic Book Hideout evaluation after missing WPN event lanes materially improve the planning read."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "cardboard-games"},
+      "fields": {
+        "id": "cardboard-games",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Cardboard Games remains a real active multi-TCG store with current Magic support. Fresh 2026-07-23 Wizards/EventLink continues to support Friday 7:00 PM CBG Commander Night and Monday 7:00 PM $20 Marvel Superheroes draft. The official Cardboard calendar remains useful for special events and supports the already-captured August 8 and August 9 Hobbit prerelease Sealed events from 1:00 PM to 5:00 PM; those rows should have structured times rather than Time TBD. The store still looks promising but not fully texture-resolved: Commander pod formation, proxy policy, casual-versus-competitive expectations, and any Discord/community coordination route remain unknown."
+      },
+      "reason": "Refresh Cardboard Games Places read and note the prerelease time-hygiene repair."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "cardboard-games"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "cardboard-games",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.7,
+        "confidence": "medium",
+        "positives": [
+          "Fresh WPN/EventLink continues to support weekly Commander and Monday draft.",
+          "Official calendar supports August Hobbit prerelease events with clear 1:00 PM to 5:00 PM timing.",
+          "Prior community/review evidence suggests the store is active and potentially new-player friendly."
+        ],
+        "cautions": [
+          "Commander pod formation, proxy policy, and power expectations remain unknown.",
+          "Official calendar is useful for specials but not clean enough to trust mechanically for all Magic rows.",
+          "No Discord/community coordination route surfaced in the bounded pass."
+        ],
+        "open_questions": [
+          "Does Friday Commander have pods/power matching that work for solo arrival?",
+          "Are proxies accepted?",
+          "Is there an official Discord or other route for same-week Commander coordination?"
+        ]
+      },
+      "reason": "Create/update Cardboard Games evaluation after fresh WPN and official calendar time hygiene."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {"id": "magic-monsters-lost-comic-cardboard-main-pass-2026-07-23"},
+      "fields": {
+        "id": "magic-monsters-lost-comic-cardboard-main-pass-2026-07-23",
+        "detected_at": "2026-07-23T08:55:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "venue",
+        "entity_id": "lost-planet",
+        "summary": "Proposed corrected four-store main pass for Magic and Monsters, Lost Planet, Comic Book Hideout, and Cardboard Games: add missing Comic Book Hideout weekly Magic lanes, convert Lost Planet Friday rotation into dated events, fix Cardboard Hobbit prerelease times, and keep Magic and Monsters Commander inactive as a source-health conflict rather than a reliable weekly event.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a durable proposed update marker before any live write."
+    }
+  ]
+}
