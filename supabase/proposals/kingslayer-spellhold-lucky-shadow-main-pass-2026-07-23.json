@@ -1,10 +1,8 @@
 {
   "proposal_id": "kingslayer-spellhold-lucky-shadow-main-pass-2026-07-23",
-  "description": "REVIEW ONLY / NOT APPLIED. Corrected four-store main-pass batch for Kingslayer Games - Fountain Valley, Spellhold Games, Lucky Seven Games, and Shadow Realm Collectibles. Fresh 2026-07-23 Wizards/EventLink pull confirms existing Kingslayer/Shadow coverage, corrects Spellhold Hobbit prerelease fee from $50 to $35, and surfaces missing Lucky Seven Pauper and FNM Draft event lanes. No canonical JSON edits.",
+  "description": "ACCEPTED/APPLIED. Corrected four-store main-pass batch for Kingslayer Games - Fountain Valley, Spellhold Games, Lucky Seven Games, and Shadow Realm Collectibles. Fresh 2026-07-23 Wizards/EventLink pull confirms existing Kingslayer/Shadow coverage, corrects Spellhold Hobbit prerelease fee from $50 to $35, and surfaces missing Lucky Seven Pauper and FNM Draft event lanes. No canonical JSON edits.",
   "created_at": "2026-07-23T00:00:00-07:00",
   "author": "Codex Project Steward",
-  "validation_level": "standard",
-  "applied": false,
   "operations": [
     {
       "action": "update",
@@ -248,7 +246,7 @@
         "entity_type": "venue",
         "entity_id": "lucky-seven-games",
         "research_status": "reviewed",
-        "candidate_status": "promising",
+        "candidate_status": "promoted",
         "fit_grade": "B-",
         "fit_score": 3.5,
         "confidence": "medium",
@@ -283,7 +281,7 @@
         "entity_type": "venue",
         "entity_id": "kingslayer-games-fountain-valley",
         "research_status": "reviewed",
-        "candidate_status": "promising",
+        "candidate_status": "promoted",
         "fit_grade": "B+",
         "fit_score": 4.0,
         "confidence": "high",
@@ -347,25 +345,5 @@
       },
       "reason": "Create a durable proposed update marker before any live write."
     }
-  ],
-  "no_write_decisions": [
-    {
-      "entity_id": "kingslayer-games-fountain-valley",
-      "decision": "No new event rows proposed; fresh WPN confirms already-modeled Fountain Valley coverage. Lake Forest rows excluded."
-    },
-    {
-      "entity_id": "shadow-realm-collectibles",
-      "decision": "No new event rows proposed; fresh WPN confirms already-modeled Monday Commander, Wednesday Standard, and Thursday Two-Headed Giant."
-    },
-    {
-      "entity_id": "spellhold-games",
-      "decision": "No new event series proposed; existing series/occurrences are updated for current prerelease fee/capacity details only."
-    }
-  ],
-  "tbd": [
-    "Kingslayer Fountain Valley Discord/community content can answer branch-specific turnout and solo-arrival questions only under the approved guarded UI-native Discord process.",
-    "Spellhold Commander proxy norms, pod formation, and solo-arrival friendliness remain unresolved.",
-    "Lucky Seven social/community route and review texture remain thin; future pass should look for Discord/community coordination and richer reviews.",
-    "Shadow Realm social/community content remains needed to decide whether prize-oriented EventLink copy reflects actual Commander vibe."
   ]
 }

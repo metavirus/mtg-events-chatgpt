@@ -2,7 +2,7 @@
 
 Date: 2026-07-23  
 Pass type: corrected main-store batch  
-Status: proposal prepared; no live Supabase write applied
+Status: accepted/applied to live Supabase on 2026-07-23
 
 ## Scope
 
@@ -248,22 +248,51 @@ than the user's ideal casual Commander lane.
 
 ## Proposed durable outcome
 
-Prepared proposal:
+Prepared and applied proposal:
 
 - `supabase/proposals/kingslayer-spellhold-lucky-shadow-main-pass-2026-07-23.json`
 
-No canonical JSON edits were made. No live Supabase write was applied.
+No canonical JSON edits were made.
+
+## Apply notes
+
+The first live apply attempt rolled back before committing because the proposal
+used `candidate_status: "promising"` for new evaluation rows, while the current
+database permits `promoted`, `neutral`, or `deprioritized`. The retry used
+`promoted` for Kingslayer Fountain Valley and Lucky Seven, matching the intended
+"strong/promoted candidate" meaning and current schema vocabulary.
+
+Applied live Supabase changes:
+
+- refreshed WPN source freshness for Kingslayer Fountain Valley, Spellhold,
+  Lucky Seven, and Shadow Realm;
+- inserted Lucky Seven Thursday Pauper and Friday FNM Draft event-series rows;
+- attached WPN provenance to the new Lucky Seven rows;
+- corrected Spellhold Hobbit prerelease aggregate and five occurrence rows to
+  $35 entry and 42-player capacity;
+- updated Lucky Seven, Spellhold, and Shadow Realm venue assessment text;
+- added evaluation rows for Lucky Seven and Kingslayer Fountain Valley;
+- inserted an accepted research-change marker.
+
+Kingslayer Lake Forest was not touched. Kingslayer Fountain Valley did not
+receive a venue-row update in this apply; its live changes were source freshness
+and the new evaluation row only.
 
 ## Recommended review gate
 
-If accepted, use standard validation because the proposal includes event-series
-and event-occurrence updates:
+Standard validation was used because the proposal included event-series and
+event-occurrence updates:
 
-- confirm Lucky Seven new event IDs do not already exist;
-- apply only listed operations;
-- verify Lucky Seven Pauper and FNM Draft rows plus WPN provenance;
-- verify Spellhold Hobbit prerelease aggregate and occurrence fees now read $35;
-- verify WPN source freshness for the four venues;
-- verify Kingslayer Lake Forest was not touched;
-- verify no duplicate active event-series rows for the affected venues;
-- skip app preview unless record verification reveals an anomaly.
+- confirmed Lucky Seven new event IDs did not already exist before write;
+- applied only listed operations, with the `candidate_status` vocabulary fix
+  noted above;
+- verified Lucky Seven Pauper and FNM Draft rows plus WPN provenance;
+- verified Spellhold Hobbit prerelease aggregate and occurrence fees now read
+  $35;
+- verified the five Spellhold prerelease occurrences now carry 42-player
+  capacity;
+- verified WPN source freshness for the four venues;
+- verified Kingslayer Lake Forest was not touched;
+- verified no duplicate active event-series rows for the affected venues;
+- skipped app preview because this was a routine Supabase data write and focused
+  record verification passed.
