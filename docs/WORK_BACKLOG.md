@@ -21,6 +21,12 @@ Use it for:
   no clean official bridge. Resolve the Orange venue name/address/relationship
   before any Signal or event proposal.
 
+- Discord survey cadence/status checkpoint:
+  `docs/DISCORD_SURVEY_CADENCE_STATUS_2026-07-23.md` is now the lean operating
+  map for small verified-route surveys. It separates ready routine routes,
+  route-discovery candidates, blocked/TBD items, cadence, useful-signal criteria,
+  quiet/stale handling, same-day Signal expiry, and write approval gates.
+
 - ChatGPT-to-Codex coordination has moved to Supabase. New ordinary ChatGPT
   source leads, findings, questions, and proposals should be submitted as
   non-canonical coordination queue records, preferably through

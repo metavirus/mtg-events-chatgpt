@@ -735,6 +735,11 @@ older notes saying "repair Tweedy first" as current next work.
   branch-identity TBD; do not merge them into Garden Grove or create Orange event
   rows until the Orange venue relationship is corroborated. See
   `research/runs/2026-07-23-jjs-orange-identity-resolution.md`.
+- Discord survey cadence/status is now checkpointed in
+  `docs/DISCORD_SURVEY_CADENCE_STATUS_2026-07-23.md`. Future routine surveys
+  should start from the ready-route list, keep route discovery separate from
+  surveys, treat JJ's Orange as a known identity TBD, expire same-day Signals
+  quickly, and require approval before any Signal/event/source/research write.
 
 ## Highest-value unresolved questions
 
