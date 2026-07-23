@@ -83,7 +83,7 @@ pass before relying on the Sunday Commander lead for travel.
 | Tilted Gaming | corrected main pass required | Batch E correction found unreconciled first-party/Wizards Draft, Commander Party, and prerelease signals | current Commander only; event proposal pending | Apply/verify missing event coverage; then finish ordinary social/community texture | Corrected main-pass acceptance test, then bounded completion | High |
 | B.Y.O.GAMES LLC | mostly complete - named closure gaps | Status-conflict pass D plus LAist evidence backfill | current records | Current operation; Tuesday vs Wednesday Commander; no-proxy context | Micro-backfill/status check if planning-relevant | Medium |
 | Buddies Collectibles | mostly complete - named closure gaps | Packet evidence backfill; reviewed evaluation already present | current record | Current operation/status contradiction; Magic emphasis | Micro-backfill with direct review/source coverage | Medium |
-| Shadow Realm Collectibles | mostly complete - named closure gaps | Nearby thin-store assessment pass | current record | Corrected main-pass coverage line and source depth | Corrected micro/main pass if prioritized | Medium |
+| Shadow Realm Collectibles | mostly complete - named closure gaps | 2026-07-23 corrected main pass; WPN/event refresh and Places recalibration | current Commander, Standard Showdown, and Two-Headed Giant rows refreshed | Power/proxy norms, solo-arrival texture, and whether prize language reflects the whole play environment | Optional community/social texture only if planning-relevant | Medium |
 | TK Collectibles | mostly complete - named closure gaps | Nearby thin-store assessment pass | current record | Corrected main-pass coverage line and source depth | Corrected micro/main pass if prioritized | Medium |
 | Games For Meeple | mostly complete - named closure gaps | Unresolved discovery assessment pass | current records | Official/social specials; service caution context | Micro-backfill if prioritized | Medium |
 | GXGAMERS | mostly complete - named closure gaps | Unresolved discovery assessment pass | current records | Social/Discord MTG texture; no-proxy impact | Micro-backfill if prioritized | Low |
@@ -92,15 +92,15 @@ pass before relying on the Sunday Commander lead for travel.
 | Aki Collectibles | mostly complete - named closure gaps | Nearby thin-store assessment pass | current record | Current-method source coverage and social/event texture | Micro-backfill if prioritized | Low |
 | Krazy Nick's Games | older/light work - corrected main pass required | Batch A identity separation | current records | Own-source assessment after Honey Pot evidence moved away | Corrected main pass if planning-relevant | Medium |
 | Comic Book Hideout | older/light work - corrected main pass required | July 15 correction/promote pass | current record | Corrected source coverage and evaluation-row calibration | Corrected main pass/micro-backfill | Medium |
-| Kingslayer Games - Fountain Valley | older/light work - corrected main pass required | Earlier branch/refinement passes | current records | Current-method closure record; Slay Pass/free-play interaction | Corrected main pass or field deepening | High |
+| Kingslayer Games - Fountain Valley | mostly complete - named closure gaps | 2026-07-23 corrected branch-safe main pass; WPN refresh and evaluation row | current Fountain Valley rows refreshed; Lake Forest not merged | Commander turnout, proxy norms, solo-arrival texture, and branch-specific Discord/community signals | Optional guarded Discord/community texture if deciding whether to visit soon | High |
 | Tweedy Cards and Gaming | older/light work - corrected main pass required | July 15 candidate repair | current records | Main-pass closure under corrected method | Corrected main pass if planning-relevant | Low |
 | Guildhall - Whittier | older/light work - corrected main pass required | July 15 first pass | current record | Magic prominence and current social/event texture | Corrected main pass if planning-relevant | Low |
 | ProjectCCG - Santa Ana | older/light work - corrected main pass required | Batch A identity clarification | current records | Branch/community-specific source replay | Corrected branch-aware main pass | Medium |
-| Spellhold Games | older/light work - corrected main pass required | Earlier discovery/reviewed record | current record | Saturday open-play/pod behavior and source coverage | Corrected main pass if planning-relevant | Medium |
+| Spellhold Games | mostly complete - named closure gaps | 2026-07-23 corrected main pass; WPN refresh and Hobbit prerelease fee/capacity correction | broad current calendar refreshed; Hobbit prerelease corrected to $35/42 cap | Saturday Commander pod behavior, proxy/power norms, solo-arrival texture | Optional community/social texture before choosing Saturday Commander | Medium |
 | Alakazam Comics | older/light work - corrected main pass required | July 15 first pass | current record | Current schedule extraction and source coverage | Corrected main pass if planning-relevant | Low |
 | Cardboard Games | older/light work - corrected main pass required | July 15 normalization repair | current records | Calendar reliability and current-method closure | Corrected main pass/micro-backfill | Medium |
 | Lost Planet | older/light work - corrected main pass required | July 15 first pass | current records | Current calendar refresh and community texture | Corrected main pass if planning-relevant | Medium |
-| Lucky Seven Games | older/light work - corrected main pass required | July 15 first pass | current records | Social/community texture and source coverage | Corrected main pass if planning-relevant | Medium |
+| Lucky Seven Games | mostly complete - named closure gaps | 2026-07-23 corrected main pass; WPN refresh, Pauper, and FNM Draft added | Commander plus Pauper and FNM Draft now represented | Solo-arrival comfort, pod formation, hidden/community route, and whether draft reliably fires | Optional social/review/community texture if promoted for a visit | Medium |
 | The Game Chest - Del Amo Fashion Center | older/light work - corrected main pass required | July 15 light pass | current record | Branch-specific Magic texture | Leave low unless nearby/planning need arises | Low |
 | Magic and Monsters | older/light work - corrected main pass required | July 15 first pass | current record | Full event-stream refinement and closure record | Corrected main pass; likely useful | Medium |
 | Paper Hero's Games - Huntington Beach | older/light work - corrected main pass required | Existing reviewed/discovery snapshot | current record | Determine actionable Commander nights | Corrected main pass if planning-relevant | Low |
@@ -141,3 +141,12 @@ planning-relevant records such as Shadow Realm Collectibles, TK Collectibles,
 Games For Meeple, GXGAMERS, Otaku Vault, or LVLUP GAMING TCG, with validation
 level chosen up front: lean for evidence/assessment-only, standard if event
 series or occurrences are written.
+
+## Post-checkpoint accepted main-pass update - 2026-07-23
+
+The accepted Kingslayer Fountain Valley / Spellhold / Lucky Seven / Shadow
+Realm batch supersedes the older queue status for those four rows above.
+Do not recommend them as ordinary corrected main-pass targets again unless a
+named remaining texture gap is deliberately selected. Their remaining work is
+community/social/visit-texture deepening rather than baseline event/source
+completion.

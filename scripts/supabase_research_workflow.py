@@ -133,6 +133,8 @@ TABLES: dict[str, dict[str, Any]] = {
     },
 }
 
+EVALUATION_CANDIDATE_STATUSES = {"promoted", "neutral", "deprioritized"}
+
 ENUMS = {
     "venues.operating_status": {"open", "closed", "temporary_closed", "unknown"},
     "venues.research_status": {"discovery", "reviewed", "deepened"},
@@ -152,7 +154,10 @@ ENUMS = {
     },
     "evaluations.entity_type": {"venue", "community"},
     "evaluations.research_status": {"discovery", "reviewed", "deepened"},
-    "evaluations.candidate_status": {"promoted", "neutral", "deprioritized"},
+    # Keep this in sync with the live Supabase
+    # public.evaluations_candidate_status_check constraint. In particular,
+    # "promising" is an app/planning label, not a database candidate_status.
+    "evaluations.candidate_status": EVALUATION_CANDIDATE_STATUSES,
     "venue_hours.status": {"verified", "variable", "stale", "unknown"},
 }
 
@@ -400,8 +405,9 @@ def validate_proposal(proposal: dict[str, Any], basis_dir: Path | None = None) -
         for enum_field, valid in ENUMS.items():
             enum_table, field = enum_field.split(".")
             if enum_table == table and field in fields and fields[field] is not None and fields[field] not in valid:
+                qualifier = "live schema values" if enum_field == "evaluations.candidate_status" else "values"
                 raise WorkflowError(
-                    f"Operation {index} {table}.{field} must be one of {sorted(valid)}"
+                    f"Operation {index} {table}.{field} must be one of {sorted(valid)} {qualifier}"
                 )
         if table == "event_series" and not fields.get("venue_id") and not fields.get("community_id"):
             raise WorkflowError(f"Operation {index} event_series requires venue_id or community_id")
