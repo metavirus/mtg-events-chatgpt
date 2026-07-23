@@ -1,0 +1,1284 @@
+{
+  "proposal_id": "grails-paper-byo-shuffle-main-pass-2026-07-23",
+  "description": "Corrected main-store pass for Grails Gone Wild, Paper Hero's Games - Huntington Beach, B.Y.O.GAMES LLC, and Shuffle and Cut Games. Adds WPN-supported missing event coverage, refreshes source health, corrects Shuffle toward current Brea identity while preserving legacy La Habra label context, and adds Paper/Shuffle evaluation rows. No canonical JSON, app code, schema, auth, or Discord safety changes are proposed.",
+  "created_at": "2026-07-23T15:40:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-18731"
+      },
+      "fields": {
+        "id": "src-wpn-18731",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull rechecked Grails Gone Wild and supports the existing Sunday Commander row plus a new August 7 Hobbit prerelease event."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-21934"
+      },
+      "fields": {
+        "id": "src-wpn-21934",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull rechecked B.Y.O.GAMES LLC and found the existing Tuesday/Wednesday Commander rows still current, with no additional non-Commander Magic rows in the checked window."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-8579"
+      },
+      "fields": {
+        "id": "src-wpn-8579",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull rechecked Shuffle and Cut's WPN org. The org retains a legacy La Habra label but uses the same current Brea address and retail site."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-17569"
+      },
+      "fields": {
+        "id": "src-wpn-17569",
+        "label": "Wizards Store & Event Locator - Paper Hero's Games - Huntington Beach",
+        "url": "https://locator.wizards.com/store/17569",
+        "source_type": "wpn",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Capture the WPN store source used for Paper Hero's Huntington Beach event completion."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "paper-heros-hb",
+        "source_id": "src-wpn-17569"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "paper-heros-hb",
+        "source_id": "src-wpn-17569",
+        "relationship": "WPN/EventLink store source for Huntington Beach event completion"
+      },
+      "reason": "Make the Paper Hero Huntington Beach WPN source visible as Evidence."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-phg-site"
+      },
+      "fields": {
+        "id": "src-phg-site",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Paper Hero's official site currently supports the Huntington Beach storefront, Magic/TCG focus, tournament positioning, and official Discord route."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-phg-events"
+      },
+      "fields": {
+        "id": "src-phg-events",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Paper Hero's CrystalCommerce storefront/events route remains reachable as the official HB store route, while WPN supplies the structured event facts in this pass."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-shuffle-cut-official-site-2026-07-23"
+      },
+      "fields": {
+        "id": "src-shuffle-cut-official-site-2026-07-23",
+        "label": "Shuffle and Cut Games official retail website",
+        "url": "https://retail.shuffleandcut.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Capture current official site evidence for Brea address, MTG retail focus, event/ticket routing, and prerelease product/ticket visibility."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-shuffle-cut-official-site-2026-07-23"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-shuffle-cut-official-site-2026-07-23",
+        "relationship": "current official retail site / Brea address / MTG inventory and event-ticket routing support"
+      },
+      "reason": "Expose the current official Shuffle and Cut site as visible Evidence for resolving the La Habra/Brea status question."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-byo-official-website-cloudflare-2026-07-23"
+      },
+      "fields": {
+        "id": "src-byo-official-website-cloudflare-2026-07-23",
+        "label": "B.Y.O.GAMES official-looking website route",
+        "url": "https://www.byogamesela.com/",
+        "source_type": "officialWebsite",
+        "health_status": "blocked",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Preserve the current official-looking BYO route as blocked/source-health evidence rather than using it for event truth."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-official-website-cloudflare-2026-07-23"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-byo-official-website-cloudflare-2026-07-23",
+        "relationship": "blocked official-looking route; not used for event details or current operation claims"
+      },
+      "reason": "Make the blocked BYO website route visible as a source-health note instead of leaving it hidden in run reasoning."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "grails-gone-wild-casual-commander-0-13-30"
+      },
+      "fields": {
+        "id": "grails-gone-wild-casual-commander-0-13-30",
+        "venue_id": "grails-gone-wild",
+        "last_verified": "2026-07-23",
+        "details": "Wizards/EventLink still lists weekly Sunday 1:30 PM Casual Commander at Grails Gone Wild with $8 entry and capacity for 20 players. Description says locals receive participation pack/promo, fee contributes to a raffle, and the event is casual Commander."
+      },
+      "reason": "Refresh existing Grails Sunday Commander row after fresh WPN pull."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "grails-gone-wild-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "id": "grails-gone-wild-hobbit-prerelease-2026",
+        "venue_id": "grails-gone-wild",
+        "community_id": null,
+        "title": "Hobbit Pre Release Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-07",
+        "entry_fee": 40,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists a single Hobbit prerelease at Grails Gone Wild on Friday, August 7, 2026 at 6:00 PM, $40 entry, capacity 14. Event copy says spaces are limited and players should secure a spot in store.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add current WPN-supported prerelease/sealed coverage for Grails beyond the existing Sunday Commander row."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-18731",
+        "series_id": "grails-gone-wild-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-18731",
+        "series_id": "grails-gone-wild-hobbit-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated prerelease evidence"
+      },
+      "reason": "Attach WPN provenance to the Grails Hobbit prerelease series."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "grails-gone-wild-hobbit-prerelease-2026-08-07-18-00"
+      },
+      "fields": {
+        "id": "grails-gone-wild-hobbit-prerelease-2026-08-07-18-00",
+        "series_id": "grails-gone-wild-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "18:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40,
+        "capacity": 14,
+        "details": "Wizards/EventLink event 11456050 confirms Grails Gone Wild Hobbit prerelease on Friday, August 7, 2026 at 6:00 PM."
+      },
+      "reason": "Add the dated Grails prerelease occurrence."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {
+        "id": "paper-heros-hb-friday-fnm-booster-draft-5-18-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-friday-fnm-booster-draft-5-18-00",
+        "venue_id": "paper-heros-hb",
+        "community_id": null,
+        "title": "Friday Night Magic Booster Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 5,
+          "startTime": "18:00"
+        },
+        "default_start_time": "18:00",
+        "start_date": "2026-07-24",
+        "end_date": null,
+        "entry_fee": 25,
+        "currency": "USD",
+        "last_verified": "2026-07-23",
+        "confidence": "high",
+        "event_status": "active",
+        "details": "Wizards/EventLink event 10860827 lists PHG Huntington Beach Friday Night Magic Booster Draft on Friday, July 24, 2026 at 6:00 PM with $25 entry, three rounds, and pack-per-win prizing. Treat fee as current WPN value; prior Discord/image evidence used $20 for an earlier listing."
+      },
+      "reason": "Refresh the existing Paper Hero Friday draft row and add canonical recurrence startTime after the prior recurrence-shape repair."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-friday-fnm-booster-draft-5-18-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-friday-fnm-booster-draft-5-18-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink current FNM draft evidence"
+      },
+      "reason": "Attach fresh WPN provenance to the existing Paper Hero Friday draft row."
+    },
+    {
+      "action": "upsert",
+      "table": "event_series",
+      "key": {
+        "id": "paper-heros-hb-saturday-pauper-6-19-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-saturday-pauper-6-19-00",
+        "venue_id": "paper-heros-hb",
+        "community_id": null,
+        "title": "PHG HB Saturday Night Pauper Weekly",
+        "format": "Pauper",
+        "event_type": "pauper",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 6,
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-25",
+        "end_date": null,
+        "entry_fee": 5,
+        "currency": "USD",
+        "last_verified": "2026-07-23",
+        "confidence": "high",
+        "event_status": "active",
+        "details": "Wizards/EventLink lists weekly Saturday 7:00 PM Pauper at Paper Hero's Huntington Beach with $5 entry. Description frames it as a commons-only affordable eternal format with attendance-based prizing and promos while building a Pauper community."
+      },
+      "reason": "Refresh existing Paper Hero Pauper row and add canonical recurrence startTime."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-saturday-pauper-6-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-saturday-pauper-6-19-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink weekly Pauper evidence"
+      },
+      "reason": "Attach fresh WPN provenance to the Paper Hero Pauper row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "phg-hb-thursday-commander"
+      },
+      "fields": {
+        "id": "phg-hb-thursday-commander",
+        "venue_id": "paper-heros-hb",
+        "last_verified": "2026-07-23",
+        "details": "Existing Thursday Commander remains supported by prior source work; official Paper Hero site also advertises Commander Night every night. Community texture, pod formation, and turnout remain TBD."
+      },
+      "reason": "Refresh Paper Hero's existing Commander row as part of the main-pass closure without overclaiming Discord/player texture."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "paper-heros-hb-standard-showdown-2-19-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-standard-showdown-2-19-00",
+        "venue_id": "paper-heros-hb",
+        "community_id": null,
+        "title": "PHG HB Standard Showdown",
+        "format": "Standard",
+        "event_type": "standard",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 2,
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-28",
+        "end_date": "2026-09-22",
+        "entry_fee": 5,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists Tuesday Standard Showdown at Paper Hero's Huntington Beach through September 22, 2026 with $5 entry and capacity 72. WPN scheduled time is 7:00 PM; event description says every Tuesday at 6PM, so verify exact time before relying on it.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add missing Paper Hero Standard Showdown coverage while preserving the WPN time-copy inconsistency."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-standard-showdown-2-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-standard-showdown-2-19-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink bounded recurring Standard Showdown evidence"
+      },
+      "reason": "Attach WPN provenance to the new Paper Hero Standard Showdown row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "paper-heros-hb-modern-weekly-3-19-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-modern-weekly-3-19-00",
+        "venue_id": "paper-heros-hb",
+        "community_id": null,
+        "title": "PHG HB Modern Weekly",
+        "format": "Modern",
+        "event_type": "constructed",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 3,
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00",
+        "start_date": "2026-07-29",
+        "end_date": "2026-08-05",
+        "entry_fee": 5,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists Wednesday Modern at Paper Hero's Huntington Beach on July 29 and August 5, 2026 at 7:00 PM with $5 entry and promos available for participants.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add bounded current Paper Hero Modern coverage without projecting beyond visible WPN dates."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-modern-weekly-3-19-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-modern-weekly-3-19-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink bounded Modern evidence"
+      },
+      "reason": "Attach WPN provenance to the new Paper Hero Modern row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "paper-heros-hb-marvel-super-heroes-commander-party-2026-08-05"
+      },
+      "fields": {
+        "id": "paper-heros-hb-marvel-super-heroes-commander-party-2026-08-05",
+        "venue_id": "paper-heros-hb",
+        "community_id": null,
+        "title": "PHG HB Marvel Super Heroes Commander Party",
+        "format": "Commander",
+        "event_type": "commander_party",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-05",
+        "end_date": "2026-08-05",
+        "entry_fee": 0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists an all-day Marvel Super Heroes Commander Party at Paper Hero's Huntington Beach on Wednesday, August 5, 2026 at 2:00 PM. Event copy invites pods to play a unique Commander game with promos involved.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add missing dated Paper Hero Commander Party special."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-marvel-super-heroes-commander-party-2026-08-05",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-marvel-super-heroes-commander-party-2026-08-05",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated Commander Party evidence"
+      },
+      "reason": "Attach WPN provenance to the Paper Hero Marvel Commander Party."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "paper-heros-hb-marvel-super-heroes-commander-party-2026-08-05-14-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-marvel-super-heroes-commander-party-2026-08-05-14-00",
+        "series_id": "paper-heros-hb-marvel-super-heroes-commander-party-2026-08-05",
+        "occurrence_date": "2026-08-05",
+        "start_time": "14:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 0,
+        "capacity": 72,
+        "details": "Wizards/EventLink event 10702809 confirms the Paper Hero HB Marvel Super Heroes Commander Party on August 5, 2026 at 2:00 PM."
+      },
+      "reason": "Add the dated Marvel Commander Party occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "paper-heros-hb-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "id": "paper-heros-hb-hobbit-prerelease-2026",
+        "venue_id": "paper-heros-hb",
+        "community_id": null,
+        "title": "PHG HB The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": 45,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists three The Hobbit prerelease sealed events at Paper Hero's Huntington Beach across August 7-9, 2026. Event copy says players receive a prerelease kit, build a 40-card deck, play three rounds, and receive prizing based on record.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add missing Paper Hero Hobbit prerelease/sealed coverage."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-hobbit-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated prerelease evidence"
+      },
+      "reason": "Attach WPN provenance to the Paper Hero Hobbit prerelease series."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "paper-heros-hb-hobbit-prerelease-2026-08-07-19-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-hobbit-prerelease-2026-08-07-19-00",
+        "series_id": "paper-heros-hb-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "19:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 72,
+        "details": "Wizards/EventLink event 10921225 confirms Paper Hero HB The Hobbit Prerelease on Friday, August 7, 2026 at 7:00 PM."
+      },
+      "reason": "Add Paper Hero Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "paper-heros-hb-hobbit-prerelease-2026-08-08-17-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-hobbit-prerelease-2026-08-08-17-00",
+        "series_id": "paper-heros-hb-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "17:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 72,
+        "details": "Wizards/EventLink event 10921226 confirms Paper Hero HB The Hobbit Prerelease on Saturday, August 8, 2026 at 5:00 PM."
+      },
+      "reason": "Add Paper Hero Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "paper-heros-hb-hobbit-prerelease-2026-08-09-17-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-hobbit-prerelease-2026-08-09-17-00",
+        "series_id": "paper-heros-hb-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "17:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 72,
+        "details": "Wizards/EventLink event 10921227 confirms Paper Hero HB The Hobbit Prerelease on Sunday, August 9, 2026 at 5:00 PM."
+      },
+      "reason": "Add Paper Hero Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "paper-heros-hb-hobbit-commander-specials-2026"
+      },
+      "fields": {
+        "id": "paper-heros-hb-hobbit-commander-specials-2026",
+        "venue_id": "paper-heros-hb",
+        "community_id": null,
+        "title": "PHG HB The Hobbit Commander Specials",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-20",
+        "end_date": "2026-09-24",
+        "entry_fee": 0,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists multiple Paper Hero HB The Hobbit Commander specials: Two-Headed Giant Commander on August 20, Hobbit Commander Party on August 27 and September 24, and Heart of the Mountain on September 10. These are special/promo Commander opportunities, not a routine weekly row.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add missing Paper Hero Commander special-event coverage without projecting routine cadence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-hobbit-commander-specials-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17569",
+        "series_id": "paper-heros-hb-hobbit-commander-specials-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated Commander special evidence"
+      },
+      "reason": "Attach WPN provenance to the Paper Hero Hobbit Commander specials."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "paper-heros-hb-two-headed-giant-commander-hobbit-2026-08-20-14-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-two-headed-giant-commander-hobbit-2026-08-20-14-00",
+        "series_id": "paper-heros-hb-hobbit-commander-specials-2026",
+        "occurrence_date": "2026-08-20",
+        "start_time": "14:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 0,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 10921452 confirms Two-Headed Giant Commander PHG HB The Hobbit on Thursday, August 20, 2026 at 2:00 PM."
+      },
+      "reason": "Add dated Paper Hero Two-Headed Giant Commander special."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "paper-heros-hb-hobbit-commander-party-2026-08-27-14-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-hobbit-commander-party-2026-08-27-14-00",
+        "series_id": "paper-heros-hb-hobbit-commander-specials-2026",
+        "occurrence_date": "2026-08-27",
+        "start_time": "14:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 0,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 10921295 confirms PHG HB The Hobbit Commander Party on Thursday, August 27, 2026 at 2:00 PM."
+      },
+      "reason": "Add dated Paper Hero Hobbit Commander Party special."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "paper-heros-hb-heart-of-the-mountain-2026-09-10-14-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-heart-of-the-mountain-2026-09-10-14-00",
+        "series_id": "paper-heros-hb-hobbit-commander-specials-2026",
+        "occurrence_date": "2026-09-10",
+        "start_time": "14:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 0,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 10921440 confirms Magic Presents: Heart of the Mountain PHG HB The Hobbit on Thursday, September 10, 2026 at 2:00 PM."
+      },
+      "reason": "Add dated Paper Hero Heart of the Mountain Commander special."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "paper-heros-hb-hobbit-commander-party-2026-09-24-14-00"
+      },
+      "fields": {
+        "id": "paper-heros-hb-hobbit-commander-party-2026-09-24-14-00",
+        "series_id": "paper-heros-hb-hobbit-commander-specials-2026",
+        "occurrence_date": "2026-09-24",
+        "start_time": "14:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 0,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 10921327 confirms PHG HB The Hobbit Commander Party on Thursday, September 24, 2026 at 2:00 PM."
+      },
+      "reason": "Add dated Paper Hero Hobbit Commander Party special."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "b-y-o-games-llc-commander-night-casual-2-19-45"
+      },
+      "fields": {
+        "id": "b-y-o-games-llc-commander-night-casual-2-19-45",
+        "venue_id": "b-y-o-games-llc",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Fresh WPN pull still supports BYO Tuesday Commander; no new event row is needed."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "b-y-o-games-llc-commander-night-casual-3-19-45"
+      },
+      "fields": {
+        "id": "b-y-o-games-llc-commander-night-casual-3-19-45",
+        "venue_id": "b-y-o-games-llc",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Fresh WPN pull still supports BYO Wednesday Commander; no new event row is needed."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "shuffle-and-cut-games-la-habra"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-la-habra",
+        "name": "Shuffle and Cut Games - Brea",
+        "city": "Brea",
+        "address": "1033 E Imperial Hwy STE E3, Brea, CA, 92821, US",
+        "website": "https://retail.shuffleandcut.com/",
+        "events_url": "https://locator.wizards.com/store/8579",
+        "operating_status": "open",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Shuffle and Cut now reads as a current Brea store despite a stale/legacy La Habra label in WPN. The official retail site lists 1033 E Imperial Hwy E3, Brea, CA 92821 and supports MTG retail/event-ticket routing; fresh WPN org 8579 uses the same Brea address and retail website while retaining the La Habra name. Treat The Realm as historical/predecessor context, not a current calendar identity. Current WPN supports Tuesday Casual Commander, Friday Marvel draft, Wednesday Standard Showdown, and a dense August Hobbit prerelease schedule. Planning fit is event-rich but still texture-limited: Commander power/proxy norms, solo-arrival comfort, and community coordination remain TBD."
+      },
+      "reason": "Resolve Shuffle's current-location/status enough for branch-safe Brea event writes while preserving legacy-label context."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "shuffle-and-cut-games-la-habra-casual-commander-night-2-17-3"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-la-habra-casual-commander-night-2-17-3",
+        "venue_id": "shuffle-and-cut-games-la-habra",
+        "title": "Casual Commander Night",
+        "last_verified": "2026-07-23",
+        "details": "Wizards/EventLink still lists Tuesday 5:30 PM Casual Commander at Shuffle and Cut's Brea address with free entry and capacity 60. Description says casual Commander every Tuesday night, meet new players, and pilot your latest brew."
+      },
+      "reason": "Refresh existing Shuffle Commander row after resolving current Brea identity."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-friday-marvel-draft-5-19-30"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-friday-marvel-draft-5-19-30",
+        "venue_id": "shuffle-and-cut-games-la-habra",
+        "community_id": null,
+        "title": "Friday Night Magic Marvel Super Heroes Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 5,
+          "startTime": "19:30"
+        },
+        "default_start_time": "19:30",
+        "start_date": "2026-07-24",
+        "end_date": "2026-07-31",
+        "entry_fee": 21,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists Friday 7:30 PM Marvel Super Heroes draft at Shuffle and Cut's Brea address on July 24 and July 31, 2026. Event copy says draft the latest Magic set every Friday night with store-credit and promo prizing to top players while supplies last.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add bounded current Shuffle Friday draft/FNM coverage without projecting beyond visible WPN dates."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-8579",
+        "series_id": "shuffle-and-cut-games-brea-friday-marvel-draft-5-19-30",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-8579",
+        "series_id": "shuffle-and-cut-games-brea-friday-marvel-draft-5-19-30",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink bounded Friday draft evidence"
+      },
+      "reason": "Attach WPN provenance to the Shuffle Friday draft row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-standard-showdown-3-18-30"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-standard-showdown-3-18-30",
+        "venue_id": "shuffle-and-cut-games-la-habra",
+        "community_id": null,
+        "title": "Weekly Standard Showdown",
+        "format": "Standard",
+        "event_type": "standard",
+        "bracket": "all",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 3,
+          "startTime": "18:30"
+        },
+        "default_start_time": "18:30",
+        "start_date": "2026-07-29",
+        "end_date": "2026-08-05",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists Wednesday 6:30 PM Standard Showdown at Shuffle and Cut's Brea address on July 29 and August 5, 2026 with $10 entry and capacity 20. Event copy says 100% store-credit payout to top players and Dark Deed promo for the event winner while supplies last.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add bounded current Shuffle Standard Showdown coverage without projecting beyond visible WPN dates."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-8579",
+        "series_id": "shuffle-and-cut-games-brea-standard-showdown-3-18-30",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-8579",
+        "series_id": "shuffle-and-cut-games-brea-standard-showdown-3-18-30",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink bounded Standard Showdown evidence"
+      },
+      "reason": "Attach WPN provenance to the Shuffle Standard row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "venue_id": "shuffle-and-cut-games-la-habra",
+        "community_id": null,
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-13",
+        "entry_fee": 45,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists eight The Hobbit prerelease sealed events at Shuffle and Cut's Brea address from August 7 through August 13, 2026. Official retail site also shows The Hobbit prerelease ticket/product routing. Event copy says players should buy tickets on the website, choose the correct day/time, and can win additional booster packs based on performance.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add branch-safe Shuffle prerelease/sealed coverage after resolving current Brea identity."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-8579",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-8579",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink dated prerelease evidence"
+      },
+      "reason": "Attach WPN provenance to Shuffle Hobbit prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-07-18-30"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-07-18-30",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "18:30",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 60,
+        "details": "Wizards/EventLink event 11393047 confirms The Hobbit Prerelease at Shuffle and Cut's Brea address on Friday, August 7, 2026 at 6:30 PM."
+      },
+      "reason": "Add Shuffle Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-07-22-30"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-07-22-30",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "22:30",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 11393048 confirms The Hobbit Prerelease at Shuffle and Cut's Brea address on Friday, August 7, 2026 at 10:30 PM."
+      },
+      "reason": "Add Shuffle Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-08-11-00"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-08-11-00",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "11:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 11393049 confirms The Hobbit Prerelease at Shuffle and Cut's Brea address on Saturday, August 8, 2026 at 11:00 AM."
+      },
+      "reason": "Add Shuffle Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-08-15-30"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-08-15-30",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "15:30",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 11393050 confirms The Hobbit Prerelease at Shuffle and Cut's Brea address on Saturday, August 8, 2026 at 3:30 PM."
+      },
+      "reason": "Add Shuffle Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-08-20-00"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-08-20-00",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "20:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 60,
+        "details": "Wizards/EventLink event 11393051 confirms The Hobbit Prerelease at Shuffle and Cut's Brea address on Saturday, August 8, 2026 at 8:00 PM."
+      },
+      "reason": "Add Shuffle Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-09-11-00"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-09-11-00",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "11:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 11393052 confirms The Hobbit Prerelease at Shuffle and Cut's Brea address on Sunday, August 9, 2026 at 11:00 AM."
+      },
+      "reason": "Add Shuffle Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-09-15-30"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-09-15-30",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "15:30",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 60,
+        "details": "Wizards/EventLink event 11393053 confirms The Hobbit Prerelease at Shuffle and Cut's Brea address on Sunday, August 9, 2026 at 3:30 PM."
+      },
+      "reason": "Add Shuffle Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-13-17-00"
+      },
+      "fields": {
+        "id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026-08-13-17-00",
+        "series_id": "shuffle-and-cut-games-brea-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-13",
+        "start_time": "17:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 24,
+        "details": "Wizards/EventLink event 11393054 confirms The Hobbit Prerelease at Shuffle and Cut's Brea address on Thursday, August 13, 2026 at 5:00 PM."
+      },
+      "reason": "Add Shuffle Hobbit prerelease occurrence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "grails-gone-wild"
+      },
+      "fields": {
+        "id": "grails-gone-wild",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Grails Gone Wild / GGW Cards N Collects remains a likely active TCG storefront with WPN-supported Magic activity. Fresh 2026-07-23 Wizards/EventLink confirms the existing Sunday 1:30 PM Casual Commander row and adds an August 7 Hobbit prerelease at 6:00 PM, $40, capacity 14. The official storefront route remains a Square shell in this pass, and the previously inspected Instagram remains useful for store-controlled identity and historical TCG/MTG activity through September 2025 but does not prove July 2026 social activity. Treat Grails as a lower-priority but real Sunday Commander/prerelease lead; current turnout, proxy/power norms, and direct review texture remain TBD."
+      },
+      "reason": "Update Grails Places synthesis after fresh WPN event completion."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "Fresh WPN supports current Sunday Casual Commander plus a dated Hobbit prerelease.",
+          "GGW Cards N Collects / Grails identity has prior official storefront and Instagram support.",
+          "Prerelease coverage makes the store more credible than a Commander-only discovery stub."
+        ],
+        "cautions": [
+          "Instagram evidence remains historical/stale for current 2026 MTG community activity.",
+          "Direct current review and turnout texture are still thin.",
+          "Torrance distance and Sunday timing make it a lower-priority personal target unless a special event appeals."
+        ],
+        "open_questions": [
+          "Does Sunday Commander reliably draw casual pods?",
+          "What are proxy and power expectations?",
+          "Is the official storefront/event communication updated outside WPN?"
+        ]
+      },
+      "reason": "Keep Grails reviewed but partial/medium-confidence after adding current prerelease support."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "paper-heros-hb"
+      },
+      "fields": {
+        "id": "paper-heros-hb",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Paper Hero's Games - Huntington Beach now reads as a strong nearby event-rich Magic candidate. Official site supports the HB storefront, Magic/TCG focus, daily 2 PM-10 PM hours, tournament positioning, and Discord route. Fresh WPN/EventLink adds or refreshes Friday FNM draft, Saturday Pauper, Tuesday Standard Showdown, Wednesday Modern, August Hobbit prereleases, Commander Party variants, and other Hobbit Commander specials. Existing Thursday Commander remains represented, but community texture is still the missing planning piece: pod formation, proxy/power norms, turnout, and solo-arrival comfort require Discord/community or visit evidence. Standard Showdown scheduled time uses WPN 7:00 PM while event copy says 6 PM, so verify before going."
+      },
+      "reason": "Update Paper Hero HB Places synthesis after main-store event/source completion."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "paper-heros-hb"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "paper-heros-hb",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 4.0,
+        "confidence": "medium",
+        "positives": [
+          "Nearby Huntington Beach store with official site, WPN, storefront, and Discord routing.",
+          "Broad current Magic calendar: Commander, FNM draft, Pauper, Standard, Modern, prerelease/sealed, and Commander specials.",
+          "Official site frames tournaments and Commander Night as regular store offerings."
+        ],
+        "cautions": [
+          "Discord/community content was not newly reopened in this pass, so turnout and player texture remain unresolved.",
+          "Standard Showdown has a WPN scheduled-time versus description-copy mismatch.",
+          "Constructed/Pauper/Modern breadth may be more competitive than the desired casual Commander lane."
+        ],
+        "open_questions": [
+          "Is Thursday Commander casual and solo-arrival friendly?",
+          "How proxy-friendly are Commander pods?",
+          "Does the official Discord clarify turnout, cancellations, and event reliability?"
+        ]
+      },
+      "reason": "Add visible Paper Hero HB evaluation after corrected main pass."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "b-y-o-games-llc"
+      },
+      "fields": {
+        "id": "b-y-o-games-llc",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "B.Y.O.GAMES LLC remains a credible East LA gaming lounge and Magic/Commander candidate, but fresh 2026-07-23 WPN still only shows the existing Tuesday and Wednesday Commander Night rows in the checked future window. The app's 4:00 PM start-time treatment remains useful: doors/open casual, warm-ups, and free-play begin at 4 PM while the structured pod/tournament language points to 7:45 PM, four-player minimum, $10 bracket 3-4, and no infinites. No draft, prerelease/sealed, FNM, or special Magic events were found in fresh WPN. The newer official-looking byogamesela.com route was Cloudflare-blocked, so preserve it as source-health evidence, not event truth. Prior LAist/Boyle Heights Beat and review-derived texture continue to support the store as a real community third place with welcoming/space positives and bracket/no-infinites caveats."
+      },
+      "reason": "Close BYO main-pass event surface without adding unsupported non-Commander rows."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "medium",
+        "positives": [
+          "Fresh WPN keeps the Tuesday/Wednesday Commander rows current.",
+          "Prior LAist/Boyle Heights Beat and review-derived texture support a real community gaming lounge with welcoming/space positives.",
+          "4 PM open-play treatment is more useful for same-day planning than only listing the later pod/tournament time."
+        ],
+        "cautions": [
+          "WPN found no current draft, prerelease/sealed, FNM, or special Magic rows in the checked window.",
+          "Commander details include bracket 3-4, four-player minimum, and no infinites, which may affect personal fit.",
+          "Current official-looking website route was blocked by Cloudflare in this pass."
+        ],
+        "open_questions": [
+          "Is there a safely readable store/community route for cancellations and turnout?",
+          "Does non-Commander Magic happen outside WPN?",
+          "How welcoming is solo Commander arrival in practice?"
+        ]
+      },
+      "reason": "Refresh BYO evaluation while preserving the no-new-events finding."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.5,
+        "confidence": "medium",
+        "positives": [
+          "Current official retail site and WPN both point to the Brea address and MTG/event-ticket routing.",
+          "Fresh WPN supports Tuesday Commander, Friday draft, Wednesday Standard, and dense Hobbit prerelease coverage.",
+          "Official site shows active MTG retail categories and prerelease/ticket routing."
+        ],
+        "cautions": [
+          "WPN still uses a legacy La Habra label despite current Brea address, so branch naming should stay visible.",
+          "Community texture, proxy/power norms, and solo-arrival comfort are not resolved.",
+          "The Realm context should remain historical/predecessor only unless a current source proves otherwise."
+        ],
+        "open_questions": [
+          "Is the La Habra wording purely stale WPN naming?",
+          "How casual is Tuesday Commander in practice?",
+          "Does a safe Discord/community route exist for cancellations, turnout, and prerelease details?"
+        ]
+      },
+      "reason": "Add a branch-aware Shuffle evaluation after resolving current Brea operation and event breadth."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "grails-paper-byo-shuffle-main-pass-2026-07-23"
+      },
+      "fields": {
+        "id": "grails-paper-byo-shuffle-main-pass-2026-07-23",
+        "detected_at": "2026-07-23T15:40:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "venue",
+        "entity_id": "paper-heros-hb",
+        "summary": "Proposed corrected main pass for Grails Gone Wild, Paper Hero's Huntington Beach, B.Y.O.GAMES, and Shuffle and Cut: add Grails prerelease, broaden Paper Hero event coverage, keep BYO to represented Commander rows, and resolve Shuffle toward current Brea identity before adding WPN draft/Standard/prerelease rows.",
+        "review_status": "proposed"
+      },
+      "reason": "Create a visible Updates marker for the reviewable four-store corrected main-pass proposal."
+    }
+  ]
+}
