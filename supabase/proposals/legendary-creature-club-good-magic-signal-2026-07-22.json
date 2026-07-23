@@ -1,0 +1,35 @@
+{
+  "proposal_id": "legendary-creature-club-good-magic-signal-2026-07-22",
+  "description": "Reviewable time-bounded Signal from the guarded Legendary Creature Club Discord Events-surface test. No live write has been applied. Do not apply after 2026-07-22T23:59:00-07:00; disposition stale / no action instead. Scope was one guild-level Events surface only, with no channel survey or Discord interaction.",
+  "created_at": "2026-07-22T19:05:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {
+        "id": "signal-lcc-good-magic-happening-now-2026-07-22"
+      },
+      "fields": {
+        "id": "signal-lcc-good-magic-happening-now-2026-07-22",
+        "category": "event_opportunity",
+        "priority": "high",
+        "status": "new",
+        "source_id": null,
+        "captured_at": "2026-07-22T19:05:00-07:00",
+        "observed_at": "2026-07-22T19:01:00-07:00",
+        "expires_at": "2026-07-22T23:59:00-07:00",
+        "related_entity_type": "community",
+        "related_entity_id": "legendary-creature-club",
+        "summary": "Legendary Creature Club's Discord Events surface shows GOOD Magic happening now at Good Time.",
+        "details": "The guarded server-level Discord Events summary visibly showed Happening Now, GOOD Magic, and Good Time. An earlier accepted manual extraction identifies this as a community Magic meetup at Good Time in Long Beach on July 22 at 6:00 PM, but this run did not independently re-read the full details or identify format, proxy policy, or power level.",
+        "evidence_url": "https://discord.com/channels/1113847610525093991",
+        "confidence": "medium",
+        "suggested_action": "If it is still practical tonight, inspect the community event manually before going; otherwise let this Signal expire and monitor future Legendary Creature Club Discord Events.",
+        "promotion_target": "event_proposal",
+        "dedupe_key": "legendary-creature-club:discord-events:good-magic:2026-07-22"
+      },
+      "reason": "This is a current same-night community Magic opportunity surfaced outside ordinary store calendars. It is actionable enough for a short-lived Signal but too incomplete and too late for a durable calendar Event row. Before applying, revalidate that no duplicate exists and that the proposal has not passed its 2026-07-22T23:59:00-07:00 expiry."
+    }
+  ]
+}

@@ -26,7 +26,7 @@ const maxVisibleMessages = Number.parseInt(process.argv[7] || '5', 10);
 const passMode = process.argv[8] || 'routine_survey';
 const targetRoute = targetUrl?.match(/^https:\/\/discord(app)?\.com\/channels\/(\d+)\/(\d+)$/i);
 if (!targetRoute) throw new Error('Pass one exact mapped Discord channel URL');
-if (!['shell', 'content'].includes(mode)) throw new Error('Mode must be shell or content');
+if (!['shell', 'content', 'events'].includes(mode)) throw new Error('Mode must be shell, content, or events');
 if (!Number.isInteger(maxVisibleMessages) || maxVisibleMessages < 1 || maxVisibleMessages > 5) {
   throw new Error('Visible message limit must be an integer from 1 through 5');
 }
@@ -55,8 +55,8 @@ const uiNativeMutationSelector = [
   '[data-slate-editor="true"]',
   'textarea',
   'input',
-  '[role="main"] button',
-  'main button',
+  '[role="main"] button:not([data-discord-readonly-nav-target="events"])',
+  'main button:not([data-discord-readonly-nav-target="events"])',
   '[id^="chat-messages-"] button',
   '[aria-label*="Messages" i] button',
   '[aria-label*="Send" i]',
@@ -104,6 +104,7 @@ const result = {
   messageAreaInteractionUsed: false,
   messageContentInspected: false,
   discordEventsSurface: null,
+  discordEventsWindow: null,
   externalDiscordStateChanged: false,
   folderExpansionRequired: false,
   stages: [],
@@ -377,7 +378,10 @@ async function inspectDiscordEventsSurface(page) {
     const normalize = (value) => (value || '').replace(/\s+/g, ' ').trim();
     const activeGuildShell = location.pathname === `/channels/${guildId}` ||
       location.pathname.startsWith(`/channels/${guildId}/`);
-    const candidates = [...document.querySelectorAll('a[href], button, [role="button"], [role="treeitem"], [data-list-item-id]')]
+    document.querySelectorAll('[data-discord-readonly-nav-target="events"]').forEach((element) => {
+      element.removeAttribute('data-discord-readonly-nav-target');
+    });
+    const inspected = [...document.querySelectorAll('a[href], button, [role="button"], [role="treeitem"], [data-list-item-id]')]
       .filter((element) => visible(element) && outsideMessages(element))
       .map((element) => {
         const text = normalize(element.textContent);
@@ -388,9 +392,24 @@ async function inspectDiscordEventsSurface(page) {
         const guildOwner = element.closest('[data-list-item-id^="guildsnav___"]');
         const guildOwnerMatch = guildOwner?.getAttribute('data-list-item-id')?.match(/^guildsnav___(\d+)$/);
         const ownerGuildId = guildOwnerMatch?.[1] || null;
+        const insideServerRail = Boolean(element.closest('[aria-label*="Servers" i], [data-list-id*="guilds" i]'));
         const label = normalize(`${ariaLabel} ${title} ${text}`);
         const eventShaped = /(^|\s)(server\s+)?events?(\s|$)/i.test(label) ||
           /guild[-_ ]?events?/i.test(`${dataListItemId || ''} ${href || ''}`);
+        const textChannelRoute = Boolean(
+          href?.match(new RegExp(`^/channels/${guildId}/\\d+$`)) ||
+          /text channel/i.test(ariaLabel)
+        );
+        let contextText = null;
+        let context = element;
+        for (let depth = 0; depth < 7 && context; depth += 1, context = context.parentElement) {
+          const candidateText = normalize(context.textContent);
+          if (candidateText.length >= 20 && candidateText.length <= 2500 &&
+              /\b(today|tomorrow|happening|am|pm|monday|tuesday|wednesday|thursday|friday|saturday|sunday|event details)\b/i.test(candidateText)) {
+            contextText = candidateText;
+            break;
+          }
+        }
         const guildBound = Boolean(activeGuildShell && eventShaped &&
           (!ownerGuildId || ownerGuildId === guildId) && (
           dataListItemId?.includes(guildId) ||
@@ -398,7 +417,7 @@ async function inspectDiscordEventsSurface(page) {
           element.closest(`[data-list-item-id*="${guildId}"]`) ||
           (!href && ['BUTTON', 'DIV'].includes(element.tagName))
         ));
-        return {
+        return { element, item: {
           tag: element.tagName,
           role: element.getAttribute('role'),
           ariaLabel: ariaLabel || null,
@@ -407,25 +426,121 @@ async function inspectDiscordEventsSurface(page) {
           href,
           dataListItemId,
           ownerGuildId,
+          insideServerRail,
+          textChannelRoute,
+          contextText,
           guildBound,
           eventShaped,
           label
-        };
-      })
-      .filter((item) => item.eventShaped && item.guildBound)
+        } };
+      });
+    const surfaceCandidates = inspected
+      .filter(({ item }) => item.eventShaped && item.guildBound && !item.insideServerRail && !item.textChannelRoute)
       .slice(0, 8);
+    const railIndicators = inspected
+      .filter(({ item }) => item.eventShaped && item.ownerGuildId === guildId && item.insideServerRail)
+      .slice(0, 4);
+    if (surfaceCandidates.length === 1) {
+      surfaceCandidates[0].element.setAttribute('data-discord-readonly-nav-target', 'events');
+    }
+    const candidates = surfaceCandidates.map(({ item }) => item);
     const visibleText = candidates.map((item) => item.label).join(' ');
     const countMatch = visibleText.match(/\b(\d{1,3})\s+(?:scheduled\s+)?events?\b/i) ||
       visibleText.match(/\bevents?\s+(\d{1,3})\b/i);
     return {
       checked: true,
-      status: candidates.length ? 'visible_not_inspected' : 'not_observed',
+      status: candidates.length ? 'visible_not_inspected' : (railIndicators.length ? 'server_rail_indicator_only' : 'not_observed'),
       visible: candidates.length > 0,
       visibleCount: countMatch ? Number.parseInt(countMatch[1], 10) : null,
       candidateCount: candidates.length,
-      candidates: candidates.map(({ label, eventShaped, guildBound, ...item }) => item)
+      targetUniquelyProven: candidates.length === 1,
+      candidates: candidates.map(({ label, eventShaped, guildBound, ...item }) => item),
+      serverRailIndicators: railIndicators.map(({ item: { label, eventShaped, guildBound, ...item } }) => item)
     };
   }, expectedRoute);
+}
+
+async function prepareEventsNavigationTarget(page) {
+  const locator = page.locator('[data-discord-readonly-nav-target="events"]');
+  if (await locator.count() !== 1) throw new Error('Events navigation target is not uniquely proven');
+  return locator.evaluate((element) => {
+    const label = (element.getAttribute('aria-label') || element.getAttribute('title') || element.textContent || '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    const insideMessageArea = Boolean(element.closest(
+      '[data-message-composer], [role="textbox"], [id^="chat-messages-"], [aria-label*="Messages" i]'
+    ));
+    const allowedLabel = /^(events|event details|view event)$/i.test(label);
+    const allowedElement = element.matches('button, [role="button"], a[href]');
+    if (!allowedLabel || !allowedElement || insideMessageArea || element.closest('form')) {
+      throw new Error('Events navigation target is not a proven read-only structural control');
+    }
+    element.removeAttribute('aria-disabled');
+    element.removeAttribute('data-discord-readonly-disabled');
+    if ('disabled' in element) element.disabled = false;
+    element.tabIndex = -1;
+    return { label, tag: element.tagName, role: element.getAttribute('role'), href: element.getAttribute('href') };
+  });
+}
+
+async function extractDiscordEventsWindow(page) {
+  return page.evaluate(() => {
+    const visible = (element) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+    };
+    const normalize = (value) => (value || '').replace(/\s+/g, ' ').trim();
+    const directRoots = [...document.querySelectorAll('[role="dialog"], [aria-modal="true"], [class*="modal" i]')]
+      .filter(visible);
+    const eventActions = [...document.querySelectorAll('button, [role="button"], a[href]')]
+      .filter(visible)
+      .filter((element) => /^(interested|going|event details|view event|events)$/i.test(normalize(
+        element.getAttribute('aria-label') || element.getAttribute('title') || element.textContent
+      )));
+    const contextualRoots = eventActions.flatMap((element) => {
+      const roots = [];
+      let cursor = element.parentElement;
+      for (let depth = 0; depth < 8 && cursor; depth += 1, cursor = cursor.parentElement) {
+        const text = normalize(cursor.textContent);
+        if (text.length >= 20 && text.length <= 8000 &&
+            /\b(today|tomorrow|happening|am|pm|monday|tuesday|wednesday|thursday|friday|saturday|sunday|interested|going|event details)\b/i.test(text)) {
+          roots.push(cursor);
+        }
+      }
+      return roots;
+    });
+    const roots = [...new Set([...directRoots, ...contextualRoots])]
+      .filter(visible)
+      .sort((a, b) => normalize(a.textContent).length - normalize(b.textContent).length);
+    const root = roots.find((element) => {
+      const text = normalize(element.textContent);
+      return text.length <= 2500 &&
+        !/\bDirect Messages\b.*\bStores\/Local\b/i.test(text) &&
+        /\b(today|tomorrow|happening|am|pm|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i.test(text) &&
+        /\b(interested|going|event details|location|long beach|magic|pauper|commander|edh|draft)\b/i.test(text);
+    }) || null;
+    if (!root) return { rendered: false, rootRole: null, heading: null, text: null, cards: [] };
+    const heading = [...root.querySelectorAll('h1, h2, h3, [role="heading"]')]
+      .filter(visible)
+      .map((element) => normalize(element.textContent))
+      .find(Boolean) || null;
+    const cardCandidates = [...root.querySelectorAll('[role="listitem"], article, li, [class*="event" i]')]
+      .filter(visible)
+      .map((element) => normalize(element.textContent))
+      .filter((value) => value.length >= 8 && value.length <= 1600)
+      .filter((value) => /\b(today|tomorrow|happening|am|pm|monday|tuesday|wednesday|thursday|friday|saturday|sunday|jul|aug|sep|oct|nov|dec|event)\b/i.test(value));
+    const cards = [...new Set(cardCandidates)]
+      .filter((value, index, values) => !values.some((other, otherIndex) => otherIndex !== index && other.length < value.length && value.includes(other)))
+      .slice(0, 12);
+    return {
+      rendered: true,
+      rootRole: root.getAttribute('role') || root.tagName,
+      heading,
+      text: normalize(root.textContent).slice(0, 8000),
+      cards
+    };
+  });
 }
 
 async function captureServerRailScreenshot(page) {
@@ -682,6 +797,31 @@ try {
   navigation = await markAndInspectNavigation(page);
   result.stages.at(-1).navigation = navigation;
   result.discordEventsSurface = await inspectDiscordEventsSurface(page);
+  if (mode === 'events') {
+    if (!result.discordEventsSurface.visible || !result.discordEventsSurface.targetUniquelyProven) {
+      throw new Error(`Discord Events surface is not uniquely reachable: ${result.discordEventsSurface.status}`);
+    }
+    result.discordEventsSurface.navigationProof = await prepareEventsNavigationTarget(page);
+    requestStage = 'events_surface_navigation';
+    await controlledNavigationClick(page, 'events');
+    await verifyStage(page, 'events_surface_opened', { waitMs: 2200 });
+    requestStage = 'events_surface_read';
+    result.discordEventsWindow = await extractDiscordEventsWindow(page);
+    const summaryText = result.discordEventsSurface.candidates[0]?.contextText || null;
+    if (!result.discordEventsWindow.rendered && !summaryText) {
+      throw new Error('Discord Events surface did not expose a readable bounded summary or detail root');
+    }
+    await verifyStage(page, 'events_surface_read_verified', { waitMs: 100 });
+    result.status = result.discordEventsWindow.rendered
+      ? 'events_surface_detail_read_succeeded_safely'
+      : 'events_surface_summary_read_succeeded_safely';
+    result.routeState = result.discordEventsWindow.rendered
+      ? 'ui_native_events_detail_read_verified'
+      : 'ui_native_events_summary_read_verified';
+    result.latestRunResult = result.discordEventsWindow.rendered
+      ? 'events_surface_detail_read_verified'
+      : 'events_surface_summary_read_verified';
+  } else {
   if (navigation.visibleChannelAnchorCount !== 1) throw new Error('mapped channel anchor is not uniquely visible after guild selection');
   requestStage = 'channel_selection';
   await controlledNavigationClick(page, 'channel', `/channels/${expectedRoute.guildId}/${expectedRoute.channelId}`);
@@ -713,6 +853,7 @@ try {
     result.latestRunResult = networkBlocks.some((entry) => classifyDiscordBlockedRequest(entry).classification === 'blocked_expected_client_setting')
       ? 'shell_verified_with_blocked_client_state'
       : 'success';
+  }
   }
   result.guildIndicatorAfter = await readGuildIndicator(page);
   result.guildIndicatorUnchanged = JSON.stringify(result.guildIndicatorBefore) === JSON.stringify(result.guildIndicatorAfter);

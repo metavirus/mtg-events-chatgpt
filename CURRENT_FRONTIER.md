@@ -705,6 +705,14 @@ older notes saying "repair Tweedy first" as current next work.
   1250855113699098685`. Three visible messages ended in November 2024 and
   yielded no current finding. No distinct Discord Events control/count was
   observed, unread state was unchanged, and no external Discord state changed.
+- Legendary Creature Club's guild-level Discord Events surface passed a bounded
+  guarded summary read on 2026-07-22. It showed `GOOD Magic` `Happening Now` at
+  `Good Time`; no other current/upcoming item was visible in the bounded summary.
+  The structurally unique Event Details control opened without changing unread
+  or external Discord state, but a fully isolated detail-panel extraction is not
+  yet proven. A time-bounded Signal proposal exists and must expire rather than
+  be applied late. The existing watchlist can represent this surface with
+  `channel_type = events`; no schema addition is justified after one test.
 
 ## Highest-value unresolved questions
 
