@@ -158,6 +158,17 @@ The proposal is intended to:
 - Cardboard no new event lanes beyond existing Commander/draft/prerelease rows.
 - No Signals writes from this batch.
 
-## Ledger status
+## Acceptance checkpoint - 2026-07-23
 
-The store-treatment/research ledgers were not advanced to “complete” in this run because the Supabase proposal has not yet been accepted/applied. This run note and proposal preserve the pending state for review.
+The proposal was accepted and applied to Supabase on 2026-07-23 with standard validation.
+
+Applied outcomes:
+
+- Magic and Monsters Commander Free Play remains inactive with a refreshed WPN/store-controlled source-health conflict note.
+- Comic Book Hideout received active WPN-supported Thursday `Magic Under the Stars`, Friday `Beginner Nights`, and refreshed Sunday Commander support.
+- Lost Planet's over-projected weekly Friday Level 2 Commander row was retired, and nine dated WPN/EventLink Friday specials/prereleases were added through September 2026.
+- Cardboard Games' August 8 and August 9 Hobbit prerelease rows now have structured 1:00 PM to 5:00 PM times.
+- Venue assessment notes and evaluation rows were refreshed for all four stores.
+- The update-feed marker is `accepted`.
+
+Ledger status after application: these stores should no longer be selected as ordinary baseline corrected-main-pass targets. Their remaining work is named texture/source follow-up, especially Discord/community route usefulness, proxy/power norms, turnout, and source-health contradictions where noted.
