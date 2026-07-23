@@ -210,13 +210,28 @@ Proposed live Supabase changes:
 
 ## Validation
 
-Pending at proposal creation time:
-
-- local proposal validator;
-- SQL planning dry run;
-- text integrity;
-- no live write until approval.
+- Proposal validation: passed against a fresh live Supabase export basis on
+  2026-07-23 before application.
+- Krazy Reality Fracture date confirmation: fresh Wizards/EventLink pull found
+  event `11428876` at `2026-09-26T02:00:00Z`, which is Friday September 25,
+  2026 at 7:00 PM PDT, and event `11428877` at `2026-09-26T20:00:00Z`, which
+  is Saturday September 26, 2026 at 1:00 PM PDT. The September 25/26 dates are
+  intentional local-date conversions, not a parser artifact.
+- Dry-run SQL plan: generated successfully with 27 operations.
+- Live write: applied after user approval on 2026-07-23.
+- Post-write readback: confirmed the new Krazy Reality Fracture series, two
+  confirmed occurrences, WPN source links, visible social-route source links,
+  Games For Meeple `login_required` source status, Krazy evaluation row, and
+  pending Updates marker.
+- Duplicate checks: no duplicate active event-series or duplicate occurrence
+  rows found.
+- No-write checks: ProjectCCG Santa Ana, TK Collectibles, and Games For Meeple
+  retained their existing event-series counts; no new event rows were added for
+  those venues.
+- Text integrity: passed after ledger/proposal updates.
 
 ## Ledger status
 
-The accepted main-pass closure ledger should advance only after this proposal is approved and applied. Until then, this run note is the durable proposed closure record for the batch.
+The accepted main-pass closure ledger advanced after proposal application. The
+four target stores are no longer ordinary corrected-main-pass targets; remaining
+work is named texture, branch, Discord/community, or source-health follow-up.

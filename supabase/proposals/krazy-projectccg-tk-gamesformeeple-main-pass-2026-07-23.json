@@ -1,5 +1,7 @@
 {
   "proposal_id": "krazy-projectccg-tk-gamesformeeple-main-pass-2026-07-23",
+  "status": "applied",
+  "applied_at": "2026-07-23T13:51:00-07:00",
   "description": "Corrected main-store pass for Krazy Nick's Games, ProjectCCG - Santa Ana, TK Collectibles, and Games For Meeple. Adds branch-safe future Krazy Reality Fracture prerelease coverage, refreshes WPN/source freshness, captures social routes as visible Evidence, adds Krazy's missing Places evaluation, and updates assessment notes. No canonical JSON or app-code changes are proposed.",
   "created_at": "2026-07-23T13:45:00-07:00",
   "author": "Codex Project Steward",

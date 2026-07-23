@@ -84,18 +84,18 @@ pass before relying on the Sunday Commander lead for travel.
 | B.Y.O.GAMES LLC | mostly complete - named closure gaps | Status-conflict pass D plus LAist evidence backfill | current records | Current operation; Tuesday vs Wednesday Commander; no-proxy context | Micro-backfill/status check if planning-relevant | Medium |
 | Buddies Collectibles | mostly complete - named closure gaps | Packet evidence backfill; reviewed evaluation already present | current record | Current operation/status contradiction; Magic emphasis | Micro-backfill with direct review/source coverage | Medium |
 | Shadow Realm Collectibles | mostly complete - named closure gaps | 2026-07-23 corrected main pass; WPN/event refresh and Places recalibration | current Commander, Standard Showdown, and Two-Headed Giant rows refreshed | Power/proxy norms, solo-arrival texture, and whether prize language reflects the whole play environment | Optional community/social texture only if planning-relevant | Medium |
-| TK Collectibles | mostly complete - named closure gaps | Nearby thin-store assessment pass | current record | Corrected main-pass coverage line and source depth | Corrected micro/main pass if prioritized | Medium |
-| Games For Meeple | mostly complete - named closure gaps | Unresolved discovery assessment pass | current records | Official/social specials; service caution context | Micro-backfill if prioritized | Medium |
+| TK Collectibles | mostly complete - named closure gaps | 2026-07-23 corrected main pass; WPN/source/social closure applied | Saturday Commander current; no draft/prerelease/specials found in checked WPN window | Instagram content replay, turnout, proxy/power norms, solo-arrival fit | Optional social/community texture only if TK becomes a serious backup | Medium |
+| Games For Meeple | mostly complete - named closure gaps | 2026-07-23 corrected main pass; WPN/source-health/social closure applied | Friday and Sunday Commander current; official site now login-required | Official site reopening, Discord/community route, social content replay, Commander texture, non-Commander Magic outside WPN | Optional source-health/social/community texture if promoted for a trip | Medium |
 | GXGAMERS | mostly complete - named closure gaps | Unresolved discovery assessment pass | current records | Social/Discord MTG texture; no-proxy impact | Micro-backfill if prioritized | Low |
 | Otaku Vault | mostly complete - named closure gaps | Unresolved discovery assessment pass | current record | Social/community and play-space evidence | Corrected main pass if prioritized | Low |
 | LVLUP GAMING TCG | mostly complete - named closure gaps | Unresolved discovery assessment pass | current records | Operating reliability; store-controlled schedule | Corrected main pass if prioritized | Low |
 | Aki Collectibles | mostly complete - named closure gaps | Nearby thin-store assessment pass | current record | Current-method source coverage and social/event texture | Micro-backfill if prioritized | Low |
-| Krazy Nick's Games | older/light work - corrected main pass required | Batch A identity separation | current records | Own-source assessment after Honey Pot evidence moved away | Corrected main pass if planning-relevant | Medium |
+| Krazy Nick's Games | mostly complete - named closure gaps | 2026-07-23 corrected main pass; own-source closure, WPN refresh, Reality Fracture prerelease, and evaluation row applied | broad current WPN coverage including Commander, Modern, Pauper, Standard, Hobbit prerelease, and future Reality Fracture prerelease | Proxy/power culture, Commander pod reliability, Instagram post-level replay, and whether stale/quiet Discord schedule has newer useful channels | Optional Discord/social texture if deciding whether to try Krazy soon | Medium |
 | Comic Book Hideout | mostly complete - named closure gaps | 2026-07-23 corrected main pass; WPN refresh added Thursday Commander and Friday Beginner Nights | Sunday, Thursday, and Friday WPN-supported Magic rows current | Thursday outdoor space/weather, turnout, proxy norms, and pod power | Optional community/social texture before choosing as a regular target | Medium |
 | Kingslayer Games - Fountain Valley | mostly complete - named closure gaps | 2026-07-23 corrected branch-safe main pass; WPN refresh and evaluation row | current Fountain Valley rows refreshed; Lake Forest not merged | Commander turnout, proxy norms, solo-arrival texture, and branch-specific Discord/community signals | Optional guarded Discord/community texture if deciding whether to visit soon | High |
 | Tweedy Cards and Gaming | older/light work - corrected main pass required | July 15 candidate repair | current records | Main-pass closure under corrected method | Corrected main pass if planning-relevant | Low |
 | Guildhall - Whittier | older/light work - corrected main pass required | July 15 first pass | current record | Magic prominence and current social/event texture | Corrected main pass if planning-relevant | Low |
-| ProjectCCG - Santa Ana | older/light work - corrected main pass required | Batch A identity clarification | current records | Branch/community-specific source replay | Corrected branch-aware main pass | Medium |
+| ProjectCCG - Santa Ana | mostly complete - named closure gaps | 2026-07-23 corrected branch-aware main pass; WPN refresh and multi-branch Instagram route captured | OC/Santa Ana Commander, Draft, and Standard Showdown rows current and branch-safe | Branch-specific social content replay, proxy/power/pod/solo texture, and future Discord event-image capture | Targeted Discord/player-texture pass if deciding whether to try Santa Ana soon | Medium |
 | Spellhold Games | mostly complete - named closure gaps | 2026-07-23 corrected main pass; WPN refresh and Hobbit prerelease fee/capacity correction | broad current calendar refreshed; Hobbit prerelease corrected to $35/42 cap | Saturday Commander pod behavior, proxy/power norms, solo-arrival texture | Optional community/social texture before choosing Saturday Commander | Medium |
 | Alakazam Comics | older/light work - corrected main pass required | July 15 first pass | current record | Current schedule extraction and source coverage | Corrected main pass if planning-relevant | Low |
 | Cardboard Games | mostly complete - named closure gaps | 2026-07-23 corrected main pass; WPN/calendar refresh and Hobbit prerelease time repair | Friday Commander, Monday draft, and August Hobbit prereleases current; prerelease times structured | Commander pod formation, proxy/power norms, and Discord/community route | Optional community/social texture before choosing Friday Commander | Medium |
@@ -158,6 +158,22 @@ unless a named remaining texture gap is deliberately selected. Their remaining
 work is source-health resolution or community/visit texture, not basic event
 surface discovery.
 
+The accepted Krazy Nick's / ProjectCCG Santa Ana / TK Collectibles / Games For
+Meeple batch also supersedes the older queue status for those four rows above.
+Do not recommend them as ordinary baseline corrected-main-pass targets again
+unless a named remaining texture, branch, Discord/community, source-health, or
+social-content gap is deliberately selected.
+
+Signals calibration for future batches: Signals should remain sparse, but not
+empty by default. Propose a Signal only when a finding is attention-worthy
+planning intelligence: time-sensitive or near-term opportunities/changes,
+source-health problems that make calendar rows unreliable, branch/entity
+blockers preventing useful promotion, high-value community routes needing
+bounded follow-up, or meaningful store/community shifts. Routine event additions
+already visible in Events, ordinary negative-fit items, quiet checks, stale
+findings, and generic route discovery should stay in Events, Places, Evidence,
+Updates, or named TBDs instead.
+
 ## Main Pass Closure Checklist Ledger
 
 Purpose: compact closure records for stores that receive the corrected main-pass
@@ -216,3 +232,55 @@ Discord/community routes, or review texture.
 - Places assessment impact: B- / 3.7 / medium; active and promising but still texture-limited.
 - Evidence visibility: WPN and official calendar sources refreshed; structured prerelease times repaired.
 - Remaining named TBDs: Commander pod formation; proxy policy; power expectations; Discord/community coordination route.
+
+### 2026-07-23 - Krazy Nick's Games
+
+- Official site/storefront: inspected; supports current Cerritos physical operation, MTG inventory, event-entry products, hours, phone, and store-credit/buylist activity.
+- WPN/EventLink: inspected 2026-07-23; supports Commander, Modern, Pauper, Standard, Hobbit prerelease, and future Reality Fracture prerelease rows.
+- Store events/calendar page: official site/event-entry surface supports operation and products; WPN remains the structured event source for this batch.
+- Instagram/Facebook/store social: Krazy Instagram captured at profile level as visible Evidence; post-level current Magic content replay remains TBD.
+- Discord/community route: prior inspected Discord evidence supports some real Commander pod/turnout texture; latest mapped schedule-channel read was stale/quiet, not a route-value downgrade.
+- Review texture: Yelp/review texture remains mixed and is preserved as a caution; Honey Pot evidence remains separated and is not used for Krazy conclusions.
+- Event-surface reconciliation: Commander = Wednesday/Sunday current; draft = no current write; prerelease/sealed = Hobbit and Reality Fracture represented; FNM = no separate current write; specials/constructed = Modern, Pauper, and Standard represented where WPN-supported.
+- Places assessment impact: added B / 3.8 / medium evaluation; close, broad Magic store with real upside but unresolved proxy/power/solo-arrival texture.
+- Evidence visibility: WPN source refreshed; Instagram route visible; Reality Fracture series/occurrences linked to WPN.
+- Remaining named TBDs: current proxy/power culture; Commander pod reliability for solo arrival; Instagram post-level replay; whether stale/quiet Discord schedule has newer useful channels.
+
+### 2026-07-23 - ProjectCCG Santa Ana
+
+- Official site/storefront: inspected; supports broader ProjectCCG brand/storefront but is not used alone for Santa Ana event truth.
+- WPN/EventLink: inspected 2026-07-23; Santa Ana/OC Commander, Draft, and Standard Showdown lanes already represented and source freshness refreshed.
+- Store events/calendar page: branch-safe event truth stays tied to WPN and previously inspected ProjectCCG OC/Discord evidence; no new calendar rows from generic ProjectCCG pages.
+- Instagram/Facebook/store social: ProjectCCG Instagram captured at profile level as multi-branch social/source routing, not branch-specific Santa Ana event proof.
+- Discord/community route: existing ProjectCCG Discord evidence remains material for OC operational reliability and community routing; no new Discord survey in this batch.
+- Review texture: not newly replayed; not a blocker for the branch-aware event/source closure.
+- Event-surface reconciliation: Commander = OC/Santa Ana current; draft = current; prerelease/sealed = no new write; FNM = no separate write; specials/constructed = Standard Showdown current.
+- Places assessment impact: remains B / 3.9 / medium; strong nearby Magic candidate, with branch discipline still essential.
+- Evidence visibility: WPN source refreshed and Instagram route captured with branch caveat.
+- Remaining named TBDs: proxy policy; pod formation; solo arrival; Commander casual-vs-competitive texture; future Discord event-image capture; branch-specific social content replay.
+
+### 2026-07-23 - TK Collectibles
+
+- Official site/storefront: inspected; generic/low-detail official route, useful for identity more than planning.
+- WPN/EventLink: inspected 2026-07-23; only Saturday noon Casual Commander appeared in the checked future window.
+- Store events/calendar page: no stronger current MTG calendar found in this bounded pass.
+- Instagram/Facebook/store social: Instagram captured at profile level as visible Evidence; post-level MTG content replay remains TBD.
+- Discord/community route: no safe/useful route captured in this pass.
+- Review texture: existing review and non-MTG organized-play evidence supports physical operation and event-hosting capability, but Magic texture remains thin.
+- Event-surface reconciliation: Commander = Saturday current; draft = no current write; prerelease/sealed = no current write; FNM = no write; specials = no write. Prior Sunday July 19 row is past dated context, not a Sunday routine.
+- Places assessment impact: complete enough for low-priority planning; valid backup, not a strong current target.
+- Evidence visibility: WPN refreshed and Instagram route captured.
+- Remaining named TBDs: Instagram content replay; Magic turnout; proxy/power norms; solo-arrival fit.
+
+### 2026-07-23 - Games For Meeple
+
+- Official site/storefront: inspected; currently resolves to a password/login page, so source health is `login_required`.
+- WPN/EventLink: inspected 2026-07-23; Friday Commander and Sunday Commander already represented.
+- Store events/calendar page: unavailable through official site in this pass because of password gate.
+- Instagram/Facebook/store social: Instagram and Facebook captured at profile level as visible Evidence; post-level event content replay remains TBD.
+- Discord/community route: route remains TBD; no safe Discord content used in this pass.
+- Review texture: existing Card Shop Hub/Yahoo/Trustpilot/resource-mirror texture supports active store/play read with one service/culture caution.
+- Event-surface reconciliation: Commander = Friday/Sunday current; draft = absent from checked WPN window; prerelease/sealed = absent from checked WPN window; FNM = Friday Commander only; specials = no current write.
+- Places assessment impact: remains B- / 3.5 / medium; credible Diamond Bar multi-TCG candidate but not promoted as top target.
+- Evidence visibility: WPN refreshed, official site marked login-required, Instagram/Facebook visible.
+- Remaining named TBDs: official site reopening; Discord/community route; social content replay; Commander turnout/power/proxy/solo-arrival texture; whether non-Commander Magic appears outside WPN.
