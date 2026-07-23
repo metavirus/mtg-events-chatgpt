@@ -1,0 +1,198 @@
+{
+  "proposal_id": "discord-operational-survey-cursor-and-signal-review-2026-07-22",
+  "description": "Reviewable proposal from the first post-foundation practical Discord signal survey. Contains monitoring cursor/result updates plus one optional short-lived Legendary Creature Club Signal candidate. No live Supabase write has been performed.",
+  "created_at": "2026-07-22T20:00:00-07:00",
+  "author": "Codex Project Steward",
+  "status": "proposed",
+  "validation_level": "lean_if_approved",
+  "scope": {
+    "mode": "routine_survey",
+    "access_method": "guarded_ui_native_navigation_only",
+    "surfaces": [
+      "Legendary Creature Club Discord Events",
+      "Collectors Lounge #mtg-announcements-and-events",
+      "JJ's Collectibles #magic-announcements",
+      "ProjectCCG #mtg-announcements",
+      "Magic & Monsters #shop-schedule",
+      "Krazy Nick's #weekly-event-schedule"
+    ],
+    "excluded": [
+      "No broad Discord survey",
+      "No new schema",
+      "No app change",
+      "No canonical event write without later approval",
+      "No JJ's Orange canonical merge until branch identity is resolved"
+    ]
+  },
+  "safety_result": {
+    "external_discord_state_changed": false,
+    "typing_or_pasting_used": false,
+    "keyboard_navigation_used": false,
+    "mutating_controls_enabled": false,
+    "prohibited_successful_responses": 0,
+    "unread_indicators_changed": false
+  },
+  "operations": [
+    {
+      "action": "update",
+      "table": "discord_channel_watchlist",
+      "key": {
+        "id": "discord-watch-legendary-creature-club-events"
+      },
+      "precondition": {
+        "channel_type": "events",
+        "safe_access_mode": "ui_native_navigation_verified"
+      },
+      "fields": {
+        "last_checked": "2026-07-22",
+        "last_checked_at": "2026-07-23T02:39:09.452Z",
+        "latest_run_result": "useful",
+        "last_useful_signal_at": "2026-07-22",
+        "notes": "Routine survey safely rechecked the guild-level Discord Events summary. Visible summary still showed Happening Now / GOOD Magic / Good Time. Treat as short-lived proof/current Signal candidate only if still useful at approval time; do not overclaim detail-panel content."
+      },
+      "reason": "Preserve the latest safe Events-surface check and the short-lived current/happening-now result."
+    },
+    {
+      "action": "conditional_insert",
+      "table": "signals",
+      "key": {
+        "deduplication_key": "legendary-creature-club-good-magic-2026-07-22"
+      },
+      "apply_only_if": "The GOOD Magic event is still current/actionable at approval time; otherwise disposition as stale/no-action proof.",
+      "fields": {
+        "category": "event_opportunity",
+        "priority": "high",
+        "status": "new",
+        "summary": "Legendary Creature Club Discord Events shows GOOD Magic happening now at Good Time.",
+        "related_entity_type": "community",
+        "related_entity_id": "legendary-creature-club",
+        "source_id": "src-legendary-creature-club-discord-2026-07-22",
+        "confidence": "medium",
+        "suggested_action": "Consider only if still in the same-night window; otherwise dismiss as expired proof of Discord Events value.",
+        "promotion_intent": "signal_only",
+        "expires_at": "2026-07-22T23:30:00-07:00",
+        "deduplication_key": "legendary-creature-club-good-magic-2026-07-22"
+      },
+      "reason": "Same-night Discord Events opportunities are exactly the intended high-value Signal type, but this one should not linger after the window passes."
+    },
+    {
+      "action": "update",
+      "table": "discord_channel_watchlist",
+      "key": {
+        "id": "discord-watch-collectors-mtg-announcements-events"
+      },
+      "precondition": {
+        "channel_id": "1128125617683050597",
+        "safe_access_mode": "ui_native_navigation_verified"
+      },
+      "fields": {
+        "last_checked": "2026-07-22",
+        "last_checked_at": "2026-07-23T02:39:45Z",
+        "last_seen_message_at": "2026-07-22T02:41:27.137Z",
+        "last_seen_message_id": "1529317423629602847",
+        "latest_run_result": "quiet"
+      },
+      "reason": "Safe five-message read found no new planning-useful signal; quiet is a run result only."
+    },
+    {
+      "action": "update",
+      "table": "discord_channel_watchlist",
+      "key": {
+        "id": "discord-watch-jjs-magic-announcements"
+      },
+      "precondition": {
+        "channel_id": "1354561517160239296",
+        "safe_access_mode": "ui_native_navigation_verified"
+      },
+      "fields": {
+        "last_checked": "2026-07-22",
+        "last_checked_at": "2026-07-23T02:40:05Z",
+        "last_seen_message_at": "2026-07-22T05:06:52.759Z",
+        "last_seen_message_id": "1529354021540728934",
+        "latest_run_result": "useful",
+        "notes": "Latest useful run surfaced a current-week Orange schedule lead. Preserve as branch-risky/TBD; do not merge into JJ's Garden Grove canonical events until the Orange entity is resolved."
+      },
+      "reason": "The inspected window contains current event-like Orange schedule material, but it is not branch-safe for Garden Grove."
+    },
+    {
+      "action": "no_write",
+      "table": "signals",
+      "key": {
+        "deduplication_key": "jjs-orange-current-week-schedule-2026-07-22"
+      },
+      "fields": {
+        "disposition": "branch_identity_tbd",
+        "summary": "JJ's Discord shows a current-week Orange schedule with Commander/FNM/Commander entries, but Orange/Garden Grove identity is unresolved.",
+        "next_action": "Resolve JJ's Orange branch/entity before any Signal or event proposal."
+      },
+      "reason": "Useful lead, but not safe to present as Garden Grove or canonical event truth."
+    },
+    {
+      "action": "update",
+      "table": "discord_channel_watchlist",
+      "key": {
+        "id": "discord-watch-projectccg-mtg-announcements"
+      },
+      "precondition": {
+        "channel_id": "1463649071485948049",
+        "safe_access_mode": "ui_native_navigation_verified"
+      },
+      "fields": {
+        "last_checked": "2026-07-22",
+        "last_checked_at": "2026-07-23T02:40:24Z",
+        "last_seen_message_at": "2026-06-29T16:38:35.786Z",
+        "last_seen_message_id": "1521193176944345181",
+        "latest_run_result": "stale"
+      },
+      "reason": "Safe five-message read contained stale/already-covered event-like material, not a current actionable finding."
+    },
+    {
+      "action": "update",
+      "table": "discord_channel_watchlist",
+      "key": {
+        "id": "discord-watch-magicandmonsters-shop-schedule"
+      },
+      "precondition": {
+        "channel_id": "928555906017398785",
+        "safe_access_mode": "ui_native_navigation_verified"
+      },
+      "fields": {
+        "last_checked": "2026-07-22",
+        "last_checked_at": "2026-07-23T02:40:43Z",
+        "last_seen_message_at": "2026-06-01T17:13:06.190Z",
+        "last_seen_message_id": "1511055000611066007",
+        "latest_run_result": "stale"
+      },
+      "reason": "Safe five-message read found no new current planning signal; source remains useful for source-health monitoring."
+    },
+    {
+      "action": "update",
+      "table": "discord_channel_watchlist",
+      "key": {
+        "id": "discord-watch-krazy-weekly-event-schedule"
+      },
+      "precondition": {
+        "channel_id": "1250855113699098685",
+        "safe_access_mode": "ui_native_navigation_verified"
+      },
+      "fields": {
+        "last_checked": "2026-07-22",
+        "last_checked_at": "2026-07-23T02:41:02Z",
+        "last_seen_message_at": "2024-11-08T20:50:31.004Z",
+        "last_seen_message_id": "1304548631134605364",
+        "latest_run_result": "stale"
+      },
+      "reason": "Safe five-message read found only old channel-start/stale schedule history. No current event or Signal."
+    }
+  ],
+  "approval_guidance": [
+    "If reviewed after the GOOD Magic same-night window, skip the conditional Signal insert and retain only the monitoring-map check.",
+    "Do not apply a JJ's Orange Signal or event write until the Orange branch identity is resolved.",
+    "Quiet/stale run results must not reduce durable route value."
+  ],
+  "validation_if_approved": [
+    "Read back affected discord_channel_watchlist rows.",
+    "Confirm no canonical event_series, event_occurrences, venues, evaluations, or app tables changed unless the conditional Signal is explicitly approved while still current.",
+    "If a Signal is inserted, confirm exactly one row by deduplication_key and a short expiry."
+  ]
+}

@@ -715,6 +715,18 @@ older notes saying "repair Tweedy first" as current next work.
   access profile, and one high-priority weekly guild Events surface with
   `channel_type = events` and `latest_run_result = useful`; no schema addition
   was needed.
+- The first post-foundation operational Discord signal survey ran on 2026-07-22
+  using only already verified UI-native surfaces: Legendary Creature Club
+  Events, Collectors Lounge, JJ's, ProjectCCG, Magic & Monsters, and Krazy
+  Nick's. All surfaces completed under guard with no external Discord state
+  change. The only new actionable item was the same short-lived Legendary
+  `GOOD Magic` Events summary; apply it as a Signal only if still useful before
+  expiry. JJ's again surfaced a current-week Orange schedule lead, but that stays
+  branch-identity TBD and must not be merged into Garden Grove. Collectors was
+  quiet; ProjectCCG, Magic & Monsters, and Krazy were stale/no-action in the
+  inspected windows. See
+  `research/runs/2026-07-22-discord-operational-signal-survey.md` and proposal
+  `supabase/proposals/discord-operational-survey-cursor-and-signal-review-2026-07-22.json`.
 
 ## Highest-value unresolved questions
 
