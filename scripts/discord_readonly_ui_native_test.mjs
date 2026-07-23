@@ -22,9 +22,17 @@ const mode = process.argv[3] || 'shell';
 const serverName = process.argv[4] || '';
 const folderName = process.argv[5] || '';
 const channelName = process.argv[6] || '';
+const maxVisibleMessages = Number.parseInt(process.argv[7] || '5', 10);
+const passMode = process.argv[8] || 'routine_survey';
 const targetRoute = targetUrl?.match(/^https:\/\/discord(app)?\.com\/channels\/(\d+)\/(\d+)$/i);
 if (!targetRoute) throw new Error('Pass one exact mapped Discord channel URL');
 if (!['shell', 'content'].includes(mode)) throw new Error('Mode must be shell or content');
+if (!Number.isInteger(maxVisibleMessages) || maxVisibleMessages < 1 || maxVisibleMessages > 5) {
+  throw new Error('Visible message limit must be an integer from 1 through 5');
+}
+if (!['route_discovery', 'routine_survey'].includes(passMode)) {
+  throw new Error('Pass mode must be route_discovery or routine_survey');
+}
 
 const expectedRoute = { guildId: targetRoute[2], channelId: targetRoute[3] };
 const homeUrl = 'https://discord.com/channels/@me';
@@ -73,6 +81,8 @@ let requestStage = 'context_initialization';
 const result = {
   test: 'discord-readonly-ui-native-navigation',
   mode,
+  passMode,
+  maxVisibleMessages,
   startedAt,
   homeUrl,
   targetUrl,
@@ -93,6 +103,7 @@ const result = {
   coordinateGuessingUsed: false,
   messageAreaInteractionUsed: false,
   messageContentInspected: false,
+  discordEventsSurface: null,
   externalDiscordStateChanged: false,
   folderExpansionRequired: false,
   stages: [],
@@ -353,6 +364,70 @@ async function waitForServerRailHydration(page, timeoutMs = 10000) {
   };
 }
 
+async function inspectDiscordEventsSurface(page) {
+  return page.evaluate(({ guildId }) => {
+    const visible = (element) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+    };
+    const outsideMessages = (element) => !element.closest(
+      'main, [role="main"], [aria-label*="Messages" i], [data-message-composer], [role="textbox"], [id^="chat-messages-"]'
+    );
+    const normalize = (value) => (value || '').replace(/\s+/g, ' ').trim();
+    const activeGuildShell = location.pathname === `/channels/${guildId}` ||
+      location.pathname.startsWith(`/channels/${guildId}/`);
+    const candidates = [...document.querySelectorAll('a[href], button, [role="button"], [role="treeitem"], [data-list-item-id]')]
+      .filter((element) => visible(element) && outsideMessages(element))
+      .map((element) => {
+        const text = normalize(element.textContent);
+        const ariaLabel = normalize(element.getAttribute('aria-label'));
+        const title = normalize(element.getAttribute('title'));
+        const href = element.getAttribute('href') || element.querySelector('a[href]')?.getAttribute('href') || null;
+        const dataListItemId = element.getAttribute('data-list-item-id');
+        const guildOwner = element.closest('[data-list-item-id^="guildsnav___"]');
+        const guildOwnerMatch = guildOwner?.getAttribute('data-list-item-id')?.match(/^guildsnav___(\d+)$/);
+        const ownerGuildId = guildOwnerMatch?.[1] || null;
+        const label = normalize(`${ariaLabel} ${title} ${text}`);
+        const eventShaped = /(^|\s)(server\s+)?events?(\s|$)/i.test(label) ||
+          /guild[-_ ]?events?/i.test(`${dataListItemId || ''} ${href || ''}`);
+        const guildBound = Boolean(activeGuildShell && eventShaped &&
+          (!ownerGuildId || ownerGuildId === guildId) && (
+          dataListItemId?.includes(guildId) ||
+          href?.startsWith(`/channels/${guildId}`) ||
+          element.closest(`[data-list-item-id*="${guildId}"]`) ||
+          (!href && ['BUTTON', 'DIV'].includes(element.tagName))
+        ));
+        return {
+          tag: element.tagName,
+          role: element.getAttribute('role'),
+          ariaLabel: ariaLabel || null,
+          title: title || null,
+          text: text.slice(0, 160) || null,
+          href,
+          dataListItemId,
+          ownerGuildId,
+          guildBound,
+          eventShaped,
+          label
+        };
+      })
+      .filter((item) => item.eventShaped && item.guildBound)
+      .slice(0, 8);
+    const visibleText = candidates.map((item) => item.label).join(' ');
+    const countMatch = visibleText.match(/\b(\d{1,3})\s+(?:scheduled\s+)?events?\b/i) ||
+      visibleText.match(/\bevents?\s+(\d{1,3})\b/i);
+    return {
+      checked: true,
+      status: candidates.length ? 'visible_not_inspected' : 'not_observed',
+      visible: candidates.length > 0,
+      visibleCount: countMatch ? Number.parseInt(countMatch[1], 10) : null,
+      candidateCount: candidates.length,
+      candidates: candidates.map(({ label, eventShaped, guildBound, ...item }) => item)
+    };
+  }, expectedRoute);
+}
+
 async function captureServerRailScreenshot(page) {
   const safeName = `server-rail-${new Date().toISOString().replace(/[:.]/g, '-')}.png`;
   const screenshotPath = path.join(screenshotDir, safeName);
@@ -514,7 +589,7 @@ async function probeFolderTooltips(page) {
 
 async function classifyTinyWindow(page) {
   const messages = await extractDiscordVisibleMessages(page, {
-    limit: 5,
+    limit: maxVisibleMessages,
     maxCharactersPerMessage: 1200
   });
   const patterns = [
@@ -606,6 +681,7 @@ try {
 
   navigation = await markAndInspectNavigation(page);
   result.stages.at(-1).navigation = navigation;
+  result.discordEventsSurface = await inspectDiscordEventsSurface(page);
   if (navigation.visibleChannelAnchorCount !== 1) throw new Error('mapped channel anchor is not uniquely visible after guild selection');
   requestStage = 'channel_selection';
   await controlledNavigationClick(page, 'channel', `/channels/${expectedRoute.guildId}/${expectedRoute.channelId}`);

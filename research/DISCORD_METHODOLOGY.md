@@ -86,6 +86,19 @@ Check, when accessible:
 
 Record useful sparse, stale, inaccessible, or empty surfaces as results.
 
+Treat Discord server Events as a distinct source surface, not as a synonym for
+an `events` channel. During discovery, record whether the server exposes an
+Events tab/control and any visible count. When guarded read-only access to that
+surface is proven, inspect current/upcoming items independently from ordinary
+messages. For each item preserve title, time or happening-now state, location,
+hosting server/community, branch-safe place relationship, visible format/fit
+clues, and whether the organizer appears store-run, community-run, or unclear.
+
+An upcoming one-off Discord Event can be a high-value Signal or dated event
+proposal even when it is not recurring and does not appear on a store calendar.
+Do not RSVP, join, react, or imply canonical event truth from an ambiguous or
+stale listing; use `tbd` when identity, timing, or physical location is unclear.
+
 ### 3. Extract text and images completely
 
 For every relevant recent post:

@@ -245,11 +245,25 @@ accessible in the isolated profile.
 - Optional content proof: at most three visible recent messages after exact
   shell identity, guard heartbeat, no editable focus, and zero enabled
   mutators are confirmed.
+- Discord Events surface check: record whether a distinct Events control/tab
+  and visible count are exposed in the server shell. Do not click, RSVP, or
+  inspect an event modal in this route-discovery proof.
 - Hard stops: join/invite acceptance, onboarding, verification, roles,
   settings, enabled composer/mutator, ambiguous identity, or unknown mutation.
 - Required result: exact path and IDs, prompt/overlay behavior, blocked request
   classes, unread-state comparison, external-state confirmation, and whether
   the route can be promoted to `ui_native_navigation_verified`.
 
-This proposal is not authorization to run the test automatically or to create
-Signals, Events, Sources, or research conclusions from it.
+The user authorized this bounded route-discovery test on 2026-07-22. That
+authorization does not extend to creating Signals, Events, Sources, or research
+conclusions from it.
+
+## Krazy Nick's route-discovery result
+
+Pass. Guarded UI-native navigation reached the exact mapped guild/channel and
+read a three-message window safely. The newest visible message was from
+2024-11-08, so the run was quiet/no-action without lowering route value. No
+distinct Discord Events control or count was observed in the tested shell; the
+Events surface was not clicked. Unread/mention state was unchanged and no
+external Discord state changed. The exact route may be promoted to
+`ui_native_navigation_verified`; cold direct navigation remains blocked.

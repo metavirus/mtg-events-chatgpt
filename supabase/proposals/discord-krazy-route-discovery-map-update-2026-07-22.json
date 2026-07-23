@@ -1,0 +1,55 @@
+{
+  "proposal_id": "discord-krazy-route-discovery-map-update-2026-07-22",
+  "status": "applied",
+  "applied_at": "2026-07-23T01:45:00Z",
+  "scope": "Operational Discord monitoring-map checkpoint only; no Signal, Event, Source, Places, assessment, schema, auth, RLS, or app-data write.",
+  "operation_count": 2,
+  "operations": [
+    {
+      "table": "discord_access_profiles",
+      "key": {
+        "source_id": "src-kng-discord-2026-07-14"
+      },
+      "precondition": {
+        "server_id": "587151201091452949",
+        "safe_access_mode": "manual_open_required"
+      },
+      "changes": {
+        "preferred_access_surface": "chrome",
+        "last_successful_access_method": "Isolated Discord-read Chrome profile: Discord @me -> Stores/Local -> exact guild ID -> exact mapped channel ID; guard verified and bounded content read passed.",
+        "automation_suitability": "future_candidate",
+        "last_checked": "2026-07-22",
+        "safe_access_mode": "ui_native_navigation_verified",
+        "safe_access_notes": "Operational guarded path: start at Discord @me; verify guard heartbeat and inactive composer; identify Stores/Local by unique hover tooltip; select guild 587151201091452949; select exact mapped channel ID; verify shell identity before a bounded read. Cold direct navigation remains blocked. On 2026-07-22 no distinct Discord Events control or count was observed in the tested server shell; no Events control was clicked or inspected."
+      }
+    },
+    {
+      "table": "discord_channel_watchlist",
+      "key": {
+        "id": "discord-watch-krazy-weekly-event-schedule"
+      },
+      "precondition": {
+        "profile_source_id": "src-kng-discord-2026-07-14",
+        "channel_id": "1250855113699098685",
+        "safe_access_mode": "manual_open_required"
+      },
+      "changes": {
+        "last_checked": "2026-07-22",
+        "last_checked_at": "2026-07-23T01:38:36.402Z",
+        "last_seen_message_at": "2024-11-08T20:50:31.004Z",
+        "last_seen_message_id": "1304548631134605364",
+        "latest_run_result": "quiet",
+        "safe_access_mode": "ui_native_navigation_verified",
+        "safe_access_notes": "Verified route-discovery path: Discord @me -> Stores/Local -> Krazy Nick's Games guild 587151201091452949 -> #weekly-event-schedule channel 1250855113699098685. Exact labels and IDs are both required; cold direct URL remains blocked. Three visible messages were read under guard; the newest was from 2024-11-08 and produced no current useful finding. No distinct Discord Events control/count was observed in the tested shell."
+      }
+    }
+  ],
+  "validation": [
+    "Read back the Krazy Nick's profile and #weekly-event-schedule watch row.",
+    "Confirm both safe_access_mode values are ui_native_navigation_verified.",
+    "Confirm the channel cursor records message 1304548631134605364 at 2024-11-08T20:50:31.004Z.",
+    "Confirm latest_run_result is quiet without changing durable route_value.",
+    "Confirm the profile records Discord Events surface status as not observed and not inspected.",
+    "Confirm no canonical research or app-data table changed."
+  ]
+}

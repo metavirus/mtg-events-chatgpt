@@ -82,6 +82,37 @@ The Collectors profile and mapped channel now use
 
 No other Discord route was promoted.
 
+## Krazy Nick's route-discovery extension (2026-07-22)
+
+The approved first-visit `route_discovery` mode was applied to one already
+joined route:
+
+`Discord @me -> Stores/Local -> Krazy Nick's Games -> #weekly-event-schedule`
+
+- Guild ID: `587151201091452949`.
+- Channel ID: `1250855113699098685`.
+- Folder identity: unique `Stores/Local` hover tooltip.
+- Guard heartbeat remained active; editable focus was absent; enabled mutators
+  remained zero.
+- No cold deep link, typing, paste, keyboard navigation, search, coordinate
+  guessing, or message-area interaction was used.
+- Three visible messages were read, from 2024-06-19 through 2024-11-08.
+- Current useful finding: none. This is a quiet result for this run, not a route
+  downgrade.
+- Discord Events surface: no distinct Events control or visible count was
+  observed in the tested shell. The runner did not click or inspect an Events
+  control.
+- Events detection is guild-bound. A scheduled-event badge owned by Legendary
+  Creature Club was visible elsewhere in the server rail during verification;
+  the corrected detector rejected it instead of attributing it to Krazy Nick's.
+- Blocked requests: Discord telemetry only.
+- Unread/mention indicator: unchanged.
+- External Discord state changed: no.
+
+This route is eligible for `ui_native_navigation_verified` routine use through
+the exact recorded path. Cold direct-channel navigation remains blocked. No
+Signal, Event, Source, Places, assessment, or other research write was created.
+
 ## Boundary after this test
 
 The safety hypothesis is proven for one mapped, already-joined route. This does
@@ -89,4 +120,3 @@ not authorize broad Discord surveying or daily automation. The next expansion,
 if approved, should be a tiny map-driven pilot that applies the same UI-native
 identity proof independently to each selected route and fails closed if its
 folder, guild, channel, guard, or network state cannot be proven.
-

@@ -696,6 +696,15 @@ older notes saying "repair Tweedy first" as current next work.
   survey should be part of that store's main first pass rather than a deferred
   optional extra; capture events, announcement patterns, meetup/LFG signals, and
   overall source usefulness without trying to read the whole server.
+- Discord Events refinement: treat the server-level Events surface as distinct
+  from ordinary channels. Route discovery records whether the control/count is
+  exposed; guarded surveys inspect current/upcoming entries separately and may
+  promote actionable one-off community play into Signals or dated proposals.
+- Krazy Nick's route discovery passed on 2026-07-22 through `Discord @me ->
+  Stores/Local -> guild 587151201091452949 -> #weekly-event-schedule
+  1250855113699098685`. Three visible messages ended in November 2024 and
+  yielded no current finding. No distinct Discord Events control/count was
+  observed, unread state was unchanged, and no external Discord state changed.
 
 ## Highest-value unresolved questions
 

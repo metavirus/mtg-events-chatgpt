@@ -101,6 +101,9 @@ Route discovery must record:
 - whether any external Discord state changed;
 - whether the route is ready for `ui_native_navigation_verified` routine use;
 - any route-specific caution.
+- whether the server exposes a distinct Discord Events surface, the visible
+  event count when Discord shows one, and whether that surface was merely
+  detected or safely inspected.
 
 ### Routine survey
 
@@ -114,6 +117,36 @@ downgrading durable route value.
 Routine survey records `last_checked_at`, `last_seen_message_id`,
 `last_seen_message_at`, and `latest_run_result`. Discord unread/read state is
 never the resume cursor.
+
+## Discord Events are a first-class signal surface
+
+Discord's server Events surface is separate from ordinary channel history and
+must be checked explicitly when it is safely visible. A one-off community event
+can be highly actionable even when it is not a recurring store program or
+listed on a store calendar.
+
+Route discovery records whether an Events tab/control is exposed and any
+visible event count. Detection alone does not authorize clicking it. Inspect
+the surface only when the control is structurally identified as read-only
+navigation and the guard remains healthy; never RSVP, express interest, join,
+or use an event control that could change Discord state.
+
+For each visible current or upcoming Discord Event, capture or propose only the
+planning-useful fields:
+
+- event title;
+- date/time or `happening_now` state;
+- location, when shown;
+- hosting community/server;
+- linked venue/place, only when branch-safe and reasonably inferable;
+- description, format, power, and proxy clues that are actually visible;
+- operator class: `store_run`, `community_run`, or `unclear`;
+- disposition: `signal`, `event_proposal`, `tbd`, `stale`, or `no_action`.
+
+Current one-off community play opportunities may justify high-priority Signals,
+especially when they answer "what could I do tonight?" Do not require
+recurrence or store ownership. Do require a visible current/upcoming date and
+enough source identity to avoid presenting stale or mismatched activity.
 
 ## Ephemeral Discord interstitial handling
 
