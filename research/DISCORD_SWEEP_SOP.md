@@ -19,14 +19,11 @@ react, upload, reply, or otherwise change external state from the user's
 account. That risk is higher than ordinary website browsing and must be treated
 as a hard safety boundary.
 
-Until a pass explicitly satisfies this protocol, **all Discord browser
-surveying is paused**.
-
-Manual opening and screenshot/paste review are temporary emergency fallbacks,
-not the intended long-term product workflow. The autonomous target is recorded
-in `docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`: a dedicated isolated
-profile, a narrow navigation/extraction-only capability, page-level input
-suppression, and network-level mutation blocking. None is certified yet.
+Every Discord pass must explicitly satisfy this protocol. Guarded UI-native
+access is operational only for routes that have passed the accepted proof;
+uncertain routes must use the bounded route-discovery mode below before they
+can enter routine survey. Manual opening and screenshot/paste review remain
+safe fallbacks, not the intended long-term workflow.
 
 ### Discord access modes
 
@@ -44,6 +41,11 @@ Use these values:
     navigation API that does not synthesize typing, pasting, or keyboard input
     into Discord. No current route should be promoted to this mode until a
     protocol-only safety test proves the method.
+- `ui_native_navigation_verified`
+  - The route has passed guarded navigation from Discord `@me` through a
+    structurally identified folder/server/channel path. Routine surveys may use
+    only the recorded order, exact labels, guild/channel IDs, and independent
+    monitoring-map cursors.
 - `route_only_tbd`
   - A route exists, but the exact stable channel/message target or safe access
     path is not recovered.
@@ -58,6 +60,61 @@ Default uncertain Discord routes to `manual_open_required`,
 `route_only_tbd`, or `blocked_unsafe_method`; never default them to "try the
 browser."
 
+## Two operating modes
+
+### Route discovery
+
+Use route discovery once for an already-known or plausibly already-joined
+server whose safe UI-native path is not yet proven. Its purpose is operational:
+identify the folder/server/channel path and record it in the monitoring map.
+It is not a broad content survey.
+
+After the read-only guard passes, route discovery may use visible,
+non-mutating navigation only:
+
+- open a structurally identified Discord folder;
+- hover a folder/server icon to read its tooltip;
+- click a server whose visible label or destination matches the expected guild;
+- click a visible channel whose label or destination matches the intended
+  channel;
+- click `Continue in Browser`, `Continue to Server`, or equivalent only when
+  the prompt is clearly routing to an already-accessible server in the browser;
+- dismiss an overlay only when it is clearly a non-mutating visibility blocker;
+- read server/channel labels, timestamps, and at most a small visible message
+  sample after shell identity and all safety checks pass.
+
+Do not click anything that implies joining, accepting an invite, verifying,
+agreeing, enabling, claiming, submitting, saving, changing settings, accepting
+roles, or completing onboarding. Any such prompt ends the pass as
+`join_or_role_gate` or `blocked_for_this_run` without lowering route value.
+
+Route discovery must record:
+
+- Discord `@me` as the start route;
+- folder label/tooltip and navigation order;
+- server label and exact guild ID when available;
+- channel label and exact channel ID when available;
+- whether a browser-routing prompt appeared and whether it was used;
+- whether an overlay was dismissed and why it was non-mutating;
+- blocked request classes and the stage where they appeared;
+- unread/mention state before and after;
+- whether any external Discord state changed;
+- whether the route is ready for `ui_native_navigation_verified` routine use;
+- any route-specific caution.
+
+### Routine survey
+
+Use routine survey only after the route-discovery path is recorded and proven.
+Start from Discord `@me`, follow the exact mapped UI-native order, verify guild
+and channel IDs, and read only the bounded window since the independent
+monitoring cursor. Do not rediscover folders or channels unless the recorded
+path fails. A failed or quiet run updates the latest run result without
+downgrading durable route value.
+
+Routine survey records `last_checked_at`, `last_seen_message_id`,
+`last_seen_message_at`, and `latest_run_result`. Discord unread/read state is
+never the resume cursor.
+
 ## Ephemeral Discord interstitial handling
 
 Discord sometimes shows or triggers a transient server/channel visibility state
@@ -68,13 +125,14 @@ correct server/channel shell while Discord attempts a
 Do not click through that state, accept an invite, join, select roles, or allow
 the membership/lurker request automatically.
 
-Allowed narrow recovery:
+Allowed narrow recovery during guarded route discovery:
 
 1. block/log the attempted membership/lurker request;
 2. close the isolated Discord-read browser context;
-3. reopen the exact same mapped channel URL once by direct navigation;
-4. continue only if the route opens without any gated/interstitial state,
-   mutating request, editable focus, or enabled mutating control.
+3. reopen Discord `@me` once and repeat only the same structurally verified
+   UI-native path;
+4. continue only if the route opens without a gated/interstitial state,
+   unknown mutation, editable focus, or enabled mutating control.
 
 If the same gated/interstitial condition recurs after one close-and-retry,
 record the channel as blocked for that run and leave the durable route value
@@ -86,8 +144,8 @@ Do not:
 
 - type Discord URLs into any focused Discord tab where the message composer
   might be active;
-- use paste, typing, keyboard shortcuts, or page-body interaction as a Discord
-  navigation method;
+- use paste, typing, keyboard shortcuts, search, message-area interaction, or
+  coordinate guessing as a Discord navigation method;
 - send text, upload files, react, reply, mark messages, join voice, change
   settings, join servers, accept invites, or perform any other social action;
 - continue after focus, navigation, or access state becomes uncertain.
@@ -95,7 +153,16 @@ Do not:
 If the only available way to reach a channel is typing or pasting into the
 Discord page, stop and mark the route blocked/TBD.
 
-### Required safe navigation method
+### Required safe navigation methods
+
+For route discovery, start at Discord `@me` and use only structurally verified
+folder, server, channel, browser-routing, and non-mutating overlay controls.
+Every navigation click must be tied to a visible label, tooltip, exact guild or
+channel destination, or another independently verified shell marker.
+
+For routine survey, use only the already recorded UI-native path. Cold direct
+channel URLs remain identity metadata unless separately proven safe; they are
+not the default access method.
 
 Open Discord channel URLs only through a navigation method that cannot submit
 text into the Discord page body, such as:
@@ -111,20 +178,17 @@ cannot be verified, do not use it.
 If the active browser-control surface does not expose a true direct-navigation
 API for the selected Discord tab, Discord inspection is blocked for that pass.
 
-Direct navigation alone does not certify autonomous surveying. Promotion to
-`direct_navigation_verified` also requires the accepted proof sequence in
-`docs/DISCORD_AUTONOMOUS_READ_ONLY_ACCESS_DESIGN.md`.
-
-Current implementation note: the local production-form guard module and ignored
-profile workspace now exist, and the guard has passed a local fixture proof. The
-real-Discord shell test plan in `docs/DISCORD_REAL_SHELL_TEST_PLAN.md` has not
-been run. No route is `direct_navigation_verified`.
+Direct navigation alone does not certify autonomous surveying. The accepted
+operational baseline is checkpoint `dd345d2`: Collectors Lounge, JJ's,
+ProjectCCG, and Magic & Monsters have proven guarded UI-native paths. Other
+routes remain unproven until a bounded route-discovery pass succeeds.
 
 ### Preflight checklist
 
 Before any Discord pass, confirm and record:
 
 - Discord survey is read-only.
+- The pass mode is `route_discovery` or `routine_survey`.
 - The exact route/channel target was selected from the monitoring map.
 - The target's `safe_access_mode` was checked.
 - The stop condition is named before beginning.
@@ -137,6 +201,10 @@ Before any Discord pass, confirm and record:
   channel/message or supplied a screenshot/paste.
 - If `direct_navigation_verified`, every channel will be opened only by the
   previously verified direct-navigation method.
+- If `ui_native_navigation_verified`, navigation will follow the exact recorded
+  folder/server/channel path and verify both labels and IDs.
+- If `route_discovery`, only the permitted structurally identified navigation
+  controls may be used; any join/onboarding/role/settings action stops the pass.
 - If direct navigation fails, the route will be marked blocked/TBD instead of
   improvising.
 - Any route requiring interaction that could write or expose the user's account
@@ -156,6 +224,7 @@ press Enter, or use shortcut navigation.
 
 Every Discord run note must state:
 
+- pass mode;
 - route/channel inspected;
 - access mode used;
 - whether the user manually opened it;
@@ -163,6 +232,11 @@ Every Discord run note must state:
 - useful findings, quiet result, blocked result, or gated result;
 - whether an unsafe/gated condition was encountered;
 - confirmation that no external Discord state was changed.
+
+For route discovery, also record the folder/server/channel path, exact IDs,
+browser-routing or overlay controls used, blocked requests, unread-state result,
+and promotion decision. For routine survey, record the independent cursor and
+latest run result.
 
 Quiet channels should be recorded as quiet for that run only. Do not downgrade a
 route's durable value merely because a single bounded inspection found no

@@ -219,7 +219,37 @@ monitoring-map cursors, and the existing fail-closed request classifications.
 Cold direct links remain identity metadata rather than an access method.
 
 This is not approval for broad autonomous or daily surveying. New routes must
-first pass the same bounded safety/access proof. Quiet results do not lower
-route value. The pending JJ's Orange finding must not be applied or attached to
-Garden Grove until the Orange branch identity is resolved well enough for a
-branch-safe disposition.
+first pass bounded `route_discovery`: guarded navigation from Discord `@me`
+through only structurally identified folders, servers, channels, and clearly
+non-mutating browser-routing/visibility controls. Joining, invites, onboarding,
+roles, settings, and unknown mutations remain hard stops. Successful discovery
+records the exact path and IDs; later `routine_survey` runs reuse that path and
+independent cursors without rediscovery. Quiet results do not lower route value.
+The pending JJ's Orange finding must not be applied or attached to Garden Grove
+until the Orange branch identity is resolved well enough for a branch-safe
+disposition.
+
+## Next bounded route-discovery proposal
+
+Proposed target: Krazy Nick's Games Discord, already recorded as joined and
+accessible in the isolated profile.
+
+- Start: Discord `@me`.
+- Expected folder: `Stores/Local`, identified by unique hover tooltip.
+- Expected server: Krazy Nick's Games, guild ID `587151201091452949`.
+- Target channel: `#weekly-event-schedule`, channel ID
+  `1250855113699098685`.
+- Mode: `route_discovery` only; no broad survey or research write.
+- Allowed navigation: verified folder/server/channel controls and a clearly
+  non-mutating browser-routing or visibility prompt if one appears.
+- Optional content proof: at most three visible recent messages after exact
+  shell identity, guard heartbeat, no editable focus, and zero enabled
+  mutators are confirmed.
+- Hard stops: join/invite acceptance, onboarding, verification, roles,
+  settings, enabled composer/mutator, ambiguous identity, or unknown mutation.
+- Required result: exact path and IDs, prompt/overlay behavior, blocked request
+  classes, unread-state comparison, external-state confirmation, and whether
+  the route can be promoted to `ui_native_navigation_verified`.
+
+This proposal is not authorization to run the test automatically or to create
+Signals, Events, Sources, or research conclusions from it.
