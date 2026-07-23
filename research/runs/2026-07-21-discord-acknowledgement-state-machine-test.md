@@ -146,3 +146,42 @@ do not prove same-attempt rendering after the blocked PATCH.
 No research, Signal, Event, Source, Places, monitoring-map, or canonical data
 write was made. The ProjectCCG useful classification remains only in the local
 ignored safety log pending a separately authorized research review.
+
+## Operationalization and small survey (2026-07-22)
+
+The accepted UI-native result at `8b00c03` was operationalized only for the
+four independently proven routes: Collectors Lounge, JJ's Collectibles,
+ProjectCCG, and Magic & Monsters. The live monitoring map now records the
+`Discord @me -> Stores/Local -> exact guild ID -> exact channel ID` order,
+retains cold direct navigation as blocked, and preserves exact labels plus IDs.
+Untested routes were not promoted.
+
+The watchlist gained only two missing resume fields:
+`last_seen_message_id` and `latest_run_result`. Existing
+`last_seen_message_at` and `last_checked_at` remain separate, so a quiet run
+advances the cursor without claiming a useful finding or changing route value.
+No survey-history table was added.
+
+The bounded operational survey used one mapped high-priority channel per
+proven server and read at most five visible messages per channel:
+
+| Server / channel | Messages | Cursor result | Disposition | Blocked request classes | Unread / external state |
+| --- | ---: | --- | --- | --- | --- |
+| Collectors `#mtg-announcements-and-events` | 5 | `1529317423629602847`, 2026-07-22 02:41 UTC | Quiet; no new planning-useful item | Telemetry only | Unchanged / unchanged |
+| JJ's `#magic-announcements` | 5 | `1529354021540728934`, 2026-07-22 05:06 UTC | Useful: current Orange weekly Magic schedule; branch-safe identity still unresolved | Telemetry only | Unchanged / unchanged |
+| ProjectCCG `#mtg-announcements` | 5 | `1521193176944345181`, 2026-06-29 16:38 UTC | Stale/already covered; no write | One expected acknowledgement, blocked | Unchanged / unchanged |
+| Magic & Monsters `#shop-schedule` | 5 | `1511055000611066007`, 2026-06-01 17:13 UTC | Stale/already captured; no write | One expected acknowledgement, blocked | Unchanged / unchanged |
+
+The exact settings-proto/2 PATCH did not recur. No unknown or social mutation
+was attempted. Twenty messages were sampled across four servers and four
+channels. Each successful guarded server run took about 13 seconds; the only
+setup churn was one bundled Playwright dependency-path correction before any
+Discord page opened. There was no route rediscovery.
+
+One reviewable proposal was created:
+`supabase/proposals/discord-operational-survey-jjs-orange-2026-07-22.json`.
+It proposes a single medium-priority event-opportunity Signal asking for
+branch-safe JJ's Orange identity resolution before calendar promotion. It does
+not propose direct Event rows and was not applied. The other three routes are
+recorded as quiet or stale no-action outcomes; no Signals were added to pad the
+landing page.

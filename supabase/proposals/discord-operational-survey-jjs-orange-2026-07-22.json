@@ -1,0 +1,79 @@
+{
+  "proposal_id": "discord-operational-survey-jjs-orange-2026-07-22",
+  "description": "Reviewable sparse finding from the first four-route operational guarded Discord survey. Proposes one non-canonical Signal for a current JJ's Orange schedule that remains branch-risky. No Event, Source, Places, Community, Signal, or canonical research write has been applied.",
+  "created_at": "2026-07-22T18:00:00-07:00",
+  "status": "proposed",
+  "author": "Codex Project Steward",
+  "validation_level": "lean",
+  "scope": {
+    "inspected_routes": [
+      "Collectors Lounge - Cypress #mtg-announcements-and-events",
+      "JJ's Collectibles #magic-announcements",
+      "ProjectCCG Online Community #mtg-announcements",
+      "Magic & Monsters #shop-schedule"
+    ],
+    "excluded": [
+      "No broad Discord survey",
+      "No cold direct-channel navigation",
+      "No Discord interaction or state mutation",
+      "No canonical Event, Source, Places, or Community write",
+      "No live Signal write without approval",
+      "No daily automation"
+    ]
+  },
+  "operations": [
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {
+        "id": "signal-jjs-orange-current-weekly-mtg-branch-resolution-2026-07-22"
+      },
+      "fields": {
+        "id": "signal-jjs-orange-current-weekly-mtg-branch-resolution-2026-07-22",
+        "category": "event_opportunity",
+        "priority": "medium",
+        "status": "new",
+        "source_id": "src-jjs-discord-magic-announcements-2026-07-18",
+        "captured_at": "2026-07-22T18:00:00-07:00",
+        "observed_at": "2026-07-21T22:06:51-07:00",
+        "expires_at": "2026-07-29T23:59:00-07:00",
+        "related_entity_type": null,
+        "related_entity_id": null,
+        "summary": "JJ's posted a current free weekly Magic schedule for an Orange location that still needs branch-safe identity resolution.",
+        "details": "The inspected JJ's #magic-announcements channel posted a current Orange schedule with Wednesday Commander, Friday Night Magic, and Saturday casual Commander, generally at 7:00 PM after 6:30 PM check-in. The store-controlled post is useful current event evidence, but the app does not yet have a branch-safe JJ's Orange Place identity. Do not attach these events to Garden Grove or create calendar rows until the Orange location and source relationship are resolved.",
+        "evidence_url": "https://discord.com/channels/1055756955043495946/1354561517160239296",
+        "confidence": "medium",
+        "suggested_action": "Resolve the JJ's Orange branch identity and location, then propose branch-safe recurring event rows if the schedule remains current.",
+        "promotion_target": "event_proposal",
+        "dedupe_key": "jjs:orange:discord:weekly-mtg-schedule:2026-07-21"
+      },
+      "reason": "This is a nearby current event opportunity that cannot safely enter the calendar until the distinct Orange branch is identified. It warrants one judgment-oriented Signal, not speculative Garden Grove event rows."
+    }
+  ],
+  "no_write_dispositions": [
+    {
+      "entity_id": "collectors-lounge-cypress",
+      "channel_id": "1128125617683050597",
+      "disposition": "quiet / no action",
+      "reason": "The bounded window produced no new planning-useful finding; durable route value remains high."
+    },
+    {
+      "entity_id": "projectccg-santa-ana",
+      "channel_id": "1463649071485948049",
+      "disposition": "stale / already covered",
+      "reason": "The bounded window ended June 29 and contained past prerelease/rescheduled-event material. It is useful history but not a current calendar or Signal write."
+    },
+    {
+      "entity_id": "magic-and-monsters",
+      "channel_id": "928555906017398785",
+      "disposition": "stale / already captured",
+      "reason": "The bounded window remained at the already-captured June 1 shop-schedule state; no new planning change appeared."
+    }
+  ],
+  "post_write_validation_plan": [
+    "Revalidate the JJ's Discord source and dedupe key against live Supabase.",
+    "Confirm a branch-safe JJ's Orange Place still does not exist before applying.",
+    "Insert only the one proposed Signal if approved; do not create Event rows in the same write.",
+    "Read back the Signal by ID and confirm no canonical Event, Venue, Source, or entity-source row changed."
+  ]
+}

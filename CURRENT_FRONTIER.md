@@ -1,6 +1,6 @@
 # Current Frontier
 
-Last updated: 2026-07-21
+Last updated: 2026-07-22
 
 ## ChatGPT-Codex coordination checkpoint
 
@@ -21,28 +21,30 @@ historical fallback only.
 Current accepted Discord safety checkpoint:
 `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`.
 
-Cold-deep-link Discord content-read remains blocked/TBD at accepted boundary
-`5e055e8`, and `members/@me?lurker=true` remains unallowlisted. A later
-protocol test proved one safer UI-native modality on Collectors Lounge:
-`Discord @me -> Stores/Local -> exact guild ID -> exact channel ID`. A bounded
-replication pass then independently proved the same guarded path for JJ's
-`#magic-announcements`. ProjectCCG and Magic & Monsters failed closed during
-server selection because Discord attempted message acknowledgement POSTs. No
-content was read on those routes and no external state changed. UI-native
-navigation therefore remains a per-route verified capability rather than a
-globally graduated survey method; broad surveying/automation remain unapproved. See
-`research/runs/2026-07-21-discord-ui-native-navigation-safety-test.md` and
-`research/runs/2026-07-21-discord-ui-native-replication-graduation.md` and
-`research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
+Cold-deep-link Discord content-read remains blocked/TBD, and
+`members/@me?lurker=true` remains unallowlisted. The accepted operational
+method is guarded UI-native navigation:
+`Discord @me -> Stores/Local -> exact guild ID -> exact channel ID`.
+Collectors Lounge, JJ's, ProjectCCG, and Magic & Monsters have each completed
+an independently verified bounded content read with guard heartbeat, exact
+route identity, no editable focus, zero enabled mutators, unchanged unread
+indicators, and no external Discord state change.
 
-A follow-up state-machine experiment now classifies the exact message
-acknowledgement endpoint separately while continuing to block it. The bounded
-ProjectCCG and Magic & Monsters reruns did not reach that condition: the
-authenticated isolated client rendered Discord `@me` without any server/folder
-controls, so both runs failed closed before navigation and read no content.
-Acknowledgement-as-nonfatal therefore remains ungraduated, both routes remain
-`manual_open_required`, and route value is unchanged. See
+Expected message acknowledgements remain blocked before transmission and may
+be nonfatal only when navigation succeeds independently. The exact
+settings-proto/2 PATCH remains blocked and conditionally nonfatal under the
+same rule, but it did not recur in the successful live reads. Telemetry remains
+blocked; unknown or social mutations remain fatal. Untested Discord routes are
+not promoted. See
 `research/runs/2026-07-21-discord-acknowledgement-state-machine-test.md`.
+
+The first operational survey used one high-priority channel on each of the four
+proven servers, with a five-message cap. Collectors was quiet, ProjectCCG and
+Magic & Monsters were stale/already covered, and JJ's produced one current
+Orange weekly-schedule lead that remains branch-risky. A single reviewable
+Signal proposal was created; it was not applied. The monitoring map now stores
+independent last-seen message ID/time, check time, and latest run result.
+Broad/daily automation remains unapproved.
 
 The first structured Discord/community monitoring map is now live in Supabase.
 Migration `20260721025750_add_discord_monitoring_map.sql` adds service-only

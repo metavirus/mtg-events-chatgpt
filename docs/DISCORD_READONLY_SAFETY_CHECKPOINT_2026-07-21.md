@@ -184,10 +184,12 @@ durable access mode was downgraded, and no research/data write was made.
 
 Current decision: keep cold-deep-link content reads blocked/TBD and do not
 allowlist `members/@me?lurker=true` or message acknowledgement writes. Guarded
-UI-native paths are proven only for Collectors and JJ's. The blocker diagnosis remains
-recorded in `research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
+UI-native paths are now independently proven for Collectors, JJ's, ProjectCCG,
+and Magic & Monsters. The blocker diagnosis remains recorded in
+`research/runs/2026-07-21-discord-lurker-blocker-diagnosis.md`.
 
-Do not treat this one-route proof as authorization for broad Discord surveys.
+Do not treat this four-route operational proof as authorization for broad
+Discord surveys.
 Carry forward the route map, priorities, expected signal types, isolated
 profile, read-only guard/harness, blocker diagnosis, and the rule that
 quiet/blocked runs do not reduce long-term route value.
@@ -195,14 +197,14 @@ quiet/blocked runs do not reduce long-term route value.
 Future Discord work should be one of:
 
 - manual screenshot/paste or user-opened visible-content analysis;
-- a separately approved tiny UI-native pilot using independently proven mapped
-  routes and the same fail-closed guard;
+- a bounded UI-native survey using only independently proven mapped routes and
+  the same fail-closed guard;
 - a separately approved non-browser or otherwise mechanically safer access
   strategy;
 - a separate decision to evaluate a narrowly scoped allowlist, with stronger
   evidence than currently exists.
 
-## Separate active issue
-
-The user reported after this checkpoint that the app does not work. Treat that
-as a separate app triage lane, not as a Discord research finding.
+The first operational four-route survey completed on 2026-07-22. Independent
+message-ID, message-time, check-time, and per-run-result cursors are now live in
+the monitoring map. Quiet/stale outcomes remain per-run observations and do
+not reduce route value. Broad or daily automation is still unapproved.
