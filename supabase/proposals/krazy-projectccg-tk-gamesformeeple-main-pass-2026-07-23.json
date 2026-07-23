@@ -1,0 +1,382 @@
+{
+  "proposal_id": "krazy-projectccg-tk-gamesformeeple-main-pass-2026-07-23",
+  "description": "Corrected main-store pass for Krazy Nick's Games, ProjectCCG - Santa Ana, TK Collectibles, and Games For Meeple. Adds branch-safe future Krazy Reality Fracture prerelease coverage, refreshes WPN/source freshness, captures social routes as visible Evidence, adds Krazy's missing Places evaluation, and updates assessment notes. No canonical JSON or app-code changes are proposed.",
+  "created_at": "2026-07-23T13:45:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-9348"},
+      "fields": {
+        "id": "src-wpn-9348",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull rechecked Krazy Nick's Games and supports existing rows plus new Reality Fracture prerelease occurrences."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-20273"},
+      "fields": {
+        "id": "src-wpn-20273",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull rechecked ProjectCCG - Santa Ana / OC event lanes and found them already represented."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-20168"},
+      "fields": {
+        "id": "src-wpn-20168",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull rechecked TK Collectibles and found only the existing Saturday Casual Commander lane in the checked future window."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-wpn-17911"},
+      "fields": {
+        "id": "src-wpn-17911",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Fresh Wizards/EventLink pull rechecked Games For Meeple and found the existing Friday/Sunday Commander lanes already represented."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-games-for-meeple-official-site-2026-07-17"},
+      "fields": {
+        "id": "src-games-for-meeple-official-site-2026-07-17",
+        "health_status": "login_required",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "The official Games For Meeple website now resolves to a password/login page, making it a limited official route rather than a clean planning surface."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-krazy-nicks-instagram-2026-07-23"},
+      "fields": {
+        "id": "src-krazy-nicks-instagram-2026-07-23",
+        "label": "Krazy Nick's Games Instagram profile",
+        "url": "https://www.instagram.com/krazynicksgames/",
+        "source_type": "social",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Public Instagram profile route was found and should be visible as store-controlled/social-source routing; post-level content replay remains TBD."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-projectccg-instagram-2026-07-23"},
+      "fields": {
+        "id": "src-projectccg-instagram-2026-07-23",
+        "label": "ProjectCCG Instagram profile",
+        "url": "https://www.instagram.com/projectccg/",
+        "source_type": "social",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Public ProjectCCG Instagram profile route was found; use as multi-branch social/source routing, not branch-specific Santa Ana event proof."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-tk-instagram-2026-07-23"},
+      "fields": {
+        "id": "src-tk-instagram-2026-07-23",
+        "label": "TK Collectibles Instagram profile",
+        "url": "https://www.instagram.com/_tkcollectibles/",
+        "source_type": "social",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Public TK Collectibles Instagram profile route was found and should be visible as source routing; post-level content replay remains TBD."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-games-for-meeple-instagram-2026-07-23"},
+      "fields": {
+        "id": "src-games-for-meeple-instagram-2026-07-23",
+        "label": "Games For Meeple Instagram profile",
+        "url": "https://www.instagram.com/gamesformeeple/",
+        "source_type": "social",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Public Games For Meeple Instagram profile route was found and should be visible as source routing; post-level content replay remains TBD."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-games-for-meeple-facebook-2026-07-23"},
+      "fields": {
+        "id": "src-games-for-meeple-facebook-2026-07-23",
+        "label": "Games For Meeple Facebook profile",
+        "url": "https://www.facebook.com/gamesformeeple/",
+        "source_type": "social",
+        "health_status": "current",
+        "last_checked": "2026-07-23"
+      },
+      "reason": "Public Facebook profile supports Games For Meeple's store identity and MTG category presence, but post-level event content was not replayed in this pass."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "krazy-nick-s-games", "source_id": "src-krazy-nicks-instagram-2026-07-23"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "krazy-nick-s-games",
+        "source_id": "src-krazy-nicks-instagram-2026-07-23",
+        "relationship": "store-controlled social route captured at profile level; content replay TBD before using it for current event, turnout, proxy, or solo-arrival conclusions"
+      },
+      "reason": "Make Krazy Nick's Instagram route visible as Evidence/source routing instead of leaving it implicit."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "projectccg-santa-ana", "source_id": "src-projectccg-instagram-2026-07-23"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "source_id": "src-projectccg-instagram-2026-07-23",
+        "relationship": "multi-branch ProjectCCG social route captured at profile level; useful for brand/source routing, not branch-specific Santa Ana event proof without branch-specific content"
+      },
+      "reason": "Make ProjectCCG social routing visible while preserving Santa Ana/OC branch safety."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "tk-collectibles", "source_id": "src-tk-instagram-2026-07-23"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-tk-instagram-2026-07-23",
+        "relationship": "store-controlled social route captured at profile level; content replay TBD before using it for current MTG promotion, turnout, proxy, or solo-arrival conclusions"
+      },
+      "reason": "Make TK Collectibles Instagram route visible as Evidence/source routing."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "games-for-meeple", "source_id": "src-games-for-meeple-instagram-2026-07-23"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-instagram-2026-07-23",
+        "relationship": "store-controlled social route captured at profile level; content replay TBD before using it for current event, turnout, proxy, or solo-arrival conclusions"
+      },
+      "reason": "Make Games For Meeple Instagram route visible as Evidence/source routing."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "games-for-meeple", "source_id": "src-games-for-meeple-facebook-2026-07-23"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-games-for-meeple-facebook-2026-07-23",
+        "relationship": "public Facebook profile supports store identity and MTG category presence; post-level event content replay TBD"
+      },
+      "reason": "Make Games For Meeple Facebook route visible as a source route while keeping event conclusions tied to WPN."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "krazy-nicks-reality-fracture-prerelease-2026"},
+      "fields": {
+        "id": "krazy-nicks-reality-fracture-prerelease-2026",
+        "venue_id": "krazy-nick-s-games",
+        "title": "Krazy Reality Fracture Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-09-25",
+        "end_date": "2026-09-26",
+        "entry_fee": 35,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists two Reality Fracture prerelease sealed occurrences at Krazy Nick's Games on September 25-26, 2026. Event copy says three rounds with prizing based on record, with signup through krazynicksgames.com before the event.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-23"
+      },
+      "reason": "Add branch-safe future WPN-supported Reality Fracture prerelease coverage for Krazy Nick's."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "krazy-nicks-reality-fracture-prerelease-2026-09-25-19-00"},
+      "fields": {
+        "id": "krazy-nicks-reality-fracture-prerelease-2026-09-25-19-00",
+        "series_id": "krazy-nicks-reality-fracture-prerelease-2026",
+        "occurrence_date": "2026-09-25",
+        "start_time": "19:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 35,
+        "capacity": 64,
+        "details": "Wizards/EventLink event 11428876 confirms Krazy Reality Fracture Prerelease at Krazy Nick's Games on 2026-09-25 at 7:00 PM local."
+      },
+      "reason": "Create confirmed dated occurrence for the Friday Reality Fracture prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "krazy-nicks-reality-fracture-prerelease-2026-09-26-13-00"},
+      "fields": {
+        "id": "krazy-nicks-reality-fracture-prerelease-2026-09-26-13-00",
+        "series_id": "krazy-nicks-reality-fracture-prerelease-2026",
+        "occurrence_date": "2026-09-26",
+        "start_time": "13:00",
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 35,
+        "capacity": 64,
+        "details": "Wizards/EventLink event 11428877 confirms Krazy Reality Fracture Prerelease at Krazy Nick's Games on 2026-09-26 at 1:00 PM local."
+      },
+      "reason": "Create confirmed dated occurrence for the Saturday Reality Fracture prerelease."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9348", "series_id": "krazy-nicks-reality-fracture-prerelease-2026", "occurrence_id": null},
+      "fields": {
+        "source_id": "src-wpn-9348",
+        "series_id": "krazy-nicks-reality-fracture-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN/EventLink source to the Reality Fracture prerelease series."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9348", "series_id": null, "occurrence_id": "krazy-nicks-reality-fracture-prerelease-2026-09-25-19-00"},
+      "fields": {
+        "source_id": "src-wpn-9348",
+        "series_id": null,
+        "occurrence_id": "krazy-nicks-reality-fracture-prerelease-2026-09-25-19-00",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN/EventLink source to the Friday Reality Fracture occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9348", "series_id": null, "occurrence_id": "krazy-nicks-reality-fracture-prerelease-2026-09-26-13-00"},
+      "fields": {
+        "source_id": "src-wpn-9348",
+        "series_id": null,
+        "occurrence_id": "krazy-nicks-reality-fracture-prerelease-2026-09-26-13-00",
+        "relationship": "evidence"
+      },
+      "reason": "Attach WPN/EventLink source to the Saturday Reality Fracture occurrence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "krazy-nick-s-games"},
+      "fields": {
+        "id": "krazy-nick-s-games",
+        "instagram": "https://www.instagram.com/krazynicksgames/",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Krazy Nick's Games now reads as a close, broad Magic store rather than merely a Wednesday/Sunday Commander option. Fresh Wizards/EventLink on 2026-07-23 supports Wednesday/Sunday Commander, Thursday Modern, Friday Pauper, Standard Showdown, Hobbit prerelease, and future Reality Fracture prerelease sealed events. Official site evidence supports current physical operation, MTG inventory, event-entry products, buylist/store-credit activity, hours, phone, and Cerritos address. Public Instagram route is captured, but post-level content replay remains TBD. Prior inspected Discord evidence supports some real Commander pod/turnout texture, while the latest mapped schedule-channel read was stale/quiet. Yelp-derived review texture remains mixed. Honey Pot evidence is separated and not used for Krazy conclusions."
+      },
+      "reason": "Refresh Krazy Places read after the corrected main pass and add the correct Krazy Instagram route."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "projectccg-santa-ana"},
+      "fields": {
+        "id": "projectccg-santa-ana",
+        "instagram": "https://www.instagram.com/projectccg/",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "ProjectCCG - Santa Ana / OC remains a strong nearby Magic planning candidate, with branch-safe Wizards/EventLink support refreshed on 2026-07-23 for OC Commander, Draft, and Standard Showdown rows already represented in the app. General ProjectCCG website and Instagram evidence supports the broader ProjectCCG brand/source route, but is not used alone for Santa Ana event truth. Existing ProjectCCG Discord evidence remains material for OC operational reliability, cancellations/reopening notes, and community routing, but this batch did not run a new Discord survey. Keep Santa Ana / OC facts separate from Alhambra/plain ProjectCCG unless a source proves the relationship."
+      },
+      "reason": "Refresh branch-aware ProjectCCG Santa Ana assessment notes and make the multi-branch Instagram route visible with caveats."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "tk-collectibles"},
+      "fields": {
+        "id": "tk-collectibles",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "TK Collectibles remains a real Newport Beach TCG shop and a low-priority but valid Saturday Commander backup. Fresh Wizards/EventLink on 2026-07-23 shows only a Saturday noon Casual Commander row in the checked future window; the prior Sunday July 19 row should be treated as a past dated one-off, not an emerging Sunday routine. Official site remains generic/low-detail, while public Instagram route evidence is now visible but post-level MTG content replay remains TBD. Existing review and non-MTG organized-play evidence supports physical operation and event-hosting capability, but Magic community depth, turnout, proxy norms, and solo-arrival fit remain unresolved."
+      },
+      "reason": "Clarify TK's current event surface and source limits after the corrected main pass."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "games-for-meeple"},
+      "fields": {
+        "id": "games-for-meeple",
+        "instagram": "https://www.instagram.com/gamesformeeple/",
+        "last_verified": "2026-07-23",
+        "assessment_notes": "Games For Meeple remains a credible Diamond Bar multi-TCG candidate with fresh 2026-07-23 Wizards/EventLink support for the existing Friday Night Magic Commander Night and Sunday Casual Play Commander Fun rows. No draft, prerelease/sealed, or special MTG rows appeared in the checked WPN window. The official website currently resolves to a password/login page, making it less useful as a planning surface until reopened or verified through another route. Public Instagram and Facebook routes support store identity and MTG category presence, but post-level content replay remains TBD. Existing review/resource mirrors still support active store/play texture with one service/culture caution."
+      },
+      "reason": "Refresh Games For Meeple assessment notes after fresh WPN check and official/social route disposition."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "krazy-nick-s-games"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "krazy-nick-s-games",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.8,
+        "confidence": "medium",
+        "positives": [
+          "Very close Cerritos location with WPN Premium status and broad current Magic coverage.",
+          "Fresh WPN/EventLink supports Commander, Modern, Pauper, Standard, and future prerelease sealed events.",
+          "Official site supports current physical operation, MTG inventory, event-entry products, hours, and store-credit/buylist activity.",
+          "Prior inspected Discord evidence supports some real Commander pod/turnout texture."
+        ],
+        "cautions": [
+          "Review texture is mixed, including pricing/transaction and staff-interaction cautions.",
+          "Instagram route is captured but post-level current Magic content remains TBD.",
+          "Latest mapped Discord schedule-channel read was stale/quiet, so current social schedule corroboration remains incomplete.",
+          "Proxy policy, power level, pod formation, and solo-arrival friendliness remain unresolved."
+        ],
+        "open_questions": [
+          "What is the current Commander proxy and power-level culture?",
+          "Does the Instagram route provide current signup/event detail beyond WPN?",
+          "How reliable are Commander pods for a solo drop-in?",
+          "Should Krazy become a near-term visit candidate after one more Discord/social texture pass?"
+        ]
+      },
+      "reason": "Krazy has a reviewed venue record but no evaluation row; add conservative fit/confidence based on corrected main-pass evidence."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {"id": "krazy-projectccg-tk-gamesformeeple-main-pass-2026-07-23"},
+      "fields": {
+        "id": "krazy-projectccg-tk-gamesformeeple-main-pass-2026-07-23",
+        "detected_at": "2026-07-23T13:45:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "batch",
+        "entity_id": "krazy-projectccg-tk-gamesformeeple",
+        "summary": "Proposed corrected main-pass closure for Krazy Nick's, ProjectCCG Santa Ana, TK Collectibles, and Games For Meeple: add Krazy Reality Fracture prerelease rows, capture social routes, refresh WPN/source state, add Krazy Places evaluation, and preserve branch/source TBDs.",
+        "review_status": "proposed"
+      },
+      "reason": "Surface the proposal in Updates as pending until reviewed."
+    }
+  ]
+}
