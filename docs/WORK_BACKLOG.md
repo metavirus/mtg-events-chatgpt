@@ -493,18 +493,15 @@ claims without reopening the whole packet.
   `research/SOURCE_SOP.md`, and
   `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`. Do not duplicate their
   checklists here.
-- **Non-urgent documentation pruning:** consider moving the chronological body
-  of `CURRENT_FRONTIER.md` into a dated archive while keeping a short live
-  frontier; then assess whether the source-specific sections embedded in
-  `research/SOURCE_SOP.md` can become pointers to their dedicated SOPs. Also
-  consider archiving the pre-Supabase repository/model history in
-  `docs/PROJECT_CONTEXT.md`. These are larger topology edits, so do them only as
-  a separate reviewed documentation tranche.
+- **Non-urgent documentation pruning:** `docs/PROJECT_CONTEXT.md` and
+  `research/SOURCE_SOP.md` remain substantial because they hold product
+  semantics and source/closure rules. Consider a further split only if fresh
+  task onboarding still proves slow; do not create another overlapping manual.
 - Generated JSON and connector apply packages are temporary recovery/execution
   artifacts, not backlog deliverables.
 - Maintain this file whenever we defer or discover meaningful future work.
-- Use `CURRENT_FRONTIER.md` as chronological checkpoint context, not a second
-  operating manual.
+- Use `CURRENT_FRONTIER.md` as the concise current handoff. Historical
+  checkpoints live under `docs/archive/`.
 - Use a concise proposal/ledger checkpoint for routine refreshes; reserve
   dedicated run notes for substantive findings, incidents, or method changes.
 - Keep attributed user field notes in repo-backed evidence when they are meant to

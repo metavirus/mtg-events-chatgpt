@@ -576,75 +576,15 @@ when useful; the system simply does not need to search those outer areas
 regularly. Displayed distance must remain an approximation from the public Los
 Alamitos centroid, and farther results should be easy to recognize and filter.
 
-## Historical repository checkpoint
+## Historical context
 
-This section records the 2026-07-17 cutover checkpoint. It explains provenance;
-it is not the current operating checklist. Use `docs/SESSION_BOOTSTRAP.md`,
-`docs/EFFICIENCY_SOP.md`, and `CURRENT_FRONTIER.md` for the live posture.
+The 2026-07-17 deployment cutover, deprecated workbook inventory, and
+pre-Supabase model-gap notes are preserved in
+`docs/archive/PROJECT_CONTEXT_PRE_SUPABASE_HISTORY.md`. They explain provenance
+but are not active requirements or ordinary research inputs.
 
-Completed:
-
-- A working static calendar/store/change interface deployed for personal use on
-  GitHub Pages at checkpoint commit `dd44e20`, tagged
-  `checkpoint/personal-use-deployed-supabase-default-2026-07-17`.
-- Supabase as the default application read source, with `?data=json` retained as
-  the explicit file-backed fallback.
-- Controlled Supabase research-write and deterministic JSON export/recovery
-  workflows for future research updates.
-- An accepted local UX pass that makes Today, Events, Places, Updates, and
-  Communities usable enough to move out of polish mode.
-- A repeatable Wizards GraphQL collector using a public Los Alamitos centroid.
-- A successful 26-mile buffered snapshot containing 1,231 Magic events, 669
-  Commander candidates, and 77 organizations.
-- A Monday GitHub Actions raw snapshot refresh.
-- First-pass reconciliation of repeated explicit nearby Commander listings.
-- Second-pass reconciliation of repeated explicit listings in the available
-  26-mile snapshot; distance is descriptive rather than an exclusion rule.
-
-The current normalized data is useful but intentionally provisional. It does not
-yet satisfy the target evidence model, and its event coverage is heavily shaped
-by the already-collected Commander-first research. The app must disclose that
-coverage limitation rather than imply that other Magic formats were
-comprehensively searched and found absent.
-
-As of the 2026-07-17 personal-use deployment checkpoint, future research should
-resume only through the controlled Supabase research-write workflow. Generated
-JSON is recovery/export output, not the manual canonical editing surface. This
-order protects against repeating the earlier failure mode of unsafe or
-low-quality canonical JSON writing.
-
-## Deprecated historical inventory
-
-The v0.4 workbook contains 15 qualitative store audits, six event/recurring-play
-records, and 33 sources. Its fields include priority tier, evidence confidence,
-research status, ranking reason, assessment notes, primary communication
-channel, communication notes, current Commander evidence, open questions,
-radius status, and last-verified date.
-
-This inventory is recorded only to explain project history. It is not a research
-source for ordinary work. See `docs/LEGACY_MATERIALS.md` for the narrow historical-
-comparison exception and the rule for independently adopting any old idea.
-
-## Historical pre-Supabase model gaps
-
-At the pre-Supabase checkpoint, the generated JSON model lacked several layers:
-
-- immutable observations with timestamps, hashes, raw payload paths, and parser versions;
-- claim-level provenance and conflicts;
-- field-level confidence;
-- event series versus dated occurrence separation;
-- store aliases and historical identity/location data;
-- communication profiles and channel maintenance patterns;
-- radius status and explicit edge review;
-- ranking reasons tied to evidence;
-- research backlog and open questions;
-- before/after change values and supporting observation IDs.
-
-## Legacy-material status
-
-The imported early materials are now fully deprecated as active inputs. Current
-work must use repo-native sources of truth. Historical files may remain preserved
-outside the active workspace, but they must not shape the product by inertia.
+Imported legacy materials remain inactive; see `docs/LEGACY_MATERIALS.md` for
+the narrow historical-comparison exception.
 
 ## Durable research-journal requirement
 

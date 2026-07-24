@@ -21,8 +21,8 @@ The repository has already completed these stabilization steps:
   emergency/debug fallback only;
 - current operating posture is centralized in `docs/EFFICIENCY_SOP.md`,
   research rules in `research/SOURCE_SOP.md`, and write rules in
-  `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`; chronological checkpoints in
-  `CURRENT_FRONTIER.md` are context, not competing instructions;
+  `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`; `CURRENT_FRONTIER.md` is now a
+  short current-state handoff, while older chronology is archived;
 - Batch A identity/status clarifications have been applied through the
   controlled Supabase workflow without changing event records;
 - high-value event candidate replay A has been completed and applied only as a
