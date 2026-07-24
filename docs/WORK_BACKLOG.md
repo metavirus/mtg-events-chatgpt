@@ -161,10 +161,12 @@ Use it for:
 
 ## Research backlog
 
-- **Bullpen matched-WPN event follow-up:** review
-  `bullpen-wpn-event-capture-calibration-2026-07-24`. It proposes caveated
-  Friday draft, Wednesday Standard, and August 7-9 prerelease inventory while
-  preserving low-confidence/deprioritized venue treatment. No live write yet.
+- **Bullpen specific follow-up only:** the
+  `bullpen-wpn-event-capture-calibration-2026-07-24` proposal has been applied.
+  Friday draft, Wednesday Standard, and August 7-9 prerelease inventory are now
+  represented as caveated WPN-backed events while the venue remains
+  low-confidence/deprioritized. Revisit only for store-controlled identity/source
+  continuity, event firing reliability, community texture, or a new contradiction.
 
 ### High priority
 
