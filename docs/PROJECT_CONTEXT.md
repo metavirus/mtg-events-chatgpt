@@ -177,6 +177,14 @@ The default workflow is:
 4. **Present:** place records in the most useful default view while keeping them
    accessible through broader views and filters.
 
+The evidence threshold is planning-grade rather than court-grade. A current
+Wizards/EventLink listing with a close venue-name and address match is normally
+enough to catalog an event. Weak store-controlled source continuity should
+lower confidence or add a `verify` / `check first` caveat, not silently suppress
+the event. Venue recommendation remains a separate judgment: a store may be
+low-confidence, deprioritized, or poor fit while its attributable current events
+remain visible in the recoverable catalog.
+
 Commander, draft, sealed, prerelease, Commander Party, and other distinctive
 Magic events are useful findings and should be retained. Casual Bracket 2/3
 Commander and appealing prerelease/special events belong in high-visibility

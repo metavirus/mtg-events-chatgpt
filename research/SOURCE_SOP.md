@@ -796,11 +796,37 @@ Bad uses:
 ## Promotion rules
 
 Promote from discovery to reviewed when:
-- identity is corroborated
-- MTG presence is real beyond a lone suspicious listing
-- at least one non-Wizards source supports the store as real and active
+- identity is sufficiently resolved for planning, with any material caveat named
+- MTG presence is real beyond a genuinely unattributable or suspicious listing
+- the standard source surfaces were checked or honestly dispositioned
 - the pass surfaces enough current MTG detail that the user could seriously
   consider attending, even if deeper social/fit questions remain
+
+Do not require near-perfect source convergence. Small local stores commonly
+have stale websites, generic WPN links, hard-to-fetch socials, gated Discords,
+and drifting names. The goal is decision-grade planning truth with explicit
+uncertainty, not court-grade proof.
+
+### Event attribution and venue-fit separation
+
+Treat event existence and personal venue recommendation as separate judgments.
+
+- A current Wizards/EventLink record whose venue name and address closely match
+  a known venue is ordinarily sufficient to propose the event.
+- Missing, stale, generic, or contradictory store-controlled sources lower
+  confidence and may require `verify` / `check first` or venue-status caveats;
+  they do not automatically block event capture.
+- A low-confidence or deprioritized venue may still have real events worth
+  cataloging.
+- No-proxy, high-power, competitive, or otherwise poor-fit events should remain
+  in the catalog with accurate metadata and default downranking/hiding.
+- Omit an event only when it is past/stale, duplicate, out of scope, genuinely
+  unattributable, or identity-unsafe enough that it could be attached to the
+  wrong venue.
+
+Use stronger corroboration when it is cheap and material, especially for branch
+splits, address conflicts, or surprising claims. Do not make ordinary event
+capture wait for every public surface to agree.
 
 Promote into deeper follow-up when:
 - source routing is rich
