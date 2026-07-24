@@ -145,20 +145,47 @@ The first pass should usually be strong enough that the user could seriously
 consider the store as a candidate and potentially add one of the surfaced
 events to their calendar.
 
-### 4. Promote before deepening
+### 4. Close once, then maintain
 
-### 5. Match research validation overhead to batch risk
+After one decision-grade main pass, or at most one targeted closure pass, set
+the venue to maintenance. Unknown turnout, proxy norms, gated Discord, or
+unreadable social posts remain caveats or targeted follow-ups; they do not keep
+the entire store eligible for ordinary batches.
+
+Ordinary store selection must start from
+`public.venue_research_candidates`. A maintenance store is selected early only
+for a new material event/source delta, a changed access condition, an open
+request, or explicit user direction.
+
+A completed-store maintenance check has a hard target of roughly two minutes:
+
+- reuse a suitable WPN snapshot and inspect deltas only;
+- check at most one or two highest-value surfaces;
+- compare with canonical state;
+- record quiet/thin/blocked/useful through the routine Supabase path;
+- stop immediately when no actionable delta appears.
+
+Do not reconstruct its source map, reopen the main pass, reread broad operating
+docs, or retry an ineligible surface. Consult
+`public.entity_surface_selection_state` before a surface check.
+`scripts/record_surface_check.py` enforces that suppression by default; use its
+explicit override only for a changed access condition, new material lead, or
+direct user request.
+
+### 5. Promote before deepening
+
+### 6. Match research validation overhead to batch risk
 
 Classify each research/data batch before applying it:
 
-- Routine Refresh / Lean: source freshness, evidence cleanup, minor evaluation
-  wording, no-write confirmations, and other updates with no new or retired
-  events, no identity conflict, no Signals, and no schema or app changes.
-  Lean validation is enough: proposal validation, affected-row readback,
-  duplicate checks only if event rows are touched, text integrity only if repo
-  text changed, a concise checkpoint, and no broad app preview. Do not keep
-  dry-run SQL artifacts unless the connector package is the current apply
-  bridge, and even then treat them as temporary execution artifacts rather than
+- Routine surface check: source availability, thin/blocked/quiet disposition,
+  or no-action confirmation with no event/evaluation/Signal/identity change.
+  Record directly through `record_entity_surface_check`; no proposal, repo
+  artifact, text check, or commit.
+- Routine Refresh / Lean: source/evaluation wording changes or other bounded
+  canonical updates that exceed a surface check but have no new/retired events,
+  identity conflict, Signals, schema, or app changes. Use affected-row readback
+  and no broad app preview. Temporary connector SQL is execution material, not
   durable evidence.
 - Standard Main Pass: new event rows, event retirements, meaningful Places or
   evaluation changes, source-health contradictions, Signals, or

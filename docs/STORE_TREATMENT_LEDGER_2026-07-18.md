@@ -5,10 +5,11 @@ kind of treatment. This is meant to prevent repeated orientation and stale
 tranche suggestions. It is not a replacement for Supabase, run notes, proposal
 files, or the broader research coverage ledger.
 
-Use this ledger before recommending a store tranche. Prefer stores whose next
-action is concrete and planning-relevant. Do not spend cycles again on a store
-listed as "hold unless new signal" unless Kavi promotes it, a new source appears,
-or a specific TBD becomes decision-changing.
+This ledger preserves treatment history and human context. It is no longer the
+ordinary batch-selection source. Query Supabase
+`public.venue_research_candidates`; do not promote a named TBD here into a
+whole-store pass unless a new lead, due date, changed access condition, or
+explicit user request makes it eligible.
 
 Status vocabulary:
 

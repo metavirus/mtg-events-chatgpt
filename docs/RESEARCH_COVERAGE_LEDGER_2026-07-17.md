@@ -20,12 +20,18 @@ Post-2026-07-23 maintenance note: venue rows below have been patched forward
 for accepted corrected main-pass batches. The original 2026-07-17 aggregate
 counts remain historical orientation, not a live queue count.
 
+Selection rule as of 2026-07-24: this ledger is historical/planning context,
+not the ordinary batch queue. Use Supabase
+`public.venue_research_candidates`; named texture gaps below do not reopen a
+baseline-complete store by themselves.
+
 ## Historical aggregate
 
 The original 2026-07-17 counts and closure audit are preserved in Git history.
 They became misleading after the accepted 2026-07-23 and 2026-07-24 passes, so
-they are no longer repeated as a live queue. Use the venue rows below and the
-store-treatment ledger for current tranche selection.
+they are no longer repeated as a live queue. Use the venue rows below for
+historical context and Supabase `public.venue_research_candidates` for current
+tranche selection.
 
 ## Venue Ledger
 

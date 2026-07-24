@@ -57,8 +57,10 @@ Canonical operating details:
 
 ## Next safe lanes
 
-1. Continue ledger-selected corrected main passes or targeted follow-ups in
-   bounded batches after explicit approval.
+1. Select ordinary store work only from
+   `public.venue_research_candidates`. This Supabase view excludes
+   baseline-complete, not-due stores and is now authoritative over old named
+   gaps in Markdown ledgers.
 2. Address specific real-use app friction when observed; do not start another
    broad product tranche by default.
 3. Consider the next overhead reduction only as a separate approved tooling
@@ -70,6 +72,12 @@ Canonical operating details:
 - Do not live-write an unapproved research proposal.
 - Do not edit canonical JSON; there is no active JSON research lane.
 - Do not create repo text artifacts just to record an ordinary surface check.
+- Do not select a maintenance store before `next_research_due_at` unless a new
+  material lead, changed access condition, open request, or explicit user
+  instruction justifies it.
+- Respect `entity_surface_selection_state`: blocked, thin, or unreadable
+  surfaces are ineligible until their retry window expires unless the access
+  condition materially changes.
 - Do not broaden a bounded store pass once its planning conclusion is clear.
 - Discord work uses only the documented guarded modes and mapped routes. Do not
   improvise around gates or resume safety engineering unless a new blocker

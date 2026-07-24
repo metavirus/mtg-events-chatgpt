@@ -14,12 +14,18 @@ Use it for:
 
 ## Active next-up
 
-- JJ's Orange branch/entity resolution: future JJ's Discord survey findings
-  that mention `Orange` must not be merged into Garden Grove. A 2026-07-23
-  non-Discord identity check found Garden Grove-only public JJ's identity and a
-  separate Orange-area Hidden Collectibles 2 / `jjscardemporium.com` lead, but
-  no clean official bridge. Resolve the Orange venue name/address/relationship
-  before any Signal or event proposal.
+- Store selection now comes from `public.venue_research_candidates`, not from
+  old ledger TBD wording. `venues.research_mode` distinguishes incomplete,
+  maintenance, targeted-followup, and identity-unresolved records;
+  baseline-complete venues remain out of ordinary batches until due or
+  triggered by a material lead/request. Surface retries come from
+  `public.entity_surface_selection_state`.
+
+- JJ's Orange is a known targeted identity boundary, not an ordinary store
+  batch candidate. Future Discord findings that mention `Orange` must not be
+  merged into Garden Grove. Revisit only when a new branch-identity source or
+  explicit user request can resolve the separate Hidden Collectibles 2 /
+  `jjscardemporium.com` lead.
 
 - Discord survey cadence/status checkpoint:
   `docs/DISCORD_SURVEY_CADENCE_STATUS_2026-07-23.md` is now the lean operating

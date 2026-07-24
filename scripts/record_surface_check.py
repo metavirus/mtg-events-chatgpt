@@ -62,8 +62,32 @@ def sql_uuid(value: str | None) -> str:
     return f"{sql_literal(value)}::uuid"
 
 
-def build_rpc_select(args: argparse.Namespace, *, dry_run: bool) -> str:
-    return f"""select coverage_id, outcome, wrote, research_change_id
+def build_eligibility_guard(args: argparse.Namespace) -> str:
+    if args.override_suppression:
+        return "-- Retry suppression explicitly overridden because the access condition or material lead changed.\n"
+    return f"""do $$
+begin
+  if exists (
+    select 1
+    from public.entity_surface_selection_state
+    where entity_type = {sql_literal(args.entity_type)}
+      and entity_id = {sql_literal(args.entity_id)}
+      and surface_type = {sql_literal(args.surface_type)}
+      and not routine_check_eligible
+  ) then
+    raise exception 'surface check is not yet eligible; inspect entity_surface_selection_state or use --override-suppression for a changed condition';
+  end if;
+end;
+$$;
+
+"""
+
+
+def build_rpc_select(
+    args: argparse.Namespace, *, dry_run: bool, include_guard: bool = True
+) -> str:
+    guard = build_eligibility_guard(args) if include_guard else ""
+    return f"""{guard}select coverage_id, outcome, wrote, research_change_id
 from public.record_entity_surface_check(
   p_idempotency_key := {sql_literal(args.idempotency_key)},
   p_entity_type := {sql_literal(args.entity_type)},
@@ -86,7 +110,7 @@ def build_replay_check(args: argparse.Namespace) -> str:
     return f"""
 
 -- Idempotent replay check: should return outcome = replayed and wrote = false.
-{build_rpc_select(args, dry_run=False)}
+{build_rpc_select(args, dry_run=False, include_guard=False)}
 
 select count(*) as coverage_count
 from public.entity_surface_coverage
@@ -123,6 +147,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--useful", action="store_true", help="Mark the surface result useful for planning.")
     parser.add_argument("--materiality", default="medium", choices=sorted(MATERIALITY))
     parser.add_argument("--followup-item-id")
+    parser.add_argument(
+        "--override-suppression",
+        action="store_true",
+        help="Permit an early retry only because access changed, a new material lead arrived, or the user explicitly requested it.",
+    )
     return parser
 
 
