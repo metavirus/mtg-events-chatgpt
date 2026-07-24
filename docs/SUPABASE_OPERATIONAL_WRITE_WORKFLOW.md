@@ -101,12 +101,16 @@ The script provides:
 
 - `validate-proposal`: checks a reviewable JSON proposal without writing;
 - `plan-sql`: generates reviewable SQL from a validated proposal;
+- `apply-approved`: validates, classifies risk, prepares temporary apply SQL,
+  and either dry-runs or applies through an explicit database execution backend;
 - `export-json`: exports deterministic recovery JSON from Supabase;
 - `verify-export`: verifies a generated export directory.
 
 The script uses the browser-safe Supabase URL and publishable key from
 `supabase/project-config.json` for read-only exports. It does not require or
-store a service-role key.
+store a service-role key. Live `apply-approved --execute` requires an explicit
+Postgres execution backend, such as `--database-url`, `DATABASE_URL`, or
+`SUPABASE_DB_URL`. Without that, it remains a dry-run/classification helper.
 
 ## Proposal format
 
@@ -117,6 +121,7 @@ Example:
 ```powershell
 python.exe scripts/supabase_research_workflow.py validate-proposal supabase/fixtures/research_update_proposal.example.json
 python.exe scripts/supabase_research_workflow.py plan-sql supabase/fixtures/research_update_proposal.example.json --output supabase/plans/example-no-live-write.sql
+python.exe scripts/supabase_research_workflow.py apply-approved supabase/fixtures/research_update_proposal.example.json
 ```
 
 For full validation or an intentional recovery checkpoint, export the current
@@ -160,6 +165,26 @@ Before any live write, validate the proposal and confirm the chosen validation
 level. For Lean and most Standard writes, a fresh full export is not mandatory
 unless the proposal touches exported recovery tables and the checkpoint is meant
 to refresh JSON.
+
+For approved routine or standard proposals, prefer:
+
+```powershell
+python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --basis-dir supabase/exports/latest
+```
+
+This dry-run path validates the proposal, classifies touched tables/risk,
+generates SQL in a temporary artifact, prepares targeted readback checks, and
+cleans up after itself. If an explicit database execution backend is available,
+the same command can apply and verify without keeping a SQL plan file:
+
+```powershell
+python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --basis-dir supabase/exports/latest --execute --database-url "<ephemeral-postgres-url>"
+```
+
+High-risk proposals are refused unless explicitly promoted with
+`--max-risk high --reviewed-high-risk`. In ordinary Codex connector-backed
+writes, use the generated apply and verification SQL from this helper as the
+single controlled payload/checklist instead of hand-building ad hoc queries.
 
 For Full writes, release/recovery checkpoints, or any write where rollback risk
 is higher than routine:
