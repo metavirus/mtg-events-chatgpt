@@ -1,0 +1,248 @@
+{
+  "proposal_id": "tilted-hobby-joyful-bullpen-texture-status-2026-07-24",
+  "description": "Mixed texture/status pass for Tilted Gaming, Hobby Overflow, Joyful Toad TCG, and The Bullpen 2.0. Refreshes WPN source freshness, closes Tilted/Hobby/Joyful practical-visit assessments without overclaiming Discord/social texture, and keeps Bullpen event-rich but status/identity gated pending store-controlled confirmation.",
+  "created_at": "2026-07-24T16:30:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-18067"
+      },
+      "fields": {
+        "id": "src-wpn-18067",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 30-mile Wizards/EventLink snapshot reconfirms Tilted's Friday Commander/FNM, Sunday draft, Commander Party, prerelease, and later special-event breadth."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-17690"
+      },
+      "fields": {
+        "id": "src-wpn-17690",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirms Hobby Overflow's recurring Thursday casual Commander row."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-15985"
+      },
+      "fields": {
+        "id": "src-wpn-15985",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirms Joyful Toad TCG's Monday Commander Night row."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-9446"
+      },
+      "fields": {
+        "id": "src-wpn-9446",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot shows current Bullpen rows across FNM draft, Saturday Commander, Standard Showdown, and Hobbit prerelease, while store-controlled source continuity remains unresolved."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "tilted-gaming"
+      },
+      "fields": {
+        "id": "tilted-gaming",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Tilted Gaming is now planning-usable rather than an ordinary corrected-main-pass target. Current first-party and Wizards/EventLink evidence supports a close Cerritos venue with Friday casual Commander/FNM, Sunday draft, Commander Party, prerelease support, clear fees/capacity/check-in structure, and first-come in-store signup. Treat it as a strong nearby event-breadth candidate, but keep community texture partial: Discord is captured from the official events page as an event/community route, while Discord/Instagram content replay, Commander turnout, proxy norms, power mix, and solo-arrival comfort remain named TBDs."
+      },
+      "reason": "Move Tilted out of corrected-main-pass-required after event breadth/source reconciliation while preserving community replay gaps."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "hobby-overflow"
+      },
+      "fields": {
+        "id": "hobby-overflow",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Hobby Overflow remains a very close and promising Cypress candidate with strong general community/store texture, but the practical Commander read is still gated. The 2026-07-24 WPN snapshot reconfirms Thursday late-night casual Commander at 10 PM, and prior review evidence supports friendly staff/community feel. The known Discord route is mapped but invite/role gated, so Commander turnout, proxy/power norms, and solo-arrival comfort remain content-replay TBD rather than inspected support."
+      },
+      "reason": "Refresh Hobby's practical-read wording and make the Discord/community disposition explicit without treating blocked access as negative evidence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "joyful-toad-tcg"
+      },
+      "fields": {
+        "id": "joyful-toad-tcg",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Joyful Toad TCG remains a legitimate Anaheim Magic lead with current WPN Commander support, official-store infrastructure, long hours, and prior review texture, but it is still more medium-confidence backup than high-priority home-base candidate. The 2026-07-24 WPN snapshot reconfirms Monday 7 PM Commander Night. Social/Discord/community texture remains unresolved because no safely readable mapped Discord route was available for this pass, and public social content was not inspectable enough to support turnout, proxy, power, or solo-arrival conclusions."
+      },
+      "reason": "Refresh Joyful Toad's current Commander support while preserving the specific social/community texture gap."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "the-bullpen-2-0"
+      },
+      "fields": {
+        "id": "the-bullpen-2-0",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "The Bullpen 2.0 has current WPN evidence at 6234 W 87th St for Saturday Commander plus broader FNM draft, Standard Showdown, and Hobbit prerelease activity, but store-controlled operation/source continuity remains unresolved. A suspected Bullpen Sports Cards LA website did not resolve from this environment, and the WPN record still uses generic website routing plus Triangle Gaming LA email context. Treat current WPN rows as real leads, not as ordinary calendar truth yet: verify the current store-controlled identity/address before promoting the full event stream or planning a visit."
+      },
+      "reason": "Resolve the pass as status/identity-gated rather than blindly promoting Bullpen's event-rich WPN stream."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B+",
+        "fit_score": 4.0,
+        "confidence": "high",
+        "positives": [
+          "Close Cerritos location with current first-party and WPN evidence across Friday casual Commander/FNM, Sunday draft, Commander Party, prerelease, and later special-event support.",
+          "Official/WPN event descriptions provide fees, check-in/start times, capacity, raffles/prizing, first-come signup, and in-store arrival expectations.",
+          "Format breadth makes Tilted useful for both Commander and limited/draft planning rather than only a Commander listing."
+        ],
+        "cautions": [
+          "Official positioning is a structured multi-TCG hub; casual/proxy comfort should not be assumed from calendar rows alone.",
+          "First-come in-store signup and limited seats mean arriving early matters for specials and draft.",
+          "Discord/community route is captured but not content-inspected; Instagram/social texture remains incomplete."
+        ],
+        "open_questions": [
+          "How casual is Friday Commander in practice, and does it welcome solo arrivals?",
+          "What are the proxy and power norms?",
+          "Does Discord support LFG/pod formation or mostly logistics?",
+          "How reliably does Sunday draft fire above its minimum?"
+        ]
+      },
+      "reason": "Close Tilted's corrected main pass as planning-usable while keeping community texture TBD."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "hobby-overflow"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "hobby-overflow",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.8,
+        "confidence": "high",
+        "positives": [
+          "Very close Cypress location with strong existing official/review evidence for TCG store activity, friendly staff, and community orientation.",
+          "Current WPN snapshot reconfirms a recurring free casual Commander anchor.",
+          "Mapped Discord route and channel watch targets show where future community checks should go once gate/user-action issues are resolved."
+        ],
+        "cautions": [
+          "Commander is currently visible as a late Thursday 10 PM WPN row, which may be less practical than closer/easier time slots.",
+          "Discord route is invite/role gated under the current safe protocol, so content was not inspected during this pass.",
+          "Commander turnout, power level, proxy norms, and solo-arrival comfort remain unproven."
+        ],
+        "open_questions": [
+          "Does Thursday Commander reliably fire and is it worth the late start?",
+          "Can the user resolve the Discord gate later for tournament schedule and Magic announcement channels?",
+          "Does the community surface show LFG, newcomer friendliness, or casual pod formation?"
+        ]
+      },
+      "reason": "Keep Hobby Overflow as promising but explicitly gated on Commander-specific community texture."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "Close-ish Anaheim store with existing official site, WPN, review/directory, Facebook, and Instagram route evidence.",
+          "Current WPN snapshot reconfirms Monday 7 PM Commander Night as a real weekly anchor.",
+          "Prior review/source texture supports an active TCG store with long hours and broad inventory/service."
+        ],
+        "cautions": [
+          "Public evidence remains stronger for broad store activity than Commander community fit.",
+          "No safely readable mapped Discord route was available for this pass.",
+          "No current inspected source established turnout, proxy norms, power mix, pod formation, or solo-arrival ease."
+        ],
+        "open_questions": [
+          "Does Joyful Toad have a Discord or other community route that can be mapped safely?",
+          "Is Monday Commander casual and social in practice?",
+          "Do Instagram/Facebook posts provide MTG schedule details beyond the WPN row?"
+        ]
+      },
+      "reason": "Refresh Joyful Toad without over-promoting it beyond the single WPN Commander anchor."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-bullpen-2-0"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-bullpen-2-0",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "C-",
+        "fit_score": 2.6,
+        "confidence": "low",
+        "positives": [
+          "Current WPN snapshot shows substantial Magic activity at the listed Los Angeles address, including Commander, FNM draft, Standard Showdown, and prerelease sessions.",
+          "The existing Saturday Commander row is not isolated; WPN suggests a broader organized-play footprint.",
+          "Could become useful if store-controlled identity and event reliability are confirmed."
+        ],
+        "cautions": [
+          "Store-controlled source routing is unresolved; the WPN record uses generic website routing and Triangle Gaming LA email context.",
+          "A suspected Bullpen Sports Cards LA web domain did not resolve from this environment.",
+          "At roughly 21 miles away, the store should not compete with closer candidates without stronger confidence.",
+          "Do not promote the broader WPN event stream into ordinary calendar truth until current operation/address continuity is branch-safe."
+        ],
+        "open_questions": [
+          "What is the current official/store-controlled source for The Bullpen 2.0?",
+          "Is 6234 W 87th St the current operational identity for the WPN events?",
+          "Should FNM draft, Standard Showdown, and prerelease rows be promoted after status confirmation?"
+        ]
+      },
+      "reason": "Create a conservative venue evaluation that preserves Bullpen's WPN activity as a lead while preventing unsafe event promotion."
+    }
+  ]
+}
