@@ -1,0 +1,569 @@
+{
+  "proposal_id": "buddies-lvlup-otaku-gx-main-pass-2026-07-24",
+  "description": "Corrected main-store pass for Buddies Collectibles, LVLUP GAMING TCG, Otaku Vault, and GXGAMERS. Refreshes current WPN-backed event rows, clarifies non-WPN source dispositions, keeps Buddies/LVLUP/Otaku as useful but check-first candidates, and downranks GXGAMERS because its supported Commander lane is no-proxy/high-power/prize structured.",
+  "created_at": "2026-07-24T15:30:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-18376"
+      },
+      "fields": {
+        "id": "src-wpn-18376",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirms Buddies' Friday and Saturday Commander-only stream."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-15152"
+      },
+      "fields": {
+        "id": "src-wpn-15152",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirms LVLUP's Tuesday/Friday Commander and Hobbit-era special-event stream."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-18939"
+      },
+      "fields": {
+        "id": "src-wpn-18939",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirms Otaku Vault Friday Commander plus Hobbit prerelease, Commander Party, and 2HG Commander specials."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-22276"
+      },
+      "fields": {
+        "id": "src-wpn-22276",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirms GXGAMERS Commander, Standard, and Hobbit prerelease rows."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "buddies-collectibles-buddies-collectibles-casual-commander-n"
+      },
+      "fields": {
+        "id": "buddies-collectibles-buddies-collectibles-casual-commander-n",
+        "venue_id": "buddies-collectibles",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Buddies' recurring Friday 6:30 PM casual Commander night as a free Commander lane. No draft, prerelease/sealed, FNM/constructed, or special-event rows surfaced for Buddies in the current WPN snapshot.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing Buddies Friday Commander row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "buddies-collectibles-casual-commander-night-6-22-30"
+      },
+      "fields": {
+        "id": "buddies-collectibles-casual-commander-night-6-22-30",
+        "venue_id": "buddies-collectibles",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Buddies' recurring Saturday 10:30 PM Casual Commander Night with $10 entry and capacity 12. Treat the late start as source-supported but practically check-first.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing Buddies Saturday Commander row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "lvlup-gaming-tcg-friday-night-commander-5-19-00"
+      },
+      "fields": {
+        "id": "lvlup-gaming-tcg-friday-night-commander-5-19-00",
+        "venue_id": "lvlup-gaming-tcg",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms LVLUP's recurring Friday 7:00 PM Friday Night Commander slot with $10 entry, capacity 40, and Bracket 3 Commander format.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing LVLUP Friday Commander row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "lvlup-gaming-tcg-tuesday-night-commander-2-19-30"
+      },
+      "fields": {
+        "id": "lvlup-gaming-tcg-tuesday-night-commander-2-19-30",
+        "venue_id": "lvlup-gaming-tcg",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms LVLUP's recurring Tuesday 7:30 PM Commander slot with $10 entry, capacity 40, and turnout-dependent prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing LVLUP Tuesday Commander row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "lvlup-gaming-tcg-the-hobbit-prerelease-2026-08-07"
+      },
+      "fields": {
+        "id": "lvlup-gaming-tcg-the-hobbit-prerelease-2026-08-07",
+        "venue_id": "lvlup-gaming-tcg",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms LVLUP's Friday August 7, 2026 7:30 PM The Hobbit Prerelease with $35 entry, capacity 40, and play booster prize support.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing LVLUP Hobbit prerelease row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "lvlup-gaming-tcg-an-unexpected-crafting-party-2026-08-14"
+      },
+      "fields": {
+        "id": "lvlup-gaming-tcg-an-unexpected-crafting-party-2026-08-14",
+        "venue_id": "lvlup-gaming-tcg",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms LVLUP's Friday August 14, 2026 7:30 PM An Unexpected Crafting Party as a free Hobbit-era special with capacity 40.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing LVLUP crafting-party special row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "lvlup-gaming-tcg-two-headed-giant-commander-the-hobbit-2026-08-18"
+      },
+      "fields": {
+        "id": "lvlup-gaming-tcg-two-headed-giant-commander-the-hobbit-2026-08-18",
+        "venue_id": "lvlup-gaming-tcg",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms LVLUP's Tuesday August 18, 2026 7:30 PM Two Headed Giant Commander The Hobbit special with $25 entry and capacity 40.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing LVLUP 2HG Commander special row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "lvlup-gaming-tcg-the-hobbit-commander-party-2026-08-25"
+      },
+      "fields": {
+        "id": "lvlup-gaming-tcg-the-hobbit-commander-party-2026-08-25",
+        "venue_id": "lvlup-gaming-tcg",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms LVLUP's Tuesday August 25, 2026 7:30 PM The Hobbit Commander Party with $10 entry and capacity 40.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing LVLUP Commander Party row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "lvlup-gaming-tcg-magic-presents-heart-of-the-mountain-2026-09-08"
+      },
+      "fields": {
+        "id": "lvlup-gaming-tcg-magic-presents-heart-of-the-mountain-2026-09-08",
+        "venue_id": "lvlup-gaming-tcg",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms LVLUP's Tuesday September 8, 2026 7:30 PM Magic Presents: Heart of the Mountain Commander special with $10 entry and promo support.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing LVLUP Magic Presents special row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "otaku-vault-friday-night-magic-commander-night-otaku-vault-5-18-00"
+      },
+      "fields": {
+        "id": "otaku-vault-friday-night-magic-commander-night-otaku-vault-5-18-00",
+        "venue_id": "otaku-vault",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Otaku Vault's Friday 6:00 PM Friday Night Magic Commander Night with $5 entry, capacity 16, and store-written casual/welcoming language.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh Otaku Vault Friday Commander with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "otaku-vault-the-hobbit-prerelease-2026-08-07-13-30"
+      },
+      "fields": {
+        "id": "otaku-vault-the-hobbit-prerelease-2026-08-07-13-30",
+        "venue_id": "otaku-vault",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Otaku Vault's Friday August 7, 2026 1:30 PM The Hobbit Prerelease session with $35 entry and capacity 16.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh Otaku Vault early Hobbit prerelease session with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "otaku-vault-the-hobbit-prerelease-2026-08-07-19-00"
+      },
+      "fields": {
+        "id": "otaku-vault-the-hobbit-prerelease-2026-08-07-19-00",
+        "venue_id": "otaku-vault",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Otaku Vault's Friday August 7, 2026 7:00 PM The Hobbit Prerelease session with $35 entry, capacity 16, and casual three-round Swiss framing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh Otaku Vault evening Hobbit prerelease session with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "otaku-vault-the-hobbit-commander-party-2026-08-21"
+      },
+      "fields": {
+        "id": "otaku-vault-the-hobbit-commander-party-2026-08-21",
+        "venue_id": "otaku-vault",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Otaku Vault's Friday August 21, 2026 7:00 PM The Hobbit Commander Party with $10 entry and capacity 16.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh Otaku Vault Commander Party row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "otaku-vault-two-headed-giant-commander-2026-08-28"
+      },
+      "fields": {
+        "id": "otaku-vault-two-headed-giant-commander-2026-08-28",
+        "venue_id": "otaku-vault",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Otaku Vault's Friday August 28, 2026 7:00 PM Two Headed Giant Commander night with $5 entry, capacity 16, and bring-a-friend/link-up language.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh Otaku Vault 2HG Commander row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "gxgamers-monday-all-night-commander-1-19-00"
+      },
+      "fields": {
+        "id": "gxgamers-monday-all-night-commander-1-19-00",
+        "venue_id": "gxgamers",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms GXGAMERS Monday 7:00 PM All Night Commander with $10 entry, capacity 32, Bracket 3 Casual, no proxies, Companion required, participation packs, end-of-match prizing, and infinite combos allowed after round 8. Source-supported but poor personal fit.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh GXGAMERS Monday Commander and make the no-proxy/high-power fit caution explicit."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "gxgamers-thursday-all-night-commander-4-19-00"
+      },
+      "fields": {
+        "id": "gxgamers-thursday-all-night-commander-4-19-00",
+        "venue_id": "gxgamers",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms GXGAMERS Thursday 7:00 PM All Night Commander with $10 entry, capacity 32, Bracket 3 Casual, no proxies, Companion required, participation packs, end-of-match prizing, and infinite combos allowed after round 8. Source-supported but poor personal fit.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh GXGAMERS Thursday Commander and make the no-proxy/high-power fit caution explicit."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "gxgamers-saturday-all-night-commander-6-19-00"
+      },
+      "fields": {
+        "id": "gxgamers-saturday-all-night-commander-6-19-00",
+        "venue_id": "gxgamers",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms GXGAMERS Saturday 7:00 PM All Night Commander with $10 entry, capacity 32, Bracket 3 Casual, no proxies, Companion required, participation packs, end-of-match prizing, and infinite combos allowed after round 8. Source-supported but poor personal fit.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh GXGAMERS Saturday Commander and make the no-proxy/high-power fit caution explicit."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "gxgamers-wednesday-standard-showdown-3-19-00"
+      },
+      "fields": {
+        "id": "gxgamers-wednesday-standard-showdown-3-19-00",
+        "venue_id": "gxgamers",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms GXGAMERS Wednesday 7:00 PM Standard Showdown with $10 entry, capacity 32, Companion required, participation pack, and top-3/top-4 prizing based on turnout.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh GXGAMERS Wednesday Standard with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "gxgamers-the-hobbit-prerelease-2026-08-07"
+      },
+      "fields": {
+        "id": "gxgamers-the-hobbit-prerelease-2026-08-07",
+        "venue_id": "gxgamers",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms GXGAMERS Friday August 7, 2026 The Hobbit Prerelease with 6:00 PM check-in, 6:30 PM deck building, 7:00 PM Swiss start, $45 entry, capacity 30, prerelease kit, and booster-per-win prizing.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh GXGAMERS Hobbit prerelease row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "buddies-collectibles"
+      },
+      "fields": {
+        "id": "buddies-collectibles",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Buddies remains a real Gardena TCG/community lead with a strong source stack: official site/events page, Linktree, Discord route, WPN, Yelp/review texture, Whatnot, and directory mirrors. Current WPN evidence is Commander-only: Friday 6:30 PM free casual Commander and Saturday 10:30 PM $10 Casual Commander Night. Keep it useful but check-first rather than a home-base assumption: the Discord first pass supports community scale but not Commander turnout, proxy norms, or solo-arrival comfort, and no current WPN draft, prerelease, FNM/constructed, or specials surfaced."
+      },
+      "reason": "Refresh Buddies' Places synthesis after current WPN Commander-only confirmation."
+    },
+    {
+      "action": "update",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.4,
+        "confidence": "medium",
+        "positives": [
+          "Close-ish Gardena TCG lead with official site, events page, Linktree, WPN, direct Yelp/review texture, and Discord route evidence.",
+          "Current WPN snapshot reconfirms both Friday free casual Commander and Saturday late-night Casual Commander.",
+          "Prior Discord first pass supports a sizable official community surface, even though Commander-specific texture remains unresolved."
+        ],
+        "cautions": [
+          "Current WPN stream is Commander-only; no draft, prerelease/sealed, FNM/constructed, or specials surfaced in this snapshot.",
+          "Saturday 10:30 PM Commander is source-supported but may be practically awkward.",
+          "Discord/community evidence does not yet establish Commander turnout, proxy norms, or solo-arrival comfort."
+        ],
+        "open_questions": [
+          "Do Friday or Saturday Commander reliably fire with casual pods?",
+          "What are the proxy and power norms?",
+          "Does Buddies have any non-WPN Magic event stream or social schedule not visible in the current pass?"
+        ]
+      },
+      "reason": "Keep Buddies as useful but not over-promoted after corrected source/event closure."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "lvlup-gaming-tcg"
+      },
+      "fields": {
+        "id": "lvlup-gaming-tcg",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "LVLUP has real WPN-visible Magic breadth: Tuesday and Friday Commander plus The Hobbit prerelease, An Unexpected Crafting Party, 2HG Commander, Commander Party, and Magic Presents. It still reads as check-first because prior accepted evidence included an operating-reliability concern from a player report of arriving for a listed Companion event when the store appeared closed. No draft, Standard/Modern, rich review texture, or safely mapped Discord/community route was resolved in this pass."
+      },
+      "reason": "Refresh LVLUP's Places synthesis while preserving the same-day reliability caution."
+    },
+    {
+      "action": "update",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "C+",
+        "fit_score": 3.0,
+        "confidence": "medium",
+        "positives": [
+          "Current WPN snapshot shows meaningful event breadth: Tuesday and Friday Commander, prerelease sealed, Commander Party, 2HG Commander, Magic Presents, and a free crafting special.",
+          "Capacity 40 on WPN rows suggests organized-play infrastructure rather than a tiny ad hoc listing.",
+          "Useful calendar inventory if a specific LVLUP special becomes appealing."
+        ],
+        "cautions": [
+          "Prior accepted reliability concern remains: a player report described arriving for a Companion-listed event when the store appeared closed.",
+          "No current draft or constructed stream surfaced beyond Commander and specials.",
+          "Official/social/community content was not newly replayed, and no safe Discord/community route is available for this pass."
+        ],
+        "open_questions": [
+          "Is LVLUP consistently open and honoring WPN-listed events now?",
+          "What is the casual/solo-arrival texture for Tuesday or Friday Commander?",
+          "Does a store-controlled social route corroborate the WPN schedule?"
+        ]
+      },
+      "reason": "Represent LVLUP's improved event breadth while keeping it check-first/deprioritized until operating reliability is resolved."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "otaku-vault"
+      },
+      "fields": {
+        "id": "otaku-vault",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Otaku Vault now reads as a real but still texture-limited Little Tokyo Magic candidate. Current WPN evidence supports Friday 6:00 PM FNM Commander with $5 entry/capacity 16 and unusually friendly store-written language, plus two Hobbit prerelease sessions, Commander Party, and 2HG Commander. Distance/traffic and lack of safely replayed Discord/social turnout texture keep it below closer home-base candidates, but it is useful to watch for specific specials."
+      },
+      "reason": "Refresh Otaku Vault's Places synthesis after current WPN event-source confirmation."
+    },
+    {
+      "action": "update",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.4,
+        "confidence": "medium",
+        "positives": [
+          "Current WPN snapshot supports Friday FNM Commander plus prerelease sealed, Commander Party, and 2HG Commander specials.",
+          "WPN description uses friendly casual language for Friday Commander and explicit link-up language for 2HG.",
+          "Official site and Discord-route metadata are already captured, giving a plausible community follow-up path."
+        ],
+        "cautions": [
+          "Distance/traffic make this a watch/special-event candidate rather than a default local target.",
+          "No current draft, Standard, Modern, or non-Commander recurring stream surfaced.",
+          "Discord/community and review texture remain content-replay TBD for turnout, proxy norms, and solo-arrival confidence."
+        ],
+        "open_questions": [
+          "Does Friday FNM Commander reliably fire with a welcoming casual crowd?",
+          "What are the proxy and power norms?",
+          "Does the official Discord route provide current LFG, turnout, or event-change signals?"
+        ]
+      },
+      "reason": "Promote Otaku from thin discovery to a modest event-useful watch candidate without overclaiming community texture."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "gxgamers"
+      },
+      "fields": {
+        "id": "gxgamers",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "GXGAMERS has real WPN-backed Magic activity, but it should be default-low for this project. Current WPN rows support Monday/Thursday/Saturday All Night Commander, Wednesday Standard Showdown, and The Hobbit prerelease. The Commander lane explicitly says Bracket 3 Casual, no proxies, Companion required, participation packs, prizing, and infinite combos after round 8, which makes it a poor fit for relaxed proxy-friendly Commander. Keep it as calendar truth and a possible Standard/prerelease lead, not a normal Commander recommendation."
+      },
+      "reason": "Refresh GXGAMERS' Places synthesis and make the poor-fit no-proxy/high-power implications explicit."
+    },
+    {
+      "action": "update",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "D+",
+        "fit_score": 2.2,
+        "confidence": "medium",
+        "positives": [
+          "Current WPN snapshot confirms real organized-play activity: multiple weekly Commander nights, Wednesday Standard Showdown, and Hobbit prerelease sealed.",
+          "Official Magic page and Linktree/social route evidence are already captured.",
+          "Useful as calendar truth for Standard/prerelease awareness if a specific event matters."
+        ],
+        "cautions": [
+          "Core Commander lane is explicitly no-proxy and prize/Companion structured, with infinite combos allowed after round 8.",
+          "The Commander description is a poor match for relaxed proxy-friendly casual Commander preferences.",
+          "Distance/parking/access and limited community/solo-arrival texture further reduce practical visit priority."
+        ],
+        "open_questions": [
+          "Is there any lower-power or proxy-friendly community layer outside the WPN Commander rows?",
+          "Would Standard Showdown or prerelease be worth attending despite Commander mismatch?",
+          "Does the Discord/social route ever publish planning-relevant changes or a more casual lane?"
+        ]
+      },
+      "reason": "Downrank GXGAMERS as a real but poor-fit/default-hidden Commander option rather than treating it as an ordinary recommendation."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "buddies-lvlup-otaku-gx-main-pass-2026-07-24"
+      },
+      "fields": {
+        "id": "buddies-lvlup-otaku-gx-main-pass-2026-07-24",
+        "detected_at": "2026-07-24T15:30:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "dataset",
+        "entity_id": "buddies-lvlup-otaku-gx-main-pass",
+        "summary": "Proposed corrected main pass for Buddies, LVLUP, Otaku Vault, and GXGAMERS: refresh existing WPN event rows, keep Buddies/LVLUP/Otaku as useful but check-first candidates, and downrank GXGAMERS because its supported Commander lane is no-proxy/high-power/prize structured.",
+        "review_status": "proposed"
+      },
+      "reason": "Expose the proposed corrected main-pass update in the Updates workflow after review."
+    }
+  ]
+}

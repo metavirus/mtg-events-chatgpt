@@ -78,6 +78,29 @@ events to their calendar.
 
 ### 4. Promote before deepening
 
+### 5. Match research validation overhead to batch risk
+
+Classify each research/data batch before applying it:
+
+- Routine Refresh / Lean: source freshness, evidence cleanup, minor evaluation
+  wording, no-write confirmations, and other updates with no new or retired
+  events, no identity conflict, no Signals, and no schema or app changes.
+  Lean validation is enough: proposal validation, affected-row readback,
+  duplicate checks only if event rows are touched, text integrity only if repo
+  text changed, a concise checkpoint, and no broad app preview. Do not keep
+  dry-run SQL artifacts unless the workflow requires them as durable evidence.
+- Standard Main Pass: new event rows, event retirements, meaningful Places or
+  evaluation changes, source-health contradictions, Signals, or
+  Discord/community content that materially changes planning. Use the normal
+  proposal, review, apply, verify, and ledger pattern.
+- High-Risk: identity merges or splits, branch/location corrections, schema,
+  auth/RLS, Discord safety/access changes, bulk writes, or anything that can
+  corrupt trust. Full ceremony is justified.
+
+The point is lower overhead, not weaker research. Discord/community surfaces
+still need an explicit disposition in main-store work: inspect them when safely
+mapped and material; otherwise mark route/TBD, gate, not found, or deferred.
+
 Deeper work should happen only after explicit promotion due to:
 
 - strong initial signals
