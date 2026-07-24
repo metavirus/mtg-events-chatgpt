@@ -44,10 +44,10 @@ Then open:
 ## Data source
 
 The operational research source is now Supabase. The hosted app reads Supabase
-by default, while `?data=json` remains the explicit recovery/export fallback.
+by default.
 
-Generated JSON files are recovery artifacts, not the ordinary research editing
-surface:
+Generated JSON files are recovery artifacts, not the ordinary research editing,
+validation, or planning surface:
 
 - `stores.json`: exported venue information and assessments
 - `events.json`: exported recurring and one-time events
@@ -59,6 +59,11 @@ Research updates should go through the controlled Supabase workflow in
 [`docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`](docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md);
 manual canonical JSON research edits are forbidden except for generated
 export/recovery work.
+
+The `?data=json` app mode is emergency/debug recovery only. Do not use it as a
+parallel product path, routine validation target, or ordinary research source.
+If Supabase breaks, fix Supabase/app behavior directly rather than optimizing
+around the fallback.
 
 ## Text integrity guardrails
 
@@ -95,9 +100,9 @@ The crawler stores:
 - `output/wizards/organizations.json`: deduplicated Wizards organizations/stores
 
 The default query uses the public Los Alamitos, CA centroid and the Wizards
-locator's 25-mile routine search radius. It does not store a private home address. Candidate events
-are intentionally broad and should be verified before being promoted into the
-app's curated `events.json` and `stores.json` files.
+locator's 25-mile routine search radius. It does not store a private home
+address. Candidate events are intentionally broad and should be verified before
+being promoted into Supabase canonical research tables.
 
 GitHub Actions refreshes the Wizards snapshot every Monday and commits changed
 `output/wizards` data back to the repository.
@@ -105,8 +110,8 @@ GitHub Actions refreshes the Wizards snapshot every Monday and commits changed
 ## Current status
 
 This is a deployed personal-use research app backed by Supabase as the default
-read source. Controlled Supabase research writes are operational, JSON remains
-available as a generated fallback, and research has resumed in small direct
-Project Steward batches. The dataset is useful but still not a complete local
-Magic calendar; the finite venue queue is tracked in
+read source. Controlled Supabase research writes are operational, and JSON is
+only an on-demand generated recovery/debug fallback. Research has resumed in
+small direct Project Steward batches. The dataset is useful but still not a
+complete local Magic calendar; the finite venue queue is tracked in
 [`docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`](docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md).

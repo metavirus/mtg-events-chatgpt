@@ -17,8 +17,8 @@ The repository has already completed these stabilization steps:
 - local UX pass accepted on `codex/reconcile-wizards`;
 - personal-use deployment accepted at `dd44e20`, tagged
   `checkpoint/personal-use-deployed-supabase-default-2026-07-17`;
-- hosted app uses Supabase as the default read source, with `?data=json` as the
-  explicit fallback;
+- hosted app uses Supabase as the default read source, with `?data=json` as an
+  emergency/debug fallback only;
 - Batch A identity/status clarifications have been applied through the
   controlled Supabase workflow without changing event records;
 - high-value event candidate replay A has been completed and applied only as a
@@ -100,4 +100,6 @@ Still open:
 - do not restart the accepted UX polish tranche by default;
 - do not resume broad research directly into canonical JSON as the main path;
 - do not hand-edit generated JSON exports as canonical research updates;
+- do not use JSON fallback/export as a normal research, validation, or planning
+  surface;
 - do not assume the current dataset is a complete local Magic census.

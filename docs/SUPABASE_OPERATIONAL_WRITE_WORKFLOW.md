@@ -4,10 +4,12 @@ Last updated: 2026-07-17
 
 ## Purpose
 
-This is the safety gate that must exist before broad research resumes.
+This is the lightweight write path for a one-person hobby app whose canonical
+operational data lives in Supabase.
 
 The prior failure mode was unsafe manual writing into canonical JSON. The fix is
-not merely to read from Supabase by default. The fix is to give future Codex
+not to preserve JSON as a parallel system. The fix is to use Supabase as the
+canonical surface, keep Git/migrations for reversibility, and give future Codex
 research updates a controlled path:
 
 1. propose exact field-level changes;
@@ -17,8 +19,8 @@ research updates a controlled path:
 5. apply only after explicit authorization when live mutation is required;
 6. verify affected records, row counts, required fields, relationships,
    provenance, and duplicate guards after the write;
-7. export deterministic JSON recovery artifacts when the risk or release gate
-   calls for it.
+7. export deterministic JSON recovery artifacts only when the risk or release
+   gate calls for it.
 
 ## Scope
 
@@ -178,8 +180,8 @@ For approved routine or standard proposals, prefer:
 python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --basis-dir supabase/exports/latest
 ```
 
-This dry-run path validates the proposal, classifies touched tables/risk,
-generates SQL, and prepares targeted readback checks. If an explicit database
+This path validates the proposal, classifies touched tables/risk, generates
+apply SQL, and prepares targeted readback checks. If an explicit database
 execution backend is available, the same command can apply and verify without
 keeping a SQL plan file:
 
@@ -188,7 +190,8 @@ python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal
 ```
 
 If the Codex Supabase connector is the live execution bridge, generate a
-connector package instead of hand-building chunks:
+connector package instead of hand-building chunks. The package is an execution
+bridge, not durable evidence:
 
 ```powershell
 python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --basis-dir supabase/exports/latest --connector-package-dir supabase/apply-packages/YYYY-MM-DD-short-name
@@ -196,6 +199,8 @@ python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal
 
 Then run each generated `*.apply-NN.sql` chunk in numeric order through the
 approved connector SQL tool, followed by the generated `*.readback.sql`.
+Delete or ignore connector packages after the batch unless there is a concrete
+debug/recovery reason to retain them.
 
 High-risk proposals are refused unless explicitly promoted with
 `--max-risk high --reviewed-high-risk`. In ordinary Codex connector-backed
@@ -217,7 +222,8 @@ If tooling itself needs improvement, record it as a named TBD after closure or
 start a separate tooling tranche before the next research batch.
 
 For Full writes, release/recovery checkpoints, or any write where rollback risk
-is higher than routine:
+is higher than routine, create a deterministic export/backup. Do not do this
+for ordinary source/evaluation refreshes merely from habit:
 
 1. create a deterministic export/backup:
 
@@ -241,7 +247,8 @@ python.exe scripts/supabase_research_workflow.py export-json --output-dir supaba
 powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1
 ```
 
-Generated exports are recovery/export artifacts. They are not manually edited.
+Generated exports are recovery/export artifacts. They are not manually edited,
+not a normal research surface, and not refreshed after every small write.
 
 ## Live-write authorization rule
 
@@ -264,9 +271,12 @@ After any authorized live write, verify at the selected validation level.
 At minimum for Lean:
 
 - affected IDs exist and contain the intended field values;
-- affected table counts/relationships are expected;
-- provenance links exist where the write added or relied on sources;
+- relevant source/evidence relationships exist when the write added them;
 - repository text-integrity validation passes for changed text files.
+
+Do not run app preview, broad table scans, deterministic export, or duplicate
+checks for Lean writes unless the touched tables or observed anomaly justify
+them.
 
 For Standard and Full, add relevant checks from this list:
 
@@ -304,10 +314,11 @@ method in `research/SOURCE_SOP.md`.
 Accepted gates:
 
 1. controlled Supabase research-write safety is accepted;
-2. deterministic Supabase-to-JSON export/recovery is accepted;
+2. deterministic Supabase-to-JSON export/recovery exists as an emergency/debug
+   path, not routine ceremony;
 3. default application read cutover to Supabase is separately accepted;
-4. agents no longer need to hand-edit canonical JSON for ordinary research
-   updates.
+4. agents no longer hand-edit or mentally model canonical JSON for ordinary
+   research updates.
 
 Still deferred:
 

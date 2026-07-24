@@ -6,6 +6,12 @@ store/group passes consistent.
 
 If a pass deviates from this SOP, the run note must say why.
 
+This SOP is for a personal planning app, not a formal archival census. The
+right stopping point is a decision-grade planning conclusion with visible
+source dispositions, not exhaustive source harvesting. Leaner workflow means
+stop retrying unreliable surfaces once the planning read is clear; it does not
+mean skipping major expected surfaces.
+
 ## Core rules
 
 1. Do not rediscover what a source is good for during a normal pass.
@@ -21,6 +27,8 @@ If a pass deviates from this SOP, the run note must say why.
    evidence implications and current MTG event / calendar implications. Lean
    validation or an "assessment batch" label must never be interpreted as
    permission to skip event hunting.
+8. Supabase is the canonical research surface. JSON exports are emergency/debug
+   recovery artifacts and should not drive ordinary passes.
 
 ## Source hierarchy by job
 
@@ -122,13 +130,19 @@ baseline sweep:
 
 This is a minimum discovery sweep, not permission for unlimited archaeology.
 Use reasonable search effort and stop when the readily discoverable surfaces
-have been found and dispositioned.
+have been found and dispositioned. Completeness means every material surface was
+considered and given an honest disposition; it does not mean every surface was
+exhaustively inspected or retried until it works.
 
 For every relevant source discovered directly, supplied by the packet, or
 surfaced by a user, give it one durable disposition:
 
 - captured as Evidence;
 - already captured;
+- route not found;
+- route found / content not inspected;
+- gated or blocked;
+- content thin / no useful current signal;
 - not material;
 - inaccessible or unverifiable;
 - stale/historical;
@@ -146,6 +160,11 @@ a main store pass, inspect enough representative content to support or reject
 store-fit and event-reliability conclusions. Do not claim Discord/community
 content supports fit, turnout, proxy practice, solo arrival, draft reliability,
 or event reliability unless that content was actually inspected.
+
+Missing or blocked community/social texture does not automatically keep a store
+in an open main-pass state. It should change confidence, priority, or named
+TBDs. Once the visit decision is clear enough, close the pass and leave deeper
+replay for promoted follow-up.
 
 Discord/community routes should also receive a lightweight operational status
 separate from the venue's overall research status. Use the Discord/community
@@ -198,9 +217,9 @@ Label every research batch with its pass type:
 
 A main store pass is not complete merely because source routes were found. For
 Instagram, Facebook, review sites, official calendars, Discord, and similar
-sources, "found" is not normally enough. If the content is accessible with
-reasonable effort, inspect enough recent and representative material to answer
-the current research questions.
+sources, "found" is not normally enough when the content is accessible,
+material, and cheap to inspect. If content is blocked, unsafe, or
+disproportionate to the current decision, record the disposition and move on.
 
 For store-controlled social accounts, inspect enough to answer:
 
@@ -230,7 +249,8 @@ Use `content replay TBD` only when:
 - or the remaining question is nonessential to the present assessment.
 
 Do not use TBD merely to defer ordinary reading of an accessible, relevant
-source during a main pass.
+material source during a main pass. But do use TBD instead of continuing a
+source chase after the material planning conclusion is already clear.
 
 ## Evidence capture rule
 
@@ -351,6 +371,11 @@ Stop once these questions are answerable:
 
 Do not deep-scroll, chase comments, or exhaustively browse secondary surfaces.
 
+Do not chase blocked Instagram/Facebook/Discord fetch issues as a default. Try
+the approved path once, use an approved fallback if it is cheap and safe, then
+record route visible / content not inspected / TBD or blocked/gated as
+appropriate.
+
 ### Candidate-grade result expectation
 
 A first pass should usually aim to produce one of these outcomes:
@@ -361,8 +386,8 @@ A first pass should usually aim to produce one of these outcomes:
 - `deepened`: strong enough to justify or already reflect deeper
   operational/social work now
 
-Treat `reviewed` as a meaningful graduation threshold. A store should not be
-called comfortably reviewed unless the pass gives the user:
+Treat `reviewed` as a meaningful graduation threshold. A store can be reviewed
+when the pass gives the user:
 
 - a reliable identity/source-routing read;
 - a real MTG read, with Commander fit assessed separately;
@@ -382,6 +407,19 @@ Use fit and confidence separately from research status:
 A sparse but bounded store can still be `reviewed` with medium or low
 confidence. Do not keep a store in research purgatory merely because it lacks
 Discord, e-commerce, or a richer community footprint.
+
+The practical disposition should be plain:
+
+- try soon
+- worth watching
+- backup
+- low priority
+- avoid / poor fit
+- identity or status unresolved
+
+Use fit grade and confidence to express how strongly the evidence supports that
+decision. Do not keep doing research just because another source might add
+garnish.
 
 Treat ordinary source silence as neutral. Most stores will not publish bracket
 expectations, proxy policy, pod-formation mechanics, or instructions for solo
@@ -790,10 +828,10 @@ Before closing a first pass, confirm:
 - no unnecessary rabbit hole taken
 - result classified: `discovery`, `reviewed`, or `deepened`
 
-Temporary schema note: canonical JSON may still use legacy `researchStatus`
-values such as `partial` while the data model catches up. Until the schema and
-UI are migrated, interpret existing `partial` records as today's nearest
-equivalent to `reviewed`.
+Temporary schema note: some exported recovery JSON or older UI language may
+still contain legacy `researchStatus` / `partial` wording. Treat Supabase as
+canonical and interpret old `partial` language as today's nearest equivalent to
+`reviewed` only when reading historical context.
 
 ## Compact main-pass closure record
 

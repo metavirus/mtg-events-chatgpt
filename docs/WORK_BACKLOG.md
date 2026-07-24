@@ -39,6 +39,13 @@ Use it for:
   backing table are already gone; do not treat it as an active coordination
   path.
 
+- Source-image/artifact evidence TBD: later investigate a minimal way to
+  preserve original Discord/Instagram/flyer-derived event artifacts or
+  screenshots when the app summarizes image-only source material. This is a
+  future trust/re-verification design problem involving provenance, retention,
+  privacy, copyright, and a tiny proof of concept. Do not implement it during
+  ordinary research batches.
+
 - Cold-deep-link Discord content-read is blocked/TBD at accepted boundary
   `5e055e8`. The current accepted safety baseline is recorded in
   `docs/DISCORD_READONLY_SAFETY_CHECKPOINT_2026-07-21.md`. The local fixture

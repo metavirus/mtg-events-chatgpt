@@ -1,13 +1,15 @@
-"""Controlled Supabase research-write and JSON export workflow.
+"""Controlled Supabase research-write workflow.
 
-This script is intentionally conservative. It gives future Codex research work a
-reviewable proposal format, validates stable IDs and relationships before any
-write SQL is produced, classifies proposal risk, and exports deterministic JSON
-recovery snapshots from Supabase.
+This script gives Codex research work a reviewable proposal format, validates
+stable IDs and relationships before any write SQL is produced, classifies
+proposal risk, prepares connector-friendly apply/readback packages, and can
+export deterministic JSON recovery snapshots from Supabase when explicitly
+needed.
 
 It does not require or store a service-role key. By default it performs dry-run
 validation, SQL generation, and targeted verification planning only. Live apply
-requires an explicit execution flag and database URL backend.
+requires an explicit execution flag and database URL backend, or an explicit
+connector package for the Codex Supabase connector.
 """
 
 from __future__ import annotations
@@ -1081,8 +1083,8 @@ def build_parser() -> argparse.ArgumentParser:
     apply = sub.add_parser(
         "apply-approved",
         help=(
-            "Validate, classify, and optionally apply an approved proposal via a "
-            "temporary SQL artifact. Defaults to dry-run."
+            "Validate, classify, and optionally apply an approved proposal via "
+            "a temporary execution package. Defaults to dry-run."
         ),
     )
     apply.add_argument("proposal")

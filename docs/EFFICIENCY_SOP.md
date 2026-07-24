@@ -11,6 +11,11 @@ The goal is:
 - preserve durable notes
 - avoid repeating known low-value failure patterns
 
+This is a one-person hobby app. Temporary app or display breakage is acceptable
+when it is reversible and obvious. The expensive failure mode is burning large
+amounts of time preserving redundant fallback/process layers that do not
+materially improve trust.
+
 If a task deviates from this SOP, the run note or handoff should say why.
 
 ## Core principle
@@ -19,11 +24,16 @@ Use the cheapest reliable path that answers the current question.
 
 That means:
 
-- reuse existing normalized data before recollecting
+- use Supabase as the canonical operational research source
 - use source-specific SOPs before improvising
 - use bounded first-pass work before deepening
 - checkpoint before risky edits
 - stop once the question has been answered
+
+Generated JSON/export files are recovery/debug artifacts, not a normal research
+surface. Do not compare against, refresh, or reason from JSON during ordinary
+batches unless the task is explicitly about fallback/export behavior or the
+latest suitable Supabase export is the chosen validation basis.
 
 ## Manual steward batches and future automation compatibility
 
@@ -48,7 +58,8 @@ than having to babysit an open-ended task.
 
 Before doing fresh collection, check whether the answer already exists in:
 
-- normalized app data
+- Supabase canonical records or a recent explicit Supabase export used only as
+  a validation basis
 - raw source snapshots
 - prior run notes
 - source-routing notes
@@ -88,6 +99,41 @@ If those are answered, stop.
 
 Do not deepen during first pass unless the place is clearly promoted.
 
+Decision-grade is the target, not exhaustive. Leaner process must not lower the
+research quality bar. A corrected main pass should still deliberately consider
+the obvious planning surfaces:
+
+- official site/storefront
+- Wizards/EventLink
+- store event/calendar page
+- Instagram/Facebook or store-controlled social routes when discoverable
+- Discord/community route status when known or discoverable
+- Google/Yelp/review texture when useful
+- Commander, draft, prerelease/sealed, FNM, and special events
+- Places implications and Evidence visibility
+
+The leaner rule changes how absent, blocked, thin, quiet, or unreliable surfaces
+are handled: record a clear disposition and move on once the rest of the
+evidence supports a decision-grade read. It does not permit skipping major
+surfaces just because they are annoying.
+
+A corrected main pass should usually classify a store as one of:
+
+- try soon
+- worth watching
+- backup
+- low priority
+- avoid / poor fit
+- identity or status unresolved
+
+Missing Instagram, Facebook, Discord, review texture, or another optional
+surface is not automatically an open research gap. It affects confidence,
+priority, and named TBDs. Use precise dispositions such as route not found,
+route found / content not inspected, gated or blocked, content thin / no useful
+current signal, or specific later TBD if it could materially change the store
+read. Once the material planning conclusion is clear, record the source
+disposition and close the batch.
+
 Important nuance: "bounded" does not mean "too shallow to be useful."
 The first pass should usually be strong enough that the user could seriously
 consider the store as a candidate and potentially add one of the surfaced
@@ -105,7 +151,9 @@ Classify each research/data batch before applying it:
   Lean validation is enough: proposal validation, affected-row readback,
   duplicate checks only if event rows are touched, text integrity only if repo
   text changed, a concise checkpoint, and no broad app preview. Do not keep
-  dry-run SQL artifacts unless the workflow requires them as durable evidence.
+  dry-run SQL artifacts unless the connector package is the current apply
+  bridge, and even then treat them as temporary execution artifacts rather than
+  durable evidence.
 - Standard Main Pass: new event rows, event retirements, meaningful Places or
   evaluation changes, source-health contradictions, Signals, or
   Discord/community content that materially changes planning. Use the normal
@@ -117,6 +165,10 @@ Classify each research/data batch before applying it:
 The point is lower overhead, not weaker research. Discord/community surfaces
 still need an explicit disposition in main-store work: inspect them when safely
 mapped and material; otherwise mark route/TBD, gate, not found, or deferred.
+
+Do not run local preview/deploy checks for data-only changes unless rendering
+risk is plausible or the user asked for a product check. Targeted Supabase
+readback is usually enough.
 
 Deeper work should happen only after explicit promotion due to:
 
@@ -147,6 +199,11 @@ If a fact is not cleanly knowable in the current pass:
 - move on
 
 Do not burn cycles trying to turn every ambiguity into certainty.
+
+If a source fetch path is blocked, record the blocked/TBD state and move on
+unless that exact source is necessary for the current decision. Do not keep
+chasing Instagram/Facebook/social fetch workarounds once the planning conclusion
+is already clear.
 
 ## UI/build efficiency rules
 

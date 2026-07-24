@@ -192,8 +192,8 @@ This should be the standard weekly collection method.
 Default approach:
 
 1. check if the store already exists in:
-   - `stores.json`
-   - `events.json`
+   - Supabase canonical venue/event rows, or a recent explicit Supabase export
+     used only as a validation basis
    - `output/wizards/organizations.json`
    - `output/wizards/events-all.json`
 2. if yes, use the local record first
@@ -341,7 +341,7 @@ This order is mandatory.
 
 Before touching Wizards, ask:
 
-1. Do I already have the answer in `stores.json`, `events.json`, or `output/wizards`?
+1. Do I already have the answer in Supabase or `output/wizards`?
 2. Is this a broad snapshot task or a store-specific validation task?
 3. Can I answer this with the crawler outputs instead of the UI?
 4. If I need live data, can I rerun the crawler instead of manually browsing?
