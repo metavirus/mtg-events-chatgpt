@@ -161,11 +161,10 @@ Use it for:
 
 ## Research backlog
 
-- **Bullpen matched-WPN event follow-up:** use the current Bullpen 2.0 name and
-  `6234 W 87th St` address match to prepare a narrow caveated event proposal.
-  Preserve the venue's low-confidence/deprioritized Places treatment. Omit only
-  stale, duplicate, out-of-scope, or genuinely misattributable rows; do not wait
-  for perfect store-controlled source convergence.
+- **Bullpen matched-WPN event follow-up:** review
+  `bullpen-wpn-event-capture-calibration-2026-07-24`. It proposes caveated
+  Friday draft, Wednesday Standard, and August 7-9 prerelease inventory while
+  preserving low-confidence/deprioritized venue treatment. No live write yet.
 
 ### High priority
 

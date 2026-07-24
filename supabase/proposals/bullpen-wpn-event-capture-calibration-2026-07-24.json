@@ -1,0 +1,229 @@
+{
+  "proposal_id": "bullpen-wpn-event-capture-calibration-2026-07-24",
+  "description": "Capture current WPN-supported Bullpen events while preserving check-first, low-confidence, deprioritized venue treatment.",
+  "created_at": "2026-07-24T18:30:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {"id": "the-bullpen-2-0-weekly-commander-6-14-00"},
+      "fields": {
+        "id": "the-bullpen-2-0-weekly-commander-6-14-00",
+        "venue_id": "the-bullpen-2-0",
+        "details": "Wizards/EventLink reconfirms free Saturday 2:00 PM Weekly Commander at The Bullpen 2.0, 6234 West 87th Street. The event identity is strong enough to retain, but the venue's store-controlled identity trail remains thin; check first before making a special trip.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing Commander row while separating WPN-supported event existence from venue recommendation."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "the-bullpen-2-0-friday-night-magic-booster-draft"},
+      "fields": {
+        "id": "the-bullpen-2-0-friday-night-magic-booster-draft",
+        "venue_id": "the-bullpen-2-0",
+        "community_id": null,
+        "title": "Friday Night Magic Booster Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "unknown",
+        "recurrence": {"dayOfWeek": 5, "frequency": "weekly", "startTime": "18:30"},
+        "default_start_time": "18:30:00",
+        "start_date": "2026-07-31",
+        "end_date": null,
+        "entry_fee": 20,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Friday 6:30 PM FNM Booster Draft at The Bullpen 2.0, $20 entry and capacity 24. Call for the current set and price. Venue identity matches the app name/address, but the broader store-controlled source trail is thin; verify before traveling.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add the missing current WPN-supported Friday draft lane with a check-first caveat."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9446", "series_id": "the-bullpen-2-0-friday-night-magic-booster-draft", "occurrence_id": null},
+      "fields": {
+        "source_id": "src-wpn-9446",
+        "series_id": "the-bullpen-2-0-friday-night-magic-booster-draft",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink events 11162426-11162430 support the recurring Friday 6:30 PM draft lane, $20 entry, and capacity 24."
+      },
+      "reason": "Attach current WPN evidence to the Bullpen draft series."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "the-bullpen-2-0-weekly-standard-showdown"},
+      "fields": {
+        "id": "the-bullpen-2-0-weekly-standard-showdown",
+        "venue_id": "the-bullpen-2-0",
+        "community_id": null,
+        "title": "Weekly Standard Showdown",
+        "format": "Standard",
+        "event_type": "constructed",
+        "bracket": "unknown",
+        "recurrence": {"dayOfWeek": 3, "frequency": "weekly", "startTime": "18:30"},
+        "default_start_time": "18:30:00",
+        "start_date": "2026-07-29",
+        "end_date": null,
+        "entry_fee": 5,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists weekly Wednesday 6:30 PM Standard Showdown at The Bullpen 2.0 with $5 entry. Venue identity matches the app name/address, but the broader store-controlled source trail is thin; verify before traveling.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add the missing current WPN-supported Standard lane with a check-first caveat."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9446", "series_id": "the-bullpen-2-0-weekly-standard-showdown", "occurrence_id": null},
+      "fields": {
+        "source_id": "src-wpn-9446",
+        "series_id": "the-bullpen-2-0-weekly-standard-showdown",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink events 11188298-11188302 support the recurring Wednesday 6:30 PM Standard Showdown lane and $5 entry."
+      },
+      "reason": "Attach current WPN evidence to the Bullpen Standard series."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {"id": "the-bullpen-2-0-hobbit-prerelease-2026"},
+      "fields": {
+        "id": "the-bullpen-2-0-hobbit-prerelease-2026",
+        "venue_id": "the-bullpen-2-0",
+        "community_id": null,
+        "title": "Magic: The Gathering | The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "13:00:00",
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": 40,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists three The Hobbit prerelease sealed sessions at The Bullpen 2.0 on August 7-9, 2026 at 1:00 PM, $40 entry and capacity 24. Venue identity matches the app name/address, but the broader store-controlled source trail is thin; verify before traveling.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add the missing current WPN-supported prerelease weekend as caveated planning inventory."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {"source_id": "src-wpn-9446", "series_id": "the-bullpen-2-0-hobbit-prerelease-2026", "occurrence_id": null},
+      "fields": {
+        "source_id": "src-wpn-9446",
+        "series_id": "the-bullpen-2-0-hobbit-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink events 11305753-11305755 confirm the August 7-9, 2026 prerelease dates, 1:00 PM starts, $40 entry, and capacity 24."
+      },
+      "reason": "Attach current WPN evidence to the Bullpen prerelease series."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "the-bullpen-2-0-hobbit-prerelease-2026-08-07-13-00"},
+      "fields": {
+        "id": "the-bullpen-2-0-hobbit-prerelease-2026-08-07-13-00",
+        "series_id": "the-bullpen-2-0-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "13:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40,
+        "capacity": 24,
+        "details": "Wizards/EventLink event 11305753 confirms the Friday prerelease session."
+      },
+      "reason": "Add the first dated Bullpen prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "the-bullpen-2-0-hobbit-prerelease-2026-08-08-13-00"},
+      "fields": {
+        "id": "the-bullpen-2-0-hobbit-prerelease-2026-08-08-13-00",
+        "series_id": "the-bullpen-2-0-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "13:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40,
+        "capacity": 24,
+        "details": "Wizards/EventLink event 11305754 confirms the Saturday prerelease session."
+      },
+      "reason": "Add the second dated Bullpen prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {"id": "the-bullpen-2-0-hobbit-prerelease-2026-08-09-13-00"},
+      "fields": {
+        "id": "the-bullpen-2-0-hobbit-prerelease-2026-08-09-13-00",
+        "series_id": "the-bullpen-2-0-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "13:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40,
+        "capacity": 24,
+        "details": "Wizards/EventLink event 11305755 confirms the Sunday prerelease session."
+      },
+      "reason": "Add the third dated Bullpen prerelease occurrence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {"id": "the-bullpen-2-0"},
+      "fields": {
+        "id": "the-bullpen-2-0",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "The Bullpen 2.0 has current WPN evidence at the same 6234 West 87th Street name/address used by the app. That match is sufficient for caveated event capture across Saturday Commander, Friday draft, Wednesday Standard, and The Hobbit prerelease. Store-controlled operation/source continuity remains thin, so the venue stays low-confidence and deprioritized: treat events as check-first inventory rather than a recommendation to make a special trip."
+      },
+      "reason": "Separate source-supported event existence from venue recommendation."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {"entity_type": "venue", "entity_id": "the-bullpen-2-0"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-bullpen-2-0",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "C-",
+        "fit_score": 2.6,
+        "confidence": "low",
+        "positives": [
+          "Current WPN evidence at the matching Bullpen name and address supports Commander, draft, Standard, and prerelease inventory.",
+          "The current event stream is broad enough to retain even though the venue is not a strong personal recommendation.",
+          "WPN provides concrete times, fees, and prerelease capacity."
+        ],
+        "cautions": [
+          "Store-controlled source routing remains unresolved; WPN uses generic website routing and Triangle Gaming LA email context.",
+          "At roughly 21 miles away, Bullpen should remain behind closer, better-supported candidates.",
+          "Treat current events as verify/check-first because venue continuity and real-world reliability lack current store-controlled corroboration."
+        ],
+        "open_questions": [
+          "What is the current official/store-controlled source for The Bullpen 2.0?",
+          "Do the WPN-listed weekly events reliably fire in practice?",
+          "What are the community, turnout, and solo-arrival conditions?"
+        ]
+      },
+      "reason": "Keep Bullpen low-confidence and deprioritized while allowing identity-safe WPN events into the catalog."
+    }
+  ]
+}
