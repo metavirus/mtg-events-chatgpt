@@ -57,8 +57,9 @@ validation, or planning surface:
 The application code does not need to change when records are added or revised.
 Research updates should go through the controlled Supabase workflow in
 [`docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`](docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md);
-manual canonical JSON research edits are forbidden except for generated
-export/recovery work.
+ordinary surface checks can land directly through the typed Supabase
+`record_entity_surface_check(...)` path. Manual canonical JSON research edits
+are forbidden except for generated export/recovery work.
 
 The `?data=json` app mode is emergency/debug recovery only. Do not use it as a
 parallel product path, routine validation target, or ordinary research source.
@@ -104,8 +105,10 @@ locator's 25-mile routine search radius. It does not store a private home
 address. Candidate events are intentionally broad and should be verified before
 being promoted into Supabase canonical research tables.
 
-GitHub Actions refreshes the Wizards snapshot every Monday and commits changed
-`output/wizards` data back to the repository.
+GitHub Actions has historically refreshed the Wizards snapshot and committed
+changed `output/wizards` data back to the repository. Going forward, ordinary
+WPN cache churn should move toward Supabase or ignored local output; keep
+Git-tracked WPN artifacts only for intentional recovery/debug/source snapshots.
 
 ## Current status
 

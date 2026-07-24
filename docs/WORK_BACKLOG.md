@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-07-21
+Last updated: 2026-07-24
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -45,6 +45,13 @@ Use it for:
   future trust/re-verification design problem involving provenance, retention,
   privacy, copyright, and a tiny proof of concept. Do not implement it during
   ordinary research batches.
+
+- Phase 2 workflow simplification proof is complete. Ordinary source/surface
+  checks should now land through `record_entity_surface_check(...)` into
+  `entity_surface_coverage` plus `research_changes`. That is canonical
+  operational research state and requires no proposal JSON, SQL package,
+  export, Markdown ledger edit, text-integrity run, or Git commit unless repo
+  files changed for another reason.
 
 - Cold-deep-link Discord content-read is blocked/TBD at accepted boundary
   `5e055e8`. The current accepted safety baseline is recorded in
@@ -494,6 +501,10 @@ claims without reopening the whole packet.
   `research/SOURCE_SOP.md`, and
   `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`. Do not duplicate their
   checklists here.
+- Routine database-only surface checks land through
+  `record_entity_surface_check(...)`. Ledgers/backlog entries are for queueing,
+  named unresolved work, and higher-level state, not mandatory paperwork for
+  every ordinary source disposition.
 - **Non-urgent documentation pruning:** `docs/PROJECT_CONTEXT.md` and
   `research/SOURCE_SOP.md` remain substantial because they hold product
   semantics and source/closure rules. Consider a further split only if fresh
@@ -503,10 +514,17 @@ claims without reopening the whole packet.
 - Maintain this file whenever we defer or discover meaningful future work.
 - Use `CURRENT_FRONTIER.md` as the concise current handoff. Historical
   checkpoints live under `docs/archive/`.
-- Use a concise proposal/ledger checkpoint for routine refreshes; reserve
-  dedicated run notes for substantive findings, incidents, or method changes.
+- Use proposals for Lean/Standard/Full data changes. Use dedicated run notes only
+  for substantive findings, incidents, or method changes.
 - Keep attributed user field notes in repo-backed evidence when they are meant to
   be durable project knowledge.
+- Next possible overhead reduction, not current work: add a narrow typed RPC for
+  WPN-backed event upserts if WPN event capture remains too proposal-heavy, or
+  establish a direct steward DB execution path if approved Standard writes still
+  spend too much time in connector ferrying.
+- WPN cache artifact policy TBD: ordinary cache state should eventually be
+  Supabase-backed or ignored local output if it creates recurring Git churn.
+  Keep Git-tracked WPN artifacts only for intentional recovery/debug snapshots.
 - At the next stable checkpoint, perform a deliberate branch-hygiene pass:
   review the active worktree, make an intentional checkpoint commit, create or
   rename into a broader canonical working branch for the full project, push it,

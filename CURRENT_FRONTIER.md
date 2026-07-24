@@ -15,8 +15,10 @@ canonical SOPs. Historical frontier checkpoints are preserved in
 - Signals, Events, Places, Communities, Updates, and Research are usable
   first-class surfaces. Product work should now respond to observed friction,
   not speculative polish.
-- Store research uses controlled Supabase proposals and ledger-backed,
-  decision-grade main passes.
+- Store research uses Supabase as operational state. Ordinary source/surface
+  checks land through `record_entity_surface_check`; proposals and ledgers are
+  reserved for event/evaluation changes, higher-level queueing, and unresolved
+  work.
 - The guarded Discord UI-native method is proven for a bounded set of mapped
   routes. Small verified-route surveys are supported; broad daily automation is
   not yet approved.
@@ -26,6 +28,9 @@ canonical SOPs. Historical frontier checkpoints are preserved in
 ## Active data and research posture
 
 - Supabase is canonical. Generated JSON is emergency/debug/export output only.
+- `entity_surface_coverage` is canonical operational research state for
+  surface checks. It is not venue/event truth, but it is durable without a
+  run note or ledger edit.
 - A store main pass closes when the material surfaces were checked or honestly
   dispositioned and the planning conclusion is clear. Missing or blocked social
   texture lowers confidence; it does not keep a store open indefinitely.
@@ -35,9 +40,11 @@ canonical SOPs. Historical frontier checkpoints are preserved in
   silent event omission.
 - Events may be broad but caveated and ranked. Signals remain sparse and
   attention-worthy.
-- Routine refreshes use lean validation and targeted readback. Standard or
-  high-risk ceremony is reserved for event changes, meaningful assessments,
-  identity corrections, schema/auth work, or other trust-sensitive changes.
+- Routine database-only surface checks use the typed Supabase RPC and require no
+  proposal JSON, SQL package, export, Markdown ledger edit, text-integrity run,
+  or Git commit. Standard or high-risk ceremony is reserved for event changes,
+  meaningful assessments, identity corrections, schema/auth work, or other
+  trust-sensitive changes.
 
 Canonical operating details:
 
@@ -50,18 +57,19 @@ Canonical operating details:
 
 ## Next safe lanes
 
-1. Prepare the narrow Bullpen 2.0 WPN-backed event-capture proposal requested by
-   the user. Keep the venue low-confidence/deprioritized while capturing
-   identity-safe current events with check-first caveats.
-2. Continue ledger-selected corrected main passes or targeted follow-ups in
+1. Continue ledger-selected corrected main passes or targeted follow-ups in
    bounded batches after explicit approval.
-3. Address specific real-use app friction when observed; do not start another
+2. Address specific real-use app friction when observed; do not start another
    broad product tranche by default.
+3. Consider the next overhead reduction only as a separate approved tooling
+   tranche: either a narrow typed RPC for WPN-backed event upserts or a direct
+   steward DB execution path.
 
 ## Active boundaries
 
 - Do not live-write an unapproved research proposal.
 - Do not edit canonical JSON; there is no active JSON research lane.
+- Do not create repo text artifacts just to record an ordinary surface check.
 - Do not broaden a bounded store pass once its planning conclusion is clear.
 - Discord work uses only the documented guarded modes and mapped routes. Do not
   improvise around gates or resume safety engineering unless a new blocker

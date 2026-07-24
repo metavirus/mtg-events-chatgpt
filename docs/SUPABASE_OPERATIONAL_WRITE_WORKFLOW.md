@@ -1,6 +1,6 @@
 # Supabase Operational Write Workflow
 
-Last updated: 2026-07-17
+Last updated: 2026-07-24
 
 ## Purpose
 
@@ -9,18 +9,18 @@ operational data lives in Supabase.
 
 The prior failure mode was unsafe manual writing into canonical JSON. The fix is
 not to preserve JSON as a parallel system. The fix is to use Supabase as the
-canonical surface, keep Git/migrations for reversibility, and give future Codex
-research updates a controlled path:
+canonical surface, keep Git/migrations for reversibility, and choose the
+smallest write path that matches the risk.
 
-1. propose exact field-level changes;
-2. validate IDs, fields, relationships, and duplicates before writing;
-3. review generated SQL before live mutation;
-4. choose the appropriate validation level for the risk;
-5. apply only after explicit authorization when live mutation is required;
-6. verify affected records, row counts, required fields, relationships,
-   provenance, and duplicate guards after the write;
-7. export deterministic JSON recovery artifacts only when the risk or release
-   gate calls for it.
+Ordinary source or surface disposition now lands through the typed
+`record_entity_surface_check(...)` RPC into `entity_surface_coverage` and
+`research_changes`. That result is durable operational research state. It is not
+canonical venue/event truth, but it also does not need a run note, proposal JSON,
+SQL package, export, Markdown ledger edit, text-integrity run, or Git commit.
+
+Use proposal/package workflow only when the write changes canonical research
+truth, user-visible planning data, identity/status interpretation, schema/auth,
+or other trust-sensitive records.
 
 ## Scope
 
@@ -36,9 +36,19 @@ This workflow covers canonical research tables only:
 - `evaluations`
 - `research_changes`
 
-It deliberately does not cover authenticated personal/workflow writes such as
-favorites, thumbs-down, notes, ratings, update-read state, or `Ask Codex`
-requests. Those remain a separate gate.
+It also covers the operational surface-check path:
+
+- `entity_surface_coverage`
+- `record_entity_surface_check(...)`
+
+Surface coverage records are canonical operational research state. They record
+that a material surface was checked, blocked, thin, stale, useful, or not found;
+they do not by themselves revise a venue assessment, event row, Signal, or
+source truth.
+
+This workflow deliberately does not cover authenticated personal/workflow writes
+such as favorites, thumbs-down, notes, ratings, update-read state, or `Ask
+Codex` requests. Those remain a separate gate.
 
 It does not change auth, RLS, credentials, browser-write permissions, or the
 default app data source. Supabase is already the operational/default research
@@ -49,10 +59,34 @@ read source; JSON is the generated recovery/export fallback.
 Do not run full ceremony merely because Supabase is written. Choose the level
 that matches the write risk, and escalate if an anomaly appears.
 
+### Routine Surface Check
+
+Use for ordinary surface results that do not change venues, events, sources,
+evaluations, Signals, or schema. Examples:
+
+- Instagram route found but content not inspected;
+- Discord route unsafe/TBD under the current protocol;
+- official site checked and thin;
+- WPN/EventLink checked for a venue and useful/not useful result recorded;
+- review surface not material for the current decision.
+
+Required:
+
+- call `record_entity_surface_check(...)` with stable entity, surface,
+  disposition, summary, materiality, and idempotency key;
+- use dry-run mode first when the target or vocabulary is uncertain;
+- keep the returned RPC result as the confirmation;
+- rely on `entity_surface_coverage` plus the associated `research_changes` row
+  as the durable record.
+
+Do not create proposal JSON, SQL packages, exports, Markdown ledger edits, run
+notes, text-integrity checks, commits, or app previews for this path unless some
+separate file/schema/app change is actually made.
+
 ### Lean
 
 Use for low-risk evidence, source, assessment, note, or status changes with low
-identity/calendar risk.
+identity/calendar risk that are too substantive for a Routine Surface Check.
 
 Required:
 
@@ -60,7 +94,8 @@ Required:
 - apply only the approved operations;
 - verify affected records and only the relationships/counts relevant to the
   touched fields;
-- update the concise proposal/ledger status when needed;
+- update a ledger or note only when the change changes higher-level queue state
+  or leaves a named follow-up;
 - run repository text integrity before committing changed text files;
 - commit and push the small checkpoint.
 
@@ -69,8 +104,9 @@ hosted app smoke test, or full export comparison.
 
 ### Standard
 
-Use for event series or occurrences, several connected records, or
-user-visible planning changes.
+Use for event series or occurrences, event retirements, several connected
+records, Signals, meaningful evaluation changes, or user-visible planning
+changes.
 
 Add:
 
@@ -110,6 +146,9 @@ The script provides:
 - `export-json`: exports deterministic recovery JSON from Supabase;
 - `verify-export`: verifies a generated export directory.
 
+Routine surface checks do not use this script by default. Use the typed
+`record_entity_surface_check(...)` RPC directly.
+
 The script uses the browser-safe Supabase URL and publishable key from
 `supabase/project-config.json` for read-only exports. It does not require or
 store a service-role key. Live `apply-approved --execute` requires an explicit
@@ -122,9 +161,29 @@ Supabase connector: numbered apply chunks, targeted readback SQL, and a small
 manifest. This keeps connector-backed writes predictable without hand-splitting
 SQL during the live apply.
 
+## Routine surface-check format
+
+Use `record_entity_surface_check(...)` when the work is only recording source or
+surface disposition. The call should include:
+
+- `entity_type`: currently `venue` or `community`;
+- `entity_id`: the existing canonical entity ID;
+- `surface_type`: one of the accepted surface classes such as `official_site`,
+  `wpn_eventlink`, `event_calendar`, `instagram`, `facebook`, `discord`,
+  `review`, or `other`;
+- `disposition`: the honest result, such as `inspected_current`,
+  `inspected_thin`, `route_found_content_not_inspected`, `blocked_gated`,
+  `unsafe_tbd`, `not_found`, `stale`, `contradiction`, or `not_material`;
+- `summary`, `materiality`, `checked_at`, optional `source_id`, optional
+  follow-up, and a stable idempotency key.
+
+If the surface result creates a later task, link or create that task through the
+existing coordination/request tables. Do not create a new queue.
+
 ## Proposal format
 
-A research update starts as a JSON proposal, not as direct JSON edits.
+A canonical research update starts as a JSON proposal, not as direct JSON edits.
+This is no longer the default path for ordinary surface checks.
 
 Routine example:
 
@@ -171,14 +230,29 @@ target up front so Updates can navigate without guessing from prose.
 - Mentioned records in the summary/details may still be linkified by the app,
   but that is a convenience fallback, not the primary navigation model.
 
+## Event-capture calibration
+
+WPN/EventLink is usually enough to capture a current event when the venue name
+and address are attributable to a known venue closely enough for this personal
+planning app. Store-controlled website weirdness, weak venue confidence, bad
+personal fit, no-proxy, high-power, or competitive posture should normally
+become confidence, check-first caveats, ranking/filtering, Places cautions, or
+event annotations. Do not silently omit source-supported current event rows
+merely because the venue is messy or a poor recommendation.
+
+Omit event rows only when they are stale/past, duplicate, out of scope,
+genuinely unattributable, or identity-unsafe enough that they could point to the
+wrong place.
+
 ## Required pre-write safety
 
-Before any live write, validate the proposal and confirm the chosen validation
-level. For Lean and most Standard writes, a fresh full export is not mandatory
-unless the proposal touches exported recovery tables and the checkpoint is meant
-to refresh JSON.
+Before any Lean, Standard, or Full live write, validate the proposal and confirm
+the chosen validation level. Routine Surface Checks use the typed RPC and its own
+idempotent validation path instead. For Lean and most Standard writes, a fresh
+full export is not mandatory unless the proposal touches exported recovery
+tables and the checkpoint is meant to refresh JSON.
 
-For approved routine or standard proposals, prefer:
+For approved Lean or Standard proposals, prefer:
 
 ```powershell
 python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json
@@ -226,8 +300,9 @@ If tooling itself needs improvement, record it as a named TBD after closure or
 start a separate tooling tranche before the next research batch.
 
 For Full writes, release/recovery checkpoints, or any write where rollback risk
-is higher than routine, create a deterministic export/backup. Do not do this
-for ordinary source/evaluation refreshes merely from habit:
+is higher than routine, create a deterministic export/backup. Do not do this for
+Routine Surface Checks or ordinary source/evaluation refreshes merely from
+habit:
 
 1. create a deterministic export/backup:
 
@@ -258,7 +333,11 @@ not a normal research surface, and not refreshed after every small write.
 
 Do not mutate live Supabase merely to demonstrate the workflow.
 
-If a live write is needed, stop and ask the user first with:
+Routine Surface Checks may be recorded directly when they are within the
+approved research task and do not change canonical venue/event/evaluation truth.
+
+If a Lean, Standard, or Full live write is needed, stop and ask the user first
+with:
 
 - the validated proposal;
 - its scope/risk level;
@@ -275,6 +354,11 @@ safe.
 ## Post-write verification
 
 After any authorized live write, verify at the selected validation level.
+
+For Routine Surface Checks, the RPC result, idempotency behavior, and resulting
+`entity_surface_coverage` / `research_changes` rows are the verification. No
+repo validation or commit is involved unless repo files changed for another
+reason.
 
 At minimum for Lean:
 
@@ -335,3 +419,14 @@ Still deferred:
 
 - broader workflow/request handling;
 - unattended recurring research automation.
+- next possible overhead reduction: either a narrow typed RPC for WPN-backed
+  event upserts, if routine WPN event capture keeps requiring proposal packages,
+  or a direct steward DB execution path, if connector ferrying remains the
+  bottleneck for approved Standard writes.
+
+## Wizards snapshot artifacts
+
+Ordinary WPN cache state should not create recurring Git churn. Prefer reusing a
+recent suitable snapshot or moving routine cache state toward Supabase or ignored
+local output in a future tranche. Keep Git-tracked WPN artifacts only when they
+are intentional recovery/debug/source snapshots for a specific checkpoint.
