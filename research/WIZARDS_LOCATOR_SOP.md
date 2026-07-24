@@ -229,6 +229,24 @@ Routine Wizards search radius is:
 
 - **25 miles**
 
+## Snapshot reuse rule
+
+Reuse the latest suitable `output/wizards` snapshot when it is less than 24
+hours old and covers the stores in scope.
+
+Refresh WPN/EventLink only when:
+
+- the latest suitable snapshot is stale;
+- the store is outside the snapshot radius;
+- same-day freshness materially affects the planning question; or
+- another source contradicts the snapshot.
+
+If a wider-radius pull is needed, save it as a clearly named source artifact
+such as `output/wizards-radius30-YYYY-MM-DD/` and explain why it was needed in
+the run note. Distinguish "recent WPN snapshot reused" from "fresh WPN pull" in
+run notes. WPN snapshots are source artifacts only; they are not canonical app
+JSON.
+
 Important nuance:
 
 - this is a collection parameter, not a hard product cutoff

@@ -180,6 +180,17 @@ ENUMS = {
     "signals.priority": {"low", "normal", "high", "urgent"},
     "signals.status": {"new", "reviewed", "promoted", "dismissed", "stale", "needs_followup"},
     "signals.confidence": {"low", "medium", "high"},
+    "signals.category": {
+        "operational", "mention", "event_opportunity", "community_activity",
+        "venue_fit", "registration", "source_health", "needs_judgment",
+    },
+    "signals.related_entity_type": {
+        "venue", "community", "event_series", "event_occurrence", "source",
+    },
+    "signals.promotion_target": {
+        "event_proposal", "update", "places_assessment", "community_note",
+        "personal_reminder", "no_action",
+    },
 }
 
 DATE_FIELDS = {

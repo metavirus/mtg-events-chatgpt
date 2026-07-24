@@ -25,6 +25,23 @@ That means:
 - checkpoint before risky edits
 - stop once the question has been answered
 
+## Manual steward batches and future automation compatibility
+
+Manual steward batches are for canonical promotion and judgment, not broad
+survey forever. When a pass finds useful but not-yet-canonical material,
+preserve it as a structured observation, candidate Signal, named TBD, or
+coordination item instead of leaving it only in chat memory.
+
+Close a batch once the material planning conclusion is clear. Do not keep
+harvesting blocked social/source surfaces just because they exist; disposition
+them honestly and move on. If a future automated agent provides observations,
+the steward's job should be to review, promote, or disposition them through the
+controlled workflow, not redo discovery from scratch.
+
+Simple user-decision questions should eventually live in the app or the
+coordination queue as bounded prompts, so Kavi is asked crisp questions rather
+than having to babysit an open-ended task.
+
 ## Project-wide anti-waste rules
 
 ### 1. Reuse before recollect

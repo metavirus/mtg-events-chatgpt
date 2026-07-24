@@ -1,0 +1,1330 @@
+{
+  "proposal_id": "aandn-nextgen-crimson-comicquest-main-pass-2026-07-24",
+  "description": "Corrected main-store pass for A & N Collectibles, Next-Gen Games, The Crimson Guild - South El Monte, and Comic Quest. Adds missing WPN-supported A & N and Next-Gen event breadth, refreshes Crimson/Comic Quest current event support, updates Places assessments/source dispositions, and proposes one sparse attention-layer Signal for Next-Gen special-event breadth.",
+  "created_at": "2026-07-24T12:00:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-10514"
+      },
+      "fields": {
+        "id": "src-wpn-10514",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 30-mile Wizards/EventLink snapshot captured A & N despite being just outside the default 25-mile app radius, confirming current Commander rows and Hobbit prerelease sessions."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-9747"
+      },
+      "fields": {
+        "id": "src-wpn-9747",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot refreshed Next-Gen Games current Commander, draft, constructed, prerelease, and special-event coverage."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-18899"
+      },
+      "fields": {
+        "id": "src-wpn-18899",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirmed Crimson Guild Commander, Pauper FNM, Draft, Standard, and Commander Party coverage."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-6809"
+      },
+      "fields": {
+        "id": "src-wpn-6809",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirmed Comic Quest FNM Commander/Standard, Hobbit prerelease, Commander Party, and Heart of the Mountain coverage."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-social-aandn-instagram-2026-07-15"
+      },
+      "fields": {
+        "id": "src-social-aandn-instagram-2026-07-15",
+        "health_status": "blocked",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Public social route was checked during this pass but not content-readable through the safe public fetch path; preserve as route evidence/content replay TBD rather than inspected support."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-social-aandn-facebook-2026-07-15"
+      },
+      "fields": {
+        "id": "src-social-aandn-facebook-2026-07-15",
+        "health_status": "blocked",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Public social route was checked during this pass but not content-readable through the safe public fetch path; preserve as route evidence/content replay TBD rather than inspected support."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "a-and-n-collectibles-friday-night-magic-commander-night-5-17-00"
+      },
+      "fields": {
+        "id": "a-and-n-collectibles-friday-night-magic-commander-night-5-17-00",
+        "venue_id": "a-and-n-collectibles",
+        "details": "Wizards/EventLink 2026-07-24 30-mile snapshot reconfirms Friday 5:00 PM Friday Night Magic Commander Night at A & N Collectibles with free entry and capacity for 24 players. This is the cleanest weekly first-visit candidate on schedule regularity, but distance and social texture remain open.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24",
+        "start_date": "2026-07-24",
+        "entry_fee": 0.0
+      },
+      "reason": "Refresh a-and-n-collectibles-friday-night-magic-commander-night-5-17-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "a-and-n-collectibles-commander-night-1-17-00"
+      },
+      "fields": {
+        "id": "a-and-n-collectibles-commander-night-1-17-00",
+        "venue_id": "a-and-n-collectibles",
+        "details": "Wizards/EventLink 2026-07-24 30-mile snapshot reconfirms Monday 5:00 PM Commander Night at A & N Collectibles with free entry and capacity for 24 players. Treat as supported routine, but not yet proven as the best first solo visit without community/social texture.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24",
+        "start_date": "2026-07-27",
+        "entry_fee": 0.0
+      },
+      "reason": "Refresh a-and-n-collectibles-commander-night-1-17-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "a-and-n-collectibles-commander-night-3-17-00"
+      },
+      "fields": {
+        "id": "a-and-n-collectibles-commander-night-3-17-00",
+        "venue_id": "a-and-n-collectibles",
+        "details": "Wizards/EventLink 2026-07-24 30-mile snapshot reconfirms Wednesday 5:00 PM Commander Night at A & N Collectibles with free entry and capacity for 24 players. Treat as supported routine, but not yet proven as the best first solo visit without community/social texture.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24",
+        "start_date": "2026-07-29",
+        "entry_fee": 0.0
+      },
+      "reason": "Refresh a-and-n-collectibles-commander-night-3-17-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "a-and-n-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "id": "a-and-n-hobbit-prerelease-2026",
+        "venue_id": "a-and-n-collectibles",
+        "title": "Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "unknown",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": 40.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink 2026-07-24 30-mile snapshot lists three A & N Hobbit prerelease sessions: Friday 7:00 PM sealed, Saturday 2:00 PM sealed, and Sunday 2:00 PM sealed. Entry is listed at $40; capacity is 28 for Friday and unstated for the weekend sessions. This meaningfully broadens A & N beyond Commander-only, but distance still makes it a deliberate-trip option.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add WPN-supported Hobbit Prerelease for a-and-n-collectibles."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-10514",
+        "series_id": "a-and-n-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-10514",
+        "series_id": "a-and-n-hobbit-prerelease-2026",
+        "relationship": "primary WPN support",
+        "occurrence_id": null
+      },
+      "reason": "Attach src-wpn-10514 to a-and-n-hobbit-prerelease-2026."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "a-and-n-hobbit-prerelease-2026-08-07-19-00"
+      },
+      "fields": {
+        "id": "a-and-n-hobbit-prerelease-2026-08-07-19-00",
+        "series_id": "a-and-n-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "19:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40.0,
+        "capacity": 28,
+        "details": "Wizards/EventLink event 10942009 confirms A & N Hobbit prerelease on 2026-08-07 at 19:00, with sealed-deck description and prize support."
+      },
+      "reason": "Add dated occurrence for a-and-n-hobbit-prerelease-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-10514",
+        "occurrence_id": "a-and-n-hobbit-prerelease-2026-08-07-19-00",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-10514",
+        "occurrence_id": "a-and-n-hobbit-prerelease-2026-08-07-19-00",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-10514 to a-and-n-hobbit-prerelease-2026-08-07-19-00."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "a-and-n-hobbit-prerelease-2026-08-08-14-00"
+      },
+      "fields": {
+        "id": "a-and-n-hobbit-prerelease-2026-08-08-14-00",
+        "series_id": "a-and-n-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "14:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40.0,
+        "capacity": null,
+        "details": "Wizards/EventLink event 10942016 confirms A & N Hobbit prerelease on 2026-08-08 at 14:00, with sealed-deck description and prize support."
+      },
+      "reason": "Add dated occurrence for a-and-n-hobbit-prerelease-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-10514",
+        "occurrence_id": "a-and-n-hobbit-prerelease-2026-08-08-14-00",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-10514",
+        "occurrence_id": "a-and-n-hobbit-prerelease-2026-08-08-14-00",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-10514 to a-and-n-hobbit-prerelease-2026-08-08-14-00."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "a-and-n-hobbit-prerelease-2026-08-09-14-00"
+      },
+      "fields": {
+        "id": "a-and-n-hobbit-prerelease-2026-08-09-14-00",
+        "series_id": "a-and-n-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "14:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40.0,
+        "capacity": null,
+        "details": "Wizards/EventLink event 10942017 confirms A & N Hobbit prerelease on 2026-08-09 at 14:00, with sealed-deck description and prize support."
+      },
+      "reason": "Add dated occurrence for a-and-n-hobbit-prerelease-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-10514",
+        "occurrence_id": "a-and-n-hobbit-prerelease-2026-08-09-14-00",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-10514",
+        "occurrence_id": "a-and-n-hobbit-prerelease-2026-08-09-14-00",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-10514 to a-and-n-hobbit-prerelease-2026-08-09-14-00."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-games-commander-night-3-18-00"
+      },
+      "fields": {
+        "id": "next-gen-games-commander-night-3-18-00",
+        "venue_id": "next-gen-games",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Wednesday 6:00 PM Commander Night at Next-Gen Games with $5 entry. Good supported routine, but actual casual/pod texture remains better answered by Discord or a visit.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh next-gen-games-commander-night-3-18-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-friday-night-magic-modern"
+      },
+      "fields": {
+        "id": "next-gen-friday-night-magic-modern",
+        "venue_id": "next-gen-games",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Friday 7:30 PM Modern at Next-Gen Games with $5 entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh next-gen-friday-night-magic-modern from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-saturday-draft"
+      },
+      "fields": {
+        "id": "next-gen-saturday-draft",
+        "venue_id": "next-gen-games",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Saturday noon Draft at Next-Gen Games with $25 entry, capacity 32, pack-per-win support, and undefeated bonus pack.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh next-gen-saturday-draft from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-saturday-afternoon-draft"
+      },
+      "fields": {
+        "id": "next-gen-saturday-afternoon-draft",
+        "venue_id": "next-gen-games",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Saturday 4:00 PM Draft at Next-Gen Games with $25 entry, capacity 32, pack-per-win support, and undefeated bonus/free-draft language.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh next-gen-saturday-afternoon-draft from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-standard-showdown"
+      },
+      "fields": {
+        "id": "next-gen-standard-showdown",
+        "venue_id": "next-gen-games",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Monday 7:30 PM Standard Showdown at Next-Gen Games with $5 entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh next-gen-standard-showdown from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-legacy-thursday"
+      },
+      "fields": {
+        "id": "next-gen-legacy-thursday",
+        "venue_id": "next-gen-games",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Thursday 7:30 PM Legacy at Next-Gen Games with $5 entry and capacity 32.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh next-gen-legacy-thursday from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-two-headed-giant-commander-2026"
+      },
+      "fields": {
+        "id": "next-gen-two-headed-giant-commander-2026",
+        "venue_id": "next-gen-games",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms dated Two-Headed Giant Commander specials on July 26 and August 30, with $5 on July 26 and $10 on August 30.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh next-gen-two-headed-giant-commander-2026 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-marvel-super-heroes-commander-party-2026-08-02"
+      },
+      "fields": {
+        "id": "next-gen-marvel-super-heroes-commander-party-2026-08-02",
+        "venue_id": "next-gen-games",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Marvel Super Heroes Commander Party at Next-Gen Games on Sunday, August 2 at noon with $40 entry and capacity 64.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh next-gen-marvel-super-heroes-commander-party-2026-08-02 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-tuesday-draft-night"
+      },
+      "fields": {
+        "id": "next-gen-tuesday-draft-night",
+        "venue_id": "next-gen-games",
+        "title": "Draft Night",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "unknown",
+        "recurrence": {
+          "dayOfWeek": 2,
+          "frequency": "weekly",
+          "startTime": "19:00"
+        },
+        "default_start_time": "19:00:00",
+        "start_date": "2026-07-28",
+        "end_date": null,
+        "entry_fee": 25.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink 2026-07-24 snapshot lists Tuesday 7:00 PM Draft Night rows at Next-Gen Games with $25 entry. Add as a supported weekly draft lane separate from the existing Saturday drafts.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add WPN-supported Draft Night for next-gen-games."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-tuesday-draft-night",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-tuesday-draft-night",
+        "relationship": "primary WPN support",
+        "occurrence_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-tuesday-draft-night."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-tuesday-modern"
+      },
+      "fields": {
+        "id": "next-gen-tuesday-modern",
+        "venue_id": "next-gen-games",
+        "title": "Tuesday Modern",
+        "format": "Modern",
+        "event_type": "constructed",
+        "bracket": "unknown",
+        "recurrence": {
+          "dayOfWeek": 2,
+          "frequency": "weekly",
+          "startTime": "19:30"
+        },
+        "default_start_time": "19:30:00",
+        "start_date": "2026-07-28",
+        "end_date": null,
+        "entry_fee": 5.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink 2026-07-24 snapshot lists Tuesday 7:30 PM Modern rows at Next-Gen Games with $5 entry. Add as a supported weekly constructed lane.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add WPN-supported Tuesday Modern for next-gen-games."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-tuesday-modern",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-tuesday-modern",
+        "relationship": "primary WPN support",
+        "occurrence_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-tuesday-modern."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "id": "next-gen-hobbit-prerelease-2026",
+        "venue_id": "next-gen-games",
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "unknown",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": 45.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink 2026-07-24 snapshot lists five Next-Gen Hobbit prerelease sessions across August 7-9, including Sunday 2HG. Entry is $45 and each row lists capacity 64. This is likely a better first-visit trial than an ordinary Commander night if the user wants a structured event.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add WPN-supported The Hobbit Prerelease for next-gen-games."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-hobbit-prerelease-2026",
+        "relationship": "primary WPN support",
+        "occurrence_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-hobbit-prerelease-2026."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "next-gen-hobbit-prerelease-2026-08-07-19-00"
+      },
+      "fields": {
+        "id": "next-gen-hobbit-prerelease-2026-08-07-19-00",
+        "series_id": "next-gen-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "19:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45.0,
+        "capacity": 64,
+        "details": "Wizards/EventLink event 11399047 confirms Next-Gen Friday 7PM Hobbit prerelease on 2026-08-07; pack-per-win / undefeated bonus language appears in the WPN row."
+      },
+      "reason": "Add dated occurrence for next-gen-hobbit-prerelease-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-07-19-00",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-07-19-00",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-hobbit-prerelease-2026-08-07-19-00."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "next-gen-hobbit-prerelease-2026-08-08-12-00"
+      },
+      "fields": {
+        "id": "next-gen-hobbit-prerelease-2026-08-08-12-00",
+        "series_id": "next-gen-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "12:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45.0,
+        "capacity": 64,
+        "details": "Wizards/EventLink event 11404740 confirms Next-Gen Saturday 12PM Hobbit prerelease on 2026-08-08; pack-per-win / undefeated bonus language appears in the WPN row."
+      },
+      "reason": "Add dated occurrence for next-gen-hobbit-prerelease-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-08-12-00",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-08-12-00",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-hobbit-prerelease-2026-08-08-12-00."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "next-gen-hobbit-prerelease-2026-08-08-16-30"
+      },
+      "fields": {
+        "id": "next-gen-hobbit-prerelease-2026-08-08-16-30",
+        "series_id": "next-gen-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "16:30:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45.0,
+        "capacity": 64,
+        "details": "Wizards/EventLink event 11404754 confirms Next-Gen Saturday 4:30PM Hobbit prerelease on 2026-08-08; pack-per-win / undefeated bonus language appears in the WPN row."
+      },
+      "reason": "Add dated occurrence for next-gen-hobbit-prerelease-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-08-16-30",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-08-16-30",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-hobbit-prerelease-2026-08-08-16-30."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "next-gen-hobbit-prerelease-2026-08-09-12-00"
+      },
+      "fields": {
+        "id": "next-gen-hobbit-prerelease-2026-08-09-12-00",
+        "series_id": "next-gen-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "12:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45.0,
+        "capacity": 64,
+        "details": "Wizards/EventLink event 11404756 confirms Next-Gen Sunday 12PM Hobbit prerelease on 2026-08-09; pack-per-win / undefeated bonus language appears in the WPN row."
+      },
+      "reason": "Add dated occurrence for next-gen-hobbit-prerelease-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-09-12-00",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-09-12-00",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-hobbit-prerelease-2026-08-09-12-00."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "next-gen-hobbit-prerelease-2026-08-09-16-30"
+      },
+      "fields": {
+        "id": "next-gen-hobbit-prerelease-2026-08-09-16-30",
+        "series_id": "next-gen-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "16:30:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45.0,
+        "capacity": 64,
+        "details": "Wizards/EventLink event 11404759 confirms Next-Gen Sunday 4:30PM 2HG Hobbit prerelease on 2026-08-09; pack-per-win / undefeated bonus language appears in the WPN row."
+      },
+      "reason": "Add dated occurrence for next-gen-hobbit-prerelease-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-09-16-30",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-prerelease-2026-08-09-16-30",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-hobbit-prerelease-2026-08-09-16-30."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-hobbit-commander-party-2026"
+      },
+      "fields": {
+        "id": "next-gen-hobbit-commander-party-2026",
+        "venue_id": "next-gen-games",
+        "title": "The Hobbit Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "unknown",
+        "recurrence": null,
+        "default_start_time": "12:00:00",
+        "start_date": "2026-08-23",
+        "end_date": "2026-09-20",
+        "entry_fee": 10.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink 2026-07-24 snapshot lists Next-Gen Hobbit Commander Party sessions on August 23 and September 20 at noon, $10 entry, capacity 32.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add WPN-supported The Hobbit Commander Party for next-gen-games."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-hobbit-commander-party-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-hobbit-commander-party-2026",
+        "relationship": "primary WPN support",
+        "occurrence_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-hobbit-commander-party-2026."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "next-gen-hobbit-commander-party-2026-08-23-12-00"
+      },
+      "fields": {
+        "id": "next-gen-hobbit-commander-party-2026-08-23-12-00",
+        "series_id": "next-gen-hobbit-commander-party-2026",
+        "occurrence_date": "2026-08-23",
+        "start_time": "12:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10.0,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 11405115 confirms Next-Gen Hobbit Commander Party on 2026-08-23 at noon."
+      },
+      "reason": "Add dated occurrence for next-gen-hobbit-commander-party-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-commander-party-2026-08-23-12-00",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-commander-party-2026-08-23-12-00",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-hobbit-commander-party-2026-08-23-12-00."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "next-gen-hobbit-commander-party-2026-09-20-12-00"
+      },
+      "fields": {
+        "id": "next-gen-hobbit-commander-party-2026-09-20-12-00",
+        "series_id": "next-gen-hobbit-commander-party-2026",
+        "occurrence_date": "2026-09-20",
+        "start_time": "12:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10.0,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 11405130 confirms Next-Gen Hobbit Commander Party on 2026-09-20 at noon."
+      },
+      "reason": "Add dated occurrence for next-gen-hobbit-commander-party-2026 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-commander-party-2026-09-20-12-00",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-hobbit-commander-party-2026-09-20-12-00",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-hobbit-commander-party-2026-09-20-12-00."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "next-gen-heart-of-the-mountain-2026-09-06"
+      },
+      "fields": {
+        "id": "next-gen-heart-of-the-mountain-2026-09-06",
+        "venue_id": "next-gen-games",
+        "title": "Magic Presents: Heart of the Mountain Sunday",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "unknown",
+        "recurrence": null,
+        "default_start_time": "12:00:00",
+        "start_date": "2026-09-06",
+        "end_date": "2026-09-06",
+        "entry_fee": 10.0,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 11405161 confirms Magic Presents: Heart of the Mountain Sunday at Next-Gen Games on September 6, 2026 at noon, with $10 entry, capacity 32, and Misty Mountains description.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add WPN-supported Magic Presents: Heart of the Mountain Sunday for next-gen-games."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-heart-of-the-mountain-2026-09-06",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "series_id": "next-gen-heart-of-the-mountain-2026-09-06",
+        "relationship": "primary WPN support",
+        "occurrence_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-heart-of-the-mountain-2026-09-06."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "next-gen-heart-of-the-mountain-2026-09-06-12-00"
+      },
+      "fields": {
+        "id": "next-gen-heart-of-the-mountain-2026-09-06-12-00",
+        "series_id": "next-gen-heart-of-the-mountain-2026-09-06",
+        "occurrence_date": "2026-09-06",
+        "start_time": "12:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10.0,
+        "capacity": 32,
+        "details": "Wizards/EventLink event 11405161 confirms Magic Presents: Heart of the Mountain Sunday at Next-Gen Games on 2026-09-06 at noon."
+      },
+      "reason": "Add dated occurrence for next-gen-heart-of-the-mountain-2026-09-06 from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-heart-of-the-mountain-2026-09-06-12-00",
+        "series_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-9747",
+        "occurrence_id": "next-gen-heart-of-the-mountain-2026-09-06-12-00",
+        "relationship": "primary WPN support",
+        "series_id": null
+      },
+      "reason": "Attach src-wpn-9747 to next-gen-heart-of-the-mountain-2026-09-06-12-00."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "the-crimson-guild-south-el-monte-the-crimson-guild-commander-night-5-18-00"
+      },
+      "fields": {
+        "id": "the-crimson-guild-south-el-monte-the-crimson-guild-commander-night-5-18-00",
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Friday 6:00 PM free Commander Night at The Crimson Guild with description \"Come play Commander with your friends.\" This is the best first-visit Commander candidate on schedule, but turnout, proxy, and solo-arrival texture remain unresolved.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the-crimson-guild-south-el-monte-the-crimson-guild-commander-night-5-18-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "crimson-guild-fnm-pauper-5-19-00"
+      },
+      "fields": {
+        "id": "crimson-guild-fnm-pauper-5-19-00",
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Friday 7:00 PM FNM Pauper with $10 entry and chill FNM environment language.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh crimson-guild-fnm-pauper-5-19-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "crimson-guild-draft-wednesday-3-19-00"
+      },
+      "fields": {
+        "id": "crimson-guild-draft-wednesday-3-19-00",
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Wednesday 7:00 PM Draft at The Crimson Guild with $20 entry and current draft-night description.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh crimson-guild-draft-wednesday-3-19-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "crimson-guild-standard-showdown-0-16-00"
+      },
+      "fields": {
+        "id": "crimson-guild-standard-showdown-0-16-00",
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Sunday 4:00 PM Standard Showdown with $10 entry and pack prize-pool language.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh crimson-guild-standard-showdown-0-16-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "crimson-guild-marvel-commander-party-2026-07-31"
+      },
+      "fields": {
+        "id": "crimson-guild-marvel-commander-party-2026-07-31",
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "details": "Wizards/EventLink 2026-07-24 snapshot shows two Crimson Guild Marvel Commander Party rows at Friday July 31 7:00 PM with free entry/promo language. Preserve as a single branch-safe event row rather than duplicate WPN rows.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh crimson-guild-marvel-commander-party-2026-07-31 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-friday-night-magic-fnm-commander-5-18-00"
+      },
+      "fields": {
+        "id": "comic-quest-friday-night-magic-fnm-commander-5-18-00",
+        "venue_id": "comic-quest",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Friday 6:00 PM Friday Night Magic FNM Commander at Comic Quest with free entry. Official site/newcomer language remains a positive, but non-regular walk-in accessibility remains the practical open question.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh comic-quest-friday-night-magic-fnm-commander-5-18-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-fnm-standard-showdown-5-18-00"
+      },
+      "fields": {
+        "id": "comic-quest-fnm-standard-showdown-5-18-00",
+        "venue_id": "comic-quest",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms FNM Standard Showdown - Marvel Superheroes on July 24 and July 31 at 6:00 PM, free entry, with weekly winner promo language. Preserve the short end date rather than projecting indefinitely.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh comic-quest-fnm-standard-showdown-5-18-00 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-marvel-commander-party-2026-07-31"
+      },
+      "fields": {
+        "id": "comic-quest-marvel-commander-party-2026-07-31",
+        "venue_id": "comic-quest",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Marvel Superheroes Commander Party #2 at Comic Quest on July 31 at 6:00 PM, free entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh comic-quest-marvel-commander-party-2026-07-31 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "id": "comic-quest-hobbit-prerelease-2026",
+        "venue_id": "comic-quest",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Comic Quest Hobbit prerelease sessions on August 7-9, including Friday 2HG and Saturday/Sunday 1v1. Entry fee remains TBA/free in WPN data, so do not infer a fee.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh comic-quest-hobbit-prerelease-2026 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-hobbit-commander-party-2026"
+      },
+      "fields": {
+        "id": "comic-quest-hobbit-commander-party-2026",
+        "venue_id": "comic-quest",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Comic Quest Hobbit Commander Party sessions on August 21 and September 18 at 6:00 PM.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh comic-quest-hobbit-commander-party-2026 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "comic-quest-heart-of-the-mountain-2026-09-04"
+      },
+      "fields": {
+        "id": "comic-quest-heart-of-the-mountain-2026-09-04",
+        "venue_id": "comic-quest",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Magic Presents: Heart of the Mountain Commander Event at Comic Quest on September 4 at 6:00 PM.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh comic-quest-heart-of-the-mountain-2026-09-04 from the 2026-07-24 corrected main-pass WPN/source review."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "the-crimson-guild-south-el-monte"
+      },
+      "fields": {
+        "id": "the-crimson-guild-south-el-monte",
+        "website": "https://thecrimsonguild.com/",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "The Crimson Guild is now a better-supported mid-distance event candidate than the older Commander-only read suggested: the 2026-07-24 Wizards/EventLink snapshot confirms Friday free Commander, Friday Pauper FNM, Wednesday Draft, Sunday Standard Showdown, and a July 31 Marvel Commander Party. The practical visit read is still cautious-positive rather than home-base: Friday Commander is the best first-visit Commander candidate, but actual turnout, proxy/power norms, solo-arrival support, and any Discord/community route remain unresolved; the public official site is active/identity-useful but schedule-thin compared with WPN."
+      },
+      "reason": "Refresh Crimson Guild venue-level source and assessment text after current WPN reconciliation."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "a-and-n-collectibles"
+      },
+      "fields": {
+        "id": "a-and-n-collectibles",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "A & N now has current Wizards/EventLink support for Monday, Wednesday, and Friday free Commander plus three Hobbit prerelease sessions, so it is not merely a stale Commander lead. Friday FNM Commander is the cleanest first-visit Commander lane on schedule regularity, while Hobbit prerelease weekend gives a structured limited-event way to sample the store. The caution remains practical: San Dimas is a deliberate 25.7-mile trip, public social routes were not content-readable in this pass, no Discord/community route is known, and prior review mirrors conflict on how strong the in-store-play experience is."
+      },
+      "reason": "Refresh a-and-n-collectibles venue-level assessment after corrected main-pass source reconciliation."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "next-gen-games"
+      },
+      "fields": {
+        "id": "next-gen-games",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Next-Gen now reads as a broad WPN Premium Magic hub with enough event breadth to justify keeping it visible despite distance: current WPN confirms Wednesday Commander, Sunday all-day Commander, Tuesday Draft, Tuesday Modern, Saturday drafts, Friday Modern, Monday Standard, Thursday Legacy, 2HG Commander, Hobbit prerelease weekend, Hobbit Commander Party, and Heart of the Mountain. Best first-visit candidates may be structured draft/prerelease/specials rather than ordinary Commander until Discord/LFG or a visit clarifies casual Commander texture."
+      },
+      "reason": "Refresh next-gen-games venue-level assessment after corrected main-pass source reconciliation."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "comic-quest"
+      },
+      "fields": {
+        "id": "comic-quest",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Comic Quest remains a useful but cautious Lake Forest candidate. The 2026-07-24 WPN snapshot confirms Friday FNM Commander, short-run FNM Standard Showdown, Marvel Commander Party, Hobbit prerelease sessions, Hobbit Commander Parties, and Heart of the Mountain; no current WPN support was found for God of Mischief. Official newcomer/open-play language remains a positive, but the review-derived locals-only caution and distance keep it from being an obvious first target without confirming non-regular walk-in friendliness."
+      },
+      "reason": "Refresh comic-quest venue-level assessment after corrected main-pass source reconciliation."
+    },
+    {
+      "action": "update",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "high",
+        "positives": [
+          "Wizards/EventLink 2026-07-24 confirms Monday, Wednesday, and Friday free Commander anchors with capacity for 24 players.",
+          "WPN now also lists three Hobbit prerelease sessions, broadening A & N beyond Commander-only.",
+          "Prior review mirrors mention weekly Magic, draft, prerelease, Commander, MTG inventory, staff help, and play-space/welcoming signals."
+        ],
+        "cautions": [
+          "San Dimas distance makes this a deliberate trip from Los Alamitos.",
+          "Public Instagram/Facebook routes were route-checked but not content-readable in this pass, leaving current social texture unresolved.",
+          "Prior review/editorial mirrors conflict about whether the shop is ideal for in-store play."
+        ],
+        "open_questions": [
+          "Which of Monday, Wednesday, or Friday Commander is best for a first solo visit?",
+          "Is there any Discord/community coordination route?",
+          "Is the in-store-play caution stale, narrow, or a real current drawback?"
+        ]
+      },
+      "reason": "Update Places evaluation for a-and-n-collectibles after corrected main-pass closure."
+    },
+    {
+      "action": "update",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B",
+        "fit_score": 3.9,
+        "confidence": "high",
+        "positives": [
+          "WPN Premium store with current WPN support for Commander, draft, Modern, Standard, Legacy, prerelease, and special events.",
+          "Newly reconciled Tuesday Draft/Modern, Hobbit prerelease, Hobbit Commander Party, and Heart of the Mountain rows make the calendar much more complete.",
+          "Structured draft/prerelease/special events may be easier first visits than trying to cold-read casual Commander texture.",
+          "Official Discord route is captured for future content replay."
+        ],
+        "cautions": [
+          "About 23.6 miles from Los Alamitos, so it competes with closer options.",
+          "Commander appears supported but casual/pod/proxy texture remains unresolved without Discord replay or a visit.",
+          "Large tournament/store footprint may not automatically mean easy solo social integration."
+        ],
+        "open_questions": [
+          "Does the captured Discord route support LFG or casual Commander coordination?",
+          "Is Wednesday or Sunday Commander casual enough for a first solo visit?",
+          "Are draft/prerelease events the better first-visit path?"
+        ]
+      },
+      "reason": "Update Places evaluation for next-gen-games after corrected main-pass closure."
+    },
+    {
+      "action": "update",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "high",
+        "positives": [
+          "Wizards/EventLink 2026-07-24 confirms Friday free Commander, Friday Pauper FNM, Wednesday Draft, Sunday Standard, and Marvel Commander Party.",
+          "Friday Commander has simple friend/play language and free entry.",
+          "Prior review-derived evidence supports a spacious, clean play area and friendly staff."
+        ],
+        "cautions": [
+          "Store-controlled public site remains schedule-thin relative to WPN.",
+          "No direct Discord/community route or current social texture was safely available in this pass.",
+          "Actual turnout, proxy policy, power-level mix, and solo-arrival support remain unknown."
+        ],
+        "open_questions": [
+          "Can Friday Commander be corroborated by store-controlled social or community content?",
+          "Does the store help solo players find pods?",
+          "Is Friday Commander casual, mixed, or high-power in practice?"
+        ]
+      },
+      "reason": "Update Places evaluation for the-crimson-guild-south-el-monte after corrected main-pass closure."
+    },
+    {
+      "action": "update",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "comic-quest",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.6,
+        "confidence": "high",
+        "positives": [
+          "Wizards/EventLink 2026-07-24 confirms FNM Commander plus Standard, prerelease, Commander Party, and Heart of the Mountain coverage.",
+          "Official site has unusually relevant newcomer/open-play language for solo arrivals.",
+          "Hobbit prerelease and Friday events provide structured ways to sample the store."
+        ],
+        "cautions": [
+          "Review-derived locals-only event report remains a direct caution for cold solo arrivals.",
+          "Current WPN did not show God of Mischief support; preserve as stale/unconfirmed rather than active planning truth.",
+          "Distance means it needs a clearer accessibility read before promotion."
+        ],
+        "open_questions": [
+          "Is FNM Commander genuinely open to non-regular walk-ins?",
+          "Was the locals-only report isolated, event-specific, or a real culture issue?",
+          "Is there a current community/Discord surface that clarifies turnout and newcomer friendliness?"
+        ]
+      },
+      "reason": "Update Places evaluation for comic-quest after corrected main-pass closure."
+    },
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {
+        "id": "sig-nextgen-hobbit-prerelease-breadth-2026-07-24"
+      },
+      "fields": {
+        "id": "sig-nextgen-hobbit-prerelease-breadth-2026-07-24",
+        "category": "event_opportunity",
+        "priority": "normal",
+        "status": "new",
+        "source_id": "src-wpn-9747",
+        "captured_at": "2026-07-24T12:00:00-07:00",
+        "observed_at": "2026-07-24T12:00:00-07:00",
+        "expires_at": "2026-08-10T06:00:00-07:00",
+        "related_entity_type": "venue",
+        "related_entity_id": "next-gen-games",
+        "summary": "Next-Gen has a full Hobbit prerelease weekend plus follow-on Commander Party / Heart of the Mountain specials in current WPN data.",
+        "details": "This is more than a routine weekly addition: a WPN Premium, broad-event hub now has multiple upcoming limited/special-event paths that may be a better first visit than cold Commander. Treat as an attention item through prerelease weekend, not as an urgent alert.",
+        "evidence_url": "https://locator.wizards.com/store/9747",
+        "confidence": "high",
+        "suggested_action": "Consider Next-Gen as a structured prerelease/special-event trial if the distance is acceptable; keep Discord/casual Commander texture as TBD.",
+        "promotion_target": "event_proposal",
+        "dedupe_key": "nextgen-hobbit-prerelease-specials-2026-07-24"
+      },
+      "reason": "Surface a sparse planning-relevant Signal for newly reconciled Next-Gen special-event breadth; routine weekly additions remain Events-only."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "aandn-nextgen-crimson-comicquest-main-pass-2026-07-24"
+      },
+      "fields": {
+        "id": "aandn-nextgen-crimson-comicquest-main-pass-2026-07-24",
+        "detected_at": "2026-07-24T12:00:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "dataset",
+        "entity_id": "corrected-main-pass-batch",
+        "summary": "Proposed corrected main pass for A & N, Next-Gen, Crimson Guild, and Comic Quest: A & N gains current Hobbit prerelease coverage, Next-Gen gains missing draft/Modern/prerelease/special breadth and an attention-worthy special-event Signal, Crimson/Comic Quest receive WPN/source/evaluation refreshes, and social/Discord TBDs remain explicit.",
+        "review_status": "proposed"
+      },
+      "reason": "Create pending Updates marker for review of this corrected main-pass proposal."
+    }
+  ]
+}
