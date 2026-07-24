@@ -146,8 +146,9 @@ The script provides:
 - `export-json`: exports deterministic recovery JSON from Supabase;
 - `verify-export`: verifies a generated export directory.
 
-Routine surface checks do not use this script by default. Use the typed
-`record_entity_surface_check(...)` RPC directly.
+Routine surface checks do not use this script by default. Use
+`scripts/record_surface_check.py`, the tiny wrapper around the typed
+`record_entity_surface_check(...)` RPC.
 
 The script uses the browser-safe Supabase URL and publishable key from
 `supabase/project-config.json` for read-only exports. It does not require or
@@ -163,8 +164,29 @@ SQL during the live apply.
 
 ## Routine surface-check format
 
-Use `record_entity_surface_check(...)` when the work is only recording source or
-surface disposition. The call should include:
+Use `scripts/record_surface_check.py` when the work is only recording source or
+surface disposition. It exposes only the exact RPC fields, supports dry-run and
+live modes, prints the RPC return columns, and can optionally add an idempotent
+replay check. It does not create durable repo artifacts.
+
+Example connector-friendly dry run:
+
+```powershell
+python.exe scripts/record_surface_check.py `
+  --idempotency-key routine-proof-store-surface-YYYY-MM-DD `
+  --entity-type venue `
+  --entity-id example-store `
+  --surface-type instagram `
+  --disposition route_found_content_not_inspected `
+  --source-id src-example-instagram `
+  --summary "Instagram route exists but content was not inspected in this routine pass."
+```
+
+Add `--live` to prepare the live RPC call for connector execution, or add
+`--execute` only when a `--database-url`, `DATABASE_URL`, or `SUPABASE_DB_URL`
+backend is configured. Add `--replay-check` for a live idempotency check.
+
+The call should include:
 
 - `entity_type`: currently `venue` or `community`;
 - `entity_id`: the existing canonical entity ID;
