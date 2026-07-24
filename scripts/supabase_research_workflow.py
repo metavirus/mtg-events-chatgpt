@@ -131,6 +131,21 @@ TABLES: dict[str, dict[str, Any]] = {
         },
         "identity_name": "research change",
     },
+    "signals": {
+        "id": ["id"],
+        "required_insert": [
+            "id", "category", "priority", "status", "captured_at", "summary",
+            "confidence",
+        ],
+        "fields": {
+            "id", "category", "priority", "status", "source_id",
+            "captured_at", "observed_at", "expires_at", "related_entity_type",
+            "related_entity_id", "summary", "details", "evidence_url",
+            "confidence", "suggested_action", "promotion_target",
+            "dedupe_key",
+        },
+        "identity_name": "signal",
+    },
 }
 
 EVALUATION_CANDIDATE_STATUSES = {"promoted", "neutral", "deprioritized"}
@@ -159,6 +174,9 @@ ENUMS = {
     # "promising" is an app/planning label, not a database candidate_status.
     "evaluations.candidate_status": EVALUATION_CANDIDATE_STATUSES,
     "venue_hours.status": {"verified", "variable", "stale", "unknown"},
+    "signals.priority": {"low", "normal", "high", "urgent"},
+    "signals.status": {"new", "reviewed", "promoted", "dismissed", "stale", "needs_followup"},
+    "signals.confidence": {"low", "medium", "high"},
 }
 
 DATE_FIELDS = {
@@ -295,6 +313,7 @@ def load_local_snapshot() -> dict[str, list[dict[str, Any]]]:
         "evaluations": evaluations,
         "venue_hours": [],
         "research_changes": changes,
+        "signals": [],
     }
 
 
@@ -310,6 +329,7 @@ def load_export_snapshot(output_dir: Path) -> dict[str, list[dict[str, Any]]]:
         "evaluations": "evaluations.json",
         "venue_hours": "venue_hours.json",
         "research_changes": "changes.json",
+        "signals": "signals.json",
     }
     snapshot: dict[str, list[dict[str, Any]]] = {}
     missing = []
@@ -485,6 +505,18 @@ def validate_relationships(index: int, table: str, fields: dict[str, Any], index
             require("event_series", entity_id, "event series")
         elif entity_type == "event_occurrence":
             require("event_occurrences", entity_id, "event occurrence")
+    elif table == "signals":
+        require("sources", fields.get("source_id"), "source")
+        related_type = fields.get("related_entity_type")
+        related_id = fields.get("related_entity_id")
+        if related_type == "venue":
+            require("venues", related_id, "venue")
+        elif related_type == "community":
+            require("communities", related_id, "community")
+        elif related_type == "event_series":
+            require("event_series", related_id, "event series")
+        elif related_type == "event_occurrence":
+            require("event_occurrences", related_id, "event occurrence")
 
 
 def insert_or_update_sql(operation: dict[str, Any]) -> str:
@@ -620,6 +652,7 @@ def export_supabase(output_dir: Path) -> None:
         "evaluations.json": "evaluations",
         "venue_hours.json": "venue_hours",
         "changes.json": "research_changes",
+        "signals.json": "signals",
         "dataset_metadata.json": "dataset_metadata",
     }
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -640,7 +673,8 @@ def export_supabase(output_dir: Path) -> None:
 def verify_export(output_dir: Path) -> None:
     required = [
         "stores.json", "communities.json", "sources.json", "events.json",
-        "event_occurrences.json", "changes.json", "manifest.json",
+        "event_occurrences.json", "changes.json", "signals.json",
+        "manifest.json",
     ]
     missing = [name for name in required if not (output_dir / name).exists()]
     if missing:
