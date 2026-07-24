@@ -1,0 +1,770 @@
+{
+  "proposal_id": "card-addiction-tweedy-delamo-cardarena-main-pass-2026-07-24",
+  "description": "Corrected main-store pass for Card Addiction, Tweedy Cards and Gaming, The Game Chest - Del Amo Fashion Center, and Card Arena. Refreshes current WPN-supported event rows, retires a past Tweedy one-off, adds missing Tweedy/Card Arena special-event coverage, and updates Places evaluations without adding unsupported Card Addiction events.",
+  "created_at": "2026-07-24T12:00:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-17882"
+      },
+      "fields": {
+        "id": "src-wpn-17882",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot refreshed Tweedy's current and future Magic event stream."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-9724"
+      },
+      "fields": {
+        "id": "src-wpn-9724",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirmed The Game Chest Del Amo's branch-safe Wednesday Commander row."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-6480"
+      },
+      "fields": {
+        "id": "src-wpn-6480",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "The 2026-07-24 Wizards/EventLink snapshot reconfirmed Card Arena Friday EDH and exposed current Hobbit prerelease sessions."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "tweedy-cards-and-gaming-friday-night-magic-casual-commander"
+      },
+      "fields": {
+        "id": "tweedy-cards-and-gaming-friday-night-magic-casual-commander",
+        "venue_id": "tweedy-cards-and-gaming",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Tweedy's recurring Friday 5:00 PM Friday Night Magic Casual Commander slot with $10 entry and capacity for 16 players. Prior inspected Instagram evidence also corroborated the Friday Commander lane.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing Tweedy Friday Commander row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "tweedy-cards-and-gaming-standard-showdown-0-17-00"
+      },
+      "fields": {
+        "id": "tweedy-cards-and-gaming-standard-showdown-0-17-00",
+        "venue_id": "tweedy-cards-and-gaming",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Tweedy Standard Showdown as a recurring Sunday 5:00 PM Standard event, with recent rows showing $5 entry and capacity around 8-16 players. Prior inspected Instagram evidence also corroborated the Sunday Standard lane.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing Tweedy Standard row with current WPN evidence."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "tweedy-cards-and-gaming-magic-presents-god-of-mischief-commander-2026-07-17"
+      },
+      "fields": {
+        "id": "tweedy-cards-and-gaming-magic-presents-god-of-mischief-commander-2026-07-17",
+        "venue_id": "tweedy-cards-and-gaming",
+        "details": "This July 17, 2026 God of Mischief Commander one-off was source-supported when added, but it is now in the past as of the 2026-07-24 corrected main pass. Preserve as historical evidence rather than active planning inventory.",
+        "confidence": "high",
+        "event_status": "inactive",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Past one-off events should not remain active planning rows."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "tweedy-marvel-super-heroes-commander-party-2026-07-31"
+      },
+      "fields": {
+        "id": "tweedy-marvel-super-heroes-commander-party-2026-07-31",
+        "venue_id": "tweedy-cards-and-gaming",
+        "community_id": null,
+        "title": "Marvel Super Heroes Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "17:00",
+        "start_date": "2026-07-31",
+        "end_date": "2026-07-31",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 10919723 lists Marvel Super Heroes Commander Party at Tweedy Cards and Gaming on Friday, July 31, 2026 at 5:00 PM local, $10 entry, capacity 16.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add a current WPN-supported Commander special missing from the app."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-marvel-super-heroes-commander-party-2026-07-31",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-marvel-super-heroes-commander-party-2026-07-31",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink event 10919723 confirms the July 31, 2026 Commander Party date, time, fee, and capacity."
+      },
+      "reason": "Attach WPN evidence to the Tweedy Commander Party row."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "tweedy-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "id": "tweedy-hobbit-prerelease-2026",
+        "venue_id": "tweedy-cards-and-gaming",
+        "community_id": null,
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-08",
+        "entry_fee": 45,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists two The Hobbit prerelease sealed sessions at Tweedy Cards and Gaming on August 7-8, 2026, each with $45 entry and capacity 15.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add current WPN-supported prerelease coverage for Tweedy."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-hobbit-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink events 11153935 and 11153936 confirm the August 7-8, 2026 Hobbit prerelease sessions."
+      },
+      "reason": "Attach WPN evidence to the Tweedy Hobbit prerelease row."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "tweedy-hobbit-prerelease-2026-08-07-17-00"
+      },
+      "fields": {
+        "id": "tweedy-hobbit-prerelease-2026-08-07-17-00",
+        "series_id": "tweedy-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "17:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 15,
+        "details": "Wizards/EventLink event 11153935 confirms The Hobbit prerelease at Tweedy on 2026-08-07 at 5:00 PM local."
+      },
+      "reason": "Add the first dated Tweedy Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "tweedy-hobbit-prerelease-2026-08-08-11-00"
+      },
+      "fields": {
+        "id": "tweedy-hobbit-prerelease-2026-08-08-11-00",
+        "series_id": "tweedy-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "11:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 45,
+        "capacity": 15,
+        "details": "Wizards/EventLink event 11153936 confirms The Hobbit prerelease at Tweedy on 2026-08-08 at 11:00 AM local."
+      },
+      "reason": "Add the second dated Tweedy Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "tweedy-two-headed-giant-commander-hobbit-2026"
+      },
+      "fields": {
+        "id": "tweedy-two-headed-giant-commander-hobbit-2026",
+        "venue_id": "tweedy-cards-and-gaming",
+        "community_id": null,
+        "title": "Two Headed Giant Commander The Hobbit",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "17:00",
+        "start_date": "2026-08-14",
+        "end_date": "2026-09-11",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists Two Headed Giant Commander The Hobbit specials at Tweedy Cards and Gaming on August 14 and September 11, 2026 at 5:00 PM local, $10 entry, capacity 16.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add WPN-supported Tweedy Commander special coverage beyond routine Friday Commander."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-two-headed-giant-commander-hobbit-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-two-headed-giant-commander-hobbit-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink events 11153947 and 11153973 confirm the two dated Two Headed Giant Commander specials."
+      },
+      "reason": "Attach WPN evidence to the Tweedy Two Headed Giant Commander row."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "tweedy-two-headed-giant-commander-hobbit-2026-08-14-17-00"
+      },
+      "fields": {
+        "id": "tweedy-two-headed-giant-commander-hobbit-2026-08-14-17-00",
+        "series_id": "tweedy-two-headed-giant-commander-hobbit-2026",
+        "occurrence_date": "2026-08-14",
+        "start_time": "17:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10,
+        "capacity": 16,
+        "details": "Wizards/EventLink event 11153947 confirms Two Headed Giant Commander The Hobbit at Tweedy on 2026-08-14 at 5:00 PM local."
+      },
+      "reason": "Add first dated Tweedy Two Headed Giant Commander occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "tweedy-two-headed-giant-commander-hobbit-2026-09-11-17-00"
+      },
+      "fields": {
+        "id": "tweedy-two-headed-giant-commander-hobbit-2026-09-11-17-00",
+        "series_id": "tweedy-two-headed-giant-commander-hobbit-2026",
+        "occurrence_date": "2026-09-11",
+        "start_time": "17:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10,
+        "capacity": 16,
+        "details": "Wizards/EventLink event 11153973 confirms Two Headed Giant Commander The Hobbit at Tweedy on 2026-09-11 at 5:00 PM local."
+      },
+      "reason": "Add second dated Tweedy Two Headed Giant Commander occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "tweedy-hobbit-commander-party-2026"
+      },
+      "fields": {
+        "id": "tweedy-hobbit-commander-party-2026",
+        "venue_id": "tweedy-cards-and-gaming",
+        "community_id": null,
+        "title": "The Hobbit Commander Party",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "17:00",
+        "start_date": "2026-08-21",
+        "end_date": "2026-09-18",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists The Hobbit Commander Party specials at Tweedy Cards and Gaming on August 21 and September 18, 2026 at 5:00 PM local, $10 entry, capacity 16.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add current WPN-supported Tweedy Commander Party coverage."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-hobbit-commander-party-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-hobbit-commander-party-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink events 11153943 and 11153945 confirm the two dated Hobbit Commander Party specials."
+      },
+      "reason": "Attach WPN evidence to the Tweedy Hobbit Commander Party row."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "tweedy-hobbit-commander-party-2026-08-21-17-00"
+      },
+      "fields": {
+        "id": "tweedy-hobbit-commander-party-2026-08-21-17-00",
+        "series_id": "tweedy-hobbit-commander-party-2026",
+        "occurrence_date": "2026-08-21",
+        "start_time": "17:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10,
+        "capacity": 16,
+        "details": "Wizards/EventLink event 11153943 confirms The Hobbit Commander Party at Tweedy on 2026-08-21 at 5:00 PM local."
+      },
+      "reason": "Add first dated Tweedy Hobbit Commander Party occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "tweedy-hobbit-commander-party-2026-09-18-17-00"
+      },
+      "fields": {
+        "id": "tweedy-hobbit-commander-party-2026-09-18-17-00",
+        "series_id": "tweedy-hobbit-commander-party-2026",
+        "occurrence_date": "2026-09-18",
+        "start_time": "17:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 10,
+        "capacity": 16,
+        "details": "Wizards/EventLink event 11153945 confirms The Hobbit Commander Party at Tweedy on 2026-09-18 at 5:00 PM local."
+      },
+      "reason": "Add second dated Tweedy Hobbit Commander Party occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "tweedy-heart-of-the-mountain-commander-2026-09-04"
+      },
+      "fields": {
+        "id": "tweedy-heart-of-the-mountain-commander-2026-09-04",
+        "venue_id": "tweedy-cards-and-gaming",
+        "community_id": null,
+        "title": "Magic Presents: Heart of the Mountain Commander",
+        "format": "Commander",
+        "event_type": "special",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": "17:00",
+        "start_date": "2026-09-04",
+        "end_date": "2026-09-04",
+        "entry_fee": 10,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 11153970 lists Magic Presents: Heart of the Mountain Commander at Tweedy Cards and Gaming on Friday, September 4, 2026 at 5:00 PM local, $10 entry, capacity 16.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add a current WPN-supported Tweedy Commander special."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-heart-of-the-mountain-commander-2026-09-04",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-17882",
+        "series_id": "tweedy-heart-of-the-mountain-commander-2026-09-04",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink event 11153970 confirms the September 4, 2026 Heart of the Mountain Commander event."
+      },
+      "reason": "Attach WPN evidence to the Tweedy Heart of the Mountain Commander row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "the-game-chest-del-amo-fashion-center-casual-commander-da-3-18-00"
+      },
+      "fields": {
+        "id": "the-game-chest-del-amo-fashion-center-casual-commander-da-3-18-00",
+        "venue_id": "the-game-chest-del-amo-fashion-center",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms The Game Chest Del Amo's Wednesday 6:00 PM Casual Commander DA row, with $5 entry and capacity 32. No branch-safe draft, prerelease, FNM, or special-event rows surfaced in this snapshot.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the branch-safe Del Amo Commander row and preserve that other event surfaces remain absent/TBD."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "card-arena-friday-night-magic-edh-5-18-00"
+      },
+      "fields": {
+        "id": "card-arena-friday-night-magic-edh-5-18-00",
+        "venue_id": "card-arena",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Card Arena Friday Night Magic EDH as a weekly Friday 6:00 PM event with $5 entry. Other store-controlled/community texture remains thin.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing Card Arena Friday EDH row with current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "card-arena-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "id": "card-arena-hobbit-prerelease-2026",
+        "venue_id": "card-arena",
+        "community_id": null,
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "all",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": 40,
+        "currency": "USD",
+        "details": "Wizards/EventLink lists three The Hobbit prerelease sealed sessions at Card Arena from August 7-9, 2026, each with $40 entry.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add current WPN-supported prerelease coverage for Card Arena."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-6480",
+        "series_id": "card-arena-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-6480",
+        "series_id": "card-arena-hobbit-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink events 10910163, 10910164, and 10910165 confirm the three dated Card Arena Hobbit prerelease sessions."
+      },
+      "reason": "Attach WPN evidence to the Card Arena Hobbit prerelease row."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "card-arena-hobbit-prerelease-2026-08-07-18-00"
+      },
+      "fields": {
+        "id": "card-arena-hobbit-prerelease-2026-08-07-18-00",
+        "series_id": "card-arena-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "18:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40,
+        "capacity": null,
+        "details": "Wizards/EventLink event 10910163 confirms Card Arena The Hobbit prerelease on 2026-08-07 at 6:00 PM local."
+      },
+      "reason": "Add first dated Card Arena Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "card-arena-hobbit-prerelease-2026-08-08-18-00"
+      },
+      "fields": {
+        "id": "card-arena-hobbit-prerelease-2026-08-08-18-00",
+        "series_id": "card-arena-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "18:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40,
+        "capacity": null,
+        "details": "Wizards/EventLink event 10910164 confirms Card Arena The Hobbit prerelease on 2026-08-08 at 6:00 PM local."
+      },
+      "reason": "Add second dated Card Arena Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "card-arena-hobbit-prerelease-2026-08-09-15-00"
+      },
+      "fields": {
+        "id": "card-arena-hobbit-prerelease-2026-08-09-15-00",
+        "series_id": "card-arena-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "15:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 40,
+        "capacity": null,
+        "details": "Wizards/EventLink event 10910165 confirms Card Arena The Hobbit prerelease on 2026-08-09 at 3:00 PM local."
+      },
+      "reason": "Add third dated Card Arena Hobbit prerelease occurrence."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "card-addiction"
+      },
+      "fields": {
+        "id": "card-addiction",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Card Addiction remains a real close Anaheim TCG store, but the 2026-07-24 corrected follow-up still found no current WPN/EventLink MTG event row and no safely inspectable current store-controlled Magic calendar. Prior official site, Lorcana locator, Yelp, Card Shop Hub, and Loc8NearMe evidence support physical operation and TCG/play-space texture. Keep as a landscape candidate and source-follow-up target, not an active Magic calendar venue yet."
+      },
+      "reason": "Refresh Card Addiction's Places read after the corrected event-source follow-up."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-addiction",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "Close Anaheim TCG storefront remains supported by official site, Lorcana organized-play listing, and review/directory surfaces.",
+          "Review evidence names Magic/TCG activity and some play-space/community texture.",
+          "Useful missed-store lead because it exposes a real non-WPN discovery gap."
+        ],
+        "cautions": [
+          "Current WPN/EventLink snapshot still shows no Card Addiction MTG event rows.",
+          "Official/social content remains event-replay TBD; do not infer Commander, draft, prerelease, or FNM from store existence alone.",
+          "Review texture remains mixed around service/pricing."
+        ],
+        "open_questions": [
+          "Does Card Addiction's official Instagram or Facebook currently advertise Magic events?",
+          "Is there a Discord/community route or other operational event channel?",
+          "Do Magic events fire in practice, and are they casual/solo-arrival friendly?"
+        ]
+      },
+      "reason": "Keep Card Addiction's evaluation current without overclaiming MTG event support."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "tweedy-cards-and-gaming"
+      },
+      "fields": {
+        "id": "tweedy-cards-and-gaming",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Tweedy has stronger WPN-visible Magic breadth than the older record showed: recurring Friday Commander and Sunday Standard, plus Commander Party, Two Headed Giant Commander, The Hobbit prerelease, Heart of the Mountain Commander, Magic Academy, and other Hobbit-themed specials. Prior Instagram evidence corroborated the routine Friday/Sunday lanes. The store remains a modest candidate because no official site, Discord/LFG layer, or rich solo-arrival texture has been surfaced, but it is no longer a thin Commander-only record."
+      },
+      "reason": "Update Tweedy's Places synthesis after current WPN event completion."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tweedy-cards-and-gaming"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tweedy-cards-and-gaming",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.5,
+        "confidence": "medium",
+        "positives": [
+          "Current WPN snapshot shows real format breadth: Friday Commander, Sunday Standard, prerelease sealed, and multiple Commander specials.",
+          "Prior inspected Instagram evidence corroborated the recurring Friday Commander and Sunday Standard lanes.",
+          "Reasonably close South Gate location keeps it relevant as an event-useful candidate."
+        ],
+        "cautions": [
+          "No useful official website or Discord/community route has been captured.",
+          "Public evidence is stronger for schedule existence than for solo-arrival, pod formation, or power/proxy norms.",
+          "Prior review texture is modest and includes pricing/inventory cautions."
+        ],
+        "open_questions": [
+          "Is there an operational community route or LFG surface?",
+          "How reliable are Friday Commander turnout and casual pod formation?",
+          "Does current social content keep corroborating the WPN schedule?"
+        ]
+      },
+      "reason": "Add a real Places evaluation for Tweedy now that corrected event breadth is represented."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "the-game-chest-del-amo-fashion-center"
+      },
+      "fields": {
+        "id": "the-game-chest-del-amo-fashion-center",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "The Game Chest Del Amo remains a legitimate branch with a current WPN-supported Wednesday Casual Commander DA row, but the corrected 2026-07-24 pass did not surface draft, prerelease, FNM, specials, or richer branch-specific community texture. Treat as a low-priority mall-branch Commander option rather than a promoted social/home-base candidate."
+      },
+      "reason": "Refresh Del Amo's branch-specific assessment without blending generic Game Chest evidence."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-del-amo-fashion-center"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-del-amo-fashion-center",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "C",
+        "fit_score": 2.8,
+        "confidence": "medium",
+        "positives": [
+          "Branch-safe WPN evidence reconfirms Wednesday Casual Commander at 6:00 PM with $5 entry and capacity 32.",
+          "Prior Facebook evidence supports real Del Amo / Torrance branch identity.",
+          "Legitimate fallback Commander option if nearby plans fail."
+        ],
+        "cautions": [
+          "Mall-branch context and distance make it lower priority than closer/richer community leads.",
+          "No branch-safe draft, prerelease, FNM, or special-event rows surfaced in the current WPN snapshot.",
+          "No strong solo-arrival, Discord, or community texture has been captured."
+        ],
+        "open_questions": [
+          "Does the Del Amo branch have a current community route or branch-specific social schedule?",
+          "Does Wednesday Commander reliably fire and support casual solo arrivals?",
+          "Are there branch-specific Magic events outside WPN that this pass missed?"
+        ]
+      },
+      "reason": "Make the Del Amo branch's low-priority Places disposition explicit."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "card-arena"
+      },
+      "fields": {
+        "id": "card-arena",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Card Arena advances from a thin WPN-discovery lead to a reviewed but low-priority event-only candidate. The 2026-07-24 WPN snapshot supports Friday Night Magic EDH and three The Hobbit prerelease sessions, but this pass did not capture reliable official-site, social, review, or community texture. Treat current calendar rows as source-supported, while keeping the Places read conservative."
+      },
+      "reason": "Update Card Arena from bare discovery to a WPN-backed reviewed/event-only record."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-arena"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-arena",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "C",
+        "fit_score": 2.9,
+        "confidence": "medium",
+        "positives": [
+          "Current WPN evidence supports weekly Friday EDH and The Hobbit prerelease sealed sessions.",
+          "Magic activity is real enough for event-calendar representation rather than pure discovery.",
+          "Useful as a distant event-only watch target if a specific prerelease or Commander night matters."
+        ],
+        "cautions": [
+          "Official site/social/review/community texture remains thin or uncaptured.",
+          "Distance and lack of solo-arrival/community evidence keep it below stronger closer candidates.",
+          "No draft, FNM breadth beyond EDH, or recurring non-Commander format surfaced in current WPN."
+        ],
+        "open_questions": [
+          "What official or social source best represents Card Arena's current schedule?",
+          "Does Friday EDH reliably fire and what is the power/proxy culture?",
+          "Are there reviews or community routes that would change the low-priority Places read?"
+        ]
+      },
+      "reason": "Add a conservative Places evaluation for Card Arena after event-source completion."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "card-addiction-tweedy-delamo-cardarena-main-pass-2026-07-24"
+      },
+      "fields": {
+        "id": "card-addiction-tweedy-delamo-cardarena-main-pass-2026-07-24",
+        "detected_at": "2026-07-24T12:00:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "dataset",
+        "entity_id": "card-addiction-tweedy-delamo-cardarena-main-pass",
+        "summary": "Proposed corrected main pass for Card Addiction, Tweedy, The Game Chest Del Amo, and Card Arena: keep Card Addiction event-TBD, broaden Tweedy special-event coverage, refresh Del Amo Commander, add Card Arena Hobbit prerelease, and calibrate Places evaluations.",
+        "review_status": "proposed"
+      },
+      "reason": "Make the proposed batch visible in Updates pending review."
+    }
+  ]
+}
