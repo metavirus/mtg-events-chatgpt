@@ -1,0 +1,575 @@
+{
+  "proposal_id": "comicbug-gamechest-projectccg-alhambra-kingslayer-lf-main-pass-2026-07-24",
+  "description": "Corrected main-pass batch for The Comic Bug, The Game Chest - Irvine, ProjectCCG - Alhambra, and Kingslayer Games - Lake Forest. Reuses the fresh 2026-07-24 WPN snapshot, closes identity-safe event gaps, refreshes source routing, and moves these stores toward decision-grade reviewed status with caveats instead of over-waiting for perfect corroboration.",
+  "created_at": "2026-07-24T15:40:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-8432"
+      },
+      "fields": {
+        "id": "src-wpn-8432",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Fresh WPN snapshot reconfirms The Comic Bug's current Friday draft and Wednesday Commander inventory."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-12524"
+      },
+      "fields": {
+        "id": "src-wpn-12524",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Fresh WPN snapshot reconfirms The Game Chest Irvine's current Sunday and Thursday Commander inventory."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-15983"
+      },
+      "fields": {
+        "id": "src-wpn-15983",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Fresh WPN snapshot reconfirms ProjectCCG Alhambra's current Wednesday Commander lane."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-15689"
+      },
+      "fields": {
+        "id": "src-wpn-15689",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Fresh WPN snapshot reconfirms Kingslayer Lake Forest's current Friday Commander lane."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-comic-bug-official-2026-07-24"
+      },
+      "fields": {
+        "id": "src-comic-bug-official-2026-07-24",
+        "label": "The Comic Bug official website",
+        "url": "https://thecomicbug.com/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Capture the current official identity route for The Comic Bug."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-comic-bug",
+        "source_id": "src-comic-bug-official-2026-07-24"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-comic-bug",
+        "source_id": "src-comic-bug-official-2026-07-24",
+        "relationship": "official identity route for The Comic Bug Manhattan Beach"
+      },
+      "reason": "Make The Comic Bug official site visible as evidence."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-game-chest-alton-square-2026-07-17"
+      },
+      "fields": {
+        "id": "src-game-chest-alton-square-2026-07-17",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Recheck the current Alton Square identity source for The Game Chest Irvine."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-game-chest-linktree-2026-07-24"
+      },
+      "fields": {
+        "id": "src-game-chest-linktree-2026-07-24",
+        "label": "The Game Chest official Linktree",
+        "url": "https://linktr.ee/gamechest",
+        "source_type": "social",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Capture the official social/community routing hub surfaced during the Irvine pass."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-irvine",
+        "source_id": "src-game-chest-linktree-2026-07-24"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-irvine",
+        "source_id": "src-game-chest-linktree-2026-07-24",
+        "relationship": "official social/community routing hub for The Game Chest Irvine branch"
+      },
+      "reason": "Make the Game Chest route stack visible without requiring direct Discord/social replay."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-projectccg-about-alhambra-2026-07-17"
+      },
+      "fields": {
+        "id": "src-projectccg-about-alhambra-2026-07-17",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Recheck the official ProjectCCG about page that supports the Alhambra branch identity."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-kingslayer-about-branches-2026-07-17"
+      },
+      "fields": {
+        "id": "src-kingslayer-about-branches-2026-07-17",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Recheck the official Kingslayer branches page before treating Lake Forest as decision-grade."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-kingslayer-lf-events-2026-07-24"
+      },
+      "fields": {
+        "id": "src-kingslayer-lf-events-2026-07-24",
+        "label": "Kingslayer Games Lake Forest events page",
+        "url": "https://www.kingslayergames.com/events/lake-forest/",
+        "source_type": "eventPlatform",
+        "health_status": "current",
+        "last_checked": "2026-07-24"
+      },
+      "reason": "Capture the branch-specific Kingslayer Lake Forest event page that resolves the old Fountain Valley text contamination concern."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-lake-forest",
+        "source_id": "src-kingslayer-lf-events-2026-07-24"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-lake-forest",
+        "source_id": "src-kingslayer-lf-events-2026-07-24",
+        "relationship": "branch-specific official event page for Kingslayer Lake Forest"
+      },
+      "reason": "Make the Lake Forest branch event page visible as evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-kingslayer-lf-events-2026-07-24",
+        "series_id": "kingslayer-games-lake-forest-lake-forest-mtg-fnm-commander-slay-pass-friday-6-pm-5-18-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-kingslayer-lf-events-2026-07-24",
+        "series_id": "kingslayer-games-lake-forest-lake-forest-mtg-fnm-commander-slay-pass-friday-6-pm-5-18-00",
+        "occurrence_id": null,
+        "relationship": "official branch-specific event page corroborates current Friday Commander inventory at Lake Forest"
+      },
+      "reason": "Attach the Kingslayer Lake Forest official events page to the current Friday Commander row."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "the-comic-bug-commander-night-3-18-00"
+      },
+      "fields": {
+        "id": "the-comic-bug-commander-night-3-18-00",
+        "venue_id": "the-comic-bug",
+        "details": "Wizards/EventLink 2026-07-24 snapshot still supports Wednesday 6:00 PM Commander Night at The Comic Bug with $5 entry and visible local occurrence support through July 29, 2026. Store-controlled MTG corroboration is still thin, so treat this as attributable but check-first planning inventory rather than a polished community read.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing Comic Bug Commander row from the current WPN snapshot."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "the-comic-bug-mtg-draft-2026-07-24"
+      },
+      "fields": {
+        "id": "the-comic-bug-mtg-draft-2026-07-24",
+        "venue_id": "the-comic-bug",
+        "community_id": null,
+        "title": "MTG Draft",
+        "format": "Draft",
+        "event_type": "draft",
+        "bracket": "unknown",
+        "recurrence": null,
+        "default_start_time": "18:00",
+        "start_date": "2026-07-24",
+        "end_date": "2026-07-24",
+        "entry_fee": 25,
+        "currency": "USD",
+        "details": "Wizards/EventLink event 11280969 lists a one-off Friday July 24, 2026 MTG Draft at The Comic Bug at 6:00 PM local with $25 entry and capacity 32. This is current attributable event inventory even though the broader store-controlled MTG source stack remains thin.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add the missing current WPN-supported Comic Bug draft event."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-8432",
+        "series_id": "the-comic-bug-mtg-draft-2026-07-24",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-8432",
+        "series_id": "the-comic-bug-mtg-draft-2026-07-24",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink event 11280969 confirms the July 24, 2026 Comic Bug draft date, time, entry, and capacity."
+      },
+      "reason": "Attach WPN evidence to the Comic Bug draft row."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "the-comic-bug"
+      },
+      "fields": {
+        "id": "the-comic-bug",
+        "website": "https://thecomicbug.com/",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "The Comic Bug is a real Manhattan Beach comic/TCG storefront with current WPN-backed Friday draft and Wednesday Commander inventory. The official site cleanly supports identity, but the current MTG/community picture remains thin outside Wizards/EventLink, so the store now reads as decision-grade but check-first rather than strongly promoted. It is useful to keep visible because the attributable event rows are real; it is not yet a strong social-confidence candidate."
+      },
+      "reason": "Move The Comic Bug from thin discovery to a decision-grade reviewed venue with caveated but attributable event coverage."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-comic-bug"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-comic-bug",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.1,
+        "confidence": "medium",
+        "positives": [
+          "Fresh WPN support shows real current Friday draft and Wednesday Commander inventory.",
+          "The official Comic Bug website gives a clean storefront identity route.",
+          "The Manhattan Beach location is practical enough to remain in the planning set rather than being discarded as a weak lead."
+        ],
+        "cautions": [
+          "Current store-controlled MTG corroboration is thin outside Wizards/EventLink.",
+          "The public identity still reads more comic-store than clearly MTG-community-first.",
+          "No current inspected Discord/community texture was used in this bounded pass."
+        ],
+        "open_questions": [
+          "Does Friday draft reliably fire, or is it a low-attendance placeholder?",
+          "What is the actual Wednesday Commander turnout and solo-arrival comfort?",
+          "Are there current prerelease, sealed, or other Magic specials beyond the visible WPN slice?"
+        ]
+      },
+      "reason": "Make The Comic Bug decision-grade for planning without pretending the thin MTG/community texture is solved."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "the-game-chest-irvine-casual-commander-0-15-00"
+      },
+      "fields": {
+        "id": "the-game-chest-irvine-casual-commander-0-15-00",
+        "venue_id": "the-game-chest-irvine",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms Sunday 3:00 PM Casual Commander at The Game Chest Irvine with $5 entry and capacity 16. Treat this as current attributable planning inventory while Discord/social content remains route-only rather than deeply inspected.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing Game Chest Irvine Sunday Commander row from current WPN evidence."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "the-game-chest-irvine-casual-commander-4-18-00"
+      },
+      "fields": {
+        "id": "the-game-chest-irvine-casual-commander-4-18-00",
+        "venue_id": "the-game-chest-irvine",
+        "community_id": null,
+        "title": "Casual Commander",
+        "format": "Commander",
+        "event_type": "casual",
+        "bracket": "unknown",
+        "recurrence": {
+          "frequency": "weekly",
+          "dayOfWeek": 4,
+          "startTime": "18:00"
+        },
+        "default_start_time": "18:00",
+        "start_date": "2026-07-30",
+        "end_date": null,
+        "entry_fee": 5,
+        "currency": "USD",
+        "details": "Wizards/EventLink events such as 11321366 list a recurring Thursday 6:00 PM Casual Commander lane at The Game Chest Irvine with $5 entry. WPN spells some rows as 'Casual Commaner'; this row normalizes the title while preserving the attributable schedule truth.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Add the missing current Thursday Commander lane for The Game Chest Irvine."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-12524",
+        "series_id": "the-game-chest-irvine-casual-commander-4-18-00",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-12524",
+        "series_id": "the-game-chest-irvine-casual-commander-4-18-00",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink Thursday 'Casual Commaner' rows support the recurring 6:00 PM Irvine Commander lane."
+      },
+      "reason": "Attach WPN evidence to the new Game Chest Irvine Thursday Commander row."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "the-game-chest-irvine"
+      },
+      "fields": {
+        "id": "the-game-chest-irvine",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "The Game Chest Irvine now reads as the Alton Square branch with current Sunday and Thursday Commander support from Wizards/EventLink. The move confusion around Irvine Spectrum versus Alton Square is still useful historical context, but it is no longer a blocker to treating the branch as real and current. Linktree now gives a practical route stack for later Discord/social replay; for now the store is decision-grade with thin but usable Commander planning support."
+      },
+      "reason": "Close the branch-identity uncertainty enough to make The Game Chest Irvine a reviewed planning candidate."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-irvine"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-irvine",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.4,
+        "confidence": "medium",
+        "positives": [
+          "Fresh WPN support shows two current Commander lanes: Thursday evening and Sunday afternoon.",
+          "The Alton Square branch identity is now good enough for ordinary planning.",
+          "The official Linktree exposes usable social/community routes for future targeted replay."
+        ],
+        "cautions": [
+          "Public branch labeling still carries old Irvine Spectrum versus Alton Square drift.",
+          "Discord/social content was not deeply inspected in this bounded pass.",
+          "Current visible MTG breadth is still mostly Commander rather than a broad Magic schedule."
+        ],
+        "open_questions": [
+          "Which Commander slot is the better first visit for casual fit and turnout?",
+          "Does the linked community stack materially improve last-minute reliability?",
+          "Are there draft, prerelease, or special-event lanes that are current but not visible in this WPN slice?"
+        ]
+      },
+      "reason": "Promote The Game Chest Irvine from discovery to a reviewed, usable Commander candidate with bounded caveats."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "projectccg-alhambra-magic-commander-night"
+      },
+      "fields": {
+        "id": "projectccg-alhambra-magic-commander-night",
+        "venue_id": "projectccg-alhambra",
+        "details": "Wizards/EventLink 2026-07-24 snapshot reconfirms free Wednesday 5:00 PM Magic Commander Night at ProjectCCG Alhambra with promo-on-entry language. This is strong enough to retain as attributable current event truth even though branch-specific social/community texture remains thinner than ProjectCCG Santa Ana.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the existing ProjectCCG Alhambra Commander row from the current WPN snapshot."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "projectccg-alhambra"
+      },
+      "fields": {
+        "id": "projectccg-alhambra",
+        "website": "https://projectccg.com/",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "ProjectCCG Alhambra is now decision-grade as a real separate branch anchored by the official ProjectCCG site and WPN store 15983. The current planning picture is narrow but useful: free Wednesday Commander is attributable and active, while broader Alhambra-specific social/community texture remains thinner than Santa Ana. Treat Alhambra as a real but secondary ProjectCCG option rather than leaving it open just because every branch-specific surface is not equally rich."
+      },
+      "reason": "Move ProjectCCG Alhambra from conservative discovery to reviewed now that the core identity and current Commander truth are safe enough."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-alhambra"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-alhambra",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "Official ProjectCCG identity and WPN store 15983 safely support the Alhambra branch.",
+          "Free Wednesday Commander remains attributable and current.",
+          "A real ProjectCCG community route exists even though the Alhambra-specific read is still thinner than Santa Ana."
+        ],
+        "cautions": [
+          "Alhambra-specific social, Discord, and review texture remain thinner than the Santa Ana branch.",
+          "The currently visible Magic breadth is much narrower than Santa Ana.",
+          "At roughly 20 miles away, Alhambra still needs a stronger reason than simple existence before becoming a priority visit."
+        ],
+        "open_questions": [
+          "Does the Wednesday Commander night have meaningful turnout and casual fit?",
+          "Are there current Alhambra-specific draft, prerelease, or other Magic lanes beyond Wednesday Commander?",
+          "Which shared ProjectCCG community routes are actually useful for Alhambra planning?"
+        ]
+      },
+      "reason": "Encode the reviewed but still secondary Alhambra read explicitly instead of keeping it in open discovery limbo."
+    },
+    {
+      "action": "update",
+      "table": "event_series",
+      "key": {
+        "id": "kingslayer-games-lake-forest-lake-forest-mtg-fnm-commander-slay-pass-friday-6-pm-5-18-00"
+      },
+      "fields": {
+        "id": "kingslayer-games-lake-forest-lake-forest-mtg-fnm-commander-slay-pass-friday-6-pm-5-18-00",
+        "venue_id": "kingslayer-games-lake-forest",
+        "details": "Wizards/EventLink 2026-07-24 snapshot plus the official Kingslayer Lake Forest events page support the Friday FNM Commander Slay Pass lane at the Lake Forest branch with $13 entry and 6:00 PM check-in / evening Commander structure. Keep the row caveated as a secondary branch option, but the old Fountain Valley text contamination is no longer the main reason to suppress confidence in the branch's basic event identity.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Refresh the Kingslayer Lake Forest Commander row using current WPN plus branch-specific official event routing."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "kingslayer-games-lake-forest"
+      },
+      "fields": {
+        "id": "kingslayer-games-lake-forest",
+        "website": "https://www.kingslayergames.com/",
+        "events_url": "https://www.kingslayergames.com/events/lake-forest/",
+        "instagram": "https://www.instagram.com/kingslayergames",
+        "research_status": "reviewed",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Kingslayer Lake Forest is a real secondary Kingslayer branch, and the branch-specific official events page now supports current Friday Commander inventory directly enough to move beyond the earlier text-contamination boundary. It remains a lower-priority practical option than Fountain Valley because of distance and thinner branch-specific community texture, but it should not stay operationally unfinished."
+      },
+      "reason": "Close the old Lake Forest branch-identity/event-routing uncertainty enough to make the store decision-grade."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-lake-forest"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "kingslayer-games-lake-forest",
+        "research_status": "reviewed",
+        "candidate_status": "deprioritized",
+        "fit_grade": "C+",
+        "fit_score": 3.0,
+        "confidence": "medium",
+        "positives": [
+          "Fresh WPN plus the branch-specific Kingslayer events page support real current Friday Commander inventory at Lake Forest.",
+          "Official Kingslayer branch routing now clearly includes Lake Forest as a real branch, not a phantom locator artifact.",
+          "The store remains usable as secondary planning inventory if closer options are unavailable."
+        ],
+        "cautions": [
+          "Fountain Valley remains the stronger Kingslayer branch for this project.",
+          "Distance and thinner branch-specific community texture keep Lake Forest from being a primary recommendation.",
+          "The broader branch social stack is still shared across Kingslayer locations rather than cleanly Lake Forest specific."
+        ],
+        "open_questions": [
+          "How does Lake Forest Commander turnout compare with Fountain Valley?",
+          "Are there additional branch-specific draft, prerelease, or special-event lanes worth surfacing later?",
+          "Does Lake Forest have any distinct community texture, or is it operationally just the secondary Kingslayer branch?"
+        ]
+      },
+      "reason": "Make Kingslayer Lake Forest decision-grade and secondary rather than operationally incomplete."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "comicbug-gamechest-projectccg-alhambra-kingslayer-lf-main-pass-2026-07-24"
+      },
+      "fields": {
+        "id": "comicbug-gamechest-projectccg-alhambra-kingslayer-lf-main-pass-2026-07-24",
+        "detected_at": "2026-07-24T15:40:00-07:00",
+        "change_type": "research_update",
+        "entity_type": "dataset",
+        "entity_id": "venue-research-candidates-batch-2026-07-24-b",
+        "summary": "Corrected main-pass batch for The Comic Bug, The Game Chest Irvine, ProjectCCG Alhambra, and Kingslayer Lake Forest: refreshed WPN-backed event truth, added missing Comic Bug draft and Game Chest Thursday Commander coverage, clarified official routing, and moved the stores toward reviewed decision-grade status with explicit caveats instead of leaving them open for texture gaps.",
+        "review_status": "proposed"
+      },
+      "reason": "Leave a single reviewable Updates marker for this four-store candidate batch."
+    }
+  ]
+}
