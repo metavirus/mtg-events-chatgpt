@@ -110,7 +110,13 @@ The script uses the browser-safe Supabase URL and publishable key from
 `supabase/project-config.json` for read-only exports. It does not require or
 store a service-role key. Live `apply-approved --execute` requires an explicit
 Postgres execution backend, such as `--database-url`, `DATABASE_URL`, or
-`SUPABASE_DB_URL`. Without that, it remains a dry-run/classification helper.
+`SUPABASE_DB_URL`.
+
+When no database URL or linked CLI backend is configured, use
+`apply-approved --connector-package-dir` to generate the bridge for the Codex
+Supabase connector: numbered apply chunks, targeted readback SQL, and a small
+manifest. This keeps connector-backed writes predictable without hand-splitting
+SQL during the live apply.
 
 ## Proposal format
 
@@ -173,18 +179,42 @@ python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal
 ```
 
 This dry-run path validates the proposal, classifies touched tables/risk,
-generates SQL in a temporary artifact, prepares targeted readback checks, and
-cleans up after itself. If an explicit database execution backend is available,
-the same command can apply and verify without keeping a SQL plan file:
+generates SQL, and prepares targeted readback checks. If an explicit database
+execution backend is available, the same command can apply and verify without
+keeping a SQL plan file:
 
 ```powershell
 python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --basis-dir supabase/exports/latest --execute --database-url "<ephemeral-postgres-url>"
 ```
 
+If the Codex Supabase connector is the live execution bridge, generate a
+connector package instead of hand-building chunks:
+
+```powershell
+python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --basis-dir supabase/exports/latest --connector-package-dir supabase/apply-packages/YYYY-MM-DD-short-name
+```
+
+Then run each generated `*.apply-NN.sql` chunk in numeric order through the
+approved connector SQL tool, followed by the generated `*.readback.sql`.
+
 High-risk proposals are refused unless explicitly promoted with
 `--max-risk high --reviewed-high-risk`. In ordinary Codex connector-backed
-writes, use the generated apply and verification SQL from this helper as the
-single controlled payload/checklist instead of hand-building ad hoc queries.
+writes, use the generated connector package as the single controlled
+payload/checklist instead of hand-building ad hoc queries.
+
+### Post-write landing rule
+
+Once the first live write chunk has executed, stop exploring tooling or workflow
+alternatives inside that batch. From that point, only:
+
+1. apply the exact remaining prepared chunks, if any;
+2. run the prepared readbacks and any required duplicate checks;
+3. update the scoped ledger/run-note files already in scope;
+4. run required repository text integrity checks;
+5. commit, push, and report.
+
+If tooling itself needs improvement, record it as a named TBD after closure or
+start a separate tooling tranche before the next research batch.
 
 For Full writes, release/recovery checkpoints, or any write where rollback risk
 is higher than routine:
