@@ -1,0 +1,138 @@
+{
+  "proposal_id": "magicandmonsters-event-capture-calibration-2026-07-24",
+  "description": "Narrow calibration pass for Magic and Monsters. Restores current WPN-supported Friday Commander Free Play as dated, check-first inventory while preserving the venue's lower-confidence source-health caveat and inactive historical weekly row.",
+  "created_at": "2026-07-24T21:15:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "magic-and-monsters-commander-free-play-2026-07-window"
+      },
+      "fields": {
+        "id": "magic-and-monsters-commander-free-play-2026-07-window",
+        "venue_id": "magic-and-monsters",
+        "community_id": null,
+        "title": "Commander Free Play",
+        "format": "Commander",
+        "event_type": "casual",
+        "bracket": "unspecified",
+        "recurrence": null,
+        "default_start_time": "18:00",
+        "start_date": "2026-07-24",
+        "end_date": "2026-07-31",
+        "entry_fee": 0,
+        "currency": "USD",
+        "details": "Wizards/EventLink store 7807 still shows Friday 6:00 PM Commander Free Play at Magic and Monsters on July 24 and July 31, 2026 with free entry and 48-player capacity. Venue identity is safe enough because the WPN store name and Mission Viejo address match the existing venue, but store-controlled sources remain contradictory: the official calendar showed no MTG listings in checked future pages and the inspected Discord summer schedule said Magic is no longer on the regular weekly schedule. Capture these checked dates as verify/check-first inventory rather than projecting a reliable ongoing weekly lane.",
+        "confidence": "medium",
+        "event_status": "active",
+        "last_verified": "2026-07-24"
+      },
+      "reason": "Capture current source-supported events even when the venue/source picture is messy, while limiting the write to the checked WPN date window rather than over-projecting a weekly recurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-wpn-7807",
+        "series_id": "magic-and-monsters-commander-free-play-2026-07-window",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-wpn-7807",
+        "series_id": "magic-and-monsters-commander-free-play-2026-07-window",
+        "occurrence_id": null,
+        "relationship": "Wizards/EventLink store 7807 confirms Magic and Monsters Friday 6:00 PM Commander Free Play on July 24 and July 31, 2026 with free entry and 48-player capacity."
+      },
+      "reason": "Attach the current WPN backbone to the new caveated dated-event window."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "magic-and-monsters-commander-free-play-2026-07-24-18-00"
+      },
+      "fields": {
+        "id": "magic-and-monsters-commander-free-play-2026-07-24-18-00",
+        "series_id": "magic-and-monsters-commander-free-play-2026-07-window",
+        "occurrence_date": "2026-07-24",
+        "start_time": "18:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 0,
+        "capacity": 48,
+        "details": "Wizards/EventLink supports Commander Free Play at Magic and Monsters on Friday, July 24, 2026 at 6:00 PM local. Store-controlled calendar and Discord evidence remain contradictory, so verify before making a special trip."
+      },
+      "reason": "Represent the currently visible July 24 WPN occurrence directly instead of suppressing it."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "magic-and-monsters-commander-free-play-2026-07-31-18-00"
+      },
+      "fields": {
+        "id": "magic-and-monsters-commander-free-play-2026-07-31-18-00",
+        "series_id": "magic-and-monsters-commander-free-play-2026-07-window",
+        "occurrence_date": "2026-07-31",
+        "start_time": "18:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 0,
+        "capacity": 48,
+        "details": "Wizards/EventLink supports Commander Free Play at Magic and Monsters on Friday, July 31, 2026 at 6:00 PM local. Store-controlled calendar and Discord evidence remain contradictory, so verify before making a special trip."
+      },
+      "reason": "Represent the second currently visible WPN occurrence directly instead of projecting an indefinite weekly lane."
+    },
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "magic-and-monsters"
+      },
+      "fields": {
+        "id": "magic-and-monsters",
+        "last_verified": "2026-07-24",
+        "assessment_notes": "Magic and Monsters remains a real TCG-focused Mission Viejo store with unusually good source routing, but it is still a weaker personal MTG planning target than its generic WPN listing suggests. Under the narrower 2026-07-24 calibration, the app should carry the currently checked WPN-supported Friday Commander Free Play dates for July 24 and July 31 as medium-confidence, verify-before-going inventory because the venue identity is safe enough. Store-controlled evidence still cuts against treating that lane as a reliable weekly anchor: the official web calendar showed no MTG listings in checked future pages, and the inspected Discord's May 31, 2026 summer schedule says Magic is no longer on the regular weekly schedule. Treat the venue as watch/special-event oriented rather than a dependable structured weekly Magic destination."
+      },
+      "reason": "Shift from suppressing current WPN-backed events toward carrying them with honest caveats."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "magic-and-monsters",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "C+",
+        "fit_score": 3.0,
+        "confidence": "medium",
+        "positives": [
+          "Official site, social routes, WPN, reviews, and an inspected Discord provide unusually good source coverage.",
+          "Current WPN still exposes specific Friday Commander Free Play dates at the matching Magic and Monsters Mission Viejo venue.",
+          "Store-controlled Discord previously supported daily/drop-in Commander or EDH play space even after regular weekly Magic was reduced."
+        ],
+        "cautions": [
+          "Store-controlled Discord says MTG is no longer on the regular weekly schedule, which lowers personal fit.",
+          "Official web calendar absence still conflicts with the current WPN Commander dates.",
+          "Mission Viejo distance makes this a poor default target without a stronger current special-event reason.",
+          "Treat current Commander dates as verify/check-first inventory rather than a reliable recurring weekly lane."
+        ],
+        "open_questions": [
+          "Do the July 24 and July 31 Commander Free Play dates actually fire despite the Discord schedule change?",
+          "Does Friday FNM currently mean anything broader than these WPN Commander dates?",
+          "What Discord/community texture exists for actual LFG, turnout, proxies, and solo arrival?"
+        ]
+      },
+      "reason": "Keep the venue cautious while allowing attributable current events to exist in the app."
+    }
+  ]
+}
