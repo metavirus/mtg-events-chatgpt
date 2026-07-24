@@ -576,7 +576,11 @@ when useful; the system simply does not need to search those outer areas
 regularly. Displayed distance must remain an approximation from the public Los
 Alamitos centroid, and farther results should be easy to recognize and filter.
 
-## Current repository state
+## Historical repository checkpoint
+
+This section records the 2026-07-17 cutover checkpoint. It explains provenance;
+it is not the current operating checklist. Use `docs/SESSION_BOOTSTRAP.md`,
+`docs/EFFICIENCY_SOP.md`, and `CURRENT_FRONTIER.md` for the live posture.
 
 Completed:
 
@@ -621,10 +625,9 @@ This inventory is recorded only to explain project history. It is not a research
 source for ordinary work. See `docs/LEGACY_MATERIALS.md` for the narrow historical-
 comparison exception and the rule for independently adopting any old idea.
 
-## Major model gaps
+## Historical pre-Supabase model gaps
 
-The current `stores.json`, `events.json`, `sources.json`, and `changes.json`
-structure lacks several required layers:
+At the pre-Supabase checkpoint, the generated JSON model lacked several layers:
 
 - immutable observations with timestamps, hashes, raw payload paths, and parser versions;
 - claim-level provenance and conflicts;
@@ -645,10 +648,13 @@ outside the active workspace, but they must not shape the product by inertia.
 
 ## Durable research-journal requirement
 
-Every substantive research pass must leave a repository-backed handoff record.
+Every substantive research pass must leave a compact durable handoff record.
 Another human or AI should be able to determine what was searched, what was
 accessible, what evidence was found, how it was interpreted, what changed, and
 what remains unresolved without relying on the originating chat window.
+
+For a routine refresh, the proposal plus updated ledger/status is usually
+enough; do not create a long bespoke run note merely for ceremony.
 
 Use the conventions in `research/README.md` and `research/METHODOLOGY.md`.
 Research notes supplement structured observations and raw snapshots; they do not
@@ -664,7 +670,8 @@ consistent.
 
 ## Research completeness gate
 
-Do not describe the dataset as comprehensive until:
+This is a dataset-level completeness test, not a store-pass closure rule. Do not
+describe the whole dataset as comprehensive until:
 
 - every Wizards organization is reconciled or explicitly excluded;
 - independent regional discovery is complete;

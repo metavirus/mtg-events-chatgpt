@@ -13,6 +13,13 @@ For this user's precision and escalation expectations, also follow
 For Supabase-backed continuity planning, also read
 `docs/SUPABASE_CONTINUITY_MODEL.md`.
 
+Current operating posture: Supabase is canonical; generated JSON is
+emergency/debug/export only; research is decision-grade rather than exhaustive;
+and routine data writes use proportional validation. Treat
+`docs/EFFICIENCY_SOP.md`, `research/SOURCE_SOP.md`, and
+`docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` as the canonical homes for those
+rules instead of reconstructing them from historical checkpoints.
+
 If text files change, run the repo text-integrity check before finalizing:
 `powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1`.
 

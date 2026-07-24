@@ -58,8 +58,9 @@ Required:
 
 - validate the proposal;
 - apply only the approved operations;
-- verify affected records and relevant relationships/counts;
-- update the durable run note/proposal status;
+- verify affected records and only the relationships/counts relevant to the
+  touched fields;
+- update the concise proposal/ledger status when needed;
 - run repository text integrity before committing changed text files;
 - commit and push the small checkpoint.
 
@@ -74,7 +75,8 @@ user-visible planning changes.
 Add:
 
 - relevant duplicate and relationship checks for the touched tables;
-- a small affected app/UI check where useful;
+- an affected app/UI check only when the change plausibly affects rendering or
+  behavior, not merely because event data changed;
 - deterministic export only if the changed tables should refresh recovery JSON
   now or event/source/change exports are part of the accepted checkpoint.
 
@@ -124,16 +126,18 @@ SQL during the live apply.
 
 A research update starts as a JSON proposal, not as direct JSON edits.
 
-Example:
+Routine example:
 
 ```powershell
 python.exe scripts/supabase_research_workflow.py validate-proposal supabase/fixtures/research_update_proposal.example.json
-python.exe scripts/supabase_research_workflow.py plan-sql supabase/fixtures/research_update_proposal.example.json --output supabase/plans/example-no-live-write.sql
 python.exe scripts/supabase_research_workflow.py apply-approved supabase/fixtures/research_update_proposal.example.json
 ```
 
-For full validation or an intentional recovery checkpoint, export the current
-accepted Supabase state and use that export as the validation basis:
+Use `plan-sql` only when a persistent review artifact is specifically useful.
+Ordinary connector-backed applies should use the temporary connector package.
+
+For Full validation or an intentional recovery checkpoint only, export the
+current accepted Supabase state and use that export as the validation basis:
 
 ```powershell
 python.exe scripts/supabase_research_workflow.py export-json --output-dir supabase/exports/prewrite-YYYY-MM-DD-short-name
@@ -177,7 +181,7 @@ to refresh JSON.
 For approved routine or standard proposals, prefer:
 
 ```powershell
-python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --basis-dir supabase/exports/latest
+python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json
 ```
 
 This path validates the proposal, classifies touched tables/risk, generates
@@ -186,7 +190,7 @@ execution backend is available, the same command can apply and verify without
 keeping a SQL plan file:
 
 ```powershell
-python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --basis-dir supabase/exports/latest --execute --database-url "<ephemeral-postgres-url>"
+python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --execute --database-url "<ephemeral-postgres-url>"
 ```
 
 If the Codex Supabase connector is the live execution bridge, generate a
@@ -194,7 +198,7 @@ connector package instead of hand-building chunks. The package is an execution
 bridge, not durable evidence:
 
 ```powershell
-python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --basis-dir supabase/exports/latest --connector-package-dir supabase/apply-packages/YYYY-MM-DD-short-name
+python.exe scripts/supabase_research_workflow.py apply-approved path/to/proposal.json --connector-package-dir supabase/apply-packages/YYYY-MM-DD-short-name
 ```
 
 Then run each generated `*.apply-NN.sql` chunk in numeric order through the
@@ -256,10 +260,14 @@ Do not mutate live Supabase merely to demonstrate the workflow.
 
 If a live write is needed, stop and ask the user first with:
 
-- exact table and record;
-- exact before/after state;
-- rollback method;
-- validation plan.
+- the validated proposal;
+- its scope/risk level;
+- the targeted landing checks.
+
+The proposal is the review artifact; do not restate every operation in a second
+bespoke approval document. For Lean and Standard writes, Git history, the
+approved proposal, and a reverse proposal are sufficient reversibility unless a
+specific risk justifies more.
 
 Dry-run, read-only, fixture, and transaction-rollback testing may proceed when
 safe.
@@ -288,7 +296,8 @@ For Standard and Full, add relevant checks from this list:
 - no unintended duplicate identities exist;
 - no unintended duplicate event occurrences exist for
   `(series_id, occurrence_date, start_time)`;
-- deterministic JSON export succeeds;
+- deterministic JSON export succeeds only when the accepted checkpoint calls
+  for recovery/export validation;
 - repository text-integrity validation passes.
 
 ## Recovery procedure
@@ -296,7 +305,9 @@ For Standard and Full, add relevant checks from this list:
 If a write is wrong:
 
 1. stop further writes;
-2. use the pre-write export directory as the recovery reference;
+2. use the approved proposal, current affected-row readback, Git history, and
+   any pre-write export created for a Full-risk checkpoint as the recovery
+   reference;
 3. generate a reverse proposal or restoration SQL from the affected records;
 4. validate and review the rollback plan;
 5. apply rollback only after explicit authorization;
@@ -322,6 +333,5 @@ Accepted gates:
 
 Still deferred:
 
-- authenticated personal/workflow writes;
-- auth/RLS expansion;
+- broader workflow/request handling;
 - unattended recurring research automation.

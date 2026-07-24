@@ -590,9 +590,8 @@ Do not use Wizards alone to conclude:
 
 ### Approved Wizards workflow
 
-1. Start from the normalized local Wizards data already in repo when available:
-   - `stores.json`
-   - `events.json`
+1. Start from the current Supabase venue/event rows and recent Wizards source
+   snapshots already in the repo when available:
    - `output/wizards/metadata.json`
    - `output/wizards/events-commander.json`
    - `output/wizards/events-all.json`
@@ -615,7 +614,7 @@ Do not use Wizards alone to conclude:
 
 ### Wizards fallback order
 
-1. local normalized Wizards data
+1. Supabase canonical rows and recent `output/wizards` source snapshots
 2. direct public fetch if it works quickly
 3. bounded browser read of search-visible Wizards text or locator page
 4. preserve uncertainty and move on
@@ -685,7 +684,7 @@ Before calling a promoted pass complete, the run note or handoff must state:
 
 1. the strongest recurring MTG anchors found
 2. the strongest upcoming one-off MTG events found
-3. whether each of those was normalized into `events.json`
+3. whether each of those was proposed or represented in Supabase
 4. any visible MTG events intentionally not normalized, with reason
 5. the resulting MTG-focus read for the store
 

@@ -35,6 +35,12 @@ surface. Do not compare against, refresh, or reason from JSON during ordinary
 batches unless the task is explicitly about fallback/export behavior or the
 latest suitable Supabase export is the chosen validation basis.
 
+Event existence and venue recommendation are separate judgments. A current
+WPN/EventLink event with a safe venue-name/address match should ordinarily be
+cataloged. Venue messiness, low confidence, bad fit, no-proxy, or high power
+belongs in metadata, ranking, cautions, and default visibility—not silent
+omission. `research/SOURCE_SOP.md` is the canonical rule.
+
 ## Manual steward batches and future automation compatibility
 
 Manual steward batches are for canonical promotion and judgment, not broad
@@ -316,30 +322,9 @@ For any of the above:
 
 Do not keep piling fixes onto a corrupted state.
 
-For canonical JSON specifically (`stores.json`, `events.json`, `sources.json`,
-`changes.json`):
-
-1. make the smallest edit batch possible
-2. run the text-integrity check immediately
-3. if it fails, stop and repair before any further substantive work
-
-Do not stack additional research, synthesis, or reconciliation work on top of a
-canonical JSON file that has not yet passed the immediate post-edit check.
-
-### 4a. Prefer safer canonical JSON edit paths
-
-When choosing how to touch canonical JSON:
-
-- prefer tight file patches or other minimal-diff edits
-- prefer UTF-8-preserving write paths
-- avoid broad PowerShell content-rewrite flows unless there is a clear reason
-- when a structured rewrite is needed, prefer `python.exe` over the `py`
-  launcher in this workspace
-- if a broad rewrite is unavoidable, treat it as a high-risk operation and
-  validate immediately
-
-The goal is to catch encoding drift at the earliest choke point rather than pay
-for diagnosis and repair later.
+Generated JSON recovery/export files are not edited as research data. If an
+explicit export/debug task regenerates them, use the controlled exporter and run
+the ordinary text-integrity check; do not create a parallel JSON editing SOP.
 
 ### 5. Roll back early, not late
 

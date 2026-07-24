@@ -1,6 +1,26 @@
 # Current Frontier
 
-Last updated: 2026-07-22
+Last updated: 2026-07-24
+
+## Current governing posture
+
+This file contains a long chronological checkpoint history. That history is
+useful for diagnosis and provenance, but it is not the ordinary operating
+manual. Current work should follow:
+
+- `docs/EFFICIENCY_SOP.md` for bounded execution and proportional validation;
+- `research/SOURCE_SOP.md` for decision-grade research and event attribution;
+- `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` for canonical writes;
+- the two coverage ledgers for current venue treatment and named follow-ups.
+
+The active posture is concise: Supabase is canonical; generated JSON is
+emergency/debug/export only; routine writes use targeted validation; store
+passes close when material surfaces are checked or dispositioned; and current
+WPN/EventLink events with a safe venue-name/address match are cataloged even
+when the venue remains low-confidence, deprioritized, or poor fit.
+
+Sections below preserve accepted historical checkpoints. If historical wording
+conflicts with the current governing docs above, the governing docs win.
 
 ## ChatGPT-Codex coordination checkpoint
 

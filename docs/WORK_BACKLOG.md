@@ -489,53 +489,26 @@ claims without reopening the whole packet.
 
 ## Process backlog
 
-- Use `docs/SUPABASE_MIGRATION_STATUS.md` as the current data-layer baseline
-  before any further Supabase work. Do not rediscover the schema/import state
-  from scratch unless the remote database has changed.
-- Use `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` for the research-write safety
-  gate before resuming broad research.
-- Controlled Supabase research writes and deterministic JSON export/recovery are
-  in place; keep using that workflow for future research updates.
-- Generated JSON exports are recovery/export artifacts and must not be manually
-  edited.
-- Supabase is the default read adapter; keep `?data=json` as the explicit
-  file-backed recovery path.
-- Revisit authenticated user-data writes only after the read adapter is stable
-  and the RLS/write model receives a higher-reasoning review.
-- Enforce the new rule that each store pass includes social review in the same
-  pass unless blocked; do not treat socials as an optional later extra.
-- Enforce the new rule that if a store has an accessible Discord, a bounded
-  Discord survey is part of the main first pass: events, announcements,
-  Commander/EDH/LFG/meetup signals, and basic server usefulness, without
-  exhaustive history reading.
-- If a bounded Discord survey shows unusually strong community value, promote
-  that store/server into a deeper Discord follow-up tier rather than treating
-  the first pass as the end of Discord work.
-- Enforce the new rule that forward-going main store passes should also capture
-  newer secondary signals when reasonably available: MTG-focus, player-pool
-  breadth / venue-scale, review/prominence clues, and play-space image evidence.
-- Add a post-pass self-QA step where Codex reviews the store from the user's
-  perspective before asking the user to validate routine findings.
-- In that self-QA, explicitly ask whether the first pass would feel complete to
-  the user based on the agreed workflow, and catch any skipped required surfaces
-  before moving on.
-- Keep `Magic overall` distinct from `Commander specifically` in analysis and
-  self-QA. A store may actively promote Magic while still making Commander only
-  a small slice of its MTG footprint, and that distinction should be visible.
-- Keep secondary-signal capture bounded: give photos/reviews/space clues a quick
-  best-efforts pass, but do not let them turn into open-ended rabbit holes
-  during routine store research.
-- Run a targeted format-completeness audit after the Tilted correction is
-  accepted. Prioritize older records where Commander exists but draft,
-  prerelease/sealed, FNM, Commander Party, or other store-controlled/Wizards
-  Magic content may never have been reconciled. This is a bounded later audit,
-  not authorization for broad re-research now.
+- Governing process rules live in `docs/EFFICIENCY_SOP.md`,
+  `research/SOURCE_SOP.md`, and
+  `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`. Do not duplicate their
+  checklists here.
+- **Non-urgent documentation pruning:** consider moving the chronological body
+  of `CURRENT_FRONTIER.md` into a dated archive while keeping a short live
+  frontier; then assess whether the source-specific sections embedded in
+  `research/SOURCE_SOP.md` can become pointers to their dedicated SOPs. Also
+  consider archiving the pre-Supabase repository/model history in
+  `docs/PROJECT_CONTEXT.md`. These are larger topology edits, so do them only as
+  a separate reviewed documentation tranche.
+- Generated JSON and connector apply packages are temporary recovery/execution
+  artifacts, not backlog deliverables.
 - Maintain this file whenever we defer or discover meaningful future work.
-- Maintain `CURRENT_FRONTIER.md` for current tranche status.
-- Maintain run folders for each substantive research pass.
+- Use `CURRENT_FRONTIER.md` as chronological checkpoint context, not a second
+  operating manual.
+- Use a concise proposal/ledger checkpoint for routine refreshes; reserve
+  dedicated run notes for substantive findings, incidents, or method changes.
 - Keep attributed user field notes in repo-backed evidence when they are meant to
   be durable project knowledge.
-- Add periodic continuity checkpoints when a work stretch gets long.
 - At the next stable checkpoint, perform a deliberate branch-hygiene pass:
   review the active worktree, make an intentional checkpoint commit, create or
   rename into a broader canonical working branch for the full project, push it,
@@ -545,22 +518,9 @@ claims without reopening the whole packet.
   Signals should regain a more prominent default surface without restoring the
   fixed right-side pane that consumed calendar width. This is not a current
   blocker.
-- Discord/community monitoring now has its first structured access/watch-map
-  pilot. The documented four-layer model still governs any later daily/weekly
-  automation:
-  community surface / route, access modality, channel watch plan, and survey
-  observations / Signals. Preserve route value separately from one quiet run:
-  a quiet check is an observation, not a permanent downgrade or prominent
-  Signal by itself. Before recurring Discord work, add the smallest durable
-  representation needed to remember joined/invite/browser access, monitored
-  channels, priority/cadence, expected signal types, last checked, last useful
-  signal, and blocked/TBD access notes. See
-  `docs/SIGNALS_AND_COMMUNITIES_DESIGN_CHECKPOINT.md`,
-  `research/DISCORD_METHODOLOGY.md`, and
-  `research/runs/2026-07-20-discord-monitoring-map-pilot.md`. Current
-  cold-deep-link content-read remains blocked at `5e055e8`. Collectors Lounge
-  now has one separately proven `ui_native_navigation_verified` path; other
-  routes remain manual/gated/TBD until independently proven.
+- Discord monitoring status and deferred automation live in
+  `docs/DISCORD_SURVEY_CADENCE_STATUS_2026-07-23.md` and the monitoring map;
+  do not restate the evolving safety frontier here.
 
 ## Done when
 

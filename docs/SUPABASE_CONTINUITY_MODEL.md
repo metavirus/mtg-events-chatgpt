@@ -82,10 +82,10 @@ Expected lifecycle:
 
 This is not part of the public research record. It is private operational state.
 
-## What belonged in the accepted local UX revision
+## Historical UX-to-continuity checkpoint
 
-The local UX revision was allowed to do the following, and the product direction
-now assumes this split:
+This section records the earlier design checkpoint. Personal continuity has
+since shipped; the data-plane split remains the governing part:
 
 - finalize this contract in repo docs;
 - keep the Supabase read seam intact;
@@ -95,19 +95,16 @@ now assumes this split:
   thumbs-down, ratings, notes, and requests as real product concepts;
 - define the data structures and cutover expectations for those features.
 
-In other words, the app may continue to design for durable hosted continuity,
-but the next stage is not more UX shaping. Supabase is already the operational
-research source; remaining continuity work is authenticated personal/workflow
-state and future agent/request handling.
+Supabase is the operational research source and signed-in personal persistence
+is implemented. Remaining continuity work is limited to richer workflow/request
+handling and future automation.
 
 ## What is deliberately deferred
 
-The accepted local UX revision and subsequent Supabase checkpoint did **not**
-need to ship:
+The accepted current product still deliberately defers:
 
-- real signed-in browser writes for personal state;
-- final auth onboarding or session UX;
-- final row-level security policy expansion for personal/workflow writes;
+- broader account/profile management beyond the lean personal sign-in;
+- workflow/request processing beyond the existing bounded coordination lane;
 - server-side request processing or agent automation;
 - removal of the JSON fallback;
 - unattended recurring research automation.
@@ -117,7 +114,7 @@ The safe current rule is:
 - Supabase research reads and controlled research writes are operational;
 - JSON is generated recovery/export fallback, not the manual canonical editing
   surface;
-- switch on authenticated personal/workflow writes only after a deliberate gate.
+- signed-in personal state is operational and separate from research truth.
 
 ## Browser-local state during transition
 
@@ -137,8 +134,8 @@ deprioritize choices, ratings, or private notes.
 
 Current sequence:
 
-1. Controlled Supabase research writes and deterministic JSON export/recovery
-   are accepted for canonical research updates.
+1. Controlled Supabase research writes are accepted for canonical research
+   updates; JSON export/recovery is on-demand.
 2. Supabase is the default application read source, with `?data=json` as the
    explicit recovery path.
 3. Research has resumed through controlled Supabase writes in small direct
@@ -152,8 +149,7 @@ Current sequence:
    rows.
 7. Workflow/request data, durable `Updates` unread state, and richer visit history remain
    deferred.
-8. Only after the corrected manual research method has completed several clean
-   batches should unattended recurring research be considered.
+8. Unattended recurring research remains a separate future decision.
 
 ## Product consequences
 

@@ -63,20 +63,7 @@ Status vocabulary:
 
 ## Ledger-based tranche guidance
 
-Recommended next small tranche from this seed ledger:
-
-1. ProjectCCG - Santa Ana / OC targeted Discord/player-texture pass.
-2. Turn Zero Games Canadian Highlander/Discord cadence pass.
-
-Why these are next: both already have useful event coverage and visible personal
-planning upside, but each has one specific community/cadence TBD that could
-change how Kavi thinks about trying the store. This is better than re-running
-baseline work on stores already marked "hold unless new signal."
-
-Suggested validation level: lean unless a new future event row is proposed; use
-standard validation if dated event rows or recurring series are added.
-
-Done means: Discord/community or cadence source is either inspected and
-synthesized, captured as Evidence with careful notes, or explicitly left as a
-named TBD with a reason; any material event signal found is proposed for the
-calendar rather than left only in notes.
+Do not preserve a fixed "next tranche" recommendation in this ledger; it goes
+stale as batches close. Select future work from current row status, distance,
+planning value, and named decision-changing TBDs. Stores marked hold/specific
+follow-up are not ordinary main-pass targets.

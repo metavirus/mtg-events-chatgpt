@@ -20,44 +20,12 @@ Post-2026-07-23 maintenance note: venue rows below have been patched forward
 for accepted corrected main-pass batches. The original 2026-07-17 aggregate
 counts remain historical orientation, not a live queue count.
 
-## Counts
+## Historical aggregate
 
-Venue universe: 55 venues.
-
-| Category | Count |
-|---|---:|
-| Current main pass complete | 7 |
-| Mostly complete - named closure gaps | 28 |
-| Older/light work - corrected main pass required | 11 |
-| Status/identity conflict | 7 |
-| Intentionally low-priority/no-action | 2 |
-| Out of scope | 0 |
-
-Mandatory main-pass queue: 18 venues. This is the 11 older/light records plus
-the 7 status/identity-conflict records.
-
-Micro-backfill queue: 7 venues from today's closure audit.
-
-Optional/deeper queue: promoted or mostly complete venues with named
-decision-changing TBDs, especially Discord/community texture, solo-arrival
-reality, and exact event-lane calibration.
-
-## Closure Audit For Stores Touched On 2026-07-17
-
-Touched-store count: 29 unique venues across event replay, Places assessment,
-status/conflict work, evidence backfills, and source-sweep correction.
-
-| Closure audit category | Count | Venues |
-|---|---:|---|
-| Pass stands | 17 | The Game Cellar; Next-Gen Games; It's GameTime!; The Crimson Guild - South El Monte; Turn Zero Games; CoreTCG; Comic Quest; Collector Legion; A & N Collectibles; Crown City Games; Odyssey Games - Pasadena; The Game Chest - Promenade on the Peninsula; Hobby Overflow; Joyful Toad TCG; Honey Pot Meadery; Requiem: Coffee, Tea, and Fantasy; SoCalMagic |
-| Micro-backfill | 7 | Finch and Sparrow Games; Tilted Gaming; Buddies Collectibles; B.Y.O.GAMES LLC; Games For Meeple; GXGAMERS; Aki Collectibles |
-| Corrected main pass required | 5 | Grails Gone Wild; Shadow Realm Collectibles; TK Collectibles; Otaku Vault; LVLUP GAMING TCG |
-| Safety correction required | 0 | None identified in this read-only audit |
-
-No current live claim was identified as needing an immediate safety correction.
-The main caution is Grails Gone Wild: the targeted source correction improved
-the record, but Grails is not fully reviewed and still needs a bounded main
-pass before relying on the Sunday Commander lead for travel.
+The original 2026-07-17 counts and closure audit are preserved in Git history.
+They became misleading after the accepted 2026-07-23 and 2026-07-24 passes, so
+they are no longer repeated as a live queue. Use the venue rows below and the
+store-treatment ledger for current tranche selection.
 
 ## Venue Ledger
 
@@ -141,11 +109,9 @@ See `research/runs/2026-07-18-grails-buddies-tilted-reanchor.md`.
 Do not keep recommending Grails/Buddies/Tilted as the default next batch unless
 one of their named TBDs is deliberately selected.
 
-Recommended next ordinary batch should instead come from still-thin,
-planning-relevant records such as Shadow Realm Collectibles, TK Collectibles,
-Games For Meeple, GXGAMERS, Otaku Vault, or LVLUP GAMING TCG, with validation
-level chosen up front: lean for evidence/assessment-only, standard if event
-series or occurrences are written.
+That replacement recommendation has also since been completed or superseded.
+Choose future batches from the current venue rows and named planning gaps, not
+from historical tranche suggestions in this ledger.
 
 ## Post-checkpoint accepted main-pass update - 2026-07-23
 

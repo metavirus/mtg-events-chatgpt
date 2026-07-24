@@ -19,6 +19,10 @@ The repository has already completed these stabilization steps:
   `checkpoint/personal-use-deployed-supabase-default-2026-07-17`;
 - hosted app uses Supabase as the default read source, with `?data=json` as an
   emergency/debug fallback only;
+- current operating posture is centralized in `docs/EFFICIENCY_SOP.md`,
+  research rules in `research/SOURCE_SOP.md`, and write rules in
+  `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`; chronological checkpoints in
+  `CURRENT_FRONTIER.md` are context, not competing instructions;
 - Batch A identity/status clarifications have been applied through the
   controlled Supabase workflow without changing event records;
 - high-value event candidate replay A has been completed and applied only as a
@@ -27,8 +31,8 @@ The repository has already completed these stabilization steps:
   Linktree/social routers, Discord/community surfaces, and official event truth
   are recorded in `research/SOURCE_SOP.md`;
 - the corrected main-pass method is active: ordinary store passes must inspect
-  accessible source content, synthesize Places and Events conclusions, and leave
-  a compact source-coverage/closure record;
+  or disposition material source surfaces, synthesize Places and Events
+  conclusions, and leave a compact source-coverage/closure record;
 - the finite research queue and 2026-07-17 closure audit are recorded in
   `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`;
 - the default worker model is retired for this project: use direct Project

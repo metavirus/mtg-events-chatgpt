@@ -33,7 +33,7 @@ community sources.
 
 ## Run locally
 
-Because browsers restrict local JSON loading, run a tiny local server in this folder:
+To serve the static application locally, run a tiny local server in this folder:
 
     python -m http.server 8000
 

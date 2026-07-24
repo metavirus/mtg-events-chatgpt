@@ -75,7 +75,9 @@ Before calling a promoted pass complete, ask:
 5. Did I surface structural or trust-related risk early enough?
 6. If I were the user, would I think something obvious was skipped?
 
-If the answer to any of these is "no" or "not sure," the pass is not complete.
+If the answer to a material item is "no" or "not sure," either fix it or record
+an honest disposition and its planning consequence. A blocked, absent, thin, or
+non-material source does not keep the pass open by itself.
 
 ## Candidate-grade first pass standard
 
@@ -100,6 +102,11 @@ For a store to count as `candidate / partial`, the pass should normally provide:
 4. a candidate judgment
    - why this might be worth trying
    - any evidence-backed caution that materially affects the judgment
+
+Event existence and venue recommendation are separate. A current WPN/EventLink
+event with a safe venue-name/address match may be cataloged with confidence or
+check-first caveats even when the venue remains low-confidence, deprioritized,
+or poor fit.
 
 Do not manufacture a blocker from missing routine disclosures. Unstated proxy,
 bracket, solo-arrival, or pod-formation details are neutral unless the available
