@@ -31,9 +31,12 @@ canonical SOPs. Historical frontier checkpoints are preserved in
 - `entity_surface_coverage` is canonical operational research state for
   surface checks. It is not venue/event truth, but it is durable without a
   run note or ledger edit.
-- A store main pass closes when the material surfaces were checked or honestly
-  dispositioned and the planning conclusion is clear. Missing or blocked social
-  texture lowers confidence; it does not keep a store open indefinitely.
+- Venue research has a finite lifecycle: `unreviewed` ->
+  `baseline_in_progress` -> `steady_state`, with at most one ordinary
+  `targeted_closure`. A third
+  holistic pass requires an active material identity/status exception or an
+  explicit user request. Missing or blocked social texture lowers confidence;
+  it does not keep a venue open indefinitely.
 - WPN/EventLink is normally sufficient to capture a current event when the
   venue name/address match is identity-safe enough. Venue messiness or poor
   personal fit becomes confidence, ranking, and caution metadata rather than
@@ -57,10 +60,11 @@ Canonical operating details:
 
 ## Next safe lanes
 
-1. Select ordinary store work only from
-   `public.venue_research_candidates`. This Supabase view excludes
-   baseline-complete, not-due stores and is now authoritative over old named
-   gaps in Markdown ledgers.
+1. Use the lifecycle-specific Supabase selectors:
+   `venue_baseline_candidates`, `venue_surface_retry_candidates`,
+   `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
+   `venue_identity_resolution_candidates`. Markdown ledgers are context, not
+   operational selectors.
 2. Address specific real-use app friction when observed; do not start another
    broad product tranche by default.
 3. Consider the next overhead reduction only as a separate approved tooling
@@ -72,12 +76,13 @@ Canonical operating details:
 - Do not live-write an unapproved research proposal.
 - Do not edit canonical JSON; there is no active JSON research lane.
 - Do not create repo text artifacts just to record an ordinary surface check.
-- Do not select a maintenance store before `next_research_due_at` unless a new
-  material lead, changed access condition, open request, or explicit user
-  instruction justifies it.
-- Respect `entity_surface_selection_state`: blocked, thin, or unreadable
-  surfaces are ineligible until their retry window expires unless the access
-  condition materially changes.
+- Do not select a `steady_state` venue for another holistic pass. Monitor exact
+  mapped surfaces and event deltas instead.
+- Respect finite surface retries. One automatic retry is the norm; terminal
+  outcomes reopen only for a recorded access/source condition change or an
+  explicit user request.
+- Quiet, thin, blocked, route-only, and no-delta checks live in
+  `entity_surface_coverage`; they do not create Updates entries.
 - Do not broaden a bounded store pass once its planning conclusion is clear.
 - Discord work uses only the documented guarded modes and mapped routes. Do not
   improvise around gates or resume safety engineering unless a new blocker

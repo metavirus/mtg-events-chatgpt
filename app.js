@@ -419,7 +419,7 @@ async function loadFromSupabase() {
     supabaseRows('event_occurrences'),
     supabaseRows('event_sources'),
     supabaseRows('evaluations'),
-    supabaseRows('research_changes'),
+    supabaseRows('product_research_changes'),
     supabaseRowsOptional('venue_hours'),
     supabaseRowsOptional('signals')
   ]);
@@ -509,10 +509,12 @@ function mapVenue(item, sourceIdsByEntity, evaluationByEntity, hoursByVenue = ne
     lastVerified: item.last_verified || '',
     researchStatus: normalizeResearchStatusForUi(item.research_status),
     researchStage: item.research_status,
+    lifecycleState: item.lifecycle_state || 'unreviewed',
     evaluation: mapEvaluation(evaluationByEntity.get(`venue:${item.id}`)),
     assessment,
     hours: normalizePlaceHours(hours ? mapVenueHours(hours) : assessment.hours),
-    assessmentNotes: item.assessment_notes || '',
+    assessmentNotes: item.planning_summary || item.assessment_notes || '',
+    assessmentDetail: item.assessment_notes || '',
     sourceIds: sourceIdsByEntity.get(`venue:${item.id}`) || []
   };
 }
@@ -1282,6 +1284,7 @@ function eventMatchesSharedFilters(event, options = {}) {
   const { includePreset = true, includeSearch = true, hideCompetitive = state.filters.hideCompetitive } = options;
   const place = store(event.storeId);
   if (!place) return false;
+  if (place.lifecycleState === 'identity_blocked' && !(event.sourceIds || []).length) return false;
   if (!state.filters.research.includes(place.researchStatus)) return false;
   if (!state.filters.confidence.includes(event.confidence)) return false;
   if (state.filters.planningGroups && !state.filters.planningGroups.includes(eventPlanningGroup(event))) return false;
@@ -1394,6 +1397,8 @@ function fitScore(event) {
 }
 
 function fitLabel(event) {
+  const place = store(event.storeId);
+  if (place?.lifecycleState === 'identity_blocked') return { label: 'Identity unresolved · check first', tone: 'amber' };
   const score = fitScore(event);
   if (hasExplicitNoProxy(event)) return { label: 'Poor fit · no proxy', tone: 'coral' };
   if (isCompetitive(event)) return { label: 'Competitive lane', tone: 'coral' };
@@ -1405,6 +1410,7 @@ function fitLabel(event) {
 
 function evidenceLabel(event) {
   const place = store(event.storeId);
+  if (place?.lifecycleState === 'identity_blocked') return { label: 'Source-attributed · check first', tone: 'amber' };
   if (event.occurrenceStatus === 'confirmed') return { label: 'Dated listing', tone: 'mint' };
   if (event.confidence === 'high' && place?.researchStatus === 'partial') return { label: 'Supported routine', tone: 'sky' };
   if (place?.researchStatus === 'wizards-discovery') return { label: 'Discovery-level', tone: 'amber' };
@@ -1561,9 +1567,11 @@ function hasExplicitNoProxy(event) {
 }
 
 function eventPlanningGroup(event) {
+  const place = store(event.storeId);
   const placeHidden = !!state.personal.hidden[`place:${event.storeId}`];
   const eventHidden = !!state.personal.hidden[eventPreferenceKey(event)];
   if (eventHidden || placeHidden || hasExplicitNoProxy(event) || isCompetitive(event) || isHighPowerCommander(event)) return 'hidden';
+  if (place?.lifecycleState === 'identity_blocked') return 'verify';
   if (isPrereleaseOrSealed(event)) return 'limited';
   const fit = fitLabel(event);
   if (fit.tone === 'mint') return 'best';
@@ -2012,7 +2020,7 @@ function renderPlaceDetail(place) {
   const favorite = !!state.personal.favorites[`place:${place.id}`];
   const hidden = !!state.personal.hidden[`place:${place.id}`];
   const rating = state.personal.ratings[`place:${place.id}`] || 0;
-  container.innerHTML = `<div class="detail-hero"><div class="detail-identity"><span class="large-avatar">${initials(place.name)}</span><div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${hidden ? '<span class="status-chip coral">Deprioritized by you</span>' : ''}${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><div class="detail-hero-aside">${placeHoursChip(place)}<div class="detail-preference-actions"><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place" title="Favorite">${heartIcon()}</button><button class="thumb-button large ${hidden ? 'active' : ''}" data-action="toggle-place-hidden" data-place-id="${place.id}" aria-label="${hidden ? 'Restore priority' : 'Deprioritize place'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></div></div></div>
+  container.innerHTML = `<div class="detail-hero"><div class="detail-identity"><span class="large-avatar">${initials(place.name)}</span><div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${place.lifecycleState === 'identity_blocked' ? '<span class="status-chip amber">Identity unresolved · check first</span>' : ''}${hidden ? '<span class="status-chip coral">Deprioritized by you</span>' : ''}${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><div class="detail-hero-aside">${placeHoursChip(place)}<div class="detail-preference-actions"><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place" title="Favorite">${heartIcon()}</button><button class="thumb-button large ${hidden ? 'active' : ''}" data-action="toggle-place-hidden" data-place-id="${place.id}" aria-label="${hidden ? 'Restore priority' : 'Deprioritize place'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></div></div></div>
     <div class="detail-actions"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a>${place.website ? `<a class="soft-button" href="${escapeHtml(place.website)}" target="_blank" rel="noreferrer">Website ↗</a>` : ''}${place.instagram ? `<a class="soft-button" href="${escapeHtml(place.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>` : ''}</div>
     <div class="detail-tabs" role="tablist" aria-label="Place details"><button class="${state.selectedPlaceTab === 'overview' ? 'active' : ''}" data-place-tab="overview" role="tab" aria-selected="${state.selectedPlaceTab === 'overview'}">Overview</button><button class="${state.selectedPlaceTab === 'events' ? 'active' : ''}" data-place-tab="events" role="tab" aria-selected="${state.selectedPlaceTab === 'events'}">Events <span>${placeEvents.length}</span></button><button class="${state.selectedPlaceTab === 'evidence' ? 'active' : ''}" data-place-tab="evidence" role="tab" aria-selected="${state.selectedPlaceTab === 'evidence'}">Evidence <span>${sources.length}</span></button></div>
     <div class="place-tab-content">${placeTabContent(place, placeEvents, sources, rating)}</div>`;
@@ -2026,7 +2034,7 @@ function placeTabContent(place, placeEvents, sources, rating) {
   if (state.selectedPlaceTab === 'evidence') {
     return `<section class="detail-section tab-intro"><p class="eyebrow">Evidence coverage</p><h3>${sources.length} connected sources</h3><p class="analysis-copy">Sources are retained separately from the analyst synthesis. A strong venue can have a weak social channel, and silence on one source is not proof that an event does not exist.</p></section><section class="detail-section"><div class="source-health-summary"><div><span>Research status</span><strong>${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</strong></div><div><span>Last venue check</span><strong>${escapeHtml(place.lastVerified || 'Unknown')}</strong></div><div><span>Source count</span><strong>${sources.length}</strong></div></div>${evidenceSourceList(sources)}</section><section class="detail-section"><p class="eyebrow">Interpretive boundary</p><h3>What remains uncertain</h3><p class="analysis-copy">Fields not stated by the connected sources remain unknown. In particular, proxy policy, pod formation, typical power level, and solo-arrival experience should not be inferred from silence.</p></section>`;
   }
-  return `${placeEvaluationSummary(place)}<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Why it’s on the radar</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p></section>
+  return `${placeEvaluationSummary(place)}<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Practical verdict</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p>${place.assessmentDetail && place.assessmentDetail !== place.assessmentNotes ? `<details class="monitoring-details"><summary>Research detail</summary><p class="analysis-copy">${escapeHtml(place.assessmentDetail)}</p></details>` : ''}</section>
     <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Fit dimensions</p><h3>Current working assessment</h3></div><button class="why-button" data-action="explain-scores">Why these scores?</button></div><div class="score-bars">${assessmentBars(place)}</div></section>
     <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Known schedule</p><h3>Event series</h3></div><button class="text-button" data-place-tab="events">See all events</button></div><div class="series-list">${placeEvents.length ? placeEvents.slice(0, 4).map((event) => seriesRow(event)).join('') : '<p class="muted-copy">No normalized event series yet. This is not proof that the venue has no Magic events.</p>'}</div></section>
     <section class="detail-section two-column-section"><div><p class="eyebrow">Personal continuity</p><h3>Your rating & notes</h3><div class="rating-row" aria-label="Rate this place">${[1,2,3,4,5].map((value) => `<button class="star ${value <= rating ? 'active' : ''}" data-rating="${value}" data-entity="place:${place.id}" aria-label="${value} stars">★</button>`).join('')}</div>${noteComposer(`place:${place.id}`, 'What did it feel like in person?')}</div><div><p class="eyebrow">Source map</p><h3>${sources.length} connected sources</h3><div class="source-list">${sources.slice(0, 5).map((item) => sourceRow(item)).join('') || '<p class="muted-copy">Source mapping incomplete.</p>'}</div><button class="text-button evidence-jump" data-place-tab="evidence">Review all evidence →</button></div></section>`;
@@ -2649,7 +2657,7 @@ function openEvent(id, occurrenceDate) {
     <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(eventStartTime(event))}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
     <div class="drawer-action-grid"><a class="primary-button" href="${calendarUrl}" target="_blank" rel="noreferrer">Add to Google Calendar ↗</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button></div>
     <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(event.details || 'The current source provides only a minimal event listing.')}</p></section>
-    <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
+    <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${place.lifecycleState === 'identity_blocked' ? '<div><span class="interpret-icon amber">!</span><p><strong>Identity unresolved</strong><br>The event has an attached source, but the venue or branch identity remains unresolved. Check the source before relying on it.</p></div>' : ''}${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
     <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Address</span><strong>${escapeHtml(place.address)}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>
     <section class="drawer-section"><p class="eyebrow">Evidence</p><h2>Source trail</h2>${src ? sourceRow(src, true) : '<p class="muted-copy">No normalized source link is attached yet.</p>'}</section>
     <section class="drawer-section"><p class="eyebrow">Your private note</p><h2>Note on this series</h2>${noteComposer(personalKey, 'What should future-you remember about this event?')}</section>`);

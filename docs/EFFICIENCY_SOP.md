@@ -145,32 +145,33 @@ The first pass should usually be strong enough that the user could seriously
 consider the store as a candidate and potentially add one of the surfaced
 events to their calendar.
 
-### 4. Close once, then maintain
+### 4. Close once, then monitor exact surfaces
 
-After one decision-grade main pass, or at most one targeted closure pass, set
-the venue to maintenance. Unknown turnout, proxy norms, gated Discord, or
-unreadable social posts remain caveats or targeted follow-ups; they do not keep
-the entire store eligible for ordinary batches.
+The database lifecycle is finite:
 
-Ordinary store selection must start from
-`public.venue_research_candidates`. A maintenance store is selected early only
-for a new material event/source delta, a changed access condition, an open
-request, or explicit user direction.
+- `unreviewed`: no decision-grade baseline yet;
+- `baseline`: one bounded decision-grade pass is active;
+- `targeted_closure`: one specific second pass is active;
+- `steady_state`: holistic research is finished;
+- `identity_blocked`: attribution is unsafe pending a named identity trigger.
 
-A completed-store maintenance check has a hard target of roughly two minutes:
+Database constraints cap ordinary holistic passes at two. A third pass is an
+exception that must be linked to an active coordination item for a material
+identity/status change or an explicit user request.
 
-- reuse a suitable WPN snapshot and inspect deltas only;
-- check at most one or two highest-value surfaces;
-- compare with canonical state;
-- record quiet/thin/blocked/useful through the routine Supabase path;
-- stop immediately when no actionable delta appears.
+After `steady_state`, monitoring selects exact mapped surfaces, never the venue
+as a whole. Each surface carries its own cadence, cursor/fingerprint, retry
+state, and latest result. Discovery of new venues/surfaces is a separate weekly
+lane.
 
-Do not reconstruct its source map, reopen the main pass, reread broad operating
-docs, or retry an ineligible surface. Consult
-`public.entity_surface_selection_state` before a surface check.
-`scripts/record_surface_check.py` enforces that suppression by default; use its
-explicit override only for a changed access condition, new material lead, or
-direct user request.
+Retries are finite. One automatic retry is the norm. Repeated
+`unavailable`, `not_publicly_readable`, `access_gated`, or
+`no_useful_content` results become terminal and reopen only when the access or
+source condition changes or the user explicitly requests it. Do not reconstruct
+the venue source map to service a surface retry.
+
+Use the lifecycle-specific candidate views. Do not recreate a single mixed
+"research candidates" queue.
 
 ### 5. Promote before deepening
 

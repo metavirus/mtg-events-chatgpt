@@ -12,11 +12,11 @@ not to preserve JSON as a parallel system. The fix is to use Supabase as the
 canonical surface, keep Git/migrations for reversibility, and choose the
 smallest write path that matches the risk.
 
-Ordinary source or surface disposition now lands through the typed
-`record_entity_surface_check(...)` RPC into `entity_surface_coverage` and
-`research_changes`. That result is durable operational research state. It is not
-canonical venue/event truth, but it also does not need a run note, proposal JSON,
-SQL package, export, Markdown ledger edit, text-integrity run, or Git commit.
+Ordinary source or surface disposition lands through the typed
+`record_entity_surface_check(...)` RPC into `entity_surface_coverage`. That row
+is durable operational research state. Only a material planning change may also
+create a targeted `research_changes` row. Quiet, thin, blocked, route-only, and
+no-delta observations never create user-facing Updates.
 
 Use proposal/package workflow only when the write changes canonical research
 truth, user-visible planning data, identity/status interpretation, schema/auth,
@@ -76,8 +76,9 @@ Required:
   disposition, summary, materiality, and idempotency key;
 - use dry-run mode first when the target or vocabulary is uncertain;
 - keep the returned RPC result as the confirmation;
-- rely on `entity_surface_coverage` plus the associated `research_changes` row
-  as the durable record.
+- rely on `entity_surface_coverage` as the durable record;
+- set `material_change` only when the observation changes user-facing planning
+  truth; otherwise no `research_changes` row is created.
 
 Do not create proposal JSON, SQL packages, exports, Markdown ledger edits, run
 notes, text-integrity checks, commits, or app previews for this path unless some
@@ -378,9 +379,9 @@ safe.
 After any authorized live write, verify at the selected validation level.
 
 For Routine Surface Checks, the RPC result, idempotency behavior, and resulting
-`entity_surface_coverage` / `research_changes` rows are the verification. No
-repo validation or commit is involved unless repo files changed for another
-reason.
+`entity_surface_coverage` row are the verification. A `research_changes` row is
+expected only for an explicitly material change. No repo validation or commit
+is involved unless repo files changed for another reason.
 
 At minimum for Lean:
 

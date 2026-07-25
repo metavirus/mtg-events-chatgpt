@@ -14,12 +14,13 @@ Use it for:
 
 ## Active next-up
 
-- Store selection now comes from `public.venue_research_candidates`, not from
-  old ledger TBD wording. `venues.research_mode` distinguishes incomplete,
-  maintenance, targeted-followup, and identity-unresolved records;
-  baseline-complete venues remain out of ordinary batches until due or
-  triggered by a material lead/request. Surface retries come from
-  `public.entity_surface_selection_state`.
+- Venue selection now comes from lifecycle-specific Supabase views, not old
+  ledger TBD wording: `venue_baseline_candidates`,
+  `venue_surface_retry_candidates`, `venue_surface_monitoring_candidates`,
+  `venue_discovery_candidates`, and
+  `venue_identity_resolution_candidates`. `venues.lifecycle_state` is the
+  durable lifecycle authority. `steady_state` venues do not return to holistic
+  batches for residual texture curiosity.
 
 - JJ's Orange is a known targeted identity boundary, not an ordinary store
   batch candidate. Future Discord findings that mention `Orange` must not be
@@ -53,11 +54,11 @@ Use it for:
   ordinary research batches.
 
 - Phase 2 workflow simplification proof is complete. Ordinary source/surface
-  checks should now land through `record_entity_surface_check(...)` into
-  `entity_surface_coverage` plus `research_changes`. That is canonical
-  operational research state and requires no proposal JSON, SQL package,
-  export, Markdown ledger edit, text-integrity run, or Git commit unless repo
-  files changed for another reason.
+  checks land through `record_entity_surface_check(...)` into
+  `entity_surface_coverage`. Material changes may also create a targeted
+  `research_changes` row; quiet, thin, blocked, route-only, and no-delta checks
+  do not. The coverage row is durable without proposal JSON, SQL package,
+  export, Markdown ledger edit, text-integrity run, or Git commit.
 
 - Cold-deep-link Discord content-read is blocked/TBD at accepted boundary
   `5e055e8`. The current accepted safety baseline is recorded in

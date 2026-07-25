@@ -41,6 +41,15 @@ DISPOSITIONS = {
     "not_material",
 }
 MATERIALITY = {"low", "medium", "high"}
+MONITORING_MODES = {
+    "none",
+    "daily",
+    "weekly",
+    "manual_only",
+    "finite_retry",
+    "discovery_triggered",
+}
+REOPEN_TRIGGERS = {"new_lead", "access_changed", "user_request"}
 
 
 def sql_literal(value: object) -> str:
@@ -63,8 +72,8 @@ def sql_uuid(value: str | None) -> str:
 
 
 def build_eligibility_guard(args: argparse.Namespace) -> str:
-    if args.override_suppression:
-        return "-- Retry suppression explicitly overridden because the access condition or material lead changed.\n"
+    if args.reopen_trigger:
+        return "-- Terminal/suppressed surface explicitly reopened by a bounded trigger.\n"
     return f"""do $$
 begin
   if exists (
@@ -73,9 +82,15 @@ begin
     where entity_type = {sql_literal(args.entity_type)}
       and entity_id = {sql_literal(args.entity_id)}
       and surface_type = {sql_literal(args.surface_type)}
-      and not routine_check_eligible
+      and (
+        terminal_outcome is not null
+        or (
+          next_eligible_check_at is not null
+          and next_eligible_check_at > now()
+        )
+      )
   ) then
-    raise exception 'surface check is not yet eligible; inspect entity_surface_selection_state or use --override-suppression for a changed condition';
+    raise exception 'surface check is suppressed or terminal; use a specific --reopen-trigger only for a new lead, access change, or explicit user request';
   end if;
 end;
 $$;
@@ -100,6 +115,12 @@ from public.record_entity_surface_check(
   p_is_useful := {sql_literal(args.useful)},
   p_materiality := {sql_literal(args.materiality)},
   p_followup_item_id := {sql_uuid(args.followup_item_id)},
+  p_monitoring_mode := {sql_literal(args.monitoring_mode)},
+  p_cursor_value := {sql_literal(args.cursor_value)},
+  p_content_fingerprint := {sql_literal(args.content_fingerprint)},
+  p_max_automatic_retries := {args.max_automatic_retries},
+  p_reopen_trigger := {sql_literal(args.reopen_trigger)},
+  p_material_change := {sql_literal(args.material_change)},
   p_dry_run := {sql_literal(dry_run)}
 );"""
 
@@ -148,9 +169,25 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--materiality", default="medium", choices=sorted(MATERIALITY))
     parser.add_argument("--followup-item-id")
     parser.add_argument(
-        "--override-suppression",
+        "--monitoring-mode",
+        default="none",
+        choices=sorted(MONITORING_MODES),
+        help="Only safe, repeatable surfaces should use daily or weekly.",
+    )
+    parser.add_argument("--cursor-value", help="Opaque surface-specific resume cursor.")
+    parser.add_argument("--content-fingerprint", help="Last safely derived delta fingerprint.")
+    parser.add_argument(
+        "--max-automatic-retries",
+        type=int,
+        default=1,
+        choices=range(0, 4),
+        metavar="{0,1,2,3}",
+    )
+    parser.add_argument("--reopen-trigger", choices=sorted(REOPEN_TRIGGERS))
+    parser.add_argument(
+        "--material-change",
         action="store_true",
-        help="Permit an early retry only because access changed, a new material lead arrived, or the user explicitly requested it.",
+        help="Create an Updates record only for a useful, high-materiality surface discovery or source-health change.",
     )
     return parser
 
