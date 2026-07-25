@@ -98,3 +98,19 @@ ENVIRONMENT NOT READY
 
 Stop immediately. Do not proceed into research, source inspection, proposals,
 or data changes while working around the failure.
+
+## Platform failure rule
+
+When a platform or environment failure is identified during any tranche, it
+becomes the active hard gate immediately. The tranche switches to capability
+repair only until the environment is either:
+
+- `READY`, with the exact failed capability retested successfully; or
+- blocked on one exact external dependency, with evidence naming the machine,
+  network, security, account, or service component that must change.
+
+Do not let platform failures spill into repeated research retries, proposal
+or process expansion, schema or workflow redesign, or workaround-heavy ordinary
+operation. Recovery work may diagnose and fix the platform layer, but useful
+project work resumes only after the gate is green or the external blocker is
+crisply named.

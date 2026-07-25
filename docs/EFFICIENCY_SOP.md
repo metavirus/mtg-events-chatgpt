@@ -30,6 +30,14 @@ That means:
 - checkpoint before risky edits
 - stop once the question has been answered
 
+Platform readiness is a hard gate, not a background inconvenience. When a
+runtime, connector, browser, network, authentication, or CLI failure is
+identified as an environment problem, the current tranche becomes capability
+repair only. Do not keep researching, redesigning workflow, expanding proposals,
+or inventing workaround-heavy ordinary operation while the platform is half
+ready. Resume useful work only when the exact capability is `READY`, or stop
+with one exact external dependency named.
+
 Generated JSON/export files are recovery/debug artifacts, not a normal research
 surface. Do not compare against, refresh, or reason from JSON during ordinary
 batches unless the task is explicitly about fallback/export behavior or the
