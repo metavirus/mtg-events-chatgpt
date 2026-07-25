@@ -82,6 +82,7 @@ const state = {
   favoritesOnly: false,
   showReadSignals: false,
   highlightsCollapsed: false,
+  placePickerOpen: false,
   search: '',
   selectedPlaceId: null,
   selectedPlaceTab: 'overview',
@@ -728,6 +729,10 @@ function bindStaticEvents() {
     renderCurrentRoute();
   });
   document.getElementById('placeSearch').addEventListener('input', renderPlaces);
+  document.getElementById('placeSearchMobile').addEventListener('input', (event) => {
+    document.getElementById('placeSearch').value = event.target.value;
+    renderPlaces();
+  });
   document.getElementById('distanceFilter').addEventListener('input', (event) => {
     document.getElementById('distanceValue').textContent = `${event.target.value} miles`;
   });
@@ -802,6 +807,7 @@ function handleClick(event) {
     if (placeTrigger.dataset.placeMode === 'drawer') return openPlaceDrawer(placeTrigger.dataset.placeId);
     if (state.selectedPlaceId !== placeTrigger.dataset.placeId) state.selectedPlaceTab = 'overview';
     state.selectedPlaceId = placeTrigger.dataset.placeId;
+    closePlacePicker();
     navigate('places');
     renderPlaces();
     return;
@@ -854,12 +860,18 @@ function handleClick(event) {
   if (event.target.closest('#jumpWeekend')) return jumpToWeekend();
   if (event.target.closest('#openFilters') || event.target.closest('[data-action="open-filters"]')) return openFilters();
   if (event.target.closest('[data-close-filters]')) return closeFilters();
+  if (event.target.closest('#openPlacePicker')) return openPlacePicker();
+  if (event.target.closest('#closePlacePicker')) return closePlacePicker();
   if (event.target.closest('#applyFilters')) return applyFilters();
   if (event.target.closest('#clearFilters')) return resetFilters();
   if (event.target.closest('#favoritesToggle')) return toggleFavoritesOnly();
   if (event.target.closest('#coverageButton')) return navigate('research');
   if (event.target.closest('#toggleHighlights')) return toggleHighlightsRail();
-  if (event.target.closest('#drawerClose') || event.target.id === 'drawerScrim') return closeDrawer();
+  if (event.target.closest('#drawerClose') || event.target.id === 'drawerScrim') {
+    closeDrawer();
+    closePlacePicker();
+    return;
+  }
   if (event.target.closest('#activityLogButton')) return openActivityLog();
   if (event.target.closest('#openQuickNote')) return openQuickNote();
   if (event.target.closest('#mobileMenu') || event.target.closest('#mobileMore')) return document.querySelector('.side-rail').classList.toggle('mobile-open');
@@ -882,6 +894,7 @@ function handleKeys(event) {
   if (event.key === 'Escape') {
     closeDrawer();
     closeFilters();
+    closePlacePicker();
     document.querySelector('.side-rail').classList.remove('mobile-open');
   }
 }
@@ -932,6 +945,7 @@ function navigate(route, options = {}) {
   document.querySelectorAll('[data-route-panel]').forEach((panel) => panel.classList.toggle('active', panel.dataset.routePanel === route));
   document.querySelectorAll('.nav-item[data-route], .mobile-nav [data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === route));
   document.querySelector('.side-rail').classList.remove('mobile-open');
+  closePlacePicker();
   renderCurrentRoute();
   document.querySelector('.workspace').scrollTo?.(0, 0);
 }
@@ -1758,6 +1772,12 @@ function placesByDistance() {
   });
 }
 
+function sortPlacesByMode(mode) {
+  if (mode === 'best') return rankedStores();
+  if (mode === 'distance') return placesByDistance();
+  return placesByName();
+}
+
 function storeScore(place) {
   return fitScoreFor(place) * 20 - Math.min(numericDistance(place) ?? 28, 40) + (place.researchStatus === 'partial' ? 8 : 0);
 }
@@ -1994,22 +2014,40 @@ function renderEventCatalogMonth(events, start) {
 
 function renderPlaces() {
   const list = document.getElementById('placeList');
-  const query = document.getElementById('placeSearch').value.trim().toLowerCase();
-  const sortedPlaces = state.placeSort === 'distance' ? placesByDistance() : placesByName();
+  const mobileList = document.getElementById('placeListMobile');
+  const desktopSearch = document.getElementById('placeSearch');
+  const mobileSearch = document.getElementById('placeSearchMobile');
+  if (state.placeFilter === 'hidden') state.placeFilter = 'all';
+  const query = desktopSearch.value.trim().toLowerCase();
+  const sortedPlaces = sortPlacesByMode(state.placeSort);
   let places = sortedPlaces.filter((place) => !query || `${place.name} ${place.city} ${place.assessmentNotes}`.toLowerCase().includes(query));
   if (state.placeFilter === 'partial') places = places.filter((place) => place.researchStatus === 'partial');
   if (state.placeFilter === 'favorites') places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
-  if (state.placeFilter === 'hidden') places = places.filter((place) => state.personal.hidden[`place:${place.id}`]);
   if (state.favoritesOnly) places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
-  if (!places.some((place) => place.id === state.selectedPlaceId)) state.selectedPlaceId = places[0]?.id;
-  list.innerHTML = places.map((place) => {
-    const active = place.id === state.selectedPlaceId;
-    const favorite = state.personal.favorites[`place:${place.id}`];
-    const hidden = state.personal.hidden[`place:${place.id}`];
-    const evaluation = normalizedEvaluation(place);
-    return `<button class="entity-list-item ${active ? 'active' : ''} ${hidden ? 'deprioritized' : ''}" data-place-id="${place.id}"><span class="entity-avatar">${initials(place.name)}</span><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small><em class="${place.researchStatus === 'partial' ? 'mint-text' : 'amber-text'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'} · ${escapeHtml(evaluation.fitGrade)} · ${escapeHtml(evaluation.confidence)} confidence</em></span><span class="list-heart">${hidden ? '↓' : favorite ? '♥' : ''}</span></button>`;
-  }).join('') || emptyState('No places match', 'Try another name or filter.');
+  const hiddenPlaces = places.filter((place) => state.personal.hidden[`place:${place.id}`]);
+  const visiblePlaces = places.filter((place) => !state.personal.hidden[`place:${place.id}`]);
+  const candidatePool = [...visiblePlaces, ...hiddenPlaces];
+  if (!candidatePool.some((place) => place.id === state.selectedPlaceId)) state.selectedPlaceId = visiblePlaces[0]?.id || hiddenPlaces[0]?.id;
+  list.innerHTML = placeListMarkup(visiblePlaces, hiddenPlaces);
+  mobileList.innerHTML = placeListMarkup(visiblePlaces, hiddenPlaces);
+  mobileSearch.value = query;
+  syncPlaceControls();
+  renderPlacePickerSummary(visiblePlaces, hiddenPlaces);
   renderPlaceDetail(store(state.selectedPlaceId));
+}
+
+function placeListMarkup(visiblePlaces, hiddenPlaces) {
+  const primaryMarkup = visiblePlaces.map((place) => placeListRow(place)).join('');
+  const hiddenMarkup = hiddenPlaces.length ? `<details class="entity-list-hidden-group"><summary><strong>Hidden / low-fit</strong><small>${hiddenPlaces.length} deprioritized</small></summary><div class="entity-list-hidden-items">${hiddenPlaces.map((place) => placeListRow(place, true)).join('')}</div></details>` : '';
+  const markup = `${primaryMarkup}${hiddenMarkup}`;
+  return markup || emptyState('No places match', 'Try another name or filter.');
+}
+
+function placeListRow(place, hidden = false) {
+  const active = place.id === state.selectedPlaceId;
+  const favorite = state.personal.favorites[`place:${place.id}`];
+  const evaluation = normalizedEvaluation(place);
+  return `<button class="entity-list-item ${active ? 'active' : ''} ${hidden ? 'deprioritized' : ''}" data-place-id="${place.id}"><span class="entity-avatar">${initials(place.name)}</span><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small><em class="${place.researchStatus === 'partial' ? 'mint-text' : 'amber-text'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'} · ${escapeHtml(evaluation.fitGrade)} · ${escapeHtml(evaluation.confidence)} confidence</em></span><span class="list-heart">${hidden ? '↓' : favorite ? '♥' : ''}</span></button>`;
 }
 
 function renderPlaceDetail(place) {
@@ -2961,8 +2999,45 @@ function openDrawer(html) {
 function closeDrawer() {
   document.getElementById('detailDrawer').classList.remove('open');
   document.getElementById('detailDrawer').setAttribute('aria-hidden', 'true');
-  document.getElementById('drawerScrim').classList.add('hidden');
-  document.body.classList.remove('drawer-open');
+  if (!document.getElementById('placePickerDrawer').classList.contains('open') && !document.getElementById('filterDrawer').classList.contains('open')) {
+    document.getElementById('drawerScrim').classList.add('hidden');
+    document.body.classList.remove('drawer-open');
+  }
+}
+
+function openPlacePicker() {
+  const drawer = document.getElementById('placePickerDrawer');
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden', 'false');
+  document.getElementById('drawerScrim').classList.remove('hidden');
+  document.body.classList.add('drawer-open');
+  state.placePickerOpen = true;
+  setTimeout(() => document.getElementById('placeSearchMobile').focus(), 50);
+}
+
+function closePlacePicker() {
+  const drawer = document.getElementById('placePickerDrawer');
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
+  state.placePickerOpen = false;
+  if (!document.getElementById('detailDrawer').classList.contains('open') && !document.getElementById('filterDrawer').classList.contains('open')) {
+    document.getElementById('drawerScrim').classList.add('hidden');
+    document.body.classList.remove('drawer-open');
+  }
+}
+
+function syncPlaceControls() {
+  document.querySelectorAll('[data-place-filter]').forEach((button) => button.classList.toggle('active', button.dataset.placeFilter === state.placeFilter));
+  document.querySelectorAll('[data-place-sort]').forEach((button) => button.classList.toggle('active', button.dataset.placeSort === state.placeSort));
+}
+
+function renderPlacePickerSummary(visiblePlaces, hiddenPlaces) {
+  const label = document.getElementById('placePickerLabel');
+  if (!label) return;
+  const selected = store(state.selectedPlaceId);
+  const visibleCount = visiblePlaces.length;
+  const hiddenSuffix = hiddenPlaces.length ? ` + ${hiddenPlaces.length} hidden` : '';
+  label.textContent = selected ? `${selected.name} · ${visibleCount} shown${hiddenSuffix}` : `${visibleCount} places${hiddenSuffix}`;
 }
 
 function openFilters() {

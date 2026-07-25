@@ -166,10 +166,18 @@
 
         <section class="route-panel" id="route-places" data-route-panel="places">
           <div class="page-heading"><div><p class="eyebrow">Stores & venues</p><h1>Places</h1><p class="heading-subtitle">Compare opportunity, community signals, source coverage, and practical fit.</p></div></div>
+          <div class="place-mobile-bar mobile-only">
+            <div class="sort-toggle compact" role="group" aria-label="Sort places">
+              <button data-place-sort="best">Best fit</button>
+              <button data-place-sort="distance">Nearby</button>
+              <button class="active" data-place-sort="name">A-Z</button>
+            </div>
+            <button id="openPlacePicker" class="soft-button place-picker-toggle" type="button" aria-haspopup="dialog" aria-controls="placePickerDrawer"><span id="placePickerLabel">Browse places</span><span class="caret-icon" aria-hidden="true">⌃</span></button>
+          </div>
           <div class="master-detail">
             <aside class="master-pane">
               <div class="pane-search"><span>&#8981;</span><input id="placeSearch" type="search" placeholder="Find a place..."></div>
-              <div class="master-controls"><div class="master-filters"><button class="mini-chip active" data-place-filter="all">All</button><button class="mini-chip" data-place-filter="partial">Reviewed</button><button class="mini-chip icon-chip" data-place-filter="favorites" aria-label="Favorites" title="Favorites"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6c-1.7-1.8-4.6-1.8-6.3 0L12 7.1 9.5 4.6c-1.7-1.8-4.6-1.8-6.3 0-1.8 1.9-1.8 4.9 0 6.8L12 20l8.8-8.6c1.8-1.9 1.8-4.9 0-6.8Z"/></svg></button><button class="mini-chip icon-chip" data-place-filter="hidden" aria-label="Deprioritized" title="Deprioritized"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14.5v4.2c0 1.1.8 2 1.9 2.1h.2c.8 0 1.5-.5 1.8-1.2l2-4.7h3.4c1.2 0 2.1-1 2-2.2L20.5 5c-.1-1.1-1-1.9-2.1-1.9H8.8c-.6 0-1.1.2-1.5.6L3.5 7.5v7h6.5Z"/><path d="M7.5 4v10.5"/></svg></button></div><div class="sort-toggle" role="group" aria-label="Sort places"><button class="active" data-place-sort="name">A-Z</button><button data-place-sort="distance">Distance</button></div></div>
+              <div class="master-controls"><div class="master-filters"><button class="mini-chip active" data-place-filter="all">All</button><button class="mini-chip" data-place-filter="partial">Reviewed</button><button class="mini-chip icon-chip" data-place-filter="favorites" aria-label="Favorites" title="Favorites"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6c-1.7-1.8-4.6-1.8-6.3 0L12 7.1 9.5 4.6c-1.7-1.8-4.6-1.8-6.3 0-1.8 1.9-1.8 4.9 0 6.8L12 20l8.8-8.6c1.8-1.9 1.8-4.9 0-6.8Z"/></svg></button></div><div class="sort-toggle" role="group" aria-label="Sort places"><button data-place-sort="best">Best fit</button><button data-place-sort="distance">Nearby</button><button class="active" data-place-sort="name">A-Z</button></div></div>
               <div id="placeList" class="entity-list"></div>
             </aside>
             <article id="placeDetail" class="detail-pane"></article>
@@ -219,6 +227,17 @@
       <fieldset><legend>Extra narrowing</legend><label><input id="hideCompetitive" type="checkbox" checked> Hide cEDH / optimized / high-power / competitive by default</label><label><input id="onlyFree" type="checkbox"> Free events only</label></fieldset>
     </div>
     <div class="drawer-footer"><button class="soft-button" id="clearFilters">Reset</button><button class="primary-button" id="applyFilters">Show events</button></div>
+  </aside>
+
+  <aside id="placePickerDrawer" class="place-picker-drawer" role="dialog" aria-modal="true" aria-labelledby="placePickerTitle" aria-hidden="true">
+    <div class="place-picker-handle" aria-hidden="true"></div>
+    <div class="drawer-header"><div><p class="eyebrow">Browse the map</p><h2 id="placePickerTitle">Places</h2></div><button class="drawer-close inline" id="closePlacePicker" aria-label="Close places">&times;</button></div>
+    <div class="pane-search"><span>&#8981;</span><input id="placeSearchMobile" type="search" placeholder="Find a place..."></div>
+    <div class="place-picker-controls">
+      <div class="master-filters"><button class="mini-chip active" data-place-filter="all">All</button><button class="mini-chip" data-place-filter="partial">Reviewed</button><button class="mini-chip icon-chip" data-place-filter="favorites" aria-label="Favorites" title="Favorites"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6c-1.7-1.8-4.6-1.8-6.3 0L12 7.1 9.5 4.6c-1.7-1.8-4.6-1.8-6.3 0-1.8 1.9-1.8 4.9 0 6.8L12 20l8.8-8.6c1.8-1.9 1.8-4.9 0-6.8Z"/></svg></button></div>
+      <p class="field-help">Deprioritized places stay tucked away at the end unless you open them.</p>
+    </div>
+    <div id="placeListMobile" class="entity-list mobile-picker-list"></div>
   </aside>
 
   <div id="toastRegion" class="toast-region" aria-live="polite"></div>
