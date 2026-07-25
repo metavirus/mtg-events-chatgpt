@@ -1,0 +1,297 @@
+{
+  "proposal_id": "collector-legion-hobbit-prerelease-calibration-2026-07-25",
+  "description": "Capture Collector Legion's current August 7-9, 2026 Hobbit prerelease sessions from the official special-events catalog without reopening broader Collector Legion research.",
+  "created_at": "2026-07-25T18:12:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {
+        "id": "src-collector-events-catalog-2026-07-14"
+      },
+      "fields": {
+        "id": "src-collector-events-catalog-2026-07-14",
+        "health_status": "current",
+        "last_checked": "2026-07-25"
+      },
+      "reason": "Official Collector Legion special-events catalog was rechecked on 2026-07-25 and currently lists the August 7-9, 2026 Hobbit prerelease sessions."
+    },
+    {
+      "action": "insert",
+      "table": "event_series",
+      "key": {
+        "id": "collector-legion-hobbit-prerelease-2026"
+      },
+      "fields": {
+        "id": "collector-legion-hobbit-prerelease-2026",
+        "venue_id": "collector-legion",
+        "community_id": null,
+        "title": "The Hobbit Prerelease",
+        "format": "Sealed",
+        "event_type": "prerelease",
+        "bracket": "unknown",
+        "recurrence": null,
+        "default_start_time": null,
+        "start_date": "2026-08-07",
+        "end_date": "2026-08-09",
+        "entry_fee": 35.0,
+        "currency": "USD",
+        "details": "Collector Legion's official special-events catalog currently lists five The Hobbit prerelease sessions across August 7-9, 2026: Friday 2:00 PM and 7:00 PM, Saturday 12:00 PM and 5:00 PM, and Sunday 12:00 PM and 5:00 PM. This is current special-event inventory rather than a new venue recommendation; Tuesday Commander remains the cleaner first routine visit lane.",
+        "confidence": "high",
+        "event_status": "active",
+        "last_verified": "2026-07-25"
+      },
+      "reason": "Add the currently visible Collector Legion Hobbit prerelease weekend from the official specials page."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": "collector-legion-hobbit-prerelease-2026",
+        "occurrence_id": null
+      },
+      "fields": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": "collector-legion-hobbit-prerelease-2026",
+        "occurrence_id": null,
+        "relationship": "Official Collector Legion special-events catalog supports the August 7-9, 2026 Hobbit prerelease weekend."
+      },
+      "reason": "Attach the official specials page to the Collector Legion Hobbit prerelease series."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-07-14-00"
+      },
+      "fields": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-07-14-00",
+        "series_id": "collector-legion-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "14:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 35.0,
+        "capacity": null,
+        "details": "Official Collector Legion special-events catalog lists The Hobbit Prerelease on Friday, August 7, 2026 at 2:00 PM for $35."
+      },
+      "reason": "Add the Friday 2:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-07-14-00"
+      },
+      "fields": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-07-14-00",
+        "relationship": "Official special-events catalog support"
+      },
+      "reason": "Attach the official specials page to the Friday 2:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-07-19-00"
+      },
+      "fields": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-07-19-00",
+        "series_id": "collector-legion-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-07",
+        "start_time": "19:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 35.0,
+        "capacity": null,
+        "details": "Official Collector Legion special-events catalog lists The Hobbit Prerelease on Friday, August 7, 2026 at 7:00 PM for $35."
+      },
+      "reason": "Add the Friday 7:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-07-19-00"
+      },
+      "fields": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-07-19-00",
+        "relationship": "Official special-events catalog support"
+      },
+      "reason": "Attach the official specials page to the Friday 7:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-08-12-00"
+      },
+      "fields": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-08-12-00",
+        "series_id": "collector-legion-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "12:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 35.0,
+        "capacity": null,
+        "details": "Official Collector Legion special-events catalog lists The Hobbit Prerelease on Saturday, August 8, 2026 at 12:00 PM for $35."
+      },
+      "reason": "Add the Saturday 12:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-08-12-00"
+      },
+      "fields": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-08-12-00",
+        "relationship": "Official special-events catalog support"
+      },
+      "reason": "Attach the official specials page to the Saturday 12:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-08-17-00"
+      },
+      "fields": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-08-17-00",
+        "series_id": "collector-legion-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-08",
+        "start_time": "17:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 35.0,
+        "capacity": null,
+        "details": "Official Collector Legion special-events catalog lists The Hobbit Prerelease on Saturday, August 8, 2026 at 5:00 PM for $35."
+      },
+      "reason": "Add the Saturday 5:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-08-17-00"
+      },
+      "fields": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-08-17-00",
+        "relationship": "Official special-events catalog support"
+      },
+      "reason": "Attach the official specials page to the Saturday 5:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-09-12-00"
+      },
+      "fields": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-09-12-00",
+        "series_id": "collector-legion-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "12:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 35.0,
+        "capacity": null,
+        "details": "Official Collector Legion special-events catalog lists The Hobbit Prerelease on Sunday, August 9, 2026 at 12:00 PM for $35."
+      },
+      "reason": "Add the Sunday 12:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-09-12-00"
+      },
+      "fields": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-09-12-00",
+        "relationship": "Official special-events catalog support"
+      },
+      "reason": "Attach the official specials page to the Sunday 12:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_occurrences",
+      "key": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-09-17-00"
+      },
+      "fields": {
+        "id": "collector-legion-hobbit-prerelease-2026-08-09-17-00",
+        "series_id": "collector-legion-hobbit-prerelease-2026",
+        "occurrence_date": "2026-08-09",
+        "start_time": "17:00:00",
+        "end_time": null,
+        "evidence_state": "single_source",
+        "occurrence_status": "confirmed",
+        "entry_fee": 35.0,
+        "capacity": null,
+        "details": "Official Collector Legion special-events catalog lists The Hobbit Prerelease on Sunday, August 9, 2026 at 5:00 PM for $35."
+      },
+      "reason": "Add the Sunday 5:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "event_sources",
+      "key": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-09-17-00"
+      },
+      "fields": {
+        "source_id": "src-collector-events-catalog-2026-07-14",
+        "series_id": null,
+        "occurrence_id": "collector-legion-hobbit-prerelease-2026-08-09-17-00",
+        "relationship": "Official special-events catalog support"
+      },
+      "reason": "Attach the official specials page to the Sunday 5:00 PM Collector Legion Hobbit prerelease occurrence."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "collector-legion-hobbit-prerelease-calibration-2026-07-25"
+      },
+      "fields": {
+        "id": "collector-legion-hobbit-prerelease-calibration-2026-07-25",
+        "detected_at": "2026-07-25T18:12:00-07:00",
+        "change_type": "new_event",
+        "entity_type": "venue",
+        "entity_id": "collector-legion",
+        "summary": "Collector Legion's official special-events catalog now contributes five August 7-9, 2026 Hobbit prerelease sessions as current planning inventory without reopening the broader venue assessment.",
+        "review_status": "accepted"
+      },
+      "reason": "Create one concise Updates marker for the Collector Legion prerelease delta."
+    }
+  ]
+}
