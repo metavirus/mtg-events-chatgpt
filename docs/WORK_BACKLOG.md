@@ -20,7 +20,9 @@ Use it for:
   `venue_discovery_candidates`, and
   `venue_identity_resolution_candidates`. `venues.lifecycle_state` is the
   durable lifecycle authority. `steady_state` venues do not return to holistic
-  batches for residual texture curiosity.
+  batches for residual texture curiosity. For user-shaped queue work, use
+  `venue_candidates_for_user(...)` so personally deprioritized or hidden venues
+  stay out of ordinary discovery, retry, and monitoring selections.
 
 - Runtime lane contract is now explicit:
   - `baseline pass`: only for `venue_baseline_candidates`; finite

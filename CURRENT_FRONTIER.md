@@ -64,7 +64,10 @@ Canonical operating details:
    `venue_baseline_candidates`, `venue_surface_retry_candidates`,
    `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
    `venue_identity_resolution_candidates`. Markdown ledgers are context, not
-   operational selectors.
+   operational selectors. For queues shaped around the user's personal app
+   preferences, use `venue_candidates_for_user(...)` so venues marked
+   `deprioritize` or `hide` do not re-enter ordinary discovery, retry, or
+   monitoring work.
 2. Keep every runtime research task inside one explicit lane:
    `baseline pass`, `identity-resolution pass`, or
    `steady-state monitoring pass`. Time budgets and hard stop conditions now
