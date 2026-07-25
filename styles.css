@@ -401,6 +401,13 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .sort-toggle { display: flex; padding: 2px; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
 .sort-toggle button { height: 27px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font-size: 8px; cursor: pointer; }
 .sort-toggle button.active { background: var(--panel-3); color: #fff; }
+.place-sort-control button { display: inline-flex; align-items: center; justify-content: center; }
+.place-sort-control .sort-icon { width: 15px; height: 15px; opacity: .95; }
+.place-sort-control .sort-icon path,
+.place-sort-control .sort-icon circle { fill: currentColor; }
+.place-sort-control .sort-icon[fill="none"] path:first-child,
+.place-sort-control .sort-icon[fill="none"] circle:first-child { fill: none; }
+.place-sort-control .alpha-label { min-width: 44px; padding: 0 10px; font-size: 9px; font-weight: 700; letter-spacing: .04em; }
 .entity-list { display: grid; gap: 5px; }
 .entity-list-item { width: 100%; min-height: 58px; display: grid; grid-template-columns: 32px 1fr auto; align-items: center; gap: 8px; border: 1px solid transparent; border-radius: 10px; background: transparent; padding: 7px; text-align: left; cursor: pointer; }
 .entity-list-item:hover { background: var(--panel-2); }
@@ -746,11 +753,10 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .place-picker-controls .master-filters.compact-inline .mini-chip { height: 40px; padding-left: 14px; padding-right: 14px; }
 .place-picker-controls .master-filters.compact-inline .mini-chip.icon-chip { width: 40px; min-width: 40px; padding: 0; }
 .place-picker-sort { width: auto; flex: 0 0 auto; margin-left: auto; }
-.place-picker-sort.icon-only { padding: 3px; }
-.place-picker-sort.icon-only button { min-width: 38px; width: 38px; height: 38px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
-.place-picker-sort .sort-icon { width: 16px; height: 16px; opacity: .95; }
-.place-picker-sort .sort-icon path { fill: currentColor; }
-.place-picker-sort .sort-icon[fill="none"] path { fill: none; }
+.place-picker-sort { padding: 3px; }
+.place-picker-sort button { min-width: 38px; height: 38px; padding: 0 10px; }
+.place-picker-sort .sort-icon { width: 16px; height: 16px; }
+.place-picker-sort .alpha-label { min-width: 48px; }
 .mobile-picker-list { padding-bottom: 8px; }
 
 @media (max-width: 1180px) {
