@@ -408,6 +408,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .place-sort-control .sort-icon[fill="none"] path:first-child,
 .place-sort-control .sort-icon[fill="none"] circle:first-child { fill: none; }
 .place-sort-control .alpha-label { min-width: 44px; padding: 0 10px; font-size: 9px; font-weight: 700; letter-spacing: .04em; }
+.place-sort-control .alpha-label { white-space: nowrap; }
 .entity-list { display: grid; gap: 5px; }
 .entity-list-item { width: 100%; min-height: 58px; display: grid; grid-template-columns: 32px 1fr auto; align-items: center; gap: 8px; border: 1px solid transparent; border-radius: 10px; background: transparent; padding: 7px; text-align: left; cursor: pointer; }
 .entity-list-item:hover { background: var(--panel-2); }
@@ -757,6 +758,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .place-picker-sort button { min-width: 38px; height: 38px; padding: 0 10px; }
 .place-picker-sort .sort-icon { width: 16px; height: 16px; }
 .place-picker-sort .alpha-label { min-width: 48px; }
+.place-picker-sort .alpha-label { white-space: nowrap; }
 .mobile-picker-list { padding-bottom: 8px; }
 
 @media (max-width: 1180px) {
