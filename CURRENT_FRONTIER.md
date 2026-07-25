@@ -74,8 +74,8 @@ Canonical operating details:
 3. Address specific real-use app friction when observed; do not start another
    broad product tranche by default.
 4. Consider the next overhead reduction only as a separate approved tooling
-   tranche: either a narrow typed RPC for WPN-backed event upserts or a direct
-   steward DB execution path.
+   tranche: either a narrow typed helper/RPC for the remaining routine write
+   shapes or further simplification around linked-CLI typed writes.
 
 ## Active boundaries
 

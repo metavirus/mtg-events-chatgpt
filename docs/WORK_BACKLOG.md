@@ -51,6 +51,23 @@ Use it for:
   `public.submit_coordination_item(...)`. The legacy PR/mailbox/intake files
   remain historical fallback only.
 
+- ChatGPT-enabled low-ceremony work lane TBD: build a better integrated path so
+  ordinary ChatGPT can still help productively when Codex usage is exhausted or
+  unavailable. The goal is not a quarantined hazmat workflow; it is a normal
+  bounded contribution lane for structured research refreshes, source leads,
+  surface checks, candidate signals, and possibly narrowly scoped canonical
+  updates where the write shape is already typed and guarded. Design this around
+  direct Supabase-backed intake/promotion rather than file dumps, branch
+  rituals, or manual cleanup archaeology.
+
+- Token-efficiency operating model review TBD: compare the current more-direct
+  working style against the earlier user + steward split. Measure whether
+  keeping more work in one tighter loop is the right default versus using a
+  research-heavy delegated steward. Focus on real costs and benefits:
+  token burn, elapsed time, continuity loss, duplicated context loading,
+  research quality, and whether specialist delegation is still worth it for any
+  bounded lane.
+
 - Coordination cleanup TBD: when a Supabase CLI/session with Edge Function
   delete access is available, cleanly remove or disable the obsolete hosted
   `coordination-capability` temporary proof function. Its repo source and

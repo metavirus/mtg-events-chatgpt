@@ -47,8 +47,8 @@ The repository has already completed these stabilization steps:
   conclusions, and leave a compact source-coverage/closure record;
 - the finite research queue and 2026-07-17 closure audit are recorded in
   `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`;
-- the default worker model is retired for this project: use direct Project
-  Steward execution for small bounded batches unless the user explicitly
+- the default worker model is retired for this project: use direct bounded
+  execution in the current task for small batches unless the user explicitly
   approves a specific exceptional worker.
 
 See also:

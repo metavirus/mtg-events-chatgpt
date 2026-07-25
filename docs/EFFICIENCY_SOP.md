@@ -49,9 +49,9 @@ cataloged. Venue messiness, low confidence, bad fit, no-proxy, or high power
 belongs in metadata, ranking, cautions, and default visibility—not silent
 omission. `research/SOURCE_SOP.md` is the canonical rule.
 
-## Manual steward batches and future automation compatibility
+## Manual bounded batches and future automation compatibility
 
-Manual steward batches are for canonical promotion and judgment, not broad
+Manual bounded batches are for canonical promotion and judgment, not broad
 survey forever. When a pass finds useful but not-yet-canonical material,
 preserve it as a structured observation, candidate Signal, named TBD, or
 coordination item instead of leaving it only in chat memory.
@@ -59,7 +59,7 @@ coordination item instead of leaving it only in chat memory.
 Close a batch once the material planning conclusion is clear. Do not keep
 harvesting blocked social/source surfaces just because they exist; disposition
 them honestly and move on. If a future automated agent provides observations,
-the steward's job should be to review, promote, or disposition them through the
+the reviewing task's job should be to review, promote, or disposition them through the
 controlled workflow, not redo discovery from scratch.
 
 Simple user-decision questions should eventually live in the app or the
@@ -392,12 +392,12 @@ fixed separately rather than a normal cost of research.
 
 ## UI/build efficiency rules
 
-### 0. Default to direct bounded steward execution
+### 0. Default to direct bounded execution
 
-The Project Steward should not delegate ordinary implementation merely because
-the work is called implementation.
+Do not delegate ordinary implementation merely because the work is called
+implementation.
 
-Perform Low-effort work directly in the steward task.
+Perform low-effort work directly in the current task.
 
 Also perform straightforward Medium-effort UI, documentation, validation, and
 narrow debugging directly when the scope is exact and the relevant files are
@@ -405,10 +405,10 @@ known.
 
 Use a worker only when it provides a concrete advantage, such as:
 
-- a specialized capability unavailable in the steward task;
+- a specialized capability unavailable in the current task;
 - large research collection;
 - bulk or repetitive processing;
-- isolated context that materially protects steward continuity;
+- isolated context that materially protects task continuity;
 - work expected to generate substantial tool output;
 - independent verification justified by risk.
 
@@ -442,7 +442,7 @@ Keep direct steward implementation bounded:
 
 If direct implementation begins accumulating broad context, tool-heavy research,
 or multiple workstreams, stop and delegate the next bounded unit rather than
-allowing the steward task to become another giant implementation task.
+allowing the current task to become another giant implementation task.
 
 ### 1. Checkpoint before non-trivial edits
 
