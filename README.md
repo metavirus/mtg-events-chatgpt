@@ -14,6 +14,11 @@ The durable product and research requirements are summarized in
 changing research logic, schemas, ranking, crawler behavior, or interface
 structure.
 
+Before substantive work, the mandatory environment gate is
+[`docs/ENVIRONMENT_READINESS.md`](docs/ENVIRONMENT_READINESS.md). If the
+readiness script reports `ENVIRONMENT NOT READY`, stop before research or data
+work.
+
 The researched visual and interaction direction is documented in
 [`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md).
 
@@ -35,7 +40,7 @@ community sources.
 
 To serve the static application locally, run a tiny local server in this folder:
 
-    python -m http.server 8000
+    .\.venv\Scripts\python.exe -m http.server 8000
 
 Then open:
 
@@ -87,11 +92,12 @@ Optional local hook setup if you use `pre-commit`:
 
 Install the crawler dependencies:
 
-    python -m pip install -r requirements.txt
+    python -m venv .venv
+    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 
 Refresh the public Wizards snapshot:
 
-    python crawler/wizards_locator.py --radius-miles 25 --output output/wizards
+    .\.venv\Scripts\python.exe crawler/wizards_locator.py --radius-miles 25 --output output/wizards
 
 The crawler stores:
 

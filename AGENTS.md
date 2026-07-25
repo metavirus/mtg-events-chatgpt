@@ -1,5 +1,11 @@
 # Agent Instructions
 
+Before substantive research, data, crawler, or app work, run the mandatory
+environment gate in `docs/ENVIRONMENT_READINESS.md`. If
+`scripts/check_environment_readiness.ps1` reports `ENVIRONMENT NOT READY`, stop
+and report the exact missing prerequisite instead of continuing into useful
+work while repairing the environment.
+
 Read `README.md`, `docs/PROJECT_CONTEXT.md`, `CURRENT_FRONTIER.md`, and
 `docs/WORK_BACKLOG.md` before substantive research, data, or app work.
 For a quick reacclimation note in a fresh task, also read

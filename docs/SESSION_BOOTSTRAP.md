@@ -1,5 +1,17 @@
 # Session Bootstrap
 
+## Gate zero: environment readiness
+
+Before research, data, crawler, or app work, run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/check_environment_readiness.ps1
+```
+
+If it reports `ENVIRONMENT NOT READY`, stop. Follow
+[`ENVIRONMENT_READINESS.md`](ENVIRONMENT_READINESS.md); do not begin useful
+work while rediscovering or repairing prerequisites.
+
 Use this note to resume work quickly without re-discovering the current
 baseline, environmental quirks, or recently settled project rules.
 
