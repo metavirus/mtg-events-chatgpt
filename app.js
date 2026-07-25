@@ -1298,6 +1298,7 @@ function eventMatchesSharedFilters(event, options = {}) {
   const { includePreset = true, includeSearch = true, hideCompetitive = state.filters.hideCompetitive } = options;
   const place = store(event.storeId);
   if (!place) return false;
+  if (isPlaceHidden(place.id) || isEventHidden(event)) return false;
   if (place.lifecycleState === 'identity_blocked' && !(event.sourceIds || []).length) return false;
   if (!state.filters.research.includes(place.researchStatus)) return false;
   if (!state.filters.confidence.includes(event.confidence)) return false;
@@ -1749,12 +1750,15 @@ function notableEvents(limit = 12) {
   const start = startOfDay(new Date());
   const events = buildOccurrences(start, endOfDay(addDays(start, 28)), false);
   return [...events]
+    .filter((event) => !isPlaceHidden(event.storeId) && !isEventHidden(event))
     .sort((a, b) => Number(isSpecial(b)) - Number(isSpecial(a)) || freshnessDays(a.lastVerified) - freshnessDays(b.lastVerified) || a.occurrenceDate - b.occurrenceDate)
     .slice(0, limit);
 }
 
 function rankedStores() {
-  return [...DATA.stores].sort((a, b) => storeScore(b) - storeScore(a) || a.distanceMiles - b.distanceMiles);
+  return [...DATA.stores]
+    .filter((place) => !isPlaceHidden(place.id))
+    .sort((a, b) => storeScore(b) - storeScore(a) || a.distanceMiles - b.distanceMiles);
 }
 
 function placesByName() {
@@ -1780,6 +1784,15 @@ function sortPlacesByMode(mode) {
 
 function storeScore(place) {
   return fitScoreFor(place) * 20 - Math.min(numericDistance(place) ?? 28, 40) + (place.researchStatus === 'partial' ? 8 : 0);
+}
+
+function isPlaceHidden(placeId) {
+  return !!state.personal.hidden[`place:${placeId}`];
+}
+
+function isEventHidden(event) {
+  if (!event) return false;
+  return !!state.personal.hidden[eventPreferenceKey(event)] || isPlaceHidden(event.storeId);
 }
 
 function placeFitPhrase(place) {
@@ -2862,6 +2875,10 @@ function updateAuthChrome() {
   if (!button) return;
   button.textContent = personalAuth.user ? (personalAuth.user.email?.[0] || 'K').toUpperCase() : 'K';
   button.classList.toggle('signed-in', !!personalAuth.user);
+  button.classList.toggle('local-only', !personalAuth.user);
+  button.classList.toggle('syncing', personalAuth.status === 'syncing');
+  button.classList.toggle('sync-error', personalAuth.status === 'error');
+  button.dataset.authState = personalAuth.user ? personalAuth.status : 'local';
   button.setAttribute('aria-label', personalAuth.user ? 'Open signed-in personal preferences' : 'Sign in to save personal preferences');
   button.title = personalAuth.message || 'Personal preferences';
 }
@@ -2961,12 +2978,12 @@ function openScoreExplanation(place) {
 }
 
 function openDiscoveryQueue() {
-  const places = DATA.stores.filter((place) => place.researchStatus !== 'partial').sort((a, b) => (numericDistance(a) ?? 999) - (numericDistance(b) ?? 999));
+  const places = DATA.stores.filter((place) => place.researchStatus !== 'partial' && !isPlaceHidden(place.id)).sort((a, b) => (numericDistance(a) ?? 999) - (numericDistance(b) ?? 999));
   openDrawer(`<div class="drawer-kicker"><span class="status-chip amber">Discovery queue</span></div><h1 id="drawerTitle">Lightly vetted places</h1><p class="drawer-lead">These places are still in the queue for stronger corroboration before they should be treated as serious bets.</p><section class="drawer-section"><div class="place-occurrences">${places.map((place) => `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${numericDistance(place) == null ? '?' : numericDistance(place).toFixed(0)}</strong>mi</time><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${truncate(place.assessmentNotes || 'Needs synthesis', 110)}</small></span><span class="status-chip amber">Discovery-level</span></button>`).join('')}</div></section>`);
 }
 
 function openReviewedPlaces() {
-  const places = DATA.stores.filter((place) => place.researchStatus === 'partial').sort((a, b) => storeScore(b) - storeScore(a));
+  const places = DATA.stores.filter((place) => place.researchStatus === 'partial' && !isPlaceHidden(place.id)).sort((a, b) => storeScore(b) - storeScore(a));
   openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">Reviewed places</span></div><h1 id="drawerTitle">Places with deeper work</h1><p class="drawer-lead">These places have moved beyond raw discovery and now support a real planning judgment.</p><section class="drawer-section"><div class="place-occurrences">${places.map((place) => { const evaluation = normalizedEvaluation(place); return `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${escapeHtml(evaluation.fitGrade)}</strong>${Number(evaluation.fitScore).toFixed(1)}</time><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small></span><span class="status-chip ${evaluation.candidateStatus === 'promoted' ? 'mint' : 'amber'}">${evaluation.candidateStatus === 'promoted' ? 'Promoted' : 'Working'}</span></button>`; }).join('')}</div></section>`);
 }
 

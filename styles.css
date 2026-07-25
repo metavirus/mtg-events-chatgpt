@@ -81,8 +81,13 @@ kbd { font: 10px var(--font); color: var(--muted); border: 1px solid var(--line-
 .coverage-ring::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--bg); }
 .coverage-ring { isolation: isolate; }
 .coverage-ring::before { content: "49"; position: absolute; z-index: 1; font-size: 8px; }
-.avatar-button { width: 36px; min-height: 36px; border-radius: 50%; background: linear-gradient(145deg, #323b55, #1c2335); color: #fff; font-weight: 700; }
+.avatar-button { position: relative; width: 36px; min-height: 36px; border-radius: 50%; background: linear-gradient(145deg, #323b55, #1c2335); color: #fff; font-weight: 700; }
+.avatar-button::after { content: ""; position: absolute; right: 1px; bottom: 1px; width: 9px; height: 9px; border-radius: 50%; border: 2px solid #111621; background: #7f8aa3; }
 .avatar-button.signed-in { border-color: rgba(84,212,167,.55); box-shadow: 0 0 0 3px rgba(84,212,167,.08); }
+.avatar-button.signed-in::after { background: var(--mint); }
+.avatar-button.local-only::after { background: #7f8aa3; }
+.avatar-button.syncing::after { background: var(--amber); box-shadow: 0 0 0 4px rgba(243,183,95,.12); }
+.avatar-button.sync-error::after { background: var(--coral); box-shadow: 0 0 0 4px rgba(241,119,120,.10); }
 .icon-button { width: 36px; padding: 0; background: transparent; color: var(--muted); }
 .icon-button:hover { color: #fff; background: var(--panel-3); }
 .text-button { min-height: auto; padding: 2px; background: transparent; border: 0; color: var(--sky); }
