@@ -163,9 +163,13 @@ The script provides:
 - `export-json`: exports deterministic recovery JSON from Supabase;
 - `verify-export`: verifies a generated export directory.
 
-Routine surface checks do not use this script by default. Use
-`scripts/record_surface_check.py`, the tiny wrapper around the typed
-`record_entity_surface_check(...)` RPC.
+Routine typed RPC lanes do not use this script by default.
+
+- Use `scripts/record_surface_check.py` for ordinary surface dispositions.
+- Use `scripts/record_official_event.py official-event` for one clean
+  attributable official standalone or finite event occurrence.
+- Use `scripts/record_official_event.py recurring-occurrence` for one official
+  dated occurrence attached to an existing recurring series.
 
 The script uses the browser-safe Supabase URL and publishable key from
 `supabase/project-config.json` for read-only exports. It does not require or
@@ -183,8 +187,9 @@ SQL during the live apply.
 
 Use `scripts/record_surface_check.py` when the work is only recording source or
 surface disposition. It exposes only the exact RPC fields, supports dry-run and
-live modes, prints the RPC return columns, and can optionally add an idempotent
-replay check. It does not create durable repo artifacts.
+live modes, can execute directly through the linked Supabase CLI, prints the
+RPC return columns, and can optionally add an idempotent replay check. It does
+not create durable repo artifacts.
 
 Example connector-friendly dry run:
 
@@ -200,6 +205,7 @@ python.exe scripts/record_surface_check.py `
 ```
 
 Add `--live` to prepare the live RPC call for connector execution, or add
+`--execute-linked` to run directly through `supabase db query --linked`, or add
 `--execute` only when a `--database-url`, `DATABASE_URL`, or `SUPABASE_DB_URL`
 backend is configured. Add `--replay-check` for a live idempotency check.
 
@@ -218,6 +224,56 @@ The call should include:
 
 If the surface result creates a later task, link or create that task through the
 existing coordination/request tables. Do not create a new queue.
+
+## Routine typed event format
+
+Use `scripts/record_official_event.py` when the work is a clean attributable
+event delta that already fits a typed steward-only RPC.
+
+Operator lanes:
+
+- `official-event`: one attributable official standalone or finite event
+  occurrence. Suitable for official events pages, calendars, or event-platform
+  listings when venue identity is already safe enough.
+- `recurring-occurrence`: one official dated occurrence attached to an existing
+  recurring series. Suitable when the recurring series already exists and only a
+  dated official occurrence needs to be attached without mutating the recurring
+  series shape.
+
+Example live linked CLI run for a recurring-series occurrence:
+
+```powershell
+python.exe scripts/record_official_event.py recurring-occurrence `
+  --live `
+  --execute-linked `
+  --idempotency-key example-recurring-occurrence-YYYY-MM-DD `
+  --venue-id example-venue `
+  --series-id example-recurring-series `
+  --occurrence-id example-occurrence `
+  --occurrence-date 2026-08-07 `
+  --start-time 18:00 `
+  --source-id src-example `
+  --source-label "Official events page — Example Store" `
+  --source-url "https://example.com/events" `
+  --summary "Official events page confirms Friday Commander on August 7, 2026."
+```
+
+For both typed event lanes:
+
+- default to dry-run when input certainty is still being checked;
+- use `--execute-linked` as the default operator path in a ready environment;
+- expect the returned IDs directly from the RPC:
+  `series_id`, `occurrence_id`, `source_id`, `outcome`, `wrote`,
+  `research_change_id`;
+- use `--replay-check` only when you need an explicit idempotency proof;
+- do not add proposal JSON, SQL packages, Markdown run notes, text-integrity
+  checks, or Git commits for routine database-only event writes.
+
+Required verification is proportional:
+
+- routine success: returned IDs plus `outcome`/`wrote`;
+- optional replay: one repeated live call when idempotency needs proof;
+- deeper readback only when the RPC output or source attribution is anomalous.
 
 ## Proposal format
 

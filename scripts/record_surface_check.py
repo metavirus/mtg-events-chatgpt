@@ -3,19 +3,28 @@
 This helper is intentionally narrow. It does not support proposals, event
 writes, evaluations, Signals, schema changes, exports, or generated artifacts.
 
-By default it prints connector-friendly SQL for the requested dry-run or live
-RPC call. With --execute and a database URL it runs the SQL through psql and
-prints the RPC return fields.
+By default it prints linked-CLI-friendly SQL for the requested dry-run or live
+RPC call. With --execute-linked it runs the SQL through `supabase db query
+--linked`; with --execute and a database URL it runs through psql. Both paths
+print the RPC return fields directly.
 """
 
 from __future__ import annotations
 
 import argparse
-import os
-import shutil
-import subprocess
 import sys
 from datetime import datetime, timezone
+
+from supabase_typed_rpc import (
+    linked_query_rows_or_raise,
+    print_rpc_rows,
+    resolve_database_url,
+    run_linked_query,
+    run_psql,
+    sql_literal,
+    sql_timestamptz,
+    sql_uuid,
+)
 
 
 ENTITY_TYPES = {"venue", "community"}
@@ -50,26 +59,6 @@ MONITORING_MODES = {
     "discovery_triggered",
 }
 REOPEN_TRIGGERS = {"new_lead", "access_changed", "user_request"}
-
-
-def sql_literal(value: object) -> str:
-    if value is None:
-        return "NULL"
-    if isinstance(value, bool):
-        return "true" if value else "false"
-    text = str(value)
-    return "'" + text.replace("'", "''") + "'"
-
-
-def sql_timestamptz(value: str) -> str:
-    return f"{sql_literal(value)}::timestamptz"
-
-
-def sql_uuid(value: str | None) -> str:
-    if not value:
-        return "NULL::uuid"
-    return f"{sql_literal(value)}::uuid"
-
 
 def build_eligibility_guard(args: argparse.Namespace) -> str:
     if args.reopen_trigger:
@@ -138,22 +127,12 @@ from public.entity_surface_coverage
 where idempotency_key = {sql_literal(args.idempotency_key)};"""
 
 
-def run_psql(sql: str, database_url: str) -> subprocess.CompletedProcess[str]:
-    if not shutil.which("psql"):
-        raise RuntimeError("psql is not available on PATH")
-    return subprocess.run(
-        ["psql", database_url, "--set", "ON_ERROR_STOP=1", "--no-psqlrc", "--command", sql],
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-
-
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--dry-run", action="store_true", default=True, help="Validate through the RPC without writing. Default.")
     mode.add_argument("--live", action="store_true", help="Prepare or execute the live RPC call.")
+    parser.add_argument("--execute-linked", action="store_true", help="Run through `supabase db query --linked`.")
     parser.add_argument("--execute", action="store_true", help="Run through psql using --database-url/DATABASE_URL/SUPABASE_DB_URL.")
     parser.add_argument("--database-url", help="Postgres connection string for psql execution. Never commit it.")
     parser.add_argument("--replay-check", action="store_true", help="After a live call, repeat the same call and count rows for this idempotency key.")
@@ -206,13 +185,28 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Entity: {args.entity_type}:{args.entity_id}")
     print(f"Surface: {args.surface_type} -> {args.disposition}")
 
-    if not args.execute:
-        print("Connector SQL follows. It returns: coverage_id, outcome, wrote, research_change_id.")
+    if not args.execute and not args.execute_linked:
+        print("Linked-CLI-friendly SQL follows. It returns: coverage_id, outcome, wrote, research_change_id.")
         print()
         print(sql)
         return 0
 
-    database_url = args.database_url or os.environ.get("DATABASE_URL") or os.environ.get("SUPABASE_DB_URL")
+    if args.execute_linked:
+        result = run_linked_query(sql)
+        try:
+            rows = linked_query_rows_or_raise(result)
+        except RuntimeError as exc:
+            if result.stdout:
+                print(result.stdout.strip())
+            if result.stderr:
+                print(result.stderr.strip(), file=sys.stderr)
+            print(str(exc), file=sys.stderr)
+            return result.returncode or 1
+        print_rpc_rows(rows, ["coverage_id", "outcome", "wrote", "research_change_id"])
+        print("PASS surface-check RPC completed via linked Supabase CLI")
+        return 0
+
+    database_url = resolve_database_url(args.database_url)
     if not database_url:
         parser.error("--execute requires --database-url, DATABASE_URL, or SUPABASE_DB_URL")
 
@@ -223,7 +217,7 @@ def main(argv: list[str] | None = None) -> int:
         print(result.stderr.strip(), file=sys.stderr)
     if result.returncode != 0:
         return result.returncode
-    print("PASS surface-check RPC completed")
+    print("PASS surface-check RPC completed via psql")
     return 0
 
 
