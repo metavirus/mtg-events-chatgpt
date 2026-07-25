@@ -60,7 +60,8 @@ try {
 
 try {
     $projects = & supabase projects list --output json
-    if ($LASTEXITCODE -ne 0 -or ($projects -notmatch $projectRef)) {
+    $projectsText = $projects -join "`n"
+    if ($LASTEXITCODE -ne 0 -or $projectsText -notmatch [regex]::Escape($projectRef)) {
         throw "authenticated project listing failed"
     }
     Pass "Supabase CLI authenticated for project $projectRef"
@@ -83,7 +84,8 @@ if (-not (Test-Path $linkedRefPath)) {
 if (-not $SkipLiveSmoke) {
     try {
         $smoke = & supabase db query --linked "select '$projectRef'::text as project_ref, current_database() as database_name, true as ready;"
-        if ($LASTEXITCODE -ne 0 -or ($smoke -notmatch $projectRef)) {
+        $smokeText = $smoke -join "`n"
+        if ($LASTEXITCODE -ne 0 -or $smokeText -notmatch [regex]::Escape($projectRef)) {
             throw "live query failed"
         }
         Pass "Direct linked live query"

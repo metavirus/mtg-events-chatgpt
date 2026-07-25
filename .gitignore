@@ -7,3 +7,4 @@ __pycache__/
 *.pyc
 supabase/exports/
 supabase/plans/
+supabase/.temp/
