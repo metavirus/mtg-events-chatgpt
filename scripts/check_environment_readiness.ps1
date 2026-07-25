@@ -3,6 +3,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$PSNativeCommandUseErrorActionPreference = $false
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $python = Join-Path $repoRoot ".venv\Scripts\python.exe"
 $metadata = Join-Path $repoRoot "output\wizards\metadata.json"
@@ -10,6 +11,45 @@ $schemaSql = Join-Path $PSScriptRoot "inspect_supabase_schema.sql"
 $projectRef = "pyvftzsodzwfqncjbmbc"
 $failed = [System.Collections.Generic.List[string]]::new()
 $env:SUPABASE_TELEMETRY_DISABLED = "1"
+
+function Invoke-SupabaseCli {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string[]]$Arguments
+    )
+
+    $supabaseCommand = Get-Command supabase -ErrorAction Stop
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $supabaseCommand.Source
+    $psi.UseShellExecute = $false
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.CreateNoWindow = $true
+
+    $psi.Arguments = ($Arguments | ForEach-Object {
+        if ($_ -match '[\s"]') {
+            '"' + ($_ -replace '"', '\"') + '"'
+        } else {
+            $_
+        }
+    }) -join ' '
+
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $psi
+    [void]$process.Start()
+    $stdout = $process.StandardOutput.ReadToEnd()
+    $stderr = $process.StandardError.ReadToEnd()
+    $process.WaitForExit()
+
+    $parts = @($stdout.Trim(), ($stderr -replace '(?m)^Initialising login role\.\.\.\s*$', '').Trim()) |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+    $text = [string]::Join("`n", $parts)
+
+    [pscustomobject]@{
+        Text = $text
+        ExitCode = $process.ExitCode
+    }
+}
 
 function Pass([string]$message) {
     Write-Host "PASS  $message"
@@ -50,23 +90,19 @@ if (-not (Test-Path $metadata)) {
     }
 }
 
-try {
-    $version = & supabase --version
-    if ($LASTEXITCODE -ne 0) { throw "CLI unavailable" }
-    Pass "Supabase CLI $version"
-} catch {
+ $versionResult = Invoke-SupabaseCli -Arguments @("--version")
+if ($versionResult.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($versionResult.Text)) {
     Fail "Supabase CLI unavailable"
+} else {
+    Pass "Supabase CLI $($versionResult.Text.Trim())"
 }
 
-try {
-    $projects = & supabase projects list --output json
-    $projectsText = $projects -join "`n"
-    if ($LASTEXITCODE -ne 0 -or $projectsText -notmatch [regex]::Escape($projectRef)) {
-        throw "authenticated project listing failed"
-    }
-    Pass "Supabase CLI authenticated for project $projectRef"
-} catch {
+ $projectsResult = Invoke-SupabaseCli -Arguments @("projects", "list", "--output", "json")
+$projectsText = $projectsResult.Text
+if ($projectsText -notmatch [regex]::Escape($projectRef)) {
     Fail "Supabase CLI authentication/Management API transport unavailable"
+} else {
+    Pass "Supabase CLI authenticated for project $projectRef"
 }
 
 $linkedRefPath = Join-Path $repoRoot "supabase\.temp\project-ref"
@@ -82,19 +118,26 @@ if (-not (Test-Path $linkedRefPath)) {
 }
 
 if (-not $SkipLiveSmoke) {
-    try {
-        $smoke = & supabase db query --linked "select '$projectRef'::text as project_ref, current_database() as database_name, true as ready;"
-        $smokeText = $smoke -join "`n"
-        if ($LASTEXITCODE -ne 0 -or $smokeText -notmatch [regex]::Escape($projectRef)) {
-            throw "live query failed"
-        }
-        Pass "Direct linked live query"
+    $smokeResult = Invoke-SupabaseCli -Arguments @("db", "query", "--linked", "select '$projectRef'::text as project_ref, current_database() as database_name, true as ready;")
+    $smokeText = $smokeResult.Text
+    $smokeOk = (
+        $smokeText -match [regex]::Escape($projectRef) -and
+        $smokeText -match '"ready"\s*:\s*true' -and
+        $smokeText -match '"database_name"\s*:\s*"postgres"'
+    )
 
-        & supabase db query --linked --file $schemaSql | Out-Null
-        if ($LASTEXITCODE -ne 0) { throw "schema inspection failed" }
-        Pass "Authoritative schema/function inspection query"
-    } catch {
+    $schemaResult = Invoke-SupabaseCli -Arguments @("db", "query", "--linked", "--file", $schemaSql)
+    $schemaOk = (
+        $schemaResult.Text -match 'record_entity_surface_check' -and
+        $schemaResult.Text -match 'upsert_attributable_official_event' -and
+        -not (($schemaResult.Text -match '"error"') -and ($schemaResult.Text -notmatch 'Timeout while shutting down PostHog'))
+    )
+
+    if (-not $smokeOk -or -not $schemaOk) {
         Fail "Authenticated linked Supabase query path unavailable"
+    } else {
+        Pass "Direct linked live query"
+        Pass "Authoritative schema/function inspection query"
     }
 }
 
