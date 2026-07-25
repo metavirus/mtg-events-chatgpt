@@ -60,6 +60,124 @@ than having to babysit an open-ended task.
 
 ## Project-wide anti-waste rules
 
+## Runtime lane contract
+
+Future research/runtime work must fit one explicit lane. If a run begins in one
+lane and starts doing the work of another, stop and either close it or
+reclassify it explicitly before continuing.
+
+### 0. Allowed lane shapes
+
+- `baseline pass`: one decision-grade first pass for an `unreviewed` venue.
+- `identity-resolution pass`: one bounded attribution/status pass for an
+  `identity_blocked` venue or a named branch/location ambiguity.
+- `steady-state monitoring pass`: one exact-surface delta check for a
+  `steady_state` venue.
+
+Do not invent a fourth "light research" shape that quietly behaves like a full
+main pass.
+
+### 1. Baseline pass contract
+
+Allowed work:
+
+- select only from `venue_baseline_candidates`;
+- reuse the current WPN cache when it is within policy;
+- check the standard decision-grade surfaces or record their disposition:
+  official/storefront, WPN/EventLink, event/calendar page, discoverable
+  store-controlled social, known/discoverable Discord/community route status,
+  and review texture when useful;
+- determine whether current attributable event rows should be captured, deferred,
+  caveated, or rejected;
+- produce one decision-grade venue read: try soon, worth watching, backup, low
+  priority, avoid/poor fit, or identity/status unresolved.
+
+Hard stop conditions:
+
+- once identity is safe enough, material event lanes are checked/dispositioned,
+  and the planning conclusion is clear;
+- once remaining missing surfaces are thin, blocked, quiet, or non-material;
+- once the work would mainly be re-trying fetches, chasing extra texture, or
+  reopening already dispositioned surfaces.
+
+Failure condition:
+
+- if the run starts reconstructing broad source maps from scratch after the core
+  surfaces are already checked/dispositioned, or keeps digging because a social
+  surface is imperfect, the lane has failed and should stop.
+
+Expected budget:
+
+- target: 5 to 8 minutes per venue;
+- soft ceiling: 10 minutes;
+- beyond 10 minutes means the pass should either close with named uncertainty or
+  be explicitly escalated as identity-resolution/high-risk work.
+
+### 2. Identity-resolution pass contract
+
+Allowed work:
+
+- select only from `venue_identity_resolution_candidates` or a named active
+  identity blocker;
+- answer one bounded question such as branch relationship, current operating
+  identity, location continuity, or safe event attribution boundary;
+- use non-Discord public identity sources first unless a safely mapped Discord
+  route is already the accepted evidence path;
+- capture attributable WPN/EventLink events when identity is safe enough for
+  this app, even if the venue remains low-confidence or poor fit.
+
+Hard stop conditions:
+
+- once the venue is safe enough to treat as attributable, or once the exact
+  blocker is named precisely enough that future work will not rediscover it;
+- once continued work would be broad venue research rather than identity
+  clarification.
+
+Failure condition:
+
+- if the pass drifts into a full venue refresh without first settling the
+  identity boundary, it has failed its lane.
+
+Expected budget:
+
+- target: 5 to 10 minutes total;
+- soft ceiling: 12 minutes;
+- beyond 12 minutes requires an explicit pause and restatement of the unresolved
+  identity question.
+
+### 3. Steady-state monitoring pass contract
+
+Allowed work:
+
+- select only from `venue_surface_monitoring_candidates` or an exact mapped
+  surface with a due retry/monitoring condition;
+- reuse existing venue context instead of reconstructing the full source map;
+- inspect only the one or two highest-value changed surfaces;
+- record quiet/thin/blocked/current/useful outcomes through
+  `record_entity_surface_check(...)`;
+- escalate only if a real delta appears: new event candidate, event retirement,
+  source-health contradiction, meaningful assessment change, or Signal-worthy
+  planning intelligence.
+
+Hard stop conditions:
+
+- once the due mapped surface is checked and recorded;
+- once no material delta is present;
+- once a material delta is found and the work must escalate into reviewed event
+  or assessment mutation.
+
+Failure condition:
+
+- if a monitoring run reopens a whole-store pass, reconstructs the source map,
+  or rechecks adjacent blocked surfaces "while we're here," it has failed.
+
+Expected budget:
+
+- target: under 2 minutes per venue;
+- soft ceiling: 3 minutes;
+- any 5+ minute steady-state check is a workflow failure, not an acceptable
+  normal run.
+
 ### 1. Reuse before recollect
 
 Before doing fresh collection, check whether the answer already exists in:
@@ -173,6 +291,17 @@ the venue source map to service a surface retry.
 Use the lifecycle-specific candidate views. Do not recreate a single mixed
 "research candidates" queue.
 
+Selector rule:
+
+- ordinary holistic work may only start from `venue_baseline_candidates`;
+- identity work may only start from `venue_identity_resolution_candidates` or a
+  named active blocker;
+- monitoring may only start from `venue_surface_monitoring_candidates` or a
+  directly named mapped surface.
+
+If a `steady_state` venue appears in ordinary holistic selection, treat that as
+an operational bug and stop to correct selection rather than researching it.
+
 ### 5. Promote before deepening
 
 ### 6. Match research validation overhead to batch risk
@@ -238,6 +367,20 @@ If a source fetch path is blocked, record the blocked/TBD state and move on
 unless that exact source is necessary for the current decision. Do not keep
 chasing Instagram/Facebook/social fetch workarounds once the planning conclusion
 is already clear.
+
+### 7. Proposal-heavy drift is a failure mode
+
+Ordinary runtime work should not drift into proposal-heavy ceremony unless the
+actual mutation risk requires it.
+
+- surface-only outcomes: RPC path only;
+- routine monitoring with no material delta: no proposal, no repo ceremony;
+- reviewed event/evaluation changes: proposal only once a real delta exists;
+- high-risk identity/schema/auth work: full reviewed path.
+
+If a run is spending most of its time on package generation, manual ferrying,
+or re-narrating low-risk no-delta work, treat that as a workflow failure to be
+fixed separately rather than a normal cost of research.
 
 ## UI/build efficiency rules
 

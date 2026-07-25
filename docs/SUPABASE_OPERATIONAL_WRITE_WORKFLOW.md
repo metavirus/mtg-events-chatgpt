@@ -1,6 +1,6 @@
 # Supabase Operational Write Workflow
 
-Last updated: 2026-07-24
+Last updated: 2026-07-25
 
 ## Purpose
 
@@ -59,6 +59,18 @@ read source; JSON is the generated recovery/export fallback.
 Do not run full ceremony merely because Supabase is written. Choose the level
 that matches the write risk, and escalate if an anomaly appears.
 
+Operational lane reminder:
+
+- `steady-state monitoring pass`: routine surface-check path unless a real delta
+  appears;
+- `baseline pass`: proposal path only when the bounded decision-grade pass finds
+  actual event/evaluation mutations;
+- `identity-resolution pass`: reviewed path only for the specific attribution or
+  branch question being resolved.
+
+Do not let a no-delta monitoring run or a blocked/thin surface disposition slide
+into Lean/Standard proposal ceremony.
+
 ### Routine Surface Check
 
 Use for ordinary surface results that do not change venues, events, sources,
@@ -83,6 +95,10 @@ Required:
 Do not create proposal JSON, SQL packages, exports, Markdown ledger edits, run
 notes, text-integrity checks, commits, or app previews for this path unless some
 separate file/schema/app change is actually made.
+
+This is the default write path for ordinary steady-state monitoring outcomes and
+for blocked/thin/no-delta surface dispositions inside a bounded baseline pass
+when no venue/event/evaluation mutation is justified.
 
 ### Lean
 

@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-07-24
+Last updated: 2026-07-25
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -21,6 +21,17 @@ Use it for:
   `venue_identity_resolution_candidates`. `venues.lifecycle_state` is the
   durable lifecycle authority. `steady_state` venues do not return to holistic
   batches for residual texture curiosity.
+
+- Runtime lane contract is now explicit:
+  - `baseline pass`: only for `venue_baseline_candidates`; finite
+    decision-grade first pass; target 5-8 minutes per venue, soft ceiling 10.
+  - `identity-resolution pass`: only for named identity blockers or
+    `venue_identity_resolution_candidates`; target 5-10 minutes total, soft
+    ceiling 12.
+  - `steady-state monitoring pass`: only for exact mapped surfaces from
+    `venue_surface_monitoring_candidates`; target under 2 minutes per venue,
+    soft ceiling 3, and a 5+ minute no-delta run is a workflow failure.
+  Use `docs/EFFICIENCY_SOP.md` as the canonical contract and stop conditions.
 
 - JJ's Orange is a known targeted identity boundary, not an ordinary store
   batch candidate. Future Discord findings that mention `Orange` must not be
@@ -59,6 +70,12 @@ Use it for:
   `research_changes` row; quiet, thin, blocked, route-only, and no-delta checks
   do not. The coverage row is durable without proposal JSON, SQL package,
   export, Markdown ledger edit, text-integrity run, or Git commit.
+
+- Collector Legion follow-up remains a distinct reviewed event action, not a
+  runtime-efficiency task: the July 25, 2026 monitoring proof surfaced August
+  7-9, 2026 Hobbit prerelease sessions on the official specials page that are
+  absent from canonical event rows. Handle that as a separate reviewed event
+  proposal after the efficiency contract checkpoint.
 
 - Cold-deep-link Discord content-read is blocked/TBD at accepted boundary
   `5e055e8`. The current accepted safety baseline is recorded in

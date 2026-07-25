@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-07-24
+Updated: 2026-07-25
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. Detailed methods live in the
@@ -65,9 +65,15 @@ Canonical operating details:
    `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
    `venue_identity_resolution_candidates`. Markdown ledgers are context, not
    operational selectors.
-2. Address specific real-use app friction when observed; do not start another
+2. Keep every runtime research task inside one explicit lane:
+   `baseline pass`, `identity-resolution pass`, or
+   `steady-state monitoring pass`. Time budgets and hard stop conditions now
+   live in `docs/EFFICIENCY_SOP.md`; treat a 5+ minute no-delta monitoring run
+   or a 10+ minute ordinary baseline run as a workflow failure condition, not a
+   normal cost.
+3. Address specific real-use app friction when observed; do not start another
    broad product tranche by default.
-3. Consider the next overhead reduction only as a separate approved tooling
+4. Consider the next overhead reduction only as a separate approved tooling
    tranche: either a narrow typed RPC for WPN-backed event upserts or a direct
    steward DB execution path.
 
@@ -78,6 +84,8 @@ Canonical operating details:
 - Do not create repo text artifacts just to record an ordinary surface check.
 - Do not select a `steady_state` venue for another holistic pass. Monitor exact
   mapped surfaces and event deltas instead.
+- Do not let `identity_blocked` venues leak back into ordinary baseline work.
+  Resolve the named identity question first or leave them out of the batch.
 - Respect finite surface retries. One automatic retry is the norm; terminal
   outcomes reopen only for a recorded access/source condition change or an
   explicit user request.
