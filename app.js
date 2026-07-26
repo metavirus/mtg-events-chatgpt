@@ -1011,6 +1011,7 @@ function handleAction(action, element) {
   if (action === 'sign-out') return signOutPersonalAccount();
   if (action === 'show-log') return openActivityLog();
   if (action === 'toggle-read-signals') { state.showReadSignals = !state.showReadSignals; return renderSignals(); }
+  if (action === 'open-signal') return openSignalDetail(element.dataset.signalId);
   if (action === 'mark-signal-read') return setSignalRead(element.dataset.signalId, true);
   if (action === 'restore-signal') return setSignalRead(element.dataset.signalId, false);
   if (action === 'dismiss-drawer') return closeDrawer();
@@ -1078,7 +1079,15 @@ function updateChrome() {
   favoriteButton.classList.toggle('active', state.favoritesOnly);
   favoriteButton.setAttribute('aria-pressed', String(state.favoritesOnly));
   favoriteButton.querySelector('span:first-child').textContent = state.favoritesOnly ? '\u2665' : '\u2661';
-  favoriteButton.title = favCount ? `${favCount} favorites` : 'No favorites yet';
+  favoriteButton.querySelector('.desktop-label').textContent = state.favoritesOnly ? 'Showing favorites' : 'Favorites';
+  favoriteButton.title = state.favoritesOnly
+    ? 'Showing only favorited places, events, and communities where this page supports it'
+    : favCount ? `Show only ${favCount} favorited items` : 'No favorites yet';
+  const favoritesCount = document.getElementById('favoritesCount');
+  if (favoritesCount) {
+    favoritesCount.textContent = favCount ? String(favCount) : '';
+    favoritesCount.classList.toggle('hidden', !favCount || state.favoritesOnly);
+  }
   const unreadCount = unreadChangesCount();
   const changeNavCount = document.getElementById('changeNavCount');
   changeNavCount.textContent = unreadCount ? String(unreadCount) : '';
@@ -1243,6 +1252,7 @@ function signalCard(signal) {
       <span>Suggested action</span>
       <strong>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</strong>
       ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" ${isExternal ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(sourceLabel)} ↗</a>` : `<small>${escapeHtml(sourceLabel)}</small>`}
+      <button class="soft-button signal-read-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open details</button>
       <button class="soft-button signal-read-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>
     </aside>
   </article>`;
@@ -1266,6 +1276,24 @@ function signalRelatedTarget(signal) {
     if (event) return `<button class="change-inline-target" data-event-id="${escapeHtml(event.id)}">${escapeHtml(event.title)}</button>`;
   }
   return signal.relatedEntityId ? `<span class="meta-chip">${escapeHtml(signal.relatedEntityType || 'related')}: ${escapeHtml(signal.relatedEntityId)}</span>` : '';
+}
+
+function openSignalDetail(signalId) {
+  const signal = DATA.signals.find((item) => item.id === signalId);
+  if (!signal) return;
+  const related = signalRelatedTarget(signal);
+  const sourceItem = source(signal.sourceId);
+  const sourceUrl = signal.evidenceUrl || sourceItem?.url || '';
+  const sourceLink = sourceUrl
+    ? `<a class="soft-button" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(sourceItem?.label || 'Open source')} ↗</a>`
+    : '<p class="muted-copy">No source URL is linked yet.</p>';
+  const read = isSignalRead(signal.id);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><span class="status-chip slate">${escapeHtml(signalPriorityLabel(signal.priority))}</span><span class="status-chip ${signal.status === 'needs_followup' ? 'amber' : signal.status === 'new' ? 'mint' : 'slate'}">${escapeHtml(signal.status.replaceAll('_', ' '))}</span></div>
+    <h1 id="drawerTitle">${escapeHtml(signal.summary)}</h1>
+    <p class="drawer-lead">${escapeHtml(signal.details || 'No additional detail recorded yet.')}</p>
+    ${related ? `<section class="drawer-section"><p class="eyebrow">Related target</p><h2>Open the linked record</h2><div class="signal-related">${related}</div></section>` : ''}
+    <section class="drawer-section"><p class="eyebrow">Suggested action</p><h2>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</h2><p>Signals are lightweight attention markers. Use this drawer to jump to the source or linked record without turning the Signals page into a static inbox.</p><div class="drawer-action-grid">${sourceLink}<button class="soft-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button></div></section>
+    <section class="drawer-section"><p class="eyebrow">Signal metadata</p><div class="before-grid"><div><span>Confidence</span><strong>${escapeHtml(signal.confidence || 'unknown')}</strong></div><div><span>Captured</span><strong>${escapeHtml(formatFreshnessDateTime(signal.capturedAt))}</strong></div><div><span>Observed</span><strong>${escapeHtml(formatFreshnessDateTime(signal.observedAt || signal.capturedAt))}</strong></div><div><span>Promotion target</span><strong>${escapeHtml(signal.promotionTarget || 'none')}</strong></div></div></section>`);
 }
 
 function signalTone(signal) {
@@ -2313,6 +2341,7 @@ function communityPulseCard(signal) {
     <h3>${escapeHtml(signal.summary)}</h3>
     ${signalRelatedTarget(signal) ? `<div class="signal-related">${signalRelatedTarget(signal)}</div>` : ''}
     <p>${escapeHtml(signal.suggestedAction || 'Keep this context available when planning around the linked community.')}</p>
+    <div class="community-pulse-actions"><button class="text-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open Signal →</button></div>
   </article>`;
 }
 
@@ -3093,6 +3122,7 @@ function toggleInterested(key) {
 function toggleFavoritesOnly() {
   state.favoritesOnly = !state.favoritesOnly;
   renderCurrentRoute();
+  toast(state.favoritesOnly ? 'Showing favorited items where available' : 'Showing all visible items');
 }
 
 function toggleHighlightsRail() {
