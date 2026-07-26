@@ -140,6 +140,10 @@ Use it for:
   hosted app uses Supabase email magic links, user-scoped venue/event-series
   preferences, and one private personal note per target, with browser-local
   state retained as a signed-out or failure fallback.
+- 2026-07-25 auth persistence tweak is implemented and pushed: the client now
+  uses implicit magic-link flow instead of PKCE so sign-in should survive the
+  user's normal browser/app/email-link context better. Marked done subject to
+  user verification after the temporary Supabase email rate-limit clears.
 - 2026-07-19 validation confirmed signed-in Supabase rows for venue notes,
   event-series notes, and favorites. Research facts remain unchanged by
   personal actions.
@@ -416,6 +420,10 @@ claims without reopening the whole packet.
   recommendation/event views without overwriting the underlying research truth.
 - The event calendar now has an explicit hidden / poor-fit bucket so avoided or
   no-proxy items are retained without competing for prominent planning slots.
+- Places now also tucks explicit/very-low-fit venues into a closed `Hidden /
+  low-fit` group and removes those venues and their events from ordinary
+  recommendation, highlight, and visible research-count surfaces. Underlying
+  venue/event records remain recoverable.
 - Revisit the top-level `Favorites` control so it either has a clear global job
   or is redesigned/removed.
 - Ensure the top-level favorites control produces a visible effect on all
