@@ -80,6 +80,7 @@ const state = {
   eventCatalogDate: startOfDay(new Date()),
   eventCatalogVisible: EVENT_CATALOG_PAGE_SIZE,
   changeFilter: 'all',
+  changesUnreadOnOpen: 0,
   favoritesOnly: false,
   showReadSignals: false,
   highlightsCollapsed: false,
@@ -132,9 +133,12 @@ function latestChangeTimestamp() {
   }, '');
 }
 
+function acceptedChanges() {
+  return DATA.changes.filter((change) => (change?.reviewStatus || '').toLowerCase() === 'accepted');
+}
+
 function latestAcceptedChangeTimestamp() {
-  return DATA.changes.reduce((latest, change) => {
-    if ((change?.reviewStatus || '').toLowerCase() !== 'accepted') return latest;
+  return acceptedChanges().reduce((latest, change) => {
     const at = change?.detectedAt || '';
     return at > latest ? at : latest;
   }, '');
@@ -153,11 +157,11 @@ function latestDataTimestamp() {
 
 function unreadChangesCount() {
   const seenAt = state.personal.updatesSeenAt || '';
-  return DATA.changes.filter((change) => (change?.detectedAt || '') > seenAt).length;
+  return acceptedChanges().filter((change) => (change?.detectedAt || '') > seenAt).length;
 }
 
 function markChangesRead() {
-  const latest = latestChangeTimestamp();
+  const latest = latestAcceptedChangeTimestamp();
   if (!latest || state.personal.updatesSeenAt === latest) return;
   state.personal.updatesSeenAt = latest;
   savePersonal();
@@ -1030,18 +1034,23 @@ function handleAction(action, element) {
 
 function navigate(route, options = {}) {
   if (!document.querySelector(`[data-route-panel="${route}"]`)) return;
+  const changesUnreadOnOpen = route === 'changes' ? unreadChangesCount() : 0;
   if (!options.skipRouteHistory && state.route && state.route !== route) {
     state.routeHistory.push(state.route);
     state.routeHistory = state.routeHistory.slice(-25);
   }
   state.route = route;
-  if (route === 'changes') markChangesRead();
+  state.changesUnreadOnOpen = changesUnreadOnOpen;
   history.replaceState(null, '', `#${route}`);
   document.querySelectorAll('[data-route-panel]').forEach((panel) => panel.classList.toggle('active', panel.dataset.routePanel === route));
   document.querySelectorAll('.nav-item[data-route], .mobile-nav [data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === route));
   document.querySelector('.side-rail').classList.remove('mobile-open');
   closePlacePicker();
   renderCurrentRoute();
+  if (route === 'changes') {
+    markChangesRead();
+    updateChrome();
+  }
   document.querySelector('.workspace').scrollTo?.(0, 0);
 }
 
@@ -2635,9 +2644,14 @@ function renderChanges() {
   const items = allItems.filter((change) => changeMatchesFilter(change, state.changeFilter));
   const latestAccepted = latestAcceptedChangeTimestamp();
   const latest = latestAccepted ? formatFreshnessDate(latestAccepted) : allItems[0]?.detectedAt ? formatFreshnessDate(allItems[0].detectedAt) : 'None yet';
+  const unreadOnOpen = state.route === 'changes' ? state.changesUnreadOnOpen || 0 : unreadChangesCount();
+  const unreadLabel = unreadOnOpen === 1 ? '1 new' : `${unreadOnOpen} new`;
+  const unreadCopy = unreadOnOpen
+    ? 'Opening Updates marks accepted records read.'
+    : 'No new accepted updates since your last visit.';
   document.getElementById('changeList').innerHTML = `<div class="change-summary">
-    <div><span>Visible updates</span><strong>${items.length}<small> / ${allItems.length}</small></strong><p>Use filters to separate planning-relevant changes from background research.</p></div>
-    <div><span>Latest accepted record</span><strong>${escapeHtml(latest)}</strong><p>Pending proposal rows remain labeled until accepted in the research workflow.</p></div>
+    <div><span>New since last visit</span><strong>${escapeHtml(unreadLabel)}</strong><p>${unreadCopy}</p></div>
+    <div><span>Visible updates</span><strong>${items.length}<small> / ${allItems.length}</small></strong><p>Latest accepted: ${escapeHtml(latest)}</p></div>
     <div><span>Current filter</span><strong>${changeFilterLabel(state.changeFilter)}</strong><p>${changeFilterHelp(state.changeFilter)}</p></div>
   </div>${items.length ? items.map((change) => changeRow(change)).join('') : emptyState('No updates in this filter', 'Try All updates or a different triage category.')}`;
 }
