@@ -94,11 +94,11 @@ Use it for:
   do not. The coverage row is durable without proposal JSON, SQL package,
   export, Markdown ledger edit, text-integrity run, or Git commit.
 
-- Collector Legion follow-up remains a distinct reviewed event action, not a
-  runtime-efficiency task: the July 25, 2026 monitoring proof surfaced August
-  7-9, 2026 Hobbit prerelease sessions on the official specials page that are
-  absent from canonical event rows. Handle that as a separate reviewed event
-  proposal after the efficiency contract checkpoint.
+- Collector Legion's July 25, 2026 monitoring delta has been handled: the
+  August 7-9, 2026 Hobbit prerelease sessions are now represented through the
+  reviewed/typed event-write path. Do not resurrect it as a pending event
+  action; only revisit Collector Legion for a fresh material source delta,
+  explicit user request, or the separate social-texture follow-up below.
 
 - Cold-deep-link Discord content-read is blocked/TBD at accepted boundary
   `5e055e8`. The current accepted safety baseline is recorded in
@@ -228,7 +228,7 @@ Use it for:
 
 ### High priority
 
-- Follow-up social refinement for Collector Legion:
+- Collector Legion social-texture follow-up only:
   - determine whether Saturday routine Commander is ever explicitly promoted;
   - keep watching for evidence that large Saturday events crowd out routine Commander;
   - optionally look for an even cleaner Instagram extraction path if future passes need it.
@@ -476,12 +476,10 @@ claims without reopening the whole packet.
 ### Updates and activity surfaces
 
 - The `Updates` label and basic filter-chip behavior have been improved in the
-  accepted local UX pass. Remaining items below are future activity-surface
-  work, not current blockers.
-- Treat the Updates badge count as an unread indicator rather than a static
-  total.
-- Opening Updates should clear or mark that count as read until new items
-  arrive.
+  accepted local UX pass. The nav badge now behaves as an unread indicator for
+  accepted updates and opening Updates marks that count read until new accepted
+  items arrive. Remaining items below are future activity-surface work, not
+  current blockers.
 - Continue refining the Updates timeline layout if it becomes a blocker during
   final acceptance; otherwise treat alignment/weight as polish.
 - Add useful update-type filters such as:
@@ -511,8 +509,10 @@ claims without reopening the whole packet.
 ### Places page refinement
 
 - Places now exposes research status, fit, confidence, rationale, evidence, and
-  compact preference controls. Remaining layout work is future polish unless a
-  final-acceptance blocker appears.
+  compact preference controls. Recent accepted work added the mobile
+  bottom-sheet place picker, compact sort/filter row, favorites-first default,
+  and a closed `Hidden / low-fit` group for deprioritized venues. Remaining
+  layout work is future polish unless a final-acceptance blocker appears.
 - Revisit the Places page layout and scrolling behavior later if the most
   important reading surface still feels awkward in real use.
 - Evaluate whether the current master-detail split should stay as-is or whether

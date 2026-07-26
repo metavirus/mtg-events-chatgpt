@@ -15,6 +15,12 @@ canonical SOPs. Historical frontier checkpoints are preserved in
 - Signals, Events, Places, Communities, Updates, and Research are usable
   first-class surfaces. Product work should now respond to observed friction,
   not speculative polish.
+- Recent accepted Places work added a mobile bottom-sheet picker, compact
+  sort/filter controls, favorites-first default behavior, and a closed low-fit
+  group for deprioritized venues. Keep iterating from real-use friction rather
+  than reopening the whole page.
+- Updates now uses an unread-style badge for accepted changes and marks them
+  read when the Updates page is opened.
 - Store research uses Supabase as operational state. Ordinary source/surface
   checks land through `record_entity_surface_check`; proposals and ledgers are
   reserved for event/evaluation changes, higher-level queueing, and unresolved
