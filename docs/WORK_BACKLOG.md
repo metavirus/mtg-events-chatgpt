@@ -76,12 +76,16 @@ Use it for:
   backing table are already gone; do not treat it as an active coordination
   path.
 
-- Source-image/artifact evidence TBD: later investigate a minimal way to
-  preserve original Discord/Instagram/flyer-derived event artifacts or
-  screenshots when the app summarizes image-only source material. This is a
-  future trust/re-verification design problem involving provenance, retention,
-  privacy, copyright, and a tiny proof of concept. Do not implement it during
-  ordinary research batches.
+- Durable source-image evidence in Supabase Storage TBD
+  (`coordination_items.id = 1ff603bd-b5c1-4878-ab75-c2f284430088`,
+  status `ready_for_review`): investigate preserving original Discord promo
+  images, Instagram schedule graphics, flyers, and PDFs as primary evidence.
+  Likely proof shape: store the artifact in Supabase Storage, attach it to the
+  relevant source/evidence/event row, record provenance and extracted facts
+  separately, and make the evidence clickable from Events/Evidence/Updates
+  where useful. This is a future trust/re-verification design problem involving
+  retention, privacy, copyright, and a tiny proof of concept. Do not implement
+  it during ordinary research batches.
 
 - Phase 2 workflow simplification proof is complete. Ordinary source/surface
   checks land through `record_entity_surface_check(...)` into
