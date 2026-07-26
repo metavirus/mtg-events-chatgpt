@@ -215,6 +215,11 @@ function initializePersonalAuthAfterRender() {
   });
 }
 
+function authRedirectUrl() {
+  if (window.location.origin && window.location.pathname) return `${window.location.origin}${window.location.pathname}`;
+  return AUTH_REDIRECT_URL;
+}
+
 async function initializePersonalAuth() {
   if (!window.supabase?.createClient) {
     personalAuth.status = 'local';
@@ -231,7 +236,7 @@ async function initializePersonalAuth() {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
-      flowType: 'pkce',
+      flowType: 'implicit',
       storageKey: AUTH_STORAGE_KEY
     }
   });
@@ -2891,7 +2896,7 @@ async function sendMagicLink(inputId) {
   try {
     const { error } = await personalAuth.client.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: AUTH_REDIRECT_URL }
+      options: { emailRedirectTo: authRedirectUrl() }
     });
     if (error) {
       console.warn('Magic-link request failed.', error);
