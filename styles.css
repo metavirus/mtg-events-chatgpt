@@ -37,7 +37,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .app-shell { min-height: 100vh; }
 .side-rail { position: fixed; inset: 0 auto 0 0; width: 224px; background: linear-gradient(180deg, #0e1220, #090d17 72%); border-right: 1px solid var(--line); padding: 22px 14px 18px; z-index: 30; display: flex; flex-direction: column; }
 .brand { display: flex; gap: 11px; align-items: center; padding: 0 8px 28px; }
-.brand-mark { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; font: 800 17px var(--display); background: linear-gradient(145deg, var(--violet), #5b44dc); box-shadow: 0 7px 22px rgba(112, 92, 232, .28); }
+.brand-mark { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 800 17px var(--display); background: transparent; border: 2px solid rgba(139, 124, 255, .72); box-shadow: 0 0 0 3px rgba(139, 124, 255, .08), 0 7px 22px rgba(0, 0, 0, .24); overflow: hidden; }
 .brand-mark img { width: 100%; height: 100%; border-radius: inherit; display: block; object-fit: cover; }
 .brand-copy { display: flex; flex-direction: column; }
 .brand-copy strong { font: 800 16px var(--display); letter-spacing: -.02em; }
