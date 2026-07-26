@@ -86,10 +86,11 @@ const state = {
   placePickerOpen: false,
   search: '',
   selectedPlaceId: null,
+  selectedPlaceWasAuto: true,
   selectedPlaceTab: 'overview',
   communitySurfaceFilter: 'all',
   placeFilter: 'all',
-  placeSort: 'name',
+  placeSort: 'best',
   filters: {
     research: ['partial', 'wizards-discovery'],
     confidence: ['high', 'medium', 'low'],
@@ -171,7 +172,7 @@ async function load() {
   if (dataSource === 'json') {
     state.dataSource = 'json';
     await loadFromJson();
-    state.selectedPlaceId = placesByName()[0]?.id || DATA.stores[0]?.id;
+    state.selectedPlaceId = defaultSelectedPlaceId();
     initialize();
     initializePersonalAuthAfterRender();
     return;
@@ -189,7 +190,7 @@ async function loadSupabaseAfterRender() {
     state.dataSource = 'supabase';
     state.selectedPlaceId = DATA.stores.some((place) => place.id === state.selectedPlaceId)
       ? state.selectedPlaceId
-      : placesByName()[0]?.id || DATA.stores[0]?.id;
+      : defaultSelectedPlaceId();
   } catch (error) {
     console.warn('Supabase read failed; no automatic JSON recovery fallback will be used.', error);
     state.dataSource = 'supabase-error';
@@ -894,6 +895,7 @@ function handleClick(event) {
     if (placeTrigger.dataset.placeMode === 'drawer') return openPlaceDrawer(placeTrigger.dataset.placeId);
     if (state.selectedPlaceId !== placeTrigger.dataset.placeId) state.selectedPlaceTab = 'overview';
     state.selectedPlaceId = placeTrigger.dataset.placeId;
+    state.selectedPlaceWasAuto = false;
     closePlacePicker();
     navigate('places');
     renderPlaces();
@@ -1869,6 +1871,17 @@ function sortPlacesByMode(mode) {
   return placesByName();
 }
 
+function favoritePlaces() {
+  return DATA.stores.filter((place) => state.personal.favorites[`place:${place.id}`] && !isPlaceHidden(place.id));
+}
+
+function defaultSelectedPlaceId() {
+  return favoritePlaces().sort((a, b) => storeScore(b) - storeScore(a) || compareText(a?.name, b?.name))[0]?.id
+    || rankedStores()[0]?.id
+    || placesByName()[0]?.id
+    || DATA.stores[0]?.id;
+}
+
 function storeScore(place) {
   return fitScoreFor(place) * 20 - Math.min(numericDistance(place) ?? 28, 40) + (place.researchStatus === 'partial' ? 8 : 0);
 }
@@ -2126,20 +2139,25 @@ function renderPlaces() {
   if (state.favoritesOnly) places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
   const hiddenPlaces = places.filter((place) => state.personal.hidden[`place:${place.id}`]);
   const visiblePlaces = places.filter((place) => !state.personal.hidden[`place:${place.id}`]);
-  const candidatePool = [...visiblePlaces, ...hiddenPlaces];
-  if (!candidatePool.some((place) => place.id === state.selectedPlaceId)) state.selectedPlaceId = visiblePlaces[0]?.id || hiddenPlaces[0]?.id;
-  list.innerHTML = placeListMarkup(visiblePlaces, hiddenPlaces);
-  mobileList.innerHTML = placeListMarkup(visiblePlaces, hiddenPlaces);
+  const showFavoriteGroup = !query && state.placeFilter === 'all' && !state.favoritesOnly;
+  const topFavorites = showFavoriteGroup ? visiblePlaces.filter((place) => state.personal.favorites[`place:${place.id}`]) : [];
+  const primaryPlaces = topFavorites.length ? visiblePlaces.filter((place) => !state.personal.favorites[`place:${place.id}`]) : visiblePlaces;
+  const candidatePool = [...topFavorites, ...primaryPlaces, ...hiddenPlaces];
+  if (!candidatePool.some((place) => place.id === state.selectedPlaceId)) state.selectedPlaceId = topFavorites[0]?.id || primaryPlaces[0]?.id || hiddenPlaces[0]?.id;
+  if (state.selectedPlaceWasAuto && topFavorites.length && state.selectedPlaceId !== topFavorites[0].id) state.selectedPlaceId = topFavorites[0].id;
+  list.innerHTML = placeListMarkup(topFavorites, primaryPlaces, hiddenPlaces);
+  mobileList.innerHTML = placeListMarkup(topFavorites, primaryPlaces, hiddenPlaces);
   mobileSearch.value = query;
   syncPlaceControls();
   renderPlacePickerSummary(visiblePlaces, hiddenPlaces);
   renderPlaceDetail(store(state.selectedPlaceId));
 }
 
-function placeListMarkup(visiblePlaces, hiddenPlaces) {
+function placeListMarkup(favoritePlaces, visiblePlaces, hiddenPlaces) {
+  const favoriteMarkup = favoritePlaces.length ? `<details class="entity-list-favorite-group" open><summary><strong>Favorites</strong><small>${favoritePlaces.length} saved</small></summary><div class="entity-list-favorite-items">${favoritePlaces.map((place) => placeListRow(place)).join('')}</div></details>` : '';
   const primaryMarkup = visiblePlaces.map((place) => placeListRow(place)).join('');
   const hiddenMarkup = hiddenPlaces.length ? `<details class="entity-list-hidden-group"><summary><strong>Hidden / low-fit</strong><small>${hiddenPlaces.length} deprioritized</small></summary><div class="entity-list-hidden-items">${hiddenPlaces.map((place) => placeListRow(place, true)).join('')}</div></details>` : '';
-  const markup = `${primaryMarkup}${hiddenMarkup}`;
+  const markup = `${favoriteMarkup}${primaryMarkup}${hiddenMarkup}`;
   return markup || emptyState('No places match', 'Try another name or filter.');
 }
 
