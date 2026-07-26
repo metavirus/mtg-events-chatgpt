@@ -1335,6 +1335,12 @@ function candidateStatusFor(place) {
   if (place.researchStatus === 'partial' && fitScoreFor(place) >= 3.8) return 'promoted';
   return place.researchStatus === 'partial' ? 'working' : 'discovery';
 }
+function isPlaceLowFit(place) {
+  const evaluation = normalizedEvaluation(place);
+  if (evaluation.candidateStatus === 'deprioritized') return true;
+  if (state.personal.hidden[`place:${place.id}`]) return true;
+  return evaluation.fitScore < 2.7 || ['D+', 'D', 'F'].includes(evaluation.fitGrade);
+}
 function normalizedEvaluation(place) {
   const explicit = place.evaluation || {};
   const fitScore = fitScoreFor(place);
@@ -1853,6 +1859,10 @@ function rankedStores() {
     .sort((a, b) => storeScore(b) - storeScore(a) || a.distanceMiles - b.distanceMiles);
 }
 
+function placesByBestFit() {
+  return [...DATA.stores].sort((a, b) => storeScore(b) - storeScore(a) || a.distanceMiles - b.distanceMiles);
+}
+
 function placesByName() {
   return [...DATA.stores].sort((a, b) => compareText(a?.name, b?.name, { numeric: true, sensitivity: 'base' }));
 }
@@ -1869,7 +1879,7 @@ function placesByDistance() {
 }
 
 function sortPlacesByMode(mode) {
-  if (mode === 'best') return rankedStores();
+  if (mode === 'best') return placesByBestFit();
   if (mode === 'distance') return placesByDistance();
   return placesByName();
 }
@@ -1890,7 +1900,8 @@ function storeScore(place) {
 }
 
 function isPlaceHidden(placeId) {
-  return !!state.personal.hidden[`place:${placeId}`];
+  const place = store(placeId);
+  return !!state.personal.hidden[`place:${placeId}`] || (place ? isPlaceLowFit(place) : false);
 }
 
 function isEventHidden(event) {
@@ -2140,8 +2151,8 @@ function renderPlaces() {
   if (state.placeFilter === 'partial') places = places.filter((place) => place.researchStatus === 'partial');
   if (state.placeFilter === 'favorites') places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
   if (state.favoritesOnly) places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
-  const hiddenPlaces = places.filter((place) => state.personal.hidden[`place:${place.id}`]);
-  const visiblePlaces = places.filter((place) => !state.personal.hidden[`place:${place.id}`]);
+  const hiddenPlaces = places.filter((place) => isPlaceLowFit(place));
+  const visiblePlaces = places.filter((place) => !isPlaceLowFit(place));
   const showFavoriteGroup = !query && state.placeFilter === 'all' && !state.favoritesOnly;
   const topFavorites = showFavoriteGroup ? visiblePlaces.filter((place) => state.personal.favorites[`place:${place.id}`]) : [];
   const primaryPlaces = topFavorites.length ? visiblePlaces.filter((place) => !state.personal.favorites[`place:${place.id}`]) : visiblePlaces;
