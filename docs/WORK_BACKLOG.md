@@ -373,10 +373,10 @@ claims without reopening the whole packet.
 
 ### User-facing features
 
-- Signals foundation is implemented as a minimal read-only Supabase model.
-  Remaining selected work is a small first-class Signals UI, followed by a
-  Communities refresh; seed only honest existing findings and keep survey
-  automation deferred.
+- Signals foundation and first-class UI are implemented. Continue tuning only
+  from observed use: sparse signal criteria, click-through quality, read/unread
+  behavior, and whether Signals / Fresh Signals deserve a stronger default
+  surface without becoming an inbox.
 - Calendar-first default view with scrolling upcoming events.
 - Weekly and monthly calendar modes.
 - Parked design question: whether Events should gain a separate "Top picks this
@@ -389,10 +389,14 @@ claims without reopening the whole packet.
 - Daily dashboard / landscape view for what is newly relevant right now.
 - Store detail pane with source links, address, and event history.
 - Group detail pane separate from store detail pane.
-- Favorites for stores and event series.
-- Favorites should change monitoring behavior, not just visual display.
+- Favorites exist for stores, event series, communities, and relevant personal
+  views. The global Favorites toggle now has visible state/count feedback;
+  remaining work is behavioral calibration, especially how favorites should
+  affect monitoring cadence and default ranking.
 - Personal notes and ratings in hosted app state.
-- Click-through behavior for most surfaced content.
+- Click-through behavior exists for most surfaced content, including recent
+  Signal and Communities pulse details. Continue tightening any remaining
+  non-clickable cards or metrics only when real use exposes friction.
 - Optional Google Maps / directions links from store detail views.
 - "New events" area that highlights newly discovered events for about two weeks.
 - Alert rail or dashboard section for sudden changes, cancellations, upstream
@@ -409,10 +413,12 @@ claims without reopening the whole packet.
   - research-authored fields
   - user-authored fields
   - agent/workflow metadata
-- Replace browser-only local storage with authenticated cross-device records,
-  including a one-time migration of existing browser preferences.
-- Ensure favorites, ratings, notes, and follow-up flags have clear behavioral
-  impact rather than feeling bolted on.
+- Authenticated cross-device personal state is implemented with browser-local
+  fallback. The 2026-07-25 magic-link persistence fix is waiting for user
+  verification after Supabase email rate limiting clears.
+- Continue calibrating behavioral impact for favorites, ratings, notes, and
+  follow-up flags so they shape ranking, monitoring, and reminders without
+  feeling bolted on.
 - Negative preference controls now exist for stores and event series. Continue
   monitoring whether individual dated occurrences need separate per-date
   thumbs-down later.
@@ -424,10 +430,10 @@ claims without reopening the whole packet.
   low-fit` group and removes those venues and their events from ordinary
   recommendation, highlight, and visible research-count surfaces. Underlying
   venue/event records remain recoverable.
-- Revisit the top-level `Favorites` control so it either has a clear global job
-  or is redesigned/removed.
-- Ensure the top-level favorites control produces a visible effect on all
-  relevant pages and does not conflict with page-local favorite filters.
+- Reassess the top-level `Favorites` control only after real use. It currently
+  acts as a visible global favorite-mode toggle where pages support it; future
+  work should decide whether it becomes a stronger `My stuff` mode or remains a
+  lightweight filter.
 - Add saved view presets such as `My commander view`, `Weekend scan`, `All
   updates`, and `Discovery queue`.
 
