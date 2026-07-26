@@ -441,6 +441,11 @@ claims without reopening the whole packet.
   stores, Commander bracket 2/3 signals, and prerelease/sealed highlights.
 - Draft should be easy to phase in as a secondary preference rather than forced
   into the default top-priority mix.
+- Keep `Prerelease / sealed / special limited` conceptually separate from
+  ordinary Draft in filters and ranking. Prerelease/sealed should remain a
+  high-signal planning class; Draft is interesting and should stay easy to
+  reveal, but it should not compete with Commander or prerelease/sealed as a
+  default priority.
 - Continue improving `why am I seeing this?` drilldowns so ranked and
   highlighted items feel trustworthy.
 - Explore how to keep `Fresh Signals` and `For You` prominent after the fixed
