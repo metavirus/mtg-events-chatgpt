@@ -6,9 +6,10 @@ const SUPABASE = {
 };
 
 const AUTH_REDIRECT_URL = 'https://metavirus.github.io/mtg-events-chatgpt/';
+const AUTH_STORAGE_KEY = 'sb-pyvftzsodzwfqncjbmbc-auth-token';
 const DATA_FETCH_TIMEOUT_MS = 9000;
-const AUTH_STARTUP_TIMEOUT_MS = 5000;
-const personalAuth = { client: null, user: null, status: 'local', message: '', sendingLink: false };
+const AUTH_STARTUP_SLOW_MS = 5000;
+const personalAuth = { client: null, user: null, status: 'checking', message: 'Restoring sign-in…', sendingLink: false, startupComplete: false, refreshInFlight: null };
 let appInitialized = false;
 
 const COMMUNITY_SEED = [
@@ -197,18 +198,19 @@ async function loadSupabaseAfterRender() {
 }
 
 function initializePersonalAuthAfterRender() {
-  withTimeout(initializePersonalAuth(), AUTH_STARTUP_TIMEOUT_MS, 'Personal preference sync timed out').catch((error) => {
+  const slowTimer = window.setTimeout(() => {
+    if (personalAuth.startupComplete || personalAuth.user || personalAuth.status !== 'checking') return;
+    personalAuth.message = 'Still restoring sign-in…';
+    updateAuthChrome();
+  }, AUTH_STARTUP_SLOW_MS);
+  initializePersonalAuth().catch((error) => {
     console.warn('Personal preference startup failed; local state remains active.', error);
     personalAuth.status = 'local';
     personalAuth.message = 'Saved on this device';
+    personalAuth.startupComplete = true;
     updateAuthChrome();
-  });
-}
-
-function withTimeout(promise, timeoutMs, message) {
-  return new Promise((resolve, reject) => {
-    const timeout = window.setTimeout(() => reject(new Error(message)), timeoutMs);
-    promise.then(resolve, reject).finally(() => window.clearTimeout(timeout));
+  }).finally(() => {
+    window.clearTimeout(slowTimer);
   });
 }
 
@@ -216,23 +218,87 @@ async function initializePersonalAuth() {
   if (!window.supabase?.createClient) {
     personalAuth.status = 'local';
     personalAuth.message = 'Account service unavailable; preferences remain on this device.';
+    personalAuth.startupComplete = true;
     updateAuthChrome();
     return;
   }
+  personalAuth.status = 'checking';
+  personalAuth.message = 'Restoring sign-in…';
+  updateAuthChrome();
   personalAuth.client = window.supabase.createClient(SUPABASE.url, SUPABASE.publishableKey, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'implicit' }
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      flowType: 'implicit',
+      storageKey: AUTH_STORAGE_KEY
+    }
   });
   personalAuth.client.auth.onAuthStateChange((event, session) => {
-    window.setTimeout(() => handleAuthSession(session, event), 0);
+    window.setTimeout(() => {
+      if (!personalAuth.startupComplete && event === 'INITIAL_SESSION') return;
+      void handleAuthSession(session, event);
+    }, 0);
   });
+  await recoverAuthSessionFromUrl();
   const { data, error } = await personalAuth.client.auth.getSession();
   if (error) {
     personalAuth.status = 'local';
     personalAuth.message = 'Could not restore sign-in; preferences remain on this device.';
+    personalAuth.startupComplete = true;
     updateAuthChrome();
     return;
   }
+  personalAuth.startupComplete = true;
   await handleAuthSession(data.session, 'INITIAL_SESSION');
+  bindAuthResumeRefresh();
+}
+
+async function recoverAuthSessionFromUrl() {
+  if (!personalAuth.client || !window.location.hash.includes('access_token=')) return;
+  const params = new URLSearchParams(window.location.hash.slice(1));
+  const accessToken = params.get('access_token');
+  const refreshToken = params.get('refresh_token');
+  if (!accessToken || !refreshToken) return;
+  const { error } = await personalAuth.client.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+  if (error) {
+    console.warn('Magic-link session recovery failed.', error);
+    return;
+  }
+  window.history.replaceState(null, document.title, `${window.location.pathname}${window.location.search}`);
+}
+
+function bindAuthResumeRefresh() {
+  if (bindAuthResumeRefresh.bound) return;
+  bindAuthResumeRefresh.bound = true;
+  const refresh = () => {
+    if (document.visibilityState && document.visibilityState !== 'visible') return;
+    void refreshPersonalAuthSession();
+  };
+  window.addEventListener('focus', refresh);
+  document.addEventListener('visibilitychange', refresh);
+}
+
+async function refreshPersonalAuthSession() {
+  if (!personalAuth.client) return;
+  if (personalAuth.refreshInFlight) return personalAuth.refreshInFlight;
+  personalAuth.refreshInFlight = personalAuth.client.auth.getSession()
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return handleAuthSession(data.session, 'RESUME_SESSION');
+    })
+    .catch((error) => {
+      console.warn('Personal preference session refresh failed.', error);
+      if (personalAuth.user) {
+        personalAuth.status = 'error';
+        personalAuth.message = 'Signed in, but sync needs a refresh';
+        updateAuthChrome();
+      }
+    })
+    .finally(() => {
+      personalAuth.refreshInFlight = null;
+    });
+  return personalAuth.refreshInFlight;
 }
 
 async function handleAuthSession(session, event) {
@@ -244,7 +310,7 @@ async function handleAuthSession(session, event) {
     updateAuthChrome();
     return;
   }
-  if (personalAuth.user?.id === nextUser.id && event === 'INITIAL_SESSION' && personalAuth.status === 'synced') return;
+  if (personalAuth.user?.id === nextUser.id && personalAuth.status === 'synced' && ['INITIAL_SESSION', 'RESUME_SESSION', 'TOKEN_REFRESHED'].includes(event)) return;
   personalAuth.user = nextUser;
   personalAuth.status = 'syncing';
   personalAuth.message = 'Syncing preferences…';
@@ -2873,13 +2939,14 @@ function personalSaveToast(label) {
 function updateAuthChrome() {
   const button = document.getElementById('openQuickNote');
   if (!button) return;
+  const restoring = ['checking', 'syncing'].includes(personalAuth.status);
   button.textContent = personalAuth.user ? (personalAuth.user.email?.[0] || 'K').toUpperCase() : 'K';
   button.classList.toggle('signed-in', !!personalAuth.user);
-  button.classList.toggle('local-only', !personalAuth.user);
-  button.classList.toggle('syncing', personalAuth.status === 'syncing');
+  button.classList.toggle('local-only', !personalAuth.user && !restoring);
+  button.classList.toggle('syncing', restoring);
   button.classList.toggle('sync-error', personalAuth.status === 'error');
-  button.dataset.authState = personalAuth.user ? personalAuth.status : 'local';
-  button.setAttribute('aria-label', personalAuth.user ? 'Open signed-in personal preferences' : 'Sign in to save personal preferences');
+  button.dataset.authState = personalAuth.user ? personalAuth.status : personalAuth.status || 'local';
+  button.setAttribute('aria-label', personalAuth.user ? 'Open signed-in personal preferences' : restoring ? 'Restoring personal sign-in' : 'Sign in to save personal preferences');
   button.title = personalAuth.message || 'Personal preferences';
 }
 
