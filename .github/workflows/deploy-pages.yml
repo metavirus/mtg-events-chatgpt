@@ -37,6 +37,8 @@ jobs:
           cp index.html _site/
           cp app.js _site/
           cp styles.css _site/
+          cp manifest.webmanifest _site/
+          cp -r assets _site/
           cp stores.json _site/
           cp events.json _site/
           cp sources.json _site/
