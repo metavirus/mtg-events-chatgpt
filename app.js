@@ -230,7 +230,7 @@ async function initializePersonalAuth() {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
-      flowType: 'implicit',
+      flowType: 'pkce',
       storageKey: AUTH_STORAGE_KEY
     }
   });
@@ -255,7 +255,22 @@ async function initializePersonalAuth() {
 }
 
 async function recoverAuthSessionFromUrl() {
-  if (!personalAuth.client || !window.location.hash.includes('access_token=')) return;
+  if (!personalAuth.client) return;
+  const url = new URL(window.location.href);
+  const authCode = url.searchParams.get('code');
+  if (authCode) {
+    const { error } = await personalAuth.client.auth.exchangeCodeForSession(authCode);
+    if (error) {
+      console.warn('Magic-link code exchange failed.', error);
+      personalAuth.status = 'error';
+      personalAuth.message = 'Sign-in link could not be restored here';
+      updateAuthChrome();
+      return;
+    }
+    cleanAuthCallbackUrl();
+    return;
+  }
+  if (!window.location.hash.includes('access_token=')) return;
   const params = new URLSearchParams(window.location.hash.slice(1));
   const accessToken = params.get('access_token');
   const refreshToken = params.get('refresh_token');
@@ -265,7 +280,13 @@ async function recoverAuthSessionFromUrl() {
     console.warn('Magic-link session recovery failed.', error);
     return;
   }
-  window.history.replaceState(null, document.title, `${window.location.pathname}${window.location.search}`);
+  cleanAuthCallbackUrl();
+}
+
+function cleanAuthCallbackUrl() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete('code');
+  window.history.replaceState(null, document.title, `${url.pathname}${url.search}${url.hash && !url.hash.includes('access_token=') ? url.hash : ''}`);
 }
 
 function bindAuthResumeRefresh() {
