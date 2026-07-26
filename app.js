@@ -1822,11 +1822,14 @@ function jumpToWeekend() {
 
 function renderHighlights() {
   const events = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 28)), false);
-  const notable = [...events].sort((a, b) => Number(isSpecial(b)) - Number(isSpecial(a)) || freshnessDays(a.lastVerified) - freshnessDays(b.lastVerified)).slice(0, 3);
+  const notable = [...events]
+    .filter((event) => !isPlaceHidden(event.storeId) && !isEventHidden(event))
+    .sort((a, b) => Number(isSpecial(b)) - Number(isSpecial(a)) || freshnessDays(a.lastVerified) - freshnessDays(b.lastVerified))
+    .slice(0, 3);
   document.getElementById('newHighlights').innerHTML = notable.map((event) => highlightEvent(event)).join('');
   const bestPlaces = rankedStores().filter((place) => place.researchStatus === 'partial').slice(0, 3);
   document.getElementById('fitHighlights').innerHTML = bestPlaces.map((place, index) => `<button class="place-highlight" data-place-id="${place.id}"><span class="rank-number">0${index + 1}</span><span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)} · ${placeFitPhrase(place)}</small></span><span>→</span></button>`).join('');
-  const discoveryCount = DATA.stores.filter((place) => place.researchStatus === 'wizards-discovery').length;
+  const discoveryCount = DATA.stores.filter((place) => place.researchStatus === 'wizards-discovery' && !isPlaceHidden(place.id)).length;
   document.getElementById('researchAlerts').innerHTML = `<button class="alert-row" data-route="research"><span class="alert-icon amber">!</span><span><strong>${discoveryCount} places need deeper review</strong><small>Visible, but not fully vetted</small></span></button><button class="alert-row" data-route="research"><span class="alert-icon coral">↯</span><span><strong>Other Magic formats under-covered</strong><small>Current seed is Commander-heavy</small></span></button>`;
 }
 
@@ -2786,11 +2789,12 @@ function changeFilterHelp(filter) {
 }
 
 function renderResearch() {
-  const partial = DATA.stores.filter((place) => place.researchStatus === 'partial').length;
-  const discovery = DATA.stores.length - partial;
+  const visibleStores = DATA.stores.filter((place) => !isPlaceHidden(place.id));
+  const partial = visibleStores.filter((place) => place.researchStatus === 'partial').length;
+  const discovery = visibleStores.length - partial;
   const formats = DATA.events.reduce((acc, event) => ((acc[event.format || 'Unknown'] = (acc[event.format || 'Unknown'] || 0) + 1), acc), {});
   const sourceTypes = DATA.sources.reduce((acc, item) => ((acc[item.type || 'other'] = (acc[item.type || 'other'] || 0) + 1), acc), {});
-  document.getElementById('researchDashboard').innerHTML = `<div class="research-stats"><button class="research-stat primary clickable" data-action="show-reviewed-places"><span>Venue depth</span><strong>${partial}<small> / ${DATA.stores.length}</small></strong><p>have moved beyond raw discovery</p><div class="progress"><i style="width:${partial / DATA.stores.length * 100}%"></i></div></button><button class="research-stat clickable" data-action="show-discovery-queue"><span>Discovery queue</span><strong>${discovery}</strong><p>places remain lightly vetted</p></button><button class="research-stat clickable" data-action="show-source-records"><span>Source records</span><strong>${DATA.sources.length}</strong><p>connected evidence surfaces</p></button><button class="research-stat warning clickable" data-action="show-format-balance"><span>Event-format balance</span><strong>${formats.Commander || 0}<small> Commander</small></strong><p>${DATA.events.length - (formats.Commander || 0)} other-format record</p></button></div>
+  document.getElementById('researchDashboard').innerHTML = `<div class="research-stats"><button class="research-stat primary clickable" data-action="show-reviewed-places"><span>Venue depth</span><strong>${partial}<small> / ${visibleStores.length}</small></strong><p>visible places have moved beyond raw discovery</p><div class="progress"><i style="width:${visibleStores.length ? partial / visibleStores.length * 100 : 0}%"></i></div></button><button class="research-stat clickable" data-action="show-discovery-queue"><span>Discovery queue</span><strong>${discovery}</strong><p>visible places remain lightly vetted</p></button><button class="research-stat clickable" data-action="show-source-records"><span>Source records</span><strong>${DATA.sources.length}</strong><p>connected evidence surfaces</p></button><button class="research-stat warning clickable" data-action="show-format-balance"><span>Event-format balance</span><strong>${formats.Commander || 0}<small> Commander</small></strong><p>${DATA.events.length - (formats.Commander || 0)} other-format record</p></button></div>
     <div class="research-grid"><section class="research-panel"><p class="eyebrow">Coverage truth</p><h2>What this snapshot can and cannot say</h2><div class="truth-list"><div><span class="truth-icon mint">✓</span><p><strong>Useful nearby Commander starting set</strong><br>Recurring listings and strong partial venue profiles can support real planning now.</p></div><div><span class="truth-icon amber">~</span><p><strong>Uneven venue depth</strong><br>${partial} places have qualitative work; ${discovery} remain discovery-level and need social/site corroboration.</p></div><div><span class="truth-icon coral">!</span><p><strong>Not a complete Magic calendar</strong><br>Draft, sealed, prerelease, and other formats have not received comparable normalization yet.</p></div><div><span class="truth-icon sky">i</span><p><strong>Recurring dates are expectations</strong><br>Weekly schedules are displayed as projected occurrences unless a date-specific source confirms them.</p></div></div></section>
     <section class="research-panel"><p class="eyebrow">Source mix</p><h2>Where the evidence comes from</h2><div class="source-bars">${Object.entries(sourceTypes).sort((a,b) => b[1]-a[1]).slice(0,8).map(([type,count]) => `<div><span>${escapeHtml(type.replaceAll(/([A-Z])/g, ' $1'))}</span><div><i style="width:${count / Math.max(...Object.values(sourceTypes)) * 100}%"></i></div><strong>${count}</strong></div>`).join('')}</div></section></div>
     <div class="research-panel methodology-card"><div><p class="eyebrow">Method in one line</p><h2>Catalog broadly. Classify carefully. Rank personally. Preserve the evidence.</h2></div><button class="soft-button" data-action="show-log">View activity log</button></div>`;
@@ -3037,6 +3041,11 @@ function toggleFavorite(key) {
 
 function toggleHidden(key) {
   state.personal.hidden[key] = !state.personal.hidden[key];
+  if (key.startsWith('place:') && state.personal.hidden[key] && state.selectedPlaceId === key.slice(6)) {
+    state.selectedPlaceId = defaultSelectedPlaceId();
+    state.selectedPlaceWasAuto = true;
+    state.selectedPlaceTab = 'overview';
+  }
   savePersonal({ type: 'preference', label: `${state.personal.hidden[key] ? 'Deprioritized' : 'Restored'} ${key.split(':')[1]}` });
   void persistPreference(key);
   renderCurrentRoute();
@@ -3101,7 +3110,7 @@ function openFreshSignals() {
 function openHighlightsHub() {
   const events = notableEvents(6);
   const places = rankedStores().filter((place) => place.researchStatus === 'partial').slice(0, 6);
-  const alerts = DATA.stores.filter((place) => place.researchStatus !== 'partial').slice(0, 5);
+  const alerts = DATA.stores.filter((place) => place.researchStatus !== 'partial' && !isPlaceHidden(place.id)).slice(0, 5);
   openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Signals hub</span></div><h1 id="drawerTitle">Side-panel signals</h1><p class="drawer-lead">When the window gets tighter, use this drawer to reach the Today page highlights without hunting for where they went.</p><section class="drawer-section"><div class="section-title-row"><div><p class="eyebrow amber">Fresh signals</p><h2>New & notable</h2></div><button class="text-button" data-action="show-fresh-signals">Open full list</button></div><div class="day-drawer-list">${events.length ? events.map((event) => eventCard(event)).join('') : '<p class="muted-copy">No notable items are visible right now.</p>'}</div></section><section class="drawer-section"><div class="section-title-row"><div><p class="eyebrow mint">For you</p><h2>Promising nearby</h2></div><button class="text-button" data-action="show-promising-nearby">Open full list</button></div><div class="place-occurrences">${places.length ? places.map((place, index) => { const evaluation = normalizedEvaluation(place); return `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${String(index + 1).padStart(2, '0')}</strong>fit</time><span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)} · ${escapeHtml(evaluation.fitGrade)} · ${Number(evaluation.fitScore).toFixed(1)}/5</small></span><span class="status-chip ${evaluation.candidateStatus === 'promoted' ? 'mint' : 'amber'}">${evaluation.candidateStatus === 'promoted' ? 'Promoted' : 'Working'}</span></button>`; }).join('') : '<p class="muted-copy">No reviewed places are available yet.</p>'}</div></section><section class="drawer-section"><div class="section-title-row"><div><p class="eyebrow coral">Check first</p><h2>Research alerts</h2></div><button class="text-button" data-route="research">See coverage</button></div><div class="place-occurrences">${alerts.length ? alerts.map((place) => `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>?</strong>queue</time><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${truncate(place.assessmentNotes || 'Needs more corroboration', 95)}</small></span><span class="status-chip amber">Discovery</span></button>`).join('') : '<p class="muted-copy">No immediate research alerts are queued.</p>'}</div></section>`);
 }
 
