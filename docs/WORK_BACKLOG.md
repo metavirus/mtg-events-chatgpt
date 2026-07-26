@@ -62,13 +62,13 @@ Use it for:
   direct Supabase-backed intake/promotion rather than file dumps, branch
   rituals, or manual cleanup archaeology.
 
-- Token-efficiency operating model review TBD: compare the current more-direct
-  working style against the earlier user + steward split. Measure whether
-  keeping more work in one tighter loop is the right default versus using a
-  research-heavy delegated steward. Focus on real costs and benefits:
-  token burn, elapsed time, continuity loss, duplicated context loading,
-  research quality, and whether specialist delegation is still worth it for any
-  bounded lane.
+- Token-efficiency operating model review TBD: compare the actual three-channel
+  workflow: this chat as orchestrator/direct executor, the separate steward
+  chat as bounded canonical worker, and ordinary ChatGPT as an occasional scout
+  when Codex usage is exhausted. Measure token burn, elapsed time, duplicated
+  context loading, compaction risk, research quality, and whether any steward
+  lane still earns its orchestration cost. The default should avoid designing
+  here and then making the steward rediscover the same problem.
 
 - Coordination cleanup TBD: when a Supabase CLI/session with Edge Function
   delete access is available, cleanly remove or disable the obsolete hosted

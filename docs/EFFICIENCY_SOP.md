@@ -403,6 +403,14 @@ Also perform straightforward Medium-effort UI, documentation, validation, and
 narrow debugging directly when the scope is exact and the relevant files are
 known.
 
+In the user's current workflow, this chat often acts as the orchestrator and
+may also execute small bounded changes directly. A separate steward chat should
+be used only when it is expected to reduce total context load or protect this
+chat from compaction risk. Do not spend tokens designing a solution here and
+then ask the steward to rediscover it. If a steward handoff is needed, send one
+authoritative instruction with the target, current commit, allowed actions,
+forbidden actions, validation, and stop condition.
+
 Use a worker only when it provides a concrete advantage, such as:
 
 - a specialized capability unavailable in the current task;
@@ -421,6 +429,15 @@ Before delegating, ask:
 
 If those answers do not support delegation, execute directly.
 
+Steward handoff packet, when delegation is justified:
+
+- current branch and commit;
+- one-sentence objective;
+- exact files, tables, or Supabase functions in scope;
+- allowed actions and explicitly forbidden actions;
+- validation commands or readbacks required;
+- hard stop condition and reporting format.
+
 When a worker is used:
 
 - do not poll repeatedly;
@@ -431,7 +448,7 @@ When a worker is used:
 - preserve any worker changes before taking over;
 - do not restart the same work in another worker.
 
-Keep direct steward implementation bounded:
+Keep direct implementation bounded:
 
 - one coherent outcome;
 - targeted inspection;
