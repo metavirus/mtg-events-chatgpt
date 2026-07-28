@@ -16,9 +16,12 @@ protocol-tested, use the manual/screenshot pattern only.
 - [ ] Discord survey is read-only.
 - [ ] Exact route/channel target selected from `discord_access_profiles` /
   `discord_channel_watchlist`.
+- [ ] `scripts/discord_route_preflight.py` passed for the intended access
+  method and every channel in scope.
 - [ ] Access mode confirmed:
   - `manual_open_required`
   - `direct_navigation_verified`
+  - `ui_native_navigation_verified`
   - `route_only_tbd`
   - `join_or_role_gate`
   - `blocked_unsafe_method`
@@ -31,6 +34,10 @@ protocol-tested, use the manual/screenshot pattern only.
   screenshot/paste.
 - [ ] If direct-navigation mode: method was previously protocol-tested and does
   not synthesize page-body input.
+- [ ] If UI-native mode: navigation starts at Discord `@me` and follows the
+  recorded folder/server/channel path; cold direct channel URLs are not opened.
+- [ ] If this is a multi-channel POC: every channel has a declared access mode;
+  manual-only channels are opened by the user or deferred to route discovery.
 
 ## Route/channel result
 

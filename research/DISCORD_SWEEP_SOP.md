@@ -118,6 +118,23 @@ Routine survey records `last_checked_at`, `last_seen_message_id`,
 `last_seen_message_at`, and `latest_run_result`. Discord unread/read state is
 never the resume cursor.
 
+Before any agent-driven Discord navigation, run the route preflight helper
+against every channel in the intended pass:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/discord_route_preflight.py `
+  --method ui_native `
+  --channel-url https://discord.com/channels/.../... `
+  --channel-url https://discord.com/channels/.../...
+```
+
+Use `--require-multiple` for a POC whose success depends on checking more than
+one channel. A failed preflight is a hard stop unless the user manually opens
+the exact channel or approves a separate route-discovery pass. Do not open a
+cold Discord channel URL in the browser merely because the URL is recorded.
+Recorded direct URLs are identity metadata unless the channel's
+`safe_access_mode` is exactly `direct_navigation_verified`.
+
 ## Discord Events are a first-class signal surface
 
 Discord's server Events surface is separate from ordinary channel history and
@@ -196,6 +213,13 @@ channel destination, or another independently verified shell marker.
 For routine survey, use only the already recorded UI-native path. Cold direct
 channel URLs remain identity metadata unless separately proven safe; they are
 not the default access method.
+
+For multi-channel Discord POCs, select the full channel set before beginning.
+It is acceptable for the result to be mixed-mode: for example, one
+`ui_native_navigation_verified` channel may be surveyed by the agent while a
+second `manual_open_required` channel needs the user to open it or supply a
+screenshot. Do not silently shrink a multi-channel proof to the one channel
+that happens to be easiest to reach.
 
 Open Discord channel URLs only through a navigation method that cannot submit
 text into the Discord page body, such as:

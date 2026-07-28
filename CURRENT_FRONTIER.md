@@ -85,7 +85,16 @@ Canonical operating details:
    Addiction team-sealed meetup or Collector's Lounge prerelease invitation
    appears to imply official store programming, fix the display/attribution
    bug directly; otherwise leave the proof alone.
-1. Use the lifecycle-specific Supabase selectors:
+1. Next Discord POC candidate: Collector's Lounge/Cypress as a multi-channel
+   surface, not a single announcements-channel peek. Run
+   `scripts/discord_route_preflight.py` before any browser navigation. Current
+   live map state: `#mtg-announcements-and-events` is
+   `ui_native_navigation_verified`; `#event-rules` is `manual_open_required`.
+   Therefore a safe POC either surveys the verified channel and asks the user to
+   manually open/provide `#event-rules`, or first performs a bounded route
+   discovery pass for `#event-rules`. Do not cold-open direct Discord channel
+   URLs unless the route is explicitly `direct_navigation_verified`.
+2. Use the lifecycle-specific Supabase selectors:
    `venue_baseline_candidates`, `venue_surface_retry_candidates`,
    `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
    `venue_identity_resolution_candidates`. Markdown ledgers are context, not
@@ -93,15 +102,15 @@ Canonical operating details:
    preferences, use `venue_candidates_for_user(...)` so venues marked
    `deprioritize` or `hide` do not re-enter ordinary discovery, retry, or
    monitoring work.
-2. Keep every runtime research task inside one explicit lane:
+3. Keep every runtime research task inside one explicit lane:
    `baseline pass`, `identity-resolution pass`, or
    `steady-state monitoring pass`. Time budgets and hard stop conditions now
    live in `docs/EFFICIENCY_SOP.md`; treat a 5+ minute no-delta monitoring run
    or a 10+ minute ordinary baseline run as a workflow failure condition, not a
    normal cost.
-3. Address specific real-use app friction when observed; do not start another
+4. Address specific real-use app friction when observed; do not start another
    broad product tranche by default.
-4. Consider the next overhead reduction only as a separate approved tooling
+5. Consider the next overhead reduction only as a separate approved tooling
    tranche: either a narrow typed helper/RPC for the remaining routine write
    shapes or further simplification around linked-CLI typed writes.
 
