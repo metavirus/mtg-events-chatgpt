@@ -114,13 +114,26 @@ monitoring cursor. Do not rediscover folders or channels unless the recorded
 path fails. A failed or quiet run updates the latest run result without
 downgrading durable route value.
 
-For multi-channel servers, do not deep-read every plausibly relevant channel.
-First run a cheap channel triage: channel name, unread/mention state, latest
-visible timestamp, and the channel's expected signal type. Then deep-read only
-channels with recent activity, user mentions, event-adjacent chatter, schedule
-changes, rules changes, or a due cursor. Stale push-only/rules channels should
-usually be a sub-minute cursor check; they should not consume the same budget as
-live meetup chatter.
+For multi-channel servers, do not deep-read every plausibly relevant channel,
+but do not trust channel names too much either. Discord servers are often
+chaotic and poorly labeled. First run a cheap channel triage: channel name,
+unread/mention state, latest visible timestamp, visible activity density, and
+the channel's expected signal type. Then deep-read channels with recent
+activity, user mentions, event-adjacent chatter, schedule changes, rules
+changes, or a due cursor.
+
+Channel names are only a prior:
+
+- clearly irrelevant channels such as `cute-memes`, off-topic media dumps, pure
+  trading/buy-sell channels, bot logs, or onboarding spam can go to an ignore or
+  low-priority list after a tiny confirmation sample;
+- ambiguous high-traffic channels such as `general`, `main`, `chat`, `lounge`,
+  or `community` must not be skipped by name alone. If they are active, take a
+  bounded recent-message sample and classify whether the activity is event,
+  meetup, store-operation, rules/power, or useful ambient community chatter.
+
+Stale push-only/rules channels should usually be a sub-minute cursor check; they
+should not consume the same budget as live meetup chatter.
 
 A multi-channel Discord routine survey that spends more than roughly two
 minutes per channel without a material delta has failed the efficiency contract.
