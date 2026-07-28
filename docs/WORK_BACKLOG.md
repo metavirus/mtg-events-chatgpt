@@ -148,6 +148,10 @@ Use it for:
   uses implicit magic-link flow instead of PKCE so sign-in should survive the
   user's normal browser/app/email-link context better. Marked done subject to
   user verification after the temporary Supabase email rate-limit clears.
+- 2026-07-28 auth root-cause fix is implemented: startup hash routing was
+  consuming implicit magic-link `#access_token=...` callbacks before Supabase
+  Auth could persist the session. The app now detects auth callbacks before
+  app-route hash handling. Pending user verification on the hosted app.
 - 2026-07-19 validation confirmed signed-in Supabase rows for venue notes,
   event-series notes, and favorites. Research facts remain unchanged by
   personal actions.
@@ -418,8 +422,9 @@ claims without reopening the whole packet.
   - user-authored fields
   - agent/workflow metadata
 - Authenticated cross-device personal state is implemented with browser-local
-  fallback. The 2026-07-25 magic-link persistence fix is waiting for user
-  verification after Supabase email rate limiting clears.
+  fallback. The 2026-07-28 magic-link callback fix prevents app hash-routing
+  from consuming auth tokens before session persistence. Pending user
+  verification on the hosted app.
 - Continue calibrating behavioral impact for favorites, ratings, notes, and
   follow-up flags so they shape ranking, monitoring, and reminders without
   feeling bolted on.

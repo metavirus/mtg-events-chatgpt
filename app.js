@@ -299,6 +299,11 @@ function cleanAuthCallbackUrl() {
   window.history.replaceState(null, document.title, `${url.pathname}${url.search}${url.hash && !url.hash.includes('access_token=') ? url.hash : ''}`);
 }
 
+function hasAuthCallbackInUrl() {
+  const url = new URL(window.location.href);
+  return url.searchParams.has('code') || /(?:^|[&#])access_token=/.test(window.location.hash);
+}
+
 function bindAuthResumeRefresh() {
   if (bindAuthResumeRefresh.bound) return;
   bindAuthResumeRefresh.bound = true;
@@ -1061,6 +1066,14 @@ function navigateBack() {
 }
 
 function routeFromHash() {
+  if (hasAuthCallbackInUrl()) {
+    state.route = 'signals';
+    history.replaceState(null, '', window.location.href);
+    document.querySelectorAll('[data-route-panel]').forEach((panel) => panel.classList.toggle('active', panel.dataset.routePanel === state.route));
+    document.querySelectorAll('.nav-item[data-route], .mobile-nav [data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === state.route));
+    renderCurrentRoute();
+    return;
+  }
   const route = location.hash.replace('#', '') || 'signals';
   navigate(document.querySelector(`[data-route-panel="${route}"]`) ? route : 'signals');
 }
