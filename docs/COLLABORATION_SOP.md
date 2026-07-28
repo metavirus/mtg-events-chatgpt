@@ -228,6 +228,25 @@ change.
 
 Compaction is a continuity event, not proof that implementation failed.
 
+### Stale-handoff recovery
+
+When the user challenges whether current work has already been done, treat that
+as a request to audit state, not as a conversational disagreement. Before
+recommending or repeating a task:
+
+1. identify the exact claimed next action;
+2. check the durable implementation surface that would prove completion, such
+   as app code, live Supabase rows/functions, accepted Signals, or committed
+   docs;
+3. compare that evidence against `CURRENT_FRONTIER.md` and
+   `docs/WORK_BACKLOG.md`;
+4. if the handoff is stale, fix the handoff note first and report the corrected
+   current frontier.
+
+Do not let transcript memory, compressed summaries, or old "next step" wording
+override durable state. Backlog items are ideas and parked work; the frontier is
+only valid when it matches implementation reality.
+
 ### Isolated compaction
 
 After one isolated compaction, continue directly when the exact target, file,

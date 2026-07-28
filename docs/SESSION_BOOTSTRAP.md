@@ -77,6 +77,24 @@ Before deeper work:
    - current branch
    - `git status --short`
 
+## Handoff freshness rule
+
+Do not treat a stale "next" item as proof that the work is still pending.
+After reading `CURRENT_FRONTIER.md` and `docs/WORK_BACKLOG.md`, quickly
+cross-check the claimed next lane against the implementation surface that would
+show completion:
+
+- app/UI work: search the relevant code and, when useful, inspect the live app;
+- Supabase/data work: inspect the live table, view, function, or row state;
+- Discord/community proof work: check the recorded Signals, source mappings,
+  and accepted surface records before rerunning a scanner;
+- platform work: run the readiness gate and trust `ENVIRONMENT READY` unless a
+  concrete command fails.
+
+If `CURRENT_FRONTIER.md`, backlog text, code, and live state disagree, pause the
+work lane and repair the handoff note first. The goal is to prevent context
+compression from resurrecting completed work.
+
 ## Python note
 
 Python is confirmed on the user's machine, but the `py` launcher has been

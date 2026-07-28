@@ -3,8 +3,14 @@
 Updated: 2026-07-28
 
 This file is the short operational handoff: where the project is now, what may
-come next, and which boundaries remain active. Detailed methods live in the
-canonical SOPs. Historical frontier checkpoints are preserved in
+come next, and which boundaries remain active. It must describe unfinished
+current work only. When a proof, product tranche, research batch, or platform
+repair completes, remove it from "next" language immediately or mark it as
+done/verify/parked. If this file conflicts with app code, Supabase live state,
+or a more recent backlog entry, treat the conflict as documentation drift:
+verify against the durable implementation state, update this file, and do not
+repeat completed work. Detailed methods live in the canonical SOPs. Historical
+frontier checkpoints are preserved in
 `docs/archive/CURRENT_FRONTIER_HISTORY_THROUGH_2026-07-24.md`.
 
 ## Where we are now
