@@ -25,6 +25,8 @@ if (-not [string]::IsNullOrWhiteSpace($DatabaseUrl)) {
         Write-Host "Replace placeholder text like <postgres-connection-url> with the actual Supabase Postgres connection URL."
         exit 1
     }
+    $env:SUPABASE_TELEMETRY_DISABLED = "1"
+    $env:DO_NOT_TRACK = "1"
     New-Item -ItemType Directory -Force -Path $secretDir | Out-Null
     Set-Content -Path $dbUrlPath -Value $DatabaseUrl -NoNewline -Encoding UTF8
     powershell -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "check_environment_readiness.ps1")
@@ -47,6 +49,7 @@ if ([string]::IsNullOrWhiteSpace($token)) {
 
 $env:SUPABASE_ACCESS_TOKEN = $token
 $env:SUPABASE_TELEMETRY_DISABLED = "1"
+$env:DO_NOT_TRACK = "1"
 $env:USERPROFILE = $supabaseCliHome
 $env:HOME = $supabaseCliHome
 $env:APPDATA = Join-Path $supabaseCliHome "AppData\Roaming"

@@ -14,6 +14,7 @@ $localSecretDir = Join-Path $repoRoot ".codex-secrets"
 $localDbUrlPath = Join-Path $localSecretDir "supabase-db-url.txt"
 $failed = [System.Collections.Generic.List[string]]::new()
 $env:SUPABASE_TELEMETRY_DISABLED = "1"
+$env:DO_NOT_TRACK = "1"
 $env:USERPROFILE = $supabaseCliHome
 $env:HOME = $supabaseCliHome
 $env:APPDATA = Join-Path $supabaseCliHome "AppData\Roaming"
@@ -35,6 +36,12 @@ function Invoke-SupabaseCli {
     $psi.RedirectStandardOutput = $true
     $psi.RedirectStandardError = $true
     $psi.CreateNoWindow = $true
+    $psi.Environment["SUPABASE_TELEMETRY_DISABLED"] = "1"
+    $psi.Environment["DO_NOT_TRACK"] = "1"
+    $psi.Environment["USERPROFILE"] = $supabaseCliHome
+    $psi.Environment["HOME"] = $supabaseCliHome
+    $psi.Environment["APPDATA"] = $env:APPDATA
+    $psi.Environment["LOCALAPPDATA"] = $env:LOCALAPPDATA
 
     $psi.Arguments = ($Arguments | ForEach-Object {
         if ($_ -match '[\s"]') {
@@ -182,13 +189,18 @@ if (-not $SkipLiveSmoke -and -not $skipLinkedLiveSmoke) {
         $smokeText -match '"database_name"\s*:\s*"postgres"'
     )
 
+    $telemetryOnlyError = (
+        $smokeText -match 'Timeout while shutting down PostHog' -or
+        $schemaResult.Text -match 'Timeout while shutting down PostHog'
+    )
+
     $schemaOk = (
         $schemaResult.Text -match 'record_entity_surface_check' -and
         $schemaResult.Text -match 'upsert_attributable_official_event' -and
         -not (($schemaResult.Text -match '"error"') -and ($schemaResult.Text -notmatch 'Timeout while shutting down PostHog'))
     )
 
-    if (-not $smokeOk -or -not $schemaOk) {
+    if ((-not $smokeOk -or -not $schemaOk) -and -not ($telemetryOnlyError -and $smokeOk -and $schemaOk)) {
         $liveText = [string]::Join("`n", @($smokeResult.Text, $schemaResult.Text))
         if ($liveText -match '(?is)(telemetry\.json|\.supabase).*(EPERM|permission|access.*denied)') {
             Fail "Supabase CLI workspace-local profile access blocked unexpectedly"
