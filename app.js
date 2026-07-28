@@ -2319,10 +2319,12 @@ function renderCommunities() {
     ? surfaces.filter((surface) => state.personal.favorites[`place:${surface.place?.id}`] || state.personal.favorites[`community:${surface.community?.id}`])
     : surfaces;
   const filteredSurfaces = filterCommunitySurfaces(visibleSurfaces);
+  const activeChannels = recentlyActiveCommunityChannels(visibleSurfaces);
   const needsReplay = surfaces.filter((surface) => surface.replayStatus === 'needs_replay').length;
   const inspected = surfaces.filter((surface) => surface.replayStatus === 'inspected').length;
   document.getElementById('communityGrid').innerHTML = `${communityDigestSection(chatter)}
     ${communityNetworkSection(visibleHubs)}
+    ${recentlyActiveChannelsSection(activeChannels)}
     ${communicationRoutesSection(filteredSurfaces, needsReplay, inspected)}`;
 }
 
@@ -2442,10 +2444,66 @@ function communityNetworkCard(hub) {
   </article>`;
 }
 
+function recentlyActiveCommunityChannels(surfaces) {
+  const cutoff = Date.now() - (45 * 24 * 60 * 60 * 1000);
+  const channels = new Map();
+  surfaces.forEach((surface) => {
+    const recentSignals = DATA.signals.filter((signal) => {
+      if (signal.sourceId !== surface.source.id || isSignalRead(signal.id) || ['dismissed', 'stale'].includes(signal.status)) return false;
+      const text = `${signal.summary} ${signal.details} ${signal.suggestedAction}`.toLowerCase();
+      if (!['mention', 'event_opportunity', 'community_activity'].includes(signal.category)) return false;
+      if (/route|first content read|content replay|source health|operational|captured|monitoring|needs (?:a )?first .*read/.test(text)) return false;
+      const observed = new Date(signal.observedAt || signal.capturedAt || 0).getTime();
+      return Number.isFinite(observed) && observed >= cutoff;
+    });
+    if (!recentSignals.length) return;
+    const sampleSignal = recentSignals[0];
+    const sourceCommunity = signalSourceCommunity(sampleSignal) || surface.community;
+    const relatedPlace = sampleSignal.relatedEntityType === 'venue' ? store(sampleSignal.relatedEntityId) : null;
+    const key = sourceCommunity ? `community:${sourceCommunity.id}` : relatedPlace ? `place:${relatedPlace.id}` : `source:${surface.source.id}`;
+    const current = channels.get(key) || { ...surface, recentSignals: [] };
+    current.recentSignals.push(...recentSignals);
+    if (!isOpenableCommunityUrl(current.source.url) && isOpenableCommunityUrl(surface.source.url)) current.source = surface.source;
+    channels.set(key, current);
+  });
+  return [...channels.values()].map((channel) => {
+    channel.recentSignals = [...new Map(channel.recentSignals.map((signal) => [signal.id, signal])).values()]
+      .sort((a, b) => String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt)));
+    channel.latestSignal = channel.recentSignals[0];
+    return channel;
+  }).sort((a, b) => String(b.latestSignal?.observedAt || b.latestSignal?.capturedAt).localeCompare(String(a.latestSignal?.observedAt || a.latestSignal?.capturedAt))).slice(0, 6);
+}
+
+function recentlyActiveChannelsSection(channels) {
+  if (!channels.length) return '';
+  return `<section class="community-section community-active-channels-section">
+    <div class="section-title-row"><div><p class="eyebrow sky">${channels.length} active lately</p><h2>Channels with useful activity</h2><p class="muted-copy">A compact view of Discords and community routes that recently produced planning-relevant chatter. Quiet channels stay in the directory below.</p></div></div>
+    <div class="community-active-channel-list">${channels.map(recentlyActiveChannelCard).join('')}</div>
+  </section>`;
+}
+
+function recentlyActiveChannelCard(channel) {
+  const signal = channel.latestSignal;
+  const sourceCommunity = signalSourceCommunity(signal) || channel.community;
+  const relatedPlace = signal.relatedEntityType === 'venue' ? store(signal.relatedEntityId) : null;
+  const targetAction = sourceCommunity
+    ? `data-community-id="${escapeHtml(sourceCommunity.id)}"`
+    : relatedPlace || channel.place
+      ? `data-place-id="${escapeHtml((relatedPlace || channel.place).id)}"`
+      : '';
+  const targetLabel = sourceCommunity?.name || relatedPlace?.name || channel.place?.name || channel.source.label;
+  const sourceUrl = signal.evidenceUrl || channel.source.url || '';
+  return `<article class="community-active-channel-card">
+    <button class="community-active-channel-target" ${targetAction}><span class="community-symbol small">${communitySurfaceIcon(channel.kind)}</span><span><strong>${escapeHtml(targetLabel)}</strong><small>${escapeHtml(channel.kind)} · ${escapeHtml(formatFreshnessDate(signal.observedAt || signal.capturedAt))}${channel.recentSignals.length > 1 ? ` · ${channel.recentSignals.length} useful threads` : ''}</small></span></button>
+    <button class="community-active-channel-finding" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">${escapeHtml(truncate(signal.summary, 150))}</button>
+    <div class="community-active-channel-actions">${sourceUrl ? `<a class="icon-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer" aria-label="Open ${escapeHtml(targetLabel)} channel" title="Open channel">↗</a>` : ''}<button class="icon-button" data-action="mark-signal-read" data-signal-id="${escapeHtml(signal.id)}" aria-label="Hide this activity" title="Hide">×</button></div>
+  </article>`;
+}
+
 function communicationRoutesSection(surfaces, needsReplay, inspected) {
   return `<section class="community-section community-routes-section">
     <details class="community-route-queue">
-      <summary><span><strong>Store channels</strong><small>${surfaces.length} Discord, social, and announcement routes</small></span><span>Browse</span></summary>
+      <summary><span><strong>All store channels</strong><small>${surfaces.length} Discord, social, and announcement routes</small></span><span>Browse</span></summary>
       <p class="community-route-intro">Useful shortcuts when you want a particular store’s conversation. These are communication routes, not separate communities.</p>
       ${communitySurfaceFilters()}
       <div class="community-surface-list">${surfaces.length ? surfaces.map(communitySurfaceCard).join('') : '<p class="muted-copy">No routes match the current search and filter.</p>'}</div>

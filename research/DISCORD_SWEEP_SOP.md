@@ -335,6 +335,13 @@ item must support a one-click personal hide/read action. Hiding removes it from
 the user's active digest without deleting the underlying research record or
 changing canonical event/community truth.
 
+Channel visibility follows recent conversational value. A Discord may appear
+in the Communities page's active-channel group when it recently produced a
+mention, forming event, or useful `community_activity` finding. Route capture,
+monitoring status, source-health bookkeeping, and "needs first read" notes do
+not count as channel activity. Quiet channels remain available only in the
+collapsed route inventory until a material conversation appears.
+
 ## Discord/community status ladder
 
 Track Discord/community status separately from the store's overall research

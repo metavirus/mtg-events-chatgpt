@@ -550,6 +550,10 @@ claims without reopening the whole packet.
 - Chatter cards have a one-click personal Hide action. False positives are
   acceptable; dismissal must be easy, reversible through read history, and
   non-destructive to canonical research.
+- Communities now separates recently useful channels from the full route
+  inventory. A channel earns the visible activity group only through recent
+  conversational findings; route-status metadata does not qualify, and quiet
+  channels naturally remain in the collapsed directory.
 - Add limited daily Discord sweeps for only the most promising community
   channels, such as LFG, meetups, events, and EDH coordination.
 - Extend the relevant-chatter proof when a direct non-meetup question such as
