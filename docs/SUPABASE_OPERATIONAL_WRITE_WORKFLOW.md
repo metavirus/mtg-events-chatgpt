@@ -187,9 +187,11 @@ SQL during the live apply.
 
 Use `scripts/record_surface_check.py` when the work is only recording source or
 surface disposition. It exposes only the exact RPC fields, supports dry-run and
-live modes, can execute directly through the linked Supabase CLI, prints the
-RPC return columns, and can optionally add an idempotent replay check. It does
-not create durable repo artifacts.
+live modes, prints the RPC return columns, and can optionally add an
+idempotent replay check. Prefer `--execute` with the configured
+`SUPABASE_DB_URL` for ordinary typed writes; use `--execute-linked` only when
+the direct DB URL path is unavailable or the task specifically needs the linked
+project context. It does not create durable repo artifacts.
 
 Example connector-friendly dry run:
 
@@ -205,9 +207,9 @@ python.exe scripts/record_surface_check.py `
 ```
 
 Add `--live` to prepare the live RPC call for connector execution, or add
-`--execute-linked` to run directly through `supabase db query --linked`, or add
-`--execute` only when a `--database-url`, `DATABASE_URL`, or `SUPABASE_DB_URL`
-backend is configured. Add `--replay-check` for a live idempotency check.
+`--execute` to run directly with `--database-url`, `DATABASE_URL`, or
+`SUPABASE_DB_URL`. Use `--execute-linked` as a fallback linked-CLI path, not as
+the default. Add `--replay-check` for a live idempotency check.
 
 The call should include:
 

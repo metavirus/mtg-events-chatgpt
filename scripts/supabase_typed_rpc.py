@@ -15,21 +15,14 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SUPABASE_CLI_HOME = ROOT / ".codex-supabase-home"
 LOCAL_DB_URL_FILE = ROOT / ".codex-secrets" / "supabase-db-url.txt"
 
 
 def supabase_cli_env() -> dict[str, str]:
-    """Keep Supabase CLI state inside the workspace, not the sandboxed profile."""
+    """Use the normal authenticated Supabase CLI state, with telemetry disabled."""
     env = os.environ.copy()
     env["SUPABASE_TELEMETRY_DISABLED"] = "1"
     env["DO_NOT_TRACK"] = "1"
-    env["USERPROFILE"] = str(SUPABASE_CLI_HOME)
-    env["HOME"] = str(SUPABASE_CLI_HOME)
-    env["APPDATA"] = str(SUPABASE_CLI_HOME / "AppData" / "Roaming")
-    env["LOCALAPPDATA"] = str(SUPABASE_CLI_HOME / "AppData" / "Local")
-    for key in ("USERPROFILE", "APPDATA", "LOCALAPPDATA"):
-        Path(env[key]).mkdir(parents=True, exist_ok=True)
     return env
 
 

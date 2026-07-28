@@ -108,7 +108,7 @@ from public.record_entity_surface_check(
   p_monitoring_mode := {sql_literal(args.monitoring_mode)},
   p_cursor_value := {sql_literal(args.cursor_value)},
   p_content_fingerprint := {sql_literal(args.content_fingerprint)},
-  p_max_automatic_retries := {args.max_automatic_retries},
+  p_max_automatic_retries := {args.max_automatic_retries}::smallint,
   p_reopen_trigger := {sql_literal(args.reopen_trigger)},
   p_material_change := {sql_literal(args.material_change)},
   p_dry_run := {sql_literal(dry_run)}

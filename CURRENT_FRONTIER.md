@@ -85,15 +85,14 @@ Canonical operating details:
    Addiction team-sealed meetup or Collector's Lounge prerelease invitation
    appears to imply official store programming, fix the display/attribution
    bug directly; otherwise leave the proof alone.
-1. Next Discord POC candidate: Collector's Lounge/Cypress as a multi-channel
-   surface, not a single announcements-channel peek. Run
-   `scripts/discord_route_preflight.py` before any browser navigation. Current
-   live map state: `#mtg-announcements-and-events` is
-   `ui_native_navigation_verified`; `#event-rules` is `manual_open_required`.
-   Therefore a safe POC either surveys the verified channel and asks the user to
-   manually open/provide `#event-rules`, or first performs a bounded route
-   discovery pass for `#event-rules`. Do not cold-open direct Discord channel
-   URLs unless the route is explicitly `direct_navigation_verified`.
+1. Collector's Lounge/Cypress multi-channel Discord POC is complete. Both
+   `#mtg-announcements-and-events` and `#event-rules` are now
+   `ui_native_navigation_verified` in the live map. Lessons: store Discords can
+   be useful chatter/schedule surfaces, not just official announcements; the
+   announcements channel carried current schedule/sign-up chatter and the rules
+   channel carried high-value Commander fit evidence. Keep community/store
+   Discord findings clearly attributed as Discord/community evidence, not
+   official WPN/event attribution by default.
 2. Use the lifecycle-specific Supabase selectors:
    `venue_baseline_candidates`, `venue_surface_retry_candidates`,
    `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
