@@ -8,3 +8,4 @@ __pycache__/
 supabase/exports/
 supabase/plans/
 supabase/.temp/
+.codex-supabase-home/

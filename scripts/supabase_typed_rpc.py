@@ -15,6 +15,21 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SUPABASE_CLI_HOME = ROOT / ".codex-supabase-home"
+
+
+def supabase_cli_env() -> dict[str, str]:
+    """Keep Supabase CLI state inside the workspace, not the sandboxed profile."""
+    env = os.environ.copy()
+    env["SUPABASE_TELEMETRY_DISABLED"] = "1"
+    env["DO_NOT_TRACK"] = "1"
+    env["USERPROFILE"] = str(SUPABASE_CLI_HOME)
+    env["HOME"] = str(SUPABASE_CLI_HOME)
+    env["APPDATA"] = str(SUPABASE_CLI_HOME / "AppData" / "Roaming")
+    env["LOCALAPPDATA"] = str(SUPABASE_CLI_HOME / "AppData" / "Local")
+    for key in ("USERPROFILE", "APPDATA", "LOCALAPPDATA"):
+        Path(env[key]).mkdir(parents=True, exist_ok=True)
+    return env
 
 
 def sql_literal(value: object) -> str:
@@ -81,6 +96,7 @@ def run_linked_query(sql: str) -> subprocess.CompletedProcess[str]:
             capture_output=True,
             timeout=120,
             check=False,
+            env=supabase_cli_env(),
         )
     finally:
         try:

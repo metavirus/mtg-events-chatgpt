@@ -9,8 +9,16 @@ $python = Join-Path $repoRoot ".venv\Scripts\python.exe"
 $metadata = Join-Path $repoRoot "output\wizards\metadata.json"
 $schemaSql = Join-Path $PSScriptRoot "inspect_supabase_schema.sql"
 $projectRef = "pyvftzsodzwfqncjbmbc"
+$supabaseCliHome = Join-Path $repoRoot ".codex-supabase-home"
 $failed = [System.Collections.Generic.List[string]]::new()
 $env:SUPABASE_TELEMETRY_DISABLED = "1"
+$env:USERPROFILE = $supabaseCliHome
+$env:HOME = $supabaseCliHome
+$env:APPDATA = Join-Path $supabaseCliHome "AppData\Roaming"
+$env:LOCALAPPDATA = Join-Path $supabaseCliHome "AppData\Local"
+New-Item -ItemType Directory -Force -Path $supabaseCliHome | Out-Null
+New-Item -ItemType Directory -Force -Path $env:APPDATA | Out-Null
+New-Item -ItemType Directory -Force -Path $env:LOCALAPPDATA | Out-Null
 
 function Invoke-SupabaseCli {
     param(
@@ -101,7 +109,9 @@ if ($versionResult.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($versionResul
 $projectsText = $projectsResult.Text
 if ($projectsText -notmatch [regex]::Escape($projectRef)) {
     if ($projectsText -match '(?is)(telemetry\.json|\.supabase).*(EPERM|permission|access.*denied)') {
-        Fail "Supabase CLI profile access blocked by the execution sandbox; rerun this gate with the approved readiness-script permission"
+        Fail "Supabase CLI workspace-local profile access blocked unexpectedly"
+    } elseif ($projectsText -match '(?is)(access token not provided|supabase login|SUPABASE_ACCESS_TOKEN)') {
+        Fail "Supabase CLI workspace auth missing; run scripts\setup_supabase_cli_workspace.ps1 once after setting SUPABASE_ACCESS_TOKEN"
     } else {
         Fail "Supabase CLI authentication/Management API transport unavailable"
     }
@@ -140,7 +150,9 @@ if (-not $SkipLiveSmoke) {
     if (-not $smokeOk -or -not $schemaOk) {
         $liveText = [string]::Join("`n", @($smokeResult.Text, $schemaResult.Text))
         if ($liveText -match '(?is)(telemetry\.json|\.supabase).*(EPERM|permission|access.*denied)') {
-            Fail "Supabase CLI profile access blocked by the execution sandbox; rerun this gate with the approved readiness-script permission"
+            Fail "Supabase CLI workspace-local profile access blocked unexpectedly"
+        } elseif ($liveText -match '(?is)(access token not provided|supabase login|SUPABASE_ACCESS_TOKEN)') {
+            Fail "Supabase CLI workspace auth missing; run scripts\setup_supabase_cli_workspace.ps1 once after setting SUPABASE_ACCESS_TOKEN"
         } else {
             Fail "Authenticated linked Supabase query path unavailable"
         }

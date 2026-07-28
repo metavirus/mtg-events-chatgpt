@@ -7,27 +7,30 @@ Run it from the repository root:
 powershell -ExecutionPolicy Bypass -File scripts/check_environment_readiness.ps1
 ```
 
-Run this gate with the approved user-profile permission from the outset. If a
-sandboxed invocation prints `ENVIRONMENT NOT READY`, that result is diagnostic
-only: immediately rerun once through the documented permission path. Repair
-agent-fixable platform problems and retest the exact failed capability in the
-same task. Stop before useful project work only when the properly privileged
-gate still proves a genuine external prerequisite is unavailable.
+The gate now gives the Supabase CLI a workspace-local home at
+`.codex-supabase-home/`, which is ignored by Git. This avoids the recurring
+Codex sandbox failure where the CLI tried to write telemetry or profile state
+under `C:\Users\kavig\.supabase`.
 
-In a managed Codex workspace, run the gate with the approved
-readiness-script permission. The Supabase CLI reads its existing login and
-local telemetry/configuration state under the user profile, which the ordinary
-workspace sandbox cannot access. Any Supabase authentication or linked-query
-failure from a sandboxed gate is non-authoritative, even when the CLI does not
-surface an explicit `EPERM`. Rerun the same gate with that permission before
-diagnosing login, transport, token, or project-link failure.
+If the gate says workspace auth is missing, do not diagnose TLS, Norton,
+project-link state, or connector fallback first. Seed the local CLI lane once:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/setup_supabase_cli_workspace.ps1
+```
+
+That script reads `SUPABASE_ACCESS_TOKEN` from the current process, User scope,
+or Machine scope, links the project, and reruns this gate. If the token was just
+added through Windows settings, restart Codex or run the setup from a fresh
+terminal so the new environment block is visible.
 
 ## Permanent baseline
 
 ### Supabase direct execution
 
 - CLI: installed `supabase` CLI.
-- Authentication: CLI access token stored by `supabase login`.
+- Authentication: `SUPABASE_ACCESS_TOKEN` visible to the setup script, then
+  local CLI state seeded under ignored `.codex-supabase-home/`.
 - Link: repository linked to project `pyvftzsodzwfqncjbmbc`.
 - Direct path:
 
@@ -36,15 +39,15 @@ diagnosing login, transport, token, or project-link failure.
   ```
 
 - Smoke test: the readiness script runs a harmless linked `select`.
-- Authentication setup is an external one-time user action in a real terminal:
+- Authentication setup is a one-time user action in a real terminal:
 
   ```powershell
-  supabase login --name mtg-events-chatgpt
-  supabase link --project-ref pyvftzsodzwfqncjbmbc
+  [Environment]::SetEnvironmentVariable('SUPABASE_ACCESS_TOKEN', '<token>', 'User')
+  powershell -ExecutionPolicy Bypass -File scripts/setup_supabase_cli_workspace.ps1
   ```
 
-  In a non-interactive environment, set `SUPABASE_ACCESS_TOKEN` from a personal
-  access token and then run the link command. Never commit the token.
+  Never commit the token. The workspace-local CLI home is ignored and should
+  remain local machine state only.
 
   If login succeeds but CLI calls report a transport error for
   `https://api.supabase.com`, the environment remains blocked. The external
