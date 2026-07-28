@@ -538,12 +538,18 @@ claims without reopening the whole packet.
 ### Communities page refinement
 
 - `Relevant chatter` now leads the page with recent meetup coordination,
-  invitations, and direct questions involving the user. It preserves Discord
-  thread context and links to the related plan, place, community, and source
-  rather than duplicating the full Signals inbox.
-- `Your active hubs` and compact `Other useful routes` now separate current
-  social utility from directory-style discovery. Keep the complete directory
-  collapsed as supporting inventory.
+  invitations, direct questions involving the user, and useful event-adjacent
+  planning chatter. Personal involvement ranks first, but venue ideas,
+  attendance, timing, and format discussion may appear without becoming a
+  cross-app Signal. It preserves Discord thread context and links to the
+  related plan, place, community, and source.
+- The three formal regional communities remain first-class visible hubs.
+  Store Discords remain equally valid chatter sources but appear as compact
+  communication routes rather than being misrepresented as separate formal
+  communities.
+- Chatter cards have a one-click personal Hide action. False positives are
+  acceptable; dismissal must be easy, reversible through read history, and
+  non-destructive to canonical research.
 - Add limited daily Discord sweeps for only the most promising community
   channels, such as LFG, meetups, events, and EDH coordination.
 - Extend the relevant-chatter proof when a direct non-meetup question such as

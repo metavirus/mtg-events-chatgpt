@@ -312,6 +312,29 @@ Classify each server as one of:
 
 Once classified, do not rediscover this from scratch every time.
 
+Regional-community and store-operated Discords are both valid chatter sources.
+Do not rank a store Discord below a regional group merely because it belongs to
+a venue. Rank the material itself: personal involvement first, then concrete
+plans, then useful event-adjacent discussion and community texture.
+
+Event-adjacent chatter is worth preserving when it reduces Discord browsing
+overhead or helps future planning even before it becomes an event or Signal.
+Examples include players comparing possible bars or stores for a future
+meetup, discussing likely attendance, choosing formats or sets, coordinating
+transport or timing, and describing which recurring nights actually draw
+people. Exclude ordinary jokes, memes, off-topic conversation, and social noise
+that does not improve planning or community understanding.
+
+Use `mention` for direct questions/invitations involving the user,
+`event_opportunity` for concrete or forming plans, and `community_activity` for
+useful non-personal chatter. A `community_activity` item may appear in the
+Communities digest without becoming a cross-app attention Signal.
+
+False positives are an expected cost of useful chatter filtering. Every digest
+item must support a one-click personal hide/read action. Hiding removes it from
+the user's active digest without deleting the underlying research record or
+changing canonical event/community truth.
+
 ## Discord/community status ladder
 
 Track Discord/community status separately from the store's overall research
@@ -391,6 +414,8 @@ Look only for:
 - correction posts
 - new event graphics
 - same-week meetup/LFG signals
+- useful planning chatter, including venue ideas, attendance, timing, or format
+  discussion even when the user is not involved
 - especially notable new compatibility signals
 
 Do not scroll broad history.

@@ -2312,78 +2312,95 @@ function seriesRow(event) {
 
 function renderCommunities() {
   const surfaces = communitySurfaces();
-  const surfaceHubs = uniqueCommunitySurfaceHubs(surfaces).map(communityHubFromSurface);
-  const formalHubs = COMMUNITY_SEED.map(communityHubFromCommunity);
-  const hubs = [...formalHubs, ...surfaceHubs].filter(communityHubMatchesSearch);
-  const eligibleHubs = state.favoritesOnly ? hubs.filter(isCommunityHubFollowed) : hubs;
-  const followedHubs = eligibleHubs.filter(isCommunityHubFollowed).sort((a, b) => b.score - a.score).slice(0, 8);
-  const activeFormalHubs = eligibleHubs.filter((hub) => hub.community && hub.latestSignal).sort((a, b) => b.score - a.score);
-  const activeHubs = [...new Map([...activeFormalHubs, ...followedHubs].map((hub) => [hub.id, hub])).values()].slice(0, 5);
-  const activeHubIds = new Set(activeHubs.map((hub) => hub.id));
-  const worthExploring = eligibleHubs.filter((hub) => !activeHubIds.has(hub.id) && !isCommunityHubFollowed(hub) && !hub.lowValue).sort((a, b) => b.score - a.score).slice(0, 6);
-  const chatter = relevantCommunityChatter();
+  const formalHubs = COMMUNITY_SEED.map(communityHubFromCommunity).filter(communityHubMatchesSearch);
+  const visibleHubs = state.favoritesOnly ? formalHubs.filter(isCommunityHubFollowed) : formalHubs;
+  const chatter = communityDigestSignals();
   const visibleSurfaces = state.favoritesOnly
     ? surfaces.filter((surface) => state.personal.favorites[`place:${surface.place?.id}`] || state.personal.favorites[`community:${surface.community?.id}`])
     : surfaces;
   const filteredSurfaces = filterCommunitySurfaces(visibleSurfaces);
   const needsReplay = surfaces.filter((surface) => surface.replayStatus === 'needs_replay').length;
   const inspected = surfaces.filter((surface) => surface.replayStatus === 'inspected').length;
-  const directoryCommunities = COMMUNITY_SEED.filter((community) => !state.search || `${community.name} ${community.region} ${community.summary} ${community.formats.join(' ')}`.toLowerCase().includes(state.search));
-  document.getElementById('communityGrid').innerHTML = `${relevantCommunityChatterSection(chatter)}
-    ${communityHubSection('Your active hubs', 'Groups you follow or that currently have something personally useful happening.', activeHubs, 'followed')}
-    ${communityExploreSection(worthExploring)}
-    <section class="community-section community-directory-section">
-      <div class="section-title-row"><div><p class="eyebrow slate">Complete inventory</p><h2>Community directory</h2><p class="muted-copy">Formal groups and linked communication routes stay available without dominating the page. Use the top search or the filters below.</p></div></div>
-      <details class="community-route-queue">
-        <summary>Browse ${directoryCommunities.length} groups and ${filteredSurfaces.length} linked routes</summary>
-        <div class="community-directory-groups">${directoryCommunities.map(communityDirectoryCard).join('') || '<p class="muted-copy">No formal groups match the current search.</p>'}</div>
-        <details class="community-monitoring-details"><summary>Monitoring details · ${needsReplay} need context · ${inspected} inspected</summary>${communitySurfaceFilters()}<div class="community-surface-list">${filteredSurfaces.length ? filteredSurfaces.map(communitySurfaceCard).join('') : '<p class="muted-copy">No routes match the current search and filter.</p>'}</div></details>
-      </details>
-    </section>`;
+  document.getElementById('communityGrid').innerHTML = `${communityDigestSection(chatter)}
+    ${communityNetworkSection(visibleHubs)}
+    ${communicationRoutesSection(filteredSurfaces, needsReplay, inspected)}`;
 }
 
-function relevantCommunityChatter() {
+function communityDigestSignals() {
   return rankedSignals().filter((signal) => {
+    if (isSignalRead(signal.id)) return false;
     if (['dismissed', 'stale'].includes(signal.status)) return false;
     const src = source(signal.sourceId);
     if (!src || !isCommunitySurfaceSource(src)) return false;
     const text = `${signal.summary} ${signal.details} ${signal.suggestedAction}`.toLowerCase();
-    return signal.category === 'mention'
-      || (['urgent', 'high'].includes(signal.priority) && /\byou\b|metavirus/.test(text));
-  }).slice(0, 4);
+    const personal = signal.category === 'mention' || /\byou\b|metavirus/.test(text);
+    const planConversation = signal.category === 'event_opportunity'
+      && /meet|join|invite|confirm|plan|vote|looking for|lfg|bar|brewery|venue|host/.test(text);
+    const usefulChatter = signal.category === 'community_activity'
+      && !/route|first content read|content replay|source|operational|captured|monitoring/.test(text);
+    return personal || planConversation || usefulChatter;
+  }).sort((a, b) => communityDigestRank(b) - communityDigestRank(a)
+    || String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt))).slice(0, 6);
 }
 
-function relevantCommunityChatterSection(signals) {
+function communityDigestRank(signal) {
+  const text = `${signal.summary} ${signal.details}`.toLowerCase();
+  const personal = signal.category === 'mention' || /\byou\b|metavirus/.test(text);
+  const plan = signal.category === 'event_opportunity' || /meet|join|invite|confirm|plan|lfg/.test(text);
+  return (personal ? 1000 : 0) + (plan ? 300 : 0) + signalRank(signal);
+}
+
+function communityDigestSection(signals) {
   return `<section class="community-section community-chatter-section">
-    <div class="section-title-row"><div><p class="eyebrow coral">For you</p><h2>Relevant chatter</h2><p class="muted-copy">Invitations, meetup coordination, and direct questions involving you. This is conversation context—not the full Signals inbox.</p></div><button class="text-button" data-route="signals">All Signals →</button></div>
-    ${signals.length ? `<div class="community-chatter-list">${signals.map(communityChatterCard).join('')}</div>` : emptyState('No active conversation needs you', 'Community monitoring is working; this area stays quiet until a conversation directly involves you.')}
+    <div class="section-title-row"><div><p class="eyebrow coral">Community digest</p><h2>Worth catching up on</h2><p class="muted-copy">Useful conversation without the Discord scavenger hunt. Your invitations and mentions come first, followed by plans, venue ideas, and event-adjacent chatter.</p></div></div>
+    ${signals.length ? `<div class="community-chatter-list">${signals.map(communityChatterCard).join('')}</div>` : emptyState('Nothing useful to catch up on', 'Routine chatter stays out; this area fills when a conversation could help you find people, places, or plans.')}
   </section>`;
 }
 
 function communityChatterCard(signal) {
   const observed = signal.observedAt || signal.capturedAt;
   const src = source(signal.sourceId);
+  const sourceCommunity = signalSourceCommunity(signal);
   const threadUrl = signal.evidenceUrl || src?.url || '';
   const linkedEvent = communityEventForSignal(signal);
   const linkedEventDate = linkedEvent ? (linkedEvent.occurrenceDate || parseDate(linkedEvent.date || linkedEvent.startDate)) : null;
-  const status = linkedEvent
-    ? { label: 'Confirmed plan', tone: 'mint' }
-    : signal.status === 'needs_followup'
-      ? { label: 'Tentative · follow up', tone: 'amber' }
-      : { label: 'Direct mention', tone: 'coral' };
+  const text = `${signal.summary} ${signal.details}`.toLowerCase();
+  const personal = signal.category === 'mention' || /\byou\b|metavirus/.test(text);
+  const status = linkedEvent ? { label: 'Confirmed plan', tone: 'mint' }
+    : signal.status === 'needs_followup' ? { label: 'Tentative', tone: 'amber' }
+      : personal ? { label: 'For you', tone: 'coral' }
+        : { label: 'Community chatter', tone: 'sky' };
   const planMeta = linkedEvent ? communityPlanMeta(linkedEvent) : '';
   return `<article class="community-chatter-card ${status.tone}">
     <div class="community-chatter-kicker"><span class="status-chip ${status.tone}">${status.label}</span><span>${escapeHtml(formatFreshnessDate(observed))}</span></div>
     <h3>${escapeHtml(signal.summary)}</h3>
     ${planMeta}
-    <p>${escapeHtml(signal.details || signal.suggestedAction || 'Open the conversation for context.')}</p>
-    <div class="community-chatter-targets">${signalRelatedTarget(signal) || ''}</div>
+    <p>${escapeHtml(truncate(signal.details || signal.suggestedAction || 'Open the conversation for context.', 260))}</p>
+    <div class="community-chatter-targets">${communityChatterTargets(signal, sourceCommunity)}</div>
     <div class="community-chatter-actions">
       ${linkedEvent ? `<button class="primary-button compact-action" data-event-id="${escapeHtml(linkedEvent.id)}" ${linkedEventDate ? `data-date="${dateKey(linkedEventDate)}"` : ''}>Open plan</button>` : ''}
       ${threadUrl ? `<a class="soft-button" href="${escapeHtml(threadUrl)}" target="_blank" rel="noreferrer">Open thread ↗</a>` : ''}
       <button class="soft-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Details</button>
+      <button class="soft-button" data-action="mark-signal-read" data-signal-id="${escapeHtml(signal.id)}">Hide</button>
     </div>
   </article>`;
+}
+
+function signalSourceCommunity(signal) {
+  return COMMUNITY_SEED.find((item) => (item.sourceIds || []).includes(signal.sourceId)) || null;
+}
+
+function communityChatterTargets(signal, sourceCommunity) {
+  const targets = [];
+  if (sourceCommunity) targets.push(`<button data-community-id="${escapeHtml(sourceCommunity.id)}">From ${escapeHtml(sourceCommunity.name)}</button>`);
+  if (signal.relatedEntityType === 'venue') {
+    const place = store(signal.relatedEntityId);
+    if (place) targets.push(`<button data-place-id="${escapeHtml(place.id)}">Mentions ${escapeHtml(place.name)}</button>`);
+  } else if (signal.relatedEntityType === 'community' && signal.relatedEntityId !== sourceCommunity?.id) {
+    const relatedCommunity = community(signal.relatedEntityId);
+    if (relatedCommunity) targets.push(`<button data-community-id="${escapeHtml(relatedCommunity.id)}">About ${escapeHtml(relatedCommunity.name)}</button>`);
+  }
+  return targets.join('');
 }
 
 function communityEventForSignal(signal) {
@@ -2407,33 +2424,34 @@ function communityPlanMeta(event) {
   return `<div class="community-plan-meta"><span>${escapeHtml(occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }))}</span><strong>${formatTime(eventStartTime(event))}</strong><button data-place-id="${escapeHtml(place.id)}">${escapeHtml(place.name)}</button></div>`;
 }
 
-function communityExploreSection(hubs) {
-  if (!hubs.length) return '';
-  return `<section class="community-section community-explore-section">
-    <div class="section-title-row"><div><p class="eyebrow sky">Explore</p><h2>Other useful routes</h2><p class="muted-copy">Nearby channels worth knowing about, kept compact until they produce something useful.</p></div></div>
-    <div class="community-explore-grid">${hubs.map(communityExploreCard).join('')}</div>
+function communityNetworkSection(hubs) {
+  return `<section class="community-section community-network-section">
+    <div class="section-title-row"><div><p class="eyebrow violet">${hubs.length} communit${hubs.length === 1 ? 'y' : 'ies'}</p><h2>Communities</h2><p class="muted-copy">Regional groups stay visible here. Store Discords remain important chatter sources and live in the compact channel directory below.</p></div></div>
+    ${hubs.length ? `<div class="community-network-grid">${hubs.map(communityNetworkCard).join('')}</div>` : emptyState('No communities match', 'Clear the current search or favorites filter to see the regional community list.')}
   </section>`;
 }
 
-function communityExploreCard(hub) {
-  const sourceUrl = hub.primarySource?.url || hub.surface?.source?.url || '';
-  return `<article class="community-explore-card">
-    <span class="community-symbol small">${communitySurfaceIcon(hub.surface?.kind || 'Community')}</span>
-    <div><strong>${escapeHtml(hub.name)}</strong><small>${escapeHtml(hub.linkedLabel)}</small><p>${escapeHtml(hub.usefulness)}</p></div>
-    <div class="community-explore-actions"><button class="heart-button" data-favorite="${escapeHtml(hub.favoriteKey)}" aria-label="Follow ${escapeHtml(hub.name)}" title="Follow">${heartIcon()}</button>${sourceUrl ? `<a class="icon-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer" aria-label="Open ${escapeHtml(hub.name)}">↗</a>` : ''}</div>
+function communityNetworkCard(hub) {
+  const favorite = isCommunityHubFollowed(hub);
+  const sourceUrl = hub.primarySource?.url || '';
+  return `<article class="community-network-card">
+    <div class="community-network-head"><span class="community-symbol small">${communitySurfaceIcon('Community')}</span><div><strong>${escapeHtml(hub.name)}</strong><small>${escapeHtml(hub.linkedLabel)}</small></div><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${escapeHtml(hub.favoriteKey)}" aria-label="${favorite ? 'Unfollow' : 'Follow'} ${escapeHtml(hub.name)}">${heartIcon()}</button></div>
+    <p>${escapeHtml(truncate(hub.community.summary || hub.usefulness, 175))}</p>
+    ${hub.latestSignal ? `<button class="community-network-finding" data-action="open-signal" data-signal-id="${escapeHtml(hub.latestSignal.id)}"><span>Latest</span>${escapeHtml(hub.latestSignal.summary)} →</button>` : ''}
+    <div class="community-network-actions">${sourceUrl ? `<a class="soft-button" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">Open Discord ↗</a>` : ''}<button class="soft-button" data-community-id="${escapeHtml(hub.community.id)}">Details</button></div>
   </article>`;
 }
 
-function uniqueCommunitySurfaceHubs(surfaces) {
-  const bestByHub = new Map();
-  surfaces.forEach((surface) => {
-    const key = surface.place ? `place:${surface.place.id}` : surface.community ? `community:${surface.community.id}` : `source:${surface.source.id}`;
-    const current = bestByHub.get(key);
-    const score = (isOpenableCommunityUrl(surface.source.url) ? 1000 : 0) + communitySurfaceRank(surface);
-    const currentScore = current ? (isOpenableCommunityUrl(current.source.url) ? 1000 : 0) + communitySurfaceRank(current) : -Infinity;
-    if (!current || score > currentScore) bestByHub.set(key, surface);
-  });
-  return [...bestByHub.values()];
+function communicationRoutesSection(surfaces, needsReplay, inspected) {
+  return `<section class="community-section community-routes-section">
+    <details class="community-route-queue">
+      <summary><span><strong>Store channels</strong><small>${surfaces.length} Discord, social, and announcement routes</small></span><span>Browse</span></summary>
+      <p class="community-route-intro">Useful shortcuts when you want a particular store’s conversation. These are communication routes, not separate communities.</p>
+      ${communitySurfaceFilters()}
+      <div class="community-surface-list">${surfaces.length ? surfaces.map(communitySurfaceCard).join('') : '<p class="muted-copy">No routes match the current search and filter.</p>'}</div>
+      <p class="community-route-status">${needsReplay} await a useful content read · ${inspected} have accepted context</p>
+    </details>
+  </section>`;
 }
 
 function isOpenableCommunityUrl(url) {
@@ -2441,7 +2459,11 @@ function isOpenableCommunityUrl(url) {
 }
 
 function communityHubFromCommunity(community) {
-  const relatedSignals = DATA.signals.filter((signal) => signal.relatedEntityType === 'community' && signal.relatedEntityId === community.id && !['dismissed', 'stale'].includes(signal.status));
+  const relatedSignals = DATA.signals.filter((signal) => {
+    if (['dismissed', 'stale'].includes(signal.status)) return false;
+    return (signal.relatedEntityType === 'community' && signal.relatedEntityId === community.id)
+      || (community.sourceIds || []).includes(signal.sourceId);
+  });
   const primarySource = (community.sourceIds || []).map(source).filter((item) => item && isOpenableCommunityUrl(item.url)).sort((a, b) => (/discord/i.test(b.label) ? 1 : 0) - (/discord/i.test(a.label) ? 1 : 0))[0] || null;
   const latestSignal = [...relatedSignals].sort((a, b) => signalRank(b) - signalRank(a))[0] || null;
   return {
@@ -2460,44 +2482,11 @@ function communityHubFromCommunity(community) {
   };
 }
 
-function communityHubFromSurface(surface) {
-  const latestSignal = [...surface.relatedSignals].filter((signal) => !['dismissed', 'stale'].includes(signal.status)).sort((a, b) => signalRank(b) - signalRank(a))[0] || null;
-  return {
-    id: surface.id,
-    type: surface.place && ['Discord', 'Meetup'].includes(surface.kind) ? 'Store community' : surface.community ? 'Community route' : 'Social route',
-    name: surface.place ? `${surface.place.name} community` : surface.community ? surface.community.name : surface.source.label,
-    linkedLabel: surface.place ? `${surface.place.city || 'Venue'} · ${distanceLabel(surface.place)}` : surface.community?.region || 'Community surface',
-    usefulness: communityHubUsefulness(surface),
-    latestSignal,
-    lastChecked: surface.source.lastChecked || '',
-    favoriteKey: surface.place ? `place:${surface.place.id}` : surface.community ? `community:${surface.community.id}` : '',
-    surface,
-    score: surface.priorityScore,
-    lowValue: surface.replayStatus === 'stale_or_low' || surface.priorityScore < 45
-  };
-}
-
 function communityUsefulness(community) {
   if (community.id === 'legendary-creature-club') return 'Nearby Commander meetups and repeat-player connections across Long Beach and the South Bay.';
   if (community.id === 'infinite-loop-mtg') return 'Regional Magic discovery when a particularly strong event or organizer signal justifies the longer trip.';
   if (community.id === 'mtg-oc') return 'Cross-store Orange County event discovery and player coordination.';
   return community.signal || community.summary;
-}
-
-function communityHubUsefulness(surface) {
-  const name = `${surface.source.label || ''} ${surface.place?.name || ''}`.toLowerCase();
-  if (/jjs|jj's/.test(name)) return 'Magic announcements, promo graphics, and event coordination tied to JJ’s.';
-  if (/collectors lounge/.test(name)) return 'Weekly lineups, Commander rules, and last-minute schedule context.';
-  if (/projectccg/.test(name)) return 'Branch-specific event coordination and operational updates.';
-  if (/guild house/.test(name)) return 'Commander routine, reservations, and store-community coordination.';
-  if (/krazy nick/.test(name)) return 'Commander chatter and community texture alongside the official calendar.';
-  if (surface.kind === 'Discord') return surface.replayStatus === 'inspected'
-    ? 'Event coordination, schedule changes, player questions, and community texture.'
-    : 'A potential route for event announcements and last-minute coordination; its usefulness is not yet proven.';
-  if (surface.kind === 'Meetup') return 'Meetup timing, RSVPs, and social play that may happen outside a store calendar.';
-  if (surface.kind === 'Instagram' || surface.kind === 'Facebook') return 'Store announcements, event graphics, cancellations, and signs of current activity.';
-  if (surface.kind === 'Linktree/router') return 'A routing hub for the community, registration, calendar, and social channels.';
-  return surface.whyCare;
 }
 
 function latestCommunitySourceDate(sourceIds = []) {
@@ -2511,38 +2500,6 @@ function isCommunityHubFollowed(hub) {
 function communityHubMatchesSearch(hub) {
   if (!state.search) return true;
   return `${hub.name} ${hub.type} ${hub.linkedLabel} ${hub.usefulness} ${hub.latestSignal?.summary || ''}`.toLowerCase().includes(state.search);
-}
-
-function communityHubSection(title, copy, hubs, kind) {
-  return `<section class="community-section community-hub-section ${kind}">
-    <div class="section-title-row"><div><p class="eyebrow ${kind === 'followed' ? 'violet' : 'sky'}">${hubs.length} hub${hubs.length === 1 ? '' : 's'}</p><h2>${escapeHtml(title)}</h2><p class="muted-copy">${escapeHtml(copy)}</p></div></div>
-    ${hubs.length ? `<div class="community-hub-grid">${hubs.map(communityHubCard).join('')}</div>` : emptyState(kind === 'followed' ? 'Nothing followed yet' : 'No strong exploration leads yet', kind === 'followed' ? 'Follow a community hub here or favorite its linked Place to keep it close.' : 'The directory remains available, but current data does not justify a featured recommendation.')}
-  </section>`;
-}
-
-function communityHubCard(hub) {
-  const favorite = isCommunityHubFollowed(hub);
-  const finding = hub.latestSignal ? hub.latestSignal.summary : 'No recent useful finding recorded.';
-  const checked = hub.lastChecked ? formatFreshnessDate(hub.lastChecked) : 'Not recently checked';
-  const openAction = hub.community
-    ? `<button class="soft-button" data-community-id="${escapeHtml(hub.community.id)}">Open community</button>`
-    : isOpenableCommunityUrl(hub.surface?.source?.url)
-      ? `<a class="soft-button" href="${escapeHtml(hub.surface.source.url)}" target="_blank" rel="noreferrer">Open community ↗</a>`
-      : '';
-  const sourceUrl = hub.primarySource?.url || hub.surface?.source?.url || '';
-  const sourceAction = sourceUrl ? `<a class="soft-button" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">Open ${hub.primarySource && /discord/i.test(hub.primarySource.label) ? 'Discord' : 'source'} ↗</a>` : '';
-  const eventsAction = hub.surface?.place ? `<button class="soft-button" data-action="open-community-events" data-place-id="${escapeHtml(hub.surface.place.id)}">View linked events</button>` : '';
-  return `<article class="community-hub-card">
-    <div class="community-hub-head"><span class="community-symbol small">${communitySurfaceIcon(hub.surface?.kind || 'Community')}</span><div><span class="status-chip slate">${escapeHtml(hub.type)}</span><h3>${escapeHtml(hub.name)}</h3><p>${escapeHtml(hub.linkedLabel)}</p></div><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${escapeHtml(hub.favoriteKey)}" aria-label="${favorite ? 'Unfollow' : 'Follow'} ${escapeHtml(hub.name)}" title="${favorite ? 'Following' : 'Follow'}">${heartIcon()}</button></div>
-    <div class="community-use"><span>Useful for</span><p>${escapeHtml(hub.usefulness)}</p></div>
-    <div class="community-latest ${hub.latestSignal ? 'has-signal' : ''}"><span>Latest useful finding</span><p>${escapeHtml(finding)}</p>${hub.latestSignal ? `<button class="text-button" data-action="open-signal" data-signal-id="${escapeHtml(hub.latestSignal.id)}">Open finding →</button>` : ''}</div>
-    <div class="community-hub-meta"><span>Last checked <strong>${escapeHtml(checked)}</strong></span></div>
-    <div class="community-hub-actions">${sourceAction}${openAction}${eventsAction}</div>
-  </article>`;
-}
-
-function communityDirectoryCard(community) {
-  return `<button class="community-directory-card" data-community-id="${escapeHtml(community.id)}"><span class="status-chip slate">${escapeHtml(communityHubFromCommunity(community).type)}</span><strong>${escapeHtml(community.name)}</strong><small>${escapeHtml(community.region || 'Region not recorded')}</small></button>`;
 }
 
 function communitySurfaces() {
