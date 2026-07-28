@@ -11,6 +11,14 @@ If it prints `ENVIRONMENT NOT READY`, stop. Do not begin useful work while
 repairing or rediscovering the environment. Fix the named prerequisite in a
 separate readiness tranche.
 
+In a managed Codex workspace, run the gate with the approved
+readiness-script permission. The Supabase CLI reads its existing login and
+local telemetry/configuration state under the user profile, which the ordinary
+workspace sandbox cannot access. An `EPERM` mentioning `.supabase` or
+`telemetry.json` is a sandbox-profile-access failure, not expired Supabase
+authentication. Rerun the same gate with that permission before diagnosing
+login, transport, or project-link failure.
+
 ## Permanent baseline
 
 ### Supabase direct execution

@@ -53,7 +53,7 @@ COMMUNITIES = [
     },
     {
         "id": "mtg-oc",
-        "name": "MTG OC / ProjectCCG",
+        "name": "MTG OC",
         "region": "Orange County",
         "research_status": "discovery",
         "formats": ["Magic", "Community"],

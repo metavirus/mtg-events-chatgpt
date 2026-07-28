@@ -299,7 +299,12 @@ async function extractDiscordVisibleMessages(page, options = {}) {
     const isVisible = (element) => {
       const rect = element.getBoundingClientRect();
       const style = window.getComputedStyle(element);
-      return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+      return rect.width > 0 &&
+        rect.height > 0 &&
+        rect.bottom > 0 &&
+        rect.top < window.innerHeight &&
+        style.visibility !== 'hidden' &&
+        style.display !== 'none';
     };
     const normalize = (value) => value.replace(/\s+/g, ' ').trim();
     const candidates = [

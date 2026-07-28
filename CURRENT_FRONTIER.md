@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-07-25
+Updated: 2026-07-28
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. Detailed methods live in the
@@ -28,6 +28,11 @@ canonical SOPs. Historical frontier checkpoints are preserved in
 - The guarded Discord UI-native method is proven for a bounded set of mapped
   routes. Small verified-route surveys are supported; broad daily automation is
   not yet approved.
+- MTG OC is modeled as an independent Orange County regional community with
+  nine mapped Discord channels. The proof distinguishes community-organized
+  meetups from host-venue programming: its confirmed August 2 team-sealed
+  meetup is an MTG OC event hosted at Card Addiction, while its tentative
+  Collector's Lounge prerelease meetup remains a follow-up Signal only.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 

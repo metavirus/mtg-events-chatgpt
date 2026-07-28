@@ -37,14 +37,14 @@ const COMMUNITY_SEED = [
   },
   {
     id: 'mtg-oc',
-    name: 'MTG OC / ProjectCCG',
+    name: 'MTG OC',
     region: 'Orange County',
     status: 'discovery',
     formats: ['Magic', 'Community'],
     channel: 'Discord',
-    summary: 'An Orange County community surface selected for Magic and local coverage. It may provide useful cross-store discovery and player coordination.',
-    signal: 'Regional discovery lead',
-    nextQuestion: 'Clarify whether the useful unit is one community, several channels, or organizer-linked venue activity.'
+    summary: 'An independent Orange County Magic community for cross-store discovery, meetup coordination, and player connections.',
+    signal: 'Regional community route',
+    nextQuestion: 'Identify the most useful Discord channels for meetups, LFG activity, and actionable Orange County announcements.'
   }
 ];
 
@@ -1132,6 +1132,7 @@ function updateChrome() {
 
 function source(id) { return DATA.sources.find((item) => item.id === id); }
 function store(id) { return DATA.stores.find((item) => item.id === id); }
+function community(id) { return COMMUNITY_SEED.find((item) => item.id === id); }
 function eventById(id) { return DATA.events.find((item) => item.id === id); }
 function startOfDay(date) { const value = new Date(date); value.setHours(0, 0, 0, 0); return value; }
 function endOfDay(date) { const value = new Date(date); value.setHours(23, 59, 59, 999); return value; }
@@ -1226,6 +1227,7 @@ function signalRank(signal) {
   const priority = { urgent: 100, high: 85, normal: 55, low: 25 }[signal.priority] || 40;
   const category = {
     operational: 28,
+    mention: 27,
     event_opportunity: 26,
     registration: 24,
     source_health: 20,
@@ -1329,6 +1331,7 @@ function signalTone(signal) {
 function signalCategoryLabel(category = '') {
   const labels = {
     operational: 'Operational',
+    mention: 'You were mentioned',
     event_opportunity: 'Opportunity',
     registration: 'Registration',
     source_health: 'Source health',
@@ -1665,6 +1668,7 @@ function thumbDownIcon() {
 function eventCard(event, compact = false, options = {}) {
   const { showDate = false, emphasize = false, catalog = false, dense = false } = options;
   const place = store(event.storeId);
+  const organizer = community(event.communityId);
   const fit = fitLabel(event);
   const evidence = evidenceLabel(event);
   const favoriteKey = eventPreferenceKey(event);
@@ -1676,15 +1680,16 @@ function eventCard(event, compact = false, options = {}) {
   const dateNote = occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
   if (compact) {
     const cue = compactEventCue(event, fit, evidence);
-    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
+    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${organizer ? `${escapeHtml(organizer.name)} meetup · ` : ''}${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
   }
   const limitedChip = isPrereleaseOrSealed(event) ? '<span class="status-chip limited">Prerelease / sealed</span>' : '';
+  const communityChip = organizer ? '<span class="status-chip sky">Community meetup</span>' : '';
   return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${dense ? 'dense-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
     <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
-      <button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">${escapeHtml(place.name)} <span>· ${distanceLabel(place)}</span></button>
-      <div class="event-chips">${limitedChip}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="meta-chip">${fee}</span>${event.bracket && event.bracket !== 'unspecified' ? `<span class="meta-chip">Bracket ${escapeHtml(event.bracket)}</span>` : '<span class="meta-chip muted-chip">Bracket unknown</span>'}</div>
+      <div class="event-attribution">${organizer ? `<button class="place-inline" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)}</button><span>·</span>` : ''}<button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">At ${escapeHtml(place.name)} <span>· ${distanceLabel(place)}</span></button></div>
+      <div class="event-chips">${communityChip}${limitedChip}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="meta-chip">${fee}</span>${event.bracket && event.bracket !== 'unspecified' ? `<span class="meta-chip">Bracket ${escapeHtml(event.bracket)}</span>` : '<span class="meta-chip muted-chip">Bracket unknown</span>'}</div>
       <p>${escapeHtml(truncate(event.details || 'Details are limited in the current source.', 175))}</p>
     </div>
     <div class="event-actions"><div class="event-preference-actions"><button class="heart-button ${isFavorite ? 'active' : ''}" data-favorite="${favoriteKey}" aria-label="${isFavorite ? 'Remove from' : 'Add to'} favorites" title="Favorite series">${heartIcon()}</button><button class="thumb-button ${isHidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${escapeHtml(event.id)}" aria-label="${isHidden ? 'Restore event priority' : 'Deprioritize event series'}" title="${isHidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></div><span class="open-cue">Open details →</span></div>
@@ -2875,6 +2880,7 @@ function renderResearch() {
 function openEvent(id, occurrenceDate) {
   const event = eventById(id);
   const place = store(event?.storeId);
+  const organizer = community(event?.communityId);
   if (!event || !place) return;
   const occurrence = occurrenceDate ? parseDate(occurrenceDate) : parseDate(event.date || event.startDate);
   const src = source(event.sourceId);
@@ -2885,7 +2891,7 @@ function openEvent(id, occurrenceDate) {
   const hidden = state.personal.hidden[personalKey];
   const interested = state.personal.interested[`${event.id}:${dateKey(occurrence)}`];
   const calendarUrl = googleCalendarUrl(event, place, occurrence);
-  openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${personalKey}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="thumb-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Restore event priority' : 'Deprioritize event series'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1><button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
+  openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span>${organizer ? '<span class="status-chip sky">Community meetup</span>' : ''}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${personalKey}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="thumb-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Restore event priority' : 'Deprioritize event series'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1>${organizer ? `<button class="drawer-place-link" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)} →</button><span class="drawer-attribution-separator"> · </span>` : ''}<button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">Hosted at ${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
     <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(eventStartTime(event))}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
     <div class="drawer-action-grid"><a class="primary-button" href="${calendarUrl}" target="_blank" rel="noreferrer">Add to Google Calendar ↗</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button></div>
     <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(event.details || 'The current source provides only a minimal event listing.')}</p></section>

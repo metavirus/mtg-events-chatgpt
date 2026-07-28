@@ -302,7 +302,7 @@ def load_local_snapshot() -> dict[str, list[dict[str, Any]]]:
         "communities": [
             {"id": "legendary-creature-club", "name": "Legendary Creature Club"},
             {"id": "infinite-loop-mtg", "name": "Infinite Loop MTG"},
-            {"id": "mtg-oc", "name": "MTG OC / ProjectCCG"},
+            {"id": "mtg-oc", "name": "MTG OC"},
         ],
         "sources": sources,
         "event_series": [

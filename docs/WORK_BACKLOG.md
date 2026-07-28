@@ -317,6 +317,12 @@ claims without reopening the whole packet.
 ## Group/community backlog
 
 - Keep groups modeled separately from stores/venues.
+- MTG OC guarded Discord proof is operational across nine mapped channels.
+  Preserve its canonical attention ordering: meetup coordination involving
+  `Metavirus` is highest signal; direct questions/requests mentioning the user
+  are next; other meaningful mentions can surface when actionable. Community
+  meetups may use known venues, bars, or changing locations without becoming
+  official venue programming.
 - Deepen the regional-group pass for:
   - Legendary Creature Club
   - Infinite Loop MTG
@@ -428,6 +434,10 @@ claims without reopening the whole packet.
 - Continue calibrating behavioral impact for favorites, ratings, notes, and
   follow-up flags so they shape ranking, monitoring, and reminders without
   feeling bolted on.
+- Revisit the event-level `Interested` action after the Discord community-event
+  proof. Keep series favorite/follow available on quick event cards, but make
+  dated `Interested` / `Going` state visibly affect Today, reminders, and
+  planning surfaces instead of behaving like a quiet detail-drawer toggle.
 - Negative preference controls now exist for stores and event series. Continue
   monitoring whether individual dated occurrences need separate per-date
   thumbs-down later.

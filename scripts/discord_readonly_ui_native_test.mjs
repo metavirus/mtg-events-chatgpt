@@ -24,11 +24,15 @@ const folderName = process.argv[5] || '';
 const channelName = process.argv[6] || '';
 const maxVisibleMessages = Number.parseInt(process.argv[7] || '5', 10);
 const passMode = process.argv[8] || 'routine_survey';
+const maxReadWindows = Number.parseInt(process.argv[9] || '1', 10);
 const targetRoute = targetUrl?.match(/^https:\/\/discord(app)?\.com\/channels\/(\d+)\/(\d+)$/i);
 if (!targetRoute) throw new Error('Pass one exact mapped Discord channel URL');
 if (!['shell', 'content', 'events'].includes(mode)) throw new Error('Mode must be shell, content, or events');
 if (!Number.isInteger(maxVisibleMessages) || maxVisibleMessages < 1 || maxVisibleMessages > 5) {
   throw new Error('Visible message limit must be an integer from 1 through 5');
+}
+if (!Number.isInteger(maxReadWindows) || maxReadWindows < 1 || maxReadWindows > 10) {
+  throw new Error('Read window limit must be an integer from 1 through 10');
 }
 if (!['route_discovery', 'routine_survey'].includes(passMode)) {
   throw new Error('Pass mode must be route_discovery or routine_survey');
@@ -83,6 +87,7 @@ const result = {
   mode,
   passMode,
   maxVisibleMessages,
+  maxReadWindows,
   startedAt,
   homeUrl,
   targetUrl,
@@ -102,6 +107,8 @@ const result = {
   keyboardNavigationUsed: false,
   coordinateGuessingUsed: false,
   messageAreaInteractionUsed: false,
+  readOnlyHistoryTraversalUsed: false,
+  contentWindows: [],
   messageContentInspected: false,
   discordEventsSurface: null,
   discordEventsWindow: null,
@@ -569,6 +576,21 @@ async function markAndInspectNavigation(page) {
     const guildTreeitems = [...document.querySelectorAll(`[role="treeitem"][data-list-item-id="guildsnav___${guildId}"]`)]
       .filter(outsideMessages);
     const channelAnchors = anchors.filter((anchor) => anchor.getAttribute('href') === exactChannelPath);
+    const visibleGuildChannels = anchors
+      .filter((anchor) => {
+        const href = anchor.getAttribute('href') || '';
+        return isVisible(anchor) && new RegExp(`^/channels/${guildId}/\\d+$`).test(href);
+      })
+      .slice(0, 50)
+      .map((anchor) => ({
+        href: anchor.getAttribute('href'),
+        label: (
+          anchor.getAttribute('aria-label') ||
+          anchor.getAttribute('title') ||
+          anchor.textContent ||
+          ''
+        ).replace(/\s+/g, ' ').trim()
+      }));
     const folderControls = [...document.querySelectorAll('button, [role="button"], [role="treeitem"][aria-expanded]')].filter((element) => {
       if (!outsideMessages(element)) return false;
       const label = `${element.getAttribute('aria-label') || ''} ${element.getAttribute('title') || ''}`.trim();
@@ -631,6 +653,7 @@ async function markAndInspectNavigation(page) {
       folderControlProven: Boolean(folderControl),
       folderControlLabel: folderControl ? (folderControl.getAttribute('aria-label') || folderControl.getAttribute('title') || '').trim() : null,
       guildNavigationRootFound: Boolean(guildNavigationRoot),
+      visibleGuildChannels,
       structuralCandidates
     };
   }, { ...expectedRoute, serverName });
@@ -708,10 +731,12 @@ async function classifyTinyWindow(page) {
     maxCharactersPerMessage: 1200
   });
   const patterns = [
+    ['user_involvement', /\bmetavirus\b/],
+    ['direct_question_or_request', /(?:\?|(?:\b(?:what do you think|do you like|have you|can you|could you|would you|are you|did you)\b))/],
     ['event', /\b(event|commander|draft|prerelease|sealed|fnm|tournament)\b/],
     ['cancellation_or_change', /\b(cancel|closed|closure|reschedul|changed?|tonight)\b/],
     ['fit_or_power', /\b(proxy|proxies|cedh|bracket|power level|casual|competitive)\b/],
-    ['community_or_lfg', /\b(lfg|looking for|anyone want|pod|turnout|new player|beginner)\b/]
+    ['community_or_lfg', /\b(lfg|looking for|anyone want|anyone down|anyone free|meet ?up|meet together|get together|want to play|play at|pod|turnout|new player|beginner)\b/]
   ];
   const findingCandidates = messages.flatMap((message) => {
     const text = message.text.toLowerCase();
@@ -727,6 +752,99 @@ async function classifyTinyWindow(page) {
   const categories = [...new Set(findingCandidates.flatMap((candidate) => candidate.categories))];
   const timestamps = messages.map((message) => message.timestamp).filter(Boolean);
   return {
+    messages,
+    messageCount: messages.length,
+    firstSeenMessageId: messages[0]?.messageId || null,
+    lastSeenMessageId: messages.at(-1)?.messageId || null,
+    firstSeenMessageAt: timestamps[0] || null,
+    lastSeenMessageAt: timestamps.at(-1) || null,
+    usefulFindingPresent: categories.length > 0,
+    usefulCategories: categories,
+    findingCandidates
+  };
+}
+
+async function scrollMessageViewportBack(page) {
+  return page.evaluate(() => {
+    const firstMessage = [...document.querySelectorAll('[id^="chat-messages-"], [role="article"]')]
+      .find((element) => {
+        const rect = element.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+      });
+    if (!firstMessage) return { moved: false, reason: 'no_visible_message' };
+
+    let scroller = firstMessage.parentElement;
+    while (scroller && scroller !== document.body) {
+      const style = getComputedStyle(scroller);
+      if (scroller.scrollHeight > scroller.clientHeight + 40 &&
+          /(auto|scroll)/i.test(style.overflowY || '')) break;
+      scroller = scroller.parentElement;
+    }
+    if (!scroller || scroller === document.body) return { moved: false, reason: 'no_message_scroller' };
+
+    const before = scroller.scrollTop;
+    // Move less than half a viewport so tall Discord messages remain present
+    // in at least one adjacent extraction window. Deduplication removes the
+    // intentional overlap.
+    const target = Math.max(0, before - Math.max(180, Math.floor(scroller.clientHeight * 0.4)));
+    scroller.scrollTop = target;
+    scroller.dispatchEvent(new Event('scroll', { bubbles: true }));
+    return { moved: target !== before, before, after: target };
+  });
+}
+
+async function classifyBoundedWindows(page) {
+  const windows = [];
+  const messagesByKey = new Map();
+
+  for (let index = 0; index < maxReadWindows; index += 1) {
+    const current = await classifyTinyWindow(page);
+    windows.push({
+      index: index + 1,
+      messageCount: current.messageCount,
+      firstSeenMessageId: current.firstSeenMessageId,
+      lastSeenMessageId: current.lastSeenMessageId,
+      firstSeenMessageAt: current.firstSeenMessageAt,
+      lastSeenMessageAt: current.lastSeenMessageAt
+    });
+    for (const message of current.messages) {
+      const key = message.messageId || `${message.timestamp || ''}:${message.text}`;
+      messagesByKey.set(key, message);
+    }
+    if (index + 1 >= maxReadWindows) break;
+
+    const movement = await scrollMessageViewportBack(page);
+    windows.at(-1).historyMovement = movement;
+    if (!movement.moved) break;
+    result.readOnlyHistoryTraversalUsed = true;
+    await page.waitForTimeout(900);
+    await verifyStage(page, `bounded_history_window_${index + 2}`, { expectExactRoute: true, waitMs: 50 });
+  }
+
+  const messages = [...messagesByKey.values()].sort((a, b) =>
+    String(a.timestamp || '').localeCompare(String(b.timestamp || '')));
+  const patterns = [
+    ['user_involvement', /\bmetavirus\b/i],
+    ['direct_question_or_request', /(?:\?|(?:\b(?:what do you think|do you like|have you|can you|could you|would you|are you|did you)\b))/i],
+    ['event', /\b(event|commander|draft|prerelease|sealed|fnm|tournament)\b/i],
+    ['cancellation_or_change', /\b(cancel|closed|closure|reschedul|changed?|tonight)\b/i],
+    ['fit_or_power', /\b(proxy|proxies|cedh|bracket|power level|casual|competitive)\b/i],
+    ['community_or_lfg', /\b(lfg|looking for|anyone want|anyone down|anyone free|meet ?up|meet together|get together|want to play|play at|pod|turnout|new player|beginner)\b/i]
+  ];
+  const findingCandidates = messages.flatMap((message) => {
+    const categories = patterns.filter(([, pattern]) => pattern.test(message.text)).map(([name]) => name);
+    if (!categories.length) return [];
+    return [{
+      messageId: message.messageId || null,
+      timestamp: message.timestamp || null,
+      categories,
+      text: message.text.slice(0, 500)
+    }];
+  }).slice(0, 30);
+  const categories = [...new Set(findingCandidates.flatMap((candidate) => candidate.categories))];
+  const timestamps = messages.map((message) => message.timestamp).filter(Boolean);
+  return {
+    windows,
     messageCount: messages.length,
     firstSeenMessageId: messages[0]?.messageId || null,
     lastSeenMessageId: messages.at(-1)?.messageId || null,
@@ -829,9 +947,10 @@ try {
 
   if (mode === 'content') {
     requestStage = 'message_rendering';
-    const windowResult = await classifyTinyWindow(page);
+    const windowResult = await classifyBoundedWindows(page);
     await verifyStage(page, 'bounded_content_read_verified', { expectExactRoute: true, waitMs: 100 });
     result.messageContentInspected = true;
+    result.contentWindows = windowResult.windows;
     result.messageWindow = {
       messageCount: windowResult.messageCount,
       firstSeenMessageId: windowResult.firstSeenMessageId,

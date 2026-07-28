@@ -100,7 +100,11 @@ if ($versionResult.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($versionResul
  $projectsResult = Invoke-SupabaseCli -Arguments @("projects", "list", "--output", "json")
 $projectsText = $projectsResult.Text
 if ($projectsText -notmatch [regex]::Escape($projectRef)) {
-    Fail "Supabase CLI authentication/Management API transport unavailable"
+    if ($projectsText -match '(?is)(telemetry\.json|\.supabase).*(EPERM|permission|access.*denied)') {
+        Fail "Supabase CLI profile access blocked by the execution sandbox; rerun this gate with the approved readiness-script permission"
+    } else {
+        Fail "Supabase CLI authentication/Management API transport unavailable"
+    }
 } else {
     Pass "Supabase CLI authenticated for project $projectRef"
 }
@@ -134,7 +138,12 @@ if (-not $SkipLiveSmoke) {
     )
 
     if (-not $smokeOk -or -not $schemaOk) {
-        Fail "Authenticated linked Supabase query path unavailable"
+        $liveText = [string]::Join("`n", @($smokeResult.Text, $schemaResult.Text))
+        if ($liveText -match '(?is)(telemetry\.json|\.supabase).*(EPERM|permission|access.*denied)') {
+            Fail "Supabase CLI profile access blocked by the execution sandbox; rerun this gate with the approved readiness-script permission"
+        } else {
+            Fail "Authenticated linked Supabase query path unavailable"
+        }
     } else {
         Pass "Direct linked live query"
         Pass "Authoritative schema/function inspection query"
