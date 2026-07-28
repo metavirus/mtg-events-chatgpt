@@ -76,6 +76,16 @@ Use it for:
   backing table are already gone; do not treat it as an active coordination
   path.
 
+- Supabase CLI final-resolution TBD: eliminate the last recurring CLI
+  rough edges permanently, not as per-run workarounds. Current known issues:
+  linked CLI sometimes prints harmless `Initialising login role...` noise;
+  sandboxed CLI calls can still hit telemetry/profile write permissions unless
+  run outside the sandbox; and typed helpers should default to the direct
+  `SUPABASE_DB_URL` path when available. Final resolution should make readiness
+  and typed writes boring: one documented command path, no fake failure output,
+  no hidden alternate CLI home that loses auth, no repeated diagnosis in
+  research runs. Treat any future recurrence as platform repair, not research.
+
 - Durable source-image evidence in Supabase Storage TBD
   (`coordination_items.id = 1ff603bd-b5c1-4878-ab75-c2f284430088`,
   status `ready_for_review`): investigate preserving original Discord promo

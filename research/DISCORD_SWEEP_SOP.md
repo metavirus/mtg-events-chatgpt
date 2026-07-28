@@ -114,6 +114,19 @@ monitoring cursor. Do not rediscover folders or channels unless the recorded
 path fails. A failed or quiet run updates the latest run result without
 downgrading durable route value.
 
+For multi-channel servers, do not deep-read every plausibly relevant channel.
+First run a cheap channel triage: channel name, unread/mention state, latest
+visible timestamp, and the channel's expected signal type. Then deep-read only
+channels with recent activity, user mentions, event-adjacent chatter, schedule
+changes, rules changes, or a due cursor. Stale push-only/rules channels should
+usually be a sub-minute cursor check; they should not consume the same budget as
+live meetup chatter.
+
+A multi-channel Discord routine survey that spends more than roughly two
+minutes per channel without a material delta has failed the efficiency contract.
+Stop, record the channel-level disposition, and leave deeper replay for an
+explicit user request or new lead.
+
 Routine survey records `last_checked_at`, `last_seen_message_id`,
 `last_seen_message_at`, and `latest_run_result`. Discord unread/read state is
 never the resume cursor.
@@ -220,6 +233,12 @@ It is acceptable for the result to be mixed-mode: for example, one
 second `manual_open_required` channel needs the user to open it or supply a
 screenshot. Do not silently shrink a multi-channel proof to the one channel
 that happens to be easiest to reach.
+
+When a server has many candidate channels, the success condition is not
+"inspect them all." The success condition is to reduce Discord clicking by
+surfacing the few conversations worth reading, while quickly filing quiet,
+stale, rules-only, push-only, or blocked channels into durable low-noise
+coverage state.
 
 Open Discord channel URLs only through a navigation method that cannot submit
 text into the Discord page body, such as:

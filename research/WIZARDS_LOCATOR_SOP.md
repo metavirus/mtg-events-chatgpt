@@ -260,6 +260,15 @@ The repo already reflects this thinking:
 
 ## How to interpret Wizards output
 
+Wizards/EventLink is a broad structured source, not a superior source class.
+Do not use it as the measuring stick for Discord, Instagram, Facebook, official
+store calendars, or community chatter. Each surface can independently establish
+different truths: Wizards is good at structured EventLink inventory; Discord can
+be better for current chatter, sign-up codes, rules, meetup coordination,
+last-minute changes, and player texture; store calendars/socials can be better
+for promotional graphics and local operational context. The job is attribution
+and synthesis, not forcing non-Wizards sources to corroborate Wizards.
+
 ### What Wizards can prove well
 
 - Magic exists at the branch

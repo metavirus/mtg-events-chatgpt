@@ -54,10 +54,11 @@ frontier checkpoints are preserved in
   holistic pass requires an active material identity/status exception or an
   explicit user request. Missing or blocked social texture lowers confidence;
   it does not keep a venue open indefinitely.
-- WPN/EventLink is normally sufficient to capture a current event when the
-  venue name/address match is identity-safe enough. Venue messiness or poor
-  personal fit becomes confidence, ranking, and caution metadata rather than
-  silent event omission.
+- WPN/EventLink, official site/calendar, Discord, Instagram/Facebook, and other
+  store/community-controlled sources are peer evidence surfaces, not a source
+  hierarchy. WPN is useful because it is broad and structured, not because it is
+  the standard every other source must prove itself against. Capture each source
+  according to what it can actually establish, with clear attribution.
 - Events may be broad but caveated and ranked. Signals remain sparse and
   attention-worthy.
 - Routine database-only surface checks use the typed Supabase RPC and require no
@@ -91,8 +92,8 @@ Canonical operating details:
    be useful chatter/schedule surfaces, not just official announcements; the
    announcements channel carried current schedule/sign-up chatter and the rules
    channel carried high-value Commander fit evidence. Keep community/store
-   Discord findings clearly attributed as Discord/community evidence, not
-   official WPN/event attribution by default.
+   Discord findings clearly attributed as Discord/community evidence, and do not
+   measure them against WPN as though WPN were the authoritative baseline.
 2. Use the lifecycle-specific Supabase selectors:
    `venue_baseline_candidates`, `venue_surface_retry_candidates`,
    `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
