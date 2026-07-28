@@ -21,6 +21,14 @@ ignored local setup file:
 powershell -ExecutionPolicy Bypass -File scripts/setup_supabase_cli_workspace.ps1
 ```
 
+Use the Supabase **Session pooler** URI for this value, not Transaction pooler.
+Supabase documents Session pooler as the IPv4-friendly alternative for
+persistent clients and Postgres tools, while Transaction pooler is meant for
+brief serverless-style interactions and does not support every client behavior.
+For this repo's tiny typed-write workload, the Session pooler is the least
+surprising permanent choice: copy the URI that uses pooler port `5432`, not the
+Transaction pooler URI on port `6543`.
+
 That script first looks for `SUPABASE_DB_URL` in the current process, User
 scope, or Machine scope. If present, it saves it to
 `.codex-secrets/supabase-db-url.txt` and the gate uses `supabase db query
@@ -52,9 +60,20 @@ visible.
 - Authentication setup is a one-time user action in a real terminal:
 
   ```powershell
-  [Environment]::SetEnvironmentVariable('SUPABASE_DB_URL', '<postgres-url>', 'User')
+  [Environment]::SetEnvironmentVariable('SUPABASE_DB_URL', '<session-pooler-postgres-url>', 'User')
   powershell -ExecutionPolicy Bypass -File scripts/setup_supabase_cli_workspace.ps1
   ```
+
+  Run the setup from the repo directory:
+
+  ```powershell
+  cd C:\Users\kavig\Documents\Codex\mtg-events-chatgpt
+  ```
+
+  If `psql`, Python, or another platform tool is installed on the host but the
+  gate cannot see it, treat that as a Codex/PATH visibility issue and fix the
+  environment path directly. Do not build research-workflow fallbacks around a
+  missing platform tool.
 
   Never commit the URL or token. `.codex-secrets/` and the workspace-local CLI
   home are ignored and should remain local machine state only.

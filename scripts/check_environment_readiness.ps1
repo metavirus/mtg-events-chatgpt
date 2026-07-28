@@ -194,11 +194,17 @@ if (-not $SkipLiveSmoke -and -not $skipLinkedLiveSmoke) {
             Fail "Supabase CLI workspace-local profile access blocked unexpectedly"
         } elseif ($liveText -match '(?is)(access token not provided|supabase login|SUPABASE_ACCESS_TOKEN)') {
             Fail "No Supabase DB URL or workspace auth configured; run scripts\setup_supabase_cli_workspace.ps1 once"
+        } elseif (-not [string]::IsNullOrWhiteSpace($databaseUrl)) {
+            Fail "Supabase DB URL connection failed; confirm the copied URI includes the current database password and can connect to the selected pooler"
         } else {
             Fail "Authenticated linked Supabase query path unavailable"
         }
     } else {
-        Pass "Direct linked live query"
+        if (-not [string]::IsNullOrWhiteSpace($databaseUrl)) {
+            Pass "Direct DB URL live query"
+        } else {
+            Pass "Direct linked live query"
+        }
         Pass "Authoritative schema/function inspection query"
     }
 }
