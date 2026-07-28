@@ -571,6 +571,13 @@ claims without reopening the whole packet.
   meetup coordination but remain visible and clickable.
 - Make the community detail drawer more useful with best recent signals,
   activity level, linked venues/geography, and next suggested action.
+- Add a lightweight audit view inside the community detail drawer for Discord
+  scanner posture. It should expose the mapped channels, safe access mode,
+  expected signal types, last checked/last seen cursor, latest run result,
+  monitoring cadence, and the scanner's current treatment of each channel
+  (`read regularly`, `sample if active`, `reference/stale`, `ignored`, or
+  `blocked`). This lets the user spot mistakes like treating `general` as
+  useless just because of its name, or over-reading a stale rules channel.
 - Consider a Communities-page async request box for instructions like `watch
   this server for Saturday commander meetup chatter`.
 
