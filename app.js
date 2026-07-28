@@ -2317,8 +2317,11 @@ function renderCommunities() {
   const hubs = [...formalHubs, ...surfaceHubs].filter(communityHubMatchesSearch);
   const eligibleHubs = state.favoritesOnly ? hubs.filter(isCommunityHubFollowed) : hubs;
   const followedHubs = eligibleHubs.filter(isCommunityHubFollowed).sort((a, b) => b.score - a.score).slice(0, 8);
-  const worthExploring = eligibleHubs.filter((hub) => !isCommunityHubFollowed(hub) && !hub.lowValue).sort((a, b) => b.score - a.score).slice(0, 6);
-  const pulse = communityPulseSignals();
+  const activeFormalHubs = eligibleHubs.filter((hub) => hub.community && hub.latestSignal).sort((a, b) => b.score - a.score);
+  const activeHubs = [...new Map([...activeFormalHubs, ...followedHubs].map((hub) => [hub.id, hub])).values()].slice(0, 5);
+  const activeHubIds = new Set(activeHubs.map((hub) => hub.id));
+  const worthExploring = eligibleHubs.filter((hub) => !activeHubIds.has(hub.id) && !isCommunityHubFollowed(hub) && !hub.lowValue).sort((a, b) => b.score - a.score).slice(0, 6);
+  const chatter = relevantCommunityChatter();
   const visibleSurfaces = state.favoritesOnly
     ? surfaces.filter((surface) => state.personal.favorites[`place:${surface.place?.id}`] || state.personal.favorites[`community:${surface.community?.id}`])
     : surfaces;
@@ -2326,9 +2329,9 @@ function renderCommunities() {
   const needsReplay = surfaces.filter((surface) => surface.replayStatus === 'needs_replay').length;
   const inspected = surfaces.filter((surface) => surface.replayStatus === 'inspected').length;
   const directoryCommunities = COMMUNITY_SEED.filter((community) => !state.search || `${community.name} ${community.region} ${community.summary} ${community.formats.join(' ')}`.toLowerCase().includes(state.search));
-  document.getElementById('communityGrid').innerHTML = `${communityPulseSection(pulse)}
-    ${communityHubSection('Communities I follow', 'Your formal groups and venue-linked community hubs, with the latest useful context we actually have.', followedHubs, 'followed')}
-    ${communityHubSection('Worth exploring', 'Nearby or promising hubs that may help with coordination, event discovery, or last-minute changes.', worthExploring, 'explore')}
+  document.getElementById('communityGrid').innerHTML = `${relevantCommunityChatterSection(chatter)}
+    ${communityHubSection('Your active hubs', 'Groups you follow or that currently have something personally useful happening.', activeHubs, 'followed')}
+    ${communityExploreSection(worthExploring)}
     <section class="community-section community-directory-section">
       <div class="section-title-row"><div><p class="eyebrow slate">Complete inventory</p><h2>Community directory</h2><p class="muted-copy">Formal groups and linked communication routes stay available without dominating the page. Use the top search or the filters below.</p></div></div>
       <details class="community-route-queue">
@@ -2339,36 +2342,85 @@ function renderCommunities() {
     </section>`;
 }
 
-function communityPulseSignals() {
-  const seen = new Set();
+function relevantCommunityChatter() {
   return rankedSignals().filter((signal) => {
     if (['dismissed', 'stale'].includes(signal.status)) return false;
     const src = source(signal.sourceId);
-    const communitySource = src && isCommunitySurfaceSource(src);
-    if (!communitySource && !['community_activity', 'operational', 'event_opportunity', 'source_health'].includes(signal.category)) return false;
-    if (!['venue', 'community'].includes(signal.relatedEntityType)) return false;
-    const key = `${signal.relatedEntityType}:${signal.relatedEntityId}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
+    if (!src || !isCommunitySurfaceSource(src)) return false;
+    const text = `${signal.summary} ${signal.details} ${signal.suggestedAction}`.toLowerCase();
+    return signal.category === 'mention'
+      || (['urgent', 'high'].includes(signal.priority) && /\byou\b|metavirus/.test(text));
   }).slice(0, 4);
 }
 
-function communityPulseSection(signals) {
-  return `<section class="community-section community-pulse-section">
-    <div class="section-title-row"><div><p class="eyebrow mint">Community pulse</p><h2>What has been useful lately</h2><p class="muted-copy">Only accepted, current observations appear here. Sparse is honest when no new community finding deserves attention.</p></div><button class="text-button" data-route="signals">View all Signals →</button></div>
-    ${signals.length ? `<div class="community-pulse-list">${signals.map(communityPulseCard).join('')}</div>` : emptyState('No recent community pulse', 'Community routes exist, but no recent accepted finding is useful enough to feature here yet.')}
+function relevantCommunityChatterSection(signals) {
+  return `<section class="community-section community-chatter-section">
+    <div class="section-title-row"><div><p class="eyebrow coral">For you</p><h2>Relevant chatter</h2><p class="muted-copy">Invitations, meetup coordination, and direct questions involving you. This is conversation context—not the full Signals inbox.</p></div><button class="text-button" data-route="signals">All Signals →</button></div>
+    ${signals.length ? `<div class="community-chatter-list">${signals.map(communityChatterCard).join('')}</div>` : emptyState('No active conversation needs you', 'Community monitoring is working; this area stays quiet until a conversation directly involves you.')}
   </section>`;
 }
 
-function communityPulseCard(signal) {
+function communityChatterCard(signal) {
   const observed = signal.observedAt || signal.capturedAt;
-  return `<article class="community-pulse-card ${signalTone(signal)}">
-    <div><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><span class="community-pulse-date">${escapeHtml(formatFreshnessDate(observed))}</span></div>
+  const src = source(signal.sourceId);
+  const threadUrl = signal.evidenceUrl || src?.url || '';
+  const linkedEvent = communityEventForSignal(signal);
+  const linkedEventDate = linkedEvent ? (linkedEvent.occurrenceDate || parseDate(linkedEvent.date || linkedEvent.startDate)) : null;
+  const status = linkedEvent
+    ? { label: 'Confirmed plan', tone: 'mint' }
+    : signal.status === 'needs_followup'
+      ? { label: 'Tentative · follow up', tone: 'amber' }
+      : { label: 'Direct mention', tone: 'coral' };
+  const planMeta = linkedEvent ? communityPlanMeta(linkedEvent) : '';
+  return `<article class="community-chatter-card ${status.tone}">
+    <div class="community-chatter-kicker"><span class="status-chip ${status.tone}">${status.label}</span><span>${escapeHtml(formatFreshnessDate(observed))}</span></div>
     <h3>${escapeHtml(signal.summary)}</h3>
-    ${signalRelatedTarget(signal) ? `<div class="signal-related">${signalRelatedTarget(signal)}</div>` : ''}
-    <p>${escapeHtml(signal.suggestedAction || 'Keep this context available when planning around the linked community.')}</p>
-    <div class="community-pulse-actions"><button class="text-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open Signal →</button></div>
+    ${planMeta}
+    <p>${escapeHtml(signal.details || signal.suggestedAction || 'Open the conversation for context.')}</p>
+    <div class="community-chatter-targets">${signalRelatedTarget(signal) || ''}</div>
+    <div class="community-chatter-actions">
+      ${linkedEvent ? `<button class="primary-button compact-action" data-event-id="${escapeHtml(linkedEvent.id)}" ${linkedEventDate ? `data-date="${dateKey(linkedEventDate)}"` : ''}>Open plan</button>` : ''}
+      ${threadUrl ? `<a class="soft-button" href="${escapeHtml(threadUrl)}" target="_blank" rel="noreferrer">Open thread ↗</a>` : ''}
+      <button class="soft-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Details</button>
+    </div>
+  </article>`;
+}
+
+function communityEventForSignal(signal) {
+  const candidates = DATA.events.filter((event) => {
+    if (event.status === 'cancelled' || event.occurrenceStatus === 'cancelled') return false;
+    if (!(event.sourceIds || []).includes(signal.sourceId)) return false;
+    if (signal.relatedEntityType === 'community' && event.communityId !== signal.relatedEntityId) return false;
+    return true;
+  });
+  return candidates.sort((a, b) => {
+    const aDate = a.occurrenceDate || parseDate(a.date || a.startDate);
+    const bDate = b.occurrenceDate || parseDate(b.date || b.startDate);
+    return (aDate?.getTime() || Infinity) - (bDate?.getTime() || Infinity);
+  })[0] || null;
+}
+
+function communityPlanMeta(event) {
+  const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+  const place = store(event.storeId);
+  if (!occurrence || !place) return '';
+  return `<div class="community-plan-meta"><span>${escapeHtml(occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }))}</span><strong>${formatTime(eventStartTime(event))}</strong><button data-place-id="${escapeHtml(place.id)}">${escapeHtml(place.name)}</button></div>`;
+}
+
+function communityExploreSection(hubs) {
+  if (!hubs.length) return '';
+  return `<section class="community-section community-explore-section">
+    <div class="section-title-row"><div><p class="eyebrow sky">Explore</p><h2>Other useful routes</h2><p class="muted-copy">Nearby channels worth knowing about, kept compact until they produce something useful.</p></div></div>
+    <div class="community-explore-grid">${hubs.map(communityExploreCard).join('')}</div>
+  </section>`;
+}
+
+function communityExploreCard(hub) {
+  const sourceUrl = hub.primarySource?.url || hub.surface?.source?.url || '';
+  return `<article class="community-explore-card">
+    <span class="community-symbol small">${communitySurfaceIcon(hub.surface?.kind || 'Community')}</span>
+    <div><strong>${escapeHtml(hub.name)}</strong><small>${escapeHtml(hub.linkedLabel)}</small><p>${escapeHtml(hub.usefulness)}</p></div>
+    <div class="community-explore-actions"><button class="heart-button" data-favorite="${escapeHtml(hub.favoriteKey)}" aria-label="Follow ${escapeHtml(hub.name)}" title="Follow">${heartIcon()}</button>${sourceUrl ? `<a class="icon-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer" aria-label="Open ${escapeHtml(hub.name)}">↗</a>` : ''}</div>
   </article>`;
 }
 
@@ -2390,17 +2442,20 @@ function isOpenableCommunityUrl(url) {
 
 function communityHubFromCommunity(community) {
   const relatedSignals = DATA.signals.filter((signal) => signal.relatedEntityType === 'community' && signal.relatedEntityId === community.id && !['dismissed', 'stale'].includes(signal.status));
+  const primarySource = (community.sourceIds || []).map(source).filter((item) => item && isOpenableCommunityUrl(item.url)).sort((a, b) => (/discord/i.test(b.label) ? 1 : 0) - (/discord/i.test(a.label) ? 1 : 0))[0] || null;
+  const latestSignal = [...relatedSignals].sort((a, b) => signalRank(b) - signalRank(a))[0] || null;
   return {
     id: `community:${community.id}`,
     type: /orange county|los angeles|south bay|regional/i.test(`${community.region} ${community.summary}`) ? 'Regional community' : 'Independent group',
     name: community.name,
     linkedLabel: community.region || 'Regional community',
     usefulness: communityUsefulness(community),
-    latestSignal: [...relatedSignals].sort((a, b) => signalRank(b) - signalRank(a))[0] || null,
+    latestSignal,
+    primarySource,
     lastChecked: latestCommunitySourceDate(community.sourceIds),
     favoriteKey: `community:${community.id}`,
     community,
-    score: community.id === 'legendary-creature-club' ? 78 : community.status === 'partial' ? 62 : 48,
+    score: (latestSignal ? signalRank(latestSignal) : 0) + (community.id === 'legendary-creature-club' ? 78 : community.status === 'partial' ? 62 : 48),
     lowValue: false
   };
 }
@@ -2474,13 +2529,15 @@ function communityHubCard(hub) {
     : isOpenableCommunityUrl(hub.surface?.source?.url)
       ? `<a class="soft-button" href="${escapeHtml(hub.surface.source.url)}" target="_blank" rel="noreferrer">Open community ↗</a>`
       : '';
+  const sourceUrl = hub.primarySource?.url || hub.surface?.source?.url || '';
+  const sourceAction = sourceUrl ? `<a class="soft-button" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">Open ${hub.primarySource && /discord/i.test(hub.primarySource.label) ? 'Discord' : 'source'} ↗</a>` : '';
   const eventsAction = hub.surface?.place ? `<button class="soft-button" data-action="open-community-events" data-place-id="${escapeHtml(hub.surface.place.id)}">View linked events</button>` : '';
   return `<article class="community-hub-card">
     <div class="community-hub-head"><span class="community-symbol small">${communitySurfaceIcon(hub.surface?.kind || 'Community')}</span><div><span class="status-chip slate">${escapeHtml(hub.type)}</span><h3>${escapeHtml(hub.name)}</h3><p>${escapeHtml(hub.linkedLabel)}</p></div><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${escapeHtml(hub.favoriteKey)}" aria-label="${favorite ? 'Unfollow' : 'Follow'} ${escapeHtml(hub.name)}" title="${favorite ? 'Following' : 'Follow'}">${heartIcon()}</button></div>
     <div class="community-use"><span>Useful for</span><p>${escapeHtml(hub.usefulness)}</p></div>
-    <div class="community-latest ${hub.latestSignal ? 'has-signal' : ''}"><span>Latest useful finding</span><p>${escapeHtml(finding)}</p></div>
+    <div class="community-latest ${hub.latestSignal ? 'has-signal' : ''}"><span>Latest useful finding</span><p>${escapeHtml(finding)}</p>${hub.latestSignal ? `<button class="text-button" data-action="open-signal" data-signal-id="${escapeHtml(hub.latestSignal.id)}">Open finding →</button>` : ''}</div>
     <div class="community-hub-meta"><span>Last checked <strong>${escapeHtml(checked)}</strong></span></div>
-    <div class="community-hub-actions">${openAction}${eventsAction}</div>
+    <div class="community-hub-actions">${sourceAction}${openAction}${eventsAction}</div>
   </article>`;
 }
 

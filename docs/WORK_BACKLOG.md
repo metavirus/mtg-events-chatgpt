@@ -537,10 +537,18 @@ claims without reopening the whole packet.
 
 ### Communities page refinement
 
-- Add a `hot finds` / `promising threads` surface for recent meetup-seeking,
-  LFG, coordination, and newcomer-friendly community signals.
+- `Relevant chatter` now leads the page with recent meetup coordination,
+  invitations, and direct questions involving the user. It preserves Discord
+  thread context and links to the related plan, place, community, and source
+  rather than duplicating the full Signals inbox.
+- `Your active hubs` and compact `Other useful routes` now separate current
+  social utility from directory-style discovery. Keep the complete directory
+  collapsed as supporting inventory.
 - Add limited daily Discord sweeps for only the most promising community
   channels, such as LFG, meetups, events, and EDH coordination.
+- Extend the relevant-chatter proof when a direct non-meetup question such as
+  the Finch and Sparrow mention is captured canonically; it should rank below
+  meetup coordination but remain visible and clickable.
 - Make the community detail drawer more useful with best recent signals,
   activity level, linked venues/geography, and next suggested action.
 - Consider a Communities-page async request box for instructions like `watch
