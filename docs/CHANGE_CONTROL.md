@@ -65,6 +65,18 @@ If a change introduces regressions:
 - Do not start speculative cleanup when the user has already approved the current build.
 - If the next step is exploratory, checkpoint first.
 
+## Direct-production posture
+
+This is a one-user personal app. Do not create a separate local-staging approval
+cycle for accepted app changes. A local preview is a verification tool only.
+Once a targeted change has passed its relevant checks and the user has approved
+publication, commit and push it directly to the production branch. Report the
+deployed result rather than asking the user to review the same change again in
+an intermediate environment.
+
+Only pause before production when a material unresolved regression, destructive
+data risk, security boundary, or explicit user request makes that necessary.
+
 ## Scope boundary
 
 This document governs app/code changes. Data-only Supabase writes follow
