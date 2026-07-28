@@ -71,6 +71,15 @@ Canonical operating details:
 
 ## Next safe lanes
 
+0. Immediate next product/research lane: run one small MTG OC Discord scanner
+   proof, not a broad Discord sweep and not Supabase readiness repair. Use the
+   known success cases to verify the scanner can surface high-signal community
+   chatter: meetup coordination involving `Metavirus`, direct questions or
+   requests mentioning the user, and event-adjacent planning such as date,
+   attendance, venue, store, bar, or format discussion. Preserve exact Discord
+   message/channel links where possible, distinguish community-organized
+   meetups from official venue programming, and return either a high-signal
+   item, a lower-key community finding, or a quiet/no-useful-chatter record.
 1. Use the lifecycle-specific Supabase selectors:
    `venue_baseline_candidates`, `venue_surface_retry_candidates`,
    `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
