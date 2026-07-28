@@ -1,11 +1,30 @@
 param(
-    [string]$ProjectRef = "pyvftzsodzwfqncjbmbc"
+    [string]$ProjectRef = "pyvftzsodzwfqncjbmbc",
+    [string]$DatabaseUrl
 )
 
 $ErrorActionPreference = "Stop"
 $PSNativeCommandUseErrorActionPreference = $false
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $supabaseCliHome = Join-Path $repoRoot ".codex-supabase-home"
+$secretDir = Join-Path $repoRoot ".codex-secrets"
+$dbUrlPath = Join-Path $secretDir "supabase-db-url.txt"
+
+if ([string]::IsNullOrWhiteSpace($DatabaseUrl)) {
+    $DatabaseUrl = $env:SUPABASE_DB_URL
+}
+if ([string]::IsNullOrWhiteSpace($DatabaseUrl)) {
+    $DatabaseUrl = [Environment]::GetEnvironmentVariable("SUPABASE_DB_URL", "User")
+}
+if ([string]::IsNullOrWhiteSpace($DatabaseUrl)) {
+    $DatabaseUrl = [Environment]::GetEnvironmentVariable("SUPABASE_DB_URL", "Machine")
+}
+if (-not [string]::IsNullOrWhiteSpace($DatabaseUrl)) {
+    New-Item -ItemType Directory -Force -Path $secretDir | Out-Null
+    Set-Content -Path $dbUrlPath -Value $DatabaseUrl -NoNewline -Encoding UTF8
+    powershell -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "check_environment_readiness.ps1")
+    exit $LASTEXITCODE
+}
 
 $token = $env:SUPABASE_ACCESS_TOKEN
 if ([string]::IsNullOrWhiteSpace($token)) {
@@ -15,8 +34,9 @@ if ([string]::IsNullOrWhiteSpace($token)) {
     $token = [Environment]::GetEnvironmentVariable("SUPABASE_ACCESS_TOKEN", "Machine")
 }
 if ([string]::IsNullOrWhiteSpace($token)) {
-    Write-Host "SUPABASE_ACCESS_TOKEN is not visible to this process."
-    Write-Host "Set it as a user or machine environment variable, then restart Codex or rerun this script from a fresh terminal."
+    Write-Host "Neither SUPABASE_DB_URL nor SUPABASE_ACCESS_TOKEN is visible to this process."
+    Write-Host "Preferred permanent fix: set SUPABASE_DB_URL, then rerun this setup script."
+    Write-Host "Fallback: set SUPABASE_ACCESS_TOKEN, then rerun this setup script."
     exit 1
 }
 

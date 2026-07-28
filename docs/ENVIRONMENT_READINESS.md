@@ -12,42 +12,52 @@ The gate now gives the Supabase CLI a workspace-local home at
 Codex sandbox failure where the CLI tried to write telemetry or profile state
 under `C:\Users\kavig\.supabase`.
 
-If the gate says workspace auth is missing, do not diagnose TLS, Norton,
-project-link state, or connector fallback first. Seed the local CLI lane once:
+The preferred permanent live-write lane is a direct Postgres URL because it
+does not depend on Supabase Management API login, project linking, or the user's
+profile directory. Configure it once through `SUPABASE_DB_URL` or through the
+ignored local setup file:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/setup_supabase_cli_workspace.ps1
 ```
 
-That script reads `SUPABASE_ACCESS_TOKEN` from the current process, User scope,
-or Machine scope, links the project, and reruns this gate. If the token was just
-added through Windows settings, restart Codex or run the setup from a fresh
-terminal so the new environment block is visible.
+That script first looks for `SUPABASE_DB_URL` in the current process, User
+scope, or Machine scope. If present, it saves it to
+`.codex-secrets/supabase-db-url.txt` and the gate uses `supabase db query
+--db-url ...` thereafter. If no DB URL is available, the script falls back to
+`SUPABASE_ACCESS_TOKEN` and `supabase link`.
+
+If an environment variable was just added through Windows settings, restart
+Codex or run the setup from a fresh terminal so the new environment block is
+visible.
 
 ## Permanent baseline
 
 ### Supabase direct execution
 
 - CLI: installed `supabase` CLI.
-- Authentication: `SUPABASE_ACCESS_TOKEN` visible to the setup script, then
-  local CLI state seeded under ignored `.codex-supabase-home/`.
-- Link: repository linked to project `pyvftzsodzwfqncjbmbc`.
+- Preferred authentication: `SUPABASE_DB_URL` visible to the setup script, then
+  saved to ignored `.codex-secrets/supabase-db-url.txt`.
+- Fallback authentication: `SUPABASE_ACCESS_TOKEN` visible to the setup script,
+  then local CLI state seeded under ignored `.codex-supabase-home/`.
+- Link: repository linked to project `pyvftzsodzwfqncjbmbc` only for the fallback
+  linked-CLI path.
 - Direct path:
 
   ```powershell
-  supabase db query --linked "<typed RPC or SQL>"
+  supabase db query --db-url "$env:SUPABASE_DB_URL" "<typed RPC or SQL>"
   ```
 
 - Smoke test: the readiness script runs a harmless linked `select`.
 - Authentication setup is a one-time user action in a real terminal:
 
   ```powershell
-  [Environment]::SetEnvironmentVariable('SUPABASE_ACCESS_TOKEN', '<token>', 'User')
+  [Environment]::SetEnvironmentVariable('SUPABASE_DB_URL', '<postgres-url>', 'User')
   powershell -ExecutionPolicy Bypass -File scripts/setup_supabase_cli_workspace.ps1
   ```
 
-  Never commit the token. The workspace-local CLI home is ignored and should
-  remain local machine state only.
+  Never commit the URL or token. `.codex-secrets/` and the workspace-local CLI
+  home are ignored and should remain local machine state only.
 
   If login succeeds but CLI calls report a transport error for
   `https://api.supabase.com`, the environment remains blocked. The external

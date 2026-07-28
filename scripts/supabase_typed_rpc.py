@@ -16,6 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SUPABASE_CLI_HOME = ROOT / ".codex-supabase-home"
+LOCAL_DB_URL_FILE = ROOT / ".codex-secrets" / "supabase-db-url.txt"
 
 
 def supabase_cli_env() -> dict[str, str]:
@@ -105,6 +106,42 @@ def run_linked_query(sql: str) -> subprocess.CompletedProcess[str]:
             pass
 
 
+def run_supabase_db_url_query(sql: str, database_url: str) -> subprocess.CompletedProcess[str]:
+    if not shutil.which("supabase"):
+        raise RuntimeError("supabase CLI is not available on PATH")
+
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", newline="\n", suffix=".sql", delete=False
+    ) as handle:
+        handle.write(sql)
+        temp_path = Path(handle.name)
+    try:
+        return subprocess.run(
+            [
+                "supabase",
+                "db",
+                "query",
+                "--db-url",
+                database_url,
+                "--output-format",
+                "json",
+                "--file",
+                str(temp_path),
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            timeout=120,
+            check=False,
+            env=supabase_cli_env(),
+        )
+    finally:
+        try:
+            temp_path.unlink()
+        except OSError:
+            pass
+
+
 def run_psql(sql: str, database_url: str) -> subprocess.CompletedProcess[str]:
     if not shutil.which("psql"):
         raise RuntimeError("psql is not available on PATH")
@@ -155,6 +192,13 @@ def print_rpc_rows(rows: list[dict], expected_fields: list[str]) -> None:
 
 
 def resolve_database_url(explicit_value: str | None) -> str | None:
-    return explicit_value or os.environ.get("DATABASE_URL") or os.environ.get(
-        "SUPABASE_DB_URL"
-    )
+    if explicit_value:
+        return explicit_value
+    env_value = os.environ.get("DATABASE_URL") or os.environ.get("SUPABASE_DB_URL")
+    if env_value:
+        return env_value
+    if LOCAL_DB_URL_FILE.exists():
+        value = LOCAL_DB_URL_FILE.read_text(encoding="utf-8").strip()
+        if value:
+            return value
+    return None

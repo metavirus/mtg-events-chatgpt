@@ -10,6 +10,8 @@ $metadata = Join-Path $repoRoot "output\wizards\metadata.json"
 $schemaSql = Join-Path $PSScriptRoot "inspect_supabase_schema.sql"
 $projectRef = "pyvftzsodzwfqncjbmbc"
 $supabaseCliHome = Join-Path $repoRoot ".codex-supabase-home"
+$localSecretDir = Join-Path $repoRoot ".codex-secrets"
+$localDbUrlPath = Join-Path $localSecretDir "supabase-db-url.txt"
 $failed = [System.Collections.Generic.List[string]]::new()
 $env:SUPABASE_TELEMETRY_DISABLED = "1"
 $env:USERPROFILE = $supabaseCliHome
@@ -59,6 +61,22 @@ function Invoke-SupabaseCli {
     }
 }
 
+function Get-DatabaseUrl {
+    if (-not [string]::IsNullOrWhiteSpace($env:SUPABASE_DB_URL)) {
+        return $env:SUPABASE_DB_URL
+    }
+    if (-not [string]::IsNullOrWhiteSpace($env:DATABASE_URL)) {
+        return $env:DATABASE_URL
+    }
+    if (Test-Path $localDbUrlPath) {
+        $value = (Get-Content -Raw $localDbUrlPath).Trim()
+        if (-not [string]::IsNullOrWhiteSpace($value)) {
+            return $value
+        }
+    }
+    return $null
+}
+
 function Pass([string]$message) {
     Write-Host "PASS  $message"
 }
@@ -105,18 +123,25 @@ if ($versionResult.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($versionResul
     Pass "Supabase CLI $($versionResult.Text.Trim())"
 }
 
- $projectsResult = Invoke-SupabaseCli -Arguments @("projects", "list", "--output", "json")
-$projectsText = $projectsResult.Text
-if ($projectsText -notmatch [regex]::Escape($projectRef)) {
-    if ($projectsText -match '(?is)(telemetry\.json|\.supabase).*(EPERM|permission|access.*denied)') {
-        Fail "Supabase CLI workspace-local profile access blocked unexpectedly"
-    } elseif ($projectsText -match '(?is)(access token not provided|supabase login|SUPABASE_ACCESS_TOKEN)') {
-        Fail "Supabase CLI workspace auth missing; run scripts\setup_supabase_cli_workspace.ps1 once after setting SUPABASE_ACCESS_TOKEN"
-    } else {
-        Fail "Supabase CLI authentication/Management API transport unavailable"
-    }
+$databaseUrl = Get-DatabaseUrl
+if (-not [string]::IsNullOrWhiteSpace($databaseUrl)) {
+    Pass "Supabase direct DB URL configured"
 } else {
-    Pass "Supabase CLI authenticated for project $projectRef"
+    $projectsResult = Invoke-SupabaseCli -Arguments @("projects", "list", "--output", "json")
+    $projectsText = $projectsResult.Text
+    if ($projectsText -notmatch [regex]::Escape($projectRef)) {
+        if ($projectsText -match '(?is)(telemetry\.json|\.supabase).*(EPERM|permission|access.*denied)') {
+            Fail "Supabase CLI workspace-local profile access blocked unexpectedly"
+        } elseif ($projectsText -match '(?is)(access token not provided|supabase login|SUPABASE_ACCESS_TOKEN)') {
+            Fail "No Supabase DB URL or workspace auth configured; run scripts\setup_supabase_cli_workspace.ps1 once"
+        } else {
+            Fail "Supabase CLI authentication/Management API transport unavailable"
+        }
+        $skipLinkedLiveSmoke = $true
+    } else {
+        Pass "Supabase CLI authenticated for project $projectRef"
+        $skipLinkedLiveSmoke = $false
+    }
 }
 
 $linkedRefPath = Join-Path $repoRoot "supabase\.temp\project-ref"
@@ -131,8 +156,14 @@ if (-not (Test-Path $linkedRefPath)) {
     }
 }
 
-if (-not $SkipLiveSmoke) {
-    $smokeResult = Invoke-SupabaseCli -Arguments @("db", "query", "--linked", "select '$projectRef'::text as project_ref, current_database() as database_name, true as ready;")
+if (-not $SkipLiveSmoke -and -not $skipLinkedLiveSmoke) {
+    if (-not [string]::IsNullOrWhiteSpace($databaseUrl)) {
+        $smokeResult = Invoke-SupabaseCli -Arguments @("db", "query", "--db-url", $databaseUrl, "--output-format", "json", "select '$projectRef'::text as project_ref, current_database() as database_name, true as ready;")
+        $schemaResult = Invoke-SupabaseCli -Arguments @("db", "query", "--db-url", $databaseUrl, "--output-format", "json", "--file", $schemaSql)
+    } else {
+        $smokeResult = Invoke-SupabaseCli -Arguments @("db", "query", "--linked", "select '$projectRef'::text as project_ref, current_database() as database_name, true as ready;")
+        $schemaResult = Invoke-SupabaseCli -Arguments @("db", "query", "--linked", "--file", $schemaSql)
+    }
     $smokeText = $smokeResult.Text
     $smokeOk = (
         $smokeText -match [regex]::Escape($projectRef) -and
@@ -140,7 +171,6 @@ if (-not $SkipLiveSmoke) {
         $smokeText -match '"database_name"\s*:\s*"postgres"'
     )
 
-    $schemaResult = Invoke-SupabaseCli -Arguments @("db", "query", "--linked", "--file", $schemaSql)
     $schemaOk = (
         $schemaResult.Text -match 'record_entity_surface_check' -and
         $schemaResult.Text -match 'upsert_attributable_official_event' -and
@@ -152,7 +182,7 @@ if (-not $SkipLiveSmoke) {
         if ($liveText -match '(?is)(telemetry\.json|\.supabase).*(EPERM|permission|access.*denied)') {
             Fail "Supabase CLI workspace-local profile access blocked unexpectedly"
         } elseif ($liveText -match '(?is)(access token not provided|supabase login|SUPABASE_ACCESS_TOKEN)') {
-            Fail "Supabase CLI workspace auth missing; run scripts\setup_supabase_cli_workspace.ps1 once after setting SUPABASE_ACCESS_TOKEN"
+            Fail "No Supabase DB URL or workspace auth configured; run scripts\setup_supabase_cli_workspace.ps1 once"
         } else {
             Fail "Authenticated linked Supabase query path unavailable"
         }
