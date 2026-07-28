@@ -7,17 +7,20 @@ Run it from the repository root:
 powershell -ExecutionPolicy Bypass -File scripts/check_environment_readiness.ps1
 ```
 
-If it prints `ENVIRONMENT NOT READY`, stop. Do not begin useful work while
-repairing or rediscovering the environment. Fix the named prerequisite in a
-separate readiness tranche.
+Run this gate with the approved user-profile permission from the outset. If a
+sandboxed invocation prints `ENVIRONMENT NOT READY`, that result is diagnostic
+only: immediately rerun once through the documented permission path. Repair
+agent-fixable platform problems and retest the exact failed capability in the
+same task. Stop before useful project work only when the properly privileged
+gate still proves a genuine external prerequisite is unavailable.
 
 In a managed Codex workspace, run the gate with the approved
 readiness-script permission. The Supabase CLI reads its existing login and
 local telemetry/configuration state under the user profile, which the ordinary
-workspace sandbox cannot access. An `EPERM` mentioning `.supabase` or
-`telemetry.json` is a sandbox-profile-access failure, not expired Supabase
-authentication. Rerun the same gate with that permission before diagnosing
-login, transport, or project-link failure.
+workspace sandbox cannot access. Any Supabase authentication or linked-query
+failure from a sandboxed gate is non-authoritative, even when the CLI does not
+surface an explicit `EPERM`. Rerun the same gate with that permission before
+diagnosing login, transport, token, or project-link failure.
 
 ## Permanent baseline
 
@@ -96,22 +99,25 @@ but the checked-in SQL command is the reproducible baseline.
 
 ## Stop rule
 
-Every substantive run begins with the readiness script. A missing CLI login,
-wrong/missing project link, failed linked query, missing blessed runtime,
-missing timezone/crawler dependency, or missing WPN metadata means:
+Every substantive run begins with the readiness script using the documented
+permission path. A missing CLI login, wrong/missing project link, failed linked
+query, missing blessed runtime, missing timezone/crawler dependency, or missing
+WPN metadata after the bounded repair/retest cycle means:
 
 ```text
 ENVIRONMENT NOT READY
 ```
 
-Stop immediately. Do not proceed into research, source inspection, proposals,
-or data changes while working around the failure.
+Do not proceed into research, source inspection, proposals, or data changes
+while working around a genuine unresolved failure. Do fix agent-remediable
+platform faults before returning to the requested work.
 
 ## Platform failure rule
 
 When a platform or environment failure is identified during any tranche, it
-becomes the active hard gate immediately. The tranche switches to capability
-repair only until the environment is either:
+becomes the active hard gate immediately. Repair it in place rather than merely
+recording or routing around it. The tranche switches to capability repair only
+until the environment is either:
 
 - `READY`, with the exact failed capability retested successfully; or
 - blocked on one exact external dependency, with evidence naming the machine,

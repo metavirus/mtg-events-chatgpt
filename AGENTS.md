@@ -1,10 +1,14 @@
 # Agent Instructions
 
 Before substantive research, data, crawler, or app work, run the mandatory
-environment gate in `docs/ENVIRONMENT_READINESS.md`. If
-`scripts/check_environment_readiness.ps1` reports `ENVIRONMENT NOT READY`, stop
-and report the exact missing prerequisite instead of continuing into useful
-work while repairing the environment.
+environment gate in `docs/ENVIRONMENT_READINESS.md` with its required
+user-profile permission. A sandboxed result is not authoritative for Supabase
+CLI authentication or linked-query readiness. If an initial invocation was
+sandboxed or reports a platform/capability failure, immediately run one bounded
+repair cycle: rerun through the documented permission path, diagnose and remedy
+an agent-fixable cause, then retest the exact failed capability. Stop and report
+`ENVIRONMENT NOT READY` only when the properly privileged retry still fails on
+a genuine prerequisite that cannot be repaired inside the task.
 
 Read `README.md`, `docs/PROJECT_CONTEXT.md`, `CURRENT_FRONTIER.md`, and
 `docs/WORK_BACKLOG.md` before substantive research, data, or app work.
@@ -37,7 +41,10 @@ If a tool, connector, runtime, browser path, or task capability appears
 unavailable, follow the Capability Recovery and Task Continuity protocol in
 `docs/COLLABORATION_SOP.md` and its concise checklist in
 `docs/EFFICIENCY_SOP.md`. Do not treat the first failed path as proof that the
-capability is unavailable.
+capability is unavailable. Platform repair becomes the active task until the
+capability passes its smoke test or one exact external dependency is proven;
+do not preserve a known agent-fixable platform fault as a backlog item or ask
+the user to work around it.
 
 If repeated compaction threatens execution continuity, follow the Compaction
 Resilience protocol in `docs/COLLABORATION_SOP.md`. Marker count alone is not a
