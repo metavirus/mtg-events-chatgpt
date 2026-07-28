@@ -77,6 +77,11 @@ function Get-DatabaseUrl {
     return $null
 }
 
+function Test-DatabaseUrlShape {
+    param([string]$DatabaseUrl)
+    return $DatabaseUrl -match '^postgres(ql)?://[^:\s]+:[^@\s]+@[^/\s]+/.+'
+}
+
 function Pass([string]$message) {
     Write-Host "PASS  $message"
 }
@@ -125,7 +130,13 @@ if ($versionResult.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($versionResul
 
 $databaseUrl = Get-DatabaseUrl
 if (-not [string]::IsNullOrWhiteSpace($databaseUrl)) {
-    Pass "Supabase direct DB URL configured"
+    if (Test-DatabaseUrlShape -DatabaseUrl $databaseUrl) {
+        Pass "Supabase direct DB URL configured"
+    } else {
+        Fail "Supabase DB URL is not a real Postgres connection string; replace the placeholder in SUPABASE_DB_URL or .codex-secrets\supabase-db-url.txt"
+        $databaseUrl = $null
+        $skipLinkedLiveSmoke = $true
+    }
 } else {
     $projectsResult = Invoke-SupabaseCli -Arguments @("projects", "list", "--output", "json")
     $projectsText = $projectsResult.Text

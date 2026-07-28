@@ -20,6 +20,11 @@ if ([string]::IsNullOrWhiteSpace($DatabaseUrl)) {
     $DatabaseUrl = [Environment]::GetEnvironmentVariable("SUPABASE_DB_URL", "Machine")
 }
 if (-not [string]::IsNullOrWhiteSpace($DatabaseUrl)) {
+    if ($DatabaseUrl -notmatch '^postgres(ql)?://[^:\s]+:[^@\s]+@[^/\s]+/.+') {
+        Write-Host "SUPABASE_DB_URL is visible, but it is not a real Postgres connection string."
+        Write-Host "Replace placeholder text like <postgres-connection-url> with the actual Supabase Postgres connection URL."
+        exit 1
+    }
     New-Item -ItemType Directory -Force -Path $secretDir | Out-Null
     Set-Content -Path $dbUrlPath -Value $DatabaseUrl -NoNewline -Encoding UTF8
     powershell -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "check_environment_readiness.ps1")
