@@ -77,6 +77,19 @@ an intermediate environment.
 Only pause before production when a material unresolved regression, destructive
 data risk, security boundary, or explicit user request makes that necessary.
 
+## Git checkpoint execution in Codex
+
+In Codex `workspace-write` mode, the `.git` directory is an intentionally
+protected path. It is normal for sandboxed `git add`, `git commit`, `git pull`,
+or `git push` operations to fail on `.git/index.lock`, `FETCH_HEAD`, or Windows
+credential access. Do not diagnose this as a broken repository, Supabase issue,
+or project platform failure.
+
+When the user has authorized a checkpoint or publication, run the necessary Git
+operation through the approved outside-sandbox Git path and continue. Do not
+remove `.git` ACL protections, create shadow Git directories, or build alternate
+checkpoint machinery merely to avoid the sandbox boundary.
+
 ## Scope boundary
 
 This document governs app/code changes. Data-only Supabase writes follow
