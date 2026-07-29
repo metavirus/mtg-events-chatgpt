@@ -25,6 +25,9 @@ from pathlib import Path
 from urllib.parse import quote
 
 import requests
+import truststore
+
+truststore.inject_into_ssl()
 
 from supabase_typed_rpc import (
     linked_query_rows_or_raise,
