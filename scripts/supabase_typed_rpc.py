@@ -11,6 +11,8 @@ import os
 import shutil
 import subprocess
 import tempfile
+import csv
+import io
 from pathlib import Path
 
 
@@ -136,15 +138,21 @@ def run_supabase_db_url_query(sql: str, database_url: str) -> subprocess.Complet
 
 
 def run_psql(sql: str, database_url: str) -> subprocess.CompletedProcess[str]:
-    if not shutil.which("psql"):
+    psql = shutil.which("psql")
+    if not psql:
+        windows_psql = Path(r"C:\Program Files\PostgreSQL\18\bin\psql.exe")
+        if windows_psql.exists():
+            psql = str(windows_psql)
+    if not psql:
         raise RuntimeError("psql is not available on PATH")
     return subprocess.run(
         [
-            "psql",
+            psql,
             database_url,
             "--set",
             "ON_ERROR_STOP=1",
             "--no-psqlrc",
+            "--csv",
             "--command",
             sql,
         ],
@@ -154,6 +162,16 @@ def run_psql(sql: str, database_url: str) -> subprocess.CompletedProcess[str]:
         timeout=120,
         check=False,
     )
+
+
+def psql_rows_or_raise(result: subprocess.CompletedProcess[str]) -> list[dict]:
+    if result.returncode != 0:
+        error_suffix = (result.stderr or result.stdout or "").strip()
+        raise RuntimeError(
+            "Direct psql query failed"
+            + (f": {error_suffix}" if error_suffix else "")
+        )
+    return list(csv.DictReader(io.StringIO(result.stdout)))
 
 
 def linked_query_rows_or_raise(result: subprocess.CompletedProcess[str]) -> list[dict]:

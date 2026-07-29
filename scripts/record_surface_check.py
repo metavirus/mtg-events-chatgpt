@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 from supabase_typed_rpc import (
     linked_query_rows_or_raise,
     print_rpc_rows,
+    psql_rows_or_raise,
     resolve_database_url,
     run_supabase_db_url_query,
     run_linked_query,
@@ -211,9 +212,9 @@ def main(argv: list[str] | None = None) -> int:
     if not database_url:
         parser.error("--execute requires --database-url, DATABASE_URL, or SUPABASE_DB_URL")
 
-    result = run_supabase_db_url_query(sql, database_url)
+    result = run_psql(sql, database_url)
     try:
-        rows = linked_query_rows_or_raise(result)
+        rows = psql_rows_or_raise(result)
     except RuntimeError as exc:
         if result.stdout:
             print(result.stdout.strip())
@@ -222,7 +223,7 @@ def main(argv: list[str] | None = None) -> int:
         print(str(exc), file=sys.stderr)
         return result.returncode or 1
     print_rpc_rows(rows, ["coverage_id", "outcome", "wrote", "research_change_id"])
-    print("PASS surface-check RPC completed via Supabase CLI db-url")
+    print("PASS surface-check RPC completed via direct psql")
     return 0
 
 
