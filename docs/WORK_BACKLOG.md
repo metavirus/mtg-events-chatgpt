@@ -86,16 +86,16 @@ Use it for:
   no hidden alternate CLI home that loses auth, no repeated diagnosis in
   research runs. Treat any future recurrence as platform repair, not research.
 
-- Durable source-image evidence in Supabase Storage TBD
+- Durable source-image evidence in Supabase Storage: Phase 1 implemented,
+  live Storage proof pending one configured service secret
   (`coordination_items.id = 1ff603bd-b5c1-4878-ab75-c2f284430088`,
-  status `ready_for_review`): investigate preserving original Discord promo
-  images, Instagram schedule graphics, flyers, and PDFs as primary evidence.
-  Likely proof shape: store the artifact in Supabase Storage, attach it to the
-  relevant source/evidence/event row, record provenance and extracted facts
-  separately, and make the evidence clickable from Events/Evidence/Updates
-  where useful. This is a future trust/re-verification design problem involving
-  retention, privacy, copyright, and a tiny proof of concept. Do not implement
-  it during ordinary research batches.
+  status `ready_for_review`): the private bucket, provenance/analysis/link
+  tables, typed RPCs, content-addressed cache, and narrow ingest/analyze/link
+  helper now exist. Two supplied Discord screenshots pass the dry-run ingest
+  path. Finish the live proof after a service-role/secret key is configured,
+  then add clickable evidence presentation where it materially helps
+  Events/Evidence/Updates. Do not expand into automated screenshot capture,
+  OCR infrastructure, or broad backfill until real usage demonstrates need.
 
 - Phase 2 workflow simplification proof is complete. Ordinary source/surface
   checks land through `record_entity_surface_check(...)` into

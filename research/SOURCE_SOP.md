@@ -29,6 +29,27 @@ mean skipping major expected surfaces.
    permission to skip event hunting.
 8. Supabase is the canonical research surface. JSON exports are emergency/debug
    recovery artifacts and should not drive ordinary passes.
+9. Images, screenshots, flyers, and PDFs are ordinary source data. Decode
+   readable facts during the same bounded pass and preserve the original
+   artifact when it materially supports those facts. Do not create a separate
+   research lane merely because the source is visual.
+
+## Visual source artifacts
+
+Use the source-artifact ingest path for material Discord images, Instagram or
+Facebook graphics, flyers, screenshots, and PDFs that are worth retaining.
+Preserve provenance, the immutable artifact, extracted text/facts, and links to
+the relevant venue, community, event, Signal, or research record.
+
+The artifact's medium does not determine authority. A store announcement image,
+a community-organized Discord flyer, and a Wizards listing each support the
+claims attributable to their actual publisher and context.
+
+If a relevant artifact is readable, act on its extracted facts in the normal
+source lane. If it is unreadable or only partly readable, record an
+artifact-specific terminal result or one finite retry. Do not keep a venue,
+community, or baseline pass open solely because one visual artifact could not
+be decoded.
 
 ## Source hierarchy by job
 

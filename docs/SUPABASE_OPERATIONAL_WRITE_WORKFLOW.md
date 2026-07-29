@@ -41,6 +41,15 @@ It also covers the operational surface-check path:
 - `entity_surface_coverage`
 - `record_entity_surface_check(...)`
 
+And the ordinary visual-evidence path:
+
+- private Storage bucket `source-artifacts`
+- `source_artifacts`
+- `source_artifact_links`
+- `record_source_artifact(...)`
+- `record_source_artifact_analysis(...)`
+- `link_source_artifact(...)`
+
 Surface coverage records are canonical operational research state. They record
 that a material surface was checked, blocked, thin, stale, useful, or not found;
 they do not by themselves revise a venue assessment, event row, Signal, or
@@ -99,6 +108,33 @@ separate file/schema/app change is actually made.
 This is the default write path for ordinary steady-state monitoring outcomes and
 for blocked/thin/no-delta surface dispositions inside a bounded baseline pass
 when no venue/event/evaluation mutation is justified.
+
+### Routine Source Artifact
+
+Use for a material image, screenshot, flyer, or PDF found on any source.
+Visual decoding is part of ordinary source inspection, not a separate research
+or approval lane.
+
+Required:
+
+- run `scripts/source_artifact_ingest.py ingest` to cache the bytes, upload one
+  immutable copy to the private bucket, record provenance, and create the first
+  evidence link;
+- run `scripts/source_artifact_ingest.py analyze` to record extracted text,
+  structured facts, summary, and confidence;
+- use `scripts/source_artifact_ingest.py link` only when the same artifact
+  materially supports another canonical target;
+- retain the publisher/organizer distinction in extracted facts. A
+  community-organized event hosted at a store must not become official store
+  programming merely because the store is the location.
+
+Do not create a proposal, SQL package, run note, export, or Git checkpoint for
+ordinary artifact ingestion. Escalate only when the extracted facts themselves
+require a higher-risk canonical mutation.
+
+If an artifact is unreadable, record `partial` or `unreadable` and allow one
+finite artifact-specific retry when a better capture is plausible. The parent
+venue/community pass closes independently.
 
 ### Lean
 
@@ -166,6 +202,8 @@ The script provides:
 Routine typed RPC lanes do not use this script by default.
 
 - Use `scripts/record_surface_check.py` for ordinary surface dispositions.
+- Use `scripts/source_artifact_ingest.py` for ordinary retained images and
+  PDFs plus their extracted text/facts.
 - Use `scripts/record_official_event.py official-event` for one clean
   attributable official standalone or finite event occurrence.
 - Use `scripts/record_official_event.py recurring-occurrence` for one official

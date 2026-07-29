@@ -123,8 +123,12 @@ that the channel exists. First-pass extraction should prioritize:
 - wording that clarifies `casual`, `open play`, `optimized`, `cEDH`, or related
   fit signals.
 
-An image is not considered reviewed merely because its existence or filename was
-observed. If it cannot be read, record `image_not_transcribed` and keep the task open.
+An image is not considered reviewed merely because its existence or filename
+was observed. Preserve material images through the ordinary source-artifact
+path and extract readable facts immediately. If an image cannot be read,
+record an artifact-specific unreadable/partial result and allow at most one
+targeted retry when a better capture is plausible. Do not keep the Discord,
+venue, or community pass open solely because that artifact remains unreadable.
 
 ### 4. Create atomic claims
 
