@@ -1,4 +1,4 @@
-const DATA = { stores: [], events: [], sources: [], changes: [], signals: [] };
+const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [] };
 
 const SUPABASE = {
   url: 'https://pyvftzsodzwfqncjbmbc.supabase.co',
@@ -11,6 +11,7 @@ const DATA_FETCH_TIMEOUT_MS = 9000;
 const AUTH_STARTUP_SLOW_MS = 5000;
 const personalAuth = { client: null, user: null, status: 'checking', message: 'Restoring sign-in…', sendingLink: false, startupComplete: false, refreshInFlight: null };
 let appInitialized = false;
+let artifactPreviewUrl = null;
 
 const COMMUNITY_SEED = [
   {
@@ -341,6 +342,7 @@ async function handleAuthSession(session, event) {
   const nextUser = session?.user || null;
   if (!nextUser) {
     personalAuth.user = null;
+    DATA.artifacts = [];
     personalAuth.status = 'local';
     personalAuth.message = 'Saved on this device';
     updateAuthChrome();
@@ -353,6 +355,12 @@ async function handleAuthSession(session, event) {
   updateAuthChrome();
   try {
     await syncPersonalState();
+    try {
+      await loadSourceArtifacts();
+    } catch (artifactError) {
+      DATA.artifacts = [];
+      console.warn('Optional source-image evidence could not be loaded.', artifactError);
+    }
     personalAuth.status = 'synced';
     personalAuth.message = 'Saved to your account';
   } catch (error) {
@@ -362,6 +370,47 @@ async function handleAuthSession(session, event) {
   }
   updateAuthChrome();
   renderAll();
+}
+
+async function loadSourceArtifacts() {
+  if (!personalAuth.client || !personalAuth.user) {
+    DATA.artifacts = [];
+    return;
+  }
+  const [{ data: artifacts, error: artifactError }, { data: links, error: linkError }] = await Promise.all([
+    personalAuth.client
+      .from('source_artifacts')
+      .select('id,source_id,origin_url,platform,published_at,captured_at,storage_path,original_filename,mime_type,width,height,analysis_status,extracted_text,extracted_facts,analysis_summary,analysis_confidence'),
+    personalAuth.client
+      .from('source_artifact_links')
+      .select('artifact_id,target_type,target_id,relationship')
+  ]);
+  if (artifactError) throw artifactError;
+  if (linkError) throw linkError;
+  const linksByArtifact = groupValues(links || [], (item) => item.artifact_id, (item) => ({
+    targetType: item.target_type,
+    targetId: item.target_id,
+    relationship: item.relationship
+  }));
+  DATA.artifacts = (artifacts || []).map((item) => ({
+    id: item.id,
+    sourceId: item.source_id,
+    originUrl: item.origin_url || '',
+    platform: item.platform || '',
+    publishedAt: item.published_at || '',
+    capturedAt: item.captured_at || '',
+    storagePath: item.storage_path,
+    originalFilename: item.original_filename || '',
+    mimeType: item.mime_type || '',
+    width: item.width,
+    height: item.height,
+    status: item.analysis_status,
+    extractedText: item.extracted_text || '',
+    facts: item.extracted_facts || {},
+    summary: item.analysis_summary || '',
+    confidence: item.analysis_confidence || '',
+    links: linksByArtifact.get(item.id) || []
+  }));
 }
 
 async function syncPersonalState() {
@@ -1021,6 +1070,7 @@ function handleAction(action, element) {
   if (action === 'show-log') return openActivityLog();
   if (action === 'toggle-read-signals') { state.showReadSignals = !state.showReadSignals; return renderSignals(); }
   if (action === 'open-signal') return openSignalDetail(element.dataset.signalId);
+  if (action === 'open-artifact') return openArtifactPreview(element.dataset.artifactId);
   if (action === 'mark-signal-read') return setSignalRead(element.dataset.signalId, true);
   if (action === 'restore-signal') return setSignalRead(element.dataset.signalId, false);
   if (action === 'dismiss-drawer') return closeDrawer();
@@ -2247,22 +2297,24 @@ function renderPlaceDetail(place) {
   if (!place) return container.innerHTML = emptyState('Select a place', 'Choose a venue from the list.');
   const placeEvents = DATA.events.filter((event) => event.storeId === place.id);
   const sources = (place.sourceIds || []).map(source).filter(Boolean);
+  const artifacts = artifactsFor('venue', place.id);
   const favorite = !!state.personal.favorites[`place:${place.id}`];
   const hidden = !!state.personal.hidden[`place:${place.id}`];
   const rating = state.personal.ratings[`place:${place.id}`] || 0;
   container.innerHTML = `<div class="detail-hero"><div class="detail-identity"><span class="large-avatar">${initials(place.name)}</span><div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${place.lifecycleState === 'identity_blocked' ? '<span class="status-chip amber">Identity unresolved · check first</span>' : ''}${hidden ? '<span class="status-chip coral">Deprioritized by you</span>' : ''}${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><div class="detail-hero-aside">${placeHoursChip(place)}<div class="detail-preference-actions"><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place" title="Favorite">${heartIcon()}</button><button class="thumb-button large ${hidden ? 'active' : ''}" data-action="toggle-place-hidden" data-place-id="${place.id}" aria-label="${hidden ? 'Restore priority' : 'Deprioritize place'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></div></div></div>
     <div class="detail-actions"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a>${place.website ? `<a class="soft-button" href="${escapeHtml(place.website)}" target="_blank" rel="noreferrer">Website ↗</a>` : ''}${place.instagram ? `<a class="soft-button" href="${escapeHtml(place.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>` : ''}</div>
-    <div class="detail-tabs" role="tablist" aria-label="Place details"><button class="${state.selectedPlaceTab === 'overview' ? 'active' : ''}" data-place-tab="overview" role="tab" aria-selected="${state.selectedPlaceTab === 'overview'}">Overview</button><button class="${state.selectedPlaceTab === 'events' ? 'active' : ''}" data-place-tab="events" role="tab" aria-selected="${state.selectedPlaceTab === 'events'}">Events <span>${placeEvents.length}</span></button><button class="${state.selectedPlaceTab === 'evidence' ? 'active' : ''}" data-place-tab="evidence" role="tab" aria-selected="${state.selectedPlaceTab === 'evidence'}">Evidence <span>${sources.length}</span></button></div>
-    <div class="place-tab-content">${placeTabContent(place, placeEvents, sources, rating)}</div>`;
+    <div class="detail-tabs" role="tablist" aria-label="Place details"><button class="${state.selectedPlaceTab === 'overview' ? 'active' : ''}" data-place-tab="overview" role="tab" aria-selected="${state.selectedPlaceTab === 'overview'}">Overview</button><button class="${state.selectedPlaceTab === 'events' ? 'active' : ''}" data-place-tab="events" role="tab" aria-selected="${state.selectedPlaceTab === 'events'}">Events <span>${placeEvents.length}</span></button><button class="${state.selectedPlaceTab === 'evidence' ? 'active' : ''}" data-place-tab="evidence" role="tab" aria-selected="${state.selectedPlaceTab === 'evidence'}">Evidence <span>${sources.length + artifacts.length}</span></button></div>
+    <div class="place-tab-content">${placeTabContent(place, placeEvents, sources, artifacts, rating)}</div>`;
 }
 
-function placeTabContent(place, placeEvents, sources, rating) {
+function placeTabContent(place, placeEvents, sources, artifacts, rating) {
   if (state.selectedPlaceTab === 'events') {
     const upcoming = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 56)), false).filter((event) => event.storeId === place.id);
     return `<section class="detail-section tab-intro"><p class="eyebrow">Known schedule</p><h3>${placeEvents.length} normalized series · ${upcoming.length} projected occurrences</h3><p class="analysis-copy">Recurring listings are patterns, not promises. Open any occurrence to see whether it is dated or projected and what should be verified before leaving.</p></section><section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Event series</p><h3>Recurring and one-off records</h3></div></div><div class="series-list">${placeEvents.length ? placeEvents.map((event) => seriesRow(event)).join('') : '<p class="muted-copy">No normalized event series yet. This is not proof that the venue has no Magic events.</p>'}</div></section><section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Next eight weeks</p><h3>Upcoming occurrences</h3></div></div><div class="place-occurrences">${upcoming.length ? upcoming.slice(0, 24).map((event) => `<button class="occurrence-row" data-event-id="${event.id}" data-date="${dateKey(event.occurrenceDate)}"><time><strong>${event.occurrenceDate.getDate()}</strong>${event.occurrenceDate.toLocaleDateString(undefined,{month:'short'})}</time><span><strong>${escapeHtml(event.title)}</strong><small>${event.occurrenceDate.toLocaleDateString(undefined,{weekday:'long'})} · ${formatTime(event.recurrence?.startTime)}</small></span><span class="status-chip ${evidenceLabel(event).tone}">${evidenceLabel(event).label}</span></button>`).join('') : '<p class="muted-copy">No upcoming occurrence is generated in the current window.</p>'}</div></section>`;
   }
   if (state.selectedPlaceTab === 'evidence') {
-    return `<section class="detail-section tab-intro"><p class="eyebrow">Evidence coverage</p><h3>${sources.length} connected sources</h3><p class="analysis-copy">Sources are retained separately from the analyst synthesis. A strong venue can have a weak social channel, and silence on one source is not proof that an event does not exist.</p></section><section class="detail-section"><div class="source-health-summary"><div><span>Research status</span><strong>${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</strong></div><div><span>Last venue check</span><strong>${escapeHtml(place.lastVerified || 'Unknown')}</strong></div><div><span>Source count</span><strong>${sources.length}</strong></div></div>${evidenceSourceList(sources)}</section><section class="detail-section"><p class="eyebrow">Interpretive boundary</p><h3>What remains uncertain</h3><p class="analysis-copy">Fields not stated by the connected sources remain unknown. In particular, proxy policy, pod formation, typical power level, and solo-arrival experience should not be inferred from silence.</p></section>`;
+    const visualEvidence = artifacts.length ? `<section class="detail-section artifact-evidence-section"><p class="eyebrow">Retained visual evidence</p><h3>${artifacts.length} source image${artifacts.length === 1 ? '' : 's'}</h3>${artifactEvidenceList(artifacts)}</section>` : '';
+    return `<section class="detail-section tab-intro"><p class="eyebrow">Evidence coverage</p><h3>${sources.length} connected sources${artifacts.length ? ` · ${artifacts.length} retained image${artifacts.length === 1 ? '' : 's'}` : ''}</h3><p class="analysis-copy">Sources are retained separately from the analyst synthesis. A strong venue can have a weak social channel, and silence on one source is not proof that an event does not exist.</p></section>${visualEvidence}<section class="detail-section"><div class="source-health-summary"><div><span>Research status</span><strong>${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</strong></div><div><span>Last venue check</span><strong>${escapeHtml(place.lastVerified || 'Unknown')}</strong></div><div><span>Source count</span><strong>${sources.length}</strong></div></div>${evidenceSourceList(sources)}</section><section class="detail-section"><p class="eyebrow">Interpretive boundary</p><h3>What remains uncertain</h3><p class="analysis-copy">Fields not stated by the connected sources remain unknown. In particular, proxy policy, pod formation, typical power level, and solo-arrival experience should not be inferred from silence.</p></section>`;
   }
   return `${placeEvaluationSummary(place)}<section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Analyst synthesis</p><h3>Practical verdict</h3></div></div><p class="analysis-copy">${escapeHtml(place.assessmentNotes)}</p>${place.assessmentDetail && place.assessmentDetail !== place.assessmentNotes ? `<details class="monitoring-details"><summary>Research detail</summary><p class="analysis-copy">${escapeHtml(place.assessmentDetail)}</p></details>` : ''}</section>
     <section class="detail-section"><div class="section-title-row"><div><p class="eyebrow">Fit dimensions</p><h3>Current working assessment</h3></div><button class="why-button" data-action="explain-scores">Why these scores?</button></div><div class="score-bars">${assessmentBars(place)}</div></section>
@@ -2963,13 +3015,15 @@ function openEvent(id, occurrenceDate) {
   const hidden = state.personal.hidden[personalKey];
   const interested = state.personal.interested[`${event.id}:${dateKey(occurrence)}`];
   const calendarUrl = googleCalendarUrl(event, place, occurrence);
+  const artifacts = artifactsForEvent(event);
+  const retainedEvidence = artifacts.length ? artifactEvidenceList(artifacts) : '';
   openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span>${organizer ? '<span class="status-chip sky">Community meetup</span>' : ''}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${personalKey}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="thumb-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Restore event priority' : 'Deprioritize event series'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1>${organizer ? `<button class="drawer-place-link" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)} →</button><span class="drawer-attribution-separator"> · </span>` : ''}<button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">Hosted at ${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
     <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(eventStartTime(event))}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
     <div class="drawer-action-grid"><a class="primary-button" href="${calendarUrl}" target="_blank" rel="noreferrer">Add to Google Calendar ↗</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button></div>
     <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(event.details || 'The current source provides only a minimal event listing.')}</p></section>
     <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${place.lifecycleState === 'identity_blocked' ? '<div><span class="interpret-icon amber">!</span><p><strong>Identity unresolved</strong><br>The event has an attached source, but the venue or branch identity remains unresolved. Check the source before relying on it.</p></div>' : ''}${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
     <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Address</span><strong>${escapeHtml(place.address)}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>
-    <section class="drawer-section"><p class="eyebrow">Evidence</p><h2>Source trail</h2>${src ? sourceRow(src, true) : '<p class="muted-copy">No normalized source link is attached yet.</p>'}</section>
+    <section class="drawer-section"><p class="eyebrow">Evidence</p><h2>Source trail</h2>${retainedEvidence}${src ? sourceRow(src, true) : '<p class="muted-copy">No normalized source link is attached yet.</p>'}</section>
     <section class="drawer-section"><p class="eyebrow">Your private note</p><h2>Note on this series</h2>${noteComposer(personalKey, 'What should future-you remember about this event?')}</section>`);
 }
 
@@ -3053,6 +3107,7 @@ async function sendMagicLink(inputId) {
 async function signOutPersonalAccount() {
   if (personalAuth.client) await personalAuth.client.auth.signOut();
   personalAuth.user = null;
+  DATA.artifacts = [];
   personalAuth.status = 'local';
   personalAuth.message = 'Saved on this device';
   updateAuthChrome();
@@ -3280,6 +3335,10 @@ function openDrawer(html) {
 }
 
 function closeDrawer() {
+  if (artifactPreviewUrl) {
+    URL.revokeObjectURL(artifactPreviewUrl);
+    artifactPreviewUrl = null;
+  }
   document.getElementById('detailDrawer').classList.remove('open');
   document.getElementById('detailDrawer').setAttribute('aria-hidden', 'true');
   if (!document.getElementById('placePickerDrawer').classList.contains('open') && !document.getElementById('filterDrawer').classList.contains('open')) {
@@ -3383,6 +3442,80 @@ function evidenceSourceList(sources) {
   const visibleRows = `<div class="source-list evidence-list">${visible.map((item) => sourceRow(item, true)).join('')}</div>`;
   if (!hidden.length) return visibleRows;
   return `${visibleRows}<details class="evidence-overflow"><summary>Show ${hidden.length} more source${hidden.length === 1 ? '' : 's'}</summary><div class="source-list evidence-list">${hidden.map((item) => sourceRow(item, true)).join('')}</div></details>`;
+}
+
+function artifactsFor(targetType, targetId) {
+  return DATA.artifacts.filter((artifact) =>
+    artifact.links.some((link) => link.targetType === targetType && link.targetId === targetId)
+  );
+}
+
+function artifactsForEvent(event) {
+  const ids = new Set([event?.id, event?.seriesId].filter(Boolean));
+  return DATA.artifacts.filter((artifact) =>
+    artifact.links.some((link) =>
+      (link.targetType === 'event_occurrence' || link.targetType === 'event_series')
+      && ids.has(link.targetId)
+    )
+  );
+}
+
+function artifactEvidenceList(artifacts) {
+  return `<div class="artifact-evidence-list">${artifacts.map(artifactEvidenceRow).join('')}</div>`;
+}
+
+function artifactEvidenceRow(artifact) {
+  const date = artifact.publishedAt ? formatFreshnessDate(artifact.publishedAt) : 'Date unknown';
+  return `<button class="artifact-evidence-row" data-action="open-artifact" data-artifact-id="${artifact.id}"><span class="artifact-evidence-icon" aria-hidden="true">${imageEvidenceIcon()}</span><span><strong>${escapeHtml(artifact.summary || 'Retained source image')}</strong><small>${escapeHtml(artifact.platform || 'source')} · ${escapeHtml(date)}</small></span><span class="artifact-evidence-open">View</span></button>`;
+}
+
+function imageEvidenceIcon() {
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v13H4zM7 15l3.1-3.2 2.5 2.4 1.8-1.8L18 16M16.2 9.2h.01"/></svg>';
+}
+
+async function openArtifactPreview(artifactId) {
+  const artifact = DATA.artifacts.find((item) => item.id === artifactId);
+  if (!artifact || !personalAuth.client || !personalAuth.user) return;
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Source image</span></div><h1 id="drawerTitle">Loading evidence…</h1>`);
+  try {
+    const { data, error } = await personalAuth.client.storage
+      .from('source-artifacts')
+      .download(artifact.storagePath);
+    if (error) throw error;
+    if (artifactPreviewUrl) URL.revokeObjectURL(artifactPreviewUrl);
+    artifactPreviewUrl = URL.createObjectURL(data);
+    const sourceItem = source(artifact.sourceId);
+    const facts = artifactFactRows(artifact.facts);
+    openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Source image</span><span class="status-chip slate">${escapeHtml(artifact.confidence || 'analyzed')} confidence</span></div><h1 id="drawerTitle">${escapeHtml(artifact.summary || 'Retained source evidence')}</h1><p class="drawer-lead">${escapeHtml(artifact.platform || 'source')} · ${escapeHtml(artifact.publishedAt ? formatFreshnessDate(artifact.publishedAt) : 'date unknown')}</p><figure class="artifact-preview"><img src="${escapeHtml(artifactPreviewUrl)}" alt="${escapeHtml(artifact.summary || 'Retained source image')}"></figure>${facts ? `<section class="drawer-section"><p class="eyebrow">Extracted facts</p><div class="artifact-facts">${facts}</div></section>` : ''}${artifact.extractedText ? `<details class="artifact-transcript"><summary>View extracted text</summary><p>${escapeHtml(artifact.extractedText)}</p></details>` : ''}<div class="drawer-action-grid artifact-actions">${artifact.originUrl ? `<a class="soft-button" href="${escapeHtml(artifact.originUrl)}" target="_blank" rel="noreferrer">Open original source ↗</a>` : ''}${sourceItem?.url && sourceItem.url !== artifact.originUrl ? `<a class="soft-button" href="${escapeHtml(sourceItem.url)}" target="_blank" rel="noreferrer">Open source page ↗</a>` : ''}</div>`);
+  } catch (error) {
+    console.warn('Source artifact download failed.', error);
+    openDrawer(`<div class="drawer-kicker"><span class="status-chip coral">Evidence unavailable</span></div><h1 id="drawerTitle">The image could not be opened</h1><p class="drawer-lead">The retained evidence record is still intact. Try again after refreshing your sign-in.</p>`);
+  }
+}
+
+function artifactFactRows(facts = {}) {
+  const labels = {
+    organizer: 'Organizer',
+    effective_date: 'Effective date',
+    date: 'Event date',
+    start_time: 'Start time',
+    no_events: 'Events held',
+    official_store_programming: 'Official store event',
+    user_involved: 'Involves you'
+  };
+  const rows = Object.entries(facts)
+    .filter(([key]) => labels[key])
+    .map(([key, value]) => {
+      const display = typeof value === 'boolean' ? (value ? 'Yes' : 'No') : String(value);
+      return `<div><span>${escapeHtml(labels[key])}</span><strong>${escapeHtml(display)}</strong></div>`;
+    })
+    .join('');
+  const hours = facts.hours && typeof facts.hours === 'object'
+    ? Object.entries(facts.hours)
+      .map(([label, value]) => `${label}: ${value}`)
+      .join(' · ')
+    : '';
+  return `${rows}${hours ? `<div><span>Hours</span><strong>${escapeHtml(hours)}</strong></div>` : ''}`;
 }
 
 function sourceRow(item, prominent = false) {

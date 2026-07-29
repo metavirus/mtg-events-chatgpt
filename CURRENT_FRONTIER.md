@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-07-28
+Updated: 2026-07-29
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -41,6 +41,10 @@ frontier checkpoints are preserved in
   Collector's Lounge prerelease meetup remains a follow-up Signal only.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
+- Private source-image evidence is operational for uncommon cases where the
+  useful source fact lives in a flyer, social graphic, or screenshot. Affected
+  Events and Place Evidence views show one compact on-demand link; unaffected
+  records consume no interface space.
 
 ## Active data and research posture
 

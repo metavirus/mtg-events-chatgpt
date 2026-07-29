@@ -86,16 +86,18 @@ Use it for:
   no hidden alternate CLI home that loses auth, no repeated diagnosis in
   research runs. Treat any future recurrence as platform repair, not research.
 
-- Durable source-image evidence in Supabase Storage: Phase 1 implemented,
-  live Storage proof pending one configured service secret
+- Durable source-image evidence in Supabase Storage: Phase 1 and the incidental
+  app presentation are complete
   (`coordination_items.id = 1ff603bd-b5c1-4878-ab75-c2f284430088`,
   status `ready_for_review`): the private bucket, provenance/analysis/link
   tables, typed RPCs, content-addressed cache, and narrow ingest/analyze/link
-  helper now exist. Two supplied Discord screenshots pass the dry-run ingest
-  path. Finish the live proof after a service-role/secret key is configured,
-  then add clickable evidence presentation where it materially helps
-  Events/Evidence/Updates. Do not expand into automated screenshot capture,
-  OCR infrastructure, or broad backfill until real usage demonstrates need.
+  helper now exist. Two supplied Discord screenshots were ingested, analyzed,
+  linked, and retained privately. Signed-in users see a compact clickable row
+  only in an affected Event or Place Evidence view; the private image and its
+  extracted facts load on demand. No image UI is rendered when no artifact
+  exists. Do not expand into automated screenshot capture, OCR infrastructure,
+  Updates-feed presentation, or broad backfill until real usage demonstrates
+  need.
 
 - Phase 2 workflow simplification proof is complete. Ordinary source/surface
   checks land through `record_entity_surface_check(...)` into
