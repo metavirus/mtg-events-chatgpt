@@ -136,6 +136,16 @@ If an artifact is unreadable, record `partial` or `unreadable` and allow one
 finite artifact-specific retry when a better capture is plausible. The parent
 venue/community pass closes independently.
 
+One-time local setup for private Storage uploads:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/setup_source_artifact_storage.ps1
+```
+
+Paste a Supabase Secret key (`sb_secret_...`) from Dashboard > Settings > API
+Keys > Secret keys. The prompt does not echo the key, and the script stores it
+only in the ignored `.codex-secrets` directory.
+
 ### Lean
 
 Use for low-risk evidence, source, assessment, note, or status changes with low
