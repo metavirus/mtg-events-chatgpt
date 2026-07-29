@@ -1356,6 +1356,10 @@ function openSignalDetail(signalId) {
   const signal = DATA.signals.find((item) => item.id === signalId);
   if (!signal) return;
   const related = signalRelatedTarget(signal);
+  const artifacts = artifactsForSignal(signal);
+  const retainedEvidence = artifacts.length
+    ? `<section class="drawer-section"><p class="eyebrow">Source evidence</p><h2>Verify the finding</h2>${artifactEvidenceList(artifacts)}</section>`
+    : '';
   const sourceItem = source(signal.sourceId);
   const sourceUrl = signal.evidenceUrl || sourceItem?.url || '';
   const sourceLink = sourceUrl
@@ -1365,6 +1369,7 @@ function openSignalDetail(signalId) {
   openDrawer(`<div class="drawer-kicker"><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><span class="status-chip slate">${escapeHtml(signalPriorityLabel(signal.priority))}</span><span class="status-chip ${signal.status === 'needs_followup' ? 'amber' : signal.status === 'new' ? 'mint' : 'slate'}">${escapeHtml(signal.status.replaceAll('_', ' '))}</span></div>
     <h1 id="drawerTitle">${escapeHtml(signal.summary)}</h1>
     <p class="drawer-lead">${escapeHtml(signal.details || 'No additional detail recorded yet.')}</p>
+    ${retainedEvidence}
     ${related ? `<section class="drawer-section"><p class="eyebrow">Related target</p><h2>Open the linked record</h2><div class="signal-related">${related}</div></section>` : ''}
     <section class="drawer-section"><p class="eyebrow">Suggested action</p><h2>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</h2><p>Signals are lightweight attention markers. Use this drawer to jump to the source or linked record without turning the Signals page into a static inbox.</p><div class="drawer-action-grid">${sourceLink}<button class="soft-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button></div></section>
     <section class="drawer-section"><p class="eyebrow">Signal metadata</p><div class="before-grid"><div><span>Confidence</span><strong>${escapeHtml(signal.confidence || 'unknown')}</strong></div><div><span>Captured</span><strong>${escapeHtml(formatFreshnessDateTime(signal.capturedAt))}</strong></div><div><span>Observed</span><strong>${escapeHtml(formatFreshnessDateTime(signal.observedAt || signal.capturedAt))}</strong></div><div><span>Promotion target</span><strong>${escapeHtml(signal.promotionTarget || 'none')}</strong></div></div></section>`);
@@ -3458,6 +3463,15 @@ function artifactsForEvent(event) {
       && ids.has(link.targetId)
     )
   );
+}
+
+function artifactsForSignal(signal) {
+  const direct = artifactsFor('signal', signal.id);
+  if (signal.relatedEntityType !== 'event_series' && signal.relatedEntityType !== 'event_occurrence') {
+    return direct;
+  }
+  const related = artifactsFor(signal.relatedEntityType, signal.relatedEntityId);
+  return [...new Map([...direct, ...related].map((artifact) => [artifact.id, artifact])).values()];
 }
 
 function artifactEvidenceList(artifacts) {

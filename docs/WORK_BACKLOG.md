@@ -93,11 +93,12 @@ Use it for:
   tables, typed RPCs, content-addressed cache, and narrow ingest/analyze/link
   helper now exist. Two supplied Discord screenshots were ingested, analyzed,
   linked, and retained privately. Signed-in users see a compact clickable row
-  only in an affected Event or Place Evidence view; the private image and its
-  extracted facts load on demand. No image UI is rendered when no artifact
-  exists. Do not expand into automated screenshot capture, OCR infrastructure,
-  Updates-feed presentation, or broad backfill until real usage demonstrates
-  need.
+  only in an affected Event, Signal, or Place Evidence view; the private image
+  and its extracted facts load on demand. A Signal should target its canonical
+  event when one exists, while keeping source and image evidence separately
+  clickable. No image UI is rendered when no artifact exists. Do not expand
+  into automated screenshot capture, OCR infrastructure, Updates-feed
+  presentation, or broad backfill until real usage demonstrates need.
 
 - Phase 2 workflow simplification proof is complete. Ordinary source/surface
   checks land through `record_entity_surface_check(...)` into
