@@ -3506,7 +3506,9 @@ function artifactFactRows(facts = {}) {
   const rows = Object.entries(facts)
     .filter(([key]) => labels[key])
     .map(([key, value]) => {
-      const display = typeof value === 'boolean' ? (value ? 'Yes' : 'No') : String(value);
+      const display = key === 'no_events'
+        ? (value ? 'No' : 'Yes')
+        : typeof value === 'boolean' ? (value ? 'Yes' : 'No') : String(value);
       return `<div><span>${escapeHtml(labels[key])}</span><strong>${escapeHtml(display)}</strong></div>`;
     })
     .join('');
