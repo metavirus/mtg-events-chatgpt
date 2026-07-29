@@ -574,9 +574,12 @@ claims without reopening the whole packet.
   `commerce_trading`, `noise_social_only`, and `stale_dormant` in
   `expected_signal_types`, notes, or a future first-class field. Cadence can be
   derived later from purpose, recency, and observed signal quality.
-- Add limited Discord sweeps for only the most promising community surfaces:
-  operational, structured events, meetups, LFG/pod formation, and active
-  event-adjacent chatter. Do not make every active channel daily by default.
+- **Deferred pending recurring-agent efficiency proof:** richer Discord chatter
+  enrichment and limited recurring sweeps. Before expanding beyond the proven
+  high-signal paths, measure the real recurring-agent time/token cost and
+  reliability. If viable, prioritize operational, structured events, meetups,
+  LFG/pod formation, and active event-adjacent chatter; do not make every active
+  channel daily by default.
 - Extend the relevant-chatter proof when a direct non-meetup question such as
   the Finch and Sparrow mention is captured canonically; it should rank below
   meetup coordination but remain visible and clickable.
