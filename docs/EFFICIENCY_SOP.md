@@ -290,6 +290,34 @@ as a whole. Each surface carries its own cadence, cursor/fingerprint, retry
 state, and latest result. Discovery of new venues/surfaces is a separate weekly
 lane.
 
+For Discord and other messy community surfaces, classify the surface by
+**purpose before cadence**. Do not start by arguing whether a channel is daily,
+twice-weekly, or weekly. First record what kind of thing it is:
+
+- `operational`: hours, closures, cancellations, no-events-today, store status.
+- `structured_events`: Discord Events button, event calendar, official event
+  posts, signup/code surfaces.
+- `meetup_coordination`: where/when/who planning, bar/store ideas, informal
+  play invites, direct coordination involving the user.
+- `lfg_pod_formation`: looking for games, Commander pods, need-one-more,
+  SpellTable/IRL play posts.
+- `event_adjacent_chatter`: loose future planning, format preferences, venue
+  ideas, travel/location possibilities, or chatter that may mature into a plan.
+- `community_pulse`: whether the group is alive, welcoming, active, or useful
+  context even when no action is required.
+- `format_rules_texture`: proxy norms, brackets, power level, house rules,
+  tournament structure, prize expectations.
+- `commerce_trading`: sales, trades, product buying; usually low priority
+  unless separately requested.
+- `noise_social_only`: memes, pet photos, greetings, pure banter.
+- `stale_dormant`: relevant by name, but currently too quiet to scan often.
+
+Cadence should be derived from purpose, recency, and observed signal quality
+later. Preserve the nuance in `expected_signal_types`, notes, and scanner
+treatment even if the current scheduler only supports coarse daily/weekly
+lanes. This avoids flattening "active event-adjacent chatter" into either
+"daily forever" or "ignore."
+
 Retries are finite. One automatic retry is the norm. Repeated
 `unavailable`, `not_publicly_readable`, `access_gated`, or
 `no_useful_content` results become terminal and reopen only when the access or

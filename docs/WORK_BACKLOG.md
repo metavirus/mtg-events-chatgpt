@@ -564,8 +564,16 @@ claims without reopening the whole packet.
   inventory. A channel earns the visible activity group only through recent
   conversational findings; route-status metadata does not qualify, and quiet
   channels naturally remain in the collapsed directory.
-- Add limited daily Discord sweeps for only the most promising community
-  channels, such as LFG, meetups, events, and EDH coordination.
+- Discord/community scanner classification should be purpose-first, cadence
+  second. Preserve channel purpose labels such as `operational`,
+  `structured_events`, `meetup_coordination`, `lfg_pod_formation`,
+  `event_adjacent_chatter`, `community_pulse`, `format_rules_texture`,
+  `commerce_trading`, `noise_social_only`, and `stale_dormant` in
+  `expected_signal_types`, notes, or a future first-class field. Cadence can be
+  derived later from purpose, recency, and observed signal quality.
+- Add limited Discord sweeps for only the most promising community surfaces:
+  operational, structured events, meetups, LFG/pod formation, and active
+  event-adjacent chatter. Do not make every active channel daily by default.
 - Extend the relevant-chatter proof when a direct non-meetup question such as
   the Finch and Sparrow mention is captured canonically; it should rank below
   meetup coordination but remain visible and clickable.
