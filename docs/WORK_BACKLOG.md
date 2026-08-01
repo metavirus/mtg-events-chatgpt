@@ -22,11 +22,12 @@ Use it for:
   decisions. The normalized observation table, compact run ledger, durable
   binding table, set-based WPN staging function, reconciliation preview, and
   one-command helper are now deployed. A service-only allowlisted reconciler
-  has also proved exact existing-occurrence binding and exact recurring-series
-  occurrence creation, including a no-proxy row returned as hidden-by-rule;
-  replay wrote nothing. The next tranche should expand those proven actions
-  set-wise, add finite-series attachment and deterministic new-series creation,
-  then prove complete/idempotent exact-known-venue WPN promotion, inherited hiding,
+  now reconciles exact existing occurrences, exact recurring-series occurrences,
+  and exact bounded finite-series occurrences set-wise. The first full safe-set
+  run bound 647 observations (644 new, 3 replayed), inherited hiding for 42,
+  produced zero duplicate slots, and fully replayed without writes. The next
+  tranche should add deterministic new-series creation while leaving ambiguous
+  and same-slot/title conflicts pending, then complete inherited hiding,
   sparse structured optional facts without blob-only normalization, grouped
   presentation deltas, one lightweight non-user-facing ingest-run ledger, and
   then one bounded non-WPN adapter. A sparse later source must not clear richer

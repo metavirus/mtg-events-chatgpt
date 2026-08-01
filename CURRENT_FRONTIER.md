@@ -88,6 +88,17 @@ frontier checkpoints are preserved in
   durable upstream bindings and exact WPN source links; replay returned
   `wrote = false`, and each canonical date/time slot remains unique. No Update
   or Signal was created.
+- The exact reconciler is now expanded set-wise through migration
+  `20260801200438_expand_safe_event_reconciler.sql`. On the same 1,081-row
+  staged run it safely reconciled 647 observations: 57 exact existing-
+  occurrence bindings, 573 dated occurrences on exact recurring series, 14
+  dated occurrences on exact bounded finite series, and 3 prior bindings
+  replayed. Of those, 42 inherited a hidden result from venue preference or a
+  no-proxy rule without suppressing canonical event truth. The remaining 434
+  observations stayed pending and 2 stayed held. An adversarial audit tightened
+  finite identity to an explicit series date/window, preventing a later
+  similarly named event from attaching to an old one-day series. Duplicate-slot
+  readback returned zero, and a full 647-row replay wrote nothing.
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated
@@ -144,14 +155,13 @@ Canonical operating details:
 ## Next safe lanes
 
 0. Continue the WPN-first slice of
-   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the proven allowlisted
-   reconciler. Expand set-wise only across the two proven exact actions
-   (`bind_exact_occurrence` and `add_occurrence_to_recurring_series`), keeping
-   unsupported/ambiguous observations isolated. Next add exact finite-series
-   attachment and deterministic new-series creation, sparse fact enrichment,
-   inherited visibility projection, and grouped presentation deltas. Prove a
-   complete replay with zero duplicate effect, then add one bounded non-WPN
-   adapter. Do not build separate WPN/social canonical promoters.
+   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the proven set-wise exact
+   reconciler. Exact occurrence binding plus exact recurring- and bounded
+   finite-series attachment are complete and idempotent. Next add deterministic
+   new-series creation, sparse fact enrichment, inherited visibility projection,
+   and grouped presentation deltas while keeping ambiguous/same-slot cases
+   pending. Then add one bounded non-WPN adapter. Do not build separate
+   WPN/social canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by

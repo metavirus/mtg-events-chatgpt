@@ -391,6 +391,25 @@ This validates the core separation between event truth and presentation
 visibility. It does not yet authorize broad creation of new series, fuzzy
 matching, or automatic presentation deltas.
 
+### Set-wise exact expansion (2026-08-01)
+
+Migration `20260801200438_expand_safe_event_reconciler.sql` expands the same
+service-only function across the complete safe set while retaining fail-closed
+explicit allowlists. The measured live run reconciled 647 observations: 57
+exact occurrence bindings, 573 exact recurring-series occurrence additions, 14
+exact bounded finite-series occurrence additions, and 3 existing bindings. It
+wrote 644 new bindings, returned 42 rows as hidden by inherited presentation
+rules, left 434 unsupported or non-exact observations pending, and left 2
+ineligible rows held.
+
+An adversarial candidate review caught an important boundary before the live
+run: a null `end_date` must not make an old finite series indefinitely open.
+Finite attachment now requires a non-null `start_date` and either an inclusive
+start/end window or exact equality with the one-day start date. The final
+duplicate-slot check returned zero, and replay of all 647 selected rows returned
+`wrote = false`. This authorizes exact materialization only; deterministic new
+series, same-slot title differences, and ambiguous identities remain separate.
+
 The read-only comparison in
 `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md` is the measured basis
 for the first implementation. It confirms that the main first-run job is
