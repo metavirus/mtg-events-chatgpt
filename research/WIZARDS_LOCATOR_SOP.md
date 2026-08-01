@@ -170,22 +170,38 @@ needs diagnosis.
 
 ## Routine operating modes
 
-### Mode A: weekly broad snapshot
+### Mode A: automatic stale-cache refresh
 
 Use:
 
-`python crawler/wizards_locator.py --radius-miles 25 --output output/wizards`
+`python scripts/refresh_wpn_cache.py`
 
-Purpose:
+Run this at session start whenever the canonical 25-mile snapshot is at least
+24 hours old. It performs one bounded workflow:
 
-- refresh the full local Magic snapshot
-- update:
+- refresh the full normalized local Magic snapshot;
+- atomically replace the rich `public.wpn_snapshot_cache` row in Supabase;
+- verify retrieval time, counts, and content fingerprint; and
+- stop.
+
+The cache retains:
+
+  - all normalized WPN events;
+  - the Commander candidate subset;
+  - normalized organizations;
+  - query metadata and counts; and
+  - a SHA-256 content fingerprint.
+
+It also updates:
+
   - `output/wizards/metadata.json`
   - `output/wizards/events-all.json`
   - `output/wizards/events-commander.json`
   - `output/wizards/organizations.json`
 
-This should be the standard weekly collection method.
+This is low-risk source-cache maintenance. It does not promote WPN rows into
+canonical app Events, create Signals, or reassess venues. If the tracked
+snapshot changed, checkpoint and push it, then finish the refresh task.
 
 ### Mode B: bounded validation for a specific store
 

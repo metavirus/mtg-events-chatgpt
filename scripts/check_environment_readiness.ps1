@@ -13,6 +13,7 @@ $supabaseCliHome = Join-Path $repoRoot ".codex-supabase-home"
 $localSecretDir = Join-Path $repoRoot ".codex-secrets"
 $localDbUrlPath = Join-Path $localSecretDir "supabase-db-url.txt"
 $failed = [System.Collections.Generic.List[string]]::new()
+$wpnNeedsRefresh = $false
 $env:SUPABASE_TELEMETRY_DISABLED = "1"
 $env:DO_NOT_TRACK = "1"
 $env:USERPROFILE = $supabaseCliHome
@@ -122,6 +123,7 @@ if (-not (Test-Path $metadata)) {
         } else {
             $freshness = if ($age.TotalHours -lt 24) { "fresh" } else { "stale" }
             Pass ("WPN snapshot present ({0:N1} hours old, {1}, 25-mile radius)" -f $age.TotalHours, $freshness)
+            $wpnNeedsRefresh = $age.TotalHours -ge 24
         }
     } catch {
         Fail "WPN metadata could not be parsed"
@@ -226,6 +228,18 @@ if ($failed.Count -gt 0) {
     Write-Host "ENVIRONMENT NOT READY"
     $failed | ForEach-Object { Write-Host "- $_" }
     exit 1
+}
+
+if (-not $SkipLiveSmoke -and $wpnNeedsRefresh) {
+    Write-Host ""
+    Write-Host "WPN snapshot is stale; refreshing and caching it in Supabase now."
+    & $python (Join-Path $PSScriptRoot "refresh_wpn_cache.py") --max-age-hours 24
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host ""
+        Write-Host "ENVIRONMENT NOT READY"
+        Write-Host "- Automatic stale WPN refresh/cache failed"
+        exit 1
+    }
 }
 
 Write-Host ""

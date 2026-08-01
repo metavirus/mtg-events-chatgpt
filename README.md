@@ -95,9 +95,9 @@ Install the crawler dependencies:
     python -m venv .venv
     .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 
-Refresh the public Wizards snapshot:
+Refresh the public Wizards snapshot and its rich Supabase cache:
 
-    .\.venv\Scripts\python.exe crawler/wizards_locator.py --radius-miles 25 --output output/wizards
+    .\.venv\Scripts\python.exe scripts/refresh_wpn_cache.py
 
 The crawler stores:
 
@@ -111,10 +111,10 @@ locator's 25-mile routine search radius. It does not store a private home
 address. Candidate events are intentionally broad and should be verified before
 being promoted into Supabase canonical research tables.
 
-GitHub Actions has historically refreshed the Wizards snapshot and committed
-changed `output/wizards` data back to the repository. Going forward, ordinary
-WPN cache churn should move toward Supabase or ignored local output; keep
-Git-tracked WPN artifacts only for intentional recovery/debug/source snapshots.
+At session start, a canonical snapshot at least 24 hours old should be refreshed
+and written to `public.wpn_snapshot_cache` in the same bounded operation. The
+Supabase row is the operational rich cache; the tracked `output/wizards` files
+remain a recovery/debug source snapshot and may be checkpointed when refreshed.
 
 ## Current status
 

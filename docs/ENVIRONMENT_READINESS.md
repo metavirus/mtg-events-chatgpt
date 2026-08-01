@@ -106,11 +106,15 @@ Do not run project scripts through an arbitrary global `python`, `python3`, or
 ### WPN snapshot
 
 - Canonical routine location: `output/wizards/`
+- Canonical operational rich cache: `public.wpn_snapshot_cache` in Supabase.
 - Metadata/freshness source: `output/wizards/metadata.json` → `retrievedAt`
 - Reuse: use the existing snapshot when it is under 24 hours old and its radius
   covers the stores in scope.
-- Refresh: only when stale, outside-radius, same-day freshness matters, or
-  another material source contradicts it.
+- Automatic refresh: the readiness gate runs `scripts/refresh_wpn_cache.py`
+  whenever the routine snapshot is at least 24 hours old. The command fetches,
+  atomically replaces the Supabase cache, verifies counts/fingerprint, and
+  stops. A failure fails the readiness gate rather than silently using stale
+  data.
 - Routine radius: 25 miles.
 - Wider-radius fallback: create a clearly named separate directory such as
   `output/wizards-radius30-YYYY-MM-DD/`; do not replace the routine 25-mile
