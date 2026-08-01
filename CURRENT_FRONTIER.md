@@ -121,6 +121,19 @@ frontier checkpoints are preserved in
   structured occurrence times when an upstream title disagrees, removes
   misleading leading-time series labels, and maps exact Premodern titles out
   of WPN's generic `Other` format.
+- Production verification on 2026-08-01 confirmed that the bootstrap promotion
+  is live in the app: 85 newly created series and 828 occurrence rows contribute
+  to 1,172 upcoming displayed occurrences across 49 venues. The Events catalog,
+  exact provenance, inherited source links, and recurring projections load
+  correctly. However, the shared reconciler has not yet implemented its
+  presentation-output stage: it created zero `research_changes` rows and no
+  Signals, so Updates still ends on 2026-07-29. Zero `NEW` claims for this first
+  bootstrap is intentional; silence for future post-baseline deltas is not.
+  There is one canonical event catalog, but two current write shapes: older
+  reviewed/typed event writers also emit `research_changes`, while the new
+  source-neutral reconciler currently stops after Events, provenance, bindings,
+  and visibility. The next tranche must close that gap rather than create a
+  second catalog, feed, or source-specific promoter.
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated

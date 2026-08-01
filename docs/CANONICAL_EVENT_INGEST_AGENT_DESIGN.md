@@ -312,6 +312,30 @@ Its purpose is to expose false novelty caused by missing bindings, canonical
 series compression, title variants, same-lane specials, and multi-session
 fragmentation.
 
+### Pre-presentation checkpoint (2026-08-01)
+
+The first broad canonical bootstrap is complete: 85 series and 828 occurrence
+rows were created through the shared WPN observation/reconciliation core, with
+exact bindings and replay safety. Production shows the resulting catalog, but
+the reconciler emitted no `research_changes` or Signals; the Updates feed
+therefore still ends on 2026-07-29.
+
+This is a deliberately bounded incomplete state, not authorization for a
+parallel sideload workflow. The next implementation must add one shared
+post-reconciliation presentation stage that:
+
+1. treats this established run as quiet bootstrap/backfill;
+2. classifies later source arrivals separately from canonical actions;
+3. groups visible deltas by run, venue, and event family;
+4. writes existing `research_changes` records only for useful grouped Updates;
+5. writes existing Signals only for independently actionable findings; and
+6. returns no presentation writes on replay or unchanged verification.
+
+Older typed/manual event writers remain compatibility and reviewed-judgment
+paths while adapters are migrated. They must not become an alternate canonical
+promoter, and future source adapters must enter through the normalized
+observation/reconciliation core.
+
 ## WPN-first implementation slice
 
 ### Implemented adapter boundary

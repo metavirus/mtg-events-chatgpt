@@ -31,12 +31,18 @@ Use it for:
   replay remained no-write with zero duplicate slots. The remaining 195 rows
   are explicit ambiguity, ineligibility, known-title/new-schedule, or same-slot/
   title conflicts—not unprocessed ordinary inventory. The next tranche should
-  complete inherited hiding,
-  sparse structured optional facts without blob-only normalization, grouped
-  presentation deltas, one lightweight non-user-facing ingest-run ledger, and
-  then one bounded non-WPN adapter. A sparse later source must not clear richer
-  facts established by another source. Do not add verbose per-event logging or
-  new Instagram/Discord crawlers in the first tranche.
+  implement the shared post-reconciliation presentation stage first. The
+  2026-08-01 bootstrap created 85 series and 828 occurrences and is visible in
+  Events, but correctly made no `NEW` claim and currently made no grouped
+  Update at all. Preserve that bootstrap as quiet backfill; for later runs,
+  classify source arrival separately from canonical action, emit useful grouped
+  Updates through existing `research_changes`, and create only independently
+  actionable Signals. Replay/no-delta runs must remain silent. Then complete
+  inherited hiding, sparse structured optional facts without blob-only
+  normalization, and prove one bounded non-WPN adapter. A sparse later source
+  must not clear richer facts established by another source. Do not add verbose
+  per-event logging, a duplicate feed/catalog, or new Instagram/Discord
+  crawlers in the first tranche.
 
 - Venue selection now comes from lifecycle-specific Supabase views, not old
   ledger TBD wording: `venue_baseline_candidates`,
