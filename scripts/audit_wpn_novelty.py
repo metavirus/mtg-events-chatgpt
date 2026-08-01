@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from refresh_wpn_cache import normalized_title_key, query_rows  # noqa: E402
+from refresh_wpn_cache import normalized_text, normalized_title_key, query_rows  # noqa: E402
 
 
 WEEKDAY_NUMBER = {
@@ -27,6 +27,16 @@ WEEKDAY_NUMBER = {
 def minute(value) -> str | None:
     text = str(value or "").strip()
     return text[:5] if len(text) >= 5 else None
+
+
+def comparable_format(value) -> str:
+    key = normalized_title_key(value)
+    if key in {"magic", "other", "new player event"}:
+        return ""
+    return {
+        "booster draft": "draft",
+        "sealed deck": "sealed",
+    }.get(key, key)
 
 
 def load_state() -> dict:
@@ -79,6 +89,7 @@ def classify_observations(state: dict, previous_event_ids: set[str] | None = Non
     binding_urls = {row.get("url") for row in (state.get("bindings") or []) if row.get("url")}
 
     exact_recurring = set()
+    recurring_matches: dict[tuple, list[dict]] = defaultdict(list)
     recurring_lanes = set()
     venue_titles = set()
     finite_series: list[dict] = []
@@ -90,17 +101,23 @@ def classify_observations(state: dict, previous_event_ids: set[str] | None = Non
         weekday = recurrence.get("dayOfWeek")
         start_time = minute(row.get("default_start_time") or recurrence.get("startTime"))
         if weekday is not None and start_time:
-            exact_recurring.add((venue, title_key, int(weekday), start_time))
+            recurring_key = (venue, title_key, int(weekday), start_time)
+            exact_recurring.add(recurring_key)
+            recurring_matches[recurring_key].append(row)
             recurring_lanes.add((venue, int(weekday), start_time))
         else:
             finite_series.append({
+                "id": row.get("id"),
                 "venue": venue,
                 "title_key": title_key,
                 "start": row.get("start_date"),
                 "end": row.get("end_date"),
+                "status": row.get("status"),
+                "format": row.get("format"),
             })
 
     exact_occurrences = set()
+    occurrence_matches: dict[tuple, list[dict]] = defaultdict(list)
     occurrence_slots = set()
     for row in occurrences:
         key = (
@@ -108,6 +125,7 @@ def classify_observations(state: dict, previous_event_ids: set[str] | None = Non
             minute(row.get("start_time")), normalized_title_key(row.get("title")),
         )
         exact_occurrences.add(key)
+        occurrence_matches[key].append(row)
         occurrence_slots.add(key[:3])
 
     results = []
@@ -125,12 +143,15 @@ def classify_observations(state: dict, previous_event_ids: set[str] | None = Non
         lane_key = (venue, weekday, start_time)
 
         category = None
+        canonical_matches: list[dict] = []
         if url in binding_urls:
             category = "existing_source_binding"
         elif exact_occurrence_key in exact_occurrences:
             category = "existing_exact_occurrence"
+            canonical_matches = occurrence_matches[exact_occurrence_key]
         elif recurring_key in exact_recurring:
             category = "existing_exact_recurring_lane"
+            canonical_matches = recurring_matches[recurring_key]
         else:
             for candidate in finite_series:
                 if candidate["venue"] != venue or candidate["title_key"] != title_key:
@@ -139,6 +160,7 @@ def classify_observations(state: dict, previous_event_ids: set[str] | None = Non
                 end = candidate["end"] or "9999-12-31"
                 if event_date and start <= event_date <= end:
                     category = "existing_finite_series"
+                    canonical_matches = [candidate]
                     break
         if category is None and (venue, title_key) in venue_titles:
             category = "known_title_other_schedule"
@@ -159,12 +181,16 @@ def classify_observations(state: dict, previous_event_ids: set[str] | None = Non
             "date": event_date,
             "time": start_time,
             "format": (event.get("normalizedFacts") or {}).get("formatName"),
+            "teamSize": (event.get("normalizedFacts") or {}).get("teamSize"),
+            "explicitNoProxy": (event.get("normalizedFacts") or {}).get("explicitNoProxy"),
+            "explicitProxyAllowed": (event.get("normalizedFacts") or {}).get("explicitProxyAllowed"),
             "url": url,
             "sourceArrival": (
                 "unknown" if previous_event_ids is None
                 else "present_in_previous_snapshot" if event.get("sourceEventId") in previous_event_ids
                 else "new_since_previous_snapshot"
             ),
+            "canonicalMatches": canonical_matches,
         })
     return results
 
@@ -194,6 +220,56 @@ def cluster_results(observations: list[dict]) -> list[dict]:
     return sorted(clusters, key=lambda item: (item["venueId"], item["title"], item["firstDate"]))
 
 
+def reverse_risks(observations: list[dict]) -> list[dict]:
+    """Find observations an over-broad existing match could wrongly suppress."""
+    risks: list[dict] = []
+    for item in observations:
+        reasons: set[str] = set()
+        for match in item.get("canonicalMatches") or []:
+            status = str(match.get("status") or match.get("occurrence_status") or "").lower()
+            if status and status not in {"active", "scheduled", "confirmed"}:
+                reasons.add("matched_inactive_or_cancelled_canonical_row")
+            if item["category"] == "existing_exact_recurring_lane":
+                start = str(match.get("start_date") or "0001-01-01")
+                end = str(match.get("end_date") or "9999-12-31")
+                if item.get("date") and not (start <= item["date"] <= end):
+                    reasons.add("source_date_outside_canonical_series_bounds")
+                canonical_format = comparable_format(match.get("format"))
+                source_format = comparable_format(item.get("format"))
+                if canonical_format and source_format and canonical_format != source_format:
+                    reasons.add("format_conflict_on_exact_title_lane")
+                if int(item.get("teamSize") or 1) > 1:
+                    reasons.add("team_variant_on_existing_lane")
+                canonical_text = normalized_text(
+                    f"{match.get('title') or ''} {json.dumps(match.get('details') or '')}"
+                )
+                if item.get("explicitNoProxy") and "no proxy" not in canonical_text:
+                    reasons.add("explicit_proxy_variant_on_existing_lane")
+                if item.get("explicitProxyAllowed") and not any(
+                    phrase in canonical_text
+                    for phrase in ("proxy allowed", "proxies allowed", "proxy friendly")
+                ):
+                    reasons.add("explicit_proxy_variant_on_existing_lane")
+        if len(item.get("canonicalMatches") or []) > 1:
+            reasons.add("multiple_canonical_rows_share_exact_match_key")
+        if reasons:
+            risks.append({
+                "sourceEventId": item["sourceEventId"],
+                "venueId": item["venueId"],
+                "title": item["title"],
+                "date": item["date"],
+                "time": item["time"],
+                "category": item["category"],
+                "sourceArrival": item["sourceArrival"],
+                "reasons": sorted(reasons),
+                "canonicalIds": [
+                    match.get("id") or match.get("series_id")
+                    for match in item.get("canonicalMatches") or []
+                ],
+            })
+    return risks
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sample-limit", type=int, default=30)
@@ -205,6 +281,7 @@ def main() -> int:
     previous_event_ids = load_git_event_ids(args.previous_git_ref)
     observations = classify_observations(load_state(), previous_event_ids)
     clusters = cluster_results(observations)
+    suppression_risks = reverse_risks(observations)
     observation_counts = Counter(item["category"] for item in observations)
     arrival_observation_counts = Counter(item["sourceArrival"] for item in observations)
     arrival_category_observation_counts = Counter(
@@ -266,6 +343,11 @@ def main() -> int:
             "templateOrTitleFamilyCount": len(family_groups),
             "multiOccurrenceFamilyCount": sum(len(items) > 1 for items in family_groups.values()),
         },
+        "reverseSuppressionRiskCount": len(suppression_risks),
+        "reverseSuppressionRiskReasonCounts": dict(sorted(Counter(
+            reason for item in suppression_risks for reason in item["reasons"]
+        ).items())),
+        "reverseSuppressionRiskSamples": suppression_risks[:args.sample_limit],
         "apparentNoveltySamples": candidates[:args.sample_limit],
     }, ensure_ascii=False, indent=2))
     return 0

@@ -317,6 +317,15 @@ compressed to 35 template-or-title event families. The initial cache baseline
 therefore warrants no `NEW` presentation at all, even when it later supplies
 legitimate canonical backfill.
 
+The reverse audit also guards against overcorrection. Among 650 observations
+classified as exact existing occurrences, recurring lanes, or finite series,
+it found no unresolved suppression risk after checking canonical activity,
+series date bounds, duplicate exact matches, normalized format, team-size
+variants, and explicit proxy-policy variants. This does not discard the 35
+clear newly arrived/no-analogue families or same-lane specials; those remain
+promotion candidates. It establishes only that the `already represented`
+bucket is not currently hiding a detectable materially different event.
+
 This completes deterministic WPN source preparation only. It does not create
 normalized cross-source observations, canonical series/occurrences, Signals,
 Updates, personal visibility decisions, or durable canonical bindings.

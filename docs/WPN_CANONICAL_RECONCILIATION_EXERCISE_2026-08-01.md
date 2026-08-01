@@ -230,3 +230,28 @@ must produce zero user-facing `NEW` badges. Future runs may claim source
 newness only relative to this trusted baseline. Canonical backfill, new dates
 on known series, newly announced event families, and conflicts must remain
 separate output classes.
+
+### Reverse adversarial result
+
+The audit then assumed the opposite failure: matching was too aggressive and
+real events were being suppressed as already represented. It checked all 650
+observations classified as exact existing occurrences, recurring lanes, or
+finite series against:
+
+- canonical activity/confirmation state;
+- recurring-series date bounds;
+- multiple canonical rows sharing one exact key;
+- normalized format equivalence (`Draft`/`Booster Draft` and
+  `Sealed`/`Sealed Deck`);
+- team-size variants; and
+- explicit proxy-policy variants not already represented by the canonical row.
+
+After eliminating vocabulary-only alarms, the audit found **zero detected
+suppression risks** in that represented set. In particular, SoCalMagic's
+explicit no-proxy Commander inventory maps to canonical no-proxy series rather
+than being flattened into an ordinary Commander lane.
+
+This is not a finding that nothing should be added. The 35 clear newly arrived,
+no-analogue event families remain promotion candidates, as do distinct
+same-lane specials after safe splitting. The reverse result only supports the
+current exact `already represented` classifications.
