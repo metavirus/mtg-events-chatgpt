@@ -10,14 +10,25 @@ from refresh_wpn_cache import (
     build_legacy_sql,
     enrich_snapshot,
     normalized_title_key,
+    title_schedule_facts,
 )
 
 
 class WpnIngestAgentTests(unittest.TestCase):
     def test_title_normalization_is_conservative_and_stable(self) -> None:
-        self.assertEqual(ADAPTER_CONTRACT_VERSION, 3)
+        self.assertEqual(ADAPTER_CONTRACT_VERSION, 4)
         self.assertEqual(normalized_title_key("FNM: Commander & Draft"), "fnm commander and draft")
         self.assertNotEqual(normalized_title_key("Commander Party"), normalized_title_key("Commander"))
+
+    def test_leading_title_time_is_advisory_not_a_schedule_override(self) -> None:
+        self.assertEqual(
+            title_schedule_facts("7PM MTG | The Hobbit", "14:00:00"),
+            {"leadingTitleTime": "19:00:00", "titleScheduleConflict": True},
+        )
+        self.assertEqual(
+            title_schedule_facts("Premodern Weekly", "14:30:00"),
+            {"leadingTitleTime": None, "titleScheduleConflict": False},
+        )
 
     def test_predeployment_fallback_is_upsert_not_flush(self) -> None:
         metadata = {

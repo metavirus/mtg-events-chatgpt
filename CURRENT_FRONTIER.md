@@ -58,7 +58,7 @@ frontier checkpoints are preserved in
   findings. The first live write established the enriched baseline in 9.16
   seconds; an immediate 9.40-second replay returned 1,267 unchanged events,
   zero findings, and zero coordination-inbox noise.
-- WPN adapter contract v3 is now live in that cache. It adds conservative
+- WPN adapter contract v4 is now live in code. It adds conservative
   title keys, promoter eligibility/exclusion reasons, structured fact and field
   presence metadata, explicit proxy-rule flags, strict venue/title/weekday/time
   series hints that preserve format/team/proxy variants, and separate
@@ -66,7 +66,9 @@ frontier checkpoints are preserved in
   current snapshot, 1,079 eligible exact-known-venue observations compress to
   374 strict hints (133 repeated, 241 one-off); 149 template hints provide a
   second lens for finite specials, with 44 spanning multiple session lanes.
-  The live v3 cache write took about 11 seconds, and an unchanged replay exited
+  Contract v4 also exposes a leading title time and exact structured-schedule
+  conflict flag without overriding WPN's structured date/time. The live v3
+  cache write took about 11 seconds, and an unchanged replay exited
   without a Supabase write in about 6.2 seconds.
 - The next event-agent boundary is now explicit in
   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`: WPN remains a source-specific
@@ -99,6 +101,18 @@ frontier checkpoints are preserved in
   finite identity to an explicit series date/window, preventing a later
   similarly named event from attaching to an old one-day series. Duplicate-slot
   readback returned zero, and a full 647-row replay wrote nothing.
+- Deterministic new-series creation is now deployed through migration
+  `20260801205442_add_deterministic_event_series_creation.sql`. It promoted 238
+  collision-free observations into 85 canonical series: 19 bounded weekly
+  series covering 140 observations and 66 finite/single series covering 98.
+  A final exact attachment brought the run to 886 bound and 195 pending rows.
+  The pending set is deliberately limited to 2 ambiguities, 2 ineligible rows,
+  34 known-title/new-schedule rows, and 157 same-slot/title differences. Replay
+  returned 238 no-write results and duplicate-slot readback remains zero.
+  Migration `20260801221500_normalize_ingested_series_metadata.sql` preserves
+  structured occurrence times when an upstream title disagrees, removes
+  misleading leading-time series labels, and maps exact Premodern titles out
+  of WPN's generic `Other` format.
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated
@@ -155,13 +169,13 @@ Canonical operating details:
 ## Next safe lanes
 
 0. Continue the WPN-first slice of
-   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the proven set-wise exact
-   reconciler. Exact occurrence binding plus exact recurring- and bounded
-   finite-series attachment are complete and idempotent. Next add deterministic
-   new-series creation, sparse fact enrichment, inherited visibility projection,
-   and grouped presentation deltas while keeping ambiguous/same-slot cases
-   pending. Then add one bounded non-WPN adapter. Do not build separate
-   WPN/social canonical promoters.
+   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the proven deterministic
+   creator. Exact attachment and collision-free new-series creation are complete
+   and idempotent. Next project inherited visibility into the app, enrich sparse
+   typed optional facts, and add grouped presentation deltas while keeping the
+   195 ambiguous/conflicting observations pending. Then prove one bounded
+   non-WPN adapter against the same reconciler. Do not build separate WPN/social
+   canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by

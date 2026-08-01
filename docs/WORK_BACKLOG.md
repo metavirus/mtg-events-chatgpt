@@ -16,7 +16,7 @@ Use it for:
 
 - Canonical event ingest agent: implement the accepted source-neutral design in
   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`. WPN is the first adapter, not a
-  separate canonical pipeline. WPN adapter contract v3 is complete: it emits
+  separate canonical pipeline. WPN adapter contract v4 is complete: it emits
   deterministic eligibility, sparse typed facts, exact URLs, field/rule flags,
   and strict plus template grouping hints without making canonical merge
   decisions. The normalized observation table, compact run ledger, durable
@@ -25,9 +25,13 @@ Use it for:
   now reconciles exact existing occurrences, exact recurring-series occurrences,
   and exact bounded finite-series occurrences set-wise. The first full safe-set
   run bound 647 observations (644 new, 3 replayed), inherited hiding for 42,
-  produced zero duplicate slots, and fully replayed without writes. The next
-  tranche should add deterministic new-series creation while leaving ambiguous
-  and same-slot/title conflicts pending, then complete inherited hiding,
+  produced zero duplicate slots, and fully replayed without writes.
+  Deterministic new-series creation is also complete: 238 collision-free
+  observations became 85 series, the complete run reached 886 bound rows, and
+  replay remained no-write with zero duplicate slots. The remaining 195 rows
+  are explicit ambiguity, ineligibility, known-title/new-schedule, or same-slot/
+  title conflicts—not unprocessed ordinary inventory. The next tranche should
+  complete inherited hiding,
   sparse structured optional facts without blob-only normalization, grouped
   presentation deltas, one lightweight non-user-facing ingest-run ledger, and
   then one bounded non-WPN adapter. A sparse later source must not clear richer

@@ -26,7 +26,7 @@ SECRET_URL = ROOT / ".codex-secrets" / "supabase-db-url.txt"
 CACHE_ID = "los-alamitos-25mi"
 WPN_EVENT_URL = "https://locator.wizards.com/event/{event_id}"
 WPN_STORE_URL = "https://locator.wizards.com/store/{organization_id}"
-ADAPTER_CONTRACT_VERSION = 3
+ADAPTER_CONTRACT_VERSION = 4
 
 NO_PROXY_PATTERN = re.compile(
     r"\b(?:no\s+prox(?:y|ies)|prox(?:y|ies)\s+(?:are\s+)?(?:not\s+allowed|prohibited|banned)|"
@@ -123,6 +123,28 @@ def normalized_title_key(value) -> str:
     text = "".join(char for char in text if not unicodedata.combining(char))
     text = text.casefold().replace("&", " and ")
     return " ".join(re.sub(r"[^a-z0-9]+", " ", text).split())
+
+
+def title_schedule_facts(title, local_start_time) -> dict:
+    """Expose an exact leading title time without overriding structured schedule data."""
+    match = re.match(
+        r"^\s*([0-9]{1,2})(?::([0-9]{2}))?\s*(am|pm)\b",
+        str(title or ""),
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return {"leadingTitleTime": None, "titleScheduleConflict": False}
+    hour = int(match.group(1)) % 12
+    if match.group(3).casefold() == "pm":
+        hour += 12
+    title_time = f"{hour:02d}:{int(match.group(2) or 0):02d}:00"
+    structured_time = str(local_start_time or "")[:8] or None
+    return {
+        "leadingTitleTime": title_time,
+        "titleScheduleConflict": bool(
+            structured_time and structured_time != title_time
+        ),
+    }
 
 
 def event_local_schedule(event: dict) -> dict:
@@ -453,6 +475,9 @@ def enrich_snapshot(
         rule_flags = event_rule_flags(event)
         event_format = event.get("eventFormat") or {}
         entry_fee = event.get("entryFee") or {}
+        title_schedule = title_schedule_facts(
+            event.get("title"), schedule.get("localStartTime")
+        )
         item.update({
             "adapterContractVersion": ADAPTER_CONTRACT_VERSION,
             "source": "wpn_eventlink",
@@ -489,6 +514,7 @@ def enrich_snapshot(
                 "isOnline": event.get("isOnline"),
                 "explicitNoProxy": rule_flags["explicitNoProxy"],
                 "explicitProxyAllowed": rule_flags["explicitProxyAllowed"],
+                **title_schedule,
             },
         })
         item["eventIdentityFingerprintVersion"] = 1

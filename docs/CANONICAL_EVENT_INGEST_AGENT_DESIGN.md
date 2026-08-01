@@ -1,6 +1,7 @@
 # Canonical Event Ingest Agent Design
 
-Status: normalized ingest core and WPN staging/preview implemented; canonical mutation remains
+Status: normalized ingest core, exact attachment, and deterministic collision-free
+WPN series creation are implemented; ambiguous/conflicting identity paths remain held.
 Updated: 2026-08-01
 
 ## Decision
@@ -316,7 +317,7 @@ fragmentation.
 ### Implemented adapter boundary
 
 The WPN cache adapter now performs the deterministic source-only preparation
-needed by the shared promoter. Contract version 3 stores normalized title keys,
+needed by the shared promoter. Contract version 4 stores normalized title keys,
 local schedule components, exact EventLink/store URLs, promotion eligibility
 and exclusion reasons, field-presence metadata, typed source facts, explicit
 proxy-rule flags, and two independent grouping hints:
@@ -409,6 +410,26 @@ start/end window or exact equality with the one-day start date. The final
 duplicate-slot check returned zero, and replay of all 647 selected rows returned
 `wrote = false`. This authorizes exact materialization only; deterministic new
 series, same-slot title differences, and ambiguous identities remain separate.
+
+### Deterministic new-series proof (2026-08-01)
+
+Migration `20260801205442_add_deterministic_event_series_creation.sql` adds a
+service-only, idempotent creator for collision-free families. It created 85
+series from 238 observations: 19 bounded weekly series from 140 consecutive
+weekly rows and 66 finite/single series from 98 rows. Families must agree on
+venue, source family, normalized title, format, event type, product, proxy
+policy, team size, and bracket; occupied slots, known-title/new-schedule rows,
+and ambiguous identities remain pending. A final exact attachment brought the
+run to 886 bound and 195 pending observations. Replay returned 238 `replayed`
+rows with no writes, and duplicate-slot readback remained zero.
+
+The source audit also established that structured source schedule fields remain
+authoritative over incidental time text embedded in a title. Adapter contract
+v4 exposes exact title/schedule conflicts, while migration
+`20260801221500_normalize_ingested_series_metadata.sql` removes a misleading
+leading time from a multi-time canonical series label and recognizes exact
+Premodern title semantics when WPN reports the generic `Other` format. It does
+not discard or rewrite the source observation.
 
 The read-only comparison in
 `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md` is the measured basis
