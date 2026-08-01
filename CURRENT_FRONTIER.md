@@ -27,6 +27,10 @@ frontier checkpoints are preserved in
   than reopening the whole page.
 - Updates now uses an unread-style badge for accepted changes and marks them
   read when the Updates page is opened.
+- Supabase app reads paginate past PostgREST's 1,000-row response limit. Event
+  drawers show when an event entered the catalog, and event-source links may
+  carry the exact source record URL (including the individual WPN event page)
+  instead of falling back to a generic venue source.
 - Store research uses Supabase as operational state. Ordinary source/surface
   checks land through `record_entity_surface_check`; proposals and ledgers are
   reserved for event/evaluation changes, higher-level queueing, and unresolved

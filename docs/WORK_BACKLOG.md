@@ -424,6 +424,10 @@ claims without reopening the whole packet.
 
 ### UI changes needed to address ingest and presentation of new items
 
+- Completed: event drawers now show an `Added to catalog` date, app reads
+  paginate beyond Supabase's 1,000-row REST limit, and promoted WPN occurrences
+  retain exact clickable event URLs in their source trail.
+
 - Add a neutral closed-eye event action for `hide this` that writes the existing
   per-user visibility preference without changing rating, canonical event
   status, venue assessment, or source truth. Reserve thumbs-down for an active

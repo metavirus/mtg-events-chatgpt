@@ -579,8 +579,8 @@ async function loadFromSupabase() {
   const evaluationByEntity = new Map(evaluations.map((item) => [`${item.entity_type}:${item.entity_id}`, item]));
   const hoursByVenue = new Map(venueHours.map((item) => [item.venue_id, item]));
   const sourceIdsByEntity = groupValues(entitySources, (item) => `${item.entity_type}:${item.entity_id}`, (item) => item.source_id);
-  const sourcesBySeries = groupValues(eventSources.filter((item) => item.series_id), (item) => item.series_id, (item) => item.source_id);
-  const sourcesByOccurrence = groupValues(eventSources.filter((item) => item.occurrence_id), (item) => item.occurrence_id, (item) => item.source_id);
+  const sourcesBySeries = groupValues(eventSources.filter((item) => item.series_id), (item) => item.series_id, (item) => item);
+  const sourcesByOccurrence = groupValues(eventSources.filter((item) => item.occurrence_id), (item) => item.occurrence_id, (item) => item);
   const seriesById = new Map(series.map((item) => [item.id, item]));
   const occurrenceSeriesIds = new Set(occurrences.map((item) => item.series_id));
 
@@ -603,15 +603,23 @@ async function loadFromSupabase() {
 }
 
 async function supabaseRows(table) {
-  const response = await fetchWithTimeout(`${SUPABASE.url}/rest/v1/${table}?select=*`, {
-    headers: {
-      apikey: SUPABASE.publishableKey,
-      Authorization: `Bearer ${SUPABASE.publishableKey}`
-    },
-    cache: 'no-store'
-  }, DATA_FETCH_TIMEOUT_MS);
-  if (!response.ok) throw new Error(`Supabase could not load ${table}`);
-  return response.json();
+  const pageSize = 1000;
+  const rows = [];
+  for (let start = 0; ; start += pageSize) {
+    const response = await fetchWithTimeout(`${SUPABASE.url}/rest/v1/${table}?select=*`, {
+      headers: {
+        apikey: SUPABASE.publishableKey,
+        Authorization: `Bearer ${SUPABASE.publishableKey}`,
+        Range: `${start}-${start + pageSize - 1}`,
+        'Range-Unit': 'items'
+      },
+      cache: 'no-store'
+    }, DATA_FETCH_TIMEOUT_MS);
+    if (!response.ok) throw new Error(`Supabase could not load ${table}`);
+    const page = await response.json();
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+  }
 }
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = DATA_FETCH_TIMEOUT_MS) {
@@ -781,6 +789,7 @@ function mapSignal(item) {
 }
 
 function mapEventSeries(item, sourcesBySeries) {
+  const sourceLinks = sourcesBySeries.get(item.id) || [];
   return {
     id: item.id,
     storeId: item.venue_id || null,
@@ -796,8 +805,10 @@ function mapEventSeries(item, sourcesBySeries) {
     entryFee: item.entry_fee == null ? null : Number(item.entry_fee),
     currency: item.currency || 'USD',
     details: item.details || '',
-    sourceIds: sourcesBySeries.get(item.id) || [],
-    sourceId: (sourcesBySeries.get(item.id) || [])[0],
+    sourceIds: sourceLinks.map((link) => link.source_id),
+    sourceId: sourceLinks[0]?.source_id,
+    sourceUrl: sourceLinks.find((link) => link.source_url)?.source_url || '',
+    createdAt: item.created_at || '',
     lastVerified: item.last_verified || '',
     confidence: item.confidence,
     status: item.event_status
@@ -806,6 +817,7 @@ function mapEventSeries(item, sourcesBySeries) {
 
 function mapEventOccurrence(item, series, sourcesByOccurrence) {
   if (!series) return null;
+  const sourceLinks = sourcesByOccurrence.get(item.id) || [];
   return {
     id: item.id,
     seriesId: item.series_id,
@@ -824,8 +836,10 @@ function mapEventOccurrence(item, series, sourcesByOccurrence) {
     capacity: item.capacity,
     currency: series.currency || 'USD',
     details: item.details || series.details || '',
-    sourceIds: sourcesByOccurrence.get(item.id) || [],
-    sourceId: (sourcesByOccurrence.get(item.id) || [])[0],
+    sourceIds: sourceLinks.map((link) => link.source_id),
+    sourceId: sourceLinks[0]?.source_id,
+    sourceUrl: sourceLinks.find((link) => link.source_url)?.source_url || '',
+    createdAt: item.created_at || series.created_at || '',
     lastVerified: series.last_verified || '',
     confidence: occurrenceConfidence(item.evidence_state, series.confidence),
     status: series.event_status,
@@ -3016,7 +3030,8 @@ function openEvent(id, occurrenceDate) {
   const organizer = community(event?.communityId);
   if (!event || !place) return;
   const occurrence = occurrenceDate ? parseDate(occurrenceDate) : parseDate(event.date || event.startDate);
-  const src = source(event.sourceId);
+  const baseSource = source(event.sourceId);
+  const src = baseSource && event.sourceUrl ? { ...baseSource, url: event.sourceUrl } : baseSource;
   const fit = fitLabel({ ...event, occurrenceDate: occurrence });
   const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: !event.recurrence && (event.date || event.startDate) ? 'confirmed' : 'projected' });
   const personalKey = eventPreferenceKey(event);
@@ -3031,7 +3046,7 @@ function openEvent(id, occurrenceDate) {
     <div class="drawer-action-grid"><a class="soft-button calendar-action" href="${calendarUrl}" target="_blank" rel="noreferrer" aria-label="Add to Google Calendar" title="Add to Google Calendar">${calendarPlusIcon()}</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button></div>
     <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(event.details || 'The current source provides only a minimal event listing.')}</p></section>
     <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${place.lifecycleState === 'identity_blocked' ? '<div><span class="interpret-icon amber">!</span><p><strong>Identity unresolved</strong><br>The event has an attached source, but the venue or branch identity remains unresolved. Check the source before relying on it.</p></div>' : ''}${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
-    <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Address</span><strong>${escapeHtml(place.address)}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>
+    <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Address</span><strong>${escapeHtml(place.address)}</strong></div><div><span>Added to catalog</span><strong>${escapeHtml(event.createdAt ? formatFreshnessDate(event.createdAt) : 'Unknown')}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>
     <section class="drawer-section"><p class="eyebrow">Evidence</p><h2>Source trail</h2>${retainedEvidence}${src ? sourceRow(src, true) : '<p class="muted-copy">No normalized source link is attached yet.</p>'}</section>
     <section class="drawer-section"><p class="eyebrow">Your private note</p><h2>Note on this series</h2>${noteComposer(personalKey, 'What should future-you remember about this event?')}</section>`);
 }
