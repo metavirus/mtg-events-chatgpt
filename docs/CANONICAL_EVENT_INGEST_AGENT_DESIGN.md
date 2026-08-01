@@ -373,6 +373,24 @@ new social crawler:
 Unmatched WPN organizations remain in the discovery inbox. They are not a
 reason to block promotion for the exact-matched majority.
 
+### Controlled live proof (2026-08-01)
+
+The first live reconciler is deliberately allowlisted rather than broad. It
+supports only an exact existing occurrence and a single exact recurring series;
+all other shapes fail closed. A three-observation proof established:
+
+- exact binding to an existing Next-Gen occurrence;
+- one dated Comic Book Hideout occurrence added to its exact recurring series;
+- one SoCalMagic `No proxy` occurrence added canonically while inheriting a
+  hidden-by-rule result rather than being discarded;
+- exact WPN schedule links and durable upstream bindings for all three;
+- one canonical row per series/date/time slot; and
+- a full replay returning `wrote = false` for every observation.
+
+This validates the core separation between event truth and presentation
+visibility. It does not yet authorize broad creation of new series, fuzzy
+matching, or automatic presentation deltas.
+
 The read-only comparison in
 `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md` is the measured basis
 for the first implementation. It confirms that the main first-run job is

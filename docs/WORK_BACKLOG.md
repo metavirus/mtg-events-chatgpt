@@ -21,9 +21,12 @@ Use it for:
   and strict plus template grouping hints without making canonical merge
   decisions. The normalized observation table, compact run ledger, durable
   binding table, set-based WPN staging function, reconciliation preview, and
-  one-command helper are now deployed. The next tranche should implement the
-  live source-neutral reconciler and fill bindings; prove complete/idempotent
-  exact-known-venue WPN promotion, inherited hiding,
+  one-command helper are now deployed. A service-only allowlisted reconciler
+  has also proved exact existing-occurrence binding and exact recurring-series
+  occurrence creation, including a no-proxy row returned as hidden-by-rule;
+  replay wrote nothing. The next tranche should expand those proven actions
+  set-wise, add finite-series attachment and deterministic new-series creation,
+  then prove complete/idempotent exact-known-venue WPN promotion, inherited hiding,
   sparse structured optional facts without blob-only normalization, grouped
   presentation deltas, one lightweight non-user-facing ingest-run ledger, and
   then one bounded non-WPN adapter. A sparse later source must not clear richer

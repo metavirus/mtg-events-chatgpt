@@ -79,8 +79,15 @@ frontier checkpoints are preserved in
   The one-command staging helper is
   `scripts/stage_wpn_event_observations.py`. Its first run staged 1,081 unique
   observations (1,079 eligible, 2 held) in about 0.3 seconds of database work;
-  replay created no duplicates. No canonical Events, Updates, or Signals were
-  written. Live canonical reconciliation remains next.
+  replay created no duplicates. The first allowlisted live reconciliation is
+  now deployed through migration
+  `20260801191243_add_controlled_event_reconciler.sql`. It proved three exact
+  cases: binding an existing Next-Gen occurrence, adding one dated Comic Book
+  Hideout occurrence to an exact recurring series, and adding a SoCalMagic
+  no-proxy occurrence while returning `hidden_by_rule = true`. All three have
+  durable upstream bindings and exact WPN source links; replay returned
+  `wrote = false`, and each canonical date/time slot remains unique. No Update
+  or Signal was created.
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated
@@ -137,14 +144,14 @@ Canonical operating details:
 ## Next safe lanes
 
 0. Continue the WPN-first slice of
-   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the deployed normalized
-   staging/preview core: implement the live source-neutral reconciler that
-   fills durable bindings, adds safe missing occurrences/series, preserves
-   sparse structured facts/conflicts, inherits hiding without suppressing
-   ingestion, and returns grouped presentation deltas. Reuse the preview's
-   exact categories and isolate its three ambiguous observations. Prove a full
-   replay with zero duplicate effect, then add one bounded non-WPN adapter. Do
-   not build separate WPN/social canonical promoters.
+   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the proven allowlisted
+   reconciler. Expand set-wise only across the two proven exact actions
+   (`bind_exact_occurrence` and `add_occurrence_to_recurring_series`), keeping
+   unsupported/ambiguous observations isolated. Next add exact finite-series
+   attachment and deterministic new-series creation, sparse fact enrichment,
+   inherited visibility projection, and grouped presentation deltas. Prove a
+   complete replay with zero duplicate effect, then add one bounded non-WPN
+   adapter. Do not build separate WPN/social canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by
