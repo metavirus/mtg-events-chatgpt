@@ -58,6 +58,12 @@ frontier checkpoints are preserved in
   findings. The first live write established the enriched baseline in 9.16
   seconds; an immediate 9.40-second replay returned 1,267 unchanged events,
   zero findings, and zero coordination-inbox noise.
+- The next event-agent boundary is now explicit in
+  `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`: WPN remains a source-specific
+  cache/adapter, while one source-neutral observation and reconciliation layer
+  promotes attributable events from WPN and later official calendars, Discord,
+  Instagram/Facebook, registration platforms, and source artifacts. The design
+  is complete; implementation has not started.
 
 ## Active data and research posture
 
@@ -95,10 +101,11 @@ Canonical operating details:
 
 ## Next safe lanes
 
-0. Review and deploy the completed WPN ingest migration and agent as one
-   separate approved data/tooling tranche. After deployment, run one live
-   refresh/readback and confirm the coordination inbox remains quiet on a
-   no-delta snapshot. Do not redesign or reimplement it first.
+0. Implement the WPN-first slice of
+   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`: a typed normalized observation
+   contract, durable source-record bindings, and one set-based source-neutral
+   canonical reconciler. Prove exact WPN replay first, then one bounded non-WPN
+   adapter. Do not build separate WPN/social canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by

@@ -14,6 +14,14 @@ Use it for:
 
 ## Active next-up
 
+- Canonical event ingest agent: implement the accepted source-neutral design in
+  `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`. WPN is the first adapter, not a
+  separate canonical pipeline. The initial tranche should add normalized event
+  observations, durable source-record bindings, and one set-based reconciler;
+  prove complete/idempotent exact-known-venue WPN promotion, inherited hiding,
+  grouped presentation deltas, and then one bounded non-WPN adapter. Do not add
+  new Instagram/Discord crawlers in the first tranche.
+
 - Venue selection now comes from lifecycle-specific Supabase views, not old
   ledger TBD wording: `venue_baseline_candidates`,
   `venue_surface_retry_candidates`, `venue_surface_monitoring_candidates`,
