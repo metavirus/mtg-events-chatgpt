@@ -20,8 +20,9 @@ Use it for:
   observations, durable source-record bindings, and one set-based reconciler;
   prove complete/idempotent exact-known-venue WPN promotion, inherited hiding,
   sparse structured optional facts without blob-only normalization, grouped
-  presentation deltas, and then one bounded non-WPN adapter. A sparse later
-  source must not clear richer facts established by another source. Do not add
+  presentation deltas, one lightweight non-user-facing ingest-run ledger, and
+  then one bounded non-WPN adapter. A sparse later source must not clear richer
+  facts established by another source. Do not add verbose per-event logging or
   new Instagram/Discord crawlers in the first tranche.
 
 - Venue selection now comes from lifecycle-specific Supabase views, not old

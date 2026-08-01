@@ -217,11 +217,22 @@ The implementation should add only what the existing schema cannot express:
 3. **One set-based reconciler.** An internal/service-only database function or
    bounded agent command that promotes all eligible observations from one run
    transactionally and returns a compact result.
+4. **Tiny ingest-run ledger.** One service-only row per attempted run containing
+   adapter/source family, input snapshot/fingerprint, validation/live mode,
+   started/finished timestamps, duration, outcome, compact result counts, code
+   or contract version, and a short error summary when applicable.
 
 Do not add a parallel event catalog, duplicate Signals queue, duplicate Updates
 table, or a generic public JSONB mutation RPC. Continue using existing canonical
 event, source, preference, Signal, research-change, coordination, and artifact
 tables.
+
+The run ledger is operational troubleshooting state, not a user-facing activity
+feed. It creates no Update or Signal and needs no Markdown run note. Do not copy
+every event into a second log table: observations and durable source bindings
+already provide row-level traceability. A future investigation should be able to
+start from a run ID, inspect its compact counts, and then follow only the
+affected observations/bindings when needed.
 
 ## Presentation consequences
 
@@ -309,3 +320,5 @@ One anomalous observation must not block safe events in the same run.
 - One ambiguous row is isolated while safe rows still land.
 - The second non-WPN adapter uses the same reconciler without source-specific
   branching in canonical promotion logic.
+- Every validation or live attempt leaves one lightweight run-ledger row, while
+  ordinary successful runs produce no repository artifact or user-facing noise.
