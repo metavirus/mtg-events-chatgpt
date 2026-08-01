@@ -210,15 +210,8 @@ snapshot changed, checkpoint and push it, then finish the refresh task.
 The refresh is fingerprint/delta-aware. It never flushes canonical Events or
 rebuilds the cache through a delete-then-reinsert cycle.
 
-The next ingest revision is implemented but intentionally **not deployed** at
-the 2026-08-01 checkpoint. Its pending migration is
-`20260801170000_enrich_wpn_ingest_cache.sql`. Until that migration is approved
-and deployed, use `scripts/refresh_wpn_cache.py --dry-run` for the enriched
-proof only. The script detects the absent enrichment columns and automatically
-uses its existing upsert-only cache write, so the readiness gate remains safe
-before deployment.
-
-After deployment, the same bounded refresh will additionally:
+Migration `20260801170000_enrich_wpn_ingest_cache.sql` was deployed and verified
+on 2026-08-01. The bounded refresh additionally:
 
 - enrich every event with direct Wizards event/store URLs, normalized local
   schedule and fee fields, format/type flags, and stable identity/content

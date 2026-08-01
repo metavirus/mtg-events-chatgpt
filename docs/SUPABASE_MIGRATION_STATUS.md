@@ -27,11 +27,10 @@ touching the data layer so future tasks do not rediscover the same state.
 - The live schema now also contains venue lifecycle/monitoring selectors,
   coordination intake, typed routine research/event writes, private source
   artifact storage, and the rich service-only WPN snapshot cache.
-- One migration is committed but deliberately undeployed:
-  `20260801170000_enrich_wpn_ingest_cache.sql`. It is the only migration shown
-  by the current `supabase db push --dry-run` checkpoint.
-- The corresponding WPN ingest code detects the old live schema and preserves
-  the existing safe cache upsert until that migration is deployed.
+- Migration `20260801170000_enrich_wpn_ingest_cache.sql` is deployed. Its first
+  live write and immediate replay verified 1,267 enriched events, 78 enriched
+  organizations, 1,267 observation records, zero replay changes, zero findings,
+  and zero recent WPN coordination-inbox rows.
 
 ## Historical implementation detail
 

@@ -46,17 +46,18 @@ frontier checkpoints are preserved in
   Events and Place Evidence views show one compact on-demand link; unaffected
   records consume no interface space.
 - The rich 25-mile WPN cache is live in `wpn_snapshot_cache` and refreshes when
-  at least 24 hours old. A faster enriched ingest revision is complete locally
-  but deliberately undeployed: it adds direct Wizards links, normalized
+  at least 24 hours old. The enriched ingest revision is deployed: it adds
+  direct Wizards links, normalized
   schedule/fee fields, exact canonical venue association, event/content/store
   fingerprints, delta comparison, two-snapshot disappearance handling, and a
-  quiet deduplicated Codex findings inbox. Its pending migration is
-  `20260801170000_enrich_wpn_ingest_cache.sql`. A forced no-write benchmark on
+  quiet deduplicated Codex findings inbox. Migration
+  `20260801170000_enrich_wpn_ingest_cache.sql` was deployed on 2026-08-01. A
+  forced no-write benchmark
   2026-08-01 fetched and enriched 1,267 events and 78 organizations in 8.64
   seconds, with 51 exact venue matches, 27 unmatched organizations, and zero
-  findings. All 1,267 events correctly appear as a one-time content change
-  because the live cache predates newly captured fields such as format name;
-  the first enriched write will establish the new comparison baseline.
+  findings. The first live write established the enriched baseline in 9.16
+  seconds; an immediate 9.40-second replay returned 1,267 unchanged events,
+  zero findings, and zero coordination-inbox noise.
 
 ## Active data and research posture
 

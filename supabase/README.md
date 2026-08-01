@@ -24,17 +24,13 @@ secret key in this repository or browser code. Browser-safe project settings
 remain in `project-config.json`; privileged local values belong only in the
 ignored `.codex-secrets/` path described by the readiness documentation.
 
-## Current undeployed migration
+## Current WPN ingest
 
-`20260801170000_enrich_wpn_ingest_cache.sql` is committed but intentionally not
-deployed. It adds enriched WPN events/organizations, compact cross-snapshot
-event observation state, upstream field inventory, and delta summaries. The
-corresponding ingest code is already safe before deployment: it detects the
-old live schema and continues using the existing upsert-only cache write.
-
-The exact next data action is recorded in `CURRENT_FRONTIER.md`: review and
-deploy that one migration, run one live WPN refresh/readback, and confirm a
-no-delta run creates no coordination-inbox noise.
+Migration `20260801170000_enrich_wpn_ingest_cache.sql` is deployed. The cache
+stores enriched WPN events/organizations, compact cross-snapshot event
+observation state, upstream field inventory, and delta summaries. The first
+live write and immediate no-delta replay were verified on 2026-08-01; ordinary
+unchanged refreshes create no coordination-inbox noise.
 
 ## Operational rules
 

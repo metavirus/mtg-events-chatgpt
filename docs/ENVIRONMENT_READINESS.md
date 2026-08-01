@@ -115,10 +115,10 @@ Do not run project scripts through an arbitrary global `python`, `python3`, or
   atomically upserts the Supabase cache, verifies counts/fingerprint, and stops.
   It never flushes and rebuilds canonical event tables. A failure fails the
   readiness gate rather than silently using stale data.
-- Pending enrichment: migration
-  `20260801170000_enrich_wpn_ingest_cache.sql` is committed but not deployed.
-  Before deployment the helper automatically uses the existing safe cache
-  upsert; `--dry-run` proves the enriched comparison path without writing.
+- Enriched cache: migration `20260801170000_enrich_wpn_ingest_cache.sql` is
+  deployed. The refresh writes fingerprints, observation state, field
+  inventory, delta summaries, and exceptional findings through the same
+  bounded upsert. `--dry-run` remains available for no-write inspection.
 - Routine radius: 25 miles.
 - Wider-radius fallback: create a clearly named separate directory such as
   `output/wizards-radius30-YYYY-MM-DD/`; do not replace the routine 25-mile

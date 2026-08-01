@@ -50,9 +50,8 @@ The repository has already completed these stabilization steps:
 - the default worker model is retired for this project: use direct bounded
   execution in the current task for small batches unless the user explicitly
   approves a specific exceptional worker.
-- the current undeployed checkpoint is the enriched WPN ingest agent described
-  in `CURRENT_FRONTIER.md`; do not mistake its local code/migration for a live
-  schema change or repeat its implementation.
+- the enriched WPN ingest agent described in `CURRENT_FRONTIER.md` is deployed
+  and verified; do not repeat its implementation or redeploy its migration.
 
 See also:
 
