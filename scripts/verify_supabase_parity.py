@@ -30,17 +30,30 @@ def local_ids(name: str) -> set[str]:
 def fetch_rows(table: str, columns: str = "id") -> list[dict[str, Any]]:
     base_url = os.environ["SUPABASE_URL"].rstrip("/")
     key = os.environ["SUPABASE_PUBLISHABLE_KEY"]
-    query = urllib.parse.urlencode({"select": columns, "limit": 1000})
-    request = urllib.request.Request(
-        f"{base_url}/rest/v1/{table}?{query}",
-        headers={
-            "apikey": key,
-            "Authorization": f"Bearer {key}",
-            "Accept": "application/json",
-        },
-    )
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return json.load(response)
+    rows: list[dict[str, Any]] = []
+    page_size = 1000
+    offset = 0
+    while True:
+        query = urllib.parse.urlencode({
+            "select": columns,
+            "limit": page_size,
+            "offset": offset,
+            "order": "id.asc",
+        })
+        request = urllib.request.Request(
+            f"{base_url}/rest/v1/{table}?{query}",
+            headers={
+                "apikey": key,
+                "Authorization": f"Bearer {key}",
+                "Accept": "application/json",
+            },
+        )
+        with urllib.request.urlopen(request, timeout=30) as response:
+            page = json.load(response)
+        rows.extend(page)
+        if len(page) < page_size:
+            return rows
+        offset += page_size
 
 
 def compare(label: str, expected: set[str], actual: set[str]) -> bool:

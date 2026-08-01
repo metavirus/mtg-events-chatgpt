@@ -588,9 +588,10 @@ async function loadFromSupabase() {
   DATA.sources = sources.map(mapSource);
   DATA.changes = changes.map(mapResearchChange);
   DATA.signals = signals.map(mapSignal);
+  const mappedSeries = series.map((item) => mapEventSeries(item, sourcesBySeries));
   DATA.events = [
-    ...series.filter((item) => !occurrenceSeriesIds.has(item.id)).map((item) => mapEventSeries(item, sourcesBySeries)),
-    ...occurrences.map((item) => mapEventOccurrence(item, seriesById.get(item.series_id), sourcesByOccurrence))
+    ...mappedSeries.filter((item) => item.recurrence?.frequency === 'weekly' || !occurrenceSeriesIds.has(item.id)),
+    ...occurrences.map((item) => mapEventOccurrence(item, seriesById.get(item.series_id), sourcesByOccurrence, sourcesBySeries))
   ].filter(Boolean);
 
   if (communities.length) {
@@ -605,8 +606,12 @@ async function loadFromSupabase() {
 async function supabaseRows(table) {
   const pageSize = 1000;
   const rows = [];
+  const orderBy = {
+    entity_sources: 'entity_type.asc,entity_id.asc,source_id.asc',
+    venue_hours: 'venue_id.asc'
+  }[table] || 'id.asc';
   for (let start = 0; ; start += pageSize) {
-    const response = await fetchWithTimeout(`${SUPABASE.url}/rest/v1/${table}?select=*`, {
+    const response = await fetchWithTimeout(`${SUPABASE.url}/rest/v1/${table}?select=*&order=${orderBy}`, {
       headers: {
         apikey: SUPABASE.publishableKey,
         Authorization: `Bearer ${SUPABASE.publishableKey}`,
@@ -792,6 +797,7 @@ function mapEventSeries(item, sourcesBySeries) {
   const sourceLinks = sourcesBySeries.get(item.id) || [];
   return {
     id: item.id,
+    seriesId: item.id,
     storeId: item.venue_id || null,
     communityId: item.community_id || null,
     title: item.title,
@@ -815,9 +821,11 @@ function mapEventSeries(item, sourcesBySeries) {
   };
 }
 
-function mapEventOccurrence(item, series, sourcesByOccurrence) {
+function mapEventOccurrence(item, series, sourcesByOccurrence, sourcesBySeries) {
   if (!series) return null;
-  const sourceLinks = sourcesByOccurrence.get(item.id) || [];
+  const directSourceLinks = sourcesByOccurrence.get(item.id) || [];
+  const seriesSourceLinks = sourcesBySeries.get(item.series_id) || [];
+  const sourceLinks = [...new Map([...directSourceLinks, ...seriesSourceLinks].map((link) => [link.source_id, link])).values()];
   return {
     id: item.id,
     seriesId: item.series_id,
@@ -1602,11 +1610,20 @@ function buildOccurrences(start, end, applyFilters = true) {
         cursor = addDays(cursor, 7);
       }
     } else if (event.date || event.startDate) {
+      if (event.occurrenceStatus === 'cancelled') continue;
       const date = parseDate(event.date || event.startDate);
-      if (date >= start && date <= end) items.push({ ...event, occurrenceDate: date, occurrenceStatus: 'confirmed' });
+      if (date >= start && date <= end) items.push({ ...event, occurrenceDate: date, occurrenceStatus: event.occurrenceStatus || 'confirmed' });
     }
   }
-  const filtered = applyFilters ? items.filter(matchesFilters) : items;
+  const confirmedSeriesDates = new Set(items
+    .filter((item) => item.occurrenceStatus === 'confirmed' && item.seriesId)
+    .map((item) => `${item.seriesId}:${dateKey(item.occurrenceDate)}`));
+  const withoutSupersededProjections = items.filter((item) =>
+    item.occurrenceStatus !== 'projected'
+    || !item.seriesId
+    || !confirmedSeriesDates.has(`${item.seriesId}:${dateKey(item.occurrenceDate)}`)
+  );
+  const filtered = applyFilters ? withoutSupersededProjections.filter(matchesFilters) : withoutSupersededProjections;
   return filtered.sort((a, b) => a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b)));
 }
 
@@ -2318,7 +2335,7 @@ function placeListRow(place, hidden = false) {
 function renderPlaceDetail(place) {
   const container = document.getElementById('placeDetail');
   if (!place) return container.innerHTML = emptyState('Select a place', 'Choose a venue from the list.');
-  const placeEvents = DATA.events.filter((event) => event.storeId === place.id);
+  const placeEvents = uniqueEventSeries(DATA.events.filter((event) => event.storeId === place.id));
   const sources = (place.sourceIds || []).map(source).filter(Boolean);
   const artifacts = artifactsFor('venue', place.id);
   const favorite = !!state.personal.favorites[`place:${place.id}`];
@@ -2328,6 +2345,16 @@ function renderPlaceDetail(place) {
     <div class="detail-actions"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a>${place.website ? `<a class="soft-button" href="${escapeHtml(place.website)}" target="_blank" rel="noreferrer">Website ↗</a>` : ''}${place.instagram ? `<a class="soft-button" href="${escapeHtml(place.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>` : ''}</div>
     <div class="detail-tabs" role="tablist" aria-label="Place details"><button class="${state.selectedPlaceTab === 'overview' ? 'active' : ''}" data-place-tab="overview" role="tab" aria-selected="${state.selectedPlaceTab === 'overview'}">Overview</button><button class="${state.selectedPlaceTab === 'events' ? 'active' : ''}" data-place-tab="events" role="tab" aria-selected="${state.selectedPlaceTab === 'events'}">Events <span>${placeEvents.length}</span></button><button class="${state.selectedPlaceTab === 'evidence' ? 'active' : ''}" data-place-tab="evidence" role="tab" aria-selected="${state.selectedPlaceTab === 'evidence'}">Evidence <span>${sources.length + artifacts.length}</span></button></div>
     <div class="place-tab-content">${placeTabContent(place, placeEvents, sources, artifacts, rating)}</div>`;
+}
+
+function uniqueEventSeries(events) {
+  const bySeries = new Map();
+  for (const event of events) {
+    const key = event.seriesId || event.id;
+    const existing = bySeries.get(key);
+    if (!existing || event.recurrence?.frequency === 'weekly') bySeries.set(key, event);
+  }
+  return [...bySeries.values()];
 }
 
 function placeTabContent(place, placeEvents, sources, artifacts, rating) {
@@ -3033,7 +3060,7 @@ function openEvent(id, occurrenceDate) {
   const baseSource = source(event.sourceId);
   const src = baseSource && event.sourceUrl ? { ...baseSource, url: event.sourceUrl } : baseSource;
   const fit = fitLabel({ ...event, occurrenceDate: occurrence });
-  const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: !event.recurrence && (event.date || event.startDate) ? 'confirmed' : 'projected' });
+  const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: event.occurrenceStatus || (!event.recurrence && (event.date || event.startDate) ? 'confirmed' : 'projected') });
   const personalKey = eventPreferenceKey(event);
   const favorite = state.personal.favorites[personalKey];
   const hidden = state.personal.hidden[personalKey];

@@ -31,6 +31,10 @@ frontier checkpoints are preserved in
   drawers show when an event entered the catalog, and event-source links may
   carry the exact source record URL (including the individual WPN event page)
   instead of falling back to a generic venue source.
+- The follow-up integrity audit also made pagination deterministic, lets dated
+  occurrences inherit valid series-level evidence, and keeps weekly series in
+  projection after their last explicitly dated confirmation. Confirmed dates
+  supersede same-day projections, so this does not duplicate the calendar.
 - Store research uses Supabase as operational state. Ordinary source/surface
   checks land through `record_entity_surface_check`; proposals and ledgers are
   reserved for event/evaluation changes, higher-level queueing, and unresolved
