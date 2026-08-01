@@ -2,7 +2,8 @@
 
 Date prepared: 2026-07-17
 
-Status: proposed only. Do not start until the user approves.
+Status: Historical proposal; superseded by the lifecycle selectors and current
+frontier. Do not start this tranche from this file.
 
 ## Recommended batch
 
@@ -88,4 +89,3 @@ Expected checks:
 - unresolved conflicts are named rather than normalized away;
 - the user receives a concise recommendation for whether to prepare a
   controlled Supabase proposal.
-

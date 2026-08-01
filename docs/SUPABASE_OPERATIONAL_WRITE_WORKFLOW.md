@@ -1,6 +1,6 @@
 # Supabase Operational Write Workflow
 
-Last updated: 2026-07-25
+Last updated: 2026-08-01
 
 ## Purpose
 
@@ -571,7 +571,8 @@ Still deferred:
 
 ## Wizards snapshot artifacts
 
-Ordinary WPN cache state should not create recurring Git churn. Prefer reusing a
-recent suitable snapshot or moving routine cache state toward Supabase or ignored
-local output in a future tranche. Keep Git-tracked WPN artifacts only when they
-are intentional recovery/debug/source snapshots for a specific checkpoint.
+Supabase is the operational WPN cache. The current crawler also refreshes the
+tracked `output/wizards` recovery/debug snapshot; checkpoint that bounded source
+snapshot when the refresh task intentionally changes it. Do not treat those
+files as canonical app data or create additional per-run notes, exports, or SQL
+artifacts around the routine cache write.

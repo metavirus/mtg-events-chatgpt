@@ -112,9 +112,13 @@ Do not run project scripts through an arbitrary global `python`, `python3`, or
   covers the stores in scope.
 - Automatic refresh: the readiness gate runs `scripts/refresh_wpn_cache.py`
   whenever the routine snapshot is at least 24 hours old. The command fetches,
-  atomically replaces the Supabase cache, verifies counts/fingerprint, and
-  stops. A failure fails the readiness gate rather than silently using stale
-  data.
+  atomically upserts the Supabase cache, verifies counts/fingerprint, and stops.
+  It never flushes and rebuilds canonical event tables. A failure fails the
+  readiness gate rather than silently using stale data.
+- Pending enrichment: migration
+  `20260801170000_enrich_wpn_ingest_cache.sql` is committed but not deployed.
+  Before deployment the helper automatically uses the existing safe cache
+  upsert; `--dry-run` proves the enriched comparison path without writing.
 - Routine radius: 25 miles.
 - Wider-radius fallback: create a clearly named separate directory such as
   `output/wizards-radius30-YYYY-MM-DD/`; do not replace the routine 25-mile

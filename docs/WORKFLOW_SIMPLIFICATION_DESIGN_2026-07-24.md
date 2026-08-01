@@ -1,7 +1,14 @@
 # Workflow Simplification Design
 
 Date: 2026-07-24  
-Status: Revised Phase 1 design checkpoint; no implementation authorized
+Status: Historical design checkpoint; core decisions implemented and superseded
+
+> This file records the reasoning that led to the lean operational model. It is
+> not an active implementation plan. Current authority is
+> `CURRENT_FRONTIER.md`, `docs/EFFICIENCY_SOP.md`, and
+> `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`. In particular, the later
+> implementation intentionally added `public.wpn_snapshot_cache`; do not use
+> the older reuse-map recommendation below to undo or duplicate it.
 
 ## Decision
 

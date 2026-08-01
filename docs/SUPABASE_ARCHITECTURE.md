@@ -1,14 +1,22 @@
 # Supabase Architecture
 
+Status: Historical cutover design; Supabase is now live and canonical.
+
+> This document preserves the reasoning and phased migration plan. Statements
+> below about JSON remaining the active application source describe the former
+> cutover period, not current operation. Use `CURRENT_FRONTIER.md`,
+> `docs/SUPABASE_MIGRATION_STATUS.md`, and
+> `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` for current state.
+
 ## Decision
 
 Supabase is the operational source of truth for the hosted MTG Events app.
 GitHub remains the versioned home for schema migrations, research methodology,
 run notes, validation code, and reproducible data exports.
 
-The existing JSON files remain the active application source until the initial
-database import has been compared and accepted. They must not be removed or
-silently replaced during migration.
+During the initial cutover, the existing JSON files remained the active
+application source until the database import was compared and accepted. That
+cutover gate has passed; JSON is now emergency/debug/export material only.
 
 Current migration/import status is tracked in
 `docs/SUPABASE_MIGRATION_STATUS.md`.

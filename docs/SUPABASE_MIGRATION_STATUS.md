@@ -1,6 +1,6 @@
 # Supabase Migration Status
 
-Last updated: 2026-07-21
+Last updated: 2026-08-01
 
 This file is the quick checkpoint for the Supabase migration. Use it before
 touching the data layer so future tasks do not rediscover the same state.
@@ -14,18 +14,33 @@ touching the data layer so future tasks do not rediscover the same state.
 - The initial remote schema has been applied.
 - The current seed snapshot has been loaded into Supabase.
 - Supabase is now the default application read source.
-- The existing JSON files remain as recovery/export fallback.
-- A Supabase read-adapter seam exists in `app.js`. Use `?data=json` for the
-  explicit JSON recovery path; if Supabase loading fails, the app falls back to
-  the JSON files and logs a warning.
+- The existing JSON files remain as emergency recovery/export artifacts.
+- A Supabase read-adapter seam exists in `app.js`. Use `?data=json` only for an
+  explicit recovery/debug check. A failed normal Supabase read is an app fault
+  to repair, not a reason to maintain JSON as a parallel operating path.
 - Representative raw-data and read-adapter parity are accepted at repair commit
   `813c0f2`; the default-source cutover was made after controlled research-write
   safety and pilot rollback were accepted.
 - Authenticated personal preferences/notes, Signals, per-user Signal read state,
   venue hours, and the first Discord monitoring map have since been added in
   bounded migrations.
+- The live schema now also contains venue lifecycle/monitoring selectors,
+  coordination intake, typed routine research/event writes, private source
+  artifact storage, and the rich service-only WPN snapshot cache.
+- One migration is committed but deliberately undeployed:
+  `20260801170000_enrich_wpn_ingest_cache.sql`. It is the only migration shown
+  by the current `supabase db push --dry-run` checkpoint.
+- The corresponding WPN ingest code detects the old live schema and preserves
+  the existing safe cache upsert until that migration is deployed.
 
-## Discord monitoring map
+## Historical implementation detail
+
+The sections below preserve migration chronology and initial import counts.
+They are useful for diagnosis, but they are not the current operating queue or
+the source of live row counts. Use `CURRENT_FRONTIER.md` and live Supabase
+readbacks for current work selection.
+
+### Discord monitoring map
 
 Migration `20260721025750_add_discord_monitoring_map.sql` adds:
 

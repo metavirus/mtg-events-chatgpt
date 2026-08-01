@@ -184,7 +184,7 @@ Run this at session start whenever the canonical 25-mile snapshot is at least
 24 hours old. It performs one bounded workflow:
 
 - refresh the full normalized local Magic snapshot;
-- atomically replace the rich `public.wpn_snapshot_cache` row in Supabase;
+- atomically upsert the rich `public.wpn_snapshot_cache` row in Supabase;
 - verify retrieval time, counts, and content fingerprint; and
 - stop.
 
@@ -206,6 +206,9 @@ It also updates:
 This is low-risk source-cache maintenance. It does not promote WPN rows into
 canonical app Events, create Signals, or reassess venues. If the tracked
 snapshot changed, checkpoint and push it, then finish the refresh task.
+
+The refresh is fingerprint/delta-aware. It never flushes canonical Events or
+rebuilds the cache through a delete-then-reinsert cycle.
 
 The next ingest revision is implemented but intentionally **not deployed** at
 the 2026-08-01 checkpoint. Its pending migration is

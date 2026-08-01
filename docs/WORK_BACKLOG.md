@@ -664,9 +664,6 @@ claims without reopening the whole packet.
   WPN-backed event upserts if WPN event capture remains too proposal-heavy, or
   establish a direct steward DB execution path if approved Standard writes still
   spend too much time in connector ferrying.
-- WPN cache artifact policy TBD: ordinary cache state should eventually be
-  Supabase-backed or ignored local output if it creates recurring Git churn.
-  Keep Git-tracked WPN artifacts only for intentional recovery/debug snapshots.
 - At the next stable checkpoint, perform a deliberate branch-hygiene pass:
   review the active worktree, make an intentional checkpoint commit, create or
   rename into a broader canonical working branch for the full project, push it,

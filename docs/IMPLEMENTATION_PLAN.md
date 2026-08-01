@@ -1,5 +1,8 @@
 # Implementation Plan
 
+Status: Product/design baseline, not the current execution queue. Use
+`CURRENT_FRONTIER.md` and `docs/WORK_BACKLOG.md` to select current work.
+
 ## Governing direction
 
 Build the first complete private version from the user decisions, research,

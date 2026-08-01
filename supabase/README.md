@@ -1,96 +1,58 @@
-# Supabase setup and migration
+# Supabase operational notes
 
-Supabase is the default operational read layer for MTG Events. The checked-in
-JSON snapshot remains available as explicit recovery/export fallback.
+Supabase is the canonical operational data layer for MTG Events. Generated
+JSON and the original seed remain emergency/debug/recovery artifacts; they are
+not the ordinary research editing or validation surface.
 
-## Files
+## Current layout
 
-- `migrations/0001_initial_schema.sql` creates the research, personal, and
-  agent-request tables, indexes, triggers, grants, and row-level security.
-- `migrations/20260719020241_add_venue_hours.sql` adds the optional
-  source-backed venue-hours table used by Places.
-- `migrations/20260720214959_add_signals_foundation.sql` adds the minimal
-  read-only Signals receiving model. Signals remain reviewable observations,
-  separate from canonical events, research truth, Updates, and personal state.
-- `migrations/20260720233000_add_signal_user_states.sql` adds private,
-  authenticated per-user read-state for Signals so handled items can be hidden
-  without mutating the underlying signal record.
-- `seed/0001_current_snapshot.sql` is generated from the current canonical JSON
-  by `scripts/generate_supabase_seed.py`.
-- `scripts/verify_supabase_parity.py` compares the imported row IDs with the
-  current JSON files through the public read API.
-- `scripts/supabase_research_workflow.py` validates reviewable research update
-  proposals, generates dry-run SQL plans, and exports deterministic JSON
-  recovery snapshots from Supabase.
+- `migrations/` contains the ordered schema history. Use the Supabase CLI and
+  `docs/ENVIRONMENT_READINESS.md`; do not replay migration files manually in
+  the dashboard.
+- `seed/0001_current_snapshot.sql` is the historical initial import generated
+  from the pre-cutover JSON snapshot. It is not regenerated during ordinary
+  operation.
+- `scripts/supabase_research_workflow.py` remains the reviewed proposal path for
+  mutations that do not fit an accepted typed routine-write lane.
+- `public.wpn_snapshot_cache` is the service-only rich WPN source cache.
+- `public.coordination_items` is the non-canonical review inbox used by
+  ChatGPT/Codex handoffs and, after the pending ingest migration, exceptional
+  machine findings.
 
-Never put a Supabase service-role key in this repository or in browser code.
-The publishable key is designed for browser use, but row-level security must
-remain enabled.
+Never put a database URL, database password, service-role key, or Supabase
+secret key in this repository or browser code. Browser-safe project settings
+remain in `project-config.json`; privileged local values belong only in the
+ignored `.codex-secrets/` path described by the readiness documentation.
 
-`project-config.json` contains only the browser-safe project URL and publishable
-key. The parity script reads this file automatically; environment variables can
-still override it.
+## Current undeployed migration
 
-## One-time project setup
+`20260801170000_enrich_wpn_ingest_cache.sql` is committed but intentionally not
+deployed. It adds enriched WPN events/organizations, compact cross-snapshot
+event observation state, upstream field inventory, and delta summaries. The
+corresponding ingest code is already safe before deployment: it detects the
+old live schema and continues using the existing upsert-only cache write.
 
-1. In the Supabase project, open **SQL Editor**.
-2. Run `migrations/0001_initial_schema.sql`.
-3. Run `seed/0001_current_snapshot.sql`.
-4. In **Authentication → URL Configuration**, add the production GitHub Pages
-   URL and the local preview URL as allowed redirect URLs.
-5. Create or invite the single project user through Supabase Authentication.
-6. Run the parity check from a UTF-8-capable shell:
+The exact next data action is recorded in `CURRENT_FRONTIER.md`: review and
+deploy that one migration, run one live WPN refresh/readback, and confirm a
+no-delta run creates no coordination-inbox noise.
 
-```powershell
-python.exe scripts/verify_supabase_parity.py
-```
+## Operational rules
 
-The expected initial result is:
+- Run the mandatory readiness gate before data work.
+- Supabase writes use proportional validation and the accepted typed/helper
+  paths in `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`.
+- Routine cache or surface state does not require proposal ceremony.
+- Canonical venue/event/evaluation changes still require the appropriate
+  reviewed write lane.
+- `?data=json` is an explicit recovery/debug mode, not a parallel product or
+  research path.
+- RLS stays enabled on exposed-schema tables, and privileged operational tables
+  remain unavailable to browser roles unless a bounded product requirement
+  explicitly changes that boundary.
 
-- 55 venue IDs
-- 3 community IDs
-- 145 source IDs
-- 97 event-series IDs
-- 10 dated occurrence IDs
-- 34 research-change IDs
+## Historical setup artifacts
 
-## Research-write safety gate
-
-Before broad research resumes, use the controlled workflow documented in
-`docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md`.
-
-Generated JSON exports are recovery/export artifacts and must not be manually
-edited. Future research updates should be proposed as field-specific Supabase
-operations, validated, reviewed, backed up/exported, applied only when
-authorized, and verified after write.
-
-## Cutover gates
-
-The app has switched to Supabase-default reads only after these gates:
-
-- controlled research writes and deterministic JSON export/recovery are
-  accepted;
-- schema and seed SQL complete without error;
-- parity check passes for every table;
-- anonymous users can read research tables but cannot write them;
-- the authenticated user can read and write only their own preferences, notes,
-  activity, state, and agent requests;
-- localStorage preferences have a tested one-time import path;
-- the file-backed adapter remains available for immediate rollback;
-- Today, Events, Places, Communities, Updates, and Research pass a browser
-  smoke test using Supabase data.
-
-Use `?data=json` to force the file-backed recovery path during local validation
-or rollback checks.
-
-## Regenerating the snapshot
-
-After canonical JSON changes and before cutover:
-
-```powershell
-python.exe scripts/generate_supabase_seed.py
-powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1
-```
-
-The generated seed is deliberately repeatable: it upserts by stable existing
-IDs rather than inventing new venue, event, source, or change identities.
+The initial seed, parity checker, and early cutover notes are retained for
+recovery and history. They do not define the current operating workflow. See
+`docs/SUPABASE_MIGRATION_STATUS.md` for the short migration checkpoint and
+`docs/archive/` for older chronology.
