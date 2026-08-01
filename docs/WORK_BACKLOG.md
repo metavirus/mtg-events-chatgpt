@@ -16,8 +16,11 @@ Use it for:
 
 - Canonical event ingest agent: implement the accepted source-neutral design in
   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`. WPN is the first adapter, not a
-  separate canonical pipeline. The initial tranche should add normalized event
-  observations, durable source-record bindings, and one set-based reconciler;
+  separate canonical pipeline. WPN adapter contract v3 is complete: it emits
+  deterministic eligibility, sparse typed facts, exact URLs, field/rule flags,
+  and strict plus template grouping hints without making canonical merge
+  decisions. The next tranche should add normalized event observations,
+  durable source-record bindings, and one set-based reconciler;
   prove complete/idempotent exact-known-venue WPN promotion, inherited hiding,
   sparse structured optional facts without blob-only normalization, grouped
   presentation deltas, one lightweight non-user-facing ingest-run ledger, and

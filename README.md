@@ -108,9 +108,17 @@ The crawler stores:
 
 The enriched ingest path also derives direct Wizards event/store links, local
 date/time, normalized fee fields, stable event/content/organization
-fingerprints, and exact canonical venue IDs when an existing `src-wpn-*`
-relationship proves the match. Ordinary deltas remain in the cache; only
-exceptional machine findings enter the quiet Supabase coordination inbox.
+fingerprints, exact canonical venue IDs when an existing `src-wpn-*`
+relationship proves the match, promotion-eligibility reasons, material rules
+flags, field-presence metadata, and two deliberately non-authoritative source
+grouping hints: strict title/weekday/time clusters and WPN template clusters.
+The strict key also preserves format, team-size, and explicit proxy-rule
+variants so same-slot events with materially different rules do not collapse.
+These hints prevent occurrence-heavy WPN data from being mistaken for one new
+canonical series per row; the shared promoter still makes the final identity
+decision. Ordinary deltas remain in the cache; only exceptional machine
+findings enter the quiet Supabase coordination inbox. Replaying an unchanged
+raw snapshot under the same adapter contract performs no cache write.
 
 The default query uses the public Los Alamitos, CA centroid and the Wizards
 locator's 25-mile routine search radius. It does not store a private home

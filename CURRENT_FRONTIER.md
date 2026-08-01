@@ -58,12 +58,23 @@ frontier checkpoints are preserved in
   findings. The first live write established the enriched baseline in 9.16
   seconds; an immediate 9.40-second replay returned 1,267 unchanged events,
   zero findings, and zero coordination-inbox noise.
+- WPN adapter contract v3 is now live in that cache. It adds conservative
+  title keys, promoter eligibility/exclusion reasons, structured fact and field
+  presence metadata, explicit proxy-rule flags, strict venue/title/weekday/time
+  series hints that preserve format/team/proxy variants, and separate
+  non-authoritative WPN template hints. On the
+  current snapshot, 1,079 eligible exact-known-venue observations compress to
+  374 strict hints (133 repeated, 241 one-off); 149 template hints provide a
+  second lens for finite specials, with 44 spanning multiple session lanes.
+  The live v3 cache write took about 11 seconds, and an unchanged replay exited
+  without a Supabase write in about 6.2 seconds.
 - The next event-agent boundary is now explicit in
   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`: WPN remains a source-specific
   cache/adapter, while one source-neutral observation and reconciliation layer
   promotes attributable events from WPN and later official calendars, Discord,
-  Instagram/Facebook, registration platforms, and source artifacts. The design
-  is complete; implementation has not started.
+  Instagram/Facebook, registration platforms, and source artifacts. The WPN
+  adapter preparation is implemented; normalized cross-source observations,
+  durable bindings, and the shared reconciler remain next.
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated
@@ -108,11 +119,13 @@ Canonical operating details:
 
 ## Next safe lanes
 
-0. Implement the WPN-first slice of
-   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`: a typed normalized observation
-   contract, durable source-record bindings, and one set-based source-neutral
-   canonical reconciler. Prove exact WPN replay first, then one bounded non-WPN
-   adapter. Do not build separate WPN/social canonical promoters.
+0. Continue the WPN-first slice of
+   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the completed adapter v3:
+   add the typed normalized observation contract, durable source-record
+   bindings, and one set-based source-neutral canonical reconciler. Use the
+   adapter's strict and template hints as evidence, never as automatic canonical
+   identity. Prove exact WPN replay first, then one bounded non-WPN adapter. Do
+   not build separate WPN/social canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by

@@ -12,9 +12,11 @@ import re
 import subprocess
 import sys
 import tempfile
+import unicodedata
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 from uuid import uuid4
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,6 +26,17 @@ SECRET_URL = ROOT / ".codex-secrets" / "supabase-db-url.txt"
 CACHE_ID = "los-alamitos-25mi"
 WPN_EVENT_URL = "https://locator.wizards.com/event/{event_id}"
 WPN_STORE_URL = "https://locator.wizards.com/store/{organization_id}"
+ADAPTER_CONTRACT_VERSION = 3
+
+NO_PROXY_PATTERN = re.compile(
+    r"\b(?:no\s+prox(?:y|ies)|prox(?:y|ies)\s+(?:are\s+)?(?:not\s+allowed|prohibited|banned)|"
+    r"official\s+(?:wizards\s+)?cards\s+only)\b",
+    re.IGNORECASE,
+)
+PROXY_ALLOWED_PATTERN = re.compile(
+    r"\b(?:prox(?:y|ies)\s+(?:are\s+)?(?:allowed|welcome|permitted|okay|ok)|proxy[- ]friendly)\b",
+    re.IGNORECASE,
+)
 
 
 def load_json(name: str):
@@ -102,6 +115,183 @@ def stable_hash(value) -> str:
 
 def normalized_text(value) -> str:
     return " ".join(str(value or "").lower().split())
+
+
+def normalized_title_key(value) -> str:
+    """Normalize source titles without guessing that similar titles are identical."""
+    text = unicodedata.normalize("NFKD", str(value or ""))
+    text = "".join(char for char in text if not unicodedata.combining(char))
+    text = text.casefold().replace("&", " and ")
+    return " ".join(re.sub(r"[^a-z0-9]+", " ", text).split())
+
+
+def event_local_schedule(event: dict) -> dict:
+    scheduled_text = str(event.get("scheduledStartTime") or "").strip()
+    if not scheduled_text:
+        return {"localStartDate": None, "localStartTime": None, "localWeekday": None}
+    try:
+        scheduled = datetime.fromisoformat(scheduled_text.replace("Z", "+00:00"))
+        zone_name = str(event.get("timeZone") or "America/Los_Angeles")
+        try:
+            local = scheduled.astimezone(ZoneInfo(zone_name))
+        except ZoneInfoNotFoundError:
+            local = scheduled.astimezone(ZoneInfo("America/Los_Angeles"))
+        return {
+            "localStartDate": local.date().isoformat(),
+            "localStartTime": local.time().replace(microsecond=0).isoformat(),
+            "localWeekday": local.strftime("%A"),
+        }
+    except ValueError:
+        return {"localStartDate": None, "localStartTime": None, "localWeekday": None}
+
+
+def event_promotion_state(event: dict, venue_match_status: str, retrieved_at: str) -> dict:
+    """Classify source eligibility without deciding canonical event identity."""
+    scheduled_text = str(event.get("scheduledStartTime") or "").strip()
+    status = str(event.get("status") or "").strip().upper()
+    if venue_match_status != "matched":
+        reason = "venue_identity_conflict" if venue_match_status == "conflict" else "unmatched_venue"
+    elif not scheduled_text:
+        reason = "missing_schedule"
+    elif status != "SCHEDULED":
+        reason = f"upstream_status_{status.casefold() or 'missing'}"
+    else:
+        try:
+            scheduled = datetime.fromisoformat(scheduled_text.replace("Z", "+00:00"))
+            retrieved = datetime.fromisoformat(retrieved_at.replace("Z", "+00:00"))
+            reason = "eligible" if scheduled >= retrieved else "already_started_or_past"
+        except ValueError:
+            reason = "malformed_schedule"
+    return {"promotionEligible": reason == "eligible", "promotionEligibility": reason}
+
+
+def event_field_presence(event: dict) -> dict:
+    return {
+        field: field in event and event.get(field) is not None
+        for field in (
+            "capacity", "description", "entryFee", "eventFormat", "cardSet",
+            "eventTemplateId", "pairingType", "playerSaved", "requiredTeamSize",
+            "rulesEnforcementLevel", "scheduledStartTime", "status", "tags",
+            "timeZone", "title",
+        )
+    }
+
+
+def event_rule_flags(event: dict) -> dict:
+    evidence = " ".join(
+        str(value or "") for value in (event.get("title"), event.get("description"))
+    )
+    return {
+        "explicitNoProxy": bool(NO_PROXY_PATTERN.search(evidence)),
+        "explicitProxyAllowed": bool(PROXY_ALLOWED_PATTERN.search(evidence)),
+    }
+
+
+def source_hint_keys(
+    org_id: str, title_key: str, schedule: dict, template_id=None,
+    format_name=None, team_size=None, rule_flags=None,
+) -> dict:
+    weekday = schedule.get("localWeekday") or "unknown-day"
+    local_time = (schedule.get("localStartTime") or "unknown-time")[:5]
+    format_key = normalized_title_key(format_name) or "unknown-format"
+    team_key = f"team-{team_size}" if team_size is not None else "team-unknown"
+    rule_flags = rule_flags or {}
+    proxy_key = (
+        "no-proxy" if rule_flags.get("explicitNoProxy")
+        else "proxy-allowed" if rule_flags.get("explicitProxyAllowed")
+        else "proxy-unspecified"
+    )
+    result = {
+        "sourceVenueTitleKey": f"wpn:{org_id}:{title_key}",
+        "sourceScheduleLaneKey": f"wpn:{org_id}:{weekday.casefold()}:{local_time}",
+        "sourceSeriesHintKey": (
+            f"wpn:{org_id}:{title_key}:{weekday.casefold()}:{local_time}:"
+            f"{format_key}:{team_key}:{proxy_key}"
+        ),
+    }
+    result["sourceTemplateHintKey"] = (
+        f"wpn:{org_id}:template:{template_id}" if template_id else None
+    )
+    return result
+
+
+def summarize_series_hints(events: list[dict]) -> dict:
+    clusters: dict[str, dict] = {}
+    template_clusters: dict[str, dict] = {}
+    eligibility: dict[str, int] = {}
+    for event in events:
+        reason = str(event.get("promotionEligibility") or "unknown")
+        eligibility[reason] = eligibility.get(reason, 0) + 1
+        if not event.get("promotionEligible"):
+            continue
+        key = event["sourceSeriesHintKey"]
+        cluster = clusters.setdefault(key, {
+            "sourceSeriesHintKey": key,
+            "sourceOrganizationId": event.get("sourceOrganizationId"),
+            "canonicalVenueId": event.get("canonicalVenueId"),
+            "normalizedTitleKey": event.get("normalizedTitleKey"),
+            "titleSample": event.get("title"),
+            "localWeekday": event.get("localWeekday"),
+            "localStartTime": event.get("localStartTime"),
+            "eventFormatName": (event.get("normalizedFacts") or {}).get("formatName"),
+            "eventTemplateIds": [],
+            "sourceEventIds": [],
+            "firstLocalDate": event.get("localStartDate"),
+            "lastLocalDate": event.get("localStartDate"),
+            "occurrenceCount": 0,
+        })
+        cluster["occurrenceCount"] += 1
+        cluster["sourceEventIds"].append(event.get("sourceEventId"))
+        template_id = event.get("eventTemplateId")
+        if template_id and template_id not in cluster["eventTemplateIds"]:
+            cluster["eventTemplateIds"].append(template_id)
+        local_date = event.get("localStartDate")
+        if local_date:
+            cluster["firstLocalDate"] = min(cluster["firstLocalDate"] or local_date, local_date)
+            cluster["lastLocalDate"] = max(cluster["lastLocalDate"] or local_date, local_date)
+        template_key = event.get("sourceTemplateHintKey")
+        if template_key:
+            template = template_clusters.setdefault(template_key, {
+                "sourceTemplateHintKey": template_key,
+                "sourceOrganizationId": event.get("sourceOrganizationId"),
+                "canonicalVenueId": event.get("canonicalVenueId"),
+                "eventTemplateId": event.get("eventTemplateId"),
+                "titleSamples": [],
+                "sourceSeriesHintKeys": [],
+                "sourceEventIds": [],
+                "firstLocalDate": event.get("localStartDate"),
+                "lastLocalDate": event.get("localStartDate"),
+                "occurrenceCount": 0,
+            })
+            template["occurrenceCount"] += 1
+            template["sourceEventIds"].append(event.get("sourceEventId"))
+            for field, value in (
+                ("titleSamples", event.get("title")),
+                ("sourceSeriesHintKeys", event.get("sourceSeriesHintKey")),
+            ):
+                if value and value not in template[field]:
+                    template[field].append(value)
+            if local_date:
+                template["firstLocalDate"] = min(template["firstLocalDate"] or local_date, local_date)
+                template["lastLocalDate"] = max(template["lastLocalDate"] or local_date, local_date)
+    ordered = sorted(clusters.values(), key=lambda value: value["sourceSeriesHintKey"])
+    ordered_templates = sorted(
+        template_clusters.values(), key=lambda value: value["sourceTemplateHintKey"]
+    )
+    return {
+        "adapterContractVersion": ADAPTER_CONTRACT_VERSION,
+        "eligibleObservationCount": sum(eligibility.get(key, 0) for key in ("eligible",)),
+        "eligibilityCounts": dict(sorted(eligibility.items())),
+        "seriesHintClusterCount": len(ordered),
+        "repeatedSeriesHintClusterCount": sum(1 for item in ordered if item["occurrenceCount"] > 1),
+        "singleOccurrenceSeriesHintClusterCount": sum(1 for item in ordered if item["occurrenceCount"] == 1),
+        "seriesHintClusters": ordered,
+        "templateHintClusterCount": len(ordered_templates),
+        "multiSessionTemplateHintClusterCount": sum(
+            1 for item in ordered_templates if len(item["sourceSeriesHintKeys"]) > 1
+        ),
+        "templateHintClusters": ordered_templates,
+    }
 
 
 def website_host(value) -> str | None:
@@ -258,7 +448,13 @@ def enrich_snapshot(
         org_id = str((event.get("organization") or {}).get("id") or event.get("sourceOrganizationId") or "")
         org = organization_lookup.get(org_id, {})
         item = dict(event)
+        schedule = event_local_schedule(event)
+        title_key = normalized_title_key(event.get("title")) or "untitled"
+        rule_flags = event_rule_flags(event)
+        event_format = event.get("eventFormat") or {}
+        entry_fee = event.get("entryFee") or {}
         item.update({
+            "adapterContractVersion": ADAPTER_CONTRACT_VERSION,
             "source": "wpn_eventlink",
             "sourceEventId": event_id,
             "sourceEventUrl": WPN_EVENT_URL.format(event_id=event_id),
@@ -268,6 +464,32 @@ def enrich_snapshot(
             "venueMatchStatus": org.get("venueMatchStatus", "unmatched"),
             "venueMatchMethod": org.get("venueMatchMethod"),
             "venueMatchConfidence": org.get("venueMatchConfidence"),
+            "normalizedTitleKey": title_key,
+            **schedule,
+            **source_hint_keys(
+                org_id or "unknown", title_key, schedule, event.get("eventTemplateId"),
+                event_format.get("name"), event.get("requiredTeamSize"), rule_flags,
+            ),
+            **event_promotion_state(event, org.get("venueMatchStatus", "unmatched"), retrieved_at),
+            "fieldPresence": event_field_presence(event),
+            "rulesFlags": rule_flags,
+            "normalizedFacts": {
+                "formatId": event_format.get("id"),
+                "formatName": event_format.get("name"),
+                "feeAmount": entry_fee.get("amount"),
+                "feeCurrency": entry_fee.get("currency"),
+                "isFree": event.get("isFree") if "isFree" in event else entry_fee.get("amount") == 0,
+                "capacity": event.get("capacity"),
+                "teamSize": event.get("requiredTeamSize"),
+                "rulesEnforcementLevel": event.get("rulesEnforcementLevel"),
+                "pairingType": event.get("pairingType"),
+                "templateId": event.get("eventTemplateId") or None,
+                "cardSetId": (event.get("cardSet") or {}).get("id"),
+                "playerSaved": event.get("playerSaved"),
+                "isOnline": event.get("isOnline"),
+                "explicitNoProxy": rule_flags["explicitNoProxy"],
+                "explicitProxyAllowed": rule_flags["explicitProxyAllowed"],
+            },
         })
         item["eventIdentityFingerprintVersion"] = 1
         item["eventIdentityFingerprint"] = stable_hash({
@@ -404,6 +626,7 @@ def enrich_snapshot(
         })
 
     matched_orgs = sum(1 for org in enriched_organizations if org.get("venueMatchStatus") == "matched")
+    series_hints = summarize_series_hints(enriched_events)
     delta = {
         "newEventCount": len(new_ids), "newEventIds": new_ids,
         "changedEventCount": len(changed_ids), "changedEventIds": changed_ids,
@@ -412,6 +635,16 @@ def enrich_snapshot(
         "confirmedMissingEventCount": len(confirmed_missing_ids), "confirmedMissingEventIds": confirmed_missing_ids,
         "matchedOrganizationCount": matched_orgs,
         "unmatchedOrganizationCount": len(enriched_organizations) - matched_orgs,
+        "adapterContractVersion": ADAPTER_CONTRACT_VERSION,
+        "promotionEligibilityCounts": series_hints["eligibilityCounts"],
+        "eligibleObservationCount": series_hints["eligibleObservationCount"],
+        "seriesHintClusterCount": series_hints["seriesHintClusterCount"],
+        "repeatedSeriesHintClusterCount": series_hints["repeatedSeriesHintClusterCount"],
+        "singleOccurrenceSeriesHintClusterCount": series_hints["singleOccurrenceSeriesHintClusterCount"],
+        "seriesHintClusters": series_hints["seriesHintClusters"],
+        "templateHintClusterCount": series_hints["templateHintClusterCount"],
+        "multiSessionTemplateHintClusterCount": series_hints["multiSessionTemplateHintClusterCount"],
+        "templateHintClusters": series_hints["templateHintClusters"],
         "findingCount": len(findings),
     }
     return enriched_events, enriched_organizations, event_state, field_inventory, findings, delta
@@ -598,6 +831,15 @@ def main() -> int:
         events_all, organizations, previous, exact_matches, metadata["retrievedAt"]
     )
     enriched_schema_ready = "enriched_events" in (previous.get("cache_row") or {})
+    previous_row = previous.get("cache_row") or {}
+    previous_contract = (previous_row.get("delta_summary") or {}).get(
+        "adapterContractVersion"
+    )
+    cache_is_current = (
+        enriched_schema_ready
+        and previous_row.get("content_sha256") == digest
+        and previous_contract == ADAPTER_CONTRACT_VERSION
+    )
     sql = build_sql(
         metadata, events_all, events_commander, organizations,
         enriched_events, enriched_organizations, event_state,
@@ -616,6 +858,13 @@ def main() -> int:
             "confirmedMissingEventIdsSample": delta["confirmedMissingEventIds"][:10],
             "matchedOrganizationCount": delta["matchedOrganizationCount"],
             "unmatchedOrganizationCount": delta["unmatchedOrganizationCount"],
+            "eligibleObservationCount": delta["eligibleObservationCount"],
+            "promotionEligibilityCounts": delta["promotionEligibilityCounts"],
+            "seriesHintClusterCount": delta["seriesHintClusterCount"],
+            "repeatedSeriesHintClusterCount": delta["repeatedSeriesHintClusterCount"],
+            "singleOccurrenceSeriesHintClusterCount": delta["singleOccurrenceSeriesHintClusterCount"],
+            "templateHintClusterCount": delta["templateHintClusterCount"],
+            "multiSessionTemplateHintClusterCount": delta["multiSessionTemplateHintClusterCount"],
             "findingCount": delta["findingCount"],
         }
         print("WPN INGEST PLAN — NO WRITE")
@@ -637,7 +886,17 @@ def main() -> int:
                 {"sourceOrganizationId": org["sourceOrganizationId"], "canonicalVenueId": org.get("canonicalVenueId")}
                 for org in enriched_organizations if org.get("canonicalVenueId")
             ][:5],
+            "seriesHintSamples": delta["seriesHintClusters"][:5],
+            "templateHintSamples": delta["templateHintClusters"][:3],
         }, indent=2, ensure_ascii=False))
+        return 0
+    if cache_is_current:
+        print(
+            "WPN CACHE UNCHANGED — raw snapshot and adapter contract already cached; "
+            "no Supabase write needed"
+        )
+        print(f"Retrieved: {metadata['retrievedAt']}")
+        print(f"SHA-256: {digest}")
         return 0
     if not enriched_schema_ready:
         sql = build_legacy_sql(

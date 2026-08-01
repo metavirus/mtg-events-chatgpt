@@ -1,6 +1,6 @@
 # Canonical Event Ingest Agent Design
 
-Status: design checkpoint; implementation not yet started  
+Status: WPN adapter contract v3 implemented; shared promoter not yet implemented
 Updated: 2026-08-01
 
 ## Decision
@@ -253,6 +253,33 @@ The reconciler must not flood the user merely because it processed many rows:
   canonical ingestion.
 
 ## WPN-first implementation slice
+
+### Implemented adapter boundary
+
+The WPN cache adapter now performs the deterministic source-only preparation
+needed by the shared promoter. Contract version 3 stores normalized title keys,
+local schedule components, exact EventLink/store URLs, promotion eligibility
+and exclusion reasons, field-presence metadata, typed source facts, explicit
+proxy-rule flags, and two independent grouping hints:
+
+- a strict organization + normalized title + weekday + local-time + format +
+  team-size + explicit proxy-rule hint, which groups repeated dated
+  observations without merging same-slot events with different titles or
+  materially different structured variants; and
+- an organization + WPN template hint, which can relate multi-session specials
+  across times while remaining explicitly non-authoritative because template
+  IDs are incomplete and can change between similarly named programs.
+
+The current 1,267-row snapshot yields 1,079 eligible exact-known-venue
+observations, 374 strict source-series hints (133 repeated and 241 one-off), and
+149 template hints, of which 44 span multiple strict session lanes. The adapter
+stores all observations but excludes unmatched venues and non-scheduled rows
+from promoter eligibility. A same-snapshot replay under the same contract is a
+no-write fast exit.
+
+This completes deterministic WPN source preparation only. It does not create
+normalized cross-source observations, canonical series/occurrences, Signals,
+Updates, personal visibility decisions, or durable canonical bindings.
 
 The first build should prove the shared core with WPN without implementing any
 new social crawler:
