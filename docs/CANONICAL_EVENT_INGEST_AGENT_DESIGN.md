@@ -268,6 +268,13 @@ new social crawler:
 Unmatched WPN organizations remain in the discovery inbox. They are not a
 reason to block promotion for the exact-matched majority.
 
+The read-only comparison in
+`docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md` is the measured basis
+for the first implementation. It confirms that the main first-run job is
+materializing dated occurrences and durable event-ID provenance for existing
+series while adding a smaller number of missing series/specials. Same schedule
+without exact title or a learned binding is not a canonical identity match.
+
 ## Second adapter proof
 
 After WPN succeeds, prove source neutrality with one already-known, reliable
@@ -310,6 +317,9 @@ One anomalous observation must not block safe events in the same run.
   observation can promote with only the facts it actually establishes.
 - Replaying a sparse observation never clears richer established facts.
 - The app renders no empty fact containers for unavailable optional data.
+- The first dry run reports observations, series clusters, occurrences, exact
+  matches, safe splits, inherited hiding, and ambiguity separately; it never
+  presents the raw observation count as the number of new canonical series.
 - A valid event at a hidden venue is present canonically but absent from default
   planning surfaces.
 - An explicit no-proxy event is present canonically and hidden by rule.

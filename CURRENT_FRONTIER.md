@@ -64,6 +64,12 @@ frontier checkpoints are preserved in
   promotes attributable events from WPN and later official calendars, Discord,
   Instagram/Facebook, registration platforms, and source artifacts. The design
   is complete; implementation has not started.
+- A read-only reconciliation against the 2026-08-01 cache is captured in
+  `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
+  exact-known-venue future WPN observations versus 118 canonical future dated
+  occurrences: 578 strong exact title/schedule matches, 254 no-lane candidates
+  compressing to 115 schedule clusters, and 249 same-slot/lane or multi-lane
+  cases that must not be merged by schedule alone. No data was written.
 
 ## Active data and research posture
 
