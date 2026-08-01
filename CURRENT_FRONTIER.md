@@ -82,6 +82,17 @@ frontier checkpoints are preserved in
   compressing to 116 schedule clusters, 182 same-slot/lane title differences,
   and 4 multi-lane ambiguities. It also identifies deterministic enrichment to
   push back into the WPN adapter so the promoter stays fast. No data was written.
+- Forward and reverse adversarial novelty audits are now built into
+  `scripts/audit_wpn_novelty.py`. Against the July 23 snapshot, 209 strict
+  clusters initially appeared novel, but only 101 were wholly new to WPN; 69
+  new/no-analogue strict clusters compressed to 35 event families. Today's
+  enriched observation state is a bootstrap baseline and must produce zero
+  user-facing `NEW` badges. Separately, 650 observations classified as already
+  represented produced zero detected suppression risks after normalized
+  format, status, date-bound, team-size, and proxy-policy checks. This does not
+  discard the 35 clear new/no-analogue families or same-lane specials: they
+  remain promoter candidates, while source arrival, canonical action, and
+  presentation novelty stay separate.
 
 ## Active data and research posture
 
