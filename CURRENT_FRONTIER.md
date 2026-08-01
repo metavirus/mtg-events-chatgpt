@@ -73,8 +73,14 @@ frontier checkpoints are preserved in
   cache/adapter, while one source-neutral observation and reconciliation layer
   promotes attributable events from WPN and later official calendars, Discord,
   Instagram/Facebook, registration platforms, and source artifacts. The WPN
-  adapter preparation is implemented; normalized cross-source observations,
-  durable bindings, and the shared reconciler remain next.
+  adapter plus service-only normalized observations, run ledger, durable
+  binding table, set-based WPN staging, and read-only reconciliation preview
+  are deployed in migration `20260801184712_add_canonical_event_ingest_core.sql`.
+  The one-command staging helper is
+  `scripts/stage_wpn_event_observations.py`. Its first run staged 1,081 unique
+  observations (1,079 eligible, 2 held) in about 0.3 seconds of database work;
+  replay created no duplicates. No canonical Events, Updates, or Signals were
+  written. Live canonical reconciliation remains next.
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated
@@ -131,11 +137,13 @@ Canonical operating details:
 ## Next safe lanes
 
 0. Continue the WPN-first slice of
-   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the completed adapter v3:
-   add the typed normalized observation contract, durable source-record
-   bindings, and one set-based source-neutral canonical reconciler. Use the
-   adapter's strict and template hints as evidence, never as automatic canonical
-   identity. Prove exact WPN replay first, then one bounded non-WPN adapter. Do
+   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the deployed normalized
+   staging/preview core: implement the live source-neutral reconciler that
+   fills durable bindings, adds safe missing occurrences/series, preserves
+   sparse structured facts/conflicts, inherits hiding without suppressing
+   ingestion, and returns grouped presentation deltas. Reuse the preview's
+   exact categories and isolate its three ambiguous observations. Prove a full
+   replay with zero duplicate effect, then add one bounded non-WPN adapter. Do
    not build separate WPN/social canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the

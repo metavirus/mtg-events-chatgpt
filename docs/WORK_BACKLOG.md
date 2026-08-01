@@ -19,9 +19,11 @@ Use it for:
   separate canonical pipeline. WPN adapter contract v3 is complete: it emits
   deterministic eligibility, sparse typed facts, exact URLs, field/rule flags,
   and strict plus template grouping hints without making canonical merge
-  decisions. The next tranche should add normalized event observations,
-  durable source-record bindings, and one set-based reconciler;
-  prove complete/idempotent exact-known-venue WPN promotion, inherited hiding,
+  decisions. The normalized observation table, compact run ledger, durable
+  binding table, set-based WPN staging function, reconciliation preview, and
+  one-command helper are now deployed. The next tranche should implement the
+  live source-neutral reconciler and fill bindings; prove complete/idempotent
+  exact-known-venue WPN promotion, inherited hiding,
   sparse structured optional facts without blob-only normalization, grouped
   presentation deltas, one lightweight non-user-facing ingest-run ledger, and
   then one bounded non-WPN adapter. A sparse later source must not clear richer

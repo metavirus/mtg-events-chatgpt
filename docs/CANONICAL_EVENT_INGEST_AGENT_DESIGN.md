@@ -1,6 +1,6 @@
 # Canonical Event Ingest Agent Design
 
-Status: WPN adapter contract v3 implemented; shared promoter not yet implemented
+Status: normalized ingest core and WPN staging/preview implemented; canonical mutation remains
 Updated: 2026-08-01
 
 ## Decision
@@ -26,6 +26,33 @@ The boundary is:
 source collector -> source adapter -> normalized event observation
                  -> shared canonical reconciler -> presentation consequences
 ```
+
+## Implemented promoter foundation (2026-08-01)
+
+Migration `20260801184712_add_canonical_event_ingest_core.sql` now provides the
+service-only operational foundation described below:
+
+- `event_ingest_runs` for one compact row per attempted cache/run;
+- `event_observations` for typed, source-neutral observations plus bounded
+  source-native evidence;
+- `event_source_bindings` for durable upstream-to-canonical identity;
+- `stage_wpn_event_observations(...)` for one set-based WPN adapter load; and
+- `preview_event_ingest_reconciliation(...)` for read-only exact-match,
+  safe-create/split, inherited-hide, ineligible, and ambiguity classification.
+
+`scripts/stage_wpn_event_observations.py` is the one-command operator path. The
+first live staging pass wrote 1,081 unique observations in roughly 0.3 seconds
+of database work (1,079 eligible, 2 held); an identical replay returned the
+same run and created no duplicates. The preview classified exactly 650 eligible
+observations as already represented, matching the prior adversarial audit while
+separating three observations with multiple exact canonical matches for review.
+It performed zero canonical Event, Update, or Signal writes.
+
+The next implementation boundary is the live source-neutral reconciler: bind
+the exact represented rows, materialize safe missing occurrences/series,
+preserve optional facts and conflicts, and return grouped presentation deltas.
+Do not reopen adapter design or add another source crawler before that path is
+proven and replayed.
 
 ## Core principles
 
