@@ -15,8 +15,11 @@ import os
 import sys
 import time
 from datetime import datetime, timezone
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
+from zoneinfo import ZoneInfo
 
 import requests
 import truststore
@@ -80,6 +83,7 @@ query queryEvents(
       status
       tags
       timeZone
+      playerSaved
       entryFee { amount currency }
       organization {
         id
@@ -87,8 +91,16 @@ query queryEvents(
         name
         postalAddress
         website
+        phoneNumber
+        emailAddress
+        address
+        city
+        state
+        postalCode
+        showEmailInSEL
+        showInInternalSearch
       }
-      eventFormat { id }
+      eventFormat { id name }
       cardSet { id }
     }
     pageInfo { page pageSize totalResults }
@@ -212,6 +224,43 @@ def normalize(
     for event in events:
         item = dict(event)
 
+        event_id = str(event.get("id") or "").strip()
+        organization = event.get("organization") or {}
+        organization_id = str(organization.get("id") or "").strip()
+        if event_id:
+            item["sourceEventId"] = event_id
+            item["sourceEventUrl"] = f"https://locator.wizards.com/event/{event_id}"
+        if organization_id:
+            item["sourceOrganizationId"] = organization_id
+            item["sourceStoreKey"] = f"wpn:{organization_id}"
+            item["sourceStoreUrl"] = f"https://locator.wizards.com/store/{organization_id}"
+
+        scheduled = event.get("scheduledStartTime")
+        event_timezone = event.get("timeZone")
+        if scheduled:
+            instant = datetime.fromisoformat(str(scheduled).replace("Z", "+00:00"))
+            local = instant
+            if event_timezone:
+                try:
+                    local = instant.astimezone(ZoneInfo(str(event_timezone)))
+                except Exception:
+                    pass
+            item["localStartDate"] = local.date().isoformat()
+            item["localStartTime"] = local.strftime("%H:%M:%S")
+            item["localWeekday"] = local.strftime("%A")
+
+        fee = event.get("entryFee") or {}
+        raw_amount = fee.get("amount")
+        currency = fee.get("currency") or "USD"
+        if raw_amount is not None:
+            value = Decimal(str(raw_amount)) / Decimal("100")
+            item["entryFeeRawAmount"] = raw_amount
+            item["entryFeeMinorUnits"] = int(raw_amount)
+            item["entryFeeValue"] = float(value)
+            item["entryFeeDisplay"] = "Free" if value == 0 else f"${value:.2f}"
+            item["isFree"] = value == 0
+            item["entryFeeCurrency"] = currency
+
         if event.get("latitude") is not None and event.get("longitude") is not None:
             item["calculatedDistanceMiles"] = round(
                 haversine_miles(
@@ -235,18 +284,35 @@ def normalize(
         item["commanderCandidate"] = any(
             term in searchable for term in ("commander", "edh", "cedh")
         )
+        item["isCommander"] = item["commanderCandidate"]
+        item["isDraft"] = "draft" in searchable
+        item["isPrerelease"] = any(
+            term in searchable for term in ("prerelease", "pre-release", "pre release")
+        )
         item["retrievedAt"] = retrieved_at
         normalized.append(item)
 
         if item["commanderCandidate"]:
             commander.append(item)
 
-        org = event.get("organization") or {}
+        org = organization
         org_id = org.get("id")
         if org_id:
             previous = organizations.get(str(org_id), {})
             organizations[str(org_id)] = {
                 **org,
+                "sourceOrganizationId": str(org_id),
+                "sourceStoreKey": f"wpn:{org_id}",
+                "sourceStoreUrl": f"https://locator.wizards.com/store/{org_id}",
+                "normalizedWebsiteHost": (
+                    urlparse(
+                        str(org.get("website") or "")
+                        if "://" in str(org.get("website") or "")
+                        else "https://" + str(org.get("website") or "")
+                    ).hostname
+                    if org.get("website")
+                    else None
+                ),
                 "latitude": event.get("latitude"),
                 "longitude": event.get("longitude"),
                 "calculatedDistanceMiles": item.get("calculatedDistanceMiles"),

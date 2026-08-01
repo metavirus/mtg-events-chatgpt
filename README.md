@@ -106,6 +106,12 @@ The crawler stores:
 - `output/wizards/events-commander.json`: heuristic Commander/EDH/cEDH candidates
 - `output/wizards/organizations.json`: deduplicated Wizards organizations/stores
 
+The enriched ingest path also derives direct Wizards event/store links, local
+date/time, normalized fee fields, stable event/content/organization
+fingerprints, and exact canonical venue IDs when an existing `src-wpn-*`
+relationship proves the match. Ordinary deltas remain in the cache; only
+exceptional machine findings enter the quiet Supabase coordination inbox.
+
 The default query uses the public Los Alamitos, CA centroid and the Wizards
 locator's 25-mile routine search radius. It does not store a private home
 address. Candidate events are intentionally broad and should be verified before

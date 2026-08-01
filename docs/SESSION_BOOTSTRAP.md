@@ -50,6 +50,9 @@ The repository has already completed these stabilization steps:
 - the default worker model is retired for this project: use direct bounded
   execution in the current task for small batches unless the user explicitly
   approves a specific exceptional worker.
+- the current undeployed checkpoint is the enriched WPN ingest agent described
+  in `CURRENT_FRONTIER.md`; do not mistake its local code/migration for a live
+  schema change or repeat its implementation.
 
 See also:
 
@@ -65,7 +68,7 @@ See also:
 Before deeper work:
 
 1. verify Python visibility:
-   - `python.exe --version`
+   - `.\.venv\Scripts\python.exe --version`
 2. read:
    - `README.md`
    - `docs/PROJECT_CONTEXT.md`
@@ -76,6 +79,11 @@ Before deeper work:
 3. inspect repo state:
    - current branch
    - `git status --short`
+4. after the WPN ingest migration is deployed, check the quiet machine inbox:
+   open `coordination_items` where `origin = 'automation'`, `target = 'codex'`,
+   `details->>'inboxKind' = 'wpn_ingest_finding'`, and status is not terminal.
+   Report only the count and actionable titles; do not create user-facing
+   Signals/Updates or redo source analysis automatically.
 
 ## Handoff freshness rule
 
@@ -97,14 +105,13 @@ compression from resurrecting completed work.
 
 ## Python note
 
-Python is confirmed on the user's machine, but the `py` launcher has been
-unreliable in Codex/Windows shell contexts because it can resolve through the
-WindowsApps stub. Prefer `python.exe`, not `py`, for repo validation and helper
-scripts.
+Python is confirmed on the user's machine, but the `py` launcher and arbitrary
+global `python.exe` installations are not the project runtime. Use
+`.\.venv\Scripts\python.exe` for repo validation, crawlers, and helpers.
 
 Interpretation:
 
-- if `python.exe --version` works, use Python normally;
+- if `.\.venv\Scripts\python.exe --version` works, use that runtime normally;
 - if `python.exe` fails in an older task, do not assume Python is uninstalled;
 - prefer a fresh task or environment refresh before spending effort debugging
   launcher visibility;

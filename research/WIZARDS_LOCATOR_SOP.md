@@ -176,6 +176,10 @@ Use:
 
 `python scripts/refresh_wpn_cache.py`
 
+Use the blessed project runtime in actual commands:
+
+`.\.venv\Scripts\python.exe scripts\refresh_wpn_cache.py`
+
 Run this at session start whenever the canonical 25-mile snapshot is at least
 24 hours old. It performs one bounded workflow:
 
@@ -202,6 +206,35 @@ It also updates:
 This is low-risk source-cache maintenance. It does not promote WPN rows into
 canonical app Events, create Signals, or reassess venues. If the tracked
 snapshot changed, checkpoint and push it, then finish the refresh task.
+
+The next ingest revision is implemented but intentionally **not deployed** at
+the 2026-08-01 checkpoint. Its pending migration is
+`20260801170000_enrich_wpn_ingest_cache.sql`. Until that migration is approved
+and deployed, use `scripts/refresh_wpn_cache.py --dry-run` for the enriched
+proof only. The script detects the absent enrichment columns and automatically
+uses its existing upsert-only cache write, so the readiness gate remains safe
+before deployment.
+
+After deployment, the same bounded refresh will additionally:
+
+- enrich every event with direct Wizards event/store URLs, normalized local
+  schedule and fee fields, format/type flags, and stable identity/content
+  fingerprints;
+- associate organizations with canonical venues only through exact existing
+  `src-wpn-{organizationId}` source relationships;
+- preserve unmatched organizations with deterministic identity fingerprints;
+- compare event IDs and content fingerprints against the prior cache without
+  flush-and-reinsert behavior;
+- retain compact per-event observation state so a future scheduled event is
+  not treated as gone until two consecutive misses; and
+- upsert exceptional findings into `coordination_items` with
+  `origin=automation`, `target=codex`, and stable deduplication keys.
+
+The quiet ingest inbox is for new unmatched organizations, identity conflicts,
+upstream field drift, malformed/duplicate records, unusual organization moves,
+confirmed future-event disappearance, and large ingest anomalies. Ordinary new
+events, routine field changes, one-snapshot misses, and no-delta refreshes do
+not create inbox items, Signals, or Updates.
 
 ### Mode B: bounded validation for a specific store
 
@@ -236,6 +269,10 @@ Preferred pattern:
    - changed fees
    - changed cadence
    - cancellations or disappearances if detectable
+
+At the start of a Codex session, report the count of open automation-originated
+WPN ingest findings from `coordination_items`. Review and promote them only when
+they change canonical research truth; do not redo the ingest analysis.
 
 Daily agent should almost never browse the Wizards UI manually.
 

@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-07-29
+Updated: 2026-08-01
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -45,6 +45,15 @@ frontier checkpoints are preserved in
   useful source fact lives in a flyer, social graphic, or screenshot. Affected
   Events and Place Evidence views show one compact on-demand link; unaffected
   records consume no interface space.
+- The rich 25-mile WPN cache is live in `wpn_snapshot_cache` and refreshes when
+  at least 24 hours old. A faster enriched ingest revision is complete locally
+  but deliberately undeployed: it adds direct Wizards links, normalized
+  schedule/fee fields, exact canonical venue association, event/content/store
+  fingerprints, delta comparison, two-snapshot disappearance handling, and a
+  quiet deduplicated Codex findings inbox. Its pending migration is
+  `20260801170000_enrich_wpn_ingest_cache.sql`; the no-write proof currently
+  reports 1,267 unchanged events, 51 exact venue matches, 27 unmatched
+  organizations, and zero false findings.
 
 ## Active data and research posture
 
@@ -82,7 +91,12 @@ Canonical operating details:
 
 ## Next safe lanes
 
-0. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
+0. Review and deploy the completed WPN ingest migration and agent as one
+   separate approved data/tooling tranche. After deployment, run one live
+   refresh/readback and confirm the coordination inbox remains quiet on a
+   no-delta snapshot. Do not redesign or reimplement it first.
+
+1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by
    observed product friction: verify click-through/source attribution in the
    live app, keep relevant chatter compact and hideable, and distinguish
@@ -90,7 +104,7 @@ Canonical operating details:
    Addiction team-sealed meetup or Collector's Lounge prerelease invitation
    appears to imply official store programming, fix the display/attribution
    bug directly; otherwise leave the proof alone.
-1. Collector's Lounge/Cypress multi-channel Discord POC is complete. Both
+2. Collector's Lounge/Cypress multi-channel Discord POC is complete. Both
    `#mtg-announcements-and-events` and `#event-rules` are now
    `ui_native_navigation_verified` in the live map. Lessons: store Discords can
    be useful chatter/schedule surfaces, not just official announcements; the
@@ -98,7 +112,7 @@ Canonical operating details:
    channel carried high-value Commander fit evidence. Keep community/store
    Discord findings clearly attributed as Discord/community evidence, and do not
    measure them against WPN as though WPN were the authoritative baseline.
-2. Use the lifecycle-specific Supabase selectors:
+3. Use the lifecycle-specific Supabase selectors:
    `venue_baseline_candidates`, `venue_surface_retry_candidates`,
    `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
    `venue_identity_resolution_candidates`. Markdown ledgers are context, not
@@ -106,15 +120,15 @@ Canonical operating details:
    preferences, use `venue_candidates_for_user(...)` so venues marked
    `deprioritize` or `hide` do not re-enter ordinary discovery, retry, or
    monitoring work.
-3. Keep every runtime research task inside one explicit lane:
+4. Keep every runtime research task inside one explicit lane:
    `baseline pass`, `identity-resolution pass`, or
    `steady-state monitoring pass`. Time budgets and hard stop conditions now
    live in `docs/EFFICIENCY_SOP.md`; treat a 5+ minute no-delta monitoring run
    or a 10+ minute ordinary baseline run as a workflow failure condition, not a
    normal cost.
-4. Address specific real-use app friction when observed; do not start another
+5. Address specific real-use app friction when observed; do not start another
    broad product tranche by default.
-5. Consider the next overhead reduction only as a separate approved tooling
+6. Consider the next overhead reduction only as a separate approved tooling
    tranche: either a narrow typed helper/RPC for the remaining routine write
    shapes or further simplification around linked-CLI typed writes.
 

@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-07-25
+Last updated: 2026-08-01
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -13,6 +13,18 @@ Use it for:
 - process improvements that protect continuity.
 
 ## Active next-up
+
+- WPN ingest-agent deployment is the exact current checkpoint. Implementation
+  is complete locally and intentionally not deployed. Pending pieces:
+  `crawler/wizards_locator.py`, `scripts/refresh_wpn_cache.py`,
+  `scripts/test_wpn_ingest_agent.py`, and migration
+  `20260801170000_enrich_wpn_ingest_cache.sql`. No-write validation passed
+  against the live cache (1,267 unchanged events; 51 exact venue matches; 27
+  unmatched organizations; zero findings), the 5-mile live API field proof
+  returned 62 events with the expanded payload, two focused regression tests
+  passed, and `supabase db push --dry-run` lists only the pending migration.
+  Next action: review/deploy once, run one live refresh/readback, then mark this
+  item complete. Do not rebuild it or create a second findings queue.
 
 - Venue selection now comes from lifecycle-specific Supabase views, not old
   ledger TBD wording: `venue_baseline_candidates`,
