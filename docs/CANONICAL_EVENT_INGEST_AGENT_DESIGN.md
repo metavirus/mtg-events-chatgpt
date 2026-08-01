@@ -111,6 +111,60 @@ source-native payload reference. At minimum it needs:
 The raw cache remains source inventory. A normalized observation is evidence
 ready for reconciliation. Neither is canonical app event truth by itself.
 
+## Sparse structured richness
+
+The common event model is a shared vocabulary, not a requirement that every
+source fill every field. Optional facts should be nullable and typed. WPN may
+populate most of them; an Instagram graphic may establish only title, date,
+time, venue, and a linked image. Both are complete observations relative to what
+their source actually says.
+
+Use three layers so richness is preserved without turning the event into a text
+blob:
+
+1. **Canonical core:** identity and planning fields used almost everywhere:
+   organizer, host venue, title, format/type, date, time, recurrence, status,
+   fee, capacity, confidence, and concise summary.
+2. **Structured optional facts:** normalized nullable fields for useful details
+   such as registration URL/status/deadline, check-in time, set/product, team
+   size, bracket/power, proxy policy, rules-enforcement level, decklist
+   requirement, event structure, prize summary, and eligibility restrictions.
+3. **Source evidence:** the complete source observation, original wording,
+   source-native payload reference, and linked image/PDF. This preserves detail
+   and provenance without making raw source fields the application schema.
+
+Do not create placeholder text such as `unknown` merely to fill a card. A null
+means the source did not establish the fact. An explicit source statement such
+as `proxies prohibited` or `capacity 24` is a real typed value. This distinction
+must survive reconciliation.
+
+The optional-fact layer should be implemented as a focused one-to-one details
+record for the applicable series or occurrence, or as carefully chosen columns
+on the existing canonical tables. Do not use a generic key/value EAV table for
+ordinary app facts, and do not make a JSON/text blob the only normalized
+representation. A bounded JSON source-native payload remains appropriate only
+for lossless evidence and forward compatibility.
+
+When peer sources differ, keep each observation's claim and provenance. The
+canonical projection may select the best current value only through explicit
+field rules; it must not erase the conflicting claim. A later sparse source
+must never blank a richer established fact merely because that source omitted
+it.
+
+### Presentation rule
+
+Render useful facts progressively:
+
+- event cards show only the few planning facts that exist and matter at a
+  glance;
+- event details show compact labeled facts such as fee, capacity, proxy rule,
+  set, registration, team size, and structure;
+- source wording and artifacts remain available through evidence/source links;
+- absent facts render nothing—no empty panels, `N/A` grids, or confidence
+  theater; and
+- facts that materially affect fit, such as `no proxies`, remain visible even
+  when the event is hidden or deprioritized.
+
 ## Layer 2: source-neutral canonical reconciliation
 
 The reconciler processes an ingest run in one bounded transaction:
@@ -240,6 +294,11 @@ One anomalous observation must not block safe events in the same run.
 - Replaying a run produces no duplicates.
 - Every promoted occurrence has exact source provenance and an upstream link
   when the source provides one.
+- A rich WPN observation retains its useful structured fee, capacity, format,
+  registration, product/set, and rules facts, while a sparse Instagram
+  observation can promote with only the facts it actually establishes.
+- Replaying a sparse observation never clears richer established facts.
+- The app renders no empty fact containers for unavailable optional data.
 - A valid event at a hidden venue is present canonically but absent from default
   planning surfaces.
 - An explicit no-proxy event is present canonically and hidden by rule.
@@ -250,4 +309,3 @@ One anomalous observation must not block safe events in the same run.
 - One ambiguous row is isolated while safe rows still land.
 - The second non-WPN adapter uses the same reconciler without source-specific
   branching in canonical promotion logic.
-

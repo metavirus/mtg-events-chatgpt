@@ -19,7 +19,9 @@ Use it for:
   separate canonical pipeline. The initial tranche should add normalized event
   observations, durable source-record bindings, and one set-based reconciler;
   prove complete/idempotent exact-known-venue WPN promotion, inherited hiding,
-  grouped presentation deltas, and then one bounded non-WPN adapter. Do not add
+  sparse structured optional facts without blob-only normalization, grouped
+  presentation deltas, and then one bounded non-WPN adapter. A sparse later
+  source must not clear richer facts established by another source. Do not add
   new Instagram/Discord crawlers in the first tranche.
 
 - Venue selection now comes from lifecycle-specific Supabase views, not old
