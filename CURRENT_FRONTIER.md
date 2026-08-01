@@ -51,9 +51,12 @@ frontier checkpoints are preserved in
   schedule/fee fields, exact canonical venue association, event/content/store
   fingerprints, delta comparison, two-snapshot disappearance handling, and a
   quiet deduplicated Codex findings inbox. Its pending migration is
-  `20260801170000_enrich_wpn_ingest_cache.sql`; the no-write proof currently
-  reports 1,267 unchanged events, 51 exact venue matches, 27 unmatched
-  organizations, and zero false findings.
+  `20260801170000_enrich_wpn_ingest_cache.sql`. A forced no-write benchmark on
+  2026-08-01 fetched and enriched 1,267 events and 78 organizations in 8.64
+  seconds, with 51 exact venue matches, 27 unmatched organizations, and zero
+  findings. All 1,267 events correctly appear as a one-time content change
+  because the live cache predates newly captured fields such as format name;
+  the first enriched write will establish the new comparison baseline.
 
 ## Active data and research posture
 

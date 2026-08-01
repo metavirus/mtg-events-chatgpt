@@ -542,7 +542,7 @@ select * from cached;
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Fetch the normalized WPN feed, replace its Supabase cache row, and verify it."
+        description="Fetch the normalized WPN feed, upsert its Supabase cache row, and verify it."
     )
     parser.add_argument("--force", action="store_true", help="Refresh even if the local snapshot is under 24 hours old.")
     parser.add_argument("--max-age-hours", type=float, default=24.0)
@@ -604,13 +604,35 @@ def main() -> int:
         field_inventory, delta, findings, digest,
     )
     if args.dry_run:
+        compact_delta = {
+            "newEventCount": delta["newEventCount"],
+            "newEventIdsSample": delta["newEventIds"][:10],
+            "changedEventCount": delta["changedEventCount"],
+            "changedEventIdsSample": delta["changedEventIds"][:10],
+            "unchangedEventCount": delta["unchangedEventCount"],
+            "missingFutureEventCount": delta["missingFutureEventCount"],
+            "missingFutureEventIdsSample": delta["missingFutureEventIds"][:10],
+            "confirmedMissingEventCount": delta["confirmedMissingEventCount"],
+            "confirmedMissingEventIdsSample": delta["confirmedMissingEventIds"][:10],
+            "matchedOrganizationCount": delta["matchedOrganizationCount"],
+            "unmatchedOrganizationCount": delta["unmatchedOrganizationCount"],
+            "findingCount": delta["findingCount"],
+        }
         print("WPN INGEST PLAN — NO WRITE")
         print(json.dumps({
             "retrievedAt": metadata["retrievedAt"],
             "eventCount": len(enriched_events),
             "organizationCount": len(enriched_organizations),
-            "delta": delta,
-            "findings": findings,
+            "delta": compact_delta,
+            "findingSamples": [
+                {
+                    "deduplicationKey": finding.get("deduplicationKey"),
+                    "itemType": finding.get("itemType"),
+                    "priority": finding.get("priority"),
+                    "title": finding.get("title"),
+                }
+                for finding in findings[:10]
+            ],
             "matchedOrganizations": [
                 {"sourceOrganizationId": org["sourceOrganizationId"], "canonicalVenueId": org.get("canonicalVenueId")}
                 for org in enriched_organizations if org.get("canonicalVenueId")
