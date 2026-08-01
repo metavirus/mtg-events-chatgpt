@@ -252,19 +252,46 @@ re-querying live.
 
 ### Mode C: daily light refresh
 
-Daily agent behavior should not do a full manual rediscovery.
+Daily agent behavior should not do a full manual rediscovery or ask a language
+model to reread the complete cache. Database-side fingerprints and exact source
+identities should reduce the run to a compact reconciliation result.
 
-Preferred pattern:
+Canonical inventory and personal presentation are separate:
 
-1. use the latest committed Wizards snapshot as baseline
-2. run only the scheduled automated refresh when needed
-3. compare newly returned events against normalized records
-4. surface:
-   - new events
-   - changed wording
-   - changed fees
-   - changed cadence
-   - cancellations or disappearances if detectable
+1. ingest every valid WPN event whose stable event ID belongs to an exactly
+   matched canonical venue and has a usable schedule;
+2. retain unmatched organizations/events in the cache and discovery inbox
+   without guessing venue identity;
+3. link promoted occurrences to an event-specific WPN source and direct EventLink
+   URL so the upstream event ID becomes the durable deduplication key;
+4. attach an occurrence to an existing series only through an exact learned
+   binding or unique deterministic schedule match; prefer a harmless split over
+   a fuzzy merge;
+5. record source-backed planning facts such as fee, capacity, format, rules
+   enforcement, team size, and explicit proxy policy without inventing missing
+   context; and
+6. derive ranking/visibility separately. A thumbs-downed venue or explicit
+   `no proxies` event remains canonical but is hidden by default. Explicit
+   event-level favorite/interested/show or hide state may override inherited
+   presentation.
+
+Flood control changes presentation, not ingestion:
+
+- Events remains the complete occurrence inventory, grouped into useful series
+  and session sets.
+- Updates groups one ingest run by series and venue instead of creating a row
+  for every occurrence.
+- Signals are created only for an attention-worthy decision or action, never
+  merely because an event was inserted. Multiple occurrences supporting the
+  same decision update one deduplicated Signal.
+- Hidden/deprioritized events remain maintained but do not produce ordinary
+  recommendations, Signals, review surveys, or prominent Updates.
+- A large delta uses digest presentation with counts and expandable groups; it
+  never truncates canonical event ingestion.
+
+A normal run should return bounded counts such as new, materially changed,
+unchanged, hidden-by-rule, grouped Updates, actionable Signals, ambiguous
+matches, and anomalies. No-delta runs should remain quiet.
 
 At the start of a Codex session, report the count of open automation-originated
 WPN ingest findings from `coordination_items`. Review and promote them only when

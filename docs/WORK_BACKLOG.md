@@ -398,6 +398,41 @@ claims without reopening the whole packet.
 - Capture one representative play-space image reference when clearly available
   and relevant, using it as supporting evidence rather than hard proof.
 
+### UI changes needed to address ingest and presentation of new items
+
+- Add a neutral closed-eye event action for `hide this` that writes the existing
+  per-user visibility preference without changing rating, canonical event
+  status, venue assessment, or source truth. Reserve thumbs-down for an active
+  negative `disliked/hated it` signal.
+- Make hiding reversible and auditable: show a compact reason (`hidden by you`,
+  `hidden with venue`, or `proxy policy: prohibited`) and provide an easy
+  unhide action from the existing collapsed hidden/poor-fit group.
+- Define scope predictably: hiding a recurring series card hides that series;
+  hiding a dated occurrence from its detail view hides only that date. An
+  explicit event-level favorite/interested/show choice overrides inherited
+  venue hiding.
+- Add a compact `New since your last visit` entry point with counts by venue and
+  event kind. Opening it should reveal all new events, grouped rather than
+  promoted individually.
+- Group multiple sessions/occurrences into one event-series presentation while
+  keeping every canonical occurrence accessible and individually linked to its
+  source where available.
+- Group Updates from one ingest by series and venue, with an expandable event
+  count. Routine verification and unchanged metadata should create no visible
+  Update.
+- Keep Signals selective and deduplicated by user decision/action. Additional
+  occurrences or sources should strengthen one Signal rather than create
+  duplicates. Retain `Act first`, `Worth knowing`, and collapsed handled/expired
+  presentation tiers without imposing a data-loss cap.
+- When an ingest produces a large delta, switch automatically to digest
+  presentation: all events remain available, while the default UI shows venue/
+  series groups and only independently actionable Signals.
+- Show temporary `New` markers and concise changed-field summaries on affected
+  event groups instead of repeating the entire event description.
+- Ensure hidden events stay out of default Today, Events, Signals,
+  recommendations, and periodic review surveys, while remaining recoverable
+  through the collapsed hidden group or an explicit include-hidden control.
+
 ### User-facing features
 
 - Signals foundation and first-class UI are implemented. Continue tuning only
@@ -425,9 +460,6 @@ claims without reopening the whole packet.
   Signal and Communities pulse details. Continue tightening any remaining
   non-clickable cards or metrics only when real use exposes friction.
 - Optional Google Maps / directions links from store detail views.
-- "New events" area that highlights newly discovered events for about two weeks.
-- Alert rail or dashboard section for sudden changes, cancellations, upstream
-  Wizards/WPN event announcements, and new high-value signals from socials.
 - Background activity log link for favorites, notes, and important changes.
 - Google Calendar add-to-calendar action if/when we wire that in.
 - During the current calibration phase only, allow selective publish-after-store-pass
@@ -456,8 +488,10 @@ claims without reopening the whole packet.
   thumbs-down later.
 - Thumb-down actions should keep hiding or deprioritizing items in
   recommendation/event views without overwriting the underlying research truth.
-- The event calendar now has an explicit hidden / poor-fit bucket so avoided or
-  no-proxy items are retained without competing for prominent planning slots.
+- The event calendar has an explicit hidden / poor-fit bucket so avoided or
+  no-proxy items are retained without competing for prominent planning slots;
+  the neutral hide/unhide behavior is tracked in the common ingest/presentation
+  UI section above.
 - Places now also tucks explicit/very-low-fit venues into a closed `Hidden /
   low-fit` group and removes those venues and their events from ordinary
   recommendation, highlight, and visible research-count surfaces. Underlying
