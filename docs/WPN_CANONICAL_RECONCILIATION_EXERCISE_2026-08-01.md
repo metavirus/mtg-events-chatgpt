@@ -200,3 +200,33 @@ identity rules and return:
 - independently actionable Signal candidates.
 
 No row in this exercise was promoted, changed, hidden, or deleted.
+
+## Adversarial novelty pressure test
+
+A second read-only audit compared the current cache with the tracked July 23
+WPN snapshot and current canonical Events. It intentionally tested the false
+assumption that every missing canonical match is `NEW`.
+
+- 1,079 current observations were promotion-eligible.
+- 796 event IDs were already present July 23; 283 arrived afterward.
+- A naive canonical comparison produced 209 apparently novel strict clusters.
+- Only 101 strict clusters were wholly new to the WPN source window.
+- Five newly arrived clusters exactly extend existing recurring lanes.
+- 27 newly arrived clusters occupy known lanes under different titles; these
+  require safe split/review semantics rather than merge-by-schedule.
+- 69 newly arrived clusters had no canonical analogue, representing 170 dated
+  observations.
+- Those 69 strict schedule clusters compress to 35 template-or-title event
+  families, including 23 multi-occurrence families.
+
+The test also surfaced title/schedule disagreement as an anomaly class: source
+titles sometimes contain a claimed session time that differs from the
+structured WPN start time. Structured source fields remain preserved, but such
+records must not be silently merged or presented as confidently new without a
+conflict flag.
+
+Conclusion: today's observation-state creation is a bootstrap baseline and
+must produce zero user-facing `NEW` badges. Future runs may claim source
+newness only relative to this trusted baseline. Canonical backfill, new dates
+on known series, newly announced event families, and conflicts must remain
+separate output classes.

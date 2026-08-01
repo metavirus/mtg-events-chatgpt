@@ -47,6 +47,10 @@ source collector -> source adapter -> normalized event observation
    existence.
 7. **Set-based and quiet.** Daily reconciliation operates on database deltas,
    not one language-model pass or one RPC call per cached event.
+8. **Novelty has three clocks.** Keep source arrival, canonical mutation, and
+   user-facing presentation novelty separate. A row can be newly seen by WPN,
+   newly added to canonical Events, both, or neither; those states are not one
+   universal `NEW` flag.
 
 ## Layer 1: source-specific collection and adapters
 
@@ -252,6 +256,34 @@ The reconciler must not flood the user merely because it processed many rows:
 - **Large deltas:** return a digest with expandable groups; never truncate
   canonical ingestion.
 
+### Novelty and bootstrap rules
+
+`NEW` is a presentation claim, not a synonym for "missing from canonical
+Events." The promoter must calculate three independent outcomes:
+
+- `source_arrival`: whether the stable upstream record first appeared after a
+  trusted prior snapshot;
+- `canonical_action`: no change, bind evidence, add occurrence, add series,
+  update facts, split safely, or hold for review; and
+- `presentation_novelty`: whether the user should see a newly announced event,
+  a quieter schedule addition, grouped backfill, conflict/correction, or no
+  visible notice.
+
+The first observation-state load is a bootstrap baseline. It may populate or
+bind canonical inventory, but it produces **zero user-facing `NEW` badges**.
+Likewise, an old source record promoted later is catalog backfill, not a newly
+announced event. A newly arrived source ID that exactly extends a known
+recurring lane is a new dated occurrence, not a new series. Same-slot or
+same-lane/different-title records are never auto-merged; they are usually
+specials, overlays, or conflicts. Multi-session weekends and repeated programs
+must be grouped into event families before Updates are calculated.
+
+Before the first live promoter run, `scripts/audit_wpn_novelty.py` must pass as
+a read-only adversarial check against the latest trusted prior WPN snapshot.
+Its purpose is to expose false novelty caused by missing bindings, canonical
+series compression, title variants, same-lane specials, and multi-session
+fragmentation.
+
 ## WPN-first implementation slice
 
 ### Implemented adapter boundary
@@ -276,6 +308,14 @@ observations, 374 strict source-series hints (133 repeated and 241 one-off), and
 stores all observations but excludes unmatched venues and non-scheduled rows
 from promoter eligibility. A same-snapshot replay under the same contract is a
 no-write fast exit.
+
+An adversarial comparison against the July 23 snapshot found why the promoter
+cannot infer novelty from canonical absence: 209 strict clusters initially
+looked novel, but only 101 were wholly new to WPN; five of those merely extended
+exact existing recurring lanes. The 69 wholly new/no-analogue strict clusters
+compressed to 35 template-or-title event families. The initial cache baseline
+therefore warrants no `NEW` presentation at all, even when it later supplies
+legitimate canonical backfill.
 
 This completes deterministic WPN source preparation only. It does not create
 normalized cross-source observations, canonical series/occurrences, Signals,

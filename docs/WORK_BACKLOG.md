@@ -426,8 +426,8 @@ claims without reopening the whole packet.
   explicit event-level favorite/interested/show choice overrides inherited
   venue hiding.
 - Add a compact `New since your last visit` entry point with counts by venue and
-  event kind. Opening it should reveal all new events, grouped rather than
-  promoted individually.
+  event kind. Opening it should reveal all newly presented events, grouped
+  rather than promoted individually.
 - Group multiple sessions/occurrences into one event-series presentation while
   keeping every canonical occurrence accessible and individually linked to its
   source where available.
