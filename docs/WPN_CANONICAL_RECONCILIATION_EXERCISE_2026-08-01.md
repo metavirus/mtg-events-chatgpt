@@ -34,18 +34,18 @@ into 1,081 series.
 
 | Class | Observations | Schedule clusters | Interpretation |
 |---|---:|---:|---|
-| Existing series, exact normalized title/time | 520 | 94 | Strong candidate to attach dated WPN occurrences to an existing series after durable binding |
+| Existing series, exact normalized title/weekday/time | 582 | 104 | Strong candidate to attach dated WPN occurrences to an existing series after durable binding |
 | Existing exact occurrence, title/date/time | 58 | 53 | Strongest initial canonical match |
-| No matching canonical lane | 254 | 115 | Genuinely new-event candidates relative to current stock; 86 venue/title groups |
-| One existing lane at same weekday/time, different title | 179 | 60 | Do not merge by schedule alone; often a special, rules variant, or different format |
+| No matching canonical lane | 255 | 116 | Genuinely new-event candidates relative to current stock; 87 venue/title groups |
+| One existing lane at same weekday/time, different title | 132 | 53 | Do not merge by schedule alone; often a special, rules variant, or different format |
 | One existing occurrence at exact slot, different title | 50 | 47 | Potential special overlay, renamed event, or true conflict; exact slot is not identity |
-| Multiple possible existing lanes | 20 | 8 | Ambiguous; isolate for review or safe split |
+| Multiple possible existing lanes | 4 | 4 | Ambiguous; isolate for review or safe split |
 
-The 254 no-lane observations compress to 115 venue/title/weekday/time clusters:
+The 255 no-lane observations compress to 116 venue/title/weekday/time clusters:
 
 - 27 repeated clusters;
-- 88 one-off clusters; and
-- 86 distinct venue/title groups.
+- 89 one-off clusters; and
+- 87 distinct venue/title groups.
 
 Examples of repeated missing inventory include Turn Zero daily Commander,
 Collector Legion Wednesday Standard Showdown, The Game Chest Irvine Thursday
@@ -154,6 +154,34 @@ query footprint.
    current organization-level WPN source links are insufficient for future
    deterministic reconciliation.
 
+## Useful feedback to the WPN ingest adapter
+
+The source refresh should perform cheap deterministic enrichment once so the
+promoter does not repeatedly reinterpret the full raw payload. It should emit:
+
+- stable source event/store identities and exact source URLs;
+- canonical venue match and match method, as it does now;
+- normalized local start/end timestamps plus an `upcoming/same-day-ended`
+  eligibility flag based on upstream status and collection time;
+- normalized title key and source-native series hints such as organization,
+  template ID when present, weekday, and time—explicitly labeled as hints, not
+  canonical identity;
+- normalized format name, event-type flags, fee/currency/free state, capacity,
+  team size, rules-enforcement level, and registration state when available;
+- deterministic phrase flags for materially useful claims such as explicit
+  `no proxy`, while retaining the original wording;
+- field-presence metadata so omission is distinct from an explicit zero/false;
+- content and identity fingerprints plus first/last-seen/miss state; and
+- upstream schema/field anomalies in the quiet findings inbox.
+
+The adapter should not decide canonical series membership, overwrite richer
+peer-source facts, create Signals, or apply personal visibility. Those remain
+shared promoter/presentation responsibilities.
+
+Opaque upstream values should be retained but not promoted as user-facing facts
+without a mapping. In particular, WPN card-set IDs need a human-readable lookup
+before they become displayable set/product facts.
+
 ## Recommended first dry-run output
 
 The implemented promoter should reproduce this analysis with stronger durable
@@ -172,4 +200,3 @@ identity rules and return:
 - independently actionable Signal candidates.
 
 No row in this exercise was promoted, changed, hidden, or deleted.
-

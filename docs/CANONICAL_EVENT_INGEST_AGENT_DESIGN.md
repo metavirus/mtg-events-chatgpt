@@ -57,7 +57,9 @@ Examples:
 
 - **WPN adapter:** reads `wpn_snapshot_cache.enriched_events`; uses WPN event ID,
   exact WPN organization-to-venue match, EventLink URL, schedule, fee, capacity,
-  format, tags, and description.
+  format, tags, description, deterministic title key/series hints, source-status
+  eligibility, field-presence flags, and explicit rules phrases. These are
+  prepared source facts and hints, not canonical matching decisions.
 - **Official calendar adapter:** uses the calendar/event record ID or canonical
   URL, publisher identity, exact schedule, registration link, and stated rules.
 - **Instagram/Facebook adapter:** uses post ID/URL, publisher account, extracted
@@ -271,9 +273,12 @@ reason to block promotion for the exact-matched majority.
 The read-only comparison in
 `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md` is the measured basis
 for the first implementation. It confirms that the main first-run job is
-materializing dated occurrences and durable event-ID provenance for existing
-series while adding a smaller number of missing series/specials. Same schedule
-without exact title or a learned binding is not a canonical identity match.
+  materializing dated occurrences and durable event-ID provenance for existing
+  series while adding a smaller number of missing series/specials. The refined
+  bootstrap found 640 exact title/schedule matches (58 existing occurrences and
+  582 existing title/weekday/time lanes), 255 no-lane observations, 182
+  same-slot/lane title differences, and 4 multi-lane ambiguities. Same schedule
+  without exact title or a learned binding is not a canonical identity match.
 
 ## Second adapter proof
 

@@ -67,9 +67,10 @@ frontier checkpoints are preserved in
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated
-  occurrences: 578 strong exact title/schedule matches, 254 no-lane candidates
-  compressing to 115 schedule clusters, and 249 same-slot/lane or multi-lane
-  cases that must not be merged by schedule alone. No data was written.
+  occurrences: 640 strong exact title/schedule matches, 255 no-lane candidates
+  compressing to 116 schedule clusters, 182 same-slot/lane title differences,
+  and 4 multi-lane ambiguities. It also identifies deterministic enrichment to
+  push back into the WPN adapter so the promoter stays fast. No data was written.
 
 ## Active data and research posture
 
