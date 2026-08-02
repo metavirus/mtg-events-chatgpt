@@ -125,15 +125,18 @@ frontier checkpoints are preserved in
   is live in the app: 85 newly created series and 828 occurrence rows contribute
   to 1,172 upcoming displayed occurrences across 49 venues. The Events catalog,
   exact provenance, inherited source links, and recurring projections load
-  correctly. However, the shared reconciler has not yet implemented its
-  presentation-output stage: it created zero `research_changes` rows and no
-  Signals, so Updates still ends on 2026-07-29. Zero `NEW` claims for this first
-  bootstrap is intentional; silence for future post-baseline deltas is not.
-  There is one canonical event catalog, but two current write shapes: older
-  reviewed/typed event writers also emit `research_changes`, while the new
-  source-neutral reconciler currently stops after Events, provenance, bindings,
-  and visibility. The next tranche must close that gap rather than create a
-  second catalog, feed, or source-specific promoter.
+  correctly. The shared source-neutral finalizer is now deployed through
+  `promote_event_ingest_run(...)`: it runs the deterministic reconciliation
+  shapes, marks a run complete, keeps bootstrap/backfill quiet, groups future
+  visible deltas into the existing Updates feed, and creates Signals only from
+  explicit adapter attention annotations. It never guesses attention from an
+  event title. All four existing WPN runs are explicitly `bootstrap / quiet`;
+  replay writes nothing. A rolled-back future-delta proof produced one event,
+  one grouped Update, and one explicit Signal, then replayed with no writes.
+  Unknown proxy policy is normalized to `unspecified`, preventing null logic
+  from hiding a valid event. The complete WPN operator path is
+  `scripts/stage_wpn_event_observations.py --promote`; `--bootstrap` is reserved
+  for deliberately quiet initial inventory.
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated
@@ -189,14 +192,14 @@ Canonical operating details:
 
 ## Next safe lanes
 
-0. Continue the WPN-first slice of
+0. Continue the source-neutral event-ingest slice of
    `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the proven deterministic
    creator. Exact attachment and collision-free new-series creation are complete
-   and idempotent. Next project inherited visibility into the app, enrich sparse
-   typed optional facts, and add grouped presentation deltas while keeping the
-   195 ambiguous/conflicting observations pending. Then prove one bounded
-   non-WPN adapter against the same reconciler. Do not build separate WPN/social
-   canonical promoters.
+   and idempotent. Grouped Updates and explicit-attention Signals are complete.
+   Next prove one bounded non-WPN adapter against the same normalized
+   observation/promoter contract, then retire ordinary use of the older direct
+   event writers. Keep the 195 ambiguous/conflicting observations pending and
+   do not build separate WPN/social canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by

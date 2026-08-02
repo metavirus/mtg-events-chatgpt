@@ -564,10 +564,8 @@ Still deferred:
 
 - broader workflow/request handling;
 - unattended recurring research automation.
-- next possible overhead reduction: either a narrow typed RPC for WPN-backed
-  event upserts, if routine WPN event capture keeps requiring proposal packages,
-  or a direct steward DB execution path, if connector ferrying remains the
-  bottleneck for approved Standard writes.
+- canonical source-adapter event work uses normalized observations and
+  `promote_event_ingest_run(...)`; do not add another WPN-specific upsert path.
 
 ## Wizards snapshot artifacts
 

@@ -30,16 +30,14 @@ Use it for:
   observations became 85 series, the complete run reached 886 bound rows, and
   replay remained no-write with zero duplicate slots. The remaining 195 rows
   are explicit ambiguity, ineligibility, known-title/new-schedule, or same-slot/
-  title conflicts—not unprocessed ordinary inventory. The next tranche should
-  implement the shared post-reconciliation presentation stage first. The
-  2026-08-01 bootstrap created 85 series and 828 occurrences and is visible in
-  Events, but correctly made no `NEW` claim and currently made no grouped
-  Update at all. Preserve that bootstrap as quiet backfill; for later runs,
-  classify source arrival separately from canonical action, emit useful grouped
-  Updates through existing `research_changes`, and create only independently
-  actionable Signals. Replay/no-delta runs must remain silent. Then complete
-  inherited hiding, sparse structured optional facts without blob-only
-  normalization, and prove one bounded non-WPN adapter. A sparse later source
+  title conflicts—not unprocessed ordinary inventory. The shared finalizer is
+  now deployed: bootstrap/backfill stays quiet, later source arrivals create
+  venue-grouped Updates through existing `research_changes`, and only explicit
+  adapter attention annotations can create Signals. Replay/no-delta runs remain
+  silent. The next tranche is one bounded non-WPN adapter using the same
+  observation/promoter contract, followed by retirement of ordinary use of the
+  older direct event writers. Then continue sparse structured optional facts
+  without blob-only normalization. A sparse later source
   must not clear richer facts established by another source. Do not add verbose
   per-event logging, a duplicate feed/catalog, or new Instagram/Discord
   crawlers in the first tranche.
@@ -106,15 +104,14 @@ Use it for:
   backing table are already gone; do not treat it as an active coordination
   path.
 
-- Supabase CLI final-resolution TBD: eliminate the last recurring CLI
-  rough edges permanently, not as per-run workarounds. Current known issues:
-  linked CLI sometimes prints harmless `Initialising login role...` noise;
-  sandboxed CLI calls can still hit telemetry/profile write permissions unless
-  run outside the sandbox; and typed helpers should default to the direct
-  `SUPABASE_DB_URL` path when available. Final resolution should make readiness
-  and typed writes boring: one documented command path, no fake failure output,
-  no hidden alternate CLI home that loses auth, no repeated diagnosis in
-  research runs. Treat any future recurrence as platform repair, not research.
+- Supabase CLI final-resolution TBD: eliminate the last cosmetic CLI rough edge
+  without reopening platform work during data runs. Direct `psql` through
+  `SUPABASE_DB_URL` is the stable query/write path and readiness passes.
+  Supabase CLI 2.109.1 may still exit nonzero after a successful command because
+  its PostHog shutdown times out; authenticated output or migration application
+  is returned first. Upgrade or suppress that telemetry defect when convenient.
+  Treat a genuine capability failure as platform repair, but do not confuse
+  this known post-success message with a database failure.
 
 - Durable source-image evidence in Supabase Storage: Phase 1 and the incidental
   app presentation are complete

@@ -1,7 +1,8 @@
 # Canonical Event Ingest Agent Design
 
-Status: normalized ingest core, exact attachment, and deterministic collision-free
-WPN series creation are implemented; ambiguous/conflicting identity paths remain held.
+Status: shared normalization, deterministic reconciliation, bootstrap-safe
+presentation, grouped Updates, and explicit-attention Signals are implemented;
+ambiguous/conflicting identity paths remain held.
 Updated: 2026-08-01
 
 ## Decision
@@ -49,11 +50,14 @@ observations as already represented, matching the prior adversarial audit while
 separating three observations with multiple exact canonical matches for review.
 It performed zero canonical Event, Update, or Signal writes.
 
-The next implementation boundary is the live source-neutral reconciler: bind
-the exact represented rows, materialize safe missing occurrences/series,
-preserve optional facts and conflicts, and return grouped presentation deltas.
-Do not reopen adapter design or add another source crawler before that path is
-proven and replayed.
+The live source-neutral finalizer is `promote_event_ingest_run(...)`. It owns
+the deterministic reconciliation shapes, run completion, bootstrap/delta
+presentation mode, venue-grouped Updates, and Signals explicitly annotated by
+an adapter. It does not infer attention from titles.
+`scripts/stage_wpn_event_observations.py --promote` is the complete WPN operator
+path; `--bootstrap` deliberately suppresses novelty for initial inventory. The
+next proof is one bounded non-WPN adapter using this same contract, not a new
+promoter.
 
 ## Core principles
 
@@ -312,17 +316,14 @@ Its purpose is to expose false novelty caused by missing bindings, canonical
 series compression, title variants, same-lane specials, and multi-session
 fragmentation.
 
-### Pre-presentation checkpoint (2026-08-01)
+### Presentation checkpoint (2026-08-01)
 
 The first broad canonical bootstrap is complete: 85 series and 828 occurrence
 rows were created through the shared WPN observation/reconciliation core, with
-exact bindings and replay safety. Production shows the resulting catalog, but
-the reconciler emitted no `research_changes` or Signals; the Updates feed
-therefore still ends on 2026-07-29.
+exact bindings and replay safety. It is explicitly marked `bootstrap / quiet`
+and therefore does not masquerade as newly announced inventory.
 
-This is a deliberately bounded incomplete state, not authorization for a
-parallel sideload workflow. The next implementation must add one shared
-post-reconciliation presentation stage that:
+The shared post-reconciliation presentation stage now:
 
 1. treats this established run as quiet bootstrap/backfill;
 2. classifies later source arrivals separately from canonical actions;
@@ -331,10 +332,10 @@ post-reconciliation presentation stage that:
 5. writes existing Signals only for independently actionable findings; and
 6. returns no presentation writes on replay or unchanged verification.
 
-Older typed/manual event writers remain compatibility and reviewed-judgment
-paths while adapters are migrated. They must not become an alternate canonical
-promoter, and future source adapters must enter through the normalized
-observation/reconciliation core.
+Older typed/manual event writers remain temporary compatibility and reviewed-
+judgment paths while adapters are migrated. They must not become an alternate
+canonical promoter, and future source adapters must enter through the
+normalized observation/reconciliation core.
 
 ## WPN-first implementation slice
 
