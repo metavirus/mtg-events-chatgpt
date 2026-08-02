@@ -241,13 +241,14 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .hours-week span { display: block; margin-bottom: 3px; color: var(--muted); font-size: 8px; text-transform: uppercase; }
 .hours-week strong { display: block; color: #dbe1ef; font-size: 9px; line-height: 1.25; }
 .event-actions { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
-.heart-button, .thumb-button { width: 32px; height: 32px; border-radius: 9px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; font-size: 17px; display: inline-grid; place-items: center; }
-.heart-button svg, .thumb-button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.heart-button, .thumb-button, .visibility-button { width: 32px; height: 32px; border-radius: 9px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; font-size: 17px; display: inline-grid; place-items: center; }
+.heart-button svg, .thumb-button svg, .visibility-button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .heart-button:hover, .heart-button.active { color: #ff7e9f; border-color: rgba(255,126,159,.38); background: rgba(255,126,159,.08); }
 .thumb-button:hover, .thumb-button.active { color: var(--coral); border-color: rgba(241,119,120,.38); background: rgba(241,119,120,.08); }
-.heart-button.large, .thumb-button.large { width: 38px; height: 38px; font-size: 19px; }
-.heart-button.large svg, .thumb-button.large svg { width: 20px; height: 20px; }
-.heart-button.labeled, .thumb-button.labeled { width: auto; min-height: 38px; height: auto; padding: 0 13px; font-size: 12px; display: inline-flex; align-items: center; gap: 7px; }
+.visibility-button:hover, .visibility-button.active { color: var(--amber); border-color: rgba(243,183,95,.38); background: rgba(243,183,95,.08); }
+.heart-button.large, .thumb-button.large, .visibility-button.large { width: 38px; height: 38px; font-size: 19px; }
+.heart-button.large svg, .thumb-button.large svg, .visibility-button.large svg { width: 20px; height: 20px; }
+.heart-button.labeled, .thumb-button.labeled, .visibility-button.labeled { width: auto; min-height: 38px; height: auto; padding: 0 13px; font-size: 12px; display: inline-flex; align-items: center; gap: 7px; }
 .event-preference-actions { display: flex; gap: 6px; }
 .open-cue { font-size: 9px; color: var(--muted-2); }
 .load-more { width: calc(100% - 72px); margin-left: 72px; height: 54px; border: 1px dashed var(--line-strong); border-radius: 12px; color: var(--muted); background: rgba(17,22,37,.4); cursor: pointer; display: grid; grid-template-columns: auto auto 1fr; align-items: center; justify-content: center; gap: 8px; }
