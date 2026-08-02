@@ -224,6 +224,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .event-attribution .place-inline { margin: 5px 0 7px; }
 .event-chips { display: flex; gap: 5px; flex-wrap: wrap; }
 .status-chip, .meta-chip { display: inline-flex; min-height: 20px; align-items: center; padding: 2px 7px; border-radius: 6px; font-size: 8px; font-weight: 700; letter-spacing: .025em; border: 1px solid var(--line); color: #bac1d2; background: rgba(255,255,255,.025); }
+.status-chip svg { width: 12px; height: 12px; margin-right: 4px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .status-chip.mint { color: var(--mint); border-color: rgba(84,212,167,.25); background: rgba(84,212,167,.08); }
 .status-chip.sky { color: var(--sky); border-color: rgba(99,182,245,.25); background: rgba(99,182,245,.08); }
 .status-chip.amber { color: var(--amber); border-color: rgba(243,183,95,.25); background: rgba(243,183,95,.08); }

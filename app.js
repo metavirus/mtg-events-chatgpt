@@ -1358,6 +1358,7 @@ function signalGroup(title, copy, signals, tone) {
 
 function signalCard(signal) {
   const related = signalRelatedTarget(signal);
+  const artifacts = artifactsForSignal(signal);
   const sourceItem = source(signal.sourceId);
   const sourceUrl = signal.evidenceUrl || sourceItem?.url || '';
   const sourceLabel = sourceItem?.label || (sourceUrl ? 'Source link' : 'Source not linked');
@@ -1369,6 +1370,7 @@ function signalCard(signal) {
         <span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span>
         <span class="status-chip slate">${escapeHtml(signalPriorityLabel(signal.priority))}</span>
         <span class="status-chip ${signal.status === 'needs_followup' ? 'amber' : signal.status === 'new' ? 'mint' : 'slate'}">${escapeHtml(signal.status.replaceAll('_', ' '))}</span>
+        ${artifacts.length ? `<span class="status-chip violet">${imageEvidenceIcon()} evidence</span>` : ''}
       </div>
       <h3>${escapeHtml(signal.summary)}</h3>
       ${related ? `<div class="signal-related">${related}</div>` : ''}
