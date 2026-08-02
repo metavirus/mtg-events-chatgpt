@@ -327,6 +327,16 @@ Its purpose is to expose false novelty caused by missing bindings, canonical
 series compression, title variants, same-lane specials, and multi-session
 fragmentation.
 
+After promoter or lifecycle changes, `scripts/audit_event_integrity.py
+--fail-on-critical` is the read-only catalog-health checkpoint. It is not a
+novelty classifier. It checks for orphaned event rows, duplicate future slots,
+broken source/source-artifact links, broken source-observation bindings,
+missing source trails, WPN date/time/venue mismatches, and source records that
+would make the app look untrustworthy. Review-only buckets such as date-only
+source listings, inherited series evidence, no-proxy or low-fit presentation
+hiding, legacy store-level WPN URLs, and benign title-key normalizer differences
+are reported without failing the run.
+
 ### Presentation checkpoint (2026-08-01)
 
 The first broad canonical bootstrap is complete: 85 series and 828 occurrence

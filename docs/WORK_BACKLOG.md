@@ -46,11 +46,18 @@ Use it for:
   promoter: same-schedule bound observations may enrich empty optional fields,
   while changed status/date/time/title/venue and two-snapshot WPN disappearance
   cases queue review instead of silently mutating, hiding, deleting, or
-  cancelling Events. Next continue sparse structured optional facts without
-  blob-only normalization. A sparse later source must not clear richer facts
-  established by another source. Do not add verbose per-event logging, a
-  duplicate feed/catalog, or new Instagram/Discord crawlers in the first
-  tranche.
+  cancelling Events. Post-ingest integrity is now covered by
+  `scripts/audit_event_integrity.py --fail-on-critical`; the 2026-08-02
+  checkpoint passed with zero critical issues across event/source/binding/
+  artifact/duplicate-slot checks. Review-only buckets remain: date-only
+  listings, series-source inheritance, no-proxy/low-fit presentation hiding,
+  legacy WPN store-level URL provenance, and benign title-key normalizer
+  differences. Do not "clean" the legacy WPN URL bucket unless exact current
+  observation/source matches exist. Next continue sparse structured optional
+  facts without blob-only normalization. A sparse later source must not clear
+  richer facts established by another source. Do not add verbose per-event
+  logging, a duplicate feed/catalog, or new Instagram/Discord crawlers in the
+  first tranche.
 
 - Venue selection now comes from lifecycle-specific Supabase views, not old
   ledger TBD wording: `venue_baseline_candidates`,

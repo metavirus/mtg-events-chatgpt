@@ -143,6 +143,18 @@ frontier checkpoints are preserved in
   for changed upstream status/date/time/title/venue or WPN events missing from
   two consecutive snapshots. It does not silently cancel, delete, hide, or
   overwrite canonical Events when a source changes or gets sparse.
+- Post-ingest event integrity is now a reusable executable checkpoint:
+  `scripts/audit_event_integrity.py --fail-on-critical`. It checks canonical
+  orphans, duplicate future slots, broken source/source-artifact links, broken
+  observation bindings, WPN date/time/venue mismatches, and source-trail gaps.
+  The 2026-08-02 checkpoint passed with zero critical issues. Review buckets
+  remain intentionally presentation-aware: 5 date-only future listings, 33
+  future occurrences inheriting series-level evidence, 41 no-proxy future
+  events, 51 future events at personally deprioritized/low-fit venues, 42
+  legacy WPN-backed future events with store-level WPN URLs only, and 11 benign
+  title-key differences. The legacy WPN URL backfill is not deterministic yet:
+  exact current observation/source matches returned zero, so do not fabricate
+  event-level WPN URLs.
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated
@@ -212,10 +224,12 @@ Canonical operating details:
    finish through the same promoter. The old direct recurring-occurrence writer
   is retired. The remaining direct WPN and official-event writers are retired,
   and targeted recurring reconciliation plus existing-event lifecycle review now
-  run inside the promoter rather than in helper-side choreography. Next continue
-  sparse structured optional facts and app-facing polish for grouped Updates/
-  review drawers. Keep the 195 ambiguous/conflicting WPN observations pending
-  and do not build separate WPN/social canonical promoters.
+  run inside the promoter rather than in helper-side choreography. The
+  post-ingest integrity audit is now available and should pass after future
+  promoter changes. Next continue sparse structured optional facts and
+  app-facing polish for grouped Updates/review drawers. Keep the 195
+  ambiguous/conflicting WPN observations pending and do not build separate
+  WPN/social canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by

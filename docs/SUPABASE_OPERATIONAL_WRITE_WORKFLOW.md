@@ -328,6 +328,19 @@ Required verification is proportional:
 - optional replay: one repeated live call when idempotency needs proof;
 - deeper readback only when the RPC output or source attribution is anomalous.
 
+For promoter, lifecycle, or bulk event-ingest changes, run the read-only
+catalog-health checkpoint before calling the slice done:
+
+```powershell
+python.exe scripts/audit_event_integrity.py --fail-on-critical
+```
+
+This audit fails only on structural problems such as orphans, duplicate future
+slots, broken source links, broken observation bindings, missing source trails,
+or WPN date/time/venue mismatches. Its review buckets are not automatic cleanup
+orders. In particular, legacy WPN rows with only store-level URLs should be
+backfilled only when an exact current observation/source match exists.
+
 ## Proposal format
 
 A canonical research update starts as a JSON proposal, not as direct JSON edits.
