@@ -53,6 +53,10 @@ frontier checkpoints are preserved in
   useful source fact lives in a flyer, social graphic, or screenshot. Affected
   Events and Place Evidence views show one compact on-demand link; unaffected
   records consume no interface space.
+- Event preference controls now distinguish three personal meanings: favorite
+  or follow the series, hide the series from normal views with the closed-eye
+  control, and record an active thumbs-down/not-for-me signal. The closed eye is
+  visibility, not dislike; thumbs-down is dislike, not deletion.
 - The rich 25-mile WPN cache is live in `wpn_snapshot_cache` and refreshes when
   at least 24 hours old. The enriched ingest revision is deployed: it adds
   direct Wizards links, normalized

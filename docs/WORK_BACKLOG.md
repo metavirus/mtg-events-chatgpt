@@ -448,17 +448,16 @@ claims without reopening the whole packet.
   paginate beyond Supabase's 1,000-row REST limit, and promoted WPN occurrences
   retain exact clickable event URLs in their source trail.
 
-- Add a neutral closed-eye event action for `hide this` that writes the existing
-  per-user visibility preference without changing rating, canonical event
-  status, venue assessment, or source truth. Reserve thumbs-down for an active
-  negative `disliked/hated it` signal.
-- Make hiding reversible and auditable: show a compact reason (`hidden by you`,
-  `hidden with venue`, or `proxy policy: prohibited`) and provide an easy
-  unhide action from the existing collapsed hidden/poor-fit group.
-- Define scope predictably: hiding a recurring series card hides that series;
-  hiding a dated occurrence from its detail view hides only that date. An
-  explicit event-level favorite/interested/show choice overrides inherited
-  venue hiding.
+- Completed: event cards and event detail now separate favorite/follow, neutral
+  closed-eye `hide for now`, and thumbs-down/not-for-me controls. The eye writes
+  the event-series visibility preference without changing canonical event
+  status, venue assessment, source truth, or the thumbs-down rating signal.
+- Completed: hidden events show `Hidden by you` and remain recoverable through
+  the hidden/poor-fit bucket rather than disappearing from the catalog.
+- Calibration TODO: hiding currently applies to the event series preference key,
+  so future occurrences in that series stay out of normal views. Add a separate
+  occurrence-only hide later only if real use shows that the series-level scope
+  is too broad.
 - Add a compact `New since your last visit` entry point with counts by venue and
   event kind. Opening it should reveal all newly presented events, grouped
   rather than promoted individually.
@@ -531,11 +530,11 @@ claims without reopening the whole packet.
   proof. Keep series favorite/follow available on quick event cards, but make
   dated `Interested` / `Going` state visibly affect Today, reminders, and
   planning surfaces instead of behaving like a quiet detail-drawer toggle.
-- Negative preference controls now exist for stores and event series. Continue
-  monitoring whether individual dated occurrences need separate per-date
-  thumbs-down later.
-- Thumb-down actions should keep hiding or deprioritizing items in
-  recommendation/event views without overwriting the underlying research truth.
+- Negative preference controls now exist for stores and event series. For
+  events, the closed-eye control handles neutral hiding from normal views, while
+  thumbs-down records an active not-for-me/dislike signal. Continue monitoring
+  whether individual dated occurrences need separate per-date hide or
+  thumbs-down behavior later.
 - The event calendar has an explicit hidden / poor-fit bucket so avoided or
   no-proxy items are retained without competing for prominent planning slots;
   the neutral hide/unhide behavior is tracked in the common ingest/presentation

@@ -44,7 +44,8 @@ presentation, and memory, but never overwrites research truth.
 Implemented durable records:
 
 - favorites
-- thumbs-down / hidden / deprioritized items
+- thumbs-down / not-for-me signals
+- hidden / deprioritized visibility preferences
 - one-to-five ratings
 - personal notes
 
@@ -141,8 +142,8 @@ Current sequence:
 3. Research has resumed through controlled Supabase writes in small direct
    batches.
 4. Authenticated personal-state reads and writes are implemented for favorites,
-   thumbs-down/deprioritize choices, ratings, private notes, and per-user
-   Signals read-state.
+   thumbs-down/not-for-me signals, hide/deprioritize visibility choices,
+   ratings, private notes, and per-user Signals read-state.
 5. Existing browser-local personal state imports once when the signed-in remote
    state is empty.
 6. Hosted personal-state persistence has been validated against live Supabase
@@ -156,7 +157,10 @@ Current sequence:
 This contract implies a few design decisions:
 
 - a favorite should change ranking and monitoring, not just paint a heart;
-- a thumbs-down should hide or demote without deleting research truth;
+- a closed-eye hide/deprioritize action should change visibility without
+  deleting research truth;
+- a thumbs-down should remain a stronger negative preference signal, separate
+  from neutral `hide for now`;
 - notes now live on the server when signed in so they are not trapped in one
   browser;
 - Signals read-state is a personal overlay: marking a signal read hides it from

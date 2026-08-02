@@ -56,8 +56,9 @@ they do not by themselves revise a venue assessment, event row, Signal, or
 source truth.
 
 This workflow deliberately does not cover authenticated personal/workflow writes
-such as favorites, thumbs-down, notes, ratings, update-read state, or `Ask
-Codex` requests. Those remain a separate gate.
+such as favorites, closed-eye hide/deprioritize choices, thumbs-down/not-for-me
+signals, notes, ratings, update-read state, or `Ask Codex` requests. Those
+remain a separate gate.
 
 It does not change auth, RLS, credentials, browser-write permissions, or the
 default app data source. Supabase is already the operational/default research
