@@ -1106,6 +1106,10 @@ function handleAction(action, element) {
     const event = DATA.events.find((item) => item.id === element.dataset.eventId);
     return toggleHidden(event ? eventPreferenceKey(event) : `event:${element.dataset.eventId}`);
   }
+  if (action === 'toggle-event-dislike') {
+    const event = DATA.events.find((item) => item.id === element.dataset.eventId);
+    return toggleEventDislike(event ? eventPreferenceKey(event) : `event:${element.dataset.eventId}`);
+  }
   if (action === 'open-community-events') {
     state.selectedPlaceId = element.dataset.placeId;
     state.selectedPlaceTab = 'events';
@@ -1822,7 +1826,7 @@ function eventCard(event, compact = false, options = {}) {
       <div class="event-chips">${communityChip}${limitedChip}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="meta-chip">${fee}</span>${event.bracket && event.bracket !== 'unspecified' ? `<span class="meta-chip">Bracket ${escapeHtml(event.bracket)}</span>` : '<span class="meta-chip muted-chip">Bracket unknown</span>'}</div>
       <p>${escapeHtml(truncate(meaningfulEventDetails(event), 175))}</p>
     </div>
-    <div class="event-actions"><div class="event-preference-actions"><button class="heart-button ${isFavorite ? 'active' : ''}" data-favorite="${favoriteKey}" aria-label="${isFavorite ? 'Remove from' : 'Add to'} favorites" title="Favorite series">${heartIcon()}</button><button class="visibility-button ${isHidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${escapeHtml(event.id)}" aria-label="${isHidden ? 'Show event normally' : 'Hide event for now'}" title="${isHidden ? 'Show normally' : 'Hide for now'}">${eyeClosedIcon()}</button></div><span class="open-cue">Open details →</span></div>
+    <div class="event-actions"><div class="event-preference-actions"><button class="heart-button ${isFavorite ? 'active' : ''}" data-favorite="${favoriteKey}" aria-label="${isFavorite ? 'Remove from' : 'Add to'} favorites" title="Favorite series">${heartIcon()}</button><button class="visibility-button ${isHidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${escapeHtml(event.id)}" aria-label="${isHidden ? 'Show event normally' : 'Hide event for now'}" title="${isHidden ? 'Show normally' : 'Hide for now'}">${eyeClosedIcon()}</button><button class="thumb-button ${state.personal.ratings[favoriteKey] === 1 ? 'active' : ''}" data-action="toggle-event-dislike" data-event-id="${escapeHtml(event.id)}" aria-label="${state.personal.ratings[favoriteKey] === 1 ? 'Remove event dislike' : 'Dislike event series'}" title="${state.personal.ratings[favoriteKey] === 1 ? 'Remove dislike' : 'Not for me'}">${thumbDownIcon()}</button></div><span class="open-cue">Open details →</span></div>
   </article>`;
 }
 
@@ -3109,7 +3113,8 @@ function openEvent(id, occurrenceDate) {
   const artifacts = artifactsForEvent(event);
   const retainedEvidence = artifacts.length ? artifactEvidenceList(artifacts) : '';
   const details = meaningfulEventDetails(event);
-  openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span>${organizer ? '<span class="status-chip sky">Community meetup</span>' : ''}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span>${hidden ? '<span class="status-chip coral">Hidden by you</span>' : ''}<span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${personalKey}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="visibility-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Show event normally' : 'Hide event for now'}" title="${hidden ? 'Show normally' : 'Hide for now'}">${eyeClosedIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1>${organizer ? `<button class="drawer-place-link" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)} →</button><span class="drawer-attribution-separator"> · </span>` : ''}<button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">Hosted at ${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
+  const disliked = state.personal.ratings[personalKey] === 1;
+  openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span>${organizer ? '<span class="status-chip sky">Community meetup</span>' : ''}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span>${hidden ? '<span class="status-chip coral">Hidden by you</span>' : ''}${disliked ? '<span class="status-chip coral">Not for you</span>' : ''}<span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${personalKey}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="visibility-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Show event normally' : 'Hide event for now'}" title="${hidden ? 'Show normally' : 'Hide for now'}">${eyeClosedIcon()}</button><button class="thumb-button ${disliked ? 'active' : ''}" data-action="toggle-event-dislike" data-event-id="${event.id}" aria-label="${disliked ? 'Remove event dislike' : 'Dislike event series'}" title="${disliked ? 'Remove dislike' : 'Not for me'}">${thumbDownIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1>${organizer ? `<button class="drawer-place-link" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)} →</button><span class="drawer-attribution-separator"> · </span>` : ''}<button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">Hosted at ${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
     <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(eventStartTime(event))}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
     <div class="drawer-action-grid"><a class="soft-button calendar-action" href="${calendarUrl}" target="_blank" rel="noreferrer" aria-label="Add to Google Calendar" title="Add to Google Calendar">${calendarPlusIcon()}</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button></div>
     <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(details)}</p></section>
@@ -3348,6 +3353,19 @@ function toggleHidden(key) {
   void persistPreference(key);
   renderCurrentRoute();
   toast(state.personal.hidden[key] ? (isEvent ? 'Hidden from normal event views' : 'Deprioritized in your view') : 'Restored to normal priority');
+}
+
+function toggleEventDislike(key) {
+  const disliked = state.personal.ratings[key] === 1;
+  if (disliked) {
+    delete state.personal.ratings[key];
+  } else {
+    state.personal.ratings[key] = 1;
+  }
+  savePersonal({ type: 'rating', label: `${disliked ? 'Removed dislike for' : 'Marked not-for-me'} ${key.split(':')[1]}` });
+  void persistPreference(key);
+  renderCurrentRoute();
+  toast(disliked ? 'Event dislike removed' : 'Marked as not for you');
 }
 
 function setSignalRead(signalId, read) {
