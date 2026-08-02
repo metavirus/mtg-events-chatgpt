@@ -3,7 +3,7 @@
 Status: shared normalization, deterministic reconciliation, bootstrap-safe
 presentation, grouped Updates, and explicit-attention Signals are implemented;
 ambiguous/conflicting identity paths remain held.
-Updated: 2026-08-01
+Updated: 2026-08-02
 
 ## Decision
 
@@ -59,12 +59,12 @@ path; `--bootstrap` deliberately suppresses novelty for initial inventory. The
 first non-WPN proof is complete: confirmed standalone/finite official listings
 use `stage_official_event_observation(...)` and the same promoter. Official
 dated occurrences with an explicit existing recurring-series target use
-`stage_official_recurring_occurrence_observation(...)`, then
-`reconcile_targeted_recurring_observations(...)`, and finally the same promoter.
+`stage_official_recurring_occurrence_observation(...)` and the same promoter;
+the promoter invokes the targeted reconciler internally.
 The normalized observation retains `target_series_id`; the reconciler validates
 that it is a recurring series owned by the same venue and never falls back to
-title matching for this lane. The former direct recurring-occurrence writer is
-retired.
+title matching for this lane. The former direct WPN, official-event, and
+recurring-occurrence catalog writers are retired.
 
 ## Core principles
 

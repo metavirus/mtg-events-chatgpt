@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-01
+Updated: 2026-08-02
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -204,8 +204,10 @@ Canonical operating details:
    recurring series now also stage as normalized observations, retain the exact
    requested series ID, reconcile through the source-neutral targeted lane, and
    finish through the same promoter. The old direct recurring-occurrence writer
-   is retired. Next migrate or remove the remaining direct compatibility writers
-   only when their normalized replacements are proven. Keep the 195 ambiguous/
+   is retired. The remaining direct WPN and official-event writers are retired,
+   and targeted recurring reconciliation now runs inside the promoter rather
+   than in helper-side choreography. Next implement safe existing-event change,
+   cancellation, and disappearance handling. Keep the 195 ambiguous/
    conflicting WPN observations pending and do not build separate WPN/social
    canonical promoters.
 

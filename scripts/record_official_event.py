@@ -213,13 +213,6 @@ from {stage_call};"""
     return f"""create temporary table recurring_event_operator_stage as
 select * from {stage_call};
 
-create temporary table recurring_event_operator_reconciled as
-select t.*
-from recurring_event_operator_stage s
-cross join lateral public.reconcile_targeted_recurring_observations(
-  s.ingest_run_id, false
-) t;
-
 create temporary table recurring_event_operator_promoted as
 select p.*
 from recurring_event_operator_stage s

@@ -218,8 +218,8 @@ Routine typed RPC lanes do not use this script by default.
   official standalone or finite event. It stages a normalized observation and
   invokes the shared promoter; it is no longer a direct catalog writer.
 - Use `scripts/record_official_event.py recurring-occurrence` for one official
-  dated occurrence attached to an existing recurring series. This remains a
-  compatibility lane pending its normalized explicit-series adapter.
+  dated occurrence attached to an existing recurring series. It stages a
+  normalized explicit-series observation and invokes the shared promoter.
 
 The script uses the browser-safe Supabase URL and publishable key from
 `supabase/project-config.json` for read-only exports. It does not require or
@@ -569,9 +569,9 @@ Canonical event paths:
   `promote_event_ingest_run(...)`; do not add another WPN-specific upsert path.
 - clean official dated occurrences targeting an existing recurring series use
   `record_official_event.py recurring-occurrence`; that helper now stages a
-  normalized observation with an exact `target_series_id`, runs the targeted
-  reconciler, and finishes through the shared promoter. Do not call or restore
-  the retired direct recurring-occurrence writer.
+  normalized observation with an exact `target_series_id` and finishes through
+  the shared promoter, which owns targeted reconciliation internally. Do not
+  call or restore any retired direct event writer.
 
 Still deferred:
 

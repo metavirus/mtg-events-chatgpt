@@ -198,7 +198,10 @@ if (-not $SkipLiveSmoke -and -not $skipLinkedLiveSmoke) {
 
     $schemaOk = (
         $schemaResult.Text -match 'record_entity_surface_check' -and
-        $schemaResult.Text -match 'upsert_attributable_official_event' -and
+        $schemaResult.Text -match 'stage_official_event_observation' -and
+        $schemaResult.Text -match 'stage_official_recurring_occurrence_observation' -and
+        $schemaResult.Text -match 'reconcile_targeted_recurring_observations' -and
+        $schemaResult.Text -match 'promote_event_ingest_run' -and
         -not (($schemaResult.Text -match '"error"') -and ($schemaResult.Text -notmatch 'Timeout while shutting down PostHog'))
     )
 

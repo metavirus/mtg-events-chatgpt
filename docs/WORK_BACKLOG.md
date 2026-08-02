@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-08-01
+Last updated: 2026-08-02
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -39,9 +39,10 @@ Use it for:
   lane is also complete: it preserves an exact target on the normalized
   observation, validates venue/recurrence compatibility, uses the shared
   presentation promoter, replays without writes, and has retired its former
-  direct writer. Next migrate or remove the remaining direct compatibility
-  writers only after their normalized replacements are proven. Then continue
-  sparse structured optional facts
+  direct writer. The remaining direct WPN and official-event compatibility
+  writers are now retired as well, and the promoter itself owns targeted
+  recurring reconciliation. Next complete safe changed/cancelled/disappeared
+  event lifecycle handling, then continue sparse structured optional facts
   without blob-only normalization. A sparse later source
   must not clear richer facts established by another source. Do not add verbose
   per-event logging, a duplicate feed/catalog, or new Instagram/Discord
