@@ -35,10 +35,13 @@ Use it for:
   venue-grouped Updates through existing `research_changes`, and only explicit
   adapter attention annotations can create Signals. Replay/no-delta runs remain
   silent. The first non-WPN adapter is now proven for clean confirmed official
-  standalone/finite listings. The next tranche moves the explicit existing-
-  recurring-series occurrence helper onto the same observation/promoter
-  contract, then retires the corresponding older direct event writers. Then
-  continue sparse structured optional facts
+  standalone/finite listings. The explicit existing-recurring-series occurrence
+  lane is also complete: it preserves an exact target on the normalized
+  observation, validates venue/recurrence compatibility, uses the shared
+  presentation promoter, replays without writes, and has retired its former
+  direct writer. Next migrate or remove the remaining direct compatibility
+  writers only after their normalized replacements are proven. Then continue
+  sparse structured optional facts
   without blob-only normalization. A sparse later source
   must not clear richer facts established by another source. Do not add verbose
   per-event logging, a duplicate feed/catalog, or new Instagram/Discord

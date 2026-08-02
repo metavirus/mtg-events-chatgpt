@@ -200,10 +200,14 @@ Canonical operating details:
    official listings stage through `stage_official_event_observation(...)` and
    finish through the same promoter. Dry run wrote nothing; a fully rolled-back
    live proof returned canonical series/occurrence IDs, one grouped Update, and
-   an idempotent replay. Next move the explicit recurring-series occurrence
-   helper onto the normalized contract, then retire the corresponding older
-   direct event writers. Keep the 195 ambiguous/conflicting WPN observations
-   pending and do not build separate WPN/social canonical promoters.
+   an idempotent replay. Official dated occurrences targeting an existing
+   recurring series now also stage as normalized observations, retain the exact
+   requested series ID, reconcile through the source-neutral targeted lane, and
+   finish through the same promoter. The old direct recurring-occurrence writer
+   is retired. Next migrate or remove the remaining direct compatibility writers
+   only when their normalized replacements are proven. Keep the 195 ambiguous/
+   conflicting WPN observations pending and do not build separate WPN/social
+   canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by

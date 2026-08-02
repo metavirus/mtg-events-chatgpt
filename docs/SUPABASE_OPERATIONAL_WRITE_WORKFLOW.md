@@ -563,12 +563,20 @@ Accepted gates:
 4. agents no longer hand-edit or mentally model canonical JSON for ordinary
    research updates.
 
+Canonical event paths:
+
+- canonical source-adapter event work uses normalized observations and
+  `promote_event_ingest_run(...)`; do not add another WPN-specific upsert path.
+- clean official dated occurrences targeting an existing recurring series use
+  `record_official_event.py recurring-occurrence`; that helper now stages a
+  normalized observation with an exact `target_series_id`, runs the targeted
+  reconciler, and finishes through the shared promoter. Do not call or restore
+  the retired direct recurring-occurrence writer.
+
 Still deferred:
 
 - broader workflow/request handling;
 - unattended recurring research automation.
-- canonical source-adapter event work uses normalized observations and
-  `promote_event_ingest_run(...)`; do not add another WPN-specific upsert path.
 
 ## Wizards snapshot artifacts
 

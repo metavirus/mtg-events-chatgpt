@@ -168,12 +168,26 @@ left join public.event_source_bindings b on b.observation_id = r.observation_id;
 
 
 def build_recurring_occurrence_sql(args: argparse.Namespace) -> str:
-    return f"""select series_id, occurrence_id, source_id, outcome, wrote, research_change_id
-from public.upsert_official_occurrence_on_recurring_series(
-  p_idempotency_key := {sql_literal(args.idempotency_key)},
+    if args.occurrence_status != "confirmed":
+        raise ValueError(
+            "The normalized recurring-occurrence lane accepts confirmed additions only; "
+            "use reviewed correction handling for cancellations, moves, or projections."
+        )
+    attention_values = [
+        args.attention_category,
+        args.attention_priority,
+        args.attention_summary,
+        args.suggested_action,
+    ]
+    if any(attention_values) and not all(attention_values):
+        raise ValueError(
+            "Attention category, priority, summary, and suggested action must be supplied together."
+        )
+    stage_call = f"""public.stage_official_recurring_occurrence_observation(
+  p_run_key := {sql_literal(args.idempotency_key)},
+  p_upstream_event_id := {sql_literal(args.occurrence_id)},
   p_venue_id := {sql_literal(args.venue_id)},
-  p_series_id := {sql_literal(args.series_id)},
-  p_occurrence_id := {sql_literal(args.occurrence_id)},
+  p_target_series_id := {sql_literal(args.series_id)},
   p_occurrence_date := {sql_date(args.occurrence_date)},
   p_start_time := {sql_time(args.start_time)},
   p_source_id := {sql_literal(args.source_id)},
@@ -181,15 +195,43 @@ from public.upsert_official_occurrence_on_recurring_series(
   p_source_url := {sql_literal(args.source_url)},
   p_summary := {sql_literal(args.summary)},
   p_source_type := {sql_literal(args.source_type)},
+  p_end_time := {sql_literal(args.end_time)}::time,
   p_entry_fee := {sql_numeric(args.entry_fee)},
   p_details := {sql_literal(args.details)},
-  p_end_time := {sql_literal(args.end_time)}::time,
-  p_confidence := {sql_literal(args.confidence)},
-  p_evidence_state := {sql_literal(args.evidence_state)},
-  p_occurrence_status := {sql_literal(args.occurrence_status)},
-  p_last_verified := {sql_date(args.last_verified)},
+  p_proxy_policy := {sql_literal(args.proxy_policy)},
+  p_attention_category := {sql_literal(args.attention_category)},
+  p_attention_priority := {sql_literal(args.attention_priority)},
+  p_attention_summary := {sql_literal(args.attention_summary)},
+  p_suggested_action := {sql_literal(args.suggested_action)},
   p_dry_run := {sql_literal(args.dry_run)}
-);"""
+)"""
+    if args.dry_run:
+        return f"""select ingest_run_id, observation_id, null::text as series_id,
+  null::text as occurrence_id, outcome, wrote,
+  0::integer as grouped_update_count, 0::integer as signal_count
+from {stage_call};"""
+    return f"""create temporary table recurring_event_operator_stage as
+select * from {stage_call};
+
+create temporary table recurring_event_operator_reconciled as
+select t.*
+from recurring_event_operator_stage s
+cross join lateral public.reconcile_targeted_recurring_observations(
+  s.ingest_run_id, false
+) t;
+
+create temporary table recurring_event_operator_promoted as
+select p.*
+from recurring_event_operator_stage s
+cross join lateral public.promote_event_ingest_run(
+  s.ingest_run_id, 'delta', false
+) p;
+
+select s.ingest_run_id, s.observation_id, b.series_id, b.occurrence_id,
+  p.outcome, p.wrote, p.grouped_update_count, p.signal_count
+from recurring_event_operator_stage s
+join recurring_event_operator_promoted p on true
+left join public.event_source_bindings b on b.observation_id = s.observation_id;"""
 
 
 def build_sql(args: argparse.Namespace) -> str:
@@ -257,9 +299,7 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("Use either --execute-linked or --execute, not both.")
 
     try:
-        fields = (["ingest_run_id", "observation_id", "series_id", "occurrence_id", "outcome", "wrote", "grouped_update_count", "signal_count"]
-                  if args.command == "official-event"
-                  else ["series_id", "occurrence_id", "source_id", "outcome", "wrote", "research_change_id"])
+        fields = ["ingest_run_id", "observation_id", "series_id", "occurrence_id", "outcome", "wrote", "grouped_update_count", "signal_count"]
         status = execute_and_print(
             sql,
             linked=args.execute_linked,

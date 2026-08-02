@@ -57,10 +57,14 @@ an adapter. It does not infer attention from titles.
 `scripts/stage_wpn_event_observations.py --promote` is the complete WPN operator
 path; `--bootstrap` deliberately suppresses novelty for initial inventory. The
 first non-WPN proof is complete: confirmed standalone/finite official listings
-use `stage_official_event_observation(...)` and the same promoter. The next
-bounded adapter shape is an official dated occurrence with an explicit existing
-recurring-series target; it must preserve that exact target rather than fall
-back to fuzzy identity.
+use `stage_official_event_observation(...)` and the same promoter. Official
+dated occurrences with an explicit existing recurring-series target use
+`stage_official_recurring_occurrence_observation(...)`, then
+`reconcile_targeted_recurring_observations(...)`, and finally the same promoter.
+The normalized observation retains `target_series_id`; the reconciler validates
+that it is a recurring series owned by the same venue and never falls back to
+title matching for this lane. The former direct recurring-occurrence writer is
+retired.
 
 ## Core principles
 
