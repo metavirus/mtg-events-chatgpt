@@ -137,6 +137,12 @@ frontier checkpoints are preserved in
   from hiding a valid event. The complete WPN operator path is
   `scripts/stage_wpn_event_observations.py --promote`; `--bootstrap` is reserved
   for deliberately quiet initial inventory.
+- Existing-event lifecycle handling is now part of the shared promoter through
+  `reconcile_existing_event_lifecycle(...)`. It refreshes only safe same-
+  schedule bound observations with null-safe optional facts, and queues review
+  for changed upstream status/date/time/title/venue or WPN events missing from
+  two consecutive snapshots. It does not silently cancel, delete, hide, or
+  overwrite canonical Events when a source changes or gets sparse.
 - A read-only reconciliation against the 2026-08-01 cache is captured in
   `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md`. It found 1,081
   exact-known-venue future WPN observations versus 118 canonical future dated
@@ -204,12 +210,12 @@ Canonical operating details:
    recurring series now also stage as normalized observations, retain the exact
    requested series ID, reconcile through the source-neutral targeted lane, and
    finish through the same promoter. The old direct recurring-occurrence writer
-   is retired. The remaining direct WPN and official-event writers are retired,
-   and targeted recurring reconciliation now runs inside the promoter rather
-   than in helper-side choreography. Next implement safe existing-event change,
-   cancellation, and disappearance handling. Keep the 195 ambiguous/
-   conflicting WPN observations pending and do not build separate WPN/social
-   canonical promoters.
+  is retired. The remaining direct WPN and official-event writers are retired,
+  and targeted recurring reconciliation plus existing-event lifecycle review now
+  run inside the promoter rather than in helper-side choreography. Next continue
+  sparse structured optional facts and app-facing polish for grouped Updates/
+  review drawers. Keep the 195 ambiguous/conflicting WPN observations pending
+  and do not build separate WPN/social canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by

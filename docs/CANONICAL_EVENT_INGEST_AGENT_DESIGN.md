@@ -64,7 +64,11 @@ the promoter invokes the targeted reconciler internally.
 The normalized observation retains `target_series_id`; the reconciler validates
 that it is a recurring series owned by the same venue and never falls back to
 title matching for this lane. The former direct WPN, official-event, and
-recurring-occurrence catalog writers are retired.
+recurring-occurrence catalog writers are retired. Existing bound events also
+pass through `reconcile_existing_event_lifecycle(...)`: safe same-schedule
+observations may enrich empty optional facts, while source
+status/date/time/title/venue changes and repeated WPN disappearance create
+review items instead of silently mutating or removing canonical Events.
 
 ## Core principles
 
@@ -462,6 +466,23 @@ v4 exposes exact title/schedule conflicts, while migration
 leading time from a multi-time canonical series label and recognizes exact
 Premodern title semantics when WPN reports the generic `Other` format. It does
 not discard or rewrite the source observation.
+
+### Existing-event lifecycle handling (2026-08-02)
+
+Migration `20260802011055_add_event_lifecycle_review_handling.sql` adds
+`reconcile_existing_event_lifecycle(...)` and wires it into
+`promote_event_ingest_run(...)`. The function handles only already-bound source
+events from prior runs. If the source still points at the same venue, title,
+date, and start time, it may refresh the binding and fill empty optional
+occurrence facts such as end time, entry fee, capacity, or details. Sparse
+observations never clear richer established facts.
+
+If the source now reports a non-scheduled status, different venue, different
+date/time, or different title, the affected event is sent to
+`coordination_items` for review instead of being automatically rewritten. WPN
+events missing from two consecutive snapshots are also queued as at-risk review
+items. This keeps the daily promoter fast and useful while avoiding invisible
+cancellations, deletions, or source-hierarchy assumptions.
 
 The read-only comparison in
 `docs/WPN_CANONICAL_RECONCILIATION_EXERCISE_2026-08-01.md` is the measured basis

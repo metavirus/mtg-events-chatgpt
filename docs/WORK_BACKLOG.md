@@ -41,12 +41,16 @@ Use it for:
   presentation promoter, replays without writes, and has retired its former
   direct writer. The remaining direct WPN and official-event compatibility
   writers are now retired as well, and the promoter itself owns targeted
-  recurring reconciliation. Next complete safe changed/cancelled/disappeared
-  event lifecycle handling, then continue sparse structured optional facts
-  without blob-only normalization. A sparse later source
-  must not clear richer facts established by another source. Do not add verbose
-  per-event logging, a duplicate feed/catalog, or new Instagram/Discord
-  crawlers in the first tranche.
+  recurring reconciliation. Safe existing-event lifecycle handling is now
+  deployed through `reconcile_existing_event_lifecycle(...)` inside the shared
+  promoter: same-schedule bound observations may enrich empty optional fields,
+  while changed status/date/time/title/venue and two-snapshot WPN disappearance
+  cases queue review instead of silently mutating, hiding, deleting, or
+  cancelling Events. Next continue sparse structured optional facts without
+  blob-only normalization. A sparse later source must not clear richer facts
+  established by another source. Do not add verbose per-event logging, a
+  duplicate feed/catalog, or new Instagram/Discord crawlers in the first
+  tranche.
 
 - Venue selection now comes from lifecycle-specific Supabase views, not old
   ledger TBD wording: `venue_baseline_candidates`,

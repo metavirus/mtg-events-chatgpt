@@ -567,6 +567,10 @@ Canonical event paths:
 
 - canonical source-adapter event work uses normalized observations and
   `promote_event_ingest_run(...)`; do not add another WPN-specific upsert path.
+- existing bound-event refresh/change/disappearance handling also belongs
+  inside `promote_event_ingest_run(...)` through
+  `reconcile_existing_event_lifecycle(...)`; do not add a separate
+  cancellation/deletion side path for WPN or official sources.
 - clean official dated occurrences targeting an existing recurring series use
   `record_official_event.py recurring-occurrence`; that helper now stages a
   normalized observation with an exact `target_series_id` and finishes through
