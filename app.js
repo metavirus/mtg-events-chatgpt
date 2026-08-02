@@ -1814,7 +1814,7 @@ function eventCard(event, compact = false, options = {}) {
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
       <div class="event-attribution">${organizer ? `<button class="place-inline" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)}</button><span>·</span>` : ''}<button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">At ${escapeHtml(place.name)} <span>· ${distanceLabel(place)}</span></button></div>
       <div class="event-chips">${communityChip}${limitedChip}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="meta-chip">${fee}</span>${event.bracket && event.bracket !== 'unspecified' ? `<span class="meta-chip">Bracket ${escapeHtml(event.bracket)}</span>` : '<span class="meta-chip muted-chip">Bracket unknown</span>'}</div>
-      <p>${escapeHtml(truncate(event.details || 'Details are limited in the current source.', 175))}</p>
+      <p>${escapeHtml(truncate(meaningfulEventDetails(event), 175))}</p>
     </div>
     <div class="event-actions"><div class="event-preference-actions"><button class="heart-button ${isFavorite ? 'active' : ''}" data-favorite="${favoriteKey}" aria-label="${isFavorite ? 'Remove from' : 'Add to'} favorites" title="Favorite series">${heartIcon()}</button><button class="thumb-button ${isHidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${escapeHtml(event.id)}" aria-label="${isHidden ? 'Restore event priority' : 'Deprioritize event series'}" title="${isHidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></div><span class="open-cue">Open details →</span></div>
   </article>`;
@@ -3517,7 +3517,7 @@ function googleCalendarUrl(event, place, date) {
   const start = new Date(date); start.setHours(hour, minute, 0, 0);
   const end = new Date(start); end.setHours(end.getHours() + 3);
   const stamp = (value) => value.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-  const params = new URLSearchParams({ action: 'TEMPLATE', text: event.title, dates: `${stamp(start)}/${stamp(end)}`, details: event.details || '', location: place.address });
+  const params = new URLSearchParams({ action: 'TEMPLATE', text: event.title, dates: `${stamp(start)}/${stamp(end)}`, details: meaningfulEventDetails(event), location: place.address });
   return `https://calendar.google.com/calendar/render?${params}`;
 }
 
