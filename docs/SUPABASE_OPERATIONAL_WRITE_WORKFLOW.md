@@ -214,10 +214,12 @@ Routine typed RPC lanes do not use this script by default.
 - Use `scripts/record_surface_check.py` for ordinary surface dispositions.
 - Use `scripts/source_artifact_ingest.py` for ordinary retained images and
   PDFs plus their extracted text/facts.
-- Use `scripts/record_official_event.py official-event` for one clean
-  attributable official standalone or finite event occurrence.
+- Use `scripts/record_official_event.py official-event` for one clean confirmed
+  official standalone or finite event. It stages a normalized observation and
+  invokes the shared promoter; it is no longer a direct catalog writer.
 - Use `scripts/record_official_event.py recurring-occurrence` for one official
-  dated occurrence attached to an existing recurring series.
+  dated occurrence attached to an existing recurring series. This remains a
+  compatibility lane pending its normalized explicit-series adapter.
 
 The script uses the browser-safe Supabase URL and publishable key from
 `supabase/project-config.json` for read-only exports. It does not require or
@@ -278,13 +280,14 @@ existing coordination/request tables. Do not create a new queue.
 ## Routine typed event format
 
 Use `scripts/record_official_event.py` when the work is a clean attributable
-event delta that already fits a typed steward-only RPC.
+event delta. Prefer the normalized `official-event` lane.
 
 Operator lanes:
 
-- `official-event`: one attributable official standalone or finite event
-  occurrence. Suitable for official events pages, calendars, or event-platform
-  listings when venue identity is already safe enough.
+- `official-event`: one confirmed attributable official standalone or finite
+  event occurrence. It uses the shared normalized observation/promoter path and
+  supports optional explicit attention annotations; ordinary events do not
+  create Signals merely because they were ingested.
 - `recurring-occurrence`: one official dated occurrence attached to an existing
   recurring series. Suitable when the recurring series already exists and only a
   dated official occurrence needs to be attached without mutating the recurring

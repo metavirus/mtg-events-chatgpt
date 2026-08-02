@@ -1,8 +1,9 @@
-"""Tiny helper for routine typed official-event Supabase RPCs.
+"""Tiny helper for routine official-event writes.
 
 This wrapper covers only the two clean routine event-delta lanes:
 
-- one attributable official standalone/finite event occurrence;
+- one attributable official standalone/finite event through the shared
+  normalized observation/promoter path;
 - one official dated occurrence attached to an existing recurring series.
 
 It does not support proposals, Signals, evaluations, schema changes, exports,
@@ -61,6 +62,11 @@ def build_common_parser(subparsers: argparse._SubParsersAction[argparse.Argument
     parser.add_argument("--evidence-state", default="single_source", choices=sorted(EVIDENCE_STATE))
     parser.add_argument("--occurrence-status", default="confirmed", choices=sorted(OCCURRENCE_STATUS))
     parser.add_argument("--last-verified", default=str(date.today()), help="YYYY-MM-DD")
+    parser.add_argument("--proxy-policy", default="unspecified", choices=["allowed", "prohibited", "unspecified"])
+    parser.add_argument("--attention-category", choices=["operational", "mention", "event_opportunity", "community_activity", "registration", "needs_judgment"])
+    parser.add_argument("--attention-priority", choices=["low", "normal", "high", "urgent"])
+    parser.add_argument("--attention-summary")
+    parser.add_argument("--suggested-action")
     return parser
 
 
@@ -96,14 +102,25 @@ def sql_numeric(value: float | None) -> str:
 
 
 def build_official_event_sql(args: argparse.Namespace) -> str:
-    series_start = args.series_start_date or args.occurrence_date
-    series_end = args.series_end_date or series_start
-    return f"""select series_id, occurrence_id, source_id, outcome, wrote, research_change_id
-from public.upsert_attributable_official_event(
-  p_idempotency_key := {sql_literal(args.idempotency_key)},
+    if args.occurrence_status != "confirmed":
+        raise ValueError(
+            "The normalized official-event lane currently accepts confirmed additions only; "
+            "use reviewed correction handling for cancellations, moves, or projections."
+        )
+    attention_values = [
+        args.attention_category,
+        args.attention_priority,
+        args.attention_summary,
+        args.suggested_action,
+    ]
+    if any(attention_values) and not all(attention_values):
+        raise ValueError(
+            "Attention category, priority, summary, and suggested action must be supplied together."
+        )
+    stage_call = f"""public.stage_official_event_observation(
+  p_run_key := {sql_literal(args.idempotency_key)},
+  p_upstream_event_id := {sql_literal(args.occurrence_id)},
   p_venue_id := {sql_literal(args.venue_id)},
-  p_series_id := {sql_literal(args.series_id)},
-  p_occurrence_id := {sql_literal(args.occurrence_id)},
   p_title := {sql_literal(args.title)},
   p_format := {sql_literal(args.format)},
   p_event_type := {sql_literal(args.event_type)},
@@ -112,20 +129,42 @@ from public.upsert_attributable_official_event(
   p_source_id := {sql_literal(args.source_id)},
   p_source_label := {sql_literal(args.source_label)},
   p_source_url := {sql_literal(args.source_url)},
-  p_summary := {sql_literal(args.summary)},
   p_source_type := {sql_literal(args.source_type)},
-  p_series_start_date := {sql_date(series_start)},
-  p_series_end_date := {sql_date(series_end)},
-  p_bracket := {sql_literal(args.bracket)},
-  p_entry_fee := {sql_numeric(args.entry_fee)},
-  p_details := {sql_literal(args.details)},
   p_end_time := {sql_literal(args.end_time)}::time,
-  p_confidence := {sql_literal(args.confidence)},
-  p_evidence_state := {sql_literal(args.evidence_state)},
-  p_occurrence_status := {sql_literal(args.occurrence_status)},
-  p_last_verified := {sql_date(args.last_verified)},
+  p_entry_fee := {sql_numeric(args.entry_fee)},
+  p_details := {sql_literal(args.details or args.summary)},
+  p_bracket := {sql_literal(args.bracket)},
+  p_proxy_policy := {sql_literal(args.proxy_policy)},
+  p_attention_category := {sql_literal(args.attention_category)},
+  p_attention_priority := {sql_literal(args.attention_priority)},
+  p_attention_summary := {sql_literal(args.attention_summary)},
+  p_suggested_action := {sql_literal(args.suggested_action)},
   p_dry_run := {sql_literal(args.dry_run)}
-);"""
+)"""
+    if args.dry_run:
+        return f"""select ingest_run_id, observation_id, null::text as series_id,
+  null::text as occurrence_id, outcome, wrote,
+  0::integer as grouped_update_count, 0::integer as signal_count
+from {stage_call};"""
+    return f"""create temporary table official_event_operator_result as
+with staged as materialized (
+  select * from {stage_call}
+), promoted as materialized (
+  select p.*
+  from staged s
+  cross join lateral public.promote_event_ingest_run(
+    s.ingest_run_id, 'delta', false
+  ) p
+)
+select s.ingest_run_id, s.observation_id,
+  p.outcome, p.wrote, p.grouped_update_count, p.signal_count
+from staged s
+join promoted p on true;
+
+select r.ingest_run_id, r.observation_id, b.series_id, b.occurrence_id,
+  r.outcome, r.wrote, r.grouped_update_count, r.signal_count
+from official_event_operator_result r
+left join public.event_source_bindings b on b.observation_id = r.observation_id;"""
 
 
 def build_recurring_occurrence_sql(args: argparse.Namespace) -> str:
@@ -161,7 +200,7 @@ def build_sql(args: argparse.Namespace) -> str:
     raise RuntimeError(f"Unsupported command: {args.command}")
 
 
-def execute_and_print(sql: str, *, linked: bool, database_url: str | None) -> int:
+def execute_and_print(sql: str, *, linked: bool, database_url: str | None, expected_fields: list[str]) -> int:
     if linked:
         result = run_linked_query(sql)
         try:
@@ -173,7 +212,7 @@ def execute_and_print(sql: str, *, linked: bool, database_url: str | None) -> in
                 print(result.stderr.strip(), file=sys.stderr)
             print(str(exc), file=sys.stderr)
             return result.returncode or 1
-        print_rpc_rows(rows, ["series_id", "occurrence_id", "source_id", "outcome", "wrote", "research_change_id"])
+        print_rpc_rows(rows, expected_fields)
         return 0
 
     if not database_url:
@@ -188,7 +227,7 @@ def execute_and_print(sql: str, *, linked: bool, database_url: str | None) -> in
             print(result.stderr.strip(), file=sys.stderr)
         print(str(exc), file=sys.stderr)
         return result.returncode or 1
-    print_rpc_rows(rows, ["series_id", "occurrence_id", "source_id", "outcome", "wrote", "research_change_id"])
+    print_rpc_rows(rows, expected_fields)
     return 0
 
 
@@ -197,7 +236,10 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     args.dry_run = not args.live
 
-    sql = build_sql(args)
+    try:
+        sql = build_sql(args)
+    except ValueError as exc:
+        parser.error(str(exc))
     mode = "DRY RUN" if args.dry_run else "LIVE"
     print(f"Typed event RPC mode: {mode}")
     print(f"Lane: {args.command}")
@@ -206,7 +248,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Occurrence: {args.occurrence_id}")
 
     if not args.execute and not args.execute_linked:
-        print("Linked-CLI-friendly SQL follows. It returns: series_id, occurrence_id, source_id, outcome, wrote, research_change_id.")
+        print("Executable SQL follows. Official-event returns normalized run/observation and canonical result IDs.")
         print()
         print(sql)
         return 0
@@ -215,10 +257,14 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("Use either --execute-linked or --execute, not both.")
 
     try:
+        fields = (["ingest_run_id", "observation_id", "series_id", "occurrence_id", "outcome", "wrote", "grouped_update_count", "signal_count"]
+                  if args.command == "official-event"
+                  else ["series_id", "occurrence_id", "source_id", "outcome", "wrote", "research_change_id"])
         status = execute_and_print(
             sql,
             linked=args.execute_linked,
             database_url=resolve_database_url(args.database_url),
+            expected_fields=fields,
         )
     except RuntimeError as exc:
         parser.error(str(exc))
@@ -236,6 +282,7 @@ def main(argv: list[str] | None = None) -> int:
                 build_sql(args),
                 linked=args.execute_linked,
                 database_url=resolve_database_url(args.database_url),
+                expected_fields=fields,
             )
         except RuntimeError as exc:
             parser.error(str(exc))

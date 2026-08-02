@@ -34,9 +34,11 @@ Use it for:
   now deployed: bootstrap/backfill stays quiet, later source arrivals create
   venue-grouped Updates through existing `research_changes`, and only explicit
   adapter attention annotations can create Signals. Replay/no-delta runs remain
-  silent. The next tranche is one bounded non-WPN adapter using the same
-  observation/promoter contract, followed by retirement of ordinary use of the
-  older direct event writers. Then continue sparse structured optional facts
+  silent. The first non-WPN adapter is now proven for clean confirmed official
+  standalone/finite listings. The next tranche moves the explicit existing-
+  recurring-series occurrence helper onto the same observation/promoter
+  contract, then retires the corresponding older direct event writers. Then
+  continue sparse structured optional facts
   without blob-only normalization. A sparse later source
   must not clear richer facts established by another source. Do not add verbose
   per-event logging, a duplicate feed/catalog, or new Instagram/Discord

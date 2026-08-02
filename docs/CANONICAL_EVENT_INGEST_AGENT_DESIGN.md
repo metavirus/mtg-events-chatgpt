@@ -56,8 +56,11 @@ presentation mode, venue-grouped Updates, and Signals explicitly annotated by
 an adapter. It does not infer attention from titles.
 `scripts/stage_wpn_event_observations.py --promote` is the complete WPN operator
 path; `--bootstrap` deliberately suppresses novelty for initial inventory. The
-next proof is one bounded non-WPN adapter using this same contract, not a new
-promoter.
+first non-WPN proof is complete: confirmed standalone/finite official listings
+use `stage_official_event_observation(...)` and the same promoter. The next
+bounded adapter shape is an official dated occurrence with an explicit existing
+recurring-series target; it must preserve that exact target rather than fall
+back to fuzzy identity.
 
 ## Core principles
 

@@ -196,10 +196,14 @@ Canonical operating details:
    `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the proven deterministic
    creator. Exact attachment and collision-free new-series creation are complete
    and idempotent. Grouped Updates and explicit-attention Signals are complete.
-   Next prove one bounded non-WPN adapter against the same normalized
-   observation/promoter contract, then retire ordinary use of the older direct
-   event writers. Keep the 195 ambiguous/conflicting observations pending and
-   do not build separate WPN/social canonical promoters.
+   The first non-WPN adapter is now proven: clean confirmed standalone/finite
+   official listings stage through `stage_official_event_observation(...)` and
+   finish through the same promoter. Dry run wrote nothing; a fully rolled-back
+   live proof returned canonical series/occurrence IDs, one grouped Update, and
+   an idempotent replay. Next move the explicit recurring-series occurrence
+   helper onto the normalized contract, then retire the corresponding older
+   direct event writers. Keep the 195 ambiguous/conflicting WPN observations
+   pending and do not build separate WPN/social canonical promoters.
 
 1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
    next default step. Current Communities work should be driven only by
