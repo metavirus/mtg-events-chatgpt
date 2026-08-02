@@ -795,6 +795,7 @@ function mapSignal(item) {
 
 function mapEventSeries(item, sourcesBySeries) {
   const sourceLinks = sourcesBySeries.get(item.id) || [];
+  const selectedSourceLink = sourceLinks.find((link) => link.source_url) || sourceLinks[0];
   return {
     id: item.id,
     seriesId: item.id,
@@ -812,8 +813,9 @@ function mapEventSeries(item, sourcesBySeries) {
     currency: item.currency || 'USD',
     details: item.details || '',
     sourceIds: sourceLinks.map((link) => link.source_id),
-    sourceId: sourceLinks[0]?.source_id,
-    sourceUrl: sourceLinks.find((link) => link.source_url)?.source_url || '',
+    sourceId: selectedSourceLink?.source_id,
+    sourceUrl: selectedSourceLink?.source_url || '',
+    sourceLinkScope: selectedSourceLink ? 'series' : '',
     createdAt: item.created_at || '',
     lastVerified: item.last_verified || '',
     confidence: item.confidence,
@@ -826,6 +828,8 @@ function mapEventOccurrence(item, series, sourcesByOccurrence, sourcesBySeries) 
   const directSourceLinks = sourcesByOccurrence.get(item.id) || [];
   const seriesSourceLinks = sourcesBySeries.get(item.series_id) || [];
   const sourceLinks = [...new Map([...directSourceLinks, ...seriesSourceLinks].map((link) => [link.source_id, link])).values()];
+  const selectedSourceLink = sourceLinks.find((link) => link.source_url) || sourceLinks[0];
+  const directSourceIds = new Set(directSourceLinks.map((link) => link.source_id));
   return {
     id: item.id,
     seriesId: item.series_id,
@@ -845,8 +849,9 @@ function mapEventOccurrence(item, series, sourcesByOccurrence, sourcesBySeries) 
     currency: series.currency || 'USD',
     details: item.details || series.details || '',
     sourceIds: sourceLinks.map((link) => link.source_id),
-    sourceId: sourceLinks[0]?.source_id,
-    sourceUrl: sourceLinks.find((link) => link.source_url)?.source_url || '',
+    sourceId: selectedSourceLink?.source_id,
+    sourceUrl: selectedSourceLink?.source_url || '',
+    sourceLinkScope: selectedSourceLink ? (directSourceIds.has(selectedSourceLink.source_id) ? 'occurrence' : 'series') : '',
     createdAt: item.created_at || series.created_at || '',
     lastVerified: series.last_verified || '',
     confidence: occurrenceConfidence(item.evidence_state, series.confidence),
@@ -1232,6 +1237,35 @@ function formatFreshnessDateTime(value) {
   if (!hasTime) return dateLabel;
   return `${dateLabel}, ${date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
 }
+
+function meaningfulEventDetails(event) {
+  const text = String(event?.details || '').trim();
+  if (!text || /^(?:tbd|n\/?a|none|unknown|null|-|--|\.)$/i.test(text)) {
+    return 'The source confirms this listing, but does not provide a useful event description yet.';
+  }
+  return text;
+}
+
+function eventSourceDisplay(baseSource, event) {
+  if (!baseSource) return null;
+  const exactEventUrl = event?.sourceUrl && /locator\.wizards\.com\/event\//i.test(event.sourceUrl);
+  const inherited = event?.sourceLinkScope === 'series' && event?.date;
+  const typeLabel = exactEventUrl
+    ? `${baseSource.type || 'source'} event`
+    : inherited
+      ? `${baseSource.type || 'source'} series evidence`
+      : baseSource.type || 'source';
+  const dateLabel = event?.lastVerified
+    ? `observed ${formatFreshnessDate(event.lastVerified)}`
+    : `checked ${baseSource.lastChecked || 'date unknown'}`;
+  return {
+    ...baseSource,
+    url: event?.sourceUrl || baseSource.url,
+    sourceContextLabel: typeLabel,
+    sourceDateLabel: dateLabel
+  };
+}
+
 function updateFreshnessMini() {
   const container = document.getElementById('freshnessMini');
   if (!container) return;
@@ -3058,7 +3092,7 @@ function openEvent(id, occurrenceDate) {
   if (!event || !place) return;
   const occurrence = occurrenceDate ? parseDate(occurrenceDate) : parseDate(event.date || event.startDate);
   const baseSource = source(event.sourceId);
-  const src = baseSource && event.sourceUrl ? { ...baseSource, url: event.sourceUrl } : baseSource;
+  const src = eventSourceDisplay(baseSource, event);
   const fit = fitLabel({ ...event, occurrenceDate: occurrence });
   const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: event.occurrenceStatus || (!event.recurrence && (event.date || event.startDate) ? 'confirmed' : 'projected') });
   const personalKey = eventPreferenceKey(event);
@@ -3068,10 +3102,11 @@ function openEvent(id, occurrenceDate) {
   const calendarUrl = googleCalendarUrl(event, place, occurrence);
   const artifacts = artifactsForEvent(event);
   const retainedEvidence = artifacts.length ? artifactEvidenceList(artifacts) : '';
+  const details = meaningfulEventDetails(event);
   openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span>${organizer ? '<span class="status-chip sky">Community meetup</span>' : ''}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${personalKey}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="thumb-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Restore event priority' : 'Deprioritize event series'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1>${organizer ? `<button class="drawer-place-link" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)} →</button><span class="drawer-attribution-separator"> · </span>` : ''}<button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">Hosted at ${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
     <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(eventStartTime(event))}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
     <div class="drawer-action-grid"><a class="soft-button calendar-action" href="${calendarUrl}" target="_blank" rel="noreferrer" aria-label="Add to Google Calendar" title="Add to Google Calendar">${calendarPlusIcon()}</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button></div>
-    <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(event.details || 'The current source provides only a minimal event listing.')}</p></section>
+    <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(details)}</p></section>
     <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${place.lifecycleState === 'identity_blocked' ? '<div><span class="interpret-icon amber">!</span><p><strong>Identity unresolved</strong><br>The event has an attached source, but the venue or branch identity remains unresolved. Check the source before relying on it.</p></div>' : ''}${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
     <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Address</span><strong>${escapeHtml(place.address)}</strong></div><div><span>Added to catalog</span><strong>${escapeHtml(event.createdAt ? formatFreshnessDate(event.createdAt) : 'Unknown')}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>
     <section class="drawer-section"><p class="eyebrow">Evidence</p><h2>Source trail</h2>${retainedEvidence}${src ? sourceRow(src, true) : '<p class="muted-copy">No normalized source link is attached yet.</p>'}</section>
@@ -3581,7 +3616,9 @@ function artifactFactRows(facts = {}) {
 }
 
 function sourceRow(item, prominent = false) {
-  const content = `<span class="source-icon">${sourceIcon(item.type)}</span><span><strong>${escapeHtml(item.label)}</strong><small>${escapeHtml(item.type || 'source')} · checked ${escapeHtml(item.lastChecked || 'date unknown')}</small></span><span>${item.url ? '↗' : '—'}</span>`;
+  const contextLabel = item.sourceContextLabel || item.type || 'source';
+  const dateLabel = item.sourceDateLabel || `checked ${item.lastChecked || 'date unknown'}`;
+  const content = `<span class="source-icon">${sourceIcon(item.type)}</span><span><strong>${escapeHtml(item.label)}</strong><small>${escapeHtml(contextLabel)} · ${escapeHtml(dateLabel)}</small></span><span>${item.url ? '↗' : '—'}</span>`;
   if (!item.url) return `<div class="source-row ${prominent ? 'prominent' : ''} source-row-static">${content}</div>`;
   return `<a class="source-row ${prominent ? 'prominent' : ''}" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">${content}</a>`;
 }
