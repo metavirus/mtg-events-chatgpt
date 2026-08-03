@@ -1,5 +1,5 @@
 {
-  "retrievedAt": "2026-08-01T16:54:17.901672+00:00",
+  "retrievedAt": "2026-08-03T17:33:18.893098+00:00",
   "publicOrigin": {
     "label": "Los Alamitos, CA",
     "latitude": 33.8031,
@@ -12,8 +12,8 @@
   "radiusMiles": 25.0,
   "startDate": null,
   "endDate": null,
-  "allEventCount": 1267,
-  "commanderCandidateCount": 637,
+  "allEventCount": 1278,
+  "commanderCandidateCount": 664,
   "organizationCount": 78,
   "privacyNote": "No home street address is stored. The default query uses a public Los Alamitos centroid and a discovery buffer."
 }
