@@ -20,7 +20,7 @@
     "latitude": 33.8173829,
     "longitude": -118.0381637,
     "calculatedDistanceMiles": 2.21,
-    "observedEventCount": 20
+    "observedEventCount": 17
   },
   {
     "id": "17690",
@@ -43,7 +43,7 @@
     "latitude": 33.8311688,
     "longitude": -118.049026,
     "calculatedDistanceMiles": 2.36,
-    "observedEventCount": 5
+    "observedEventCount": 4
   },
   {
     "id": "18648",
@@ -89,7 +89,7 @@
     "latitude": 33.7763907,
     "longitude": -118.034843,
     "calculatedDistanceMiles": 2.85,
-    "observedEventCount": 10
+    "observedEventCount": 8
   },
   {
     "id": "20776",
@@ -135,7 +135,7 @@
     "latitude": 33.8317595,
     "longitude": -118.0004539,
     "calculatedDistanceMiles": 4.59,
-    "observedEventCount": 4
+    "observedEventCount": 3
   },
   {
     "id": "9269",
@@ -158,7 +158,7 @@
     "latitude": 33.87256,
     "longitude": -118.09055,
     "calculatedDistanceMiles": 4.91,
-    "observedEventCount": 1
+    "observedEventCount": 2
   },
   {
     "id": "6718",
@@ -181,7 +181,7 @@
     "latitude": 33.80847,
     "longitude": -118.16063,
     "calculatedDistanceMiles": 5.07,
-    "observedEventCount": 99
+    "observedEventCount": 94
   },
   {
     "id": "20922",
@@ -227,7 +227,7 @@
     "latitude": 33.874286,
     "longitude": -118.047938,
     "calculatedDistanceMiles": 5.12,
-    "observedEventCount": 36
+    "observedEventCount": 34
   },
   {
     "id": "18067",
@@ -250,7 +250,7 @@
     "latitude": 33.8855679,
     "longitude": -118.1050217,
     "calculatedDistanceMiles": 5.99,
-    "observedEventCount": 13
+    "observedEventCount": 12
   },
   {
     "id": "7516",
@@ -273,7 +273,7 @@
     "latitude": 33.88322,
     "longitude": -118.1256,
     "calculatedDistanceMiles": 6.32,
-    "observedEventCount": 4
+    "observedEventCount": 1
   },
   {
     "id": "18954",
@@ -319,7 +319,7 @@
     "latitude": 33.78579,
     "longitude": -117.95799,
     "calculatedDistanceMiles": 6.69,
-    "observedEventCount": 5
+    "observedEventCount": 4
   },
   {
     "id": "21179",
@@ -342,7 +342,7 @@
     "latitude": 33.7821505,
     "longitude": -118.1890544,
     "calculatedDistanceMiles": 6.84,
-    "observedEventCount": 17
+    "observedEventCount": 15
   },
   {
     "id": "19321",
@@ -365,7 +365,7 @@
     "latitude": 33.8972219,
     "longitude": -118.0064175,
     "calculatedDistanceMiles": 7.53,
-    "observedEventCount": 2
+    "observedEventCount": 3
   },
   {
     "id": "17569",
@@ -388,7 +388,7 @@
     "latitude": 33.69350010000001,
     "longitude": -117.9885261,
     "calculatedDistanceMiles": 8.98,
-    "observedEventCount": 34
+    "observedEventCount": 37
   },
   {
     "id": "14480",
@@ -411,7 +411,7 @@
     "latitude": 33.83315,
     "longitude": -117.91624,
     "calculatedDistanceMiles": 9.21,
-    "observedEventCount": 13
+    "observedEventCount": 10
   },
   {
     "id": "8283",
@@ -434,7 +434,7 @@
     "latitude": 33.87046,
     "longitude": -117.92719,
     "calculatedDistanceMiles": 9.56,
-    "observedEventCount": 19
+    "observedEventCount": 17
   },
   {
     "id": "7819",
@@ -457,7 +457,7 @@
     "latitude": 33.7043651,
     "longitude": -117.9331268,
     "calculatedDistanceMiles": 10.52,
-    "observedEventCount": 23
+    "observedEventCount": 17
   },
   {
     "id": "9263",
@@ -480,7 +480,7 @@
     "latitude": 33.95441,
     "longitude": -118.09936,
     "calculatedDistanceMiles": 10.57,
-    "observedEventCount": 30
+    "observedEventCount": 26
   },
   {
     "id": "22786",
@@ -503,7 +503,7 @@
     "latitude": 33.95432,
     "longitude": -118.12982,
     "calculatedDistanceMiles": 10.95,
-    "observedEventCount": 28
+    "observedEventCount": 24
   },
   {
     "id": "21942",
@@ -526,7 +526,7 @@
     "latitude": 33.77649,
     "longitude": -118.26241,
     "calculatedDistanceMiles": 11.05,
-    "observedEventCount": 3
+    "observedEventCount": 2
   },
   {
     "id": "8707",
@@ -549,7 +549,7 @@
     "latitude": 33.78773,
     "longitude": -117.87218,
     "calculatedDistanceMiles": 11.56,
-    "observedEventCount": 50
+    "observedEventCount": 43
   },
   {
     "id": "17882",
@@ -572,7 +572,30 @@
     "latitude": 33.9432829,
     "longitude": -118.1951806,
     "calculatedDistanceMiles": 11.97,
-    "observedEventCount": 32
+    "observedEventCount": 31
+  },
+  {
+    "id": "20085",
+    "isPremium": false,
+    "name": "Pandy's Cards and Collectibles",
+    "postalAddress": "321 N Harbor Blvd, La Habra, CA, 90631, United States",
+    "website": "https://instagram.com/pandyscollectibles",
+    "phoneNumber": "1562-905-0007",
+    "emailAddress": "pandy@pandyscollectibles.com",
+    "address": "321 N Harbor Blvd",
+    "city": "La Habra",
+    "state": "CA",
+    "postalCode": "90631",
+    "showEmailInSEL": true,
+    "showInInternalSearch": true,
+    "sourceOrganizationId": "20085",
+    "sourceStoreKey": "wpn:20085",
+    "sourceStoreUrl": "https://locator.wizards.com/store/20085",
+    "normalizedWebsiteHost": "instagram.com",
+    "latitude": 33.9342194,
+    "longitude": -117.9338428,
+    "calculatedDistanceMiles": 12.06,
+    "observedEventCount": 2
   },
   {
     "id": "19606",
@@ -595,7 +618,7 @@
     "latitude": 33.9798979985312,
     "longitude": -118.03639693068655,
     "calculatedDistanceMiles": 12.39,
-    "observedEventCount": 4
+    "observedEventCount": 3
   },
   {
     "id": "16787",
@@ -618,7 +641,7 @@
     "latitude": 33.9654525,
     "longitude": -118.1649098,
     "calculatedDistanceMiles": 12.4,
-    "observedEventCount": 19
+    "observedEventCount": 15
   },
   {
     "id": "17832",
@@ -664,7 +687,7 @@
     "latitude": 33.91417179999999,
     "longitude": -117.8903723,
     "calculatedDistanceMiles": 12.97,
-    "observedEventCount": 10
+    "observedEventCount": 18
   },
   {
     "id": "20273",
@@ -687,7 +710,7 @@
     "latitude": 33.7409804,
     "longitude": -117.8509998,
     "calculatedDistanceMiles": 13.43,
-    "observedEventCount": 31
+    "observedEventCount": 26
   },
   {
     "id": "6830",
@@ -710,30 +733,7 @@
     "latitude": 33.80896,
     "longitude": -117.83886,
     "calculatedDistanceMiles": 13.43,
-    "observedEventCount": 68
-  },
-  {
-    "id": "21789",
-    "isPremium": false,
-    "name": "424 Collectibles",
-    "postalAddress": "1428 S Gaffey St, Los Angeles, CA, 90731, United States",
-    "website": "https://www.424collectibles.com",
-    "phoneNumber": "1424-489-3459",
-    "emailAddress": "424collectibles@gmail.com",
-    "address": "1428 S Gaffey St",
-    "city": "Los Angeles",
-    "state": "CA",
-    "postalCode": "90731",
-    "showEmailInSEL": true,
-    "showInInternalSearch": true,
-    "sourceOrganizationId": "21789",
-    "sourceStoreKey": "wpn:21789",
-    "sourceStoreUrl": "https://locator.wizards.com/store/21789",
-    "normalizedWebsiteHost": "www.424collectibles.com",
-    "latitude": 33.7309186,
-    "longitude": -118.292213,
-    "calculatedDistanceMiles": 13.56,
-    "observedEventCount": 1
+    "observedEventCount": 63
   },
   {
     "id": "18094",
@@ -779,7 +779,7 @@
     "latitude": 33.9786858,
     "longitude": -118.191863,
     "calculatedDistanceMiles": 13.93,
-    "observedEventCount": 10
+    "observedEventCount": 8
   },
   {
     "id": "18376",
@@ -802,7 +802,30 @@
     "latitude": 33.8627133,
     "longitude": -118.30969,
     "calculatedDistanceMiles": 14.22,
-    "observedEventCount": 18
+    "observedEventCount": 16
+  },
+  {
+    "id": "9261",
+    "isPremium": false,
+    "name": "Alakazam Comics",
+    "postalAddress": "17777 Main Street, Irvine, CA, 92614, United States",
+    "website": "https://alakazamcomics.com/",
+    "phoneNumber": "1949-854-3744",
+    "emailAddress": "irvine@alakazamcomics.com",
+    "address": "17777 Main Street",
+    "city": "Irvine",
+    "state": "CA",
+    "postalCode": "92614",
+    "showEmailInSEL": false,
+    "showInInternalSearch": true,
+    "sourceOrganizationId": "9261",
+    "sourceStoreKey": "wpn:9261",
+    "sourceStoreUrl": "https://locator.wizards.com/store/9261",
+    "normalizedWebsiteHost": "alakazamcomics.com",
+    "latitude": 33.68677,
+    "longitude": -117.85782,
+    "calculatedDistanceMiles": 14.73,
+    "observedEventCount": 1
   },
   {
     "id": "17086",
@@ -825,7 +848,7 @@
     "latitude": 33.7459165,
     "longitude": -117.8256096,
     "calculatedDistanceMiles": 14.73,
-    "observedEventCount": 12
+    "observedEventCount": 11
   },
   {
     "id": "18731",
@@ -848,7 +871,7 @@
     "latitude": 33.8722036,
     "longitude": -118.3172226,
     "calculatedDistanceMiles": 14.83,
-    "observedEventCount": 14
+    "observedEventCount": 12
   },
   {
     "id": "18910",
@@ -871,7 +894,7 @@
     "latitude": 33.8284161,
     "longitude": -118.3333633,
     "calculatedDistanceMiles": 15.07,
-    "observedEventCount": 19
+    "observedEventCount": 16
   },
   {
     "id": "17840",
@@ -917,7 +940,7 @@
     "latitude": 33.85882,
     "longitude": -117.80575,
     "calculatedDistanceMiles": 15.79,
-    "observedEventCount": 13
+    "observedEventCount": 10
   },
   {
     "id": "9724",
@@ -940,7 +963,7 @@
     "latitude": 33.8328,
     "longitude": -118.35078,
     "calculatedDistanceMiles": 16.1,
-    "observedEventCount": 5
+    "observedEventCount": 3
   },
   {
     "id": "6480",
@@ -963,7 +986,7 @@
     "latitude": 34.01497,
     "longitude": -117.94442,
     "calculatedDistanceMiles": 16.38,
-    "observedEventCount": 5
+    "observedEventCount": 3
   },
   {
     "id": "20150",
@@ -986,7 +1009,7 @@
     "latitude": 34.0401653,
     "longitude": -118.142966,
     "calculatedDistanceMiles": 16.87,
-    "observedEventCount": 10
+    "observedEventCount": 7
   },
   {
     "id": "11405",
@@ -1009,7 +1032,7 @@
     "latitude": 33.87342,
     "longitude": -118.35416,
     "calculatedDistanceMiles": 16.87,
-    "observedEventCount": 24
+    "observedEventCount": 18
   },
   {
     "id": "19404",
@@ -1032,7 +1055,7 @@
     "latitude": 33.86366,
     "longitude": -117.78721,
     "calculatedDistanceMiles": 16.91,
-    "observedEventCount": 3
+    "observedEventCount": 2
   },
   {
     "id": "15729",
@@ -1055,7 +1078,7 @@
     "latitude": 33.772589,
     "longitude": -118.3731306,
     "calculatedDistanceMiles": 17.39,
-    "observedEventCount": 7
+    "observedEventCount": 13
   },
   {
     "id": "21934",
@@ -1101,7 +1124,7 @@
     "latitude": 34.0087307,
     "longitude": -118.2501497,
     "calculatedDistanceMiles": 17.48,
-    "observedEventCount": 15
+    "observedEventCount": 13
   },
   {
     "id": "21645",
@@ -1124,7 +1147,7 @@
     "latitude": 34.030907,
     "longitude": -118.207433,
     "calculatedDistanceMiles": 17.54,
-    "observedEventCount": 21
+    "observedEventCount": 20
   },
   {
     "id": "18899",
@@ -1147,7 +1170,7 @@
     "latitude": 34.0631456,
     "longitude": -118.0582392,
     "calculatedDistanceMiles": 17.99,
-    "observedEventCount": 34
+    "observedEventCount": 35
   },
   {
     "id": "17911",
@@ -1170,7 +1193,7 @@
     "latitude": 33.9839856,
     "longitude": -117.8414105,
     "calculatedDistanceMiles": 18.22,
-    "observedEventCount": 33
+    "observedEventCount": 30
   },
   {
     "id": "8432",
@@ -1193,7 +1216,7 @@
     "latitude": 33.88763,
     "longitude": -118.38025,
     "calculatedDistanceMiles": 18.6,
-    "observedEventCount": 28
+    "observedEventCount": 25
   },
   {
     "id": "19392",
@@ -1216,7 +1239,7 @@
     "latitude": 34.0797108,
     "longitude": -118.0950173,
     "calculatedDistanceMiles": 19.16,
-    "observedEventCount": 6
+    "observedEventCount": 5
   },
   {
     "id": "12524",
@@ -1239,7 +1262,7 @@
     "latitude": 33.6665778,
     "longitude": -117.7806347,
     "calculatedDistanceMiles": 19.25,
-    "observedEventCount": 18
+    "observedEventCount": 16
   },
   {
     "id": "18939",
@@ -1262,7 +1285,7 @@
     "latitude": 34.0484895,
     "longitude": -118.2411393,
     "calculatedDistanceMiles": 19.52,
-    "observedEventCount": 4
+    "observedEventCount": 2
   },
   {
     "id": "19738",
@@ -1308,7 +1331,7 @@
     "latitude": 34.0947075,
     "longitude": -118.1265952,
     "calculatedDistanceMiles": 20.38,
-    "observedEventCount": 11
+    "observedEventCount": 10
   },
   {
     "id": "13567",
@@ -1331,7 +1354,7 @@
     "latitude": 34.0992948,
     "longitude": -118.0913384,
     "calculatedDistanceMiles": 20.49,
-    "observedEventCount": 34
+    "observedEventCount": 26
   },
   {
     "id": "22276",
@@ -1354,7 +1377,7 @@
     "latitude": 34.04843867565551,
     "longitude": -118.2830474871029,
     "calculatedDistanceMiles": 20.81,
-    "observedEventCount": 3
+    "observedEventCount": 41
   },
   {
     "id": "16709",
@@ -1377,7 +1400,7 @@
     "latitude": 34.102679,
     "longitude": -118.1095475,
     "calculatedDistanceMiles": 20.81,
-    "observedEventCount": 5
+    "observedEventCount": 1
   },
   {
     "id": "13822",
@@ -1400,7 +1423,7 @@
     "latitude": 34.10652,
     "longitude": -118.06247,
     "calculatedDistanceMiles": 20.97,
-    "observedEventCount": 3
+    "observedEventCount": 2
   },
   {
     "id": "9446",
@@ -1423,7 +1446,30 @@
     "latitude": 33.95842,
     "longitude": -118.3944,
     "calculatedDistanceMiles": 21.35,
-    "observedEventCount": 11
+    "observedEventCount": 10
+  },
+  {
+    "id": "23212",
+    "isPremium": false,
+    "name": "GameStop - 3878 - Wilshire & Vermont",
+    "postalAddress": "3183 Wilshire Blvd, Los Angeles, CA, 90010-1200, USA",
+    "website": "https://www.gamestop.com/",
+    "phoneNumber": "1(213) 382-6998",
+    "emailAddress": "storeops-events@gamestop.com",
+    "address": "3183 Wilshire Blvd",
+    "city": "Los Angeles",
+    "state": "CA",
+    "postalCode": "90010-1200",
+    "showEmailInSEL": false,
+    "showInInternalSearch": true,
+    "sourceOrganizationId": "23212",
+    "sourceStoreKey": "wpn:23212",
+    "sourceStoreUrl": "https://locator.wizards.com/store/23212",
+    "normalizedWebsiteHost": "www.gamestop.com",
+    "latitude": 34.06199,
+    "longitude": -118.29037,
+    "calculatedDistanceMiles": 21.81,
+    "observedEventCount": 3
   },
   {
     "id": "15594",
@@ -1446,7 +1492,7 @@
     "latitude": 34.0478262,
     "longitude": -117.8115887,
     "calculatedDistanceMiles": 22.58,
-    "observedEventCount": 2
+    "observedEventCount": 1
   },
   {
     "id": "8425",
@@ -1469,7 +1515,7 @@
     "latitude": 34.06211,
     "longitude": -118.31345,
     "calculatedDistanceMiles": 22.6,
-    "observedEventCount": 84
+    "observedEventCount": 75
   },
   {
     "id": "10666",
@@ -1492,7 +1538,7 @@
     "latitude": 34.10795,
     "longitude": -117.91736,
     "calculatedDistanceMiles": 22.87,
-    "observedEventCount": 2
+    "observedEventCount": 1
   },
   {
     "id": "18474",
@@ -1515,7 +1561,7 @@
     "latitude": 34.1347003,
     "longitude": -118.051589,
     "calculatedDistanceMiles": 22.94,
-    "observedEventCount": 3
+    "observedEventCount": 4
   },
   {
     "id": "11989",
@@ -1538,7 +1584,7 @@
     "latitude": 34.13254,
     "longitude": -118.14694,
     "calculatedDistanceMiles": 23.16,
-    "observedEventCount": 2
+    "observedEventCount": 1
   },
   {
     "id": "15923",
@@ -1561,7 +1607,7 @@
     "latitude": 34.1145363,
     "longitude": -118.2358861,
     "calculatedDistanceMiles": 23.47,
-    "observedEventCount": 19
+    "observedEventCount": 16
   },
   {
     "id": "9747",
@@ -1584,7 +1630,7 @@
     "latitude": 34.04857,
     "longitude": -118.3582,
     "calculatedDistanceMiles": 23.57,
-    "observedEventCount": 57
+    "observedEventCount": 50
   },
   {
     "id": "7829",
@@ -1607,7 +1653,7 @@
     "latitude": 34.13953,
     "longitude": -117.98386,
     "calculatedDistanceMiles": 23.79,
-    "observedEventCount": 10
+    "observedEventCount": 8
   },
   {
     "id": "5693",
@@ -1630,7 +1676,7 @@
     "latitude": 34.1462,
     "longitude": -118.11336,
     "calculatedDistanceMiles": 23.82,
-    "observedEventCount": 26
+    "observedEventCount": 20
   },
   {
     "id": "22000",
@@ -1676,7 +1722,7 @@
     "latitude": 34.1461566,
     "longitude": -118.1450743,
     "calculatedDistanceMiles": 24.06,
-    "observedEventCount": 3
+    "observedEventCount": 1
   },
   {
     "id": "19658",
@@ -1699,7 +1745,7 @@
     "latitude": 34.1455694,
     "longitude": -118.1494955,
     "calculatedDistanceMiles": 24.07,
-    "observedEventCount": 38
+    "observedEventCount": 35
   },
   {
     "id": "6809",
@@ -1722,7 +1768,7 @@
     "latitude": 33.61645,
     "longitude": -117.70869,
     "calculatedDistanceMiles": 24.57,
-    "observedEventCount": 6
+    "observedEventCount": 8
   },
   {
     "id": "15689",
@@ -1745,7 +1791,7 @@
     "latitude": 33.6208812,
     "longitude": -117.7030186,
     "calculatedDistanceMiles": 24.69,
-    "observedEventCount": 7
+    "observedEventCount": 4
   },
   {
     "id": "22419",
@@ -1791,6 +1837,6 @@
     "latitude": 34.029,
     "longitude": -118.41082,
     "calculatedDistanceMiles": 24.89,
-    "observedEventCount": 10
+    "observedEventCount": 8
   }
 ]

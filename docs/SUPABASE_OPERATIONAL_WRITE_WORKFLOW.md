@@ -212,6 +212,9 @@ The script provides:
 
 Routine typed RPC lanes do not use this script by default.
 
+- Use `scripts/daily_surveyor.py` for the ordinary daily WPN lane. It wraps the
+  current WPN cache refresh, normalized observation staging, optional shared
+  promoter call, and lightweight event-integrity audit in one measured command.
 - Use `scripts/record_surface_check.py` for ordinary surface dispositions.
 - Use `scripts/source_artifact_ingest.py` for ordinary retained images and
   PDFs plus their extracted text/facts.
@@ -328,6 +331,35 @@ Required verification is proportional:
 - routine success: returned IDs plus `outcome`/`wrote`;
 - optional replay: one repeated live call when idempotency needs proof;
 - deeper readback only when the RPC output or source attribution is anomalous.
+
+## Daily WPN surveyor lane
+
+Use the daily surveyor wrapper before hand-driving WPN refresh, staging, and
+audit commands separately:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\daily_surveyor.py
+```
+
+Default behavior is safe and preview-oriented:
+
+- refreshes the WPN cache only when older than the configured age threshold;
+- stages normalized WPN observations;
+- prints the reconciliation preview;
+- runs the event integrity audit;
+- does not promote canonical event deltas unless `--promote` is supplied.
+
+For the ordinary live daily pass, after preview behavior is trusted:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\daily_surveyor.py --promote
+```
+
+Use `--bootstrap` only for deliberate quiet inventory landing. Use
+`--force-refresh` only when deliberately rechecking WPN despite a fresh cache.
+The wrapper automatically re-routes through the repo `.venv` when available, so
+the known system-Python timezone-data issue does not become a repeated operator
+failure.
 
 For promoter, lifecycle, or bulk event-ingest changes, run the read-only
 catalog-health checkpoint before calling the slice done:

@@ -1,0 +1,197 @@
+#!/usr/bin/env python3
+"""One-command operator wrapper for the daily WPN surveyor lane.
+
+This is intentionally thin. The real work stays in the existing components:
+
+- refresh_wpn_cache.py owns WPN fetch/cache enrichment;
+- stage_wpn_event_observations.py owns normalized observation staging and the
+  shared promoter call;
+- audit_event_integrity.py owns post-ingest integrity checks.
+
+The wrapper exists to make the ordinary daily lane hard to misuse and easy to
+measure.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+BLESSED_PYTHON = ROOT / ".venv" / "Scripts" / "python.exe"
+
+
+def reexec_with_blessed_runtime() -> None:
+    """Use the repo venv when available.
+
+    The Windows system Python in this workspace has previously lacked tzdata.
+    The project readiness gate validates the venv, so this script should route
+    through it automatically instead of rediscovering that platform issue.
+    """
+
+    if not BLESSED_PYTHON.exists():
+        return
+    current = Path(sys.executable).resolve()
+    blessed = BLESSED_PYTHON.resolve()
+    if current == blessed:
+        return
+    completed = subprocess.run([str(blessed), __file__, *sys.argv[1:]], cwd=ROOT)
+    raise SystemExit(completed.returncode)
+
+
+def run_step(label: str, command: list[str]) -> tuple[int, str, float]:
+    started = time.perf_counter()
+    env = os.environ.copy()
+    env["SUPABASE_TELEMETRY_DISABLED"] = "1"
+    env["DO_NOT_TRACK"] = "1"
+    result = subprocess.run(
+        command,
+        cwd=ROOT,
+        env=env,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    elapsed = time.perf_counter() - started
+    output = "\n".join(part for part in (result.stdout, result.stderr) if part).strip()
+    print(f"\n[{label}] {elapsed:.1f}s")
+    if output:
+        print(output)
+    if result.returncode != 0:
+        print(f"[{label}] FAILED with exit code {result.returncode}")
+    return result.returncode, output, elapsed
+
+
+def extract_json_object(text: str) -> dict[str, Any] | None:
+    decoder = json.JSONDecoder()
+    for match in re.finditer(r"\{", text):
+        try:
+            value, _ = decoder.raw_decode(text[match.start() :])
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, dict):
+            return value
+    return None
+
+
+def summarize_refresh(output: str) -> dict[str, Any]:
+    summary: dict[str, Any] = {"status": "unknown"}
+    if "WPN CACHE UNCHANGED" in output:
+        summary["status"] = "unchanged"
+    elif "WPN CACHE READY" in output:
+        summary["status"] = "refreshed"
+    if match := re.search(r"Delta:\s+([^\n]+)", output):
+        summary["delta"] = match.group(1).strip()
+    if match := re.search(r"Retrieved:\s+([^\n]+)", output):
+        summary["retrieved"] = match.group(1).strip()
+    if match := re.search(r"SHA-256:\s+([0-9a-f]+)", output):
+        summary["sha256"] = match.group(1)
+    return summary
+
+
+def summarize_audit(output: str) -> dict[str, Any]:
+    critical_failures: list[str] = []
+    for line in output.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("FAIL"):
+            critical_failures.append(stripped)
+    return {
+        "result": "pass" if "Result: PASS" in output and not critical_failures else "review",
+        "critical_failures": critical_failures,
+    }
+
+
+def main() -> int:
+    reexec_with_blessed_runtime()
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--skip-refresh", action="store_true")
+    parser.add_argument("--force-refresh", action="store_true")
+    parser.add_argument("--max-age-hours", type=float, default=24.0)
+    parser.add_argument(
+        "--promote",
+        action="store_true",
+        help="Run the shared promoter after staging. Default is preview-only.",
+    )
+    parser.add_argument(
+        "--bootstrap",
+        action="store_true",
+        help="Pass --bootstrap to the promoter for quiet inventory landing.",
+    )
+    parser.add_argument(
+        "--audit",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Run post-ingest integrity audit after staging/promote.",
+    )
+    args = parser.parse_args()
+
+    overall_started = time.perf_counter()
+    python = str(BLESSED_PYTHON if BLESSED_PYTHON.exists() else Path(sys.executable))
+    result_summary: dict[str, Any] = {
+        "mode": "promote" if args.promote else "preview",
+        "bootstrap": bool(args.bootstrap),
+    }
+
+    if not args.skip_refresh:
+        refresh_command = [
+            python,
+            "scripts/refresh_wpn_cache.py",
+            "--max-age-hours",
+            str(args.max_age_hours),
+        ]
+        if args.force_refresh:
+            refresh_command.append("--force")
+        code, output, elapsed = run_step("refresh-wpn-cache", refresh_command)
+        result_summary["refresh"] = summarize_refresh(output) | {"elapsedSeconds": round(elapsed, 1)}
+        if code != 0:
+            result_summary["status"] = "failed"
+            print("\nDaily surveyor summary")
+            print(json.dumps(result_summary, indent=2))
+            return code
+
+    stage_command = [python, "scripts/stage_wpn_event_observations.py"]
+    if args.promote:
+        stage_command.append("--promote")
+    if args.bootstrap:
+        stage_command.append("--bootstrap")
+    code, output, elapsed = run_step("stage-wpn-observations", stage_command)
+    stage_json = extract_json_object(output)
+    result_summary["stage"] = (stage_json or {"rawOutput": output}) | {
+        "elapsedSeconds": round(elapsed, 1)
+    }
+    if code != 0:
+        result_summary["status"] = "failed"
+        print("\nDaily surveyor summary")
+        print(json.dumps(result_summary, indent=2, default=str))
+        return code
+
+    if args.audit:
+        code, output, elapsed = run_step(
+            "event-integrity-audit",
+            [python, "scripts/audit_event_integrity.py", "--fail-on-critical"],
+        )
+        result_summary["audit"] = summarize_audit(output) | {"elapsedSeconds": round(elapsed, 1)}
+        if code != 0:
+            result_summary["status"] = "failed"
+            print("\nDaily surveyor summary")
+            print(json.dumps(result_summary, indent=2, default=str))
+            return code
+
+    result_summary["status"] = "ok"
+    result_summary["elapsedSeconds"] = round(time.perf_counter() - overall_started, 1)
+    print("\nDaily surveyor summary")
+    print(json.dumps(result_summary, indent=2, default=str))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
