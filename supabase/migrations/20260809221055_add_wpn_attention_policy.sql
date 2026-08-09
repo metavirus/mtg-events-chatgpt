@@ -9,9 +9,11 @@ as $$
 declare
   v_count integer := 0;
 begin
-  with candidates as (
+  with eligible as (
     select
       o.id,
+      o.ingest_run_id,
+      o.source_family,
       row_number() over (
         partition by
           o.venue_id,
@@ -31,7 +33,6 @@ begin
     where o.ingest_run_id = p_ingest_run_id
       and o.source_family = 'wpn'
       and o.promotion_eligibility = 'eligible'
-      and o.attention_category is null
       and coalesce(o.proxy_policy, 'unspecified') <> 'prohibited'
       and not exists (
         select 1 from public.entity_preferences ep
@@ -63,6 +64,25 @@ begin
           )
         )
       )
+  ),
+  winners as (
+    select id
+    from eligible
+    where candidate_rank = 1
+  ),
+  pruned as (
+    update public.event_observations o
+    set
+      attention_category = null,
+      attention_priority = null,
+      attention_summary = null,
+      suggested_action = null,
+      updated_at = timezone('utc', now())
+    where o.ingest_run_id = p_ingest_run_id
+      and o.source_family = 'wpn'
+      and o.attention_category is not null
+      and not exists (select 1 from winners w where w.id = o.id)
+    returning o.id
   )
   update public.event_observations o
   set
@@ -89,9 +109,9 @@ begin
       else 'Review the new WPN listing if this venue is relevant to your plans.'
     end,
     updated_at = timezone('utc', now())
-  from candidates c, public.venues v
-  where c.id = o.id
-    and c.candidate_rank = 1
+  from winners w, public.venues v
+  where w.id = o.id
+    and o.attention_category is null
     and v.id = o.venue_id
   ;
 

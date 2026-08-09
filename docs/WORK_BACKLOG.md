@@ -31,7 +31,11 @@ Use it for:
   false positives/false negatives, not from abstract category expansion. Local
   proof on 2026-08-09 against the fresh WPN cache annotated 7 sparse attention
   candidates but created 0 Signals/Updates because there were no newly visible
-  deltas to present; this is the intended no-spam replay behavior.
+  deltas to present; this is the intended no-spam replay behavior. The first
+  cloud proof initially exposed a duplicate-session annotation edge case, then
+  the policy was tightened to rank across the full venue/event family before
+  pruning non-winners. Readback now shows one attention annotation per
+  venue/event family.
 
 - Canonical event ingest agent: implement the accepted source-neutral design in
   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`. WPN is the first adapter, not a
