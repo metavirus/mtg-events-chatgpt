@@ -165,6 +165,28 @@ async function launchAndProbe({ chromium, executablePath, profileDir, targetUrl,
   }
 }
 
+async function closeAndReprobe({ context, chromium, executablePath, profileDir, targetUrl, platform }) {
+  await context.close().catch(() => {});
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+  return launchAndProbe({
+    chromium,
+    executablePath,
+    profileDir,
+    targetUrl,
+    platform
+  });
+}
+
+function assessDurability(classification, authEvidence) {
+  if (classification.status !== 'session_usable') {
+    return 'not_authenticated';
+  }
+  if (authEvidence.hasLikelySessionCookie) {
+    return 'durable_session_likely';
+  }
+  return 'session_usable_cookie_unclear';
+}
+
 const args = parseArgs(process.argv.slice(2));
 const { chromium } = resolvePlaywright();
 const workspaceRoot = path.resolve('work/social-auth', args.platform);
@@ -199,14 +221,34 @@ if (!args.probeOnly && classification.status !== 'session_usable') {
   await rl.question('After login/checkpoint is complete in the opened browser, press Enter to probe again...');
   rl.close();
 
-  await context.close().catch(() => {});
-  ({ context, classification, authEvidence } = await launchAndProbe({
+  ({ context, classification, authEvidence } = await closeAndReprobe({
+    context,
     chromium,
     executablePath,
     profileDir,
     targetUrl,
     platform: args.platform
   }));
+}
+
+const firstPass = { classification, authEvidence };
+let durabilityCheck = null;
+if (classification.status === 'session_usable') {
+  ({ context, classification, authEvidence } = await closeAndReprobe({
+    context,
+    chromium,
+    executablePath,
+    profileDir,
+    targetUrl,
+    platform: args.platform
+  }));
+  durabilityCheck = {
+    afterCloseReopen: {
+      classification,
+      authEvidence,
+      durabilityStatus: assessDurability(classification, authEvidence)
+    }
+  };
 }
 
 const result = {
@@ -230,7 +272,10 @@ const result = {
     'committing cookies or session state'
   ],
   classification,
-  authEvidence
+  authEvidence,
+  firstPass,
+  durabilityCheck,
+  durabilityStatus: assessDurability(classification, authEvidence)
 };
 
 await writeManifest(manifestPath, result);

@@ -34,9 +34,10 @@ lets the user complete login or checkpoints once, and records only a small
 manifest. It must not post, like, follow, message, scrape broadly, or commit
 session state. A `public_readable_auth_unclear` result means the surface can be
 used for a bounded public-read check, but it does not prove a durable logged-in
-session. For Instagram, the helper should report a likely session cookie such as
-`sessionid` before treating the profile as durably authenticated. If the profile
-still reports `login_required`,
+session. For Instagram, the helper should report
+`durabilityStatus: durable_session_likely` after a close/reopen probe before
+treating the profile as durably authenticated. If the profile still reports
+`login_required`,
 `challenge_or_checkpoint`, or `blocked_or_unreadable` after one repair attempt,
 record that exact surface state and stop.
 
