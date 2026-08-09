@@ -31,6 +31,14 @@ on:
         description: "Maximum sources per social platform"
         required: true
         default: "3"
+      social_include_suppressed:
+        description: "Explicit proof run: allow social surfaces that are not due yet"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
   schedule:
     - cron: "37 13 * * *"
 
@@ -106,5 +114,8 @@ jobs:
           fi
           if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.social }}" = "true" ]; then
             args+=(--social-platform instagram --social-platform facebook --social-limit "${{ inputs.social_limit || '3' }}")
+          fi
+          if [ "${{ inputs.social_include_suppressed }}" = "true" ]; then
+            args+=(--social-include-suppressed)
           fi
           python scripts/daily_surveyor.py "${args[@]}"

@@ -169,6 +169,11 @@ def main() -> int:
     parser.add_argument("--social-max-links", type=int, default=12)
     parser.add_argument("--social-max-scrolls", type=int, default=2)
     parser.add_argument(
+        "--social-include-suppressed",
+        action="store_true",
+        help="Allow an explicit proof run to recheck suppressed social surfaces.",
+    )
+    parser.add_argument(
         "--social-fail-hard",
         action="store_true",
         help="Fail the whole daily run if a social lane returns review/failure.",
@@ -249,6 +254,9 @@ def main() -> int:
                 str(args.social_max_scrolls),
                 "--live",
             ]
+            if args.social_include_suppressed:
+                social_command.append("--include-suppressed")
+                social_command.extend(["--reopen-trigger", "user_request"])
             code, output, elapsed = run_step(f"social-{platform}-survey", social_command)
             summary = summarize_social(output) | {"elapsedSeconds": round(elapsed, 1)}
             if code != 0:
