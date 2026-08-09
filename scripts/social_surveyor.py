@@ -30,7 +30,7 @@ from supabase_typed_rpc import psql_rows_or_raise, resolve_database_url, run_psq
 
 ROOT = Path(__file__).resolve().parents[1]
 BLESSED_PYTHON = ROOT / ".venv" / "Scripts" / "python.exe"
-PROBE_SCRIPT = ROOT / "scripts" / "probe_social_surface.ps1"
+PROBE_SCRIPT = ROOT / "scripts" / "social_surface_probe.mjs"
 SURFACE_SCRIPT = ROOT / "scripts" / "record_surface_check.py"
 ARTIFACT_SCRIPT = ROOT / "scripts" / "ingest_social_probe_artifact.py"
 
@@ -208,18 +208,15 @@ def load_probe_path_from_output(output: str) -> Path | None:
 
 def probe_source(source: SocialSource, *, platform: str, max_links: int, max_scrolls: int) -> tuple[Path | None, dict[str, Any] | None, str | None]:
     command = [
-        "powershell",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
+        "node",
         str(PROBE_SCRIPT),
-        "-Platform",
+        "--platform",
         platform,
-        "-ProfileUrl",
+        "--url",
         normalize_social_profile_url(platform, source.url),
-        "-MaxLinks",
+        "--max-links",
         str(max_links),
-        "-MaxScrolls",
+        "--max-scrolls",
         str(max_scrolls),
     ]
     result = run_command(command, timeout=150)
@@ -436,7 +433,20 @@ def main(argv: list[str] | None = None) -> int:
         include_suppressed=include_suppressed,
     )
     if not sources:
-        raise SystemExit(f"No {args.platform} sources matched the requested scope")
+        print("\nSocial surveyor summary")
+        print(
+            json.dumps(
+                {
+                    "status": "skipped",
+                    "reason": f"No {args.platform} sources matched the requested scope",
+                    "live": bool(args.live),
+                    "elapsedSeconds": round(time.perf_counter() - started, 1),
+                    "results": [],
+                },
+                indent=2,
+            )
+        )
+        return 0
 
     print(f"Social surveyor mode: {'LIVE' if args.live else 'DRY RUN'}")
     print(f"{args.platform.title()} sources: {len(sources)}")
