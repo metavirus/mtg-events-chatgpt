@@ -99,12 +99,13 @@ Refresh the public Wizards snapshot and its rich Supabase cache:
 
     .\.venv\Scripts\python.exe scripts/refresh_wpn_cache.py
 
-The ordinary daily WPN lane is now cloud-owned by
+The ordinary daily surveyor is now cloud-owned by
 `.github/workflows/daily-surveyor.yml`. It runs the WPN cache refresh,
 observation staging, promoter, and integrity audit from GitHub Actions using
-the repository secret `SUPABASE_DB_URL`. It does not require the user's desktop
-or Codex session to be open, and it does not commit generated WPN JSON during
-routine runs.
+the repository secret `SUPABASE_DB_URL`. It can also run bounded
+Instagram/Facebook surface probes when the corresponding saved session-state
+secrets are present. It does not require the user's desktop or Codex session to
+be open, and it does not commit generated WPN JSON during routine runs.
 
 The crawler stores:
 

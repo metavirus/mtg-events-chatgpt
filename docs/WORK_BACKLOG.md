@@ -19,8 +19,13 @@ Use it for:
   user's desktop or Codex session. Repository secret `SUPABASE_DB_URL` is the
   canonical execution credential for this lane. The first cloud proof completed
   successfully on 2026-08-09 and promoted WPN deltas through the shared event
-  promoter. Keep Discord bracketed; Instagram/Facebook assisted-session
-  surveyors are later lanes, not part of the WPN cloud job.
+  promoter. The same workflow now has optional Instagram/Facebook social lanes
+  that run bounded profile probes when saved session-state secrets are present:
+  `SOCIAL_INSTAGRAM_STORAGE_STATE_JSON` and
+  `SOCIAL_FACEBOOK_STORAGE_STATE_JSON`. These lanes record surface checks and
+  ingest MTG-looking source artifacts, but remain conservative about canonical
+  Events/Signals until a social adapter emits exact structured event facts.
+  Keep Discord bracketed from the cloud job for now.
 
 - WPN attention policy: WPN promotion now has a sparse adapter-owned attention
   annotation layer. It should create Signals only for explicit high-value

@@ -334,18 +334,23 @@ Required verification is proportional:
 - optional replay: one repeated live call when idempotency needs proof;
 - deeper readback only when the RPC output or source attribution is anomalous.
 
-## Daily WPN surveyor lane
+## Daily cloud surveyor lane
 
-The ordinary WPN daily lane should run in GitHub Actions through
+The ordinary daily lane should run in GitHub Actions through
 `.github/workflows/daily-surveyor.yml`. It is the cloud path for keeping the
-rich WPN cache fresh and promoting safe WPN deltas without requiring the user's
-desktop or Codex task to be open.
+rich WPN cache fresh, promoting safe WPN deltas, and optionally probing
+Instagram/Facebook surfaces without requiring the user's desktop or Codex task
+to be open.
 
 Required cloud configuration:
 
 - repository Actions secret: `SUPABASE_DB_URL`;
+- optional repository Actions secrets:
+  - `SOCIAL_INSTAGRAM_STORAGE_STATE_JSON`;
+  - `SOCIAL_FACEBOOK_STORAGE_STATE_JSON`;
 - normal scheduled run: daily at `13:37 UTC`;
-- manual dispatch options: `promote` and `force_refresh`.
+- manual dispatch options: `promote`, `force_refresh`, `social`, and
+  `social_limit`.
 
 The action runs `scripts/daily_surveyor.py`, which:
 
@@ -354,7 +359,15 @@ The action runs `scripts/daily_surveyor.py`, which:
 - stages normalized WPN observations;
 - optionally promotes eligible WPN observations through the shared promoter;
 - runs the event integrity audit;
+- if social is enabled and session-state secrets exist, probes bounded
+  Instagram/Facebook surfaces, records surface dispositions, and ingests
+  MTG-looking source artifacts;
 - does not commit generated WPN JSON or create per-run repo artifacts.
+
+Social lanes are intentionally fail-soft and conservative. Missing social
+session state should skip that platform, not fail WPN. Thin or ambiguous social
+content should stay as surface/artifact evidence until a source adapter can
+emit exact structured event facts for the shared promoter.
 
 For local debugging only, use the wrapper before hand-driving WPN refresh,
 staging, and audit commands separately:

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""One-command operator wrapper for the daily WPN surveyor lane.
+"""One-command operator wrapper for the daily surveyor lane.
 
 This is intentionally thin. The real work stays in the existing components:
 
 - refresh_wpn_cache.py owns WPN fetch/cache enrichment;
 - stage_wpn_event_observations.py owns normalized observation staging and the
   shared promoter call;
+- social_surveyor.py owns bounded Instagram/Facebook surface and artifact
+  ingestion;
 - audit_event_integrity.py owns post-ingest integrity checks.
 
 The wrapper exists to make the ordinary daily lane hard to misuse and easy to
@@ -118,6 +120,21 @@ def summarize_audit(output: str) -> dict[str, Any]:
     }
 
 
+def summarize_social(output: str) -> dict[str, Any]:
+    payload = extract_json_object(output)
+    if not payload:
+        return {"status": "review", "rawOutput": output[-1000:]}
+    return payload
+
+
+def social_auth_available(platform: str) -> bool:
+    env_name = f"SOCIAL_{platform.upper()}_STORAGE_STATE_JSON"
+    if os.environ.get(env_name):
+        return True
+    profile_state = ROOT / "work" / "social-auth" / platform / "storage-state.json"
+    return profile_state.exists()
+
+
 def main() -> int:
     reexec_with_blessed_runtime()
 
@@ -140,6 +157,21 @@ def main() -> int:
         action=argparse.BooleanOptionalAction,
         default=True,
         help="Run post-ingest integrity audit after staging/promote.",
+    )
+    parser.add_argument(
+        "--social-platform",
+        action="append",
+        choices=["instagram", "facebook"],
+        default=[],
+        help="Also run a bounded social surface survey for this platform.",
+    )
+    parser.add_argument("--social-limit", type=int, default=3)
+    parser.add_argument("--social-max-links", type=int, default=12)
+    parser.add_argument("--social-max-scrolls", type=int, default=2)
+    parser.add_argument(
+        "--social-fail-hard",
+        action="store_true",
+        help="Fail the whole daily run if a social lane returns review/failure.",
     )
     args = parser.parse_args()
 
@@ -194,6 +226,42 @@ def main() -> int:
             print("\nDaily surveyor summary")
             print(json.dumps(result_summary, indent=2, default=str))
             return code
+
+    if args.social_platform:
+        social_summaries: dict[str, Any] = {}
+        for platform in args.social_platform:
+            if not social_auth_available(platform):
+                social_summaries[platform] = {
+                    "status": "skipped",
+                    "reason": f"missing SOCIAL_{platform.upper()}_STORAGE_STATE_JSON or local storage-state.json",
+                }
+                continue
+            social_command = [
+                python,
+                "scripts/social_surveyor.py",
+                "--platform",
+                platform,
+                "--limit",
+                str(args.social_limit),
+                "--max-links",
+                str(args.social_max_links),
+                "--max-scrolls",
+                str(args.social_max_scrolls),
+                "--live",
+            ]
+            code, output, elapsed = run_step(f"social-{platform}-survey", social_command)
+            summary = summarize_social(output) | {"elapsedSeconds": round(elapsed, 1)}
+            if code != 0:
+                summary["status"] = summary.get("status") or "review"
+                summary["exitCode"] = code
+            social_summaries[platform] = summary
+            if code != 0 and args.social_fail_hard:
+                result_summary["social"] = social_summaries
+                result_summary["status"] = "failed"
+                print("\nDaily surveyor summary")
+                print(json.dumps(result_summary, indent=2, default=str))
+                return code
+        result_summary["social"] = social_summaries
 
     result_summary["status"] = "ok"
     result_summary["elapsedSeconds"] = round(time.perf_counter() - overall_started, 1)

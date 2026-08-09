@@ -19,6 +19,18 @@ on:
         options:
           - "false"
           - "true"
+      social:
+        description: "Also run Instagram/Facebook surface survey lanes"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      social_limit:
+        description: "Maximum sources per social platform"
+        required: true
+        default: "3"
   schedule:
     - cron: "37 13 * * *"
 
@@ -37,6 +49,9 @@ jobs:
 
     env:
       SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      SOCIAL_INSTAGRAM_STORAGE_STATE_JSON: ${{ secrets.SOCIAL_INSTAGRAM_STORAGE_STATE_JSON }}
+      SOCIAL_FACEBOOK_STORAGE_STATE_JSON: ${{ secrets.SOCIAL_FACEBOOK_STORAGE_STATE_JSON }}
+      SOCIAL_HEADLESS: "1"
       SUPABASE_TELEMETRY_DISABLED: "1"
       DO_NOT_TRACK: "1"
 
@@ -66,6 +81,18 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install -r requirements.txt
 
+      - name: Set up Node for social probes
+        if: ${{ github.event_name == 'schedule' || inputs.social == 'true' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install Playwright for social probes
+        if: ${{ github.event_name == 'schedule' || inputs.social == 'true' }}
+        run: |
+          npm install --no-save playwright@1.54.2
+          npx playwright install chromium
+
       - name: Run daily surveyor
         shell: bash
         run: |
@@ -75,5 +102,8 @@ jobs:
           fi
           if [ "${{ inputs.force_refresh }}" = "true" ]; then
             args+=(--force-refresh)
+          fi
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.social }}" = "true" ]; then
+            args+=(--social-platform instagram --social-platform facebook --social-limit "${{ inputs.social_limit || '3' }}")
           fi
           python scripts/daily_surveyor.py "${args[@]}"

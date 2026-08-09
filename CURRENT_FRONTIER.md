@@ -70,14 +70,21 @@ frontier checkpoints are preserved in
   findings. The first live write established the enriched baseline in 9.16
   seconds; an immediate 9.40-second replay returned 1,267 unchanged events,
   zero findings, and zero coordination-inbox noise.
-- The ordinary daily WPN path is now intended to run in the cloud through
+- The ordinary daily surveyor now runs in the cloud through
   `.github/workflows/daily-surveyor.yml`, not on the user's desktop. The action
-  uses `SUPABASE_DB_URL`, refreshes only when the rich cache is stale unless
+  uses `SUPABASE_DB_URL`, refreshes only when the rich WPN cache is stale unless
   forced, stages observations, optionally promotes eligible WPN deltas, and runs
-  the integrity audit without committing generated JSON. Discord is explicitly
-  bracketed out of this lane. The first GitHub Actions proof completed
-  successfully on 2026-08-09 after the `SUPABASE_DB_URL` repository secret was
-  installed and the parser/log-cap issues were fixed.
+  the integrity audit without committing generated JSON. It also has optional
+  Instagram/Facebook social lanes. Those lanes use saved storage-state secrets
+  (`SOCIAL_INSTAGRAM_STORAGE_STATE_JSON`,
+  `SOCIAL_FACEBOOK_STORAGE_STATE_JSON`) to do bounded profile checks, record
+  surface state, and ingest MTG-looking source artifacts. Social lanes are
+  fail-soft and conservative: they do not fabricate canonical events from thin
+  social text; exact event promotion belongs in the shared source-neutral
+  promoter once a social adapter can emit structured event facts. Discord is
+  explicitly bracketed out of this lane. The first GitHub Actions WPN proof
+  completed successfully on 2026-08-09 after the `SUPABASE_DB_URL` repository
+  secret was installed and the parser/log-cap issues were fixed.
 - WPN adapter contract v4 is now live in code. It adds conservative
   title keys, promoter eligibility/exclusion reasons, structured fact and field
   presence metadata, explicit proxy-rule flags, strict venue/title/weekday/time

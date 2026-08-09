@@ -51,6 +51,7 @@ function resolvePlaywright() {
   const candidates = [
     process.env.SOCIAL_PLAYWRIGHT_NODE_MODULES,
     process.env.CODEX_NODE_MODULES,
+    path.resolve(process.cwd(), 'node_modules'),
     'C:\\Users\\kavig\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules'
   ].filter(Boolean);
 
@@ -254,17 +255,27 @@ const root = process.cwd();
 const authRoot = path.resolve(root, 'work/social-auth', args.platform);
 const profileDir = path.join(authRoot, 'profile');
 const storageStatePath = path.join(authRoot, 'storage-state.json');
+const storageStateEnvName = `SOCIAL_${args.platform.toUpperCase()}_STORAGE_STATE_JSON`;
 const outputPath = args.output
   ? path.resolve(root, args.output)
   : path.resolve(root, 'work/social-probes', `${args.platform}-${Date.now()}.json`);
 
 let context;
 try {
-  context = await chromium.launchPersistentContext(profileDir, {
-    headless: false,
-    executablePath: process.env.SOCIAL_AUTH_BROWSER || defaultChromePath(),
+  const envStorageState = process.env[storageStateEnvName];
+  if (envStorageState && !(await readJsonIfExists(storageStatePath))) {
+    await fs.mkdir(path.dirname(storageStatePath), { recursive: true });
+    await fs.writeFile(storageStatePath, envStorageState.trim(), 'utf8');
+  }
+  const launchOptions = {
+    headless: process.env.CI === 'true' || process.env.SOCIAL_HEADLESS === '1',
     viewport: { width: 1280, height: 900 },
     args: ['--no-proxy-server']
+  };
+  const chromePath = process.env.CI === 'true' ? undefined : (process.env.SOCIAL_AUTH_BROWSER || defaultChromePath());
+  if (chromePath) launchOptions.executablePath = chromePath;
+  context = await chromium.launchPersistentContext(profileDir, {
+    ...launchOptions
   });
 } catch (error) {
   if (`${error.message || error}`.includes('ProcessSingleton')) {
