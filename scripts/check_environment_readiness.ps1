@@ -203,6 +203,7 @@ if (-not $SkipLiveSmoke -and -not $skipLinkedLiveSmoke) {
         $schemaResult.Text -match 'reconcile_targeted_recurring_observations' -and
         $schemaResult.Text -match 'reconcile_existing_event_lifecycle' -and
         $schemaResult.Text -match 'promote_event_ingest_run' -and
+        $schemaResult.Text -match 'annotate_wpn_event_observation_attention' -and
         -not (($schemaResult.Text -match '"error"') -and ($schemaResult.Text -notmatch 'Timeout while shutting down PostHog'))
     )
 

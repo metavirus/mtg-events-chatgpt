@@ -75,7 +75,9 @@ frontier checkpoints are preserved in
   uses `SUPABASE_DB_URL`, refreshes only when the rich cache is stale unless
   forced, stages observations, optionally promotes eligible WPN deltas, and runs
   the integrity audit without committing generated JSON. Discord is explicitly
-  bracketed out of this lane.
+  bracketed out of this lane. The first GitHub Actions proof completed
+  successfully on 2026-08-09 after the `SUPABASE_DB_URL` repository secret was
+  installed and the parser/log-cap issues were fixed.
 - WPN adapter contract v4 is now live in code. It adds conservative
   title keys, promoter eligibility/exclusion reasons, structured fact and field
   presence metadata, explicit proxy-rule flags, strict venue/title/weekday/time
@@ -147,6 +149,11 @@ frontier checkpoints are preserved in
   from hiding a valid event. The complete WPN operator path is
   `scripts/stage_wpn_event_observations.py --promote`; `--bootstrap` is reserved
   for deliberately quiet initial inventory.
+- WPN attention policy is now adapter-owned and intentionally sparse. The WPN
+  adapter may annotate favorite-venue prereleases, favorite-venue Commander
+  specials, and Commanderfest-style events for Signals; ordinary WPN arrivals
+  stay as venue-grouped Updates. Multi-session weekends are collapsed to one
+  attention marker per venue/event family to prevent Signal flood.
 - Existing-event lifecycle handling is now part of the shared promoter through
   `reconcile_existing_event_lifecycle(...)`. It refreshes only safe same-
   schedule bound observations with null-safe optional facts, and queues review

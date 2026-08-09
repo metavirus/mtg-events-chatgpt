@@ -54,6 +54,10 @@ The live source-neutral finalizer is `promote_event_ingest_run(...)`. It owns
 the deterministic reconciliation shapes, run completion, bootstrap/delta
 presentation mode, venue-grouped Updates, and Signals explicitly annotated by
 an adapter. It does not infer attention from titles.
+For WPN, `annotate_wpn_event_observation_attention(...)` is the current sparse
+adapter policy: favorite-venue prereleases, favorite-venue Commander specials,
+and Commanderfest-style events may become Signals, collapsed to one marker per
+venue/event family. Ordinary WPN event arrivals should remain grouped Updates.
 `scripts/stage_wpn_event_observations.py --promote` is the complete WPN operator
 path; `--bootstrap` deliberately suppresses novelty for initial inventory. The
 first non-WPN proof is complete: confirmed standalone/finite official listings

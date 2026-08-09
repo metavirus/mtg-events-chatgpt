@@ -14,14 +14,24 @@ Use it for:
 
 ## Active next-up
 
-- Cloud daily surveyor proof: the WPN daily lane now lives in
-  `.github/workflows/daily-surveyor.yml` and is designed to run in GitHub
-  Actions without the user's desktop or Codex session. Before calling it
-  complete, add/verify the repository Actions secret `SUPABASE_DB_URL`, manually
-  dispatch the workflow once with `promote=true`, confirm the action completes,
-  and confirm the app reflects any promoted deltas. Discord remains bracketed;
-  Instagram/Facebook assisted-session surveyors are later lanes, not part of
-  this WPN proof.
+- Cloud daily surveyor: the WPN daily lane now runs in
+  `.github/workflows/daily-surveyor.yml` through GitHub Actions without the
+  user's desktop or Codex session. Repository secret `SUPABASE_DB_URL` is the
+  canonical execution credential for this lane. The first cloud proof completed
+  successfully on 2026-08-09 and promoted WPN deltas through the shared event
+  promoter. Keep Discord bracketed; Instagram/Facebook assisted-session
+  surveyors are later lanes, not part of the WPN cloud job.
+
+- WPN attention policy: WPN promotion now has a sparse adapter-owned attention
+  annotation layer. It should create Signals only for explicit high-value
+  classes such as favorite-venue prereleases, favorite-venue Commander specials,
+  and Commanderfest-style events, while grouping multi-session weekends to one
+  attention candidate per venue/event family. Keep ordinary newly listed WPN
+  events as grouped Updates, not Signal spam. Continue tuning only from observed
+  false positives/false negatives, not from abstract category expansion. Local
+  proof on 2026-08-09 against the fresh WPN cache annotated 7 sparse attention
+  candidates but created 0 Signals/Updates because there were no newly visible
+  deltas to present; this is the intended no-spam replay behavior.
 
 - Canonical event ingest agent: implement the accepted source-neutral design in
   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`. WPN is the first adapter, not a
@@ -67,6 +77,13 @@ Use it for:
   richer facts established by another source. Do not add verbose per-event
   logging, a duplicate feed/catalog, or new Instagram/Discord crawlers in the
   first tranche.
+
+- GitHub Actions/Supabase execution hygiene: use `SUPABASE_DB_URL` and the
+  direct database helper path for cloud and local routine database work. The
+  Supabase CLI can still emit a misleading PostHog shutdown timeout after
+  returning valid rows; readiness treats that as nonfatal only when the expected
+  result payload is present. Do not re-open broad CLI authentication or Norton
+  debugging unless the actual DB smoke test fails.
 
 - Venue selection now comes from lifecycle-specific Supabase views, not old
   ledger TBD wording: `venue_baseline_candidates`,
