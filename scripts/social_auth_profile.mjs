@@ -133,6 +133,26 @@ async function writeManifest(manifestPath, payload) {
   await fs.writeFile(manifestPath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 }
 
+async function launchAndProbe({ chromium, executablePath, profileDir, targetUrl, platform }) {
+  const context = await chromium.launchPersistentContext(profileDir, {
+    headless: false,
+    executablePath,
+    viewport: { width: 1280, height: 900 },
+    args: ['--no-proxy-server']
+  });
+
+  try {
+    const page = context.pages()[0] || await context.newPage();
+    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.waitForTimeout(3000);
+    const classification = await classifyPage(page, platform);
+    return { context, classification };
+  } catch (error) {
+    await context.close().catch(() => {});
+    throw error;
+  }
+}
+
 const args = parseArgs(process.argv.slice(2));
 const { chromium } = resolvePlaywright();
 const workspaceRoot = path.resolve('work/social-auth', args.platform);
@@ -146,18 +166,13 @@ const targetUrl = args.url || defaultUrl(args.platform);
 const executablePath = process.env.SOCIAL_AUTH_BROWSER || defaultChromePath();
 const launchedAt = new Date().toISOString();
 
-const context = await chromium.launchPersistentContext(profileDir, {
-  headless: false,
+let { context, classification } = await launchAndProbe({
+  chromium,
   executablePath,
-  viewport: { width: 1280, height: 900 },
-  args: ['--no-proxy-server']
+  profileDir,
+  targetUrl,
+  platform: args.platform
 });
-
-const page = context.pages()[0] || await context.newPage();
-await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
-await page.waitForTimeout(3000);
-
-let classification = await classifyPage(page, args.platform);
 
 if (!args.probeOnly && classification.status !== 'session_usable') {
   console.log(JSON.stringify({
@@ -172,9 +187,14 @@ if (!args.probeOnly && classification.status !== 'session_usable') {
   await rl.question('After login/checkpoint is complete in the opened browser, press Enter to probe again...');
   rl.close();
 
-  await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await page.waitForTimeout(3000);
-  classification = await classifyPage(page, args.platform);
+  await context.close().catch(() => {});
+  ({ context, classification } = await launchAndProbe({
+    chromium,
+    executablePath,
+    profileDir,
+    targetUrl,
+    platform: args.platform
+  }));
 }
 
 const result = {
