@@ -166,12 +166,22 @@ const outputPath = args.output
   ? path.resolve(root, args.output)
   : path.resolve(root, 'work/social-probes', `${args.platform}-${Date.now()}.json`);
 
-const context = await chromium.launchPersistentContext(profileDir, {
-  headless: false,
-  executablePath: process.env.SOCIAL_AUTH_BROWSER || defaultChromePath(),
-  viewport: { width: 1280, height: 900 },
-  args: ['--no-proxy-server']
-});
+let context;
+try {
+  context = await chromium.launchPersistentContext(profileDir, {
+    headless: false,
+    executablePath: process.env.SOCIAL_AUTH_BROWSER || defaultChromePath(),
+    viewport: { width: 1280, height: 900 },
+    args: ['--no-proxy-server']
+  });
+} catch (error) {
+  if (`${error.message || error}`.includes('ProcessSingleton')) {
+    throw new Error(
+      `The ${args.platform} social-auth profile is already open. Close the dedicated ${args.platform} browser window, then rerun this command. Profile: ${profileDir}`
+    );
+  }
+  throw error;
+}
 
 try {
   const page = context.pages()[0] || await context.newPage();

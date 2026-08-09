@@ -145,12 +145,22 @@ function summarizeCookies(cookies, platform) {
 }
 
 async function launchAndProbe({ chromium, executablePath, profileDir, targetUrl, platform }) {
-  const context = await chromium.launchPersistentContext(profileDir, {
-    headless: false,
-    executablePath,
-    viewport: { width: 1280, height: 900 },
-    args: ['--no-proxy-server']
-  });
+  let context;
+  try {
+    context = await chromium.launchPersistentContext(profileDir, {
+      headless: false,
+      executablePath,
+      viewport: { width: 1280, height: 900 },
+      args: ['--no-proxy-server']
+    });
+  } catch (error) {
+    if (`${error.message || error}`.includes('ProcessSingleton')) {
+      throw new Error(
+        `The ${platform} social-auth profile is already open. Close the dedicated ${platform} browser window, then rerun this command. Profile: ${profileDir}`
+      );
+    }
+    throw error;
+  }
 
   try {
     const page = context.pages()[0] || await context.newPage();
@@ -214,11 +224,11 @@ if (!args.probeOnly && classification.status !== 'session_usable') {
     profileDir,
     targetUrl,
     status: classification.status,
-    nextStep: 'Complete login or any visible checkpoint in the opened browser window, then return to this terminal and press Enter.'
+    nextStep: 'Complete login/checkpoint in the opened browser. If Instagram offers to save login info, accept it. Confirm the profile page is visibly logged in, then return to this terminal and press Enter.'
   }, null, 2));
 
   const rl = readline.createInterface({ input, output });
-  await rl.question('After login/checkpoint is complete in the opened browser, press Enter to probe again...');
+  await rl.question('After login/checkpoint is complete and saved in the opened browser, press Enter to close/reopen and probe durability...');
   rl.close();
 
   ({ context, classification, authEvidence } = await closeAndReprobe({
