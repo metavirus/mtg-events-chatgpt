@@ -32,7 +32,16 @@ from supabase_typed_rpc import (
 CONFIDENCE = {"low", "medium", "high"}
 EVIDENCE_STATE = {"corroborated", "single_source", "projected", "needs_confirmation"}
 OCCURRENCE_STATUS = {"confirmed", "projected", "cancelled", "moved", "at_risk"}
-OFFICIAL_SOURCE_TYPES = {"official", "officialWebsite", "eventsPage", "eventPlatform", "calendar"}
+OFFICIAL_SOURCE_TYPES = {
+    "official",
+    "officialWebsite",
+    "eventsPage",
+    "eventPlatform",
+    "calendar",
+    "instagram",
+    "facebook",
+    "social",
+}
 
 
 def build_common_parser(subparsers: argparse._SubParsersAction[argparse.ArgumentParser], name: str, help_text: str) -> argparse.ArgumentParser:
@@ -53,6 +62,7 @@ def build_common_parser(subparsers: argparse._SubParsersAction[argparse.Argument
     parser.add_argument("--source-id", required=True)
     parser.add_argument("--source-label", required=True)
     parser.add_argument("--source-url", required=True)
+    parser.add_argument("--source-artifact-id", help="Optional source_artifacts.id proving this observation.")
     parser.add_argument("--summary", required=True)
     parser.add_argument("--source-type", default="eventsPage", choices=sorted(OFFICIAL_SOURCE_TYPES))
     parser.add_argument("--entry-fee", type=float)
@@ -139,15 +149,15 @@ def build_official_event_sql(args: argparse.Namespace) -> str:
   p_attention_priority := {sql_literal(args.attention_priority)},
   p_attention_summary := {sql_literal(args.attention_summary)},
   p_suggested_action := {sql_literal(args.suggested_action)},
-  p_dry_run := {sql_literal(args.dry_run)}
+  p_dry_run := {sql_literal(args.dry_run)},
+  p_source_artifact_id := {sql_literal(args.source_artifact_id)}::uuid
 )"""
     if args.dry_run:
         return f"""select ingest_run_id, observation_id, null::text as series_id,
   null::text as occurrence_id, outcome, wrote,
   0::integer as grouped_update_count, 0::integer as signal_count
 from {stage_call};"""
-    return f"""create temporary table official_event_operator_result as
-with staged as materialized (
+    return f"""with staged as materialized (
   select * from {stage_call}
 ), promoted as materialized (
   select p.*
@@ -156,15 +166,11 @@ with staged as materialized (
     s.ingest_run_id, 'delta', false
   ) p
 )
-select s.ingest_run_id, s.observation_id,
+select s.ingest_run_id, s.observation_id, b.series_id, b.occurrence_id,
   p.outcome, p.wrote, p.grouped_update_count, p.signal_count
 from staged s
-join promoted p on true;
-
-select r.ingest_run_id, r.observation_id, b.series_id, b.occurrence_id,
-  r.outcome, r.wrote, r.grouped_update_count, r.signal_count
-from official_event_operator_result r
-left join public.event_source_bindings b on b.observation_id = r.observation_id;"""
+join promoted p on true
+left join public.event_source_bindings b on b.observation_id = s.observation_id;"""
 
 
 def build_recurring_occurrence_sql(args: argparse.Namespace) -> str:
@@ -210,20 +216,19 @@ def build_recurring_occurrence_sql(args: argparse.Namespace) -> str:
   null::text as occurrence_id, outcome, wrote,
   0::integer as grouped_update_count, 0::integer as signal_count
 from {stage_call};"""
-    return f"""create temporary table recurring_event_operator_stage as
-select * from {stage_call};
-
-create temporary table recurring_event_operator_promoted as
-select p.*
-from recurring_event_operator_stage s
-cross join lateral public.promote_event_ingest_run(
-  s.ingest_run_id, 'delta', false
-) p;
-
+    return f"""with staged as materialized (
+  select * from {stage_call}
+), promoted as materialized (
+  select p.*
+  from staged s
+  cross join lateral public.promote_event_ingest_run(
+    s.ingest_run_id, 'delta', false
+  ) p
+)
 select s.ingest_run_id, s.observation_id, b.series_id, b.occurrence_id,
   p.outcome, p.wrote, p.grouped_update_count, p.signal_count
-from recurring_event_operator_stage s
-join recurring_event_operator_promoted p on true
+from staged s
+join promoted p on true
 left join public.event_source_bindings b on b.observation_id = s.observation_id;"""
 
 
