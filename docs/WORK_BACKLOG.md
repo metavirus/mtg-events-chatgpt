@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-08-02
+Last updated: 2026-08-09
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -13,6 +13,15 @@ Use it for:
 - process improvements that protect continuity.
 
 ## Active next-up
+
+- Cloud daily surveyor proof: the WPN daily lane now lives in
+  `.github/workflows/daily-surveyor.yml` and is designed to run in GitHub
+  Actions without the user's desktop or Codex session. Before calling it
+  complete, add/verify the repository Actions secret `SUPABASE_DB_URL`, manually
+  dispatch the workflow once with `promote=true`, confirm the action completes,
+  and confirm the app reflects any promoted deltas. Discord remains bracketed;
+  Instagram/Facebook assisted-session surveyors are later lanes, not part of
+  this WPN proof.
 
 - Canonical event ingest agent: implement the accepted source-neutral design in
   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md`. WPN is the first adapter, not a

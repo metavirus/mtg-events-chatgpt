@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-02
+Updated: 2026-08-09
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -70,6 +70,12 @@ frontier checkpoints are preserved in
   findings. The first live write established the enriched baseline in 9.16
   seconds; an immediate 9.40-second replay returned 1,267 unchanged events,
   zero findings, and zero coordination-inbox noise.
+- The ordinary daily WPN path is now intended to run in the cloud through
+  `.github/workflows/daily-surveyor.yml`, not on the user's desktop. The action
+  uses `SUPABASE_DB_URL`, refreshes only when the rich cache is stale unless
+  forced, stages observations, optionally promotes eligible WPN deltas, and runs
+  the integrity audit without committing generated JSON. Discord is explicitly
+  bracketed out of this lane.
 - WPN adapter contract v4 is now live in code. It adds conservative
   title keys, promoter eligibility/exclusion reasons, structured fact and field
   presence metadata, explicit proxy-rule flags, strict venue/title/weekday/time

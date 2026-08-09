@@ -99,6 +99,13 @@ Refresh the public Wizards snapshot and its rich Supabase cache:
 
     .\.venv\Scripts\python.exe scripts/refresh_wpn_cache.py
 
+The ordinary daily WPN lane is now cloud-owned by
+`.github/workflows/daily-surveyor.yml`. It runs the WPN cache refresh,
+observation staging, promoter, and integrity audit from GitHub Actions using
+the repository secret `SUPABASE_DB_URL`. It does not require the user's desktop
+or Codex session to be open, and it does not commit generated WPN JSON during
+routine runs.
+
 The crawler stores:
 
 - `output/wizards/metadata.json`: retrieval settings and counts
@@ -125,10 +132,10 @@ locator's 25-mile routine search radius. It does not store a private home
 address. Candidate events are intentionally broad and should be verified before
 being promoted into Supabase canonical research tables.
 
-At session start, a canonical snapshot at least 24 hours old should be refreshed
-and written to `public.wpn_snapshot_cache` in the same bounded operation. The
-Supabase row is the operational rich cache; the tracked `output/wizards` files
-remain a recovery/debug source snapshot and may be checkpointed when refreshed.
+At session start, if the WPN cache is stale, prefer checking the cloud daily
+surveyor state or manually dispatching the GitHub Action instead of doing a
+desktop-local refresh. The Supabase row is the operational rich cache; the
+tracked `output/wizards` files remain a recovery/debug source snapshot only.
 
 ## Current status
 

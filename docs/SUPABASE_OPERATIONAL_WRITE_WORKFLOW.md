@@ -336,14 +336,34 @@ Required verification is proportional:
 
 ## Daily WPN surveyor lane
 
-Use the daily surveyor wrapper before hand-driving WPN refresh, staging, and
-audit commands separately:
+The ordinary WPN daily lane should run in GitHub Actions through
+`.github/workflows/daily-surveyor.yml`. It is the cloud path for keeping the
+rich WPN cache fresh and promoting safe WPN deltas without requiring the user's
+desktop or Codex task to be open.
+
+Required cloud configuration:
+
+- repository Actions secret: `SUPABASE_DB_URL`;
+- normal scheduled run: daily at `13:37 UTC`;
+- manual dispatch options: `promote` and `force_refresh`.
+
+The action runs `scripts/daily_surveyor.py`, which:
+
+- refreshes the WPN cache only when older than the configured age threshold
+  unless forced;
+- stages normalized WPN observations;
+- optionally promotes eligible WPN observations through the shared promoter;
+- runs the event integrity audit;
+- does not commit generated WPN JSON or create per-run repo artifacts.
+
+For local debugging only, use the wrapper before hand-driving WPN refresh,
+staging, and audit commands separately:
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\daily_surveyor.py
 ```
 
-Default behavior is safe and preview-oriented:
+Default local behavior is safe and preview-oriented:
 
 - refreshes the WPN cache only when older than the configured age threshold;
 - stages normalized WPN observations;
@@ -351,7 +371,7 @@ Default behavior is safe and preview-oriented:
 - runs the event integrity audit;
 - does not promote canonical event deltas unless `--promote` is supplied.
 
-For the ordinary live daily pass, after preview behavior is trusted:
+For a local live pass, after preview behavior is trusted:
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\daily_surveyor.py --promote
