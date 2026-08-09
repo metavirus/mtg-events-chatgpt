@@ -20,6 +20,24 @@ Use it for a few specific jobs:
 
 If Instagram is not helping with one of those jobs, stop.
 
+When login state is needed, treat it as a platform capability to establish once,
+not a reason to keep retrying from a blank browser. Use the ignored local
+profile created by `scripts/setup_social_auth_profile.ps1` and run a bounded
+probe before any post-level inspection:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/setup_social_auth_profile.ps1 -Platform instagram -ProfileUrl https://www.instagram.com/example/
+```
+
+The helper opens a dedicated local browser profile under `work/social-auth/`,
+lets the user complete login or checkpoints once, and records only a small
+manifest. It must not post, like, follow, message, scrape broadly, or commit
+session state. A `public_readable_auth_unclear` result means the surface can be
+used for a bounded public-read check, but it does not prove a durable logged-in
+session. If the profile still reports `login_required`,
+`challenge_or_checkpoint`, or `blocked_or_unreadable` after one repair attempt,
+record that exact surface state and stop.
+
 ## Pass types
 
 ### 1. Strict first pass

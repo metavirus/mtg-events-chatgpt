@@ -1,4 +1,5 @@
 work/
+work/social-auth/
 outputs/
 .gh-config/
 .venv/
