@@ -95,7 +95,17 @@ def rows_from_cli(output: str) -> list[dict]:
             continue
         if isinstance(value, dict) and isinstance(value.get("rows"), list):
             return value["rows"]
-    raise SystemExit(f"Supabase query returned no readable rows:\n{output}")
+    for match in re.finditer(r"\[", output):
+        try:
+            value, _ = decoder.raw_decode(output[match.start():])
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, list):
+            return value
+    excerpt = output.strip()
+    if len(excerpt) > 4000:
+        excerpt = f"{excerpt[:2000]}\n\n... truncated {len(output):,} characters ...\n\n{excerpt[-2000:]}"
+    raise SystemExit(f"Supabase query returned no readable rows:\n{excerpt}")
 
 
 def query_rows(sql: str) -> list[dict]:
