@@ -172,7 +172,14 @@ def psql_rows_or_raise(result: subprocess.CompletedProcess[str]) -> list[dict]:
             "Direct psql query failed"
             + (f": {error_suffix}" if error_suffix else "")
         )
-    return list(csv.DictReader(io.StringIO(result.stdout)))
+    output = result.stdout
+    lines = output.splitlines()
+    if lines and "," not in lines[0]:
+        for index, line in enumerate(lines[1:], start=1):
+            if "," in line:
+                output = "\n".join(lines[index:]) + "\n"
+                break
+    return list(csv.DictReader(io.StringIO(output)))
 
 
 def linked_query_rows_or_raise(result: subprocess.CompletedProcess[str]) -> list[dict]:

@@ -147,8 +147,22 @@ select distinct on (v.id)
 from public.sources s
 join public.entity_sources es on es.source_id = s.id
 join public.venues v on v.id = es.entity_id and es.entity_type = 'venue'
+left join public.entity_surface_selection_state ess
+  on ess.entity_type = 'venue'
+  and ess.entity_id = v.id
+  and ess.surface_type = '{platform}'
 where lower(coalesce(s.url,'')) like '%instagram%'
   and coalesce(s.url,'') <> ''
+  and (
+    ess.entity_id is null
+    or (
+      ess.terminal_outcome is null
+      and (
+        ess.next_eligible_check_at is null
+        or ess.next_eligible_check_at <= now()
+      )
+    )
+  )
   {id_filter}
 order by v.id, coalesce(s.last_checked, '1900-01-01'::timestamptz) asc, s.id
 limit {int(limit)};
