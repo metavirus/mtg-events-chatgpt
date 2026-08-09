@@ -193,6 +193,7 @@ def linked_query_rows_or_raise(result: subprocess.CompletedProcess[str]) -> list
 
 
 def print_rpc_rows(rows: list[dict], expected_fields: list[str]) -> None:
+    rows = [row for row in rows if any(field in row for field in expected_fields)]
     if not rows:
         print("No rows returned.")
         return

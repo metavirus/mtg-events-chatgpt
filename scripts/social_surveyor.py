@@ -99,12 +99,18 @@ class SocialSource:
     url: str
 
 
-def normalize_instagram_profile_url(url: str) -> str:
-    """Return a profile URL even when the stored source is a post/reel URL."""
+def normalize_social_profile_url(platform: str, url: str) -> str:
+    """Return a profile URL when the stored route is a common post/reel URL."""
 
     parsed = urlparse(url)
     parts = [part for part in parsed.path.split("/") if part]
     if not parts:
+        return url
+    if platform == "facebook":
+        if parts[0] in {"posts", "photos", "videos", "reel", "reels", "events"}:
+            return url
+        if len(parts) >= 2 and parts[1] in {"posts", "photos", "videos", "reels", "events"}:
+            return f"https://www.facebook.com/{parts[0]}"
         return url
     if parts[0] in {"p", "reel", "tv", "stories"}:
         return url
@@ -127,7 +133,7 @@ def run_command(command: list[str], *, timeout: int = 120) -> subprocess.Complet
     )
 
 
-def query_sources(database_url: str, *, limit: int, include_ids: list[str]) -> list[SocialSource]:
+def query_sources(database_url: str, *, platform: str, limit: int, include_ids: list[str]) -> list[SocialSource]:
     id_filter = ""
     if include_ids:
         quoted = ",".join("'" + value.replace("'", "''") + "'" for value in include_ids)
@@ -147,6 +153,8 @@ where lower(coalesce(s.url,'')) like '%instagram%'
 order by v.id, coalesce(s.last_checked, '1900-01-01'::timestamptz) asc, s.id
 limit {int(limit)};
 """
+    if platform == "facebook":
+        sql = sql.replace("%instagram%", "%facebook%")
     rows = psql_rows_or_raise(run_psql(sql, database_url))
     return [
         SocialSource(
@@ -172,7 +180,7 @@ def load_probe_path_from_output(output: str) -> Path | None:
     return Path(path) if path else None
 
 
-def probe_source(source: SocialSource, *, max_links: int, max_scrolls: int) -> tuple[Path | None, dict[str, Any] | None, str | None]:
+def probe_source(source: SocialSource, *, platform: str, max_links: int, max_scrolls: int) -> tuple[Path | None, dict[str, Any] | None, str | None]:
     command = [
         "powershell",
         "-ExecutionPolicy",
@@ -180,9 +188,9 @@ def probe_source(source: SocialSource, *, max_links: int, max_scrolls: int) -> t
         "-File",
         str(PROBE_SCRIPT),
         "-Platform",
-        "instagram",
+        platform,
         "-ProfileUrl",
-        normalize_instagram_profile_url(source.url),
+        normalize_social_profile_url(platform, source.url),
         "-MaxLinks",
         str(max_links),
         "-MaxScrolls",
@@ -235,41 +243,44 @@ def choose_artifact_candidate(probe: dict[str, Any]) -> tuple[int | None, str]:
     return best_index, best_reason
 
 
-def summarize_probe(probe: dict[str, Any], artifact_reason: str) -> tuple[str, str, bool, str]:
+def summarize_probe(probe: dict[str, Any], artifact_reason: str, *, platform: str) -> tuple[str, str, bool, str]:
     classification = probe.get("classification") or {}
     surface_status = probe.get("surfaceStatus") or "unknown"
     matched_mtg = classification.get("matchedMtgTerms") or []
     matched_ops = classification.get("matchedOperationalTerms") or []
-    if surface_status != "candidate_posts_visible":
+    readable_statuses = {"candidate_posts_visible", "candidate_media_visible"}
+    if surface_status not in readable_statuses:
         return "route_found_content_not_inspected", "Profile route did not expose a clean bounded post slice.", False, "low"
     has_artifact = not artifact_reason.startswith("no ")
+    platform_label = platform.title()
     if matched_mtg and matched_ops and has_artifact:
         return (
             "inspected_current",
-            f"Readable Instagram profile with MTG and operational/event-adjacent terms; artifact candidate {artifact_reason}.",
+            f"Readable {platform_label} profile with MTG and operational/event-adjacent terms; artifact candidate {artifact_reason}.",
             True,
             "medium",
         )
     if matched_mtg and has_artifact:
         return (
             "inspected_current",
-            f"Readable Instagram profile with MTG-relevant terms; artifact candidate {artifact_reason}.",
+            f"Readable {platform_label} profile with MTG-relevant terms; artifact candidate {artifact_reason}.",
             True,
             "low",
         )
     if matched_mtg:
         return (
             "inspected_thin",
-            "Readable Instagram profile had MTG-adjacent text, but no strong event-like media candidate in the bounded slice.",
+            f"Readable {platform_label} profile had MTG-adjacent text, but no strong event-like media candidate in the bounded slice.",
             False,
             "low",
         )
-    return "not_material", "Readable Instagram profile, but bounded slice did not show MTG-relevant content.", False, "low"
+    return "not_material", f"Readable {platform_label} profile, but bounded slice did not show MTG-relevant content.", False, "low"
 
 
 def run_surface_record(
     source: SocialSource,
     *,
+    platform: str,
     disposition: str,
     summary: str,
     useful: bool,
@@ -282,13 +293,13 @@ def run_surface_record(
         blessed_python(),
         str(SURFACE_SCRIPT),
         "--idempotency-key",
-        f"social-survey-instagram-{source.venue_id}-{fingerprint}",
+        f"social-survey-{platform}-{source.venue_id}-{fingerprint}",
         "--entity-type",
         "venue",
         "--entity-id",
         source.venue_id,
         "--surface-type",
-        "instagram",
+        platform,
         "--disposition",
         disposition,
         "--source-id",
@@ -319,6 +330,7 @@ def run_surface_record(
 def run_artifact_ingest(
     source: SocialSource,
     *,
+    platform: str,
     probe_path: Path,
     index: int,
     summary: str,
@@ -334,7 +346,7 @@ def run_artifact_ingest(
         "--index",
         str(index),
         "--idempotency-key",
-        f"social-survey-artifact-instagram-{source.venue_id}-{fingerprint}",
+        f"social-survey-artifact-{platform}-{source.venue_id}-{fingerprint}",
         "--source-id",
         source.source_id,
         "--target-type",
@@ -362,6 +374,7 @@ def run_artifact_ingest(
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--platform", choices=["instagram", "facebook"], default="instagram")
     parser.add_argument("--limit", type=int, default=5)
     parser.add_argument("--venue-id", action="append", default=[], help="Limit to one or more specific venue IDs.")
     parser.add_argument("--max-links", type=int, default=12)
@@ -383,12 +396,12 @@ def main(argv: list[str] | None = None) -> int:
     if not database_url:
         raise SystemExit("SUPABASE_DB_URL or .codex-secrets/supabase-db-url.txt is required")
 
-    sources = query_sources(database_url, limit=args.limit, include_ids=args.venue_id)
+    sources = query_sources(database_url, platform=args.platform, limit=args.limit, include_ids=args.venue_id)
     if not sources:
-        raise SystemExit("No Instagram sources matched the requested scope")
+        raise SystemExit(f"No {args.platform} sources matched the requested scope")
 
     print(f"Social surveyor mode: {'LIVE' if args.live else 'DRY RUN'}")
-    print(f"Instagram sources: {len(sources)}")
+    print(f"{args.platform.title()} sources: {len(sources)}")
     results: list[dict[str, Any]] = []
     failures = 0
 
@@ -396,14 +409,16 @@ def main(argv: list[str] | None = None) -> int:
         print(f"\n[{ordinal}/{len(sources)}] {source.venue_name} ({source.venue_id})")
         probe_path, probe, error = probe_source(
             source,
+            platform=args.platform,
             max_links=args.max_links,
             max_scrolls=args.max_scrolls,
         )
         fingerprint = str(int(time.time()))
         if error or not probe_path or not probe:
-            summary = f"Instagram probe failed or was blocked: {error or 'unknown failure'}"
+            summary = f"{args.platform.title()} probe failed or was blocked: {error or 'unknown failure'}"
             code = run_surface_record(
                 source,
+                platform=args.platform,
                 disposition="route_found_content_not_inspected",
                 summary=summary[:900],
                 useful=False,
@@ -417,10 +432,11 @@ def main(argv: list[str] | None = None) -> int:
             continue
 
         artifact_index, artifact_reason = choose_artifact_candidate(probe)
-        disposition, summary, useful, materiality = summarize_probe(probe, artifact_reason)
-        fingerprint = Path(probe_path).stem.replace("instagram-", "")
+        disposition, summary, useful, materiality = summarize_probe(probe, artifact_reason, platform=args.platform)
+        fingerprint = Path(probe_path).stem.replace(f"{args.platform}-", "")
         surface_code = run_surface_record(
             source,
+            platform=args.platform,
             disposition=disposition,
             summary=summary,
             useful=useful,
@@ -435,9 +451,10 @@ def main(argv: list[str] | None = None) -> int:
         if surface_code == 0 and artifact_index is not None and useful:
             artifact_code = run_artifact_ingest(
                 source,
+                platform=args.platform,
                 probe_path=probe_path,
                 index=artifact_index,
-                summary=f"{source.venue_name} Instagram artifact retained from bounded survey: {summary}",
+                summary=f"{source.venue_name} {args.platform.title()} artifact retained from bounded survey: {summary}",
                 materiality=materiality,
                 fingerprint=fingerprint,
                 live=args.live,
