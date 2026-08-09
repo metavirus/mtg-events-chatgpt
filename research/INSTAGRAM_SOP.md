@@ -54,8 +54,12 @@ The probe restores the ignored `storage-state.json`, writes an ignored preview
 under `work/social-probes/`, and refreshes the storage-state file after a
 successful check. It should be used only to decide whether a small recent
 visible slice contains candidate MTG posts, graphics, schedule notices,
-cancellations, or source-routing changes. Do not promote profile chrome such
-as Instagram's own `Log In` / `Sign Up` text into operational event evidence.
+cancellations, or source-routing changes. Instagram may expose useful
+post/reel candidates through visible image tiles and generated image alt text
+even when ordinary anchor scraping looks empty; treat those media candidates as
+the first pass, then inspect or ingest only the small subset that looks
+MTG-relevant. Do not promote profile chrome such as Instagram's own `Log In` /
+`Sign Up` text into operational event evidence.
 
 ## Pass types
 

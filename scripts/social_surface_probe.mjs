@@ -84,28 +84,31 @@ function normalizeUrl(href, platform) {
 
 function isCandidateUrl(url, platform) {
   if (platform === 'instagram') {
-    return /instagram\.com\/(p|reel|stories)\//i.test(url);
+    return /instagram\.com\/(?:[^/]+\/)?(?:p|reel|stories)\//i.test(url);
   }
   return /facebook\.com\/.*\/(posts|events|photos|videos)\//i.test(url)
     || /facebook\.com\/events\//i.test(url);
 }
 
-function classifySurface(text, links, platform) {
+function classifySurface(text, links, mediaCandidates, platform) {
   const compact = text.toLowerCase();
   const loginTerms = platform === 'instagram'
     ? ['log in', 'sign up', 'never miss a post']
     : ['log in', 'create new account'];
   const hasLoginChrome = loginTerms.some((term) => compact.includes(term));
-  if (hasLoginChrome && links.length === 0) {
+  if (hasLoginChrome && links.length === 0 && mediaCandidates.length === 0) {
     return 'login_or_public_shell';
   }
   if (links.length > 0) {
     return 'candidate_posts_visible';
   }
+  if (mediaCandidates.length > 0) {
+    return 'candidate_media_visible';
+  }
   return 'readable_profile_only';
 }
 
-function classifyProbe(text, links) {
+function classifyProbe(text, links, mediaCandidates) {
   const compact = text.toLowerCase();
   const mtgTerms = [
     'magic', 'mtg', 'commander', 'edh', 'draft', 'sealed', 'prerelease',
@@ -116,8 +119,13 @@ function classifyProbe(text, links) {
     'today', 'tonight', 'tomorrow', 'closed', 'hours', 'schedule',
     'cancel', 'registration', 'league', 'tournament'
   ];
-  const matchedMtgTerms = mtgTerms.filter((term) => compact.includes(term));
-  const matchedOperationalTerms = operationalTerms.filter((term) => compact.includes(term));
+  const mediaText = mediaCandidates
+    .map((candidate) => `${candidate.alt || ''} ${candidate.nearbyText || ''}`)
+    .join(' ')
+    .toLowerCase();
+  const combinedText = `${compact} ${mediaText}`;
+  const matchedMtgTerms = mtgTerms.filter((term) => combinedText.includes(term));
+  const matchedOperationalTerms = operationalTerms.filter((term) => combinedText.includes(term));
   let disposition = 'no_visible_mtg_signal';
   if (matchedMtgTerms.length > 0 && matchedOperationalTerms.length > 0) {
     disposition = 'possible_operational_mtg_signal';
@@ -125,6 +133,8 @@ function classifyProbe(text, links) {
     disposition = 'possible_mtg_signal';
   } else if (links.length > 0) {
     disposition = 'candidate_links_no_text_signal';
+  } else if (mediaCandidates.length > 0) {
+    disposition = 'candidate_media_no_text_signal';
   }
   return {
     disposition,
@@ -172,9 +182,15 @@ async function collectVisibleSlice(page, platform, maxLinks) {
     }))
   );
 
+  const htmlHrefCandidates = await page.evaluate(() => {
+    const html = document.documentElement?.innerHTML || '';
+    const matches = [...html.matchAll(/href=["']([^"']+)["']/gi)];
+    return matches.map((match) => match[1]);
+  }).catch(() => []);
+
   const seen = new Set();
   const candidateLinks = [];
-  for (const anchor of anchors) {
+  for (const anchor of [...anchors, ...htmlHrefCandidates.map((href) => ({ href, text: '' }))]) {
     const url = normalizeUrl(anchor.href, platform);
     if (!url || seen.has(url) || !isCandidateUrl(url, platform)) continue;
     seen.add(url);
@@ -182,9 +198,53 @@ async function collectVisibleSlice(page, platform, maxLinks) {
     if (candidateLinks.length >= maxLinks) break;
   }
 
+  const mediaCandidates = await page.evaluate((limit) => {
+    const viewportHeight = window.innerHeight || 900;
+    const viewportWidth = window.innerWidth || 1280;
+    const candidates = [];
+    const seenSources = new Set();
+
+    for (const image of document.querySelectorAll('img')) {
+      const rect = image.getBoundingClientRect();
+      const source = image.currentSrc || image.src || '';
+      if (!source || seenSources.has(source)) continue;
+      if (rect.width < 80 || rect.height < 80) continue;
+      if (rect.bottom < 0 || rect.top > viewportHeight * 2.5) continue;
+      if (rect.right < 0 || rect.left > viewportWidth) continue;
+      seenSources.add(source);
+
+      const link = image.closest('a')?.href || '';
+      const nearbyText = image.closest('article, main, section, div')?.textContent || '';
+      candidates.push({
+        src: source,
+        alt: image.alt || '',
+        link,
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+        x: Math.round(rect.x),
+        y: Math.round(rect.y),
+        nearbyText: nearbyText.replace(/\s+/g, ' ').trim().slice(0, 300)
+      });
+      if (candidates.length >= limit) break;
+    }
+    return candidates;
+  }, maxLinks).catch(() => []);
+
+  for (const mediaCandidate of mediaCandidates) {
+    const url = normalizeUrl(mediaCandidate.link, platform);
+    if (!url || seen.has(url) || !isCandidateUrl(url, platform)) continue;
+    seen.add(url);
+    candidateLinks.push({
+      url,
+      text: mediaCandidate.alt || mediaCandidate.nearbyText || ''
+    });
+    if (candidateLinks.length >= maxLinks) break;
+  }
+
   return {
     bodyTextSample: bodyText.replace(/\s+/g, ' ').trim().slice(0, 2500),
-    candidateLinks
+    candidateLinks: candidateLinks.slice(0, maxLinks),
+    mediaCandidates: mediaCandidates.slice(0, maxLinks)
   };
 }
 
@@ -229,9 +289,14 @@ try {
   const surfaceStatus = classifySurface(
     visibleSlice.bodyTextSample,
     visibleSlice.candidateLinks,
+    visibleSlice.mediaCandidates,
     args.platform
   );
-  const classification = classifyProbe(visibleSlice.bodyTextSample, visibleSlice.candidateLinks);
+  const classification = classifyProbe(
+    visibleSlice.bodyTextSample,
+    visibleSlice.candidateLinks,
+    visibleSlice.mediaCandidates
+  );
   const result = {
     platform: args.platform,
     targetUrl: args.url,
@@ -265,6 +330,7 @@ try {
     surfaceStatus,
     disposition: classification.disposition,
     candidateLinks: visibleSlice.candidateLinks.length,
+    mediaCandidates: visibleSlice.mediaCandidates.length,
     matchedMtgTerms: classification.matchedMtgTerms,
     matchedOperationalTerms: classification.matchedOperationalTerms
   }, null, 2));
