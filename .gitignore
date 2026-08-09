@@ -1,5 +1,6 @@
 work/
 work/social-auth/
+work/social-probes/
 outputs/
 .gh-config/
 .venv/

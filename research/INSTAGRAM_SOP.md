@@ -34,9 +34,23 @@ lets the user complete login or checkpoints once, and records only a small
 manifest. It must not post, like, follow, message, scrape broadly, or commit
 session state. A `public_readable_auth_unclear` result means the surface can be
 used for a bounded public-read check, but it does not prove a durable logged-in
-session. If the profile still reports `login_required`,
+session. For Instagram, the helper should report a likely session cookie such as
+`sessionid` before treating the profile as durably authenticated. If the profile
+still reports `login_required`,
 `challenge_or_checkpoint`, or `blocked_or_unreadable` after one repair attempt,
 record that exact surface state and stop.
+
+After auth is healthy, use the bounded surface probe before post-level ingest:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/probe_social_surface.ps1 -Platform instagram -ProfileUrl https://www.instagram.com/example/
+```
+
+The probe writes an ignored preview under `work/social-probes/`. It should be
+used only to decide whether a small recent visible slice contains candidate MTG
+posts, graphics, schedule notices, cancellations, or source-routing changes.
+Do not promote profile chrome such as Instagram's own `Log In` / `Sign Up`
+text into operational event evidence.
 
 ## Pass types
 

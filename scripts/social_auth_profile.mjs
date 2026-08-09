@@ -133,6 +133,17 @@ async function writeManifest(manifestPath, payload) {
   await fs.writeFile(manifestPath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 }
 
+function summarizeCookies(cookies, platform) {
+  const relevantHost = platform === 'instagram' ? 'instagram.com' : 'facebook.com';
+  const relevantCookies = cookies.filter((cookie) => cookie.domain.includes(relevantHost));
+  const names = relevantCookies.map((cookie) => cookie.name).sort();
+  return {
+    relevantCookieCount: relevantCookies.length,
+    cookieNames: names,
+    hasLikelySessionCookie: names.some((name) => ['sessionid', 'c_user', 'xs'].includes(name))
+  };
+}
+
 async function launchAndProbe({ chromium, executablePath, profileDir, targetUrl, platform }) {
   const context = await chromium.launchPersistentContext(profileDir, {
     headless: false,
@@ -146,7 +157,8 @@ async function launchAndProbe({ chromium, executablePath, profileDir, targetUrl,
     await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
     await page.waitForTimeout(3000);
     const classification = await classifyPage(page, platform);
-    return { context, classification };
+    const cookies = await context.cookies().catch(() => []);
+    return { context, classification, authEvidence: summarizeCookies(cookies, platform) };
   } catch (error) {
     await context.close().catch(() => {});
     throw error;
@@ -166,7 +178,7 @@ const targetUrl = args.url || defaultUrl(args.platform);
 const executablePath = process.env.SOCIAL_AUTH_BROWSER || defaultChromePath();
 const launchedAt = new Date().toISOString();
 
-let { context, classification } = await launchAndProbe({
+let { context, classification, authEvidence } = await launchAndProbe({
   chromium,
   executablePath,
   profileDir,
@@ -188,7 +200,7 @@ if (!args.probeOnly && classification.status !== 'session_usable') {
   rl.close();
 
   await context.close().catch(() => {});
-  ({ context, classification } = await launchAndProbe({
+  ({ context, classification, authEvidence } = await launchAndProbe({
     chromium,
     executablePath,
     profileDir,
@@ -217,7 +229,8 @@ const result = {
     'broad scraping',
     'committing cookies or session state'
   ],
-  classification
+  classification,
+  authEvidence
 };
 
 await writeManifest(manifestPath, result);

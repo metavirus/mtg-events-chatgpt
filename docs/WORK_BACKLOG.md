@@ -143,10 +143,14 @@ Use it for:
 
 - Instagram/Facebook assisted-session POC: login-gated Meta surfaces should use
   the ignored `work/social-auth/` persistent-profile path before being declared
-  blocked. Start with Instagram, likely Collector's Lounge, and prove only a
-  tiny personal-use loop: restore session, inspect a bounded recent-post slice,
-  ingest at most one or two MTG-relevant artifacts, classify app relevance, and
-  stop. Meta surfaces are hostile and terms-restricted, so this is an assisted
+  blocked. Initial Collector Legion Instagram work proved a bounded
+  public-readable route plus a session-health manifest, but durable login is
+  not yet proven because the stored profile lacked Instagram's likely
+  `sessionid` cookie after the interactive attempt. Next repair should focus on
+  durable browser-profile persistence, not event analysis. Once auth is healthy,
+  run the tiny personal-use loop: inspect a bounded recent-post slice, ingest at
+  most one or two MTG-relevant artifacts, classify app relevance, and stop.
+  Meta surfaces are hostile and terms-restricted, so this is an assisted
   source-review path, not a broad scraper.
 
 - Phase 2 workflow simplification proof is complete. Ordinary source/surface
