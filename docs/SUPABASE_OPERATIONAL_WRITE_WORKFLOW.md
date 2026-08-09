@@ -374,6 +374,11 @@ or WPN date/time/venue mismatches. Its review buckets are not automatic cleanup
 orders. In particular, legacy WPN rows with only store-level URLs should be
 backfilled only when an exact current observation/source match exists.
 
+Promoter source-link writes are intentionally idempotent at the `event_sources`
+table boundary. Duplicate source/occurrence or source/series links are skipped
+instead of aborting set-based daily runs; the unique indexes remain the
+canonical rule, and the trigger only converts replay collisions into no-ops.
+
 ## Proposal format
 
 A canonical research update starts as a JSON proposal, not as direct JSON edits.
