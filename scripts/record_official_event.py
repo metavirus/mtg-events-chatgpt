@@ -19,8 +19,8 @@ from datetime import date
 from supabase_typed_rpc import (
     linked_query_rows_or_raise,
     print_rpc_rows,
+    psql_rows_or_raise,
     resolve_database_url,
-    run_supabase_db_url_query,
     run_linked_query,
     run_psql,
     sql_date,
@@ -41,7 +41,7 @@ def build_common_parser(subparsers: argparse._SubParsersAction[argparse.Argument
     mode.add_argument("--dry-run", action="store_true", default=True, help="Validate through the RPC without writing. Default.")
     mode.add_argument("--live", action="store_true", help="Prepare or execute the live RPC call.")
     parser.add_argument("--execute-linked", action="store_true", help="Run through `supabase db query --linked`.")
-    parser.add_argument("--execute", action="store_true", help="Run through Supabase CLI --db-url using --database-url, DATABASE_URL, SUPABASE_DB_URL, or .codex-secrets/supabase-db-url.txt.")
+    parser.add_argument("--execute", action="store_true", help="Run through direct psql using --database-url, DATABASE_URL, SUPABASE_DB_URL, or .codex-secrets/supabase-db-url.txt.")
     parser.add_argument("--database-url", help="Postgres connection string for psql execution. Never commit it.")
     parser.add_argument("--replay-check", action="store_true", help="Repeat the same live RPC call once to confirm idempotency.")
     parser.add_argument("--idempotency-key", required=True)
@@ -252,9 +252,9 @@ def execute_and_print(sql: str, *, linked: bool, database_url: str | None, expec
 
     if not database_url:
         raise RuntimeError("--execute requires --database-url, DATABASE_URL, or SUPABASE_DB_URL")
-    result = run_supabase_db_url_query(sql, database_url)
+    result = run_psql(sql, database_url)
     try:
-        rows = linked_query_rows_or_raise(result)
+        rows = psql_rows_or_raise(result)
     except RuntimeError as exc:
         if result.stdout:
             print(result.stdout.strip())

@@ -297,12 +297,12 @@ Operator lanes:
   dated official occurrence needs to be attached without mutating the recurring
   series shape.
 
-Example live linked CLI run for a recurring-series occurrence:
+Example live direct-DB run for a recurring-series occurrence:
 
 ```powershell
 python.exe scripts/record_official_event.py recurring-occurrence `
   --live `
-  --execute-linked `
+  --execute `
   --idempotency-key example-recurring-occurrence-YYYY-MM-DD `
   --venue-id example-venue `
   --series-id example-recurring-series `
@@ -318,7 +318,9 @@ python.exe scripts/record_official_event.py recurring-occurrence `
 For both typed event lanes:
 
 - default to dry-run when input certainty is still being checked;
-- use `--execute-linked` as the default operator path in a ready environment;
+- use `--execute` as the default operator path in a ready environment;
+- use `--execute-linked` only as a fallback/admin path when direct DB URL is
+  unavailable or project-linked CLI context is specifically required;
 - expect the returned IDs directly from the RPC:
   `series_id`, `occurrence_id`, `source_id`, `outcome`, `wrote`,
   `research_change_id`;

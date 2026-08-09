@@ -32,8 +32,9 @@ truststore.inject_into_ssl()
 from supabase_typed_rpc import (
     linked_query_rows_or_raise,
     print_rpc_rows,
+    psql_rows_or_raise,
     resolve_database_url,
-    run_supabase_db_url_query,
+    run_psql,
     sql_literal,
     sql_timestamptz,
     sql_uuid,
@@ -205,9 +206,9 @@ def upload_artifact(
 
 
 def execute_sql(sql: str, database_url: str) -> list[dict]:
-    result = run_supabase_db_url_query(sql, database_url)
+    result = run_psql(sql, database_url)
     try:
-        return linked_query_rows_or_raise(result)
+        return psql_rows_or_raise(result)
     except RuntimeError as exc:
         if result.stdout:
             print(result.stdout.strip())

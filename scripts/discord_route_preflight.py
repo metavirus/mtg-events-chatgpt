@@ -16,9 +16,10 @@ import sys
 
 from supabase_typed_rpc import (
     linked_query_rows_or_raise,
+    psql_rows_or_raise,
     resolve_database_url,
     run_linked_query,
-    run_supabase_db_url_query,
+    run_psql,
     sql_literal,
 )
 
@@ -86,7 +87,7 @@ def main(argv: list[str] | None = None) -> int:
     sql = build_sql(urls)
     database_url = resolve_database_url(None)
     if database_url:
-        rows = linked_query_rows_or_raise(run_supabase_db_url_query(sql, database_url))
+        rows = psql_rows_or_raise(run_psql(sql, database_url))
     else:
         rows = linked_query_rows_or_raise(run_linked_query(sql))
     rows_by_url = {row["channel_url"]: row for row in rows}

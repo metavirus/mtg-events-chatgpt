@@ -1,7 +1,8 @@
 """Shared helpers for tiny typed Supabase RPC wrappers.
 
-This module is intentionally narrow. It supports only linked Supabase CLI
-execution and optional direct psql execution for small typed-RPC helpers.
+This module is intentionally narrow. Ordinary execution should use direct psql
+through ``SUPABASE_DB_URL``; linked Supabase CLI execution remains a fallback
+or admin/project-context path.
 """
 
 from __future__ import annotations

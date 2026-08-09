@@ -121,14 +121,11 @@ Use it for:
   backing table are already gone; do not treat it as an active coordination
   path.
 
-- Supabase CLI final-resolution TBD: eliminate the last cosmetic CLI rough edge
-  without reopening platform work during data runs. Direct `psql` through
-  `SUPABASE_DB_URL` is the stable query/write path and readiness passes.
-  Supabase CLI 2.109.1 may still exit nonzero after a successful command because
-  its PostHog shutdown times out; authenticated output or migration application
-  is returned first. Upgrade or suppress that telemetry defect when convenient.
-  Treat a genuine capability failure as platform repair, but do not confuse
-  this known post-success message with a database failure.
+- Supabase execution environment is ready. Routine typed writes now prefer
+  direct `psql` through `SUPABASE_DB_URL`; linked Supabase CLI remains a
+  fallback/admin path. If a genuine CLI admin capability fails, repair it as a
+  platform issue immediately, but do not route ordinary data work through CLI
+  just to rediscover telemetry or profile-state noise.
 
 - Durable source-image evidence in Supabase Storage: Phase 1 and the incidental
   app presentation are complete

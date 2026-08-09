@@ -20,7 +20,6 @@ from supabase_typed_rpc import (
     print_rpc_rows,
     psql_rows_or_raise,
     resolve_database_url,
-    run_supabase_db_url_query,
     run_linked_query,
     run_psql,
     sql_literal,
