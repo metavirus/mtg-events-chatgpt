@@ -27,6 +27,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 BLESSED_PYTHON = ROOT / ".venv" / "Scripts" / "python.exe"
+MAX_STEP_LOG_CHARS = 12000
 
 
 def reexec_with_blessed_runtime() -> None:
@@ -64,7 +65,15 @@ def run_step(label: str, command: list[str]) -> tuple[int, str, float]:
     output = "\n".join(part for part in (result.stdout, result.stderr) if part).strip()
     print(f"\n[{label}] {elapsed:.1f}s")
     if output:
-        print(output)
+        if len(output) <= MAX_STEP_LOG_CHARS:
+            print(output)
+        else:
+            print(output[:4000])
+            print(
+                f"\n[{label}] output truncated locally: "
+                f"{len(output):,} characters total; showing head and tail only.\n"
+            )
+            print(output[-8000:])
     if result.returncode != 0:
         print(f"[{label}] FAILED with exit code {result.returncode}")
     return result.returncode, output, elapsed
