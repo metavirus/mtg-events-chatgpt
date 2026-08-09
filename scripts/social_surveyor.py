@@ -50,6 +50,15 @@ MTG_TERMS = {
     "avatar",
     "strixhaven",
 }
+NON_MTG_GAME_TERMS = {
+    "lorcana",
+    "disney",
+    "pokemon",
+    "one piece",
+    "yugioh",
+    "riftbound",
+    "gundam",
+}
 EVENTISH_TERMS = {
     "today",
     "tomorrow",
@@ -202,6 +211,10 @@ def choose_artifact_candidate(probe: dict[str, Any]) -> tuple[int | None, str]:
     best_reason = "no media candidate"
     for index, candidate in enumerate(candidates):
         text = candidate_text(candidate)
+        if any(term in text for term in NON_MTG_GAME_TERMS) and not any(
+            term in text for term in ("magic", "mtg", "commander", "fnm", "standard", "modern", "pauper", "hobbit")
+        ):
+            continue
         mtg_score = sum(1 for term in MTG_TERMS if term in text)
         event_score = sum(1 for term in EVENTISH_TERMS if term in text)
         strong_event_score = sum(1 for term in STRONG_EVENT_TERMS if term in text)
@@ -419,7 +432,7 @@ def main(argv: list[str] | None = None) -> int:
         failures += 1 if surface_code else 0
 
         artifact_code = None
-        if artifact_index is not None and useful:
+        if surface_code == 0 and artifact_index is not None and useful:
             artifact_code = run_artifact_ingest(
                 source,
                 probe_path=probe_path,
