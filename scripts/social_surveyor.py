@@ -16,7 +16,9 @@ central event observation/promoter path when the facts are concrete enough.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import re
 import subprocess
 import sys
 import time
@@ -233,6 +235,43 @@ def candidate_text(candidate: dict[str, Any]) -> str:
     return " ".join(
         str(candidate.get(key) or "") for key in ("alt", "nearbyText", "text", "link")
     ).lower()
+
+
+def stable_probe_fingerprint(platform: str, source: SocialSource, probe: dict[str, Any]) -> str:
+    """Content-derived fingerprint for idempotent social checks."""
+
+    visible = probe.get("visibleSlice") or {}
+    classification = probe.get("classification") or {}
+    body = str(visible.get("bodyTextSample") or "")
+    body = re.sub(r"Scan the QR code.*?(?:Log In|Create new account|$)", "", body, flags=re.I | re.S)
+    body = re.sub(r"\b[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3}\b", "", body)
+    body = re.sub(r"\s+", " ", body).strip()[:2500]
+
+    links = []
+    for item in visible.get("candidateLinks") or []:
+        url = str(item.get("url") or "").split("?", 1)[0]
+        text = re.sub(r"\s+", " ", str(item.get("text") or "")).strip()
+        links.append({"url": url, "text": text})
+
+    media = []
+    for item in visible.get("mediaCandidates") or []:
+        src = str(item.get("src") or "").split("?", 1)[0]
+        link = str(item.get("link") or "").split("?", 1)[0]
+        alt = re.sub(r"\s+", " ", str(item.get("alt") or "")).strip()
+        nearby = re.sub(r"\s+", " ", str(item.get("nearbyText") or "")).strip()[:300]
+        media.append({"src": src, "link": link, "alt": alt, "nearby": nearby})
+
+    payload = {
+        "platform": platform,
+        "source_id": source.source_id,
+        "status": probe.get("surfaceStatus"),
+        "terms": classification,
+        "body": body,
+        "links": links[:12],
+        "media": media[:12],
+    }
+    digest = hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=True).encode("utf-8")).hexdigest()
+    return digest[:24]
 
 
 def choose_artifact_candidate(probe: dict[str, Any]) -> tuple[int | None, str]:
@@ -481,7 +520,7 @@ def main(argv: list[str] | None = None) -> int:
 
         artifact_index, artifact_reason = choose_artifact_candidate(probe)
         disposition, summary, useful, materiality = summarize_probe(probe, artifact_reason, platform=args.platform)
-        fingerprint = Path(probe_path).stem.replace(f"{args.platform}-", "")
+        fingerprint = stable_probe_fingerprint(args.platform, source, probe)
         surface_code = run_surface_record(
             source,
             platform=args.platform,
