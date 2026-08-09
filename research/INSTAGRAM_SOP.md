@@ -31,9 +31,12 @@ powershell -ExecutionPolicy Bypass -File scripts/setup_social_auth_profile.ps1 -
 
 The helper opens a dedicated local browser profile under `work/social-auth/`,
 lets the user complete login or checkpoints once, and records only a small
-manifest. It must not post, like, follow, message, scrape broadly, or commit
-session state. A `public_readable_auth_unclear` result means the surface can be
-used for a bounded public-read check, but it does not prove a durable logged-in
+manifest. It also saves an ignored `storage-state.json` beside the profile as
+a belt-and-suspenders restore point for cookies/local storage when a later
+Playwright persistent-context launch does not carry a session cookie forward.
+It must not post, like, follow, message, scrape broadly, or commit session
+state. A `public_readable_auth_unclear` result means the surface can be used
+for a bounded public-read check, but it does not prove a durable logged-in
 session. For Instagram, the helper should report
 `durabilityStatus: durable_session_likely` after a close/reopen probe before
 treating the profile as durably authenticated. If the profile still reports
@@ -47,11 +50,12 @@ After auth is healthy, use the bounded surface probe before post-level ingest:
 powershell -ExecutionPolicy Bypass -File scripts/probe_social_surface.ps1 -Platform instagram -ProfileUrl https://www.instagram.com/example/
 ```
 
-The probe writes an ignored preview under `work/social-probes/`. It should be
-used only to decide whether a small recent visible slice contains candidate MTG
-posts, graphics, schedule notices, cancellations, or source-routing changes.
-Do not promote profile chrome such as Instagram's own `Log In` / `Sign Up`
-text into operational event evidence.
+The probe restores the ignored `storage-state.json`, writes an ignored preview
+under `work/social-probes/`, and refreshes the storage-state file after a
+successful check. It should be used only to decide whether a small recent
+visible slice contains candidate MTG posts, graphics, schedule notices,
+cancellations, or source-routing changes. Do not promote profile chrome such
+as Instagram's own `Log In` / `Sign Up` text into operational event evidence.
 
 ## Pass types
 

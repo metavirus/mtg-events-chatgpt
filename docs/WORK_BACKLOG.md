@@ -142,17 +142,15 @@ Use it for:
   presentation, or broad backfill until real usage demonstrates need.
 
 - Instagram/Facebook assisted-session POC: login-gated Meta surfaces should use
-  the ignored `work/social-auth/` persistent-profile path before being declared
-  blocked. Collector Legion Instagram proved the profile can reach
-  `durable_session_likely` immediately after interactive login, but a later
-  automated probe lost the likely `sessionid` cookie and fell back to
-  `not_authenticated`. Next repair should focus on true cross-run durability:
-  save-login/checkpoint behavior, profile lock handling, and next-process probe
-  stability. Once auth is healthy, run the tiny personal-use loop: inspect a
-  bounded recent-post slice, ingest at most one or two MTG-relevant artifacts,
-  classify app relevance, and stop. Meta surfaces are hostile and
-  terms-restricted, so this is an assisted source-review path, not a broad
-  scraper.
+  the ignored `work/social-auth/` persistent profile plus the ignored
+  `storage-state.json` restore file before being declared blocked. The
+  storage-state shim is intentionally belt-and-suspenders: it preserves cookies
+  and local storage for the next probe when a Playwright persistent-context
+  relaunch drops a session cookie. Once auth is healthy, run the tiny
+  personal-use loop: inspect a bounded recent-post slice, ingest at most one or
+  two MTG-relevant artifacts, classify app relevance, and stop. Meta surfaces
+  are hostile and terms-restricted, so this is an assisted source-review path,
+  not a broad scraper.
 
 - Phase 2 workflow simplification proof is complete. Ordinary source/surface
   checks land through `record_entity_surface_check(...)` into

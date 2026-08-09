@@ -133,6 +133,22 @@ async function writeManifest(manifestPath, payload) {
   await fs.writeFile(manifestPath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 }
 
+async function readJsonIfExists(filePath) {
+  try {
+    return JSON.parse(await fs.readFile(filePath, 'utf8'));
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
+}
+
+async function saveStorageState(context, storageStatePath) {
+  const storageState = await context.storageState();
+  await fs.mkdir(path.dirname(storageStatePath), { recursive: true });
+  await fs.writeFile(storageStatePath, `${JSON.stringify(storageState, null, 2)}\n`, 'utf8');
+  return storageState;
+}
+
 function summarizeCookies(cookies, platform) {
   const relevantHost = platform === 'instagram' ? 'instagram.com' : 'facebook.com';
   const relevantCookies = cookies.filter((cookie) => cookie.domain.includes(relevantHost));
@@ -144,7 +160,7 @@ function summarizeCookies(cookies, platform) {
   };
 }
 
-async function launchAndProbe({ chromium, executablePath, profileDir, targetUrl, platform }) {
+async function launchAndProbe({ chromium, executablePath, profileDir, storageStatePath, targetUrl, platform }) {
   let context;
   try {
     context = await chromium.launchPersistentContext(profileDir, {
@@ -163,6 +179,10 @@ async function launchAndProbe({ chromium, executablePath, profileDir, targetUrl,
   }
 
   try {
+    const savedState = await readJsonIfExists(storageStatePath);
+    if (savedState?.cookies?.length) {
+      await context.addCookies(savedState.cookies);
+    }
     const page = context.pages()[0] || await context.newPage();
     await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
     await page.waitForTimeout(3000);
@@ -175,13 +195,14 @@ async function launchAndProbe({ chromium, executablePath, profileDir, targetUrl,
   }
 }
 
-async function closeAndReprobe({ context, chromium, executablePath, profileDir, targetUrl, platform }) {
+async function closeAndReprobe({ context, chromium, executablePath, profileDir, storageStatePath, targetUrl, platform }) {
   await context.close().catch(() => {});
   await new Promise((resolve) => setTimeout(resolve, 1500));
   return launchAndProbe({
     chromium,
     executablePath,
     profileDir,
+    storageStatePath,
     targetUrl,
     platform
   });
@@ -203,6 +224,7 @@ const workspaceRoot = path.resolve('work/social-auth', args.platform);
 const profileDir = path.join(workspaceRoot, 'profile');
 const logsDir = path.join(workspaceRoot, 'logs');
 const manifestPath = path.join(workspaceRoot, 'profile-manifest.json');
+const storageStatePath = path.join(workspaceRoot, 'storage-state.json');
 await fs.mkdir(profileDir, { recursive: true });
 await fs.mkdir(logsDir, { recursive: true });
 
@@ -214,6 +236,7 @@ let { context, classification, authEvidence } = await launchAndProbe({
   chromium,
   executablePath,
   profileDir,
+  storageStatePath,
   targetUrl,
   platform: args.platform
 });
@@ -231,11 +254,14 @@ if (!args.probeOnly && classification.status !== 'session_usable') {
   await rl.question('After login/checkpoint is complete and saved in the opened browser, press Enter to close/reopen and probe durability...');
   rl.close();
 
+  await saveStorageState(context, storageStatePath);
+
   ({ context, classification, authEvidence } = await closeAndReprobe({
     context,
     chromium,
     executablePath,
     profileDir,
+    storageStatePath,
     targetUrl,
     platform: args.platform
   }));
@@ -249,6 +275,7 @@ if (classification.status === 'session_usable') {
     chromium,
     executablePath,
     profileDir,
+    storageStatePath,
     targetUrl,
     platform: args.platform
   }));
@@ -267,6 +294,7 @@ const result = {
   launchedAt,
   checkedAt: new Date().toISOString(),
   profileDir,
+  storageStatePath,
   profileIgnoredByGit: true,
   purpose: [
     'personal assisted source review',

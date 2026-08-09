@@ -133,6 +133,36 @@ function classifyProbe(text, links) {
   };
 }
 
+async function readJsonIfExists(filePath) {
+  try {
+    return JSON.parse(await fs.readFile(filePath, 'utf8'));
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
+}
+
+async function restoreStorageStateIfPresent(context, storageStatePath) {
+  const savedState = await readJsonIfExists(storageStatePath);
+  if (savedState?.cookies?.length) {
+    await context.addCookies(savedState.cookies);
+  }
+  return {
+    storageStatePath,
+    restoredCookieCount: savedState?.cookies?.length || 0
+  };
+}
+
+async function saveStorageState(context, storageStatePath) {
+  const storageState = await context.storageState();
+  await fs.mkdir(path.dirname(storageStatePath), { recursive: true });
+  await fs.writeFile(storageStatePath, `${JSON.stringify(storageState, null, 2)}\n`, 'utf8');
+  return {
+    storageStatePath,
+    savedCookieCount: storageState.cookies?.length || 0
+  };
+}
+
 async function collectVisibleSlice(page, platform, maxLinks) {
   const bodyText = await page.locator('body').innerText({ timeout: 8000 }).catch(() => '');
   const anchors = await page.locator('a[href]').evaluateAll((elements) =>
@@ -161,7 +191,9 @@ async function collectVisibleSlice(page, platform, maxLinks) {
 const args = parseArgs(process.argv.slice(2));
 const { chromium } = resolvePlaywright();
 const root = process.cwd();
-const profileDir = path.resolve(root, 'work/social-auth', args.platform, 'profile');
+const authRoot = path.resolve(root, 'work/social-auth', args.platform);
+const profileDir = path.join(authRoot, 'profile');
+const storageStatePath = path.join(authRoot, 'storage-state.json');
 const outputPath = args.output
   ? path.resolve(root, args.output)
   : path.resolve(root, 'work/social-probes', `${args.platform}-${Date.now()}.json`);
@@ -184,6 +216,7 @@ try {
 }
 
 try {
+  const restoredStorageState = await restoreStorageStateIfPresent(context, storageStatePath);
   const page = context.pages()[0] || await context.newPage();
   await page.goto(args.url, { waitUntil: 'domcontentloaded', timeout: 60000 });
   await page.waitForTimeout(3000);
@@ -204,6 +237,8 @@ try {
     targetUrl: args.url,
     checkedAt: new Date().toISOString(),
     profileDir,
+    storageStatePath,
+    restoredStorageState,
     bounds: {
       maxLinks: args.maxLinks,
       maxScrolls: args.maxScrolls
@@ -221,9 +256,12 @@ try {
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, `${JSON.stringify(result, null, 2)}\n`, 'utf8');
+  const savedStorageState = await saveStorageState(context, storageStatePath);
   console.log(JSON.stringify({
     status: 'ok',
     outputPath,
+    restoredCookieCount: restoredStorageState.restoredCookieCount,
+    savedCookieCount: savedStorageState.savedCookieCount,
     surfaceStatus,
     disposition: classification.disposition,
     candidateLinks: visibleSlice.candidateLinks.length,
