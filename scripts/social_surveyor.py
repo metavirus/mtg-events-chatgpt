@@ -133,11 +133,32 @@ def run_command(command: list[str], *, timeout: int = 120) -> subprocess.Complet
     )
 
 
-def query_sources(database_url: str, *, platform: str, limit: int, include_ids: list[str]) -> list[SocialSource]:
+def query_sources(
+    database_url: str,
+    *,
+    platform: str,
+    limit: int,
+    include_ids: list[str],
+    include_suppressed: bool,
+) -> list[SocialSource]:
     id_filter = ""
     if include_ids:
         quoted = ",".join("'" + value.replace("'", "''") + "'" for value in include_ids)
         id_filter = f"and v.id in ({quoted})"
+    eligibility_filter = ""
+    if not include_suppressed:
+        eligibility_filter = """
+  and (
+    ess.entity_id is null
+    or (
+      ess.terminal_outcome is null
+      and (
+        ess.next_eligible_check_at is null
+        or ess.next_eligible_check_at <= now()
+      )
+    )
+  )
+"""
     sql = f"""
 select distinct on (v.id)
   v.id as venue_id,
@@ -153,16 +174,7 @@ left join public.entity_surface_selection_state ess
   and ess.surface_type = '{platform}'
 where lower(coalesce(s.url,'')) like '%instagram%'
   and coalesce(s.url,'') <> ''
-  and (
-    ess.entity_id is null
-    or (
-      ess.terminal_outcome is null
-      and (
-        ess.next_eligible_check_at is null
-        or ess.next_eligible_check_at <= now()
-      )
-    )
-  )
+  {eligibility_filter}
   {id_filter}
 order by v.id, coalesce(s.last_checked, '1900-01-01'::timestamptz) asc, s.id
 limit {int(limit)};
@@ -395,6 +407,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-scrolls", type=int, default=2)
     parser.add_argument("--live", action="store_true", help="Write surface checks/artifacts. Default is dry-run.")
     parser.add_argument(
+        "--include-suppressed",
+        action="store_true",
+        help="Allow an explicit pilot to inspect sources that are not currently due.",
+    )
+    parser.add_argument(
         "--reopen-trigger",
         choices=["access_changed", "new_lead", "user_request"],
         help="Use only for an explicit bounded recheck of a currently suppressed surface.",
@@ -410,7 +427,14 @@ def main(argv: list[str] | None = None) -> int:
     if not database_url:
         raise SystemExit("SUPABASE_DB_URL or .codex-secrets/supabase-db-url.txt is required")
 
-    sources = query_sources(database_url, platform=args.platform, limit=args.limit, include_ids=args.venue_id)
+    include_suppressed = bool(args.include_suppressed or args.venue_id or args.reopen_trigger)
+    sources = query_sources(
+        database_url,
+        platform=args.platform,
+        limit=args.limit,
+        include_ids=args.venue_id,
+        include_suppressed=include_suppressed,
+    )
     if not sources:
         raise SystemExit(f"No {args.platform} sources matched the requested scope")
 
