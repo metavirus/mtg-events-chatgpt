@@ -7,12 +7,13 @@ This is the practical daily-lane wrapper for Instagram/Facebook-style surfaces:
 2. probe each profile sequentially with the persisted auth profile;
 3. record a surface disposition;
 4. optionally ingest one MTG-looking media artifact as evidence.
-5. create an app-visible Signal for strong social findings.
+5. promote clear social event artifacts through the canonical event promoter;
+6. create app-visible Signals only for urgent operational findings.
 
 It intentionally does not create proposals, exports, run notes, or ledger edits.
-It also does not fabricate Events from fuzzy social media text. Strong social
-findings become Signals; structured Events still come from the canonical event
-promoter paths when date/time/title facts are concrete enough.
+It does not fabricate Events from fuzzy social media text. A social source must
+show concrete date + time + MTG event facts before it enters the canonical event
+promoter. Vague profile/chrome text is retained only as surface/artifact state.
 """
 
 from __future__ import annotations
@@ -25,6 +26,7 @@ import subprocess
 import sys
 import time
 from dataclasses import dataclass
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -37,6 +39,7 @@ BLESSED_PYTHON = ROOT / ".venv" / "Scripts" / "python.exe"
 PROBE_SCRIPT = ROOT / "scripts" / "social_surface_probe.mjs"
 SURFACE_SCRIPT = ROOT / "scripts" / "record_surface_check.py"
 ARTIFACT_SCRIPT = ROOT / "scripts" / "ingest_social_probe_artifact.py"
+EVENT_SCRIPT = ROOT / "scripts" / "record_official_event.py"
 
 MTG_TERMS = {
     "magic",
@@ -115,6 +118,44 @@ PROMO_SIGNAL_TERMS = {
     "free",
     "commander party",
 }
+MONTHS = {
+    "jan": 1,
+    "january": 1,
+    "feb": 2,
+    "february": 2,
+    "mar": 3,
+    "march": 3,
+    "apr": 4,
+    "april": 4,
+    "may": 5,
+    "jun": 6,
+    "june": 6,
+    "jul": 7,
+    "july": 7,
+    "aug": 8,
+    "august": 8,
+    "sep": 9,
+    "sept": 9,
+    "september": 9,
+    "oct": 10,
+    "october": 10,
+    "nov": 11,
+    "november": 11,
+    "dec": 12,
+    "december": 12,
+}
+DATE_WORD_RE = re.compile(
+    r"\b(today|tomorrow|tonight|mon(?:day)?|tue(?:sday)?|wed(?:nesday)?|thu(?:rsday)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)\b",
+    re.IGNORECASE,
+)
+MONTH_DAY_RE = re.compile(
+    r"\b("
+    + "|".join(sorted(MONTHS, key=len, reverse=True))
+    + r")\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,\s*(20\d{2}))?\b",
+    re.IGNORECASE,
+)
+SLASH_DATE_RE = re.compile(r"\b(\d{1,2})/(\d{1,2})(?:/(20\d{2}|\d{2}))?\b")
+TIME_RE = re.compile(r"\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -261,6 +302,125 @@ def candidate_text(candidate: dict[str, Any]) -> str:
     ).lower()
 
 
+def candidate_text_raw(candidate: dict[str, Any]) -> str:
+    return " ".join(
+        str(candidate.get(key) or "") for key in ("alt", "nearbyText", "text", "link")
+    ).strip()
+
+
+def parse_time_value(text: str) -> str | None:
+    match = TIME_RE.search(text)
+    if not match:
+        return None
+    hour = int(match.group(1))
+    minute = int(match.group(2) or "0")
+    meridiem = match.group(3).lower()
+    if meridiem == "pm" and hour != 12:
+        hour += 12
+    if meridiem == "am" and hour == 12:
+        hour = 0
+    if hour > 23 or minute > 59:
+        return None
+    return f"{hour:02d}:{minute:02d}:00"
+
+
+def resolve_social_date(text: str, *, today: date | None = None) -> str | None:
+    today = today or date.today()
+    lowered = text.lower()
+    if re.search(r"\btomorrow\b", lowered):
+        return (today + timedelta(days=1)).isoformat()
+    if re.search(r"\btoday|tonight\b", lowered):
+        return today.isoformat()
+
+    for match in MONTH_DAY_RE.finditer(text):
+        month = MONTHS[match.group(1).lower().rstrip(".")]
+        day = int(match.group(2))
+        year = int(match.group(3)) if match.group(3) else today.year
+        try:
+            candidate = date(year, month, day)
+        except ValueError:
+            continue
+        if candidate < today - timedelta(days=2) and not match.group(3):
+            candidate = date(today.year + 1, month, day)
+        if candidate >= today - timedelta(days=2):
+            return candidate.isoformat()
+
+    for match in SLASH_DATE_RE.finditer(text):
+        month = int(match.group(1))
+        day = int(match.group(2))
+        year_text = match.group(3)
+        year = today.year
+        if year_text:
+            year = 2000 + int(year_text) if len(year_text) == 2 else int(year_text)
+        try:
+            candidate = date(year, month, day)
+        except ValueError:
+            continue
+        if candidate < today - timedelta(days=2) and not year_text:
+            candidate = date(today.year + 1, month, day)
+        if candidate >= today - timedelta(days=2):
+            return candidate.isoformat()
+    return None
+
+
+def has_actionable_timing(text: str) -> bool:
+    return bool(resolve_social_date(text) and parse_time_value(text))
+
+
+def event_format_from_text(text_lc: str) -> tuple[str, str, str]:
+    if "prerelease" in text_lc:
+        return "Prerelease", "Prerelease", "Prerelease"
+    if "draft" in text_lc:
+        return "Draft", "Draft", "Draft"
+    if "commander" in text_lc or "edh" in text_lc:
+        return "Commander", "Commander", "Commander"
+    if "standard" in text_lc:
+        return "Standard", "Standard", "Standard"
+    if "modern" in text_lc:
+        return "Modern", "Modern", "Modern"
+    if "pauper" in text_lc:
+        return "Pauper", "Pauper", "Pauper"
+    return "MTG", "MTG", "Magic event"
+
+
+def structured_social_event(source: SocialSource, *, platform: str, probe: dict[str, Any], artifact_index: int | None) -> dict[str, str] | None:
+    if artifact_index is None:
+        return None
+    media = probe.get("visibleSlice", {}).get("mediaCandidates") or []
+    if artifact_index < 0 or artifact_index >= len(media):
+        return None
+    raw = candidate_text_raw(media[artifact_index])
+    text_lc = raw.lower()
+    if not any(term in text_lc for term in STRONG_EVENT_TERMS):
+        return None
+    occurrence_date = resolve_social_date(raw)
+    start_time = parse_time_value(raw)
+    if not occurrence_date or not start_time:
+        return None
+    title, fmt, event_type = event_format_from_text(text_lc)
+    if title == "MTG" and not any(term in text_lc for term in ("magic", "mtg")):
+        return None
+    digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:12]
+    source_url = media[artifact_index].get("link") or source.url
+    return {
+        "idempotency_key": f"social-{platform}-{source.venue_id}-{occurrence_date}-{start_time[:5]}-{digest}",
+        "venue_id": source.venue_id,
+        "occurrence_id": f"social-{platform}-{source.source_id}-{occurrence_date}-{start_time[:5]}-{digest}",
+        "occurrence_date": occurrence_date,
+        "start_time": start_time,
+        "source_id": source.source_id,
+        "source_label": f"{source.venue_name} {platform.title()}",
+        "source_url": source_url,
+        "source_type": platform,
+        "title": title,
+        "format": fmt,
+        "event_type": event_type,
+        "summary": f"{source.venue_name} {platform.title()} post lists {title} on {occurrence_date} at {start_time[:5]}.",
+        "details": raw[:900],
+        "attention_summary": f"{source.venue_name} {platform.title()} lists {title} on {occurrence_date} at {start_time[:5]}.",
+    }
+
+
 def stable_probe_fingerprint(platform: str, source: SocialSource, probe: dict[str, Any]) -> str:
     """Content-derived fingerprint for idempotent social checks."""
 
@@ -362,31 +522,21 @@ def signal_from_probe(
         return None
 
     has_urgent_ops = bool(matched_ops) or any(term in text_lc for term in URGENT_OPERATIONAL_TERMS)
-    has_event = any(term in text_lc for term in STRONG_EVENT_TERMS)
-    has_promo = any(term in text_lc for term in PROMO_SIGNAL_TERMS)
-    if not (has_urgent_ops or has_event or has_promo):
+    if not has_urgent_ops:
+        return None
+    if not (
+        any(term in text_lc for term in ("closed", "cancel", "cancelled", "canceled", "no events", "hours"))
+        and (DATE_WORD_RE.search(text_lc) or "hours" in text_lc or "no events" in text_lc)
+    ):
         return None
 
     platform_label = platform.title()
     excerpt = text[:420].strip()
-    if has_urgent_ops:
-        category = "operational"
-        priority = "high"
-        promotion_target = "personal_reminder"
-        summary = f"{source.venue_name} may have a {platform_label} operational update."
-        action = "Open the source before planning around this store."
-    elif has_promo:
-        category = "event_opportunity"
-        priority = "normal"
-        promotion_target = "update"
-        summary = f"{source.venue_name} may have a {platform_label} promo or event opportunity."
-        action = "Open the source/artifact and promote if the date, time, and event title are clear."
-    else:
-        category = "event_opportunity"
-        priority = "normal" if materiality == "low" else "high"
-        promotion_target = "event_proposal"
-        summary = f"{source.venue_name} has MTG event-like {platform_label} activity."
-        action = "Open the source/artifact and promote if the date, time, and event title are clear."
+    category = "operational"
+    priority = "high"
+    promotion_target = "personal_reminder"
+    summary = f"{source.venue_name} has a {platform_label} operational update."
+    action = "Open the source before planning around this store."
 
     details = f"{excerpt}\n\nDetected by bounded {platform} survey. Source was not treated as secondary to WPN."
     signal_key = f"social:{platform}:{source.source_id}:{category}"
@@ -401,6 +551,66 @@ def signal_from_probe(
         "suggested_action": action,
         "promotion_target": promotion_target,
     }
+
+
+def run_social_event_promotion(
+    event: dict[str, str],
+    *,
+    live: bool,
+) -> tuple[int, str]:
+    command = [
+        blessed_python(),
+        str(EVENT_SCRIPT),
+        "official-event",
+        "--idempotency-key",
+        event["idempotency_key"],
+        "--venue-id",
+        event["venue_id"],
+        "--series-id",
+        "social-observation",
+        "--occurrence-id",
+        event["occurrence_id"],
+        "--occurrence-date",
+        event["occurrence_date"],
+        "--start-time",
+        event["start_time"],
+        "--source-id",
+        event["source_id"],
+        "--source-label",
+        event["source_label"],
+        "--source-url",
+        event["source_url"],
+        "--source-type",
+        event["source_type"],
+        "--title",
+        event["title"],
+        "--format",
+        event["format"],
+        "--event-type",
+        event["event_type"],
+        "--summary",
+        event["summary"],
+        "--details",
+        event["details"],
+        "--attention-category",
+        "event_opportunity",
+        "--attention-priority",
+        "normal",
+        "--attention-summary",
+        event["attention_summary"],
+        "--suggested-action",
+        "Review the source post if you need extra context; the event was promoted from a structured social finding.",
+    ]
+    if live:
+        command.extend(["--live", "--execute"])
+    result = run_command(command, timeout=180)
+    if result.stdout:
+        print(result.stdout.strip())
+    if result.stderr:
+        print(result.stderr.strip(), file=sys.stderr)
+    if result.returncode != 0:
+        return result.returncode, "failed"
+    return 0, "promoted" if live else "dry_run"
 
 
 def run_signal_record(
@@ -709,6 +919,20 @@ def main(argv: list[str] | None = None) -> int:
             )
             failures += 1 if artifact_code else 0
 
+        event_status = "skipped"
+        social_event = structured_social_event(
+            source,
+            platform=args.platform,
+            probe=probe,
+            artifact_index=artifact_index,
+        )
+        if surface_code == 0 and social_event is not None:
+            event_code, event_status = run_social_event_promotion(
+                social_event,
+                live=args.live,
+            )
+            failures += 1 if event_code else 0
+
         signal_status = "skipped"
         signal = signal_from_probe(
             source,
@@ -739,6 +963,7 @@ def main(argv: list[str] | None = None) -> int:
                 "matched_operational_terms": classification.get("matchedOperationalTerms") or [],
                 "artifact_index": artifact_index,
                 "artifact_ingest": "skipped" if artifact_code is None else ("ok" if artifact_code == 0 else "failed"),
+                "event_promotion": event_status,
                 "signal": signal_status,
             }
         )

@@ -23,9 +23,10 @@ Use it for:
   that run bounded profile probes when saved session-state secrets are present:
   `SOCIAL_INSTAGRAM_STORAGE_STATE_JSON` and
   `SOCIAL_FACEBOOK_STORAGE_STATE_JSON`. These lanes record surface checks,
-  ingest MTG-looking source artifacts, and create sparse Signals for strong
-  MTG/event/operational findings. They remain conservative about canonical
-  Events until a social adapter emits exact structured event facts.
+  ingest MTG-looking source artifacts, promote clear date/time/title social
+  event facts through the shared event promoter, and create sparse Signals only
+  for urgent operational findings. Fuzzy profile/chrome/social text must remain
+  quiet evidence, not a "may have event" Signal.
   Keep Discord bracketed from the cloud job for now.
 
 - WPN attention policy: WPN promotion now has a sparse adapter-owned attention
