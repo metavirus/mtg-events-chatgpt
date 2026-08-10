@@ -78,11 +78,14 @@ frontier checkpoints are preserved in
   Instagram/Facebook social lanes. Those lanes use saved storage-state secrets
   (`SOCIAL_INSTAGRAM_STORAGE_STATE_JSON`,
   `SOCIAL_FACEBOOK_STORAGE_STATE_JSON`) to do bounded profile checks, record
-  surface state, and ingest MTG-looking source artifacts. Social lanes are
-  fail-soft and conservative: they do not fabricate canonical events from thin
-  social text; exact event promotion belongs in the shared source-neutral
-  promoter once a social adapter can emit structured event facts. Discord is
-  explicitly bracketed out of this lane. The first GitHub Actions WPN proof
+  surface state, ingest MTG-looking source artifacts, and create sparse
+  app-visible Signals for strong MTG/event/operational findings such as
+  closures, cancellations, promos, prerelease graphics, or other event-like
+  social posts. Social lanes are fail-soft and conservative: they do not
+  fabricate canonical events from thin social text; exact event promotion
+  belongs in the shared source-neutral promoter once a social adapter can emit
+  structured event facts. Discord is explicitly bracketed out of this lane.
+  The first GitHub Actions WPN proof
   completed successfully on 2026-08-09 after the `SUPABASE_DB_URL` repository
   secret was installed and the parser/log-cap issues were fixed.
 - WPN adapter contract v4 is now live in code. It adds conservative

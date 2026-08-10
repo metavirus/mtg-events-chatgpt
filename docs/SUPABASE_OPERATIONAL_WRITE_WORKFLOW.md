@@ -360,14 +360,17 @@ The action runs `scripts/daily_surveyor.py`, which:
 - optionally promotes eligible WPN observations through the shared promoter;
 - runs the event integrity audit;
 - if social is enabled and session-state secrets exist, probes bounded
-  Instagram/Facebook surfaces, records surface dispositions, and ingests
-  MTG-looking source artifacts;
+  Instagram/Facebook surfaces, records surface dispositions, ingests
+  MTG-looking source artifacts, and creates sparse Signals for strong
+  MTG/event/operational findings;
 - does not commit generated WPN JSON or create per-run repo artifacts.
 
 Social lanes are intentionally fail-soft and conservative. Missing social
-session state should skip that platform, not fail WPN. Thin or ambiguous social
-content should stay as surface/artifact evidence until a source adapter can
-emit exact structured event facts for the shared promoter.
+session state should skip that platform, not fail WPN. Strong social findings
+may become Signals immediately so they are visible in the app. Thin or ambiguous
+social content should stay as surface/artifact evidence, and canonical event
+creation should wait until a source adapter can emit exact structured event
+facts for the shared promoter.
 
 For local debugging only, use the wrapper before hand-driving WPN refresh,
 staging, and audit commands separately:

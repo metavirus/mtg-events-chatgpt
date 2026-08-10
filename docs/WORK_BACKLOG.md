@@ -22,9 +22,10 @@ Use it for:
   promoter. The same workflow now has optional Instagram/Facebook social lanes
   that run bounded profile probes when saved session-state secrets are present:
   `SOCIAL_INSTAGRAM_STORAGE_STATE_JSON` and
-  `SOCIAL_FACEBOOK_STORAGE_STATE_JSON`. These lanes record surface checks and
-  ingest MTG-looking source artifacts, but remain conservative about canonical
-  Events/Signals until a social adapter emits exact structured event facts.
+  `SOCIAL_FACEBOOK_STORAGE_STATE_JSON`. These lanes record surface checks,
+  ingest MTG-looking source artifacts, and create sparse Signals for strong
+  MTG/event/operational findings. They remain conservative about canonical
+  Events until a social adapter emits exact structured event facts.
   Keep Discord bracketed from the cloud job for now.
 
 - WPN attention policy: WPN promotion now has a sparse adapter-owned attention

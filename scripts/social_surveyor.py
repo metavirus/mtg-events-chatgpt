@@ -7,10 +7,12 @@ This is the practical daily-lane wrapper for Instagram/Facebook-style surfaces:
 2. probe each profile sequentially with the persisted auth profile;
 3. record a surface disposition;
 4. optionally ingest one MTG-looking media artifact as evidence.
+5. create an app-visible Signal for strong social findings.
 
-It intentionally does not create Events, Signals, proposals, exports, run notes,
-or ledger edits. Event-like artifacts should be promoted later through the
-central event observation/promoter path when the facts are concrete enough.
+It intentionally does not create proposals, exports, run notes, or ledger edits.
+It also does not fabricate Events from fuzzy social media text. Strong social
+findings become Signals; structured Events still come from the canonical event
+promoter paths when date/time/title facts are concrete enough.
 """
 
 from __future__ import annotations
@@ -27,7 +29,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-from supabase_typed_rpc import psql_rows_or_raise, resolve_database_url, run_psql
+from supabase_typed_rpc import psql_rows_or_raise, resolve_database_url, run_psql, sql_literal
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -90,6 +92,28 @@ STRONG_EVENT_TERMS = {
     "entry",
     "players",
     "capacity",
+}
+URGENT_OPERATIONAL_TERMS = {
+    "closed",
+    "closure",
+    "cancel",
+    "cancelled",
+    "canceled",
+    "postponed",
+    "delayed",
+    "no events",
+    "hours",
+    "holiday hours",
+    "tomorrow's hours",
+}
+PROMO_SIGNAL_TERMS = {
+    "raffle",
+    "giveaway",
+    "promo",
+    "promotion",
+    "prize",
+    "free",
+    "commander party",
 }
 
 
@@ -303,6 +327,142 @@ def choose_artifact_candidate(probe: dict[str, Any]) -> tuple[int | None, str]:
     if best_score <= 0:
         return None, best_reason
     return best_index, best_reason
+
+
+def compact_probe_text(probe: dict[str, Any], artifact_index: int | None) -> str:
+    visible = probe.get("visibleSlice") or {}
+    pieces: list[str] = [str(visible.get("bodyTextSample") or "")]
+    links = visible.get("candidateLinks") or []
+    for item in links[:6]:
+        pieces.append(str(item.get("text") or ""))
+    media = visible.get("mediaCandidates") or []
+    if artifact_index is not None and 0 <= artifact_index < len(media):
+        item = media[artifact_index]
+        pieces.append(str(item.get("alt") or ""))
+        pieces.append(str(item.get("nearbyText") or ""))
+    return re.sub(r"\s+", " ", " ".join(pieces)).strip()
+
+
+def signal_from_probe(
+    source: SocialSource,
+    *,
+    platform: str,
+    probe: dict[str, Any],
+    artifact_index: int | None,
+    fingerprint: str,
+    materiality: str,
+) -> dict[str, str] | None:
+    classification = probe.get("classification") or {}
+    matched_mtg = set(classification.get("matchedMtgTerms") or [])
+    matched_ops = set(classification.get("matchedOperationalTerms") or [])
+    text = compact_probe_text(probe, artifact_index)
+    text_lc = text.lower()
+    has_mtg = bool(matched_mtg) or any(term in text_lc for term in MTG_TERMS)
+    if not has_mtg:
+        return None
+
+    has_urgent_ops = bool(matched_ops) or any(term in text_lc for term in URGENT_OPERATIONAL_TERMS)
+    has_event = any(term in text_lc for term in STRONG_EVENT_TERMS)
+    has_promo = any(term in text_lc for term in PROMO_SIGNAL_TERMS)
+    if not (has_urgent_ops or has_event or has_promo):
+        return None
+
+    platform_label = platform.title()
+    excerpt = text[:420].strip()
+    if has_urgent_ops:
+        category = "operational"
+        priority = "high"
+        promotion_target = "personal_reminder"
+        summary = f"{source.venue_name} may have a {platform_label} operational update."
+        action = "Open the source before planning around this store."
+    elif has_promo:
+        category = "event_opportunity"
+        priority = "normal"
+        promotion_target = "update"
+        summary = f"{source.venue_name} may have a {platform_label} promo or event opportunity."
+        action = "Open the source/artifact and promote if the date, time, and event title are clear."
+    else:
+        category = "event_opportunity"
+        priority = "normal" if materiality == "low" else "high"
+        promotion_target = "event_proposal"
+        summary = f"{source.venue_name} has MTG event-like {platform_label} activity."
+        action = "Open the source/artifact and promote if the date, time, and event title are clear."
+
+    details = f"{excerpt}\n\nDetected by bounded {platform} survey. Source was not treated as secondary to WPN."
+    return {
+        "id": f"social:{platform}:{source.source_id}:{fingerprint}",
+        "dedupe_key": f"social:{platform}:{source.source_id}:{fingerprint}:signal",
+        "category": category,
+        "priority": priority,
+        "summary": summary,
+        "details": details[:1800],
+        "confidence": "medium" if materiality != "low" else "low",
+        "suggested_action": action,
+        "promotion_target": promotion_target,
+    }
+
+
+def run_signal_record(
+    database_url: str,
+    source: SocialSource,
+    signal: dict[str, str],
+    *,
+    live: bool,
+) -> tuple[int, str]:
+    sql = f"""
+insert into public.signals (
+  id, category, priority, status, source_id, captured_at, observed_at,
+  related_entity_type, related_entity_id, summary, details, evidence_url,
+  confidence, suggested_action, promotion_target, dedupe_key
+) values (
+  {sql_literal(signal['id'])},
+  {sql_literal(signal['category'])},
+  {sql_literal(signal['priority'])},
+  'new',
+  {sql_literal(source.source_id)},
+  timezone('utc', now()),
+  timezone('utc', now()),
+  'venue',
+  {sql_literal(source.venue_id)},
+  {sql_literal(signal['summary'])},
+  {sql_literal(signal['details'])},
+  {sql_literal(source.url)},
+  {sql_literal(signal['confidence'])},
+  {sql_literal(signal['suggested_action'])},
+  {sql_literal(signal['promotion_target'])},
+  {sql_literal(signal['dedupe_key'])}
+)
+on conflict (dedupe_key) where dedupe_key is not null do update
+set updated_at = timezone('utc', now()),
+    source_id = excluded.source_id,
+    evidence_url = excluded.evidence_url,
+    details = excluded.details,
+    suggested_action = excluded.suggested_action
+returning id, category, priority, status;
+"""
+    if not live:
+        print(
+            json.dumps(
+                {
+                    "signal": {
+                        "dryRun": True,
+                        "id": signal["id"],
+                        "category": signal["category"],
+                        "priority": signal["priority"],
+                        "summary": signal["summary"],
+                    }
+                },
+                indent=2,
+            )
+        )
+        return 0, "dry_run"
+    result = run_psql(sql, database_url)
+    if result.returncode != 0:
+        print(result.stderr.strip(), file=sys.stderr)
+        return result.returncode, "failed"
+    rows = psql_rows_or_raise(result)
+    print(json.dumps({"signal": rows[0] if rows else {"status": "unknown"}}, indent=2))
+    return 0, "ok"
 
 
 def summarize_probe(probe: dict[str, Any], artifact_reason: str, *, platform: str) -> tuple[str, str, bool, str]:
@@ -548,6 +708,24 @@ def main(argv: list[str] | None = None) -> int:
             )
             failures += 1 if artifact_code else 0
 
+        signal_status = "skipped"
+        signal = signal_from_probe(
+            source,
+            platform=args.platform,
+            probe=probe,
+            artifact_index=artifact_index,
+            fingerprint=fingerprint,
+            materiality=materiality,
+        )
+        if surface_code == 0 and signal is not None:
+            signal_code, signal_status = run_signal_record(
+                database_url,
+                source,
+                signal,
+                live=args.live,
+            )
+            failures += 1 if signal_code else 0
+
         classification = probe.get("classification") or {}
         results.append(
             {
@@ -560,6 +738,7 @@ def main(argv: list[str] | None = None) -> int:
                 "matched_operational_terms": classification.get("matchedOperationalTerms") or [],
                 "artifact_index": artifact_index,
                 "artifact_ingest": "skipped" if artifact_code is None else ("ok" if artifact_code == 0 else "failed"),
+                "signal": signal_status,
             }
         )
 
