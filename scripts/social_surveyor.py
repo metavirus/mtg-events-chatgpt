@@ -389,9 +389,10 @@ def signal_from_probe(
         action = "Open the source/artifact and promote if the date, time, and event title are clear."
 
     details = f"{excerpt}\n\nDetected by bounded {platform} survey. Source was not treated as secondary to WPN."
+    signal_key = f"social:{platform}:{source.source_id}:{category}"
     return {
-        "id": f"social:{platform}:{source.source_id}:{fingerprint}",
-        "dedupe_key": f"social:{platform}:{source.source_id}:{fingerprint}:signal",
+        "id": signal_key,
+        "dedupe_key": signal_key,
         "category": category,
         "priority": priority,
         "summary": summary,
