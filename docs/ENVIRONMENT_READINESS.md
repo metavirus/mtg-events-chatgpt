@@ -105,24 +105,28 @@ Do not run project scripts through an arbitrary global `python`, `python3`, or
 
 ### WPN snapshot
 
-- Canonical routine location: `output/wizards/`
+- Canonical routine crawler handoff: `work/wpn-cache/latest/` (git ignored).
 - Canonical operational rich cache: `public.wpn_snapshot_cache` in Supabase.
-- Metadata/freshness source: `output/wizards/metadata.json` → `retrievedAt`
+- Local handoff metadata source, when present:
+  `work/wpn-cache/latest/metadata.json` → `retrievedAt`.
 - Reuse: use the existing snapshot when it is under 24 hours old and its radius
   covers the stores in scope.
 - Automatic refresh: the readiness gate runs `scripts/refresh_wpn_cache.py`
-  whenever the routine snapshot is at least 24 hours old. The command fetches,
-  atomically upserts the Supabase cache, verifies counts/fingerprint, and stops.
-  It never flushes and rebuilds canonical event tables. A failure fails the
-  readiness gate rather than silently using stale data.
+  whenever the routine handoff is missing or stale. The command fetches into
+  ignored `work/`, atomically upserts the Supabase cache, verifies
+  counts/fingerprint, and stops. It never flushes and rebuilds canonical event
+  tables, and it should not dirty tracked JSON. A failure fails the readiness
+  gate rather than silently using stale data.
 - Enriched cache: migration `20260801170000_enrich_wpn_ingest_cache.sql` is
   deployed. The refresh writes fingerprints, observation state, field
   inventory, delta summaries, and exceptional findings through the same
   bounded upsert. `--dry-run` remains available for no-write inspection.
 - Routine radius: 25 miles.
-- Wider-radius fallback: create a clearly named separate directory such as
-  `output/wizards-radius30-YYYY-MM-DD/`; do not replace the routine 25-mile
-  snapshot or treat either snapshot as canonical app data.
+- Recovery/debug snapshot: tracked `output/wizards/` is historical fallback
+  material only; refresh it only with an explicit recovery/debug task.
+- Wider-radius fallback: create a clearly named separate ignored work directory
+  such as `work/wpn-cache/radius30-YYYY-MM-DD/`; do not replace the routine
+  25-mile handoff or treat any local snapshot as canonical app data.
 
 ### Authoritative schema inspection
 

@@ -676,8 +676,14 @@ Still deferred:
 
 ## Wizards snapshot artifacts
 
-Supabase is the operational WPN cache. The current crawler also refreshes the
-tracked `output/wizards` recovery/debug snapshot; checkpoint that bounded source
-snapshot when the refresh task intentionally changes it. Do not treat those
-files as canonical app data or create additional per-run notes, exports, or SQL
-artifacts around the routine cache write.
+Supabase is the operational WPN cache. Routine WPN refreshes use the ignored
+local crawler handoff `work/wpn-cache/latest`, then upsert the enriched result
+into Supabase. They should not dirty tracked JSON or produce a Git checkpoint
+unless code, docs, schema, or app behavior changed.
+
+The tracked `output/wizards` directory is historical/recovery/debug material
+only. Refresh it only through an explicit recovery/debug task, using
+`scripts/refresh_wpn_cache.py --tracked-recovery-snapshot`, and checkpoint that
+bounded source snapshot only when the task intentionally calls for it. Do not
+treat those files as canonical app data or create additional per-run notes,
+exports, or SQL artifacts around the routine cache write.

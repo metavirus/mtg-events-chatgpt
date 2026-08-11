@@ -95,9 +95,13 @@ Install the crawler dependencies:
     python -m venv .venv
     .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 
-Refresh the public Wizards snapshot and its rich Supabase cache:
+Refresh the public Wizards feed and its rich Supabase cache:
 
     .\.venv\Scripts\python.exe scripts/refresh_wpn_cache.py
+
+Routine refreshes use the ignored crawler handoff directory
+`work/wpn-cache/latest`, then upsert the enriched result into Supabase.
+They should not dirty tracked JSON files.
 
 The ordinary daily surveyor is now cloud-owned by
 `.github/workflows/daily-surveyor.yml`. It runs the WPN cache refresh,
@@ -107,12 +111,12 @@ Instagram/Facebook surface probes when the corresponding saved session-state
 secrets are present. It does not require the user's desktop or Codex session to
 be open, and it does not commit generated WPN JSON during routine runs.
 
-The crawler stores:
+The ignored crawler handoff stores:
 
-- `output/wizards/metadata.json`: retrieval settings and counts
-- `output/wizards/events-all.json`: every returned Magic event
-- `output/wizards/events-commander.json`: heuristic Commander/EDH/cEDH candidates
-- `output/wizards/organizations.json`: deduplicated Wizards organizations/stores
+- `work/wpn-cache/latest/metadata.json`: retrieval settings and counts
+- `work/wpn-cache/latest/events-all.json`: every returned Magic event
+- `work/wpn-cache/latest/events-commander.json`: heuristic Commander/EDH/cEDH candidates
+- `work/wpn-cache/latest/organizations.json`: deduplicated Wizards organizations/stores
 
 The enriched ingest path also derives direct Wizards event/store links, local
 date/time, normalized fee fields, stable event/content/organization
@@ -136,7 +140,9 @@ being promoted into Supabase canonical research tables.
 At session start, if the WPN cache is stale, prefer checking the cloud daily
 surveyor state or manually dispatching the GitHub Action instead of doing a
 desktop-local refresh. The Supabase row is the operational rich cache; the
-tracked `output/wizards` files remain a recovery/debug source snapshot only.
+tracked `output/wizards` files are historical/recovery/debug source snapshots
+only. Use `scripts/refresh_wpn_cache.py --tracked-recovery-snapshot` only when
+the task explicitly calls for refreshing that recovery snapshot.
 
 ## Current status
 

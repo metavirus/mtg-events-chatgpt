@@ -20,7 +20,8 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "output" / "wizards"
+DEFAULT_SNAPSHOT_DIR = ROOT / "work" / "wpn-cache" / "latest"
+TRACKED_RECOVERY_SNAPSHOT_DIR = ROOT / "output" / "wizards"
 CRAWLER = ROOT / "crawler" / "wizards_locator.py"
 SECRET_URL = ROOT / ".codex-secrets" / "supabase-db-url.txt"
 CACHE_ID = "los-alamitos-25mi"
@@ -39,8 +40,8 @@ PROXY_ALLOWED_PATTERN = re.compile(
 )
 
 
-def load_json(name: str):
-    return json.loads((OUTPUT / name).read_text(encoding="utf-8"))
+def load_json(snapshot_dir: Path, name: str):
+    return json.loads((snapshot_dir / name).read_text(encoding="utf-8"))
 
 
 def database_args() -> list[str]:
@@ -816,30 +817,52 @@ def main() -> int:
     parser.add_argument("--force", action="store_true", help="Refresh even if the local snapshot is under 24 hours old.")
     parser.add_argument("--max-age-hours", type=float, default=24.0)
     parser.add_argument(
+        "--snapshot-dir",
+        type=Path,
+        default=DEFAULT_SNAPSHOT_DIR,
+        help=(
+            "Local crawler handoff directory. Defaults to ignored work/wpn-cache/latest "
+            "so routine refreshes do not dirty tracked JSON."
+        ),
+    )
+    parser.add_argument(
+        "--tracked-recovery-snapshot",
+        action="store_true",
+        help=(
+            "Use tracked output/wizards as an explicit recovery/debug snapshot. "
+            "Not for routine refreshes."
+        ),
+    )
+    parser.add_argument(
         "--dry-run", action="store_true",
         help="Read current Supabase context and print the enriched delta plan without writing."
     )
     args = parser.parse_args()
 
-    metadata_path = OUTPUT / "metadata.json"
+    snapshot_dir = (
+        TRACKED_RECOVERY_SNAPSHOT_DIR
+        if args.tracked_recovery_snapshot
+        else args.snapshot_dir
+    )
+    metadata_path = snapshot_dir / "metadata.json"
     should_fetch = args.force or not metadata_path.exists()
     if not should_fetch:
-        metadata = load_json("metadata.json")
+        metadata = load_json(snapshot_dir, "metadata.json")
         retrieved = datetime.fromisoformat(metadata["retrievedAt"].replace("Z", "+00:00"))
         age_hours = (datetime.now(timezone.utc) - retrieved).total_seconds() / 3600
         should_fetch = age_hours >= args.max_age_hours
 
     if should_fetch:
         subprocess.run(
-            [sys.executable, str(CRAWLER), "--radius-miles", "25", "--output", str(OUTPUT)],
+            [sys.executable, str(CRAWLER), "--radius-miles", "25", "--output", str(snapshot_dir)],
             cwd=ROOT,
             check=True,
         )
 
-    metadata = load_json("metadata.json")
-    events_all = load_json("events-all.json")
-    events_commander = load_json("events-commander.json")
-    organizations = load_json("organizations.json")
+    metadata = load_json(snapshot_dir, "metadata.json")
+    events_all = load_json(snapshot_dir, "events-all.json")
+    events_commander = load_json(snapshot_dir, "events-commander.json")
+    organizations = load_json(snapshot_dir, "organizations.json")
     if float(metadata["radiusMiles"]) != 25.0:
         raise SystemExit("Refusing to cache a non-canonical WPN radius.")
     expected = (
