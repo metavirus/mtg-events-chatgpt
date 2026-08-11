@@ -1345,6 +1345,7 @@ function renderSignals() {
   }
 
   container.innerHTML = `
+    ${arrivalDigestBanner(arrivalSignals)}
     <div class="signals-overview">
       <article><span class="live-dot"></span><strong>${activeSignals.length}</strong><small>active signals</small></article>
       <article><span class="status-dot amber"></span><strong>${urgent.length}</strong><small>act-first items</small></article>
@@ -1362,6 +1363,31 @@ function renderSignals() {
       ${stale.length ? signalGroup('Closed or stale', 'Retained for context, but not currently asking for attention.', stale, 'slate') : ''}
       ${state.showReadSignals && hiddenSignals.length ? signalGroup('Read / hidden', 'You marked these handled. Restore one if it should return to Signals.', hiddenSignals, 'slate') : ''}
     </div>`;
+}
+
+function arrivalDigestBanner(arrivalSignals) {
+  if (!arrivalSignals.length) return '';
+  const linkedChanges = arrivalSignals
+    .map((signal) => changeById(signal.derivedFromChangeId))
+    .filter(Boolean);
+  const venueIds = new Set(linkedChanges.map((change) => change.entityId).filter(Boolean));
+  const addedEventCount = linkedChanges.reduce((sum, change) => sum + eventIngestDeltaMatches(change).filter((event) => !isEventHidden(event)).length, 0);
+  const newestChange = linkedChanges
+    .filter((change) => change.detectedAt)
+    .sort((a, b) => compareText(b.detectedAt, a.detectedAt))[0] || linkedChanges[0];
+  const newestCount = newestChange ? eventIngestDeltaMatches(newestChange).filter((event) => !isEventHidden(event)).length : 0;
+  const newestPlace = newestChange ? store(newestChange.entityId) : null;
+  return `<section class="arrival-digest">
+    <div class="arrival-digest-copy">
+      <p class="eyebrow sky">Fresh arrivals</p>
+      <h2>${addedEventCount} new event${addedEventCount === 1 ? '' : 's'} surfaced across ${venueIds.size} venue${venueIds.size === 1 ? '' : 's'}.</h2>
+      <p>Automated promotions are landing successfully. Skim the newest batch here instead of digging through the full Activity timeline.</p>
+    </div>
+    <div class="arrival-digest-actions">
+      ${newestChange ? `<button class="soft-button" data-action="open-change-events" data-change-id="${escapeHtml(newestChange.id)}">Open latest batch${newestPlace ? ` · ${escapeHtml(newestPlace.name)}` : ''}${newestCount ? ` (${newestCount})` : ''}</button>` : ''}
+      <button class="soft-button" data-route="changes">Open Updates</button>
+    </div>
+  </section>`;
 }
 
 function rankedSignals() {
