@@ -1097,6 +1097,7 @@ function handleAction(action, element) {
   if (action === 'show-log') return openActivityLog();
   if (action === 'toggle-read-signals') { state.showReadSignals = !state.showReadSignals; return renderSignals(); }
   if (action === 'open-signal') return openSignalDetail(element.dataset.signalId);
+  if (action === 'open-change-events') return openChangeEvents(element.dataset.changeId);
   if (action === 'open-artifact') return openArtifactPreview(element.dataset.artifactId);
   if (action === 'mark-signal-read') return setSignalRead(element.dataset.signalId, true);
   if (action === 'restore-signal') return setSignalRead(element.dataset.signalId, false);
@@ -1267,6 +1268,43 @@ function eventSourceDisplay(baseSource, event) {
     url: event?.sourceUrl || baseSource.url,
     sourceContextLabel: typeLabel,
     sourceDateLabel: dateLabel
+  };
+}
+
+function resolvedEventSourceContext(event, occurrenceDate) {
+  if (!event) return { baseSource: null, eventRef: event };
+  const targetDateKey = occurrenceDate ? dateKey(occurrenceDate) : '';
+  const siblingEvents = DATA.events.filter((item) => item.seriesId === event.seriesId);
+  const candidates = [event, ...siblingEvents.filter((item) => item.id !== event.id)];
+  const ranked = candidates
+    .map((item) => {
+      const candidateDate = item.occurrenceDate || parseDate(item.date || item.startDate || null);
+      const candidateSourceId = item.sourceId || (item.sourceIds || []).find((sourceId) => source(sourceId));
+      return {
+        item,
+        baseSource: candidateSourceId ? source(candidateSourceId) : null,
+        candidateSourceId,
+        sameDate: targetDateKey && candidateDate ? dateKey(candidateDate) === targetDateKey : false,
+        directScope: item.sourceLinkScope === 'occurrence',
+        datedOccurrence: Boolean(item.date || item.occurrenceDate)
+      };
+    })
+    .sort((a, b) =>
+      Number(b.sameDate) - Number(a.sameDate)
+      || Number(b.directScope) - Number(a.directScope)
+      || Number(b.datedOccurrence) - Number(a.datedOccurrence)
+    );
+  const selected = ranked.find((entry) => entry.baseSource);
+  if (!selected) return { baseSource: null, eventRef: event };
+  return {
+    baseSource: selected.baseSource,
+    eventRef: {
+      ...event,
+      sourceId: selected.candidateSourceId,
+      sourceUrl: selected.item.sourceUrl || event.sourceUrl || '',
+      sourceLinkScope: selected.item.sourceLinkScope || event.sourceLinkScope || '',
+      lastVerified: selected.item.lastVerified || event.lastVerified || ''
+    }
   };
 }
 
@@ -2922,7 +2960,47 @@ function changeTargetButtons(change) {
   return `<button class="change-action" data-route="${route}">${route === 'events' ? 'Browse events' : route === 'research' ? 'Coverage' : 'Browse places'} →</button>`;
 }
 
+function changeById(id) {
+  return DATA.changes.find((item) => item.id === id) || null;
+}
+
+function eventIngestDeltaMatches(change) {
+  if (!change || change.changeType !== 'event_ingest_delta' || change.entityType !== 'venue' || !change.entityId) return [];
+  const detectedAt = change.detectedAt ? new Date(change.detectedAt) : null;
+  const detectedMs = detectedAt && !Number.isNaN(detectedAt.getTime()) ? detectedAt.getTime() : null;
+  const matched = DATA.events.filter((event) => {
+    if (event.storeId !== change.entityId) return false;
+    if (!event.createdAt || !detectedMs) return false;
+    const created = new Date(event.createdAt);
+    if (Number.isNaN(created.getTime())) return false;
+    return Math.abs(created.getTime() - detectedMs) <= 5 * 60 * 1000;
+  });
+  return matched.sort((a, b) => {
+    const aDate = a.occurrenceDate || parseDate(a.date || a.startDate);
+    const bDate = b.occurrenceDate || parseDate(b.date || b.startDate);
+    return aDate - bDate || compareText(eventStartTime(a), eventStartTime(b)) || compareText(a.title, b.title);
+  });
+}
+
 function structuredChangeTarget(change) {
+  if (change.changeType === 'event_ingest_delta') {
+    const matchedEvents = eventIngestDeltaMatches(change);
+    if (matchedEvents.length === 1) {
+      const event = matchedEvents[0];
+      const occurrenceDate = event.occurrenceDate || parseDate(event.date || event.startDate);
+      return {
+        label: 'Open new event',
+        attribute: `data-event-id="${escapeHtml(event.id)}" ${occurrenceDate ? `data-date="${dateKey(occurrenceDate)}"` : ''}`
+      };
+    }
+    if (matchedEvents.length > 1) {
+      return {
+        label: `Open ${matchedEvents.length} new events`,
+        attribute: `data-action="open-change-events" data-change-id="${escapeHtml(change.id)}"`
+      };
+    }
+  }
+
   const type = (change.entityType || '').toLowerCase();
   const id = change.entityId || '';
   if (!id || type === 'dataset') return null;
@@ -2962,6 +3040,20 @@ function linkifyChangeText(rawText = '') {
   }
   html += escapeHtml(rawText.slice(lastIndex));
   return html;
+}
+
+function openChangeEvents(changeId) {
+  const change = changeById(changeId);
+  if (!change) return;
+  const matchedEvents = eventIngestDeltaMatches(change);
+  const place = store(change.entityId);
+  const eventRows = matchedEvents.length
+    ? matchedEvents.map((event) => {
+        const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+        return `<button class="occurrence-row" data-event-id="${escapeHtml(event.id)}" ${occurrence ? `data-date="${dateKey(occurrence)}"` : ''}><time><strong>${occurrence ? occurrence.getDate() : '—'}</strong>${occurrence ? occurrence.toLocaleDateString(undefined, { month: 'short' }) : ''}</time><span><strong>${escapeHtml(event.title)}</strong><small>${occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'long' }) : 'Dated event'} · ${formatTime(eventStartTime(event))}</small></span><span class="status-chip ${evidenceLabel(event).tone}">${evidenceLabel(event).label}</span></button>`;
+      }).join('')
+    : '<p class="muted-copy">This update no longer maps cleanly to live event rows.</p>';
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Update batch</span><span class="status-chip slate">${matchedEvents.length} event${matchedEvents.length === 1 ? '' : 's'}</span></div><h1 id="drawerTitle">${escapeHtml(change.summary || 'New event batch')}</h1><p class="drawer-lead">${escapeHtml(change.details || 'These events were added by the automated ingest pipeline.')}</p><section class="drawer-section"><p class="eyebrow">Linked venue</p><h2>${place ? escapeHtml(place.name) : 'Venue update'}</h2>${place ? `<button class="soft-button" data-place-id="${escapeHtml(place.id)}">Open place →</button>` : ''}</section><section class="drawer-section"><p class="eyebrow">Newly added occurrences</p><h2>${matchedEvents.length ? 'Open any occurrence' : 'No direct event match found'}</h2><div class="place-occurrences">${eventRows}</div></section>`);
 }
 
 function changeLinkCandidates() {
@@ -3101,8 +3193,8 @@ function openEvent(id, occurrenceDate) {
   const organizer = community(event?.communityId);
   if (!event || !place) return;
   const occurrence = occurrenceDate ? parseDate(occurrenceDate) : parseDate(event.date || event.startDate);
-  const baseSource = source(event.sourceId);
-  const src = eventSourceDisplay(baseSource, event);
+  const { baseSource, eventRef } = resolvedEventSourceContext(event, occurrence);
+  const src = eventSourceDisplay(baseSource, eventRef);
   const fit = fitLabel({ ...event, occurrenceDate: occurrence });
   const evidence = evidenceLabel({ ...event, occurrenceDate: occurrence, occurrenceStatus: event.occurrenceStatus || (!event.recurrence && (event.date || event.startDate) ? 'confirmed' : 'projected') });
   const personalKey = eventPreferenceKey(event);
