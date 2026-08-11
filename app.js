@@ -1362,7 +1362,65 @@ function renderSignals() {
 }
 
 function rankedSignals() {
-  return [...DATA.signals].sort((a, b) => signalRank(b) - signalRank(a) || String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt)));
+  return [...DATA.signals, ...derivedEventIngestSignals()]
+    .sort((a, b) => signalRank(b) - signalRank(a) || String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt)));
+}
+
+function derivedEventIngestSignals() {
+  const recentCutoff = addDays(startOfDay(new Date()), -14);
+  return acceptedChanges()
+    .filter((change) => change.changeType === 'event_ingest_delta')
+    .filter((change) => {
+      const detected = new Date(change.detectedAt || '');
+      return !Number.isNaN(detected.getTime()) && detected >= recentCutoff;
+    })
+    .map(eventIngestDigestSignal)
+    .filter(Boolean);
+}
+
+function eventIngestDigestSignal(change) {
+  const events = eventIngestDeltaMatches(change).filter((event) => !isEventHidden(event));
+  if (!events.length) return null;
+  const place = store(change.entityId);
+  const eventCount = events.length;
+  const specialCount = events.filter(isSpecial).length;
+  const commanderCount = events.filter(isCommanderLike).length;
+  const favorited = !!(place && state.personal.favorites[`place:${place.id}`])
+    || events.some((event) => state.personal.favorites[eventPreferenceKey(event)]);
+  const nearby = numericDistance(place) != null && numericDistance(place) <= 10;
+  const priority = favorited || (nearby && specialCount) || eventCount >= 8 ? 'high' : 'normal';
+  const firstDate = events
+    .map((event) => event.occurrenceDate || parseDate(event.date || event.startDate))
+    .filter((date) => date instanceof Date && !Number.isNaN(date.getTime()))
+    .sort((a, b) => a - b)[0];
+  const category = 'event_opportunity';
+  const dateCopy = firstDate ? ` Earliest listed date: ${firstDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}.` : '';
+  const sourceKinds = [...new Set(events.map((event) => event.sourceIds?.map(source).find(Boolean)?.type || 'source').filter(Boolean))];
+  const sourceCopy = sourceKinds.length ? ` Source: ${sourceKinds.slice(0, 2).join(' + ')}.` : '';
+  const emphasis = [
+    specialCount ? `${specialCount} special/prerelease/limited` : '',
+    commanderCount ? `${commanderCount} Commander-related` : '',
+    favorited ? 'favorite-linked' : '',
+    nearby ? 'nearby' : ''
+  ].filter(Boolean).join(' · ');
+  return {
+    id: `derived:${change.id}`,
+    derivedFromChangeId: change.id,
+    category,
+    priority,
+    status: 'new',
+    sourceId: '',
+    capturedAt: change.detectedAt || '',
+    observedAt: change.detectedAt || '',
+    relatedEntityType: 'venue',
+    relatedEntityId: change.entityId || '',
+    summary: `${place?.name || 'A venue'} added ${eventCount} new event${eventCount === 1 ? '' : 's'}.`,
+    details: `${emphasis ? `${emphasis}. ` : ''}${change.details || 'The daily surveyor promoted newly listed events.'}${dateCopy}${sourceCopy}`,
+    confidence: eventCount ? 'high' : 'medium',
+    suggestedAction: eventCount === 1 ? 'Open the new event and decide whether it matters for planning.' : 'Open the batch drawer and skim the newly added events.',
+    promotionTarget: eventCount === 1 ? 'event' : 'event_digest',
+    dedupeKey: `derived-event-ingest:${change.id}`
+  };
 }
 
 function isActFirstSignal(signal) {
@@ -1426,6 +1484,7 @@ function signalCard(signal) {
       <span>Suggested action</span>
       <strong>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</strong>
       ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" ${isExternal ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(sourceLabel)} ↗</a>` : `<small>${escapeHtml(sourceLabel)}</small>`}
+      ${signal.derivedFromChangeId ? `<button class="soft-button signal-read-button" data-action="open-change-events" data-change-id="${escapeHtml(signal.derivedFromChangeId)}">${eventIngestDeltaMatches(changeById(signal.derivedFromChangeId)).filter((event) => !isEventHidden(event)).length === 1 ? 'Open new event' : 'Open new events'}</button>` : ''}
       <button class="soft-button signal-read-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open details</button>
       <button class="soft-button signal-read-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>
     </aside>
@@ -1453,7 +1512,7 @@ function signalRelatedTarget(signal) {
 }
 
 function openSignalDetail(signalId) {
-  const signal = DATA.signals.find((item) => item.id === signalId);
+  const signal = rankedSignals().find((item) => item.id === signalId);
   if (!signal) return;
   const related = signalRelatedTarget(signal);
   const artifacts = artifactsForSignal(signal);
@@ -1465,13 +1524,16 @@ function openSignalDetail(signalId) {
   const sourceLink = sourceUrl
     ? `<a class="soft-button" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(sourceItem?.label || 'Open source')} ↗</a>`
     : '<p class="muted-copy">No source URL is linked yet.</p>';
+  const derivedEventAction = signal.derivedFromChangeId
+    ? `<button class="soft-button" data-action="open-change-events" data-change-id="${escapeHtml(signal.derivedFromChangeId)}">Open newly added events →</button>`
+    : '';
   const read = isSignalRead(signal.id);
   openDrawer(`<div class="drawer-kicker"><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><span class="status-chip slate">${escapeHtml(signalPriorityLabel(signal.priority))}</span><span class="status-chip ${signal.status === 'needs_followup' ? 'amber' : signal.status === 'new' ? 'mint' : 'slate'}">${escapeHtml(signal.status.replaceAll('_', ' '))}</span></div>
     <h1 id="drawerTitle">${escapeHtml(signal.summary)}</h1>
     <p class="drawer-lead">${escapeHtml(signal.details || 'No additional detail recorded yet.')}</p>
     ${retainedEvidence}
     ${related ? `<section class="drawer-section"><p class="eyebrow">Related target</p><h2>Open the linked record</h2><div class="signal-related">${related}</div></section>` : ''}
-    <section class="drawer-section"><p class="eyebrow">Suggested action</p><h2>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</h2><p>Signals are lightweight attention markers. Use this drawer to jump to the source or linked record without turning the Signals page into a static inbox.</p><div class="drawer-action-grid">${sourceLink}<button class="soft-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button></div></section>
+    <section class="drawer-section"><p class="eyebrow">Suggested action</p><h2>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</h2><p>Signals are lightweight attention markers. Use this drawer to jump to the source, linked record, or newly added event batch without turning Signals into a static inbox.</p><div class="drawer-action-grid">${derivedEventAction}${sourceLink}<button class="soft-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button></div></section>
     <section class="drawer-section"><p class="eyebrow">Signal metadata</p><div class="before-grid"><div><span>Confidence</span><strong>${escapeHtml(signal.confidence || 'unknown')}</strong></div><div><span>Captured</span><strong>${escapeHtml(formatFreshnessDateTime(signal.capturedAt))}</strong></div><div><span>Observed</span><strong>${escapeHtml(formatFreshnessDateTime(signal.observedAt || signal.capturedAt))}</strong></div><div><span>Promotion target</span><strong>${escapeHtml(signal.promotionTarget || 'none')}</strong></div></div></section>`);
 }
 
