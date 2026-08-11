@@ -1344,50 +1344,38 @@ function renderSignals() {
     return;
   }
 
+  const summaryParts = [];
+  if (urgent.length) summaryParts.push(`${urgent.length} urgent`);
+  if (arrivalSignals.length) {
+    const arrivalVenues = new Set(
+      arrivalSignals
+        .map((signal) => changeById(signal.derivedFromChangeId))
+        .filter(Boolean)
+        .map((change) => change.entityId)
+        .filter(Boolean)
+    );
+    summaryParts.push(`${arrivalSignals.length} new arrival${arrivalSignals.length === 1 ? '' : 's'} across ${arrivalVenues.size} venue${arrivalVenues.size === 1 ? '' : 's'}`);
+  }
+  if (activeSignals.length && !summaryParts.length) summaryParts.push(`${activeSignals.length} active`);
+  if (readSignals.length) summaryParts.push(`${readSignals.length} read`);
+
+  const orderedGroups = [
+    urgent.length ? signalGroup('Act first', 'Actionable cancellations, deadlines, strong opportunities, or judgment calls that should shape near-term planning.', urgent, 'coral') : '',
+    arrivalSignals.length ? signalGroup('New arrivals', 'Fresh automated event additions worth skimming so new options do not disappear into the Activity log.', arrivalSignals, 'sky') : '',
+    followUp.length ? signalGroup('Follow up', 'Useful routes, source-health issues, or community surfaces that deserve a bounded next look.', followUp, 'amber') : '',
+    watch.length ? signalGroup('Watch list', 'Real but lower-pressure signals to keep visible without turning this into an inbox.', watch, 'mint') : '',
+    stale.length ? signalGroup('Closed or stale', 'Retained for context, but not currently asking for attention.', stale, 'slate') : '',
+    state.showReadSignals && hiddenSignals.length ? signalGroup('Read / hidden', 'You marked these handled. Restore one if it should return to Signals.', hiddenSignals, 'slate') : '',
+  ].filter(Boolean).join('');
+
   container.innerHTML = `
-    ${arrivalDigestBanner(arrivalSignals)}
-    <div class="signals-overview">
-      <article><span class="live-dot"></span><strong>${activeSignals.length}</strong><small>active signals</small></article>
-      <article><span class="status-dot amber"></span><strong>${urgent.length}</strong><small>act-first items</small></article>
-      <article><span class="status-dot slate"></span><strong>${readSignals.length}</strong><small>marked read</small></article>
-    </div>
     <div class="signal-toolbar">
-      <p>${readSignals.length ? `${readSignals.length} signal${readSignals.length === 1 ? '' : 's'} hidden from the main view.` : 'Mark handled signals read to keep this page quiet.'}</p>
+      <p>${summaryParts.length ? summaryParts.join(' · ') : 'Signals stay compact here; handled items can be marked read and revisited later.'}</p>
       ${readSignals.length ? `<button class="soft-button" data-action="toggle-read-signals">${state.showReadSignals ? 'Hide read signals' : 'Show read signals'}</button>` : ''}
     </div>
     <div class="signals-board">
-      ${signalGroup('Act first', 'Actionable cancellations, deadlines, strong opportunities, or judgment calls that should shape near-term planning.', urgent, 'coral')}
-      ${signalGroup('New arrivals', 'Fresh automated event additions worth skimming so new options do not disappear into the Activity log.', arrivalSignals, 'sky')}
-      ${signalGroup('Follow up', 'Useful routes, source-health issues, or community surfaces that deserve a bounded next look.', followUp, 'amber')}
-      ${signalGroup('Watch list', 'Real but lower-pressure signals to keep visible without turning this into an inbox.', watch, 'mint')}
-      ${stale.length ? signalGroup('Closed or stale', 'Retained for context, but not currently asking for attention.', stale, 'slate') : ''}
-      ${state.showReadSignals && hiddenSignals.length ? signalGroup('Read / hidden', 'You marked these handled. Restore one if it should return to Signals.', hiddenSignals, 'slate') : ''}
+      ${orderedGroups}
     </div>`;
-}
-
-function arrivalDigestBanner(arrivalSignals) {
-  if (!arrivalSignals.length) return '';
-  const linkedChanges = arrivalSignals
-    .map((signal) => changeById(signal.derivedFromChangeId))
-    .filter(Boolean);
-  const venueIds = new Set(linkedChanges.map((change) => change.entityId).filter(Boolean));
-  const addedEventCount = linkedChanges.reduce((sum, change) => sum + eventIngestDeltaMatches(change).filter((event) => !isEventHidden(event)).length, 0);
-  const newestChange = linkedChanges
-    .filter((change) => change.detectedAt)
-    .sort((a, b) => compareText(b.detectedAt, a.detectedAt))[0] || linkedChanges[0];
-  const newestCount = newestChange ? eventIngestDeltaMatches(newestChange).filter((event) => !isEventHidden(event)).length : 0;
-  const newestPlace = newestChange ? store(newestChange.entityId) : null;
-  return `<section class="arrival-digest">
-    <div class="arrival-digest-copy">
-      <p class="eyebrow sky">Fresh arrivals</p>
-      <h2>${addedEventCount} new event${addedEventCount === 1 ? '' : 's'} surfaced across ${venueIds.size} venue${venueIds.size === 1 ? '' : 's'}.</h2>
-      <p>Automated promotions are landing successfully. Skim the newest batch here instead of digging through the full Activity timeline.</p>
-    </div>
-    <div class="arrival-digest-actions">
-      ${newestChange ? `<button class="soft-button" data-action="open-change-events" data-change-id="${escapeHtml(newestChange.id)}">Open latest batch${newestPlace ? ` · ${escapeHtml(newestPlace.name)}` : ''}${newestCount ? ` (${newestCount})` : ''}</button>` : ''}
-      <button class="soft-button" data-route="changes">Open Updates</button>
-    </div>
-  </section>`;
 }
 
 function rankedSignals() {
