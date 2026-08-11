@@ -1327,6 +1327,7 @@ function updateFreshnessMini() {
 
 function renderSignals() {
   const container = document.getElementById('signalsContent');
+  const summaryContainer = document.getElementById('signalsSummary');
   if (!container) return;
   const signals = rankedSignals();
   const readSignals = signals.filter((signal) => isSignalRead(signal.id));
@@ -1340,6 +1341,7 @@ function renderSignals() {
   const hiddenSignals = readSignals.filter((signal) => !['dismissed', 'stale'].includes(signal.status));
 
   if (!signals.length) {
+    if (summaryContainer) summaryContainer.innerHTML = '';
     container.innerHTML = emptyState('No signals yet', 'Signals will appear here when a real source, community route, fit caution, or opportunity deserves attention.');
     return;
   }
@@ -1368,12 +1370,14 @@ function renderSignals() {
     state.showReadSignals && hiddenSignals.length ? signalGroup('Read / hidden', 'You marked these handled. Restore one if it should return to Signals.', hiddenSignals, 'slate') : '',
   ].filter(Boolean).join('');
 
-  container.innerHTML = `
-    <div class="signal-toolbar">
+  if (summaryContainer) {
+    summaryContainer.innerHTML = `<div class="signal-toolbar">
       <p>${summaryParts.length ? summaryParts.join(' · ') : 'Signals stay compact here; handled items can be marked read and revisited later.'}</p>
       ${readSignals.length ? `<button class="soft-button" data-action="toggle-read-signals">${state.showReadSignals ? 'Hide read signals' : 'Show read signals'}</button>` : ''}
-    </div>
-    <div class="signals-board">
+    </div>`;
+  }
+
+  container.innerHTML = `<div class="signals-board">
       ${orderedGroups}
     </div>`;
 }
@@ -1481,10 +1485,11 @@ function signalCard(signal) {
   const sourceLabel = sourceItem?.label || (sourceUrl ? 'Source link' : 'Source not linked');
   const isExternal = /^https?:\/\//i.test(sourceUrl);
   const read = isSignalRead(signal.id);
-  return `<article class="signal-card ${signalTone(signal)}">
+  const tone = signalTone(signal);
+  return `<article class="signal-card ${tone}">
     <div class="signal-card-main">
       <div class="signal-card-kicker">
-        <span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span>
+        <span class="status-chip ${tone}">${escapeHtml(signalCategoryLabel(signal.category))}</span>
         <span class="status-chip slate">${escapeHtml(signalPriorityLabel(signal.priority))}</span>
         <span class="status-chip ${signal.status === 'needs_followup' ? 'amber' : signal.status === 'new' ? 'mint' : 'slate'}">${escapeHtml(signal.status.replaceAll('_', ' '))}</span>
         ${artifacts.length ? `<span class="status-chip violet">${imageEvidenceIcon()} evidence</span>` : ''}
@@ -1555,6 +1560,7 @@ function openSignalDetail(signalId) {
 }
 
 function signalTone(signal) {
+  if (signal.derivedFromChangeId) return 'violet';
   if (signal.priority === 'urgent' || signal.priority === 'high') return 'coral';
   if (signal.category === 'source_health' || signal.status === 'needs_followup') return 'amber';
   if (signal.category === 'community_activity') return 'sky';
