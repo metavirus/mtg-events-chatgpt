@@ -1331,9 +1331,11 @@ function renderSignals() {
   const signals = rankedSignals();
   const readSignals = signals.filter((signal) => isSignalRead(signal.id));
   const activeSignals = signals.filter((signal) => !['dismissed', 'stale'].includes(signal.status) && !isSignalRead(signal.id));
-  const urgent = activeSignals.filter(isActFirstSignal);
-  const followUp = activeSignals.filter((signal) => !urgent.includes(signal) && (signal.status === 'needs_followup' || ['source_health', 'community_activity'].includes(signal.category)));
-  const watch = activeSignals.filter((signal) => !urgent.includes(signal) && !followUp.includes(signal));
+  const arrivalSignals = activeSignals.filter((signal) => !!signal.derivedFromChangeId);
+  const coreActiveSignals = activeSignals.filter((signal) => !signal.derivedFromChangeId);
+  const urgent = coreActiveSignals.filter(isActFirstSignal);
+  const followUp = coreActiveSignals.filter((signal) => !urgent.includes(signal) && (signal.status === 'needs_followup' || ['source_health', 'community_activity'].includes(signal.category)));
+  const watch = coreActiveSignals.filter((signal) => !urgent.includes(signal) && !followUp.includes(signal));
   const stale = signals.filter((signal) => ['dismissed', 'stale'].includes(signal.status) && !isSignalRead(signal.id));
   const hiddenSignals = readSignals.filter((signal) => !['dismissed', 'stale'].includes(signal.status));
 
@@ -1354,6 +1356,7 @@ function renderSignals() {
     </div>
     <div class="signals-board">
       ${signalGroup('Act first', 'Actionable cancellations, deadlines, strong opportunities, or judgment calls that should shape near-term planning.', urgent, 'coral')}
+      ${signalGroup('New arrivals', 'Fresh automated event additions worth skimming so new options do not disappear into the Activity log.', arrivalSignals, 'sky')}
       ${signalGroup('Follow up', 'Useful routes, source-health issues, or community surfaces that deserve a bounded next look.', followUp, 'amber')}
       ${signalGroup('Watch list', 'Real but lower-pressure signals to keep visible without turning this into an inbox.', watch, 'mint')}
       ${stale.length ? signalGroup('Closed or stale', 'Retained for context, but not currently asking for attention.', stale, 'slate') : ''}
@@ -2996,7 +2999,7 @@ function changeRow(change) {
   const tone = changeTone(change);
   const title = changeTitle(change);
   const status = reviewStatusDisplay(change);
-  return `<article class="change-row"><div class="timeline-node ${tone}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><div class="change-title-row"><h3>${title}</h3><span class="change-type-chip">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span></div><p>${linkifyChangeText(change.details || 'The research record was updated.')}</p><div class="change-clicklets">${changeTargetButtons(change)}</div></div><span class="review-state ${status.tone}">${status.label}</span></article>`;
+  return `<article class="change-row"><div class="timeline-node ${tone}"></div><time><strong>${new Date(change.detectedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</strong><small>${new Date(change.detectedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</small></time><div class="change-body"><div class="change-title-row"><h3>${title}</h3><span class="change-type-chip">${escapeHtml(change.changeType?.replaceAll('_', ' ') || 'research update')}</span></div><p>${linkifyChangeText(change.details || 'The research record was updated.')}</p>${changeEventPreview(change)}<div class="change-clicklets">${changeTargetButtons(change)}</div></div><span class="review-state ${status.tone}">${status.label}</span></article>`;
 }
 
 function reviewStatusDisplay(change) {
@@ -3020,6 +3023,23 @@ function changeTargetButtons(change) {
   if (target) return `<button class="change-action" ${target.attribute}>${escapeHtml(target.label)} →</button>`;
   const route = changeRoute(change);
   return `<button class="change-action" data-route="${route}">${route === 'events' ? 'Browse events' : route === 'research' ? 'Coverage' : 'Browse places'} →</button>`;
+}
+
+function changeEventPreview(change) {
+  if (!change || change.changeType !== 'event_ingest_delta') return '';
+  const matchedEvents = eventIngestDeltaMatches(change).filter((event) => !isEventHidden(event));
+  if (!matchedEvents.length) return '';
+  const preview = matchedEvents.slice(0, 3).map((event) => {
+    const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+    const when = occurrence instanceof Date && !Number.isNaN(occurrence.getTime())
+      ? occurrence.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+      : 'dated';
+    return `<button class="change-event-chip" data-event-id="${escapeHtml(event.id)}" ${occurrence ? `data-date="${dateKey(occurrence)}"` : ''}><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(when)}</small></button>`;
+  }).join('');
+  const more = matchedEvents.length > 3
+    ? `<button class="change-event-chip more" data-action="open-change-events" data-change-id="${escapeHtml(change.id)}">+${matchedEvents.length - 3} more</button>`
+    : '';
+  return `<div class="change-event-preview">${preview}${more}</div>`;
 }
 
 function changeById(id) {
