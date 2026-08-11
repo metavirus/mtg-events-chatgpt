@@ -148,6 +148,25 @@ DATE_WORD_RE = re.compile(
     r"\b(today|tomorrow|tonight|mon(?:day)?|tue(?:sday)?|wed(?:nesday)?|thu(?:rsday)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)\b",
     re.IGNORECASE,
 )
+WEEKDAYS = {
+    "mon": 0,
+    "monday": 0,
+    "tue": 1,
+    "tues": 1,
+    "tuesday": 1,
+    "wed": 2,
+    "wednesday": 2,
+    "thu": 3,
+    "thur": 3,
+    "thurs": 3,
+    "thursday": 3,
+    "fri": 4,
+    "friday": 4,
+    "sat": 5,
+    "saturday": 5,
+    "sun": 6,
+    "sunday": 6,
+}
 MONTH_DAY_RE = re.compile(
     r"\b("
     + "|".join(sorted(MONTHS, key=len, reverse=True))
@@ -332,6 +351,15 @@ def resolve_social_date(text: str, *, today: date | None = None) -> str | None:
     if re.search(r"\btoday|tonight\b", lowered):
         return today.isoformat()
 
+    weekday_match = re.search(
+        r"\b(mon(?:day)?|tue(?:s|sday)?|wed(?:nesday)?|thu(?:r|rs|rsday)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)\b",
+        lowered,
+    )
+    if weekday_match:
+        target_weekday = WEEKDAYS[weekday_match.group(1)]
+        days_ahead = (target_weekday - today.weekday()) % 7
+        return (today + timedelta(days=days_ahead)).isoformat()
+
     for match in MONTH_DAY_RE.finditer(text):
         month = MONTHS[match.group(1).lower().rstrip(".")]
         day = int(match.group(2))
@@ -472,17 +500,27 @@ def choose_artifact_candidate(probe: dict[str, Any]) -> tuple[int | None, str]:
         mtg_score = sum(1 for term in MTG_TERMS if term in text)
         event_score = sum(1 for term in EVENTISH_TERMS if term in text)
         strong_event_score = sum(1 for term in STRONG_EVENT_TERMS if term in text)
-        if not mtg_score:
+        operational_score = sum(1 for term in URGENT_OPERATIONAL_TERMS if term in text)
+        has_specific_date = bool(
+            DATE_WORD_RE.search(text) or MONTH_DAY_RE.search(text) or SLASH_DATE_RE.search(text)
+        )
+        event_candidate = bool(mtg_score and strong_event_score)
+        operational_candidate = bool(operational_score and has_specific_date)
+        if not (event_candidate or operational_candidate):
             continue
-        if not strong_event_score:
-            continue
-        score = (mtg_score * 10) + (event_score * 2) + (strong_event_score * 5)
+        score = (
+            (mtg_score * 10)
+            + (event_score * 2)
+            + (strong_event_score * 5)
+            + (operational_score * 12)
+            + (10 if has_specific_date else 0)
+        )
         if score > best_score:
             best_index = index
             best_score = score
             best_reason = (
                 f"mtg_terms={mtg_score}, eventish_terms={event_score}, "
-                f"strong_event_terms={strong_event_score}"
+                f"strong_event_terms={strong_event_score}, operational_terms={operational_score}"
             )
     if best_score <= 0:
         return None, best_reason
@@ -490,17 +528,13 @@ def choose_artifact_candidate(probe: dict[str, Any]) -> tuple[int | None, str]:
 
 
 def compact_probe_text(probe: dict[str, Any], artifact_index: int | None) -> str:
+    """Return only one specific media candidate, never profile/page chrome."""
+
     visible = probe.get("visibleSlice") or {}
-    pieces: list[str] = [str(visible.get("bodyTextSample") or "")]
-    links = visible.get("candidateLinks") or []
-    for item in links[:6]:
-        pieces.append(str(item.get("text") or ""))
     media = visible.get("mediaCandidates") or []
-    if artifact_index is not None and 0 <= artifact_index < len(media):
-        item = media[artifact_index]
-        pieces.append(str(item.get("alt") or ""))
-        pieces.append(str(item.get("nearbyText") or ""))
-    return re.sub(r"\s+", " ", " ".join(pieces)).strip()
+    if artifact_index is None or artifact_index < 0 or artifact_index >= len(media):
+        return ""
+    return re.sub(r"\s+", " ", candidate_text_raw(media[artifact_index])).strip()
 
 
 def signal_from_probe(
@@ -512,21 +546,19 @@ def signal_from_probe(
     fingerprint: str,
     materiality: str,
 ) -> dict[str, str] | None:
-    classification = probe.get("classification") or {}
-    matched_mtg = set(classification.get("matchedMtgTerms") or [])
-    matched_ops = set(classification.get("matchedOperationalTerms") or [])
     text = compact_probe_text(probe, artifact_index)
-    text_lc = text.lower()
-    has_mtg = bool(matched_mtg) or any(term in text_lc for term in MTG_TERMS)
-    if not has_mtg:
+    if not text:
         return None
-
-    has_urgent_ops = bool(matched_ops) or any(term in text_lc for term in URGENT_OPERATIONAL_TERMS)
+    text_lc = text.lower()
+    has_urgent_ops = any(term in text_lc for term in URGENT_OPERATIONAL_TERMS)
     if not has_urgent_ops:
         return None
+    has_specific_date = bool(
+        DATE_WORD_RE.search(text_lc) or MONTH_DAY_RE.search(text_lc) or SLASH_DATE_RE.search(text_lc)
+    )
     if not (
         any(term in text_lc for term in ("closed", "cancel", "cancelled", "canceled", "no events", "hours"))
-        and (DATE_WORD_RE.search(text_lc) or "hours" in text_lc or "no events" in text_lc)
+        and has_specific_date
     ):
         return None
 
@@ -550,6 +582,10 @@ def signal_from_probe(
         "confidence": "medium" if materiality != "low" else "low",
         "suggested_action": action,
         "promotion_target": promotion_target,
+        "evidence_url": str(
+            (probe.get("visibleSlice", {}).get("mediaCandidates") or [])[artifact_index].get("link")
+            or source.url
+        ),
     }
 
 
@@ -637,7 +673,7 @@ insert into public.signals (
   {sql_literal(source.venue_id)},
   {sql_literal(signal['summary'])},
   {sql_literal(signal['details'])},
-  {sql_literal(source.url)},
+  {sql_literal(signal['evidence_url'])},
   {sql_literal(signal['confidence'])},
   {sql_literal(signal['suggested_action'])},
   {sql_literal(signal['promotion_target'])},
