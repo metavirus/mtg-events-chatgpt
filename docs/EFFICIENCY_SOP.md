@@ -418,6 +418,23 @@ If a run is spending most of its time on package generation, manual ferrying,
 or re-narrating low-risk no-delta work, treat that as a workflow failure to be
 fixed separately rather than a normal cost of research.
 
+### 8. WPN pending-tail cleanup is command-first
+
+When future eligible WPN observations remain pending after a daily surveyor or
+promoter run, do not begin by manually inspecting individual observations,
+venues, titles, or source rows. Run the bounded closure harness first:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\close_wpn_backlog.py
+.\.venv\Scripts\python.exe scripts\close_wpn_backlog.py --live
+```
+
+Manual analysis is allowed only for the compact unresolved buckets printed by
+that command. This is a hard anti-waste rule: safe stale-time repairs, same-lane
+Commander aliases, finite prerelease title variants, and finite-series
+extensions belong in the database-owned closure lanes, not in another
+twenty-minute hand pass.
+
 ## UI/build efficiency rules
 
 ### 0. Default to direct bounded execution

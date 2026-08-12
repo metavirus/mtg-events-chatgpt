@@ -402,6 +402,25 @@ The wrapper automatically re-routes through the repo `.venv` when available, so
 the known system-Python timezone-data issue does not become a repeated operator
 failure.
 
+If WPN observations remain `pending` after a surveyor/promoter run, do not start
+manual row-by-row SQL investigation. First run the closure harness:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\close_wpn_backlog.py
+```
+
+That dry run checks the full future eligible WPN pending universe and previews
+the database-owned closure lanes. To apply those bounded safe lanes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\close_wpn_backlog.py --live
+```
+
+Only inspect rows manually if this command exits with unresolved buckets. The
+wrapper is the required first response to WPN pending-tail cleanup because it
+prevents the old failure mode: a long manual archaeology pass over cases the
+reconciler already knows how to classify safely.
+
 For promoter, lifecycle, or bulk event-ingest changes, run the read-only
 catalog-health checkpoint before calling the slice done:
 

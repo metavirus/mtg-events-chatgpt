@@ -145,6 +145,10 @@ frontier checkpoints are preserved in
   aliases, finite prerelease title variants, and one-day finite-series
   extensions. Current production readback shows zero future eligible WPN
   observations left pending.
+  `scripts/close_wpn_backlog.py` is now the required first operator response
+  when WPN pending rows appear: dry-run previews the full future eligible WPN
+  pending universe, `--live` applies the known safe closure lanes, and only its
+  compact unresolved buckets should trigger manual review.
   Replay returned no-write results and duplicate-slot readback remains zero.
   Migration `20260801221500_normalize_ingested_series_metadata.sql` preserves
   structured occurrence times when an upstream title disagrees, removes
