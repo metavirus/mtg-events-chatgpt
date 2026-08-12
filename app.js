@@ -1480,7 +1480,7 @@ function signalGroup(title, copy, signals, tone) {
 function signalCard(signal) {
   const related = signalRelatedTarget(signal);
   const artifacts = artifactsForSignal(signal);
-  const sourceItem = source(signal.sourceId);
+  const sourceItem = primarySourceForSignal(signal);
   const sourceUrl = signal.evidenceUrl || sourceItem?.url || '';
   const sourceLabel = sourceItem?.label || (sourceUrl ? 'Source link' : 'Source not linked');
   const isExternal = /^https?:\/\//i.test(sourceUrl);
@@ -1541,7 +1541,7 @@ function openSignalDetail(signalId) {
   const retainedEvidence = artifacts.length
     ? `<section class="drawer-section"><p class="eyebrow">Source evidence</p><h2>Verify the finding</h2>${artifactEvidenceList(artifacts)}</section>`
     : '';
-  const sourceItem = source(signal.sourceId);
+  const sourceItem = primarySourceForSignal(signal);
   const sourceUrl = signal.evidenceUrl || sourceItem?.url || '';
   const sourceLink = sourceUrl
     ? `<a class="soft-button" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(sourceItem?.label || 'Open source')} ↗</a>`
@@ -1557,6 +1557,18 @@ function openSignalDetail(signalId) {
     ${related ? `<section class="drawer-section"><p class="eyebrow">Related target</p><h2>Open the linked record</h2><div class="signal-related">${related}</div></section>` : ''}
     <section class="drawer-section"><p class="eyebrow">Suggested action</p><h2>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</h2><p>Signals are lightweight attention markers. Use this drawer to jump to the source, linked record, or newly added event batch without turning Signals into a static inbox.</p><div class="drawer-action-grid">${derivedEventAction}${sourceLink}<button class="soft-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button></div></section>
     <section class="drawer-section"><p class="eyebrow">Signal metadata</p><div class="before-grid"><div><span>Confidence</span><strong>${escapeHtml(signal.confidence || 'unknown')}</strong></div><div><span>Captured</span><strong>${escapeHtml(formatFreshnessDateTime(signal.capturedAt))}</strong></div><div><span>Observed</span><strong>${escapeHtml(formatFreshnessDateTime(signal.observedAt || signal.capturedAt))}</strong></div><div><span>Promotion target</span><strong>${escapeHtml(signal.promotionTarget || 'none')}</strong></div></div></section>`);
+}
+
+function primarySourceForSignal(signal) {
+  const explicit = source(signal.sourceId);
+  if (explicit) return explicit;
+  if (!signal.derivedFromChangeId) return null;
+  const events = eventIngestDeltaMatches(changeById(signal.derivedFromChangeId)).filter((event) => !isEventHidden(event));
+  for (const event of events) {
+    const linked = (event.sourceIds || []).map(source).find((item) => item?.url);
+    if (linked) return linked;
+  }
+  return null;
 }
 
 function signalTone(signal) {
@@ -3757,21 +3769,26 @@ function artifactsFor(targetType, targetId) {
 
 function artifactsForEvent(event) {
   const ids = new Set([event?.id, event?.seriesId].filter(Boolean));
+  const sourceIds = new Set(event?.sourceIds || []);
   return DATA.artifacts.filter((artifact) =>
     artifact.links.some((link) =>
-      (link.targetType === 'event_occurrence' || link.targetType === 'event_series')
-      && ids.has(link.targetId)
+      ((link.targetType === 'event_occurrence' || link.targetType === 'event_series') && ids.has(link.targetId))
+      || (link.targetType === 'source' && sourceIds.has(link.targetId))
+      || sourceIds.has(artifact.sourceId)
     )
   );
 }
 
 function artifactsForSignal(signal) {
   const direct = artifactsFor('signal', signal.id);
+  const derivedEvents = signal.derivedFromChangeId
+    ? eventIngestDeltaMatches(changeById(signal.derivedFromChangeId)).filter((event) => !isEventHidden(event)).flatMap(artifactsForEvent)
+    : [];
   if (signal.relatedEntityType !== 'event_series' && signal.relatedEntityType !== 'event_occurrence') {
-    return direct;
+    return [...new Map([...direct, ...derivedEvents].map((artifact) => [artifact.id, artifact])).values()];
   }
   const related = artifactsFor(signal.relatedEntityType, signal.relatedEntityId);
-  return [...new Map([...direct, ...related].map((artifact) => [artifact.id, artifact])).values()];
+  return [...new Map([...direct, ...derivedEvents, ...related].map((artifact) => [artifact.id, artifact])).values()];
 }
 
 function artifactEvidenceList(artifacts) {
