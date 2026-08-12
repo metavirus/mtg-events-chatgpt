@@ -23,11 +23,21 @@ Use it for:
   that run bounded profile probes when saved session-state secrets are present:
   `SOCIAL_INSTAGRAM_STORAGE_STATE_JSON` and
   `SOCIAL_FACEBOOK_STORAGE_STATE_JSON`. These lanes record surface checks,
-  ingest MTG-looking source artifacts, promote clear date/time/title social
-  event facts through the shared event promoter, and create sparse Signals only
-  for urgent operational findings. Fuzzy profile/chrome/social text must remain
-  quiet evidence, not a "may have event" Signal.
+  retain source artifacts only for clear dated MTG event facts or dated
+  operational notices, promote clear date/time/title social event facts through
+  the shared event promoter, and create sparse Signals only for urgent
+  operational findings or dated MTG promo/opportunity findings. Retained
+  artifact ids are passed into event promotion so app drawers can show the
+  visual evidence without taking over the UI. Fuzzy profile/chrome/social text
+  must remain quiet, not a "may have event" Signal.
   Keep Discord bracketed from the cloud job for now.
+
+- Store source-completeness audit: use
+  `.\.venv\Scripts\python.exe scripts\audit_store_source_completeness.py --limit 20`
+  as the fast operator check for venues that still look WPN-only,
+  directory-only, or otherwise source-thin. This is not a research pass by
+  itself; it is the selector for deciding whether a store deserves a real main
+  pass instead of another manual source-count spelunk.
 
 - WPN attention policy: WPN promotion now has a sparse adapter-owned attention
   annotation layer. It should create Signals only for explicit high-value

@@ -395,6 +395,15 @@ def has_actionable_timing(text: str) -> bool:
     return bool(resolve_social_date(text) and parse_time_value(text))
 
 
+def has_clear_social_event_fact(text: str) -> bool:
+    text_lc = text.lower()
+    return (
+        any(term in text_lc for term in STRONG_EVENT_TERMS)
+        and any(term in text_lc for term in MTG_TERMS)
+        and has_actionable_timing(text)
+    )
+
+
 def event_format_from_text(text_lc: str) -> tuple[str, str, str]:
     if "prerelease" in text_lc:
         return "Prerelease", "Prerelease", "Prerelease"
@@ -504,15 +513,21 @@ def choose_artifact_candidate(probe: dict[str, Any]) -> tuple[int | None, str]:
         has_specific_date = bool(
             DATE_WORD_RE.search(text) or MONTH_DAY_RE.search(text) or SLASH_DATE_RE.search(text)
         )
-        event_candidate = bool(mtg_score and strong_event_score)
+        event_candidate = has_clear_social_event_fact(candidate_text_raw(candidate))
         operational_candidate = bool(operational_score and has_specific_date)
-        if not (event_candidate or operational_candidate):
+        promo_candidate = bool(
+            mtg_score
+            and has_specific_date
+            and any(term in text for term in PROMO_SIGNAL_TERMS)
+        )
+        if not (event_candidate or operational_candidate or promo_candidate):
             continue
         score = (
             (mtg_score * 10)
             + (event_score * 2)
             + (strong_event_score * 5)
             + (operational_score * 12)
+            + (8 if promo_candidate else 0)
             + (10 if has_specific_date else 0)
         )
         if score > best_score:
@@ -551,27 +566,39 @@ def signal_from_probe(
         return None
     text_lc = text.lower()
     has_urgent_ops = any(term in text_lc for term in URGENT_OPERATIONAL_TERMS)
-    if not has_urgent_ops:
-        return None
     has_specific_date = bool(
         DATE_WORD_RE.search(text_lc) or MONTH_DAY_RE.search(text_lc) or SLASH_DATE_RE.search(text_lc)
     )
-    if not (
+    has_promo = (
+        any(term in text_lc for term in PROMO_SIGNAL_TERMS)
+        and any(term in text_lc for term in MTG_TERMS)
+        and has_specific_date
+    )
+    if has_urgent_ops and not (
         any(term in text_lc for term in ("closed", "cancel", "cancelled", "canceled", "no events", "hours"))
         and has_specific_date
     ):
         return None
+    if not (has_urgent_ops or has_promo):
+        return None
 
     platform_label = platform.title()
     excerpt = text[:420].strip()
-    category = "operational"
-    priority = "high"
-    promotion_target = "personal_reminder"
-    summary = f"{source.venue_name} has a {platform_label} operational update."
-    action = "Open the source before planning around this store."
+    if has_urgent_ops:
+        category = "operational"
+        priority = "high"
+        promotion_target = "personal_reminder"
+        summary = f"{source.venue_name} has a {platform_label} operational update."
+        action = "Open the source before planning around this store."
+    else:
+        category = "event_opportunity"
+        priority = "normal"
+        promotion_target = "event_opportunity"
+        summary = f"{source.venue_name} has a {platform_label} promo or event-adjacent opportunity."
+        action = "Open the source and decide whether the promo matters for planning."
 
     details = f"{excerpt}\n\nDetected by bounded {platform} survey. Source was not treated as secondary to WPN."
-    signal_key = f"social:{platform}:{source.source_id}:{category}"
+    signal_key = f"social:{platform}:{source.source_id}:{category}:{fingerprint[:12]}"
     return {
         "id": signal_key,
         "dedupe_key": signal_key,
@@ -593,6 +620,7 @@ def run_social_event_promotion(
     event: dict[str, str],
     *,
     live: bool,
+    source_artifact_id: str | None = None,
 ) -> tuple[int, str]:
     command = [
         blessed_python(),
@@ -637,6 +665,8 @@ def run_social_event_promotion(
         "--suggested-action",
         "Review the source post if you need extra context; the event was promoted from a structured social finding.",
     ]
+    if source_artifact_id:
+        command.extend(["--source-artifact-id", source_artifact_id])
     if live:
         command.extend(["--live", "--execute"])
     result = run_command(command, timeout=180)
@@ -806,7 +836,7 @@ def run_artifact_ingest(
     materiality: str,
     fingerprint: str,
     live: bool,
-) -> int:
+) -> tuple[int, str | None]:
     command = [
         blessed_python(),
         str(ARTIFACT_SCRIPT),
@@ -834,11 +864,20 @@ def run_artifact_ingest(
     if live:
         command.append("--live")
     result = run_command(command, timeout=180)
+    artifact_id = parse_artifact_id(result.stdout or "")
     if result.stdout:
         print(result.stdout.strip())
     if result.stderr:
         print(result.stderr.strip(), file=sys.stderr)
-    return result.returncode
+    return result.returncode, artifact_id
+
+
+def parse_artifact_id(output: str) -> str | None:
+    for line in output.splitlines():
+        match = re.match(r"\s*artifact_id:\s*([0-9a-fA-F-]{36})\s*$", line)
+        if match:
+            return match.group(1)
+    return None
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -942,8 +981,9 @@ def main(argv: list[str] | None = None) -> int:
         failures += 1 if surface_code else 0
 
         artifact_code = None
+        source_artifact_id = None
         if surface_code == 0 and artifact_index is not None and useful:
-            artifact_code = run_artifact_ingest(
+            artifact_code, source_artifact_id = run_artifact_ingest(
                 source,
                 platform=args.platform,
                 probe_path=probe_path,
@@ -966,6 +1006,7 @@ def main(argv: list[str] | None = None) -> int:
             event_code, event_status = run_social_event_promotion(
                 social_event,
                 live=args.live,
+                source_artifact_id=source_artifact_id,
             )
             failures += 1 if event_code else 0
 

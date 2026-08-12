@@ -360,20 +360,26 @@ The action runs `scripts/daily_surveyor.py`, which:
 - optionally promotes eligible WPN observations through the shared promoter;
 - runs the event integrity audit;
 - if social is enabled and session-state secrets exist, probes bounded
-  Instagram/Facebook surfaces, records surface dispositions, ingests
-  MTG-looking source artifacts, promotes clear date/time/title social event
-  facts through the shared event promoter, and creates sparse Signals only for
-  urgent operational findings;
+  Instagram/Facebook surfaces, records surface dispositions, ingests retained
+  source artifacts only for clear dated MTG event facts or dated operational
+  notices, promotes clear date/time/title social event facts through the shared
+  event promoter, and creates sparse Signals only for urgent operational
+  findings or dated MTG promo/opportunity findings;
 - does not commit generated WPN JSON or create per-run repo artifacts.
 
 Social lanes are intentionally fail-soft and conservative. Missing social
 session state should skip that platform, not fail WPN. Thin, ambiguous, or
-profile/chrome-like social content stays as surface/artifact evidence only. A
+profile/chrome-like social content stays quiet; do not retain or surface a
+source artifact merely because the page shell says "Magic" or "events." A
 social item becomes a canonical Event only when the adapter can emit concrete
-event facts: venue, title/format lane, date, time, and source URL/artifact. A
-social item becomes a Signal only when it is operationally urgent, such as
-closures, cancellations, no-event notices, or hours changes. Do not create
-"may have an event" watchlist Signals from fuzzy social text.
+event facts: venue, title/format lane, date, time, and source URL/artifact.
+When a retained image/flyer produced the event, pass its artifact id into the
+event promoter so the app can show the visual evidence incidentally in the
+event or Signal drawer. A social item becomes a Signal only when it is a dated
+operational finding, such as closures, cancellations, no-event notices, or
+hours changes, or a dated MTG promo/opportunity finding such as a Commander
+night raffle. Do not create "may have an event" watchlist Signals from fuzzy
+social text.
 
 For local debugging only, use the wrapper before hand-driving WPN refresh,
 staging, and audit commands separately:

@@ -9,6 +9,7 @@ from datetime import date
 from social_surveyor import (
     SocialSource,
     choose_artifact_candidate,
+    parse_artifact_id,
     resolve_social_date,
     signal_from_probe,
     structured_social_event,
@@ -127,7 +128,7 @@ class SocialSurveyorTests(unittest.TestCase):
             }]
         )
         artifact_index, _ = choose_artifact_candidate(vague)
-        self.assertEqual(artifact_index, 0)
+        self.assertIsNone(artifact_index)
         self.assertIsNone(
             structured_social_event(
                 SOURCE,
@@ -145,6 +146,37 @@ class SocialSurveyorTests(unittest.TestCase):
                 fingerprint="vague",
                 materiality="low",
             )
+        )
+
+    def test_dated_commander_promo_becomes_watchlist_signal(self) -> None:
+        promo = probe(
+            media=[{
+                "alt": "Free raffle tomorrow during Commander night",
+                "nearbyText": "Magic players welcome.",
+                "link": "https://www.instagram.com/p/promo/",
+            }]
+        )
+        artifact_index, _ = choose_artifact_candidate(promo)
+        self.assertEqual(artifact_index, 0)
+        signal = signal_from_probe(
+            SOURCE,
+            platform="instagram",
+            probe=promo,
+            artifact_index=artifact_index,
+            fingerprint="promo",
+            materiality="medium",
+        )
+        self.assertIsNotNone(signal)
+        self.assertEqual(signal["category"], "event_opportunity")
+        self.assertEqual(signal["priority"], "normal")
+        self.assertEqual(signal["evidence_url"], "https://www.instagram.com/p/promo/")
+
+    def test_artifact_id_parser_reads_live_helper_output(self) -> None:
+        self.assertEqual(
+            parse_artifact_id(
+                "source_id: src-example\nartifact_id: 12345678-1234-1234-1234-123456789abc\n"
+            ),
+            "12345678-1234-1234-1234-123456789abc",
         )
 
 
