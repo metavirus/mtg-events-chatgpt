@@ -25,6 +25,7 @@ import sys
 import time
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -79,6 +80,86 @@ def run_step(label: str, command: list[str]) -> tuple[int, str, float]:
     if result.returncode != 0:
         print(f"[{label}] FAILED with exit code {result.returncode}")
     return result.returncode, output, elapsed
+
+
+def load_database_url() -> str | None:
+    value = os.environ.get("SUPABASE_DB_URL") or os.environ.get("DATABASE_URL")
+    if not value:
+        secret_path = ROOT / ".codex-secrets" / "supabase-db-url.txt"
+        if secret_path.exists():
+            value = secret_path.read_text(encoding="utf-8").strip()
+    if not value:
+        return None
+    parsed = urlparse(value)
+    if parsed.scheme not in {"postgres", "postgresql"} or not parsed.hostname:
+        return None
+    return value
+
+
+def sql_text(value: str) -> str:
+    return "'" + value.replace("'", "''") + "'"
+
+
+def record_automation_error_item(
+    *,
+    lane: str,
+    title: str,
+    summary: str,
+    details: dict[str, Any],
+    deduplication_key: str,
+    priority: int = 80,
+) -> bool:
+    database_url = load_database_url()
+    if not database_url:
+        return False
+    details_json = json.dumps(details, ensure_ascii=False, separators=(",", ":")).replace("'", "''")
+    command = [
+        "supabase",
+        "db",
+        "query",
+        "--db-url",
+        database_url,
+        "--output-format",
+        "json",
+        "--query",
+        f"""
+insert into public.coordination_items (
+  origin, target, item_type, status, priority, title, summary, details,
+  related_entity_type, related_entity_id, recommended_action, deduplication_key
+) values (
+  'automation', 'codex', 'app_issue', 'new', {priority},
+  {sql_text(title)},
+  {sql_text(summary)},
+  '{details_json}'::jsonb,
+  'app',
+  {sql_text(lane)},
+  'Review automation error and repair the lane without losing unrelated survey coverage.',
+  {sql_text(deduplication_key)}
+)
+on conflict (deduplication_key) do update set
+  updated_at = now(),
+  status = 'new',
+  title = excluded.title,
+  summary = excluded.summary,
+  details = excluded.details,
+  related_entity_type = excluded.related_entity_type,
+  related_entity_id = excluded.related_entity_id,
+  recommended_action = excluded.recommended_action
+returning id;
+""",
+    ]
+    env = os.environ.copy()
+    env["SUPABASE_TELEMETRY_DISABLED"] = "1"
+    env["DO_NOT_TRACK"] = "1"
+    result = subprocess.run(
+        command,
+        cwd=ROOT,
+        env=env,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    return result.returncode == 0
 
 
 def extract_json_object(text: str) -> dict[str, Any] | None:
@@ -199,6 +280,20 @@ def main() -> int:
         code, output, elapsed = run_step("refresh-wpn-cache", refresh_command)
         result_summary["refresh"] = summarize_refresh(output) | {"elapsedSeconds": round(elapsed, 1)}
         if code != 0:
+            record_automation_error_item(
+                lane="daily_surveyor.refresh_wpn_cache",
+                title="Daily surveyor WPN refresh failed",
+                summary="The WPN refresh lane failed before staging/promote. Other automation lanes may still be healthy.",
+                details={
+                    "step": "refresh-wpn-cache",
+                    "mode": result_summary["mode"],
+                    "forceRefresh": bool(args.force_refresh),
+                    "maxAgeHours": args.max_age_hours,
+                    "exitCode": code,
+                    "outputTail": output[-4000:],
+                },
+                deduplication_key="automation-error:daily-surveyor:refresh-wpn-cache",
+            )
             result_summary["status"] = "failed"
             print("\nDaily surveyor summary")
             print(json.dumps(result_summary, indent=2))
@@ -215,6 +310,19 @@ def main() -> int:
         "elapsedSeconds": round(elapsed, 1)
     }
     if code != 0:
+        record_automation_error_item(
+            lane="daily_surveyor.stage_wpn_observations",
+            title="Daily surveyor WPN staging/promote failed",
+            summary="The WPN observation staging or promotion lane failed. The refresh cache may still be current.",
+            details={
+                "step": "stage-wpn-observations",
+                "mode": result_summary["mode"],
+                "bootstrap": bool(args.bootstrap),
+                "exitCode": code,
+                "outputTail": output[-4000:],
+            },
+            deduplication_key="automation-error:daily-surveyor:stage-wpn-observations",
+        )
         result_summary["status"] = "failed"
         print("\nDaily surveyor summary")
         print(json.dumps(result_summary, indent=2, default=str))
@@ -227,6 +335,19 @@ def main() -> int:
         )
         result_summary["audit"] = summarize_audit(output) | {"elapsedSeconds": round(elapsed, 1)}
         if code != 0:
+            record_automation_error_item(
+                lane="daily_surveyor.event_integrity_audit",
+                title="Daily surveyor integrity audit failed",
+                summary="The daily surveyor finished ingest work but the post-ingest integrity audit reported a critical failure.",
+                details={
+                    "step": "event-integrity-audit",
+                    "mode": result_summary["mode"],
+                    "exitCode": code,
+                    "outputTail": output[-4000:],
+                },
+                deduplication_key="automation-error:daily-surveyor:event-integrity-audit",
+                priority=90,
+            )
             result_summary["status"] = "failed"
             print("\nDaily surveyor summary")
             print(json.dumps(result_summary, indent=2, default=str))
@@ -262,6 +383,22 @@ def main() -> int:
             if code != 0:
                 summary["status"] = summary.get("status") or "review"
                 summary["exitCode"] = code
+                record_automation_error_item(
+                    lane=f"daily_surveyor.social_{platform}",
+                    title=f"Daily surveyor {platform} social lane failed",
+                    summary=f"The bounded {platform} social survey lane failed. Other daily automation lanes may still be healthy.",
+                    details={
+                        "step": f"social-{platform}-survey",
+                        "platform": platform,
+                        "limit": args.social_limit,
+                        "maxLinks": args.social_max_links,
+                        "maxScrolls": args.social_max_scrolls,
+                        "includeSuppressed": bool(args.social_include_suppressed),
+                        "exitCode": code,
+                        "outputTail": output[-4000:],
+                    },
+                    deduplication_key=f"automation-error:daily-surveyor:social:{platform}",
+                )
             social_summaries[platform] = summary
             if code != 0 and args.social_fail_hard:
                 result_summary["social"] = social_summaries
