@@ -135,10 +135,17 @@ frontier checkpoints are preserved in
   `20260801205442_add_deterministic_event_series_creation.sql`. It promoted 238
   collision-free observations into 85 canonical series: 19 bounded weekly
   series covering 140 observations and 66 finite/single series covering 98.
-  A final exact attachment brought the run to 886 bound and 195 pending rows.
-  The pending set is deliberately limited to 2 ambiguities, 2 ineligible rows,
-  34 known-title/new-schedule rows, and 157 same-slot/title differences. Replay
-  returned 238 no-write results and duplicate-slot readback remains zero.
+  A final exact attachment brought the August 1 proof run to 886 bound and 195
+  intentionally unsupported rows, then the August 12 closure pass retired the
+  safe leftovers without relaxing identity checks. The promoter now allows
+  distinct parallel WPN series in the same venue/date/time slot when the event
+  identity differs, skips invalid explicit recurring targets instead of
+  aborting the run, deduplicates new-series occurrence inserts, and applies
+  bounded safe-lane repairs for stale recurring times, same-lane Commander title
+  aliases, finite prerelease title variants, and one-day finite-series
+  extensions. Current production readback shows zero future eligible WPN
+  observations left pending.
+  Replay returned no-write results and duplicate-slot readback remains zero.
   Migration `20260801221500_normalize_ingested_series_metadata.sql` preserves
   structured occurrence times when an upstream title disagrees, removes
   misleading leading-time series labels, and maps exact Premodern titles out

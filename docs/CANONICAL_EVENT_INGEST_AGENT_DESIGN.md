@@ -468,10 +468,16 @@ service-only, idempotent creator for collision-free families. It created 85
 series from 238 observations: 19 bounded weekly series from 140 consecutive
 weekly rows and 66 finite/single series from 98 rows. Families must agree on
 venue, source family, normalized title, format, event type, product, proxy
-policy, team size, and bracket; occupied slots, known-title/new-schedule rows,
-and ambiguous identities remain pending. A final exact attachment brought the
-run to 886 bound and 195 pending observations. Replay returned 238 `replayed`
-rows with no writes, and duplicate-slot readback remained zero.
+policy, team size, and bracket. The original proof parked occupied-slot,
+known-title/new-schedule, and ambiguous rows rather than guessing. The August
+12 closure pass narrowed that conservatism: exact duplicates are still blocked,
+but distinct parallel WPN series may promote in the same venue/date/time slot;
+safe known-lane repairs handle stale recurring times, same-lane Commander title
+aliases, finite prerelease title variants, and one-day finite-series extensions;
+and invalid explicit recurring targets are reported without aborting the whole
+run. Production readback after that closure shows zero future eligible WPN
+observations left pending. Replay returned no-write results, and duplicate-slot
+readback remained zero.
 
 The source audit also established that structured source schedule fields remain
 authoritative over incidental time text embedded in a title. Adapter contract

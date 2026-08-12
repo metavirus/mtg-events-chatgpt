@@ -57,10 +57,17 @@ Use it for:
   run bound 647 observations (644 new, 3 replayed), inherited hiding for 42,
   produced zero duplicate slots, and fully replayed without writes.
   Deterministic new-series creation is also complete: 238 collision-free
-  observations became 85 series, the complete run reached 886 bound rows, and
-  replay remained no-write with zero duplicate slots. The remaining 195 rows
-  are explicit ambiguity, ineligibility, known-title/new-schedule, or same-slot/
-  title conflicts—not unprocessed ordinary inventory. The shared finalizer is
+  observations became 85 series, the original proof reached 886 bound rows, and
+  replay remained no-write with zero duplicate slots. The August 12 closure pass
+  then retired the safe WPN leftovers that had been too conservatively parked:
+  distinct same-slot series can now promote when their identity is different,
+  invalid explicit recurring targets are skipped rather than aborting the run,
+  new-series occurrence inserts are deduplicated, and bounded safe-lane repairs
+  handle stale recurring times, same-lane Commander aliases, finite prerelease
+  title variants, and one-day finite-series extensions. Current production
+  readback shows zero future eligible WPN observations left pending; remaining
+  WPN work is ordinary future monitoring, not a store-hydration backlog. The
+  shared finalizer is
   now deployed: bootstrap/backfill stays quiet, later source arrivals create
   venue-grouped Updates through existing `research_changes`, and only explicit
   adapter attention annotations can create Signals. Replay/no-delta runs remain
