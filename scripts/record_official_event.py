@@ -1,9 +1,10 @@
 """Tiny helper for routine official-event writes.
 
-This wrapper covers only the two clean routine event-delta lanes:
+This wrapper covers only the three clean routine event-delta lanes:
 
 - one attributable official standalone/finite event through the shared
   normalized observation/promoter path;
+- one attributable community-organized event at a free-form physical location;
 - one official dated occurrence attached to an existing recurring series.
 
 It does not support proposals, Signals, evaluations, schema changes, exports,
@@ -54,8 +55,8 @@ def build_common_parser(subparsers: argparse._SubParsersAction[argparse.Argument
     parser.add_argument("--database-url", help="Postgres connection string for psql execution. Never commit it.")
     parser.add_argument("--replay-check", action="store_true", help="Repeat the same live RPC call once to confirm idempotency.")
     parser.add_argument("--idempotency-key", required=True)
-    parser.add_argument("--venue-id", required=True)
-    parser.add_argument("--series-id", required=True)
+    parser.add_argument("--venue-id")
+    parser.add_argument("--series-id")
     parser.add_argument("--occurrence-id", required=True)
     parser.add_argument("--occurrence-date", required=True, help="YYYY-MM-DD")
     parser.add_argument("--start-time", required=True, help="HH:MM or HH:MM:SS local venue time")
@@ -96,6 +97,18 @@ def build_parser() -> argparse.ArgumentParser:
     official.add_argument("--series-end-date", help="Defaults to series-start-date.")
     official.add_argument("--bracket")
 
+    community = build_common_parser(
+        subparsers,
+        "community-event",
+        "One attributable event organized by a known community at any physical location.",
+    )
+    community.add_argument("--community-id", required=True)
+    community.add_argument("--physical-location", required=True)
+    community.add_argument("--title", required=True)
+    community.add_argument("--format", required=True)
+    community.add_argument("--event-type", required=True)
+    community.add_argument("--bracket")
+
     recurring = build_common_parser(
         subparsers,
         "recurring-occurrence",
@@ -112,6 +125,8 @@ def sql_numeric(value: float | None) -> str:
 
 
 def build_official_event_sql(args: argparse.Namespace) -> str:
+    if not args.venue_id:
+        raise ValueError("--venue-id is required for official-event")
     if args.occurrence_status != "confirmed":
         raise ValueError(
             "The normalized official-event lane currently accepts confirmed additions only; "
@@ -173,7 +188,62 @@ join promoted p on true
 left join public.event_source_bindings b on b.observation_id = s.observation_id;"""
 
 
+def build_community_event_sql(args: argparse.Namespace) -> str:
+    if args.occurrence_status != "confirmed":
+        raise ValueError(
+            "The normalized community-event lane currently accepts confirmed additions only; "
+            "use reviewed correction handling for cancellations, moves, or projections."
+        )
+    attention_values = [args.attention_category, args.attention_priority, args.attention_summary, args.suggested_action]
+    if any(attention_values) and not all(attention_values):
+        raise ValueError("Attention category, priority, summary, and suggested action must be supplied together.")
+    stage_call = f"""public.stage_community_event_observation(
+  p_run_key := {sql_literal(args.idempotency_key)},
+  p_upstream_event_id := {sql_literal(args.occurrence_id)},
+  p_community_id := {sql_literal(args.community_id)},
+  p_physical_location_text := {sql_literal(args.physical_location)},
+  p_title := {sql_literal(args.title)},
+  p_format := {sql_literal(args.format)},
+  p_event_type := {sql_literal(args.event_type)},
+  p_occurrence_date := {sql_date(args.occurrence_date)},
+  p_start_time := {sql_time(args.start_time)},
+  p_source_id := {sql_literal(args.source_id)},
+  p_source_label := {sql_literal(args.source_label)},
+  p_source_url := {sql_literal(args.source_url)},
+  p_source_type := {sql_literal(args.source_type)},
+  p_end_time := {sql_literal(args.end_time)}::time,
+  p_entry_fee := {sql_numeric(args.entry_fee)},
+  p_details := {sql_literal(args.details or args.summary)},
+  p_bracket := {sql_literal(args.bracket)},
+  p_proxy_policy := {sql_literal(args.proxy_policy)},
+  p_attention_category := {sql_literal(args.attention_category)},
+  p_attention_priority := {sql_literal(args.attention_priority)},
+  p_attention_summary := {sql_literal(args.attention_summary)},
+  p_suggested_action := {sql_literal(args.suggested_action)},
+  p_dry_run := {sql_literal(args.dry_run)},
+  p_source_artifact_id := {sql_literal(args.source_artifact_id)}::uuid
+)"""
+    if args.dry_run:
+        return f"""select ingest_run_id, observation_id, null::text as series_id,
+  null::text as occurrence_id, outcome, wrote,
+  0::integer as grouped_update_count, 0::integer as signal_count
+from {stage_call};"""
+    return f"""with staged as materialized (select * from {stage_call}),
+promoted as materialized (
+  select p.* from staged s
+  cross join lateral public.promote_event_ingest_run(s.ingest_run_id, 'delta', false) p
+)
+select s.ingest_run_id, s.observation_id, b.series_id, b.occurrence_id,
+  p.outcome, p.wrote, p.grouped_update_count, p.signal_count
+from staged s join promoted p on true
+left join public.event_source_bindings b on b.observation_id = s.observation_id;"""
+
+
 def build_recurring_occurrence_sql(args: argparse.Namespace) -> str:
+    if not args.venue_id:
+        raise ValueError("--venue-id is required for recurring-occurrence")
+    if not args.series_id:
+        raise ValueError("--series-id is required for recurring-occurrence")
     if args.occurrence_status != "confirmed":
         raise ValueError(
             "The normalized recurring-occurrence lane accepts confirmed additions only; "
@@ -235,6 +305,8 @@ left join public.event_source_bindings b on b.observation_id = s.observation_id;
 def build_sql(args: argparse.Namespace) -> str:
     if args.command == "official-event":
         return build_official_event_sql(args)
+    if args.command == "community-event":
+        return build_community_event_sql(args)
     if args.command == "recurring-occurrence":
         return build_recurring_occurrence_sql(args)
     raise RuntimeError(f"Unsupported command: {args.command}")
@@ -283,7 +355,7 @@ def main(argv: list[str] | None = None) -> int:
     mode = "DRY RUN" if args.dry_run else "LIVE"
     print(f"Typed event RPC mode: {mode}")
     print(f"Lane: {args.command}")
-    print(f"Venue: {args.venue_id}")
+    print(f"Organizer: {getattr(args, 'community_id', None) or args.venue_id}")
     print(f"Series: {args.series_id}")
     print(f"Occurrence: {args.occurrence_id}")
 

@@ -570,6 +570,11 @@ Relevant surfaces may include:
 Before concluding the pass, reconcile cross-surface differences instead of
 letting one source silently dominate the final read.
 
+For community-organized meetups, keep organizer and location separate. The
+community owns the event even when it meets at a store, bar, home, park, or
+other temporary location. Preserve that location as physical-location text;
+do not create a canonical venue merely because an event happens there.
+
 ### Blocker recovery rule
 
 If an important source appears blocked but the task still depends on it, do not

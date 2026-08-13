@@ -74,6 +74,12 @@ observations may enrich empty optional facts, while source
 status/date/time/title/venue changes and repeated WPN disappearance create
 review items instead of silently mutating or removing canonical Events.
 
+Community-organized events use `stage_community_event_observation(...)` and the
+same promoter. This lane records the community as organizer and accepts
+free-form physical-location text without inventing a canonical venue. A meetup
+can occur at a store, bar, home, park, or other location; location alone never
+makes that place the event owner or a new Places record.
+
 ## Core principles
 
 1. **Peer evidence.** WPN, store calendars, Discord, Instagram, Facebook,
