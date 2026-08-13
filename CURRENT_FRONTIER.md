@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-12
+Updated: 2026-08-13
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -14,6 +14,11 @@ frontier checkpoints are preserved in
 `docs/archive/CURRENT_FRONTIER_HISTORY_THROUGH_2026-07-24.md`.
 
 ## Where we are now
+
+- A fuzzy community-discovery checkpoint is pinned in `docs/WORK_BACKLOG.md`.
+  Execute it sequentially without repeating the completed batch search: enrich
+  MTG OC first, then promote/hydrate LAGS, GayMTG, and Sanctuary MTG, then build
+  the compact Home possibilities lane for corroborated but uncertain groups.
 
 - The personal-use app reads canonical operational data from Supabase.
 - Signed-in favorites, deprioritization, and private notes persist through
