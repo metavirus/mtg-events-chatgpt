@@ -1,6 +1,7 @@
 work/
 work/social-auth/
 work/social-probes/
+work/readiness/
 outputs/
 .gh-config/
 .venv/

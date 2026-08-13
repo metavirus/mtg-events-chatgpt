@@ -171,6 +171,12 @@ launcher does not prove that the underlying runtime is absent.
 
 ### One bounded recovery cycle
 
+Use `scripts/capability_readiness.py` to enforce this cycle whenever the exact
+capability is not already covered by `scripts/check_environment_readiness.ps1`.
+The ledger is temporary and ignored by Git; its purpose is to make retry count,
+repair prediction, restart evidence, and the terminal state mechanically
+auditable during the task.
+
 When a required capability appears unavailable:
 
 1. inspect the available tools, skills, plugins, bundled runtimes, and approved

@@ -683,6 +683,9 @@ current authorized task still has safe work remaining.
 
 When a capability appears unavailable:
 
+0. start `scripts/capability_readiness.py` for the exact operation when the
+   baseline environment gate cannot test that capability directly;
+
 1. identify the failed layer precisely;
 2. inspect available tools, skills, plugins, runtimes, and approved alternate
    paths;

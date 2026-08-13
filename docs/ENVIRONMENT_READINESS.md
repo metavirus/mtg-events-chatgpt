@@ -172,3 +172,20 @@ or process expansion, schema or workflow redesign, or workaround-heavy ordinary
 operation. Recovery work may diagnose and fix the platform layer, but useful
 project work resumes only after the gate is green or the external blocker is
 crisply named.
+
+For a task-specific capability that the baseline script cannot exercise itself
+(for example, Codex browser control), use the executable recovery ledger rather
+than relying on conversational memory:
+
+```powershell
+.venv\Scripts\python.exe scripts\capability_readiness.py start --task "live UI verification" --capability browser --operation "read the target page DOM"
+.venv\Scripts\python.exe scripts\capability_readiness.py smoke --passed --evidence "returned title, URL, and target heading"
+.venv\Scripts\python.exe scripts\capability_readiness.py finish --outcome READY
+```
+
+On failure, the only allowed sequence is `smoke` (failed), `repair`, the exact
+`smoke` retest, then `finish`. The program rejects a third attempt. Repairs that
+change configuration or process state use `repair --requires-restart` and
+cannot finish ready until `restart --evidence "..."` records a new process or
+host lifecycle. Terminal outcomes are only `READY`, `REPAIRED_AND_READY`, and
+`EXTERNAL_BLOCKER`; the last requires an exact, non-speculative dependency.
