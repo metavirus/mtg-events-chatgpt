@@ -44,16 +44,18 @@ Use it for:
 
 ## Active next-up
 
-- **Community fuzzy-discovery checkpoint (execute sequentially; do not
+- **Community fuzzy-discovery checkpoint (canonical promotion completed
+  2026-08-13; execute the remaining main passes sequentially and do not
   re-research the batch):** the prior store/source discovery method was too
   literal and missed community-led Magic groups discoverable through ordinary
   fuzzy web searches. The evidence gathered on 2026-08-13 is pinned here for
   one-community-at-a-time promotion:
-  1. `MTG OC`: keep the existing canonical community. Add
+  1. `MTG OC`: completed. The existing canonical community now includes
      `https://www.meetup.com/magic-the-gathering-oc-casual/` as another source;
      its organizer/Discord identity matches the existing group. Do not create a
      duplicate community.
-  2. `Los Angeles Gayming Society (LAGS)`: a distinct LGBTQ+ gaming community,
+  2. `Los Angeles Gayming Society (LAGS)`: canonical discovery community now
+     created. It is a distinct LGBTQ+ gaming community,
      not GayMTG. Known routes are `https://lagaymingsociety.org/`,
      `https://www.instagram.com/lagaymers/`, and Discord invite
      `https://discord.gg/gkf6Jwj`. AKBAR corroborates recurring LAGS Gaymer
@@ -61,11 +63,13 @@ Use it for:
      exact date/time/venue-grade source evidence was not recovered in the
      bounded search, so do not invent or promote that event until the exact
      listing is inspected.
-  3. `GayMTG`: promote as its own promising LGBTQ+/allies Magic community.
+  3. `GayMTG`: canonical reviewed community now created as its own promising
+     LGBTQ+/allies Magic community.
      Primary known source is `https://www.meetup.com/gaymtg/`; the page showed
      recent 2026 Commander/prerelease activity and should receive a full source
      hydration pass before closure.
-  4. `Sanctuary MTG`: promote as its own active social Magic community. Known
+  4. `Sanctuary MTG`: canonical reviewed community now created as its own active
+     social Magic community. Known
      routes are `https://www.instagram.com/sanctuarymtg/` and
      `https://www.reddit.com/r/LosAngelesSocialClub/comments/1qe7s66/magic_the_gathering_social_club/`;
      evidence describes weekly Commander gatherings rotating among venues such
@@ -77,7 +81,10 @@ Use it for:
      Corroborate each through a second fuzzy source search. Stale/2025-only
      groups should remain clearly labeled questionable possibilities rather
      than disappearing or becoming full Signals.
-  Product follow-up: add a compact Home discovery/possibilities lane distinct
+  Canonical source attachment readback: MTG OC has 11 mapped sources, LAGS 3,
+  GayMTG 1, and Sanctuary MTG 2. No event was guessed or promoted in this
+  source-only step. Remaining product follow-up: add a compact Home
+  discovery/possibilities lane distinct
   from canonical Signals. A promoted community pass must inspect all known
   sources, perform one bounded fuzzy hydration search, and ingest any concrete
   attributable event facts found; it is not merely a source-identification

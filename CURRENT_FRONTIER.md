@@ -15,10 +15,12 @@ frontier checkpoints are preserved in
 
 ## Where we are now
 
-- A fuzzy community-discovery checkpoint is pinned in `docs/WORK_BACKLOG.md`.
-  Execute it sequentially without repeating the completed batch search: enrich
-  MTG OC first, then promote/hydrate LAGS, GayMTG, and Sanctuary MTG, then build
-  the compact Home possibilities lane for corroborated but uncertain groups.
+- The fuzzy community-discovery checkpoint is pinned in
+  `docs/WORK_BACKLOG.md`. Canonical promotion is complete: MTG OC has its Meetup
+  source, and LAGS, GayMTG, and Sanctuary MTG now exist with their verified
+  routes. Do not repeat discovery or recreate them. Next execute the real main
+  passes sequentially—LAGS first—then build the compact Home possibilities lane
+  for corroborated but uncertain groups.
 
 - The personal-use app reads canonical operational data from Supabase.
 - Signed-in favorites, deprioritization, and private notes persist through
