@@ -148,7 +148,7 @@ the task explicitly calls for refreshing that recovery snapshot.
 
 This is a deployed personal-use research app backed by Supabase as the default
 read source. Controlled Supabase research writes are operational, and JSON is
-only an on-demand generated recovery/debug fallback. Research has resumed in
-small direct Project Steward batches. The dataset is useful but still not a
-complete local Magic calendar; the finite venue queue is tracked in
-[`docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`](docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md).
+only an on-demand generated recovery/debug fallback. The cloud daily surveyor is
+the default WPN/Instagram/Facebook intake path, broad venue hydration is closed,
+and remaining source-thin store checks are tracked as specific follow-ups rather
+than a standing full-list research queue.

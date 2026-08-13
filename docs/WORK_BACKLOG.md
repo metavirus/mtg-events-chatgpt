@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-08-09
+Last updated: 2026-08-12
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -12,7 +12,7 @@ Use it for:
 - data-quality gaps and ambiguity we want to revisit;
 - process improvements that protect continuity.
 
-## Active next-up
+## Recently closed / operational baseline
 
 - Cloud daily surveyor: the WPN daily lane now runs in
   `.github/workflows/daily-surveyor.yml` through GitHub Actions without the
@@ -30,14 +30,24 @@ Use it for:
   artifact ids are passed into event promotion so app drawers can show the
   visual evidence without taking over the UI. Fuzzy profile/chrome/social text
   must remain quiet, not a "may have event" Signal.
-  Keep Discord bracketed from the cloud job for now.
+  Keep Discord bracketed from the cloud job for now. This is operational
+  baseline, not greenfield next work.
 
 - Store source-completeness audit: use
   `.\.venv\Scripts\python.exe scripts\audit_store_source_completeness.py --limit 20`
   as the fast operator check for venues that still look WPN-only,
   directory-only, or otherwise source-thin. This is not a research pass by
   itself; it is the selector for deciding whether a store deserves a real main
-  pass instead of another manual source-count spelunk.
+  pass instead of another manual source-count spelunk. The broad hydration
+  closeout is done; the current specific source-thin follow-ups are LVLUP
+  GAMING TCG and The Bullpen 2.0 only.
+
+## Active next-up
+
+- Source-thin specific follow-up only: LVLUP GAMING TCG and The Bullpen 2.0
+  remain worth a narrow continuity/source-confidence check if a future source
+  pass is already in scope. Do not reopen the whole venue list or rerun broad
+  "which stores are light?" sweeps without a new audit finding.
 
 - WPN attention policy: WPN promotion now has a sparse adapter-owned attention
   annotation layer. It should create Signals only for explicit high-value

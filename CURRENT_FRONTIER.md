@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-09
+Updated: 2026-08-12
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -91,6 +91,13 @@ frontier checkpoints are preserved in
   The first GitHub Actions WPN proof
   completed successfully on 2026-08-09 after the `SUPABASE_DB_URL` repository
   secret was installed and the parser/log-cap issues were fixed.
+- Broad store hydration/source-completeness cleanup is closed. The fast audit
+  tool `scripts/audit_store_source_completeness.py` is the continuing selector
+  for source-thin venues; current deliberate follow-up is narrow, not a new
+  main-pass sweep. The only standing source-thin store follow-ups from the
+  latest audit are LVLUP GAMING TCG and The Bullpen 2.0, and both are specific
+  continuity/source-confidence checks rather than reasons to reopen the full
+  venue list.
 - WPN adapter contract v4 is now live in code. It adds conservative
   title keys, promoter eligibility/exclusion reasons, structured fact and field
   presence metadata, explicit proxy-rule flags, strict venue/title/weekday/time
