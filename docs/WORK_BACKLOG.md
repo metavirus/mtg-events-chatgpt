@@ -79,13 +79,16 @@ Use it for:
      `promotion_target = event_proposal` because that is the allowed event-
      action enum.
      Discord channel classification follow-up completed August 14:
-     `#announcements` is a hot/watch source and `#general` is a watch/sample
-     source. `#announcements` revealed a new LAGS Discord event, Gaymer Night
-     at WERK Long Beach on August 20, 2026 at 8 PM, with a Discord event link
-     and Instagram cross-post. `#general` revealed a lower-confidence lead for
-     Tuesday MTG at Witch's Cottage in North Hollywood. Promote these only via
-     the community-event adapter: the group owns the event, and the bar/location
-     is host-location context unless separately promoted as a store/community.
+     `#meet-up` and `#announcements` are hot/watch sources; `#general` is a
+     watch/sample source. `#meet-up` surfaced the Discord event card for Magic
+     The GAYthering at Precinct DTLA on August 18, 2026 at 6 PM; that evidence
+     is attached to the existing LAGS-owned event and Signal. `#announcements`
+     revealed a new LAGS Discord event, Gaymer Night at WERK Long Beach on
+     August 20, 2026 at 8 PM, with a Discord event link and Instagram cross-post.
+     `#general` revealed a lower-confidence lead for Tuesday MTG at Witch's
+     Cottage in North Hollywood. Promote these only via the community-event
+     adapter: the group owns the event, and the bar/location is host-location
+     context unless separately promoted as a store/community.
   3. `GayMTG`: completed. The canonical reviewed LGBTQ+/allies Magic community
      has a full bounded main pass. Its verified route is
      `https://www.meetup.com/gaymtg/`; the current page showed 128 members,
