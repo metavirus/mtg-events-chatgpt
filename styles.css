@@ -147,6 +147,18 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .signal-action a { color: var(--sky); font-weight: 700; overflow-wrap: anywhere; }
 .signal-action small { overflow-wrap: anywhere; }
 .signal-read-button { justify-self: start; min-height: 30px; padding-inline: 10px; font-size: 11px; }
+.discovery-possibilities { grid-column: 1 / -1; margin-bottom: 14px; padding: 14px; border: 1px solid rgba(139,124,255,.24); border-radius: var(--radius); background: linear-gradient(145deg, rgba(139,124,255,.06), rgba(17,22,37,.74)); }
+.discovery-possibilities.compact { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.discovery-possibilities h2 { margin: 2px 0 0; font: 800 18px/1.15 var(--display); }
+.discovery-possibilities p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+.discovery-possibilities-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.discovery-possibility-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.discovery-possibility-card { min-width: 0; display: grid; gap: 11px; align-content: space-between; padding: 12px; border: 1px solid rgba(99,182,245,.16); border-radius: 12px; background: rgba(12,16,28,.62); }
+.discovery-possibility-card h3 { margin: 8px 0 0; font: 800 14px/1.18 var(--display); }
+.discovery-possibility-card p { font-size: 11px; line-height: 1.45; }
+.discovery-possibility-card small { color: var(--muted-2); font-size: 10px; line-height: 1.35; }
+.discovery-possibility-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.discovery-possibility-actions .soft-button { min-height: 29px; padding: 0 9px; font-size: 10px; }
 
 .calendar-toolbar { min-height: 57px; padding: 8px; display: flex; gap: 13px; align-items: center; flex-wrap: wrap; border: 1px solid var(--line); background: rgba(17, 22, 37, .72); border-radius: 13px; margin-bottom: 18px; }
 .view-switcher { display: flex; padding: 3px; border-radius: 10px; background: #0a0e18; border: 1px solid var(--line); }
@@ -840,6 +852,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
   .highlights-rail.collapsed { grid-template-columns: 1fr; }
   .signals-button { display: inline-flex; }
   .signals-board { grid-template-columns: 1fr; }
+  .discovery-possibility-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .signal-group:only-child .signal-stack { grid-template-columns: 1fr; }
   .rail-section { min-width: 0; }
   .catalog-grid { grid-template-columns: 1fr; }
@@ -899,6 +912,8 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
   .event-card { grid-template-columns: 1fr auto; padding: 12px; }
   .signal-toolbar { align-items: stretch; flex-direction: column; }
   .signal-toolbar .soft-button { width: 100%; }
+  .discovery-possibilities, .discovery-possibilities.compact, .discovery-possibilities-head { display: grid; }
+  .discovery-possibility-grid { grid-template-columns: 1fr; }
   .signal-card { grid-template-columns: 1fr; }
   .signal-action { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: 11px; }
   .hours-week { grid-template-columns: 1fr 1fr; }

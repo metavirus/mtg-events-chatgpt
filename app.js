@@ -118,6 +118,49 @@ function defaultPersonal() {
   return { favorites: {}, hidden: {}, ratings: {}, notes: {}, signalRead: {}, interested: {}, activity: [], updatesSeenAt: null };
 }
 
+const DISCOVERY_POSSIBILITIES = [
+  {
+    id: 'mtg-lgbt-commander-oc',
+    name: 'Magic The Gathering LGBT Commander Meetup',
+    area: 'Orange County',
+    why: 'Possible LGBTQ+ Commander/community lead near OC; needs a current public source before it graduates.',
+    next: 'Verify whether it is active and distinct from already-known MTG OC / GayMTG routes.',
+    query: 'Magic The Gathering LGBT Commander Meetup Orange County'
+  },
+  {
+    id: 'here-clubhouse-queer-mtg',
+    name: 'Here Clubhouse queer MTG',
+    area: 'Los Angeles',
+    why: 'Possible queer social-space MTG lead; current Magic-specific activity is still unclear.',
+    next: 'Look for a current event post, calendar row, or recurring meetup reference.',
+    query: 'Here Clubhouse queer Magic The Gathering Los Angeles'
+  },
+  {
+    id: 'topdeck-lethal',
+    name: 'Topdeck Lethal',
+    area: 'SoCal / online-adjacent',
+    why: 'Possible community/content lead that may point to real meetups or events.',
+    next: 'Confirm whether there is current Southern California in-person activity.',
+    query: 'Topdeck Lethal Magic The Gathering Los Angeles meetup'
+  },
+  {
+    id: 'lotus-guild',
+    name: 'Lotus Guild',
+    area: 'Los Angeles / SoCal',
+    why: 'Possible group name from fuzzy discovery; needs identity and current activity confirmation.',
+    next: 'Find a current official/social route and decide if it belongs in Communities.',
+    query: 'Lotus Guild Magic The Gathering Los Angeles'
+  },
+  {
+    id: 'geeks-out-la',
+    name: 'Geeks OUT L.A.',
+    area: 'Los Angeles',
+    why: 'Relevant queer geek community lead; MTG-specific usefulness is unproven.',
+    next: 'Check whether any current tabletop/MTG event exists before promoting.',
+    query: 'Geeks OUT Los Angeles Magic The Gathering'
+  }
+];
+
 function savePersonal(action) {
   localStorage.setItem('mana-radar-personal', JSON.stringify(state.personal));
   if (action) {
@@ -1102,6 +1145,8 @@ function handleAction(action, element) {
   if (action === 'open-artifact') return openArtifactPreview(element.dataset.artifactId);
   if (action === 'mark-signal-read') return setSignalRead(element.dataset.signalId, true);
   if (action === 'restore-signal') return setSignalRead(element.dataset.signalId, false);
+  if (action === 'dismiss-discovery-possibility') return setDiscoveryPossibilityHidden(element.dataset.possibilityId, true);
+  if (action === 'restore-discovery-possibilities') return restoreDiscoveryPossibilities();
   if (action === 'dismiss-drawer') return closeDrawer();
   if (action === 'toggle-place-hidden') return toggleHidden(`place:${element.dataset.placeId}`);
   if (action === 'toggle-event-hidden') {
@@ -1378,7 +1423,7 @@ function renderSignals() {
     </div>`;
   }
 
-  container.innerHTML = `<div class="signals-board">
+  container.innerHTML = `${discoveryPossibilitiesSection()}<div class="signals-board">
       ${orderedGroups}
     </div>`;
 }
@@ -1520,6 +1565,79 @@ function signalCard(signal) {
 
 function isSignalRead(signalId) {
   return !!state.personal.signalRead?.[signalId];
+}
+
+function discoveryPossibilityKey(id) {
+  return `discovery:${id}`;
+}
+
+function activeDiscoveryPossibilities() {
+  return DISCOVERY_POSSIBILITIES.filter((item) => !state.personal.hidden?.[discoveryPossibilityKey(item.id)]);
+}
+
+function discoverySearchUrl(item) {
+  return `https://www.google.com/search?q=${encodeURIComponent(item.query || item.name)}`;
+}
+
+function setDiscoveryPossibilityHidden(id, hidden) {
+  const item = DISCOVERY_POSSIBILITIES.find((possibility) => possibility.id === id);
+  if (!item) return;
+  const key = discoveryPossibilityKey(id);
+  if (hidden) {
+    state.personal.hidden[key] = new Date().toISOString();
+  } else {
+    delete state.personal.hidden[key];
+  }
+  savePersonal({ type: 'discovery', label: `${hidden ? 'Dismissed' : 'Restored'} discovery possibility: ${item.name}` });
+  renderSignals();
+  toast(hidden ? 'Possibility tucked away' : 'Possibility restored');
+}
+
+function restoreDiscoveryPossibilities() {
+  DISCOVERY_POSSIBILITIES.forEach((item) => delete state.personal.hidden[discoveryPossibilityKey(item.id)]);
+  savePersonal({ type: 'discovery', label: 'Restored discovery possibilities' });
+  renderSignals();
+  toast('Discovery possibilities restored');
+}
+
+function discoveryPossibilitiesSection() {
+  const active = activeDiscoveryPossibilities();
+  const hiddenCount = DISCOVERY_POSSIBILITIES.length - active.length;
+  if (!active.length && !hiddenCount) return '';
+  if (!active.length) {
+    return `<section class="discovery-possibilities compact">
+      <div>
+        <p class="eyebrow">Possibilities</p>
+        <h2>Discovery leads are tucked away</h2>
+        <p>Nothing questionable is currently asking for attention.</p>
+      </div>
+      <button class="soft-button" data-action="restore-discovery-possibilities">Restore leads</button>
+    </section>`;
+  }
+  return `<section class="discovery-possibilities">
+    <div class="discovery-possibilities-head">
+      <div>
+        <p class="eyebrow">Possibly worth checking</p>
+        <h2>${active.length} fuzzy community lead${active.length === 1 ? '' : 's'}</h2>
+        <p>Not canonical yet. These are lightweight breadcrumbs for a later full pass, not urgent Signals.</p>
+      </div>
+      ${hiddenCount ? `<button class="soft-button" data-action="restore-discovery-possibilities">Restore ${hiddenCount} hidden</button>` : ''}
+    </div>
+    <div class="discovery-possibility-grid">
+      ${active.map((item) => `<article class="discovery-possibility-card">
+        <div>
+          <span class="status-chip violet">${escapeHtml(item.area)}</span>
+          <h3>${escapeHtml(item.name)}</h3>
+          <p>${escapeHtml(item.why)}</p>
+          <small>${escapeHtml(item.next)}</small>
+        </div>
+        <div class="discovery-possibility-actions">
+          <a class="soft-button" href="${escapeHtml(discoverySearchUrl(item))}" target="_blank" rel="noreferrer">Search ↗</a>
+          <button class="soft-button" data-action="dismiss-discovery-possibility" data-possibility-id="${escapeHtml(item.id)}">Hide</button>
+        </div>
+      </article>`).join('')}
+    </div>
+  </section>`;
 }
 
 function signalRelatedTarget(signal) {
