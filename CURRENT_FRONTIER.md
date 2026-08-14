@@ -98,6 +98,12 @@ the exact durable state and next action, then hand off from that checkpoint.
   event-opportunity Signal, live LAGS drawer, Events search result, and
   idempotent adapter replay all passed on August 14. Do not rediscover or
   re-promote this event.
+- Legendary Creature Club bounded Discord survey completed on August 14. The
+  safe UI-native path read `#events`, `#lfg`, and `#meet-ups`; current `#events`
+  and `#lfg` were quiet, `#meet-ups` contained stale-but-real same-night meetup
+  coordination, and the guild Events surface is now an exact
+  `needs_deeper_replay` repair item because no unique Events control was
+  observed. No current Signal/Event was created.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 - Private source-image evidence is operational for uncommon cases where the

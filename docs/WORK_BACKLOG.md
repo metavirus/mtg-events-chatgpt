@@ -867,6 +867,12 @@ claims without reopening the whole packet.
   Current Sources content already shows mapped routes, last checks, and the
   existing inspected/needs-context treatment without inventing unavailable
   scanner fields.
+- Legendary Creature Club bounded Discord survey completed on 2026-08-14:
+  `#events` and `#lfg` were quiet for current planning, `#meet-ups` proved a
+  stale but real same-night meetup/location coordination thread, and the guild
+  Events surface failed closed because no unique Events control was observed.
+  Watchlist state and community surface coverage were updated; no current
+  Signal/Event was created.
 - Completed: captured the August 8 MTG OC post-meetup acknowledgment/photo as a
   source-grounded personal connection in live Supabase. It links MTG OC,
   the August 8 Collectors Lounge gathering context, and the Discord
