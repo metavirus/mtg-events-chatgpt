@@ -63,11 +63,13 @@ Use it for:
      exact date/time/venue-grade source evidence was not recovered in the
      bounded search, so do not invent or promote that event until the exact
      listing is inspected.
-  3. `GayMTG`: canonical reviewed community now created as its own promising
-     LGBTQ+/allies Magic community.
-     Primary known source is `https://www.meetup.com/gaymtg/`; the page showed
-     recent 2026 Commander/prerelease activity and should receive a full source
-     hydration pass before closure.
+  3. `GayMTG`: completed. The canonical reviewed LGBTQ+/allies Magic community
+     has a full bounded main pass. Its verified route is
+     `https://www.meetup.com/gaymtg/`; the current page showed 128 members,
+     13 past events, and recent 2026 Commander/prerelease activity, but no
+     future dated gathering. A bounded fuzzy hydration search found no other
+     reliable official social or Discord route. Weekly Meetup monitoring is the
+     steady-state path; do not reopen holistic research without a new lead.
   4. `Sanctuary MTG`: canonical reviewed community now created as its own active
      social Magic community. Known
      routes are `https://www.instagram.com/sanctuarymtg/` and
