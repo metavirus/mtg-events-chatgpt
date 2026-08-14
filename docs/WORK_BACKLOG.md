@@ -85,10 +85,16 @@ Use it for:
      is attached to the existing LAGS-owned event and Signal. `#announcements`
      revealed a new LAGS Discord event, Gaymer Night at WERK Long Beach on
      August 20, 2026 at 8 PM, with a Discord event link and Instagram cross-post.
+     Continuity repair completed August 14: the event is now canonically
+     promoted through the community-event adapter from the exact official LAGS
+     Instagram post. LAGS owns the event; WERK Long Beach remains host-location
+     text. The confirmed Aug 20 8 PM occurrence, exact source link, free entry,
+     and event-opportunity Signal all passed live readback and idempotent replay.
      `#general` revealed a lower-confidence lead for Tuesday MTG at Witch's
      Cottage in North Hollywood. Promote these only via the community-event
      adapter: the group owns the event, and the bar/location is host-location
-     context unless separately promoted as a store/community.
+     context unless separately promoted as a store/community. Do not re-promote
+     the WERK event.
   3. `GayMTG`: completed. The canonical reviewed LGBTQ+/allies Magic community
      has a full bounded main pass. Its verified route is
      `https://www.meetup.com/gaymtg/`; the current page showed 128 members,

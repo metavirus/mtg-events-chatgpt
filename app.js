@@ -931,7 +931,7 @@ function normalizeTime(value) {
 }
 
 function occurrenceConfidence(evidenceState, fallback) {
-  if (/confirmed|multi|strong/i.test(evidenceState || '')) return 'high';
+  if (/confirmed|multi|strong|corroborated/i.test(evidenceState || '')) return 'high';
   return fallback || 'medium';
 }
 
@@ -2149,6 +2149,7 @@ function eventCard(event, compact = false, options = {}) {
 }
 
 function formatClass(event) {
+  if (/community social|community gaming|gaymer night/i.test(`${event.title} ${event.format} ${event.eventType}`)) return 'format-community';
   if (/prerelease|sealed|limited/i.test(`${event.format} ${event.eventType}`)) return 'format-limited';
   if (/draft/i.test(`${event.format} ${event.eventType}`)) return 'format-draft';
   if (isCompetitive(event) || isHighPowerCommander(event)) return 'format-competitive';
@@ -2169,6 +2170,7 @@ function compactEventCue(event, fit, evidence) {
 
 function formatShort(event) {
   const text = `${event.title || ''} ${event.format || ''} ${event.eventType || ''}`;
+  if (/community social|community gaming|gaymer night/i.test(text)) return 'SOC';
   if (/prerelease/i.test(text)) return 'PR';
   if (/sealed|limited/i.test(text)) return 'SE';
   if (/draft/i.test(text)) return 'DR';

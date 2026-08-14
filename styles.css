@@ -230,6 +230,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .format-limited { color: var(--amber); background: rgba(243,183,95,.11); border-color: rgba(243,183,95,.35); }
 .format-draft { color: var(--sky); background: rgba(99,182,245,.11); border-color: rgba(99,182,245,.35); }
 .format-competitive { color: var(--coral); background: rgba(241,119,120,.11); border-color: rgba(241,119,120,.35); }
+.format-community { color: var(--mint); background: rgba(84,212,167,.11); border-color: rgba(84,212,167,.35); }
 .place-inline { border: 0; padding: 0; background: none; color: #b7bfd2; font-size: 11px; cursor: pointer; margin: 5px 0 7px; }
 .place-inline:hover { color: var(--sky); }
 .place-inline span { color: var(--muted-2); }

@@ -91,6 +91,12 @@ the exact durable state and next action, then hand off from that checkpoint.
   closure is to capture the August 8 MTG OC post-meetup acknowledgment/photo as
   supported personal social evidence, then verify its connection card without
   broadening Discord scope.
+- LAGS Gaymer Night at WERK Long Beach is now a canonical LAGS-owned community
+  event for Thursday, August 20, 2026 at 8 PM. WERK is host-location text only.
+  The exact official LAGS Instagram post, confirmed occurrence, free entry,
+  event-opportunity Signal, live LAGS drawer, Events search result, and
+  idempotent adapter replay all passed on August 14. Do not rediscover or
+  re-promote this event.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 - Private source-image evidence is operational for uncommon cases where the
