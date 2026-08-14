@@ -104,6 +104,11 @@ Use it for:
      Corroborate each through a second fuzzy source search. Stale/2025-only
      groups should remain clearly labeled questionable possibilities rather
      than disappearing or becoming full Signals.
+     These five leads are now loaded into `public.community_discovery_candidates`
+     as unresolved `source_lead` coordination items. That queue is the source
+     of truth for fuzzy community leads: promote only after a bounded
+     corroboration search, then run a real main pass; otherwise mark the item
+     deferred or rejected instead of letting it re-enter broad discovery.
   Canonical source attachment readback: MTG OC has 11 mapped sources, LAGS 3,
   GayMTG 1, and Sanctuary MTG 2. The later LAGS event promotion supersedes the
   earlier source-only note; no other community event was guessed. Remaining

@@ -40,8 +40,12 @@ the exact durable state and next action, then hand off from that checkpoint.
   `event_proposal` because that is the allowed event-action enum even though
   the app opens the event. Do not re-run this discovery batch or re-promote
   these records; only fix exact app/display/readback defects if the live UI
-  disagrees. The remaining discovery product follow-up is the compact Home
-  possibilities lane for corroborated but uncertain groups.
+  disagrees. Lower-confidence community possibilities are now parked in
+  `public.community_discovery_candidates`, a view over `coordination_items`.
+  It currently holds five unresolved fuzzy leads. Do not main-pass them until
+  one bounded corroboration search promotes them. The remaining discovery
+  product follow-up is the compact Home possibilities lane for corroborated but
+  uncertain groups.
 
 - The personal-use app reads canonical operational data from Supabase.
 - Signed-in favorites, deprioritization, and private notes persist through
