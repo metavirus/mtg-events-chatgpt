@@ -80,6 +80,17 @@ the exact durable state and next action, then hand off from that checkpoint.
   meetups from host-venue programming: its confirmed August 2 team-sealed
   meetup is an MTG OC event hosted at Card Addiction, while its tentative
   Collector's Lounge prerelease meetup remains a follow-up Signal only.
+- The first Communities-profile redesign slice is implemented locally in
+  `app.js` and `styles.css`. Community cards now distinguish new activity,
+  quiet-but-monitored, uncertain coverage, and not-yet-assessed states while
+  retaining upcoming-event, personal-connection, and known-host context. The
+  detail drawer now has Overview, Events & plans, Your connections, Activity,
+  and Sources tabs. Live local proof passed for MTG OC, Legendary Creature
+  Club, and LAGS; LAGS renders as organizer of Magic The GAYthering with
+  Precinct DTLA retained as host-location text. The next bounded product/data
+  closure is to capture the August 8 MTG OC post-meetup acknowledgment/photo as
+  supported personal social evidence, then verify its connection card without
+  broadening Discord scope.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 - Private source-image evidence is operational for uncommon cases where the

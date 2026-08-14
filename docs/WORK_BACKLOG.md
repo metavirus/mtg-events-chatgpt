@@ -846,15 +846,25 @@ claims without reopening the whole packet.
 - Extend the relevant-chatter proof when a direct non-meetup question such as
   the Finch and Sparrow mention is captured canonically; it should rank below
   meetup coordination but remain visible and clickable.
-- Make the community detail drawer more useful with best recent signals,
-  activity level, linked venues/geography, and next suggested action.
-- Add a lightweight audit view inside the community detail drawer for Discord
-  scanner posture. It should expose the mapped channels, safe access mode,
-  expected signal types, last checked/last seen cursor, latest run result,
-  monitoring cadence, and the scanner's current treatment of each channel
-  (`read regularly`, `sample if active`, `reference/stale`, `ignored`, or
-  `blocked`). This lets the user spot mistakes like treating `general` as
-  useless just because of its name, or over-reading a stale rules channel.
+- Community cards and the detail drawer now expose useful activity, monitoring
+  state, upcoming community-owned events, personal connections, known host
+  locations, curated activity, and mapped sources. Quiet-but-monitored is an
+  explicit healthy state; last successful check stays separate from last
+  meaningful activity.
+- Community event rows explicitly separate `Organized by` from `Hosted at`.
+  A park, bar, game store, home, or unpromoted location-text host never becomes
+  event owner merely because the community gathers there. The local LAGS proof
+  renders Magic The GAYthering as LAGS-owned and Precinct DTLA as location text.
+- Complete the richer Discord audit layer after the bounded UI proof: expose
+  safe access mode, expected signal types, last-seen cursor, latest run result,
+  cadence, and scanner treatment when those fields are available to the app.
+  Current Sources content already shows mapped routes, last checks, and the
+  existing inspected/needs-context treatment without inventing unavailable
+  scanner fields.
+- Capture and display the August 8 MTG OC post-meetup acknowledgment/photo as a
+  source-grounded personal connection. It should link the community, gathering,
+  and Collectors Lounge host context without facial identification or inferred
+  relationships, and should remain useful through later quiet periods.
 - Consider a Communities-page async request box for instructions like `watch
   this server for Saturday commander meetup chatter`.
 

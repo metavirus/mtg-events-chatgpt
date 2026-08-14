@@ -90,6 +90,8 @@ const state = {
   selectedPlaceId: null,
   selectedPlaceWasAuto: true,
   selectedPlaceTab: 'overview',
+  selectedCommunityId: null,
+  selectedCommunityTab: 'overview',
   communitySurfaceFilter: 'all',
   placeFilter: 'all',
   placeSort: 'best',
@@ -1015,6 +1017,13 @@ function handleClick(event) {
   if (placeTab) {
     state.selectedPlaceTab = placeTab.dataset.placeTab;
     renderPlaceDetail(store(state.selectedPlaceId));
+    return;
+  }
+
+  const communityTab = event.target.closest('[data-community-tab]');
+  if (communityTab) {
+    state.selectedCommunityTab = communityTab.dataset.communityTab;
+    openCommunity(state.selectedCommunityId, true);
     return;
   }
 
@@ -2877,12 +2886,28 @@ function communityNetworkSection(hubs) {
 function communityNetworkCard(hub) {
   const favorite = isCommunityHubFollowed(hub);
   const sourceUrl = hub.primarySource?.url || '';
+  const profile = communityProfileData(hub.community);
   return `<article class="community-network-card">
     <div class="community-network-head"><span class="community-symbol small">${communitySurfaceIcon('Community')}</span><div><strong>${escapeHtml(hub.name)}</strong><small>${escapeHtml(hub.linkedLabel)}</small></div><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${escapeHtml(hub.favoriteKey)}" aria-label="${favorite ? 'Unfollow' : 'Follow'} ${escapeHtml(hub.name)}">${heartIcon()}</button></div>
-    <p>${escapeHtml(truncate(hub.community.summary || hub.usefulness, 175))}</p>
-    ${hub.latestSignal ? `<button class="community-network-finding" data-action="open-signal" data-signal-id="${escapeHtml(hub.latestSignal.id)}"><span>Latest</span>${escapeHtml(hub.latestSignal.summary)} →</button>` : ''}
+    <div class="community-card-status"><span class="status-chip ${profile.monitoring.tone}">${escapeHtml(profile.monitoring.label)}</span><small>${escapeHtml(profile.monitoring.detail)}</small></div>
+    <p>${escapeHtml(communityUsefulness(hub.community))}</p>
+    ${communityCardHighlight(profile)}
+    <div class="community-card-counts"><span><strong>${profile.upcoming.length}</strong> upcoming</span><span><strong>${profile.connections.length}</strong> connection${profile.connections.length === 1 ? '' : 's'}</span><span><strong>${profile.locations.length}</strong> host${profile.locations.length === 1 ? '' : 's'}</span></div>
     <div class="community-network-actions">${sourceUrl ? `<a class="soft-button" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">Open Discord ↗</a>` : ''}<button class="soft-button" data-community-id="${escapeHtml(hub.community.id)}">Details</button></div>
   </article>`;
+}
+
+function communityCardHighlight(profile) {
+  const event = profile.upcoming[0];
+  if (event) {
+    const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+    return `<button class="community-network-finding" data-event-id="${escapeHtml(event.id)}" ${occurrence ? `data-date="${dateKey(occurrence)}"` : ''}><span>Next community event</span>${escapeHtml(event.title)}${communityHostLabel(event) ? ` · ${escapeHtml(communityHostLabel(event))}` : ''} →</button>`;
+  }
+  const connection = profile.connections[0];
+  if (connection) return `<button class="community-network-finding social" data-action="open-signal" data-signal-id="${escapeHtml(connection.id)}"><span>Your connection</span>${escapeHtml(connection.summary)} →</button>`;
+  const signal = profile.signals[0];
+  if (signal) return `<button class="community-network-finding" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}"><span>Last useful activity</span>${escapeHtml(signal.summary)} →</button>`;
+  return `<div class="community-network-finding quiet"><span>No recent useful activity</span>Monitoring state is shown above; silence does not remove this community from your radar.</div>`;
 }
 
 function recentlyActiveCommunityChannels(surfaces) {
@@ -3558,11 +3583,126 @@ function openPlaceDrawer(id) {
   openDrawer(`<div class="drawer-kicker"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span></div><h1 id="drawerTitle">${escapeHtml(place.name)}</h1><p class="drawer-lead">${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p><div class="drawer-action-grid"><button class="primary-button" data-place-id="${place.id}">Open full profile</button><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a></div><section class="drawer-section"><p class="eyebrow">Analyst synthesis</p><h2>Why it’s on the radar</h2><p>${escapeHtml(place.assessmentNotes)}</p></section><section class="drawer-section"><p class="eyebrow">Known schedule</p><h2>${events.length} event series</h2><div class="series-list">${events.map(seriesRow).join('') || '<p>No normalized series yet.</p>'}</div></section>`);
 }
 
-function openCommunity(id) {
+function communityProfileData(community) {
+  const signals = DATA.signals.filter((signal) => {
+    if (['dismissed', 'stale'].includes(signal.status)) return false;
+    return (signal.relatedEntityType === 'community' && signal.relatedEntityId === community.id)
+      || (community.sourceIds || []).includes(signal.sourceId);
+  }).sort((a, b) => String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt)));
+  const events = uniqueEventSeries(DATA.events.filter((event) => event.communityId === community.id));
+  const upcoming = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 56)), false)
+    .filter((event) => event.communityId === community.id)
+    .sort((a, b) => a.occurrenceDate - b.occurrenceDate);
+  const recent = buildOccurrences(startOfDay(addDays(new Date(), -56)), endOfDay(addDays(new Date(), -1)), false)
+    .filter((event) => event.communityId === community.id)
+    .sort((a, b) => b.occurrenceDate - a.occurrenceDate);
+  const sources = (community.sourceIds || []).map(source).filter(Boolean);
+  const surfaces = communitySurfaces().filter((surface) => surface.community?.id === community.id);
+  const connections = signals.filter(isPersonalCommunityConnection);
+  const locations = [...new Map(DATA.events.filter((event) => event.communityId === community.id).map((event) => {
+    const place = store(event.storeId);
+    if (place) return [`place:${place.id}`, { id: place.id, name: place.name, place }];
+    const hostText = communityHostName(event);
+    if (hostText) return [`text:${hostText.toLowerCase()}`, { id: '', name: hostText, place: null }];
+    return null;
+  }).filter(Boolean)).values()];
+  return { community, signals, events, upcoming, recent, sources, surfaces, connections, locations, monitoring: communityMonitoringState(sources, signals) };
+}
+
+function isPersonalCommunityConnection(signal) {
+  const text = `${signal.summary || ''} ${signal.details || ''} ${signal.suggestedAction || ''}`.toLowerCase();
+  const personal = signal.category === 'mention' || /\bmetavirus\b|\byou\b/.test(text);
+  const social = /had fun|great time|good time|nice meeting|meet you|played with|photo|picture|glad (?:you|we)|thanks for (?:coming|joining)|see you again/.test(text);
+  return personal && (social || signal.category === 'mention');
+}
+
+function communityMonitoringState(sources, signals) {
+  const dates = sources.map((item) => item.lastChecked).filter(Boolean).map((value) => new Date(value)).filter((value) => !Number.isNaN(value.getTime()));
+  const lastChecked = dates.sort((a, b) => b - a)[0] || null;
+  const current = lastChecked && (Date.now() - lastChecked.getTime()) <= 14 * 24 * 60 * 60 * 1000;
+  const usefulDate = signals.map((signal) => new Date(signal.observedAt || signal.capturedAt || 0)).filter((value) => !Number.isNaN(value.getTime())).sort((a, b) => b - a)[0] || null;
+  const recent = usefulDate && (Date.now() - usefulDate.getTime()) <= 14 * 24 * 60 * 60 * 1000;
+  if (!sources.length) return { label: 'Not yet assessed', tone: 'amber', detail: 'No monitored route is mapped yet', lastChecked, usefulDate };
+  if (!current) return { label: 'Coverage uncertain', tone: 'amber', detail: lastChecked ? `Last checked ${formatFreshnessDate(lastChecked)}` : 'No successful check recorded', lastChecked, usefulDate };
+  if (recent) return { label: 'New activity', tone: 'mint', detail: `Useful activity ${formatFreshnessDate(usefulDate)}`, lastChecked, usefulDate };
+  return { label: 'Quiet but monitored', tone: 'sky', detail: `Checked ${formatFreshnessDate(lastChecked)}`, lastChecked, usefulDate };
+}
+
+function communityHostLabel(event) {
+  const location = communityHostName(event);
+  return location ? `at ${location}` : '';
+}
+
+function communityHostName(event) {
+  const place = store(event.storeId);
+  if (place?.name) return place.name;
+  if (event.physicalLocation) return event.physicalLocation;
+  const explicitHost = String(event.details || '').match(/\b(?:hosted|held|meeting) at ([^,.;\n]+)/i);
+  return explicitHost?.[1]?.trim() || '';
+}
+
+function communityOwnedEventRow(event, community) {
+  const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+  const host = communityHostName(event);
+  const when = occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : 'Date not normalized';
+  return `<button class="community-event-row" data-event-id="${escapeHtml(event.id)}" ${occurrence ? `data-date="${dateKey(occurrence)}"` : ''}><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(when)} · Organized by ${escapeHtml(community.name)}${host ? ` · Hosted at ${escapeHtml(host)}` : ''}</small></span><span class="status-chip ${event.confidence === 'high' ? 'mint' : 'amber'}">${escapeHtml(event.confidence || 'unknown')}</span></button>`;
+}
+
+function communityProfileTabs(profile) {
+  const tabs = [
+    ['overview', 'Overview', ''],
+    ['events', 'Events & plans', profile.upcoming.length],
+    ['connections', 'Your connections', profile.connections.length],
+    ['activity', 'Activity', profile.signals.length],
+    ['sources', 'Sources', profile.sources.length]
+  ];
+  return `<div class="community-detail-tabs" role="tablist" aria-label="Community details">${tabs.map(([id, label, count]) => `<button class="${state.selectedCommunityTab === id ? 'active' : ''}" data-community-tab="${id}" role="tab" aria-selected="${state.selectedCommunityTab === id}">${label}${count !== '' ? ` <span>${count}</span>` : ''}</button>`).join('')}</div>`;
+}
+
+function communityProfileTabContent(profile) {
+  const { community, monitoring } = profile;
+  if (state.selectedCommunityTab === 'events') {
+    return `<section class="drawer-section"><p class="eyebrow">Confirmed events</p><h2>Organized by ${escapeHtml(community.name)}</h2><p>Host locations are logistics, not ownership. Community-owned events remain here whether they meet at a store, bar, park, home, or another location.</p><div class="series-list">${profile.upcoming.length ? profile.upcoming.slice(0, 20).map((event) => communityOwnedEventRow(event, community)).join('') : '<p class="muted-copy">No confirmed upcoming community-owned events in the next eight weeks.</p>'}</div></section><section class="drawer-section"><p class="eyebrow">Event series</p><h2>${profile.events.length} normalized record${profile.events.length === 1 ? '' : 's'}</h2><div class="series-list">${profile.events.length ? profile.events.map((event) => communityOwnedEventRow(event, community)).join('') : '<p class="muted-copy">No normalized community-owned series yet. Tentative Discord plans can remain signals until their logistics are stable.</p>'}</div></section><section class="drawer-section"><p class="eyebrow">Recent gatherings</p><h2>Continuity after the date passes</h2><div class="series-list">${profile.recent.length ? profile.recent.slice(0, 8).map((event) => communityOwnedEventRow(event, community)).join('') : '<p class="muted-copy">No recent normalized gathering is linked yet.</p>'}</div></section>`;
+  }
+  if (state.selectedCommunityTab === 'connections') {
+    return `<section class="drawer-section"><p class="eyebrow coral">Your connections</p><h2>Moments worth remembering</h2><p>Direct invitations, personal mentions, and positive post-meetup follow-ups live here so a quiet Discord does not erase the social continuity you built.</p><div class="community-connection-list">${profile.connections.length ? profile.connections.map(communityConnectionCard).join('') : '<div class="community-empty-memory"><strong>No personal connection has been captured yet</strong><p>This does not mean none happened. New direct mentions and post-meetup acknowledgments will appear here when supported by monitored evidence.</p></div>'}</div></section>${noteComposer(`community:${community.id}`, 'Who did you meet, and what made the gathering worth remembering?')}`;
+  }
+  if (state.selectedCommunityTab === 'activity') {
+    return `<section class="drawer-section"><p class="eyebrow sky">Meaningful activity</p><h2>${profile.signals.length} useful signal${profile.signals.length === 1 ? '' : 's'}</h2><p>This is a curated timeline, not a raw Discord feed. Empty scans and routine chatter stay out.</p><div class="community-activity-list">${profile.signals.length ? profile.signals.slice(0, 20).map(communityActivityRow).join('') : '<p class="muted-copy">No useful activity is currently captured. Monitoring silence is normal.</p>'}</div></section>`;
+  }
+  if (state.selectedCommunityTab === 'sources') {
+    return `<section class="drawer-section"><p class="eyebrow">Monitoring coverage</p><h2>${escapeHtml(monitoring.label)}</h2><p>${escapeHtml(monitoring.detail)}. Last meaningful activity and last successful check are tracked separately so quiet periods remain trustworthy.</p><div class="source-list">${profile.sources.map(sourceRow).join('') || '<p class="muted-copy">No source mapping is available.</p>'}</div></section><section class="drawer-section"><details class="monitoring-details"><summary>Monitoring details</summary><div class="community-surface-list">${profile.surfaces.length ? profile.surfaces.map(communitySurfaceCard).join('') : '<p class="muted-copy">No classified community surfaces are available yet.</p>'}</div></details></section>`;
+  }
+  return `<section class="drawer-section community-profile-snapshot"><div class="community-facts"><div><span>Monitoring</span><strong>${escapeHtml(monitoring.label)}</strong></div><div><span>Upcoming</span><strong>${profile.upcoming.length} confirmed</strong></div><div><span>Known hosts</span><strong>${profile.locations.length}</strong></div></div>${monitoring.usefulDate ? `<p class="community-last-meaningful">Last meaningful activity ${escapeHtml(formatFreshnessDate(monitoring.usefulDate))}</p>` : '<p class="community-last-meaningful">No meaningful activity date is captured yet.</p>'}</section><section class="drawer-section"><p class="eyebrow">Current synthesis</p><h2>Why this group matters</h2><p>${escapeHtml(community.summary)}</p></section>${communityOverviewHighlight(profile)}<section class="drawer-section"><p class="eyebrow">Geography and hosts</p><h2>${profile.locations.length ? `${profile.locations.length} known gathering location${profile.locations.length === 1 ? '' : 's'}` : 'Host relationships still developing'}</h2><div class="community-host-list">${profile.locations.map((location) => location.place ? `<button class="meta-chip link-chip" data-place-id="${escapeHtml(location.id)}" data-place-mode="drawer">${escapeHtml(location.name)}</button>` : `<span class="meta-chip">${escapeHtml(location.name)} · location text</span>`).join('') || '<p class="muted-copy">A community can organize gatherings at stores, parks, bars, homes, or location text that has not become a venue record.</p>'}</div></section><section class="drawer-section"><p class="eyebrow">Open research question</p><h2>What would make this profile more useful</h2><p>${escapeHtml(community.nextQuestion)}</p></section>${noteComposer(`community:${community.id}`, 'Add a personal note about this community...')}`;
+}
+
+function communityOverviewHighlight(profile) {
+  const connection = profile.connections[0];
+  if (connection) return `<section class="drawer-section"><p class="eyebrow coral">Your latest connection</p>${communityConnectionCard(connection)}</section>`;
+  const event = profile.upcoming[0];
+  if (event) return `<section class="drawer-section"><p class="eyebrow mint">Next community event</p><div class="series-list">${communityOwnedEventRow(event, profile.community)}</div></section>`;
+  return `<section class="drawer-section"><p class="eyebrow sky">Current pulse</p><h2>No new useful activity</h2><p>That is a normal state. This profile remains available while monitoring watches for the next plan, invitation, event change, or social follow-up.</p></section>`;
+}
+
+function communityConnectionCard(signal) {
+  const observed = signal.observedAt || signal.capturedAt;
+  const src = source(signal.sourceId);
+  const url = signal.evidenceUrl || src?.url || '';
+  return `<article class="community-connection-card"><div><span class="status-chip coral">Personal connection</span><small>${escapeHtml(formatFreshnessDate(observed))}</small></div><h3>${escapeHtml(signal.summary)}</h3><p>${escapeHtml(signal.details || signal.suggestedAction || '')}</p><div>${url ? `<a class="soft-button" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">View conversation ↗</a>` : ''}<button class="soft-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Evidence</button></div></article>`;
+}
+
+function communityActivityRow(signal) {
+  return `<button class="community-activity-row" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}"><span class="status-chip ${signal.category === 'mention' ? 'coral' : signal.category === 'event_opportunity' ? 'mint' : 'sky'}">${escapeHtml(signal.categoryLabel || signal.category || 'Activity')}</span><span><strong>${escapeHtml(signal.summary)}</strong><small>${escapeHtml(formatFreshnessDate(signal.observedAt || signal.capturedAt))}</small></span><span>→</span></button>`;
+}
+
+function openCommunity(id, preserveTab = false) {
   const community = COMMUNITY_SEED.find((item) => item.id === id);
   if (!community) return;
+  if (!preserveTab || state.selectedCommunityId !== id) state.selectedCommunityTab = 'overview';
+  state.selectedCommunityId = id;
   const favorite = state.personal.favorites[`community:${id}`];
-  openDrawer(`<div class="drawer-kicker"><span class="community-symbol small">◎</span><span class="status-chip ${community.status === 'partial' ? 'sky' : 'amber'}">${community.status === 'partial' ? 'Partial profile' : 'Discovery lead'}</span><span class="status-chip slate">Community record</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${id}" aria-label="${favorite ? 'Remove community from' : 'Add community to'} favorites" title="Favorite community">${heartIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(community.name)}</h1><p class="drawer-lead">${escapeHtml(community.region)}</p><section class="drawer-section"><p class="eyebrow">Current synthesis</p><h2>Why this group matters</h2><p>${escapeHtml(community.summary)}</p></section><section class="drawer-section"><p class="eyebrow">How to use this</p><h2>${escapeHtml(community.signal)}</h2><p>Community records help find people, organizers, and recurring social patterns. They stay separate from store records so a Discord or meetup group does not accidentally become a fake venue.</p></section><section class="drawer-section"><p class="eyebrow">Open research question</p><h2>What we still need</h2><p>${escapeHtml(community.nextQuestion)}</p></section>${noteComposer(`community:${id}`, 'Add a personal note about this community...')}`);
+  const profile = communityProfileData(community);
+  openDrawer(`<div class="drawer-kicker"><span class="community-symbol small">◎</span><span class="status-chip ${profile.monitoring.tone}">${escapeHtml(profile.monitoring.label)}</span><span class="status-chip slate">Community record</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${id}" aria-label="${favorite ? 'Remove community from' : 'Add community to'} favorites" title="Favorite community">${heartIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(community.name)}</h1><p class="drawer-lead">${escapeHtml(community.region)}${community.formats?.length ? ` · ${escapeHtml(community.formats.join(' · '))}` : ''}</p>${communityProfileTabs(profile)}<div class="community-profile-content">${communityProfileTabContent(profile)}</div>`);
 }
 
 async function sendMagicLink(inputId) {
