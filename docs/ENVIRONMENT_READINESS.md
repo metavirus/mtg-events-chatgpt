@@ -103,6 +103,32 @@ python -m venv .venv
 Do not run project scripts through an arbitrary global `python`, `python3`, or
 `py` interpreter.
 
+### Browser/UI verification lane
+
+The baseline readiness gate now includes an app-owned Playwright smoke test:
+
+```powershell
+node scripts/verify_app_ui.mjs --scenario browser-smoke
+```
+
+The gate runs this through the bundled Codex Node runtime when available and
+passes the bundled `node_modules` path explicitly. This is the stable readiness
+proof for UI verification. The Codex in-app browser bridge is useful when it is
+healthy, but it is not the only acceptable browser lane and it must not become a
+token sink. If the Codex browser bridge returns no observable output, switch
+immediately to this verifier rather than retrying the bridge repeatedly.
+
+For live public-app checks, use a targeted scenario instead of broad clicking:
+
+```powershell
+node scripts/verify_app_ui.mjs --scenario public-signals-smoke
+node scripts/verify_app_ui.mjs --scenario lags-signal-event-link
+```
+
+Any task that depends on browser/UI observation is not ready until either the
+Codex browser bridge or this Playwright verifier can launch a browser, inspect
+visible DOM state, and report an observable result.
+
 ### WPN snapshot
 
 - Canonical routine crawler handoff: `work/wpn-cache/latest/` (git ignored).

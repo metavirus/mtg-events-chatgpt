@@ -8,10 +8,12 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $python = Join-Path $repoRoot ".venv\Scripts\python.exe"
 $metadata = Join-Path $repoRoot "output\wizards\metadata.json"
 $schemaSql = Join-Path $PSScriptRoot "inspect_supabase_schema.sql"
+$uiVerifier = Join-Path $PSScriptRoot "verify_app_ui.mjs"
 $projectRef = "pyvftzsodzwfqncjbmbc"
 $supabaseCliHome = Join-Path $repoRoot ".codex-supabase-home"
 $localSecretDir = Join-Path $repoRoot ".codex-secrets"
 $localDbUrlPath = Join-Path $localSecretDir "supabase-db-url.txt"
+$realUserProfile = $env:USERPROFILE
 $failed = [System.Collections.Generic.List[string]]::new()
 $wpnNeedsRefresh = $false
 $env:SUPABASE_TELEMETRY_DISABLED = "1"
@@ -108,6 +110,47 @@ if (-not (Test-Path $python)) {
         Pass "Blessed runtime and crawler/timezone dependencies"
     } catch {
         Fail "Blessed runtime dependencies are incomplete"
+    }
+}
+
+$nodeCandidates = @(
+    (Join-Path $realUserProfile ".cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe"),
+    "node"
+)
+$nodeForUi = $null
+foreach ($candidate in $nodeCandidates) {
+    try {
+        if ($candidate -eq "node") {
+            $cmd = Get-Command node -ErrorAction Stop
+            $nodeForUi = $cmd.Source
+        } elseif (Test-Path $candidate) {
+            $nodeForUi = $candidate
+        }
+        if ($nodeForUi) { break }
+    } catch {
+        $nodeForUi = $null
+    }
+}
+
+if (-not $nodeForUi) {
+    Fail "Node runtime unavailable for browser/UI readiness smoke"
+} elseif (-not (Test-Path $uiVerifier)) {
+    Fail "Browser/UI readiness verifier missing: scripts\verify_app_ui.mjs"
+} else {
+    try {
+        $bundledNodeModules = Join-Path $realUserProfile ".cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules"
+        if ((Test-Path $bundledNodeModules) -and [string]::IsNullOrWhiteSpace($env:CODEX_NODE_MODULES)) {
+            $env:CODEX_NODE_MODULES = $bundledNodeModules
+        }
+        $realPlaywrightBrowsers = Join-Path $realUserProfile "AppData\Local\ms-playwright"
+        if ((Test-Path $realPlaywrightBrowsers) -and [string]::IsNullOrWhiteSpace($env:PLAYWRIGHT_BROWSERS_PATH)) {
+            $env:PLAYWRIGHT_BROWSERS_PATH = $realPlaywrightBrowsers
+        }
+        & $nodeForUi $uiVerifier --scenario browser-smoke
+        if ($LASTEXITCODE -ne 0) { throw "browser smoke failed" }
+        Pass "Browser/UI verification lane"
+    } catch {
+        Fail "Browser/UI verification lane unavailable; repair Playwright/Node before UI work"
     }
 }
 
