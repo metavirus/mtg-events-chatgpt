@@ -1403,13 +1403,14 @@ function derivedEventIngestSignals() {
 function eventIngestDigestSignal(change) {
   const events = eventIngestDeltaMatches(change).filter((event) => !isEventHidden(event));
   if (!events.length) return null;
-  const relatedCommunity = change.entityType === 'community' ? community(change.entityId) : null;
-  const place = change.entityType === 'venue' ? store(change.entityId) : null;
-  const relatedName = relatedCommunity?.name || place?.name || (change.entityType === 'community' ? 'A community' : 'A venue');
+  const owner = eventIngestDisplayOwner(change, events);
+  const place = owner.place || events.map((event) => store(event.storeId)).find(Boolean) || null;
+  const relatedName = owner.name;
   const eventCount = events.length;
   const specialCount = events.filter(isSpecial).length;
   const commanderCount = events.filter(isCommanderLike).length;
-  const favorited = !!(place && state.personal.favorites[`place:${place.id}`])
+  const favorited = !!(owner.community && state.personal.favorites[`community:${owner.community.id}`])
+    || !!(place && state.personal.favorites[`place:${place.id}`])
     || events.some((event) => state.personal.favorites[eventPreferenceKey(event)]);
   const nearby = numericDistance(place) != null && numericDistance(place) <= 10;
   const priority = favorited || (nearby && specialCount) || eventCount >= 8 ? 'high' : 'normal';
@@ -1436,8 +1437,8 @@ function eventIngestDigestSignal(change) {
     sourceId: '',
     capturedAt: change.detectedAt || '',
     observedAt: change.detectedAt || '',
-    relatedEntityType: change.entityType,
-    relatedEntityId: change.entityId || '',
+    relatedEntityType: owner.type,
+    relatedEntityId: owner.id,
     summary: `${relatedName} added ${eventCount} new event${eventCount === 1 ? '' : 's'}.`,
     details: `${emphasis ? `${emphasis}. ` : ''}${change.details || 'The daily surveyor promoted newly listed events.'}${dateCopy}${sourceCopy}`,
     confidence: eventCount ? 'high' : 'medium',
@@ -1775,7 +1776,7 @@ function eventMatchesPreset(event, preset) {
   if (preset === 'weekend') return isWeekend(event.occurrenceDate);
   if (preset === 'specials') return /prerelease|sealed|limited/i.test(`${event.title} ${event.format} ${event.eventType}`);
   if (preset === 'draft') return /draft/i.test(`${event.title} ${event.format} ${event.eventType}`);
-  if (preset === 'favorites') return !!state.personal.favorites[eventPreferenceKey(event)] || !!state.personal.favorites[`place:${event.storeId}`];
+  if (preset === 'favorites') return !!state.personal.favorites[eventPreferenceKey(event)] || !!state.personal.favorites[`place:${event.storeId}`] || !!state.personal.favorites[`community:${event.communityId}`];
   return true;
 }
 
@@ -1838,12 +1839,8 @@ function matchesFilters(event) {
 
 function fitScore(event) {
   const place = store(event.storeId);
-  if (!place) {
-    if (!event.communityId) return 0;
-    const isDatedCommunityEvent = event.occurrenceStatus === 'confirmed' && !!eventStartTime(event);
-    const hasUsableConfidence = event.confidence === 'high' || event.confidence === 'medium';
-    return isDatedCommunityEvent && hasUsableConfidence ? 82 : 70;
-  }
+  if (isDatedCommunityEvent(event)) return 82;
+  if (!place) return event.communityId ? 70 : 0;
   const assessment = place.assessment || {};
   let score = 35;
   score += (assessment.communityContinuity || 3) * 5;
@@ -1863,6 +1860,7 @@ function fitScore(event) {
 function fitLabel(event) {
   const place = store(event.storeId);
   if (place?.lifecycleState === 'identity_blocked') return { label: 'Identity unresolved · check first', tone: 'amber' };
+  if (isDatedCommunityEvent(event)) return { label: 'Community event', tone: 'mint' };
   const score = fitScore(event);
   if (hasExplicitNoProxy(event)) return { label: 'Poor fit · no proxy', tone: 'coral' };
   if (isCompetitive(event)) return { label: 'Competitive lane', tone: 'coral' };
@@ -1879,6 +1877,13 @@ function evidenceLabel(event) {
   if (event.confidence === 'high' && place?.researchStatus === 'partial') return { label: 'Supported routine', tone: 'sky' };
   if (place?.researchStatus === 'wizards-discovery') return { label: 'Discovery-level', tone: 'amber' };
   return { label: 'Expected routine', tone: 'amber' };
+}
+
+function isDatedCommunityEvent(event) {
+  if (!event?.communityId) return false;
+  const isConfirmed = event.occurrenceStatus === 'confirmed' || !!event.date || !!event.startDate;
+  const hasUsableConfidence = event.confidence === 'high' || event.confidence === 'medium';
+  return isConfirmed && !!eventStartTime(event) && hasUsableConfidence;
 }
 
 function renderCalendar() {
@@ -3080,6 +3085,13 @@ function reviewStatusDisplay(change) {
 }
 
 function changeTitle(change) {
+  if (change.changeType === 'event_ingest_delta') {
+    const matchedEvents = eventIngestDeltaMatches(change);
+    if (matchedEvents.length) {
+      const owner = eventIngestDisplayOwner(change, matchedEvents);
+      return `${escapeHtml(owner.name)}: ${matchedEvents.length} newly listed event${matchedEvents.length === 1 ? '' : 's'}`;
+    }
+  }
   const rawSummary = change.summary || 'Research record updated';
   const summary = linkifyChangeText(rawSummary);
   const escapedSummary = escapeHtml(rawSummary);
@@ -3119,18 +3131,43 @@ function eventIngestDeltaMatches(change) {
   if (!change || change.changeType !== 'event_ingest_delta' || !['venue', 'community'].includes(change.entityType) || !change.entityId) return [];
   const detectedAt = change.detectedAt ? new Date(change.detectedAt) : null;
   const detectedMs = detectedAt && !Number.isNaN(detectedAt.getTime()) ? detectedAt.getTime() : null;
+  const changeText = `${change.summary || ''} ${change.details || ''}`.toLowerCase();
   const matched = DATA.events.filter((event) => {
-    if ((change.entityType === 'venue' ? event.storeId : event.communityId) !== change.entityId) return false;
+    const entityMatched = (change.entityType === 'venue' ? event.storeId : event.communityId) === change.entityId;
+    const titleMatched = event.title && event.title.length > 6 && changeText.includes(event.title.toLowerCase());
+    if (!entityMatched && !titleMatched) return false;
     if (!event.createdAt || !detectedMs) return false;
     const created = new Date(event.createdAt);
     if (Number.isNaN(created.getTime())) return false;
-    return Math.abs(created.getTime() - detectedMs) <= 5 * 60 * 1000;
+    return Math.abs(created.getTime() - detectedMs) <= 30 * 60 * 1000;
   });
   return matched.sort((a, b) => {
     const aDate = a.occurrenceDate || parseDate(a.date || a.startDate);
     const bDate = b.occurrenceDate || parseDate(b.date || b.startDate);
     return aDate - bDate || compareText(eventStartTime(a), eventStartTime(b)) || compareText(a.title, b.title);
   });
+}
+
+function eventIngestDisplayOwner(change, events = []) {
+  const communityIds = [...new Set(events.map((event) => event.communityId).filter(Boolean))];
+  if (communityIds.length === 1) {
+    const item = community(communityIds[0]);
+    if (item) return { type: 'community', id: item.id, name: item.name, community: item, place: null };
+  }
+  const venueIds = [...new Set(events.map((event) => event.storeId).filter(Boolean))];
+  if (venueIds.length === 1 && !communityIds.length) {
+    const item = store(venueIds[0]);
+    if (item) return { type: 'venue', id: item.id, name: item.name, community: null, place: item };
+  }
+  if (change.entityType === 'community') {
+    const item = community(change.entityId);
+    if (item) return { type: 'community', id: item.id, name: item.name, community: item, place: null };
+  }
+  if (change.entityType === 'venue') {
+    const item = store(change.entityId);
+    if (item) return { type: 'venue', id: item.id, name: item.name, community: null, place: item };
+  }
+  return { type: change.entityType || 'dataset', id: change.entityId || '', name: 'Daily surveyor', community: null, place: null };
 }
 
 function structuredChangeTarget(change) {
