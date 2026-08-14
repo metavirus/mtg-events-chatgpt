@@ -117,6 +117,22 @@ function isDiscordMutationRequest(requestUrl, method) {
   return discordMutationPathPatterns.some((pattern) => pattern.test(parsed.pathname));
 }
 
+function isAllowedDiscordReadinessRequest(requestUrl, method, options = {}) {
+  if (method.toUpperCase() !== 'PUT') return false;
+  let parsed;
+  try {
+    parsed = new URL(requestUrl);
+  } catch {
+    return false;
+  }
+  if (!/(^|\.)discord(app)?\.com$/i.test(parsed.hostname)) return false;
+  const match = parsed.pathname.match(/^\/api\/v\d+\/guilds\/(\d+)\/members\/@me$/i);
+  if (!match || parsed.searchParams.get('lurker') !== 'true') return false;
+  const expectedRoute = options.expectedRoute || null;
+  if (expectedRoute?.guildId && expectedRoute.guildId !== match[1]) return false;
+  return true;
+}
+
 function classifyDiscordBlockedRequest(entry) {
   let parsed;
   try {
@@ -170,6 +186,8 @@ async function installDiscordReadOnlyGuards(context, options = {}) {
   const guardVersion = options.guardVersion || 'discord-readonly-v1';
   const selector = options.selector || defaultMutationSelector;
   const networkBlocks = options.networkBlocks || [];
+  const allowedReadinessRequests = options.allowedReadinessRequests || [];
+  const expectedRoute = options.expectedRoute || null;
   const getRequestContext = typeof options.getRequestContext === 'function'
     ? options.getRequestContext
     : () => null;
@@ -178,6 +196,20 @@ async function installDiscordReadOnlyGuards(context, options = {}) {
   for (const pattern of ['**://discord.com/**', '**://*.discord.com/**', '**://discordapp.com/**', '**://*.discordapp.com/**']) {
     await context.route(pattern, async (route) => {
       const request = route.request();
+      if (isAllowedDiscordReadinessRequest(request.url(), request.method(), { expectedRoute })) {
+        const bodyBuffer = request.postDataBuffer();
+        allowedReadinessRequests.push({
+          method: request.method().toUpperCase(),
+          url: request.url(),
+          hasBody: Boolean(bodyBuffer?.length),
+          bodyByteLength: bodyBuffer?.length ?? 0,
+          requestContext: getRequestContext(),
+          allowedAt: new Date().toISOString(),
+          classification: 'allowed_discord_lurker_readiness_ack'
+        });
+        await route.continue();
+        return;
+      }
       if (isDiscordMutationRequest(request.url(), request.method())) {
         const bodyBuffer = request.postDataBuffer();
         networkBlocks.push({
@@ -242,14 +274,20 @@ async function readDiscordShellSafetyState(page, options = {}) {
       return editable || !disabled;
     });
     const loginGate = Boolean(document.querySelector('[name="email"], [name="password"], form[action*="login" i]'));
-    const inviteOrRoleGate = Boolean(document.querySelector([
-      '[aria-label*="Join" i]',
-      '[aria-label*="Accept Invite" i]',
-      '[aria-label*="Invite" i]',
-      '[aria-label*="Role" i]',
-      '[aria-label*="Verify" i]',
-      '[data-list-item-id*="roles" i]'
-    ].join(',')));
+    const visibleText = (element) => {
+      const rect = element.getBoundingClientRect();
+      const style = window.getComputedStyle(element);
+      if (rect.width <= 0 || rect.height <= 0 || style.visibility === 'hidden' || style.display === 'none') return '';
+      return [
+        element.getAttribute('aria-label') || '',
+        element.textContent || ''
+      ].join(' ').replace(/\s+/g, ' ').trim();
+    };
+    const visibleGateLabels = [...document.querySelectorAll('button, a, [role="button"], [role="dialog"], main, [role="main"]')]
+      .map(visibleText)
+      .filter(Boolean)
+      .filter((label) => /\b(join server|accept invite|complete verification|verify your account|captcha|claim account|continue to discord)\b/i.test(label));
+    const inviteOrRoleGate = visibleGateLabels.length > 0;
     const shellMarkers = {
       appMount: Boolean(document.querySelector('#app-mount')),
       guildShell: Boolean(document.querySelector('[aria-label*="Servers" i], [data-list-id*="guilds" i]')),
@@ -286,6 +324,7 @@ async function readDiscordShellSafetyState(page, options = {}) {
       )),
       hasLoginGate: loginGate,
       hasInviteGate: inviteOrRoleGate,
+      gateLabels: visibleGateLabels.slice(0, 10),
       shellMarkers,
       routeIdentity
     };
@@ -311,7 +350,8 @@ async function extractDiscordVisibleMessages(page, options = {}) {
       ...document.querySelectorAll('[id^="chat-messages-"], [role="article"]')
     ].filter(isVisible);
 
-    return candidates.slice(-limit).map((element) => {
+    const seen = new Set();
+    return candidates.map((element) => {
       const idValue = element.id || element.getAttribute('data-list-item-id') || '';
       const messageId = idValue.match(/(?:chat-messages-|chat-messages___)(?:\d+-)?(\d{15,})$/)?.[1] ||
         idValue.match(/(\d{15,})$/)?.[1] ||
@@ -328,7 +368,13 @@ async function extractDiscordVisibleMessages(page, options = {}) {
         text: text.slice(0, maxCharactersPerMessage),
         truncated: text.length > maxCharactersPerMessage
       };
-    }).filter((message) => message.text);
+    }).filter((message) => {
+      if (!message.text) return false;
+      const key = message.messageId || message.text;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(-limit);
   }, { limit, maxCharactersPerMessage });
 }
 
@@ -381,6 +427,7 @@ export {
   defaultMutationSelector,
   discordMutationPathPatterns,
   installDiscordReadOnlyGuards,
+  isAllowedDiscordReadinessRequest,
   isDiscordMutationRequest,
   extractDiscordVisibleMessages,
   readDiscordSafetyState,

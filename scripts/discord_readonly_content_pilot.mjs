@@ -44,6 +44,7 @@ const result = {
   researchArtifactsCreated: false,
   routePromoted: false,
   externalDiscordStateChanged: false,
+  allowedReadinessTransitionCount: 0,
   blockedMutationCount: 0,
   status: 'unknown',
   failureReason: null,
@@ -61,6 +62,7 @@ const isLurkerInterstitialBlock = (block) => (
 
 async function runAttempt(attemptNumber) {
   const networkBlocks = [];
+  const allowedReadinessRequests = [];
   const context = await chromium.launchPersistentContext(profileDir, {
     headless: true,
     executablePath: browserExecutable,
@@ -71,16 +73,20 @@ async function runAttempt(attemptNumber) {
     status: 'unknown',
     failureReason: null,
     blockedMutationCount: 0,
+    allowedReadinessTransitionCount: 0,
     lurkerInterstitialBlocked: false,
     shell: null,
     messageCount: 0,
     messages: [],
-    networkBlocks
+    networkBlocks,
+    allowedReadinessRequests
   };
 
   await installDiscordReadOnlyGuards(context, {
     guardVersion: 'discord-readonly-v1',
-    networkBlocks
+    networkBlocks,
+    allowedReadinessRequests,
+    expectedRoute
   });
 
   try {
@@ -99,6 +105,7 @@ async function runAttempt(attemptNumber) {
       enabledMutatorLabels: safety.enabledMutatorLabels,
       hasLoginGate: safety.hasLoginGate,
       hasInviteGate: safety.hasInviteGate,
+      gateLabels: safety.gateLabels,
       shellMarkers: safety.shellMarkers,
       routeIdentity: safety.routeIdentity
     };
@@ -116,6 +123,7 @@ async function runAttempt(attemptNumber) {
     }
 
     attempt.blockedMutationCount = networkBlocks.length;
+    attempt.allowedReadinessTransitionCount = allowedReadinessRequests.length;
     attempt.lurkerInterstitialBlocked = networkBlocks.some(isLurkerInterstitialBlock);
     if (attempt.lurkerInterstitialBlocked) {
       throw new Error('known Discord membership/lurker interstitial request blocked');
@@ -128,11 +136,13 @@ async function runAttempt(attemptNumber) {
     attempt.messages = messages;
     attempt.messageCount = messages.length;
     attempt.blockedMutationCount = networkBlocks.length;
+    attempt.allowedReadinessTransitionCount = allowedReadinessRequests.length;
     attempt.status = messages.length === 0 ? 'quiet_or_no_visible_messages' : 'content_read_succeeded';
   } catch (error) {
     attempt.status = 'failed_closed';
     attempt.failureReason = error.message;
     attempt.blockedMutationCount = networkBlocks.length;
+    attempt.allowedReadinessTransitionCount = allowedReadinessRequests.length;
     attempt.lurkerInterstitialBlocked = networkBlocks.some(isLurkerInterstitialBlock);
   } finally {
     await context.close();
@@ -165,6 +175,10 @@ try {
   result.messageCount = finalAttempt.messageCount;
   result.messageContentInspected = finalAttempt.status === 'content_read_succeeded' || finalAttempt.status === 'quiet_or_no_visible_messages';
   result.blockedMutationCount = result.attempts.reduce((count, attempt) => count + attempt.blockedMutationCount, 0);
+  result.allowedReadinessTransitionCount = result.attempts.reduce((count, attempt) => count + attempt.allowedReadinessTransitionCount, 0);
+  result.externalDiscordStateChanged = result.allowedReadinessTransitionCount
+    ? 'allowed_discord_lurker_readiness_ack'
+    : false;
 
   if (result.status === 'failed_closed') {
     result.failureReason = result.failureReason || 'content-read attempt failed closed';
