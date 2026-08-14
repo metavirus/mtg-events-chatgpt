@@ -214,13 +214,15 @@ than relying on conversational memory:
 The readiness gate intentionally proves runtime, browser/UI, WPN, and Supabase
 capabilities. It does not make sandboxed Git metadata writes authoritative.
 
-In Codex `workspace-write` mode, `.git` is protected by design. Sandboxed
-checkpoint operations may fail on `.git/index.lock`, `FETCH_HEAD`, or Windows
-credential access even when the repository is healthy. When the user has
-authorized a checkpoint, commit, or publication, run the necessary Git operation
-through the approved outside-sandbox Git path from `docs/CHANGE_CONTROL.md`
-instead of first attempting a known-doomed sandboxed write. A sandboxed Git
-metadata failure is a known execution boundary, not `ENVIRONMENT NOT READY`.
+In Codex `workspace-write` mode, project files are writable but `.git` is
+read-only in the normal sandbox. Sandboxed checkpoint operations therefore
+predictably fail on `.git/index.lock`, `FETCH_HEAD`, or Windows credential
+access even when the repository is healthy. When the user has authorized a
+checkpoint, commit, or publication, run the necessary Git operation through the
+approved outside-sandbox Git path from `docs/CHANGE_CONTROL.md` on the first
+attempt. A sandboxed Git metadata failure is a known execution boundary, not
+`ENVIRONMENT NOT READY`, and attempting that doomed lane first is a readiness
+process failure.
 
 On failure, the only allowed sequence is `smoke` (failed), `repair`, the exact
 `smoke` retest, then `finish`. The program rejects a third attempt. Repairs that

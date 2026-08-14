@@ -170,13 +170,16 @@ prove that its plugin is installed or authorized for the target; and a missing
 launcher does not prove that the underlying runtime is absent.
 
 Known sandbox boundaries are not fresh mysteries. In Codex `workspace-write`
-mode, Git metadata writes are protected; sandboxed `git add`, `git commit`,
-`git pull`, and `git push` commonly fail on `.git/index.lock`, `FETCH_HEAD`, or
-Windows credential access. Once a checkpoint or publication is authorized, use
-the outside-sandbox Git lane from `docs/CHANGE_CONTROL.md` directly and continue.
-Do not spend a recovery cycle proving the same sandbox boundary again, and do
-not misclassify it as repository corruption, a GitHub outage, Supabase trouble,
-or an application failure.
+mode, project files are writable but `.git` is read-only unless the command is
+run through the approved outside-sandbox Git lane. Sandboxed `git add`,
+`git commit`, `git pull`, and `git push` are therefore predictably noncompliant
+when a checkpoint or publication is already authorized: they try to create
+metadata such as `.git/index.lock` or `FETCH_HEAD` in a protected directory.
+Use the outside-sandbox Git lane from `docs/CHANGE_CONTROL.md` on the first
+attempt. Do not first run the doomed sandboxed path, do not narrate the
+permission failure as a "known wall," do not spend a recovery cycle proving the
+same sandbox boundary again, and do not misclassify it as repository corruption,
+a GitHub outage, Supabase trouble, or an application failure.
 
 ### One bounded recovery cycle
 
