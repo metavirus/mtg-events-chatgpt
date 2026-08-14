@@ -169,6 +169,15 @@ not prove that application interactions work; a connected account does not
 prove that its plugin is installed or authorized for the target; and a missing
 launcher does not prove that the underlying runtime is absent.
 
+Known sandbox boundaries are not fresh mysteries. In Codex `workspace-write`
+mode, Git metadata writes are protected; sandboxed `git add`, `git commit`,
+`git pull`, and `git push` commonly fail on `.git/index.lock`, `FETCH_HEAD`, or
+Windows credential access. Once a checkpoint or publication is authorized, use
+the outside-sandbox Git lane from `docs/CHANGE_CONTROL.md` directly and continue.
+Do not spend a recovery cycle proving the same sandbox boundary again, and do
+not misclassify it as repository corruption, a GitHub outage, Supabase trouble,
+or an application failure.
+
 ### One bounded recovery cycle
 
 Use `scripts/capability_readiness.py` to enforce this cycle whenever the exact

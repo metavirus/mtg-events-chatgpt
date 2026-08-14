@@ -694,6 +694,15 @@ When a capability appears unavailable:
 5. retest the exact operation with a minimal safe probe;
 6. do not repeat the same failed path without new evidence.
 
+Git checkpoint/write operations are a known sandbox boundary in Codex
+`workspace-write` mode. If a task requires `git add`, `git commit`, `git pull`,
+or `git push`, do not first run the doomed sandboxed path and then narrate the
+`.git/index.lock` failure as a surprise. Use the approved outside-sandbox Git
+lane described in `docs/CHANGE_CONTROL.md` directly. Treat `.git/index.lock`,
+`FETCH_HEAD`, and Windows credential-access failures from sandboxed Git as a
+known execution boundary, not a repository problem, platform outage, or reason
+to invent alternate checkpoint machinery.
+
 When compaction occurs:
 
 1. continue directly if the exact target, file, and next step remain clear;
