@@ -7,7 +7,7 @@ const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const audit = fs.readFileSync(path.join(root, 'scripts', 'audit_event_integrity.py'), 'utf8');
 
 const checks = [
-  ['community event digest attribution', /relatedEntityType:\s*change\.entityType[\s\S]*summary:\s*`\$\{relatedName\} added/],
+  ['community event digest attribution', /const owner = eventIngestDisplayOwner\(change, events\)[\s\S]*relatedEntityType:\s*owner\.type[\s\S]*summary:\s*`\$\{relatedName\} added/],
   ['community physical-location fallback', /event\?\.communityId[\s\S]*match\(\/\\b\(\?:at\|@\)/],
   ['event cards use normalized host labels', /function eventCard[\s\S]*const hostLabel = eventHostLabel\(event, place\)/],
   ['event drawer uses normalized host labels', /function openEvent[\s\S]*const hostLabel = eventHostLabel\(event, place\)/],
