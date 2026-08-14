@@ -19,8 +19,9 @@ frontier checkpoints are preserved in
   `docs/WORK_BACKLOG.md`. Canonical promotion is complete: MTG OC has its Meetup
   source, and LAGS, GayMTG, and Sanctuary MTG now exist with their verified
   routes. Do not repeat discovery or recreate them. LAGS and Sanctuary MTG have
-  completed bounded main passes; Sanctuary's known sources yielded no
-  trustworthy current dated event, so none was invented. Continue the sequence
+  completed bounded main passes; Sanctuary's authenticated Instagram review
+  confirmed active recent gatherings but yielded no concrete future dated event,
+  so none was invented. Continue the sequence
   with GayMTG, then MTG OC source reconciliation, before building the compact
   Home possibilities lane for corroborated but uncertain groups.
 

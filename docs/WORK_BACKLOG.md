@@ -74,10 +74,13 @@ Use it for:
      `https://www.reddit.com/r/LosAngelesSocialClub/comments/1qe7s66/magic_the_gathering_social_club/`;
      evidence describes weekly Commander gatherings rotating among venues such
      as Frogtown Brewery and Lawless Brewing. Main pass completed August 13:
-     both known routes and one bounded fuzzy search were inspected. Instagram
-     reached a login checkpoint and the available public evidence exposed no
-     trustworthy current dated event, so no event was invented or promoted.
-     The pass is closed; ordinary monitoring may capture a later dated listing.
+     both known routes and one bounded fuzzy search were inspected. After the
+     Instagram login was refreshed, an authenticated slice of 18 recent posts
+     was inspected. It confirmed active gatherings and past dated events at
+     Frogtown Brewery and Belle's Bagels; the newest post said Sanctuary was
+     changing its usual schedule and that a future flyer was still forthcoming.
+     No concrete future dated event was therefore invented or promoted. The
+     pass is closed; weekly monitoring may capture the promised later listing.
   5. Lower-confidence Home discovery possibilities, not canonical communities
      yet: Magic The Gathering LGBT Commander Meetup (Orange County), Here
      Clubhouse queer MTG, Topdeck Lethal, Lotus Guild, and Geeks OUT L.A.
