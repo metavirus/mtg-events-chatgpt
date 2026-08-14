@@ -844,6 +844,7 @@ function mapEventOccurrence(item, series, sourcesByOccurrence, sourcesBySeries) 
     startDate: item.occurrence_date,
     startTime: normalizeTime(item.start_time || series.default_start_time),
     endTime: normalizeTime(item.end_time),
+    physicalLocation: item.physical_location_text || '',
     entryFee: item.entry_fee == null ? (series.entry_fee == null ? null : Number(series.entry_fee)) : Number(item.entry_fee),
     capacity: item.capacity,
     currency: series.currency || 'USD',
@@ -1479,6 +1480,7 @@ function signalGroup(title, copy, signals, tone) {
 
 function signalCard(signal) {
   const related = signalRelatedTarget(signal);
+  const relatedEvent = signalRelatedEvent(signal);
   const artifacts = artifactsForSignal(signal);
   const sourceItem = primarySourceForSignal(signal);
   const sourceUrl = signal.evidenceUrl || sourceItem?.url || '';
@@ -1506,7 +1508,7 @@ function signalCard(signal) {
       <span>Suggested action</span>
       <strong>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</strong>
       ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" ${isExternal ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(sourceLabel)} ↗</a>` : `<small>${escapeHtml(sourceLabel)}</small>`}
-      ${signal.derivedFromChangeId ? `<button class="soft-button signal-read-button" data-action="open-change-events" data-change-id="${escapeHtml(signal.derivedFromChangeId)}">${eventIngestDeltaMatches(changeById(signal.derivedFromChangeId)).filter((event) => !isEventHidden(event)).length === 1 ? 'Open new event' : 'Open new events'}</button>` : ''}
+      ${relatedEvent ? `<button class="soft-button signal-read-button" data-event-id="${escapeHtml(relatedEvent.id)}">Open event</button>` : signal.derivedFromChangeId ? `<button class="soft-button signal-read-button" data-action="open-change-events" data-change-id="${escapeHtml(signal.derivedFromChangeId)}">${eventIngestDeltaMatches(changeById(signal.derivedFromChangeId)).filter((event) => !isEventHidden(event)).length === 1 ? 'Open new event' : 'Open new events'}</button>` : ''}
       <button class="soft-button signal-read-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open details</button>
       <button class="soft-button signal-read-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>
     </aside>
@@ -1533,6 +1535,11 @@ function signalRelatedTarget(signal) {
   return signal.relatedEntityId ? `<span class="meta-chip">${escapeHtml(signal.relatedEntityType || 'related')}: ${escapeHtml(signal.relatedEntityId)}</span>` : '';
 }
 
+function signalRelatedEvent(signal) {
+  if (!['event_series', 'event_occurrence'].includes(signal.relatedEntityType)) return null;
+  return eventById(signal.relatedEntityId) || DATA.events.find((item) => item.seriesId === signal.relatedEntityId) || null;
+}
+
 function openSignalDetail(signalId) {
   const signal = rankedSignals().find((item) => item.id === signalId);
   if (!signal) return;
@@ -1546,9 +1553,12 @@ function openSignalDetail(signalId) {
   const sourceLink = sourceUrl
     ? `<a class="soft-button" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(sourceItem?.label || 'Open source')} ↗</a>`
     : '<p class="muted-copy">No source URL is linked yet.</p>';
-  const derivedEventAction = signal.derivedFromChangeId
-    ? `<button class="soft-button" data-action="open-change-events" data-change-id="${escapeHtml(signal.derivedFromChangeId)}">Open newly added events →</button>`
-    : '';
+  const relatedEvent = signalRelatedEvent(signal);
+  const derivedEventAction = relatedEvent
+    ? `<button class="soft-button" data-event-id="${escapeHtml(relatedEvent.id)}">Open event →</button>`
+    : signal.derivedFromChangeId
+      ? `<button class="soft-button" data-action="open-change-events" data-change-id="${escapeHtml(signal.derivedFromChangeId)}">Open newly added events →</button>`
+      : '';
   const read = isSignalRead(signal.id);
   openDrawer(`<div class="drawer-kicker"><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><span class="status-chip slate">${escapeHtml(signalPriorityLabel(signal.priority))}</span><span class="status-chip ${signal.status === 'needs_followup' ? 'amber' : signal.status === 'new' ? 'mint' : 'slate'}">${escapeHtml(signal.status.replaceAll('_', ' '))}</span></div>
     <h1 id="drawerTitle">${escapeHtml(signal.summary)}</h1>
@@ -1702,16 +1712,18 @@ function isWeekend(date) { return [5, 6, 0].includes(date.getDay()); }
 function eventMatchesSharedFilters(event, options = {}) {
   const { includePreset = true, includeSearch = true, hideCompetitive = state.filters.hideCompetitive } = options;
   const place = store(event.storeId);
-  if (!place) return false;
-  if (isPlaceHidden(place.id)) return false;
-  if (place.lifecycleState === 'identity_blocked' && !(event.sourceIds || []).length) return false;
-  if (!state.filters.research.includes(place.researchStatus)) return false;
+  const organizer = community(event.communityId);
+  const hostLabel = place?.name || event.physicalLocation || 'Location in source';
+  if (!place && !organizer) return false;
+  if (place && isPlaceHidden(place.id)) return false;
+  if (place?.lifecycleState === 'identity_blocked' && !(event.sourceIds || []).length) return false;
+  if (place && !state.filters.research.includes(place.researchStatus)) return false;
   if (!state.filters.confidence.includes(event.confidence)) return false;
   if (state.filters.planningGroups && !state.filters.planningGroups.includes(eventPlanningGroup(event))) return false;
-  if (numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
+  if (place && numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
   if (state.filters.onlyFree && Number(event.entryFee || 0) !== 0) return false;
   if (hideCompetitive && (isCompetitive(event) || isHighPowerCommander(event))) return false;
-  if (state.favoritesOnly && !state.personal.favorites[eventPreferenceKey(event)] && !state.personal.favorites[`place:${place.id}`]) return false;
+  if (state.favoritesOnly && !state.personal.favorites[eventPreferenceKey(event)] && !state.personal.favorites[`place:${place?.id}`] && !state.personal.favorites[`community:${organizer?.id}`]) return false;
   if (includeSearch && state.search) {
     const haystack = [
       event.title,
@@ -1723,13 +1735,16 @@ function eventMatchesSharedFilters(event, options = {}) {
       evidenceLabel(event).label,
       event.confidence,
       event.occurrenceStatus,
-      place.name,
-      place.city,
-      place.address,
-      place.researchStatus,
-      place.assessmentNotes,
-      ...(place.tags || []),
-      ...(place.communitySignals || [])
+      place?.name,
+      place?.city,
+      place?.address,
+      place?.researchStatus,
+      place?.assessmentNotes,
+      organizer?.name,
+      organizer?.region,
+      event.physicalLocation,
+      ...(place?.tags || []),
+      ...(place?.communitySignals || [])
     ].filter(Boolean).join(' ').toLowerCase();
     if (!haystack.includes(state.search)) return false;
   }
@@ -1808,7 +1823,7 @@ function matchesFilters(event) {
 
 function fitScore(event) {
   const place = store(event.storeId);
-  if (!place) return 0;
+  if (!place) return event.communityId ? 70 : 0;
   const assessment = place.assessment || {};
   let score = 35;
   score += (assessment.communityContinuity || 3) * 5;
@@ -1938,6 +1953,7 @@ function eventCard(event, compact = false, options = {}) {
   const { showDate = false, emphasize = false, catalog = false, dense = false } = options;
   const place = store(event.storeId);
   const organizer = community(event.communityId);
+  const hostLabel = place?.name || event.physicalLocation || 'Location in source';
   const fit = fitLabel(event);
   const evidence = evidenceLabel(event);
   const favoriteKey = eventPreferenceKey(event);
@@ -1949,7 +1965,7 @@ function eventCard(event, compact = false, options = {}) {
   const dateNote = occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
   if (compact) {
     const cue = compactEventCue(event, fit, evidence);
-    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${organizer ? `${escapeHtml(organizer.name)} meetup · ` : ''}${escapeHtml(place.name)}</small><em>${escapeHtml(cue.label)}</em></button>`;
+    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${organizer ? `${escapeHtml(organizer.name)} meetup · ` : ''}${escapeHtml(hostLabel)}</small><em>${escapeHtml(cue.label)}</em></button>`;
   }
   const limitedChip = isPrereleaseOrSealed(event) ? '<span class="status-chip limited">Prerelease / sealed</span>' : '';
   const communityChip = organizer ? '<span class="status-chip sky">Community meetup</span>' : '';
@@ -1957,7 +1973,7 @@ function eventCard(event, compact = false, options = {}) {
     <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
-      <div class="event-attribution">${organizer ? `<button class="place-inline" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)}</button><span>·</span>` : ''}<button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">At ${escapeHtml(place.name)} <span>· ${distanceLabel(place)}</span></button></div>
+      <div class="event-attribution">${organizer ? `<button class="place-inline" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)}</button><span>·</span>` : ''}${place ? `<button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">At ${escapeHtml(place.name)} <span>· ${distanceLabel(place)}</span></button>` : `<span>At ${escapeHtml(hostLabel)}</span>`}</div>
       <div class="event-chips">${communityChip}${limitedChip}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span><span class="meta-chip">${fee}</span>${event.bracket && event.bracket !== 'unspecified' ? `<span class="meta-chip">Bracket ${escapeHtml(event.bracket)}</span>` : '<span class="meta-chip muted-chip">Bracket unknown</span>'}</div>
       <p>${escapeHtml(truncate(meaningfulEventDetails(event), 175))}</p>
     </div>
@@ -2327,7 +2343,8 @@ function renderEventCatalog() {
   const rawEvents = buildOccurrences(rawStart, rawEnd);
   const events = eventCatalogMatches(rawEvents);
   updateEventCatalogDateNav(catalogRange);
-  document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${new Set(events.map((event) => event.storeId)).size}</strong><span>places represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>${state.eventCatalogFilter === 'best' ? 'Best-fit ordering' : 'Chronological catalog'}</strong><span>${state.eventCatalogView === 'list' ? 'full catalog list' : state.eventCatalogView === 'week' ? 'weekly layout' : 'monthly layout'}</span></div>`;
+  const organizerCount = new Set(events.map((event) => event.storeId ? `place:${event.storeId}` : `community:${event.communityId}`).filter(Boolean)).size;
+  document.getElementById('eventSummary').innerHTML = `<div><strong>${events.length}</strong><span>upcoming occurrences shown</span></div><div><strong>${organizerCount}</strong><span>organizers represented</span></div><div><strong>${events.filter(isSpecial).length}</strong><span>special / limited signals</span></div><div class="warning-stat"><strong>${state.eventCatalogFilter === 'best' ? 'Best-fit ordering' : 'Chronological catalog'}</strong><span>${state.eventCatalogView === 'list' ? 'full catalog list' : state.eventCatalogView === 'week' ? 'weekly layout' : 'monthly layout'}</span></div>`;
   if (!events.length) {
     document.getElementById('eventCatalog').innerHTML = emptyState('No catalog matches', 'Clear filters or search terms to restore events.');
     return;
@@ -3079,11 +3096,11 @@ function changeById(id) {
 }
 
 function eventIngestDeltaMatches(change) {
-  if (!change || change.changeType !== 'event_ingest_delta' || change.entityType !== 'venue' || !change.entityId) return [];
+  if (!change || change.changeType !== 'event_ingest_delta' || !['venue', 'community'].includes(change.entityType) || !change.entityId) return [];
   const detectedAt = change.detectedAt ? new Date(change.detectedAt) : null;
   const detectedMs = detectedAt && !Number.isNaN(detectedAt.getTime()) ? detectedAt.getTime() : null;
   const matched = DATA.events.filter((event) => {
-    if (event.storeId !== change.entityId) return false;
+    if ((change.entityType === 'venue' ? event.storeId : event.communityId) !== change.entityId) return false;
     if (!event.createdAt || !detectedMs) return false;
     const created = new Date(event.createdAt);
     if (Number.isNaN(created.getTime())) return false;
@@ -3305,7 +3322,7 @@ function openEvent(id, occurrenceDate) {
   const event = eventById(id);
   const place = store(event?.storeId);
   const organizer = community(event?.communityId);
-  if (!event || !place) return;
+  if (!event || (!place && !organizer)) return;
   const occurrence = occurrenceDate ? parseDate(occurrenceDate) : parseDate(event.date || event.startDate);
   const { baseSource, eventRef } = resolvedEventSourceContext(event, occurrence);
   const src = eventSourceDisplay(baseSource, eventRef);
@@ -3320,12 +3337,17 @@ function openEvent(id, occurrenceDate) {
   const retainedEvidence = artifacts.length ? artifactEvidenceList(artifacts) : '';
   const details = meaningfulEventDetails(event);
   const disliked = state.personal.ratings[personalKey] === 1;
-  openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span>${organizer ? '<span class="status-chip sky">Community meetup</span>' : ''}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span>${hidden ? '<span class="status-chip coral">Hidden by you</span>' : ''}${disliked ? '<span class="status-chip coral">Not for you</span>' : ''}<span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${personalKey}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="visibility-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Show event normally' : 'Hide event for now'}" title="${hidden ? 'Show normally' : 'Hide for now'}">${eyeClosedIcon()}</button><button class="thumb-button ${disliked ? 'active' : ''}" data-action="toggle-event-dislike" data-event-id="${event.id}" aria-label="${disliked ? 'Remove event dislike' : 'Dislike event series'}" title="${disliked ? 'Remove dislike' : 'Not for me'}">${thumbDownIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1>${organizer ? `<button class="drawer-place-link" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)} →</button><span class="drawer-attribution-separator"> · </span>` : ''}<button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">Hosted at ${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>
+  const hostLabel = place?.name || event.physicalLocation || 'Location in source';
+  const hostAttribution = place
+    ? `<button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">Hosted at ${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>`
+    : `<span class="drawer-place-link static">At ${escapeHtml(hostLabel)}</span>`;
+  const destination = place?.address || event.physicalLocation || '';
+  openDrawer(`<div class="drawer-kicker"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span>${organizer ? '<span class="status-chip sky">Community meetup</span>' : ''}<span class="status-chip ${fit.tone}">${fit.label}</span><span class="status-chip ${evidence.tone}">${evidence.label}</span>${hidden ? '<span class="status-chip coral">Hidden by you</span>' : ''}${disliked ? '<span class="status-chip coral">Not for you</span>' : ''}<span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${personalKey}" aria-label="${favorite ? 'Unfollow event series' : 'Follow event series'}" title="${favorite ? 'Following series' : 'Follow series'}">${heartIcon()}</button><button class="visibility-button ${hidden ? 'active' : ''}" data-action="toggle-event-hidden" data-event-id="${event.id}" aria-label="${hidden ? 'Show event normally' : 'Hide event for now'}" title="${hidden ? 'Show normally' : 'Hide for now'}">${eyeClosedIcon()}</button><button class="thumb-button ${disliked ? 'active' : ''}" data-action="toggle-event-dislike" data-event-id="${event.id}" aria-label="${disliked ? 'Remove event dislike' : 'Dislike event series'}" title="${disliked ? 'Remove dislike' : 'Not for me'}">${thumbDownIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(event.title)}</h1>${organizer ? `<button class="drawer-place-link" data-community-id="${escapeHtml(organizer.id)}">Organized by ${escapeHtml(organizer.name)} →</button><span class="drawer-attribution-separator"> · </span>` : ''}${hostAttribution}
     <div class="event-hero-meta"><div><span>Date</span><strong>${occurrence.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</strong></div><div><span>Time</span><strong>${formatTime(eventStartTime(event))}</strong></div><div><span>Entry</span><strong>${event.entryFee == null ? 'Unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`}</strong></div><div><span>Power</span><strong>${event.bracket && event.bracket !== 'unspecified' ? `Bracket ${event.bracket}` : 'Not stated'}</strong></div></div>
-    <div class="drawer-action-grid"><a class="soft-button calendar-action" href="${calendarUrl}" target="_blank" rel="noreferrer" aria-label="Add to Google Calendar" title="Add to Google Calendar">${calendarPlusIcon()}</a><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button></div>
+    <div class="drawer-action-grid"><a class="soft-button calendar-action" href="${calendarUrl}" target="_blank" rel="noreferrer" aria-label="Add to Google Calendar" title="Add to Google Calendar">${calendarPlusIcon()}</a>${destination ? `<a class="soft-button" href="${mapsUrl({ address: destination })}" target="_blank" rel="noreferrer">Directions ↗</a>` : ''}<button class="soft-button ${interested ? 'active' : ''}" data-interested="${event.id}:${dateKey(occurrence)}">${interested ? '✓ Interested' : '+ Interested'}</button></div>
     <section class="drawer-section"><p class="eyebrow">Source description</p><h2>What’s happening</h2><p>${escapeHtml(details)}</p></section>
-    <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${place.lifecycleState === 'identity_blocked' ? '<div><span class="interpret-icon amber">!</span><p><strong>Identity unresolved</strong><br>The event has an attached source, but the venue or branch identity remains unresolved. Check the source before relying on it.</p></div>' : ''}${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
-    <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Address</span><strong>${escapeHtml(place.address)}</strong></div><div><span>Added to catalog</span><strong>${escapeHtml(event.createdAt ? formatFreshnessDate(event.createdAt) : 'Unknown')}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>
+    <section class="drawer-section"><p class="eyebrow">Analyst read</p><h2>How to interpret it</h2><div class="interpretation-grid"><div><span class="interpret-icon ${fit.tone}">●</span><p><strong>${fit.label}</strong><br>${eventFitExplanation(event, place)}</p></div><div><span class="interpret-icon ${evidence.tone}">●</span><p><strong>${evidence.label}</strong><br>${evidenceExplanation(event, place)}</p></div>${place?.lifecycleState === 'identity_blocked' ? '<div><span class="interpret-icon amber">!</span><p><strong>Identity unresolved</strong><br>The event has an attached source, but the venue or branch identity remains unresolved. Check the source before relying on it.</p></div>' : ''}${isCompetitive(event) ? '<div><span class="interpret-icon coral">!</span><p><strong>Competitive signal</strong><br>This belongs in the complete catalog but is deprioritized from your casual default view.</p></div>' : ''}</div></section>
+    <section class="drawer-section"><p class="eyebrow">Before you go</p><h2>Practical check</h2><div class="before-grid"><div><span>Location</span><strong>${escapeHtml(hostLabel)}</strong></div><div><span>Added to catalog</span><strong>${escapeHtml(event.createdAt ? formatFreshnessDate(event.createdAt) : 'Unknown')}</strong></div><div><span>Last verified</span><strong>${escapeHtml(event.lastVerified)}</strong></div><div><span>Pod formation</span><strong>${/pair|random pod/i.test(event.details) ? 'Structured signal found' : 'Not stated'}</strong></div><div><span>Proxy policy</span><strong>${/no prox/i.test(event.details) ? 'No proxies stated' : /prox/i.test(event.details) ? 'Policy mentioned' : 'Not stated'}</strong></div></div></section>
     <section class="drawer-section"><p class="eyebrow">Evidence</p><h2>Source trail</h2>${retainedEvidence}${src ? sourceRow(src, true) : '<p class="muted-copy">No normalized source link is attached yet.</p>'}</section>
     <section class="drawer-section"><p class="eyebrow">Your private note</p><h2>Note on this series</h2>${noteComposer(personalKey, 'What should future-you remember about this event?')}</section>`);
 }
@@ -3344,12 +3366,13 @@ function eventFitExplanation(event, place) {
   if (isHighPowerCommander(event)) return 'The wording suggests high-power or Bracket 4/5 Commander, so it belongs in the recoverable poor-fit bucket rather than competing with your usual casual Bracket 2/3 targets.';
   if (/open play|drop.?in|casual/i.test(`${event.title} ${event.details}`)) return 'The casual/open wording aligns with your preferred play style; solo-arrival mechanics may still be unknown.';
   if (isSpecial(event)) return 'This is the kind of infrequent limited or special event you asked to have highlighted.';
+  if (!place && event.communityId) return 'This is a community-organized event relevant to your interests. Its practical fit depends on the specific gathering and physical location, not a store assessment.';
   return `The listing is relevant, but its power expectations and social structure need interpretation. ${distanceLabel(place, true)} keeps distance in the practical calculation.`;
 }
 
 function evidenceExplanation(event, place) {
   if (!event.recurrence && (event.date || event.startDate)) return 'A source names this specific date rather than only a recurring weekly pattern.';
-  if (place.researchStatus === 'partial' && event.confidence === 'high') return 'The routine is supported by a stronger store pass, but this displayed date is still projected from recurrence.';
+  if (place?.researchStatus === 'partial' && event.confidence === 'high') return 'The routine is supported by a stronger store pass, but this displayed date is still projected from recurrence.';
   return 'This occurrence is generated from a recurring listing. Verify the source before a longer drive.';
 }
 
@@ -3746,9 +3769,15 @@ function activeFilterCount() {
 function googleCalendarUrl(event, place, date) {
   const [hour = 18, minute = 0] = (eventStartTime(event) || '18:00').split(':').map(Number);
   const start = new Date(date); start.setHours(hour, minute, 0, 0);
-  const end = new Date(start); end.setHours(end.getHours() + 3);
+  const end = new Date(start);
+  if (event.endTime) {
+    const [endHour, endMinute = 0] = event.endTime.split(':').map(Number);
+    end.setHours(endHour, endMinute, 0, 0);
+  } else {
+    end.setHours(end.getHours() + 3);
+  }
   const stamp = (value) => value.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-  const params = new URLSearchParams({ action: 'TEMPLATE', text: event.title, dates: `${stamp(start)}/${stamp(end)}`, details: meaningfulEventDetails(event), location: place.address });
+  const params = new URLSearchParams({ action: 'TEMPLATE', text: event.title, dates: `${stamp(start)}/${stamp(end)}`, details: meaningfulEventDetails(event), location: place?.address || event.physicalLocation || '' });
   return `https://calendar.google.com/calendar/render?${params}`;
 }
 
