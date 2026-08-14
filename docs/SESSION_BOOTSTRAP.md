@@ -84,6 +84,10 @@ Before deeper work:
    `details->>'inboxKind' = 'wpn_ingest_finding'`, and status is not terminal.
    Report only the count and actionable titles; do not create user-facing
    Signals/Updates or redo source analysis automatically.
+5. if the active lane is community/Discord work, read `CURRENT_FRONTIER.md`
+   first and keep the scope bounded to the currently named server/channel
+   classification task. Do not re-derive LAGS ownership semantics, rerun broad
+   discovery, or reopen resolved Precinct-host attribution.
 
 ## Handoff freshness rule
 

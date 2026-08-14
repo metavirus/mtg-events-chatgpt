@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-08-13
+Last updated: 2026-08-14
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -130,6 +130,12 @@ Use it for:
   attributable event facts found; it is not merely a source-identification
   exercise. User-fit rule: LGBTQ+/gay-inclusive groups are relevant; a
   women-only group is not a personal-fit recommendation for this user.
+
+- Discord survey completion lane: finish classification for the already
+  discovered/approved community Discords only. The goal is a durable
+  HOT/WATCH, MAYBE, and IGNORE map that future recurring review can use
+  without rescanning entire servers. This lane is not permission to resume
+  broad community discovery or reopen the settled LAGS/Precinct ownership fix.
 
 - Source-thin specific follow-up only: LVLUP GAMING TCG and The Bullpen 2.0
   remain worth a narrow continuity/source-confidence check if a future source

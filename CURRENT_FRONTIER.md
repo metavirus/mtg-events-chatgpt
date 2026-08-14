@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-13
+Updated: 2026-08-14
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -303,32 +303,28 @@ Canonical operating details:
    recurring series now also stage as normalized observations, retain the exact
    requested series ID, reconcile through the source-neutral targeted lane, and
    finish through the same promoter. The old direct recurring-occurrence writer
-  is retired. The remaining direct WPN and official-event writers are retired,
-  and targeted recurring reconciliation plus existing-event lifecycle review now
-  run inside the promoter rather than in helper-side choreography. The
-  post-ingest integrity audit is now available and should pass after future
-  promoter changes. Next continue sparse structured optional facts and
-  app-facing polish for grouped Updates/review drawers. Keep the 195
-  ambiguous/conflicting WPN observations pending and do not build separate
-  WPN/social canonical promoters.
+   is retired. The remaining direct WPN and official-event writers are retired,
+   and targeted recurring reconciliation plus existing-event lifecycle review now
+   run inside the promoter rather than in helper-side choreography. The
+   post-ingest integrity audit is now available and should pass after future
+   promoter changes. Do not build separate WPN/social canonical promoters.
 
-1. The small MTG OC Discord scanner proof is complete. Do not repeat it as the
-   next default step. Current Communities work should be driven only by
-   observed product friction: verify click-through/source attribution in the
-   live app, keep relevant chatter compact and hideable, and distinguish
-   community-organized meetups from official venue programming. If the Card
-   Addiction team-sealed meetup or Collector's Lounge prerelease invitation
-   appears to imply official store programming, fix the display/attribution
-   bug directly; otherwise leave the proof alone.
-2. Collector's Lounge/Cypress multi-channel Discord POC is complete. Both
-   `#mtg-announcements-and-events` and `#event-rules` are now
-   `ui_native_navigation_verified` in the live map. Lessons: store Discords can
-   be useful chatter/schedule surfaces, not just official announcements; the
-   announcements channel carried current schedule/sign-up chatter and the rules
-   channel carried high-value Commander fit evidence. Keep community/store
-   Discord findings clearly attributed as Discord/community evidence, and do not
-   measure them against WPN as though WPN were the authoritative baseline.
-3. Use the lifecycle-specific Supabase selectors:
+## Immediate next work
+
+1. Finish the bounded Discord surface-classification pass for already
+   discovered, already approved communities only. The active target is
+   channel/source mapping quality, not broad new discovery. Record HOT/WATCH,
+   MAYBE, and IGNORE routes so future recurring review can read only the
+   right channels instead of rescanning whole servers.
+2. Treat LAGS as closed on ownership semantics: Los Angeles Gayming Society
+   owns its community events; Precinct DTLA is host-location text only. Do not
+   reopen that ownership question. Future work there is limited to display,
+   routing, or evidence-link defects if the live UI disagrees.
+3. Keep Community/Home/Event presentation work narrow and friction-driven:
+   event-linked community Signals should open the event cleanly, grouped
+   Updates should expose clickable event lists, and new community-owned events
+   should not disappear behind unhelpful "promising" or venue-owned framing.
+4. Use the lifecycle-specific Supabase selectors:
    `venue_baseline_candidates`, `venue_surface_retry_candidates`,
    `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
    `venue_identity_resolution_candidates`. Markdown ledgers are context, not
@@ -336,17 +332,11 @@ Canonical operating details:
    preferences, use `venue_candidates_for_user(...)` so venues marked
    `deprioritize` or `hide` do not re-enter ordinary discovery, retry, or
    monitoring work.
-4. Keep every runtime research task inside one explicit lane:
+5. Keep every runtime research task inside one explicit lane:
    `baseline pass`, `identity-resolution pass`, or
-   `steady-state monitoring pass`. Time budgets and hard stop conditions now
-   live in `docs/EFFICIENCY_SOP.md`; treat a 5+ minute no-delta monitoring run
-   or a 10+ minute ordinary baseline run as a workflow failure condition, not a
-   normal cost.
-5. Address specific real-use app friction when observed; do not start another
-   broad product tranche by default.
-6. Consider the next overhead reduction only as a separate approved tooling
-   tranche: either a narrow typed helper/RPC for the remaining routine write
-   shapes or further simplification around linked-CLI typed writes.
+   `steady-state monitoring pass`. Time budgets and hard stop conditions live
+   in `docs/EFFICIENCY_SOP.md`; a 5+ minute no-delta monitoring run or a 10+
+   minute ordinary baseline run is a workflow failure, not a normal cost.
 
 ## Active boundaries
 
