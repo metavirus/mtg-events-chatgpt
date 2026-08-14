@@ -1027,6 +1027,14 @@ function handleClick(event) {
     return;
   }
 
+  const communityOpenTab = event.target.closest('[data-community-open-tab]');
+  if (communityOpenTab) {
+    state.selectedCommunityId = communityOpenTab.dataset.communityId;
+    state.selectedCommunityTab = communityOpenTab.dataset.communityOpenTab;
+    openCommunity(state.selectedCommunityId, true);
+    return;
+  }
+
   const eventTrigger = event.target.closest('[data-event-id]');
   if (eventTrigger && !event.target.closest('[data-favorite]') && !event.target.closest('[data-place-id]') && !event.target.closest('[data-action]')) {
     const occurrenceDate = eventTrigger.dataset.date;
@@ -1046,7 +1054,10 @@ function handleClick(event) {
   }
 
   const communityTrigger = event.target.closest('[data-community-id]');
-  if (communityTrigger && !event.target.closest('[data-favorite]')) return openCommunity(communityTrigger.dataset.communityId);
+  if (communityTrigger && !event.target.closest('[data-favorite]')) {
+    const nestedInteractive = event.target.closest('a, button, input, textarea, select, summary');
+    if (!nestedInteractive || nestedInteractive === communityTrigger) return openCommunity(communityTrigger.dataset.communityId);
+  }
 
   const favorite = event.target.closest('[data-favorite]');
   if (favorite) return toggleFavorite(favorite.dataset.favorite);
@@ -1128,6 +1139,10 @@ function handleKeys(event) {
     closeFilters();
     closePlacePicker();
     document.querySelector('.side-rail').classList.remove('mobile-open');
+  }
+  if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[role="button"][tabindex="0"]')) {
+    event.preventDefault();
+    event.target.click();
   }
 }
 
@@ -2887,12 +2902,12 @@ function communityNetworkCard(hub) {
   const favorite = isCommunityHubFollowed(hub);
   const sourceUrl = hub.primarySource?.url || '';
   const profile = communityProfileData(hub.community);
-  return `<article class="community-network-card">
+  return `<article class="community-network-card" data-community-id="${escapeHtml(hub.community.id)}" role="button" tabindex="0" aria-label="Open ${escapeHtml(hub.name)} community profile">
     <div class="community-network-head"><span class="community-symbol small">${communitySurfaceIcon('Community')}</span><div><strong>${escapeHtml(hub.name)}</strong><small>${escapeHtml(hub.linkedLabel)}</small></div><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="${escapeHtml(hub.favoriteKey)}" aria-label="${favorite ? 'Unfollow' : 'Follow'} ${escapeHtml(hub.name)}">${heartIcon()}</button></div>
-    <div class="community-card-status"><span class="status-chip ${profile.monitoring.tone}">${escapeHtml(profile.monitoring.label)}</span><small>${escapeHtml(profile.monitoring.detail)}</small></div>
+    <div class="community-card-status"><button class="status-chip ${profile.monitoring.tone}" data-community-id="${escapeHtml(hub.community.id)}" data-community-open-tab="sources">${escapeHtml(profile.monitoring.label)}</button><small>${escapeHtml(profile.monitoring.detail)}</small></div>
     <p>${escapeHtml(communityUsefulness(hub.community))}</p>
     ${communityCardHighlight(profile)}
-    <div class="community-card-counts"><span><strong>${profile.upcoming.length}</strong> upcoming</span><span><strong>${profile.connections.length}</strong> connection${profile.connections.length === 1 ? '' : 's'}</span><span><strong>${profile.locations.length}</strong> host${profile.locations.length === 1 ? '' : 's'}</span></div>
+    <div class="community-card-counts"><button data-community-id="${escapeHtml(hub.community.id)}" data-community-open-tab="events"><strong>${profile.upcoming.length}</strong> upcoming</button><button data-community-id="${escapeHtml(hub.community.id)}" data-community-open-tab="connections"><strong>${profile.connections.length}</strong> connection${profile.connections.length === 1 ? '' : 's'}</button><button data-community-id="${escapeHtml(hub.community.id)}" data-community-open-tab="events"><strong>${profile.locations.length}</strong> host${profile.locations.length === 1 ? '' : 's'}</button></div>
     <div class="community-network-actions">${sourceUrl ? `<a class="soft-button" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">Open Discord ↗</a>` : ''}<button class="soft-button" data-community-id="${escapeHtml(hub.community.id)}">Details</button></div>
   </article>`;
 }
@@ -2907,7 +2922,7 @@ function communityCardHighlight(profile) {
   if (connection) return `<button class="community-network-finding social" data-action="open-signal" data-signal-id="${escapeHtml(connection.id)}"><span>Your connection</span>${escapeHtml(connection.summary)} →</button>`;
   const signal = profile.signals[0];
   if (signal) return `<button class="community-network-finding" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}"><span>Last useful activity</span>${escapeHtml(signal.summary)} →</button>`;
-  return `<div class="community-network-finding quiet"><span>No recent useful activity</span>Monitoring state is shown above; silence does not remove this community from your radar.</div>`;
+  return `<button class="community-network-finding quiet" data-community-id="${escapeHtml(profile.community.id)}" data-community-open-tab="activity"><span>No recent useful activity</span>Monitoring state is shown above; open the activity view for the durable record.</button>`;
 }
 
 function recentlyActiveCommunityChannels(surfaces) {
@@ -3641,6 +3656,10 @@ function communityHostName(event) {
   return explicitHost?.[1]?.trim() || '';
 }
 
+function mapsSearchUrl(label) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(label)}`;
+}
+
 function communityOwnedEventRow(event, community) {
   const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
   const host = communityHostName(event);
@@ -3673,7 +3692,7 @@ function communityProfileTabContent(profile) {
   if (state.selectedCommunityTab === 'sources') {
     return `<section class="drawer-section"><p class="eyebrow">Monitoring coverage</p><h2>${escapeHtml(monitoring.label)}</h2><p>${escapeHtml(monitoring.detail)}. Last meaningful activity and last successful check are tracked separately so quiet periods remain trustworthy.</p><div class="source-list">${profile.sources.map(sourceRow).join('') || '<p class="muted-copy">No source mapping is available.</p>'}</div></section><section class="drawer-section"><details class="monitoring-details"><summary>Monitoring details</summary><div class="community-surface-list">${profile.surfaces.length ? profile.surfaces.map(communitySurfaceCard).join('') : '<p class="muted-copy">No classified community surfaces are available yet.</p>'}</div></details></section>`;
   }
-  return `<section class="drawer-section community-profile-snapshot"><div class="community-facts"><div><span>Monitoring</span><strong>${escapeHtml(monitoring.label)}</strong></div><div><span>Upcoming</span><strong>${profile.upcoming.length} confirmed</strong></div><div><span>Known hosts</span><strong>${profile.locations.length}</strong></div></div>${monitoring.usefulDate ? `<p class="community-last-meaningful">Last meaningful activity ${escapeHtml(formatFreshnessDate(monitoring.usefulDate))}</p>` : '<p class="community-last-meaningful">No meaningful activity date is captured yet.</p>'}</section><section class="drawer-section"><p class="eyebrow">Current synthesis</p><h2>Why this group matters</h2><p>${escapeHtml(community.summary)}</p></section>${communityOverviewHighlight(profile)}<section class="drawer-section"><p class="eyebrow">Geography and hosts</p><h2>${profile.locations.length ? `${profile.locations.length} known gathering location${profile.locations.length === 1 ? '' : 's'}` : 'Host relationships still developing'}</h2><div class="community-host-list">${profile.locations.map((location) => location.place ? `<button class="meta-chip link-chip" data-place-id="${escapeHtml(location.id)}" data-place-mode="drawer">${escapeHtml(location.name)}</button>` : `<span class="meta-chip">${escapeHtml(location.name)} · location text</span>`).join('') || '<p class="muted-copy">A community can organize gatherings at stores, parks, bars, homes, or location text that has not become a venue record.</p>'}</div></section><section class="drawer-section"><p class="eyebrow">Open research question</p><h2>What would make this profile more useful</h2><p>${escapeHtml(community.nextQuestion)}</p></section>${noteComposer(`community:${community.id}`, 'Add a personal note about this community...')}`;
+  return `<section class="drawer-section community-profile-snapshot"><div class="community-facts"><button data-community-tab="sources"><span>Monitoring</span><strong>${escapeHtml(monitoring.label)}</strong></button><button data-community-tab="events"><span>Upcoming</span><strong>${profile.upcoming.length} confirmed</strong></button><button data-community-tab="events"><span>Known hosts</span><strong>${profile.locations.length}</strong></button></div>${monitoring.usefulDate ? `<button class="community-last-meaningful" data-community-tab="activity">Last meaningful activity ${escapeHtml(formatFreshnessDate(monitoring.usefulDate))} →</button>` : '<button class="community-last-meaningful" data-community-tab="activity">No meaningful activity date is captured yet · review activity →</button>'}</section><section class="drawer-section"><p class="eyebrow">Current synthesis</p><h2>Why this group matters</h2><p>${escapeHtml(community.summary)}</p></section>${communityOverviewHighlight(profile)}<section class="drawer-section"><p class="eyebrow">Geography and hosts</p><h2>${profile.locations.length ? `${profile.locations.length} known gathering location${profile.locations.length === 1 ? '' : 's'}` : 'Host relationships still developing'}</h2><div class="community-host-list">${profile.locations.map((location) => location.place ? `<button class="meta-chip link-chip" data-place-id="${escapeHtml(location.id)}" data-place-mode="drawer">${escapeHtml(location.name)}</button>` : `<a class="meta-chip link-chip" href="${escapeHtml(mapsSearchUrl(location.name))}" target="_blank" rel="noreferrer">${escapeHtml(location.name)} · map ↗</a>`).join('') || '<p class="muted-copy">A community can organize gatherings at stores, parks, bars, homes, or location text that has not become a venue record.</p>'}</div></section><section class="drawer-section"><p class="eyebrow">Open research question</p><h2>What would make this profile more useful</h2><p>${escapeHtml(community.nextQuestion)}</p></section>${noteComposer(`community:${community.id}`, 'Add a personal note about this community...')}`;
 }
 
 function communityOverviewHighlight(profile) {
@@ -3702,7 +3721,7 @@ function openCommunity(id, preserveTab = false) {
   state.selectedCommunityId = id;
   const favorite = state.personal.favorites[`community:${id}`];
   const profile = communityProfileData(community);
-  openDrawer(`<div class="drawer-kicker"><span class="community-symbol small">◎</span><span class="status-chip ${profile.monitoring.tone}">${escapeHtml(profile.monitoring.label)}</span><span class="status-chip slate">Community record</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${id}" aria-label="${favorite ? 'Remove community from' : 'Add community to'} favorites" title="Favorite community">${heartIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(community.name)}</h1><p class="drawer-lead">${escapeHtml(community.region)}${community.formats?.length ? ` · ${escapeHtml(community.formats.join(' · '))}` : ''}</p>${communityProfileTabs(profile)}<div class="community-profile-content">${communityProfileTabContent(profile)}</div>`);
+  openDrawer(`<div class="drawer-kicker"><span class="community-symbol small">◎</span><button class="status-chip ${profile.monitoring.tone}" data-community-tab="sources">${escapeHtml(profile.monitoring.label)}</button><span class="status-chip slate">Community record</span><span class="drawer-preference-actions"><button class="heart-button ${favorite ? 'active' : ''}" data-favorite="community:${id}" aria-label="${favorite ? 'Remove community from' : 'Add community to'} favorites" title="Favorite community">${heartIcon()}</button></span></div><h1 id="drawerTitle">${escapeHtml(community.name)}</h1><p class="drawer-lead">${escapeHtml(community.region)}${community.formats?.length ? ` · ${escapeHtml(community.formats.join(' · '))}` : ''}</p>${communityProfileTabs(profile)}<div class="community-profile-content">${communityProfileTabContent(profile)}</div>`);
 }
 
 async function sendMagicLink(inputId) {

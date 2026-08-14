@@ -414,6 +414,12 @@ Use clear hover, focus, and touch affordances so users can distinguish clickable
 elements. Drilldowns should be deep-linkable where practical, preserve browser
 back behavior, and remain keyboard accessible. External sources and directions
 open in a new tab; internal investigation should normally remain inside the app.
+Treat this as a global composition rule, not a page-specific enhancement: when
+a card, count tile, status badge, host/location chip, finding, or summary panel
+visually suggests a useful underlying record, make the whole implied target
+clickable with an honest destination and keyboard affordance. If no useful
+destination exists, remove the button-like styling instead of leaving a false
+affordance.
 
 ## Distance and map behavior
 
