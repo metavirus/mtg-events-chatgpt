@@ -14,6 +14,14 @@ Use it for:
 
 ## Recently closed / operational baseline
 
+- Compaction-resilient handoff posture: `CURRENT_FRONTIER.md` is the first
+  recovery read and must remain compact. Fresh tasks should use targeted
+  backlog searches/snippets instead of raw-reading this file. If a task
+  compacts repeatedly before reaching a bounded result, stop the active lane,
+  update `CURRENT_FRONTIER.md`/this backlog with the exact state and next
+  action, and resume from that checkpoint rather than continuing into context
+  churn.
+
 - Cloud daily surveyor: the WPN daily lane now runs in
   `.github/workflows/daily-surveyor.yml` through GitHub Actions without the
   user's desktop or Codex session. Repository secret `SUPABASE_DB_URL` is the
@@ -44,12 +52,13 @@ Use it for:
 
 ## Active next-up
 
-- **Community fuzzy-discovery checkpoint (canonical promotion completed
-  2026-08-13; execute the remaining main passes sequentially and do not
-  re-research the batch):** the prior store/source discovery method was too
+- **Community fuzzy-discovery checkpoint (canonical promotion/main passes
+  completed 2026-08-13; remaining work is presentation and lower-confidence
+  possibilities only):** the prior store/source discovery method was too
   literal and missed community-led Magic groups discoverable through ordinary
   fuzzy web searches. The evidence gathered on 2026-08-13 is pinned here for
-  one-community-at-a-time promotion:
+  future monitoring and product presentation; do not re-run the completed
+  promotions as research:
   1. `MTG OC`: completed. The existing canonical community now includes
      `https://www.meetup.com/magic-the-gathering-oc-casual/` as another source;
      its organizer/Discord identity matches the existing group. Do not create a
@@ -59,10 +68,12 @@ Use it for:
      not GayMTG. Known routes are `https://lagaymingsociety.org/`,
      `https://www.instagram.com/lagaymers/`, and Discord invite
      `https://discord.gg/gkf6Jwj`. AKBAR corroborates recurring LAGS Gaymer
-     Night activity. The user identified an August 18 bar event in Los Angeles;
-     exact date/time/venue-grade source evidence was not recovered in the
-     bounded search, so do not invent or promote that event until the exact
-     listing is inspected.
+     Night activity. The August 18 Magic The GAYthering item was later
+     recovered and promoted through the community-event adapter as a
+     LAGS/Magic The GAYthering community event using Precinct DTLA as the host
+     location. It is not an official Precinct venue event. Signals, Updates,
+     and event listings should route to the promoted event or source, not only
+     to a descriptive popup.
   3. `GayMTG`: completed. The canonical reviewed LGBTQ+/allies Magic community
      has a full bounded main pass. Its verified route is
      `https://www.meetup.com/gaymtg/`; the current page showed 128 members,
@@ -90,8 +101,9 @@ Use it for:
      groups should remain clearly labeled questionable possibilities rather
      than disappearing or becoming full Signals.
   Canonical source attachment readback: MTG OC has 11 mapped sources, LAGS 3,
-  GayMTG 1, and Sanctuary MTG 2. No event was guessed or promoted in this
-  source-only step. Remaining product follow-up: add a compact Home
+  GayMTG 1, and Sanctuary MTG 2. The later LAGS event promotion supersedes the
+  earlier source-only note; no other community event was guessed. Remaining
+  product follow-up: add a compact Home
   discovery/possibilities lane distinct
   from canonical Signals. A promoted community pass must inspect all known
   sources, perform one bounded fuzzy hydration search, and ingest any concrete

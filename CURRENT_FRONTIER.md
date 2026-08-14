@@ -13,6 +13,14 @@ repeat completed work. Detailed methods live in the canonical SOPs. Historical
 frontier checkpoints are preserved in
 `docs/archive/CURRENT_FRONTIER_HISTORY_THROUGH_2026-07-24.md`.
 
+## Compaction safety
+
+This file is the first recovery read after compaction. Keep it short. Do not
+raw-read `docs/WORK_BACKLOG.md` or broad source trees just to reacclimate; use
+targeted searches and small snippets. If a task compacts repeatedly before a
+bounded result is reached, stop substantive work, update this file/backlog with
+the exact durable state and next action, then hand off from that checkpoint.
+
 ## Where we are now
 
 - The fuzzy community-discovery checkpoint is pinned in
@@ -23,9 +31,13 @@ frontier checkpoints are preserved in
   2026 history but no future dated event and no additional verified official
   route, so it is closed to weekly Meetup monitoring. Sanctuary's authenticated Instagram review
   confirmed active recent gatherings but yielded no concrete future dated event,
-  so none was invented. Continue the sequence
-  with MTG OC source reconciliation, before building the compact
-  Home possibilities lane for corroborated but uncertain groups.
+  so none was invented. MTG OC source reconciliation is complete. The LAGS
+  August 18 Magic The GAYthering item has since been promoted as a
+  community-owned event hosted at Precinct DTLA, not as official Precinct
+  programming. Do not re-run this discovery batch or re-promote these records;
+  only fix exact app/display/readback defects if the live UI disagrees. The
+  remaining discovery product follow-up is the compact Home possibilities lane
+  for corroborated but uncertain groups.
 
 - The personal-use app reads canonical operational data from Supabase.
 - Signed-in favorites, deprioritization, and private notes persist through

@@ -68,13 +68,14 @@ Before deeper work:
 
 1. verify Python visibility:
    - `.\.venv\Scripts\python.exe --version`
-2. read:
+2. read the short current-state docs first:
    - `README.md`
    - `docs/PROJECT_CONTEXT.md`
    - `CURRENT_FRONTIER.md`
-   - `docs/WORK_BACKLOG.md`
    - `docs/CHANGE_CONTROL.md`
    - `docs/EFFICIENCY_SOP.md`
+   Then query `docs/WORK_BACKLOG.md` with targeted searches/snippets for the
+   active lane. Do not raw-read the entire backlog just to reacclimate.
 3. inspect repo state:
    - current branch
    - `git status --short`
