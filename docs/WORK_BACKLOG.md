@@ -849,6 +849,18 @@ claims without reopening the whole packet.
   reliability. If viable, prioritize operational, structured events, meetups,
   LFG/pod formation, and active event-adjacent chatter; do not make every active
   channel daily by default.
+- Daily Discord automation ladder is accepted as the path to v1:
+  1. finish first-batch bounded proofs, with Collectors Lounge next;
+  2. build a local micro-sweep script over MTG OC, eligible LCC rows, and
+     Collectors Lounge only;
+  3. prove local write-watchlist behavior with Signal/Event writes disabled by
+     default;
+  4. move to GitHub Actions only after timing, failure classes, and app-visible
+     output are measured;
+  5. expand one repaired/proven surface at a time.
+  The v1 outcome contract is `accepted_signal`, `event_candidate`,
+  `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
+  runs update monitoring state only; they do not create visible Signals.
 - Extend the relevant-chatter proof when a direct non-meetup question such as
   the Finch and Sparrow mention is captured canonically; it should rank below
   meetup coordination but remain visible and clickable.

@@ -104,6 +104,12 @@ the exact durable state and next action, then hand off from that checkpoint.
   coordination, and the guild Events surface is now an exact
   `needs_deeper_replay` repair item because no unique Events control was
   observed. No current Signal/Event was created.
+- The Discord automation path is now a phased micro-sweep ladder, not broad
+  crawler work. Phase 1 is the next execution step: finish the Collectors
+  Lounge bounded proof over mapped watchlist rows. Phase 2 is a local
+  `scripts/run_discord_daily_survey.mjs` v1 over only MTG OC, eligible LCC
+  channel rows, and Collectors Lounge. GitHub Actions automation waits until
+  the local write-watchlist proof measures clean timing/failure behavior.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 - Private source-image evidence is operational for uncommon cases where the

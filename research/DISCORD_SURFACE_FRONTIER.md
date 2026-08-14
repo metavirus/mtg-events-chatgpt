@@ -154,14 +154,57 @@ Quiet outcomes:
 
 ## Next implementation checkpoint
 
-The next Discord automation step is not "discover Discord again." It is:
+The next Discord automation step is not "discover Discord again." It is the
+daily-sweep ladder below. Do not skip ahead to broad automation.
 
-1. Build/read from the existing `discord_channel_watchlist` map.
-2. Run a small proof over the first ripe set: MTG OC, Legendary Creature Club,
-   and Collectors Lounge `#announcements`.
-3. Emit only one of four outcomes per surface: accepted Signal, accepted event
-   candidate/promotion, quiet coverage/no useful chatter, or exact blocked
-   repair item.
-4. Link accepted findings to the Discord source/channel/message where possible,
-   and to the community or canonical event when promoted.
-5. Stop and report timing/cost before expanding to the rest of the map.
+### Daily Discord automation ladder
+
+Phase 0 is the current state: bounded manual/guarded proofs over exact mapped
+watchlist rows. MTG OC and Legendary Creature Club have current proofs. LCC's
+guild Events surface is excluded from automation until the exact
+`needs_deeper_replay` repair is complete.
+
+Phase 1 is the missing first-batch proof: Collectors Lounge. Run a bounded
+guarded survey of `#announcements`, `#mtg-announcements-and-events`, and
+`#general` / `#event-rules` only as scoped by the watchlist. Record each row as
+accepted Signal, event candidate/promotion, quiet coverage, stale useful
+context, or exact blocked repair item.
+
+Phase 2 is a local micro-sweep script, not a crawler:
+`scripts/run_discord_daily_survey.mjs`. It should read active
+`discord_channel_watchlist` rows, preflight `safe_access_mode`, run the existing
+guarded UI-native reader, classify the bounded window, update watchlist state,
+and emit a JSON log. V1 includes only MTG OC, LCC channel rows that are not
+`needs_deeper_replay`, and Collectors Lounge. It must support `--dry-run`,
+`--limit`, `--surface`, `--write-watchlist`, `--no-signal-writes`, and
+`--json-log`.
+
+Phase 3 is local write-watchlist proof. Run the v1 allowlist locally with
+watchlist writes enabled, but with Signal/Event writes disabled unless a current
+urgent finding is reviewed. Measure elapsed time, failure classes, and how many
+visible app items would have been created.
+
+Phase 4 is GitHub Actions. Only after Phase 3 passes, add
+`.github/workflows/daily-discord-survey.yml` with a strict timeout, daily
+morning PT schedule, manual dispatch, JSON-log artifact upload, and no commits
+of generated logs.
+
+Phase 5 is measured expansion. Add JJ's / other operational channels only after
+v1 runs cleanly. ProjectCCG and other repaired routes must get one bounded proof
+before entering the daily allowlist.
+
+### V1 outcome contract
+
+Every automated surface run emits exactly one outcome:
+
+- `accepted_signal`
+- `event_candidate`
+- `quiet_coverage`
+- `blocked_repair`
+- `stale_useful_context`
+
+Only current, actionable findings create app-visible Signals or event proposals:
+direct `Metavirus` mentions/questions, current/tomorrow meetup coordination,
+closures/no-event/cancellation/moved-location notices, concrete dated event
+facts, or material access/source-health problems. Quiet, noisy, stale, or
+blocked runs update monitoring state only.
