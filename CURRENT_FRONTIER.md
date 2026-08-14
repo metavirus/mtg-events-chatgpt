@@ -18,9 +18,11 @@ frontier checkpoints are preserved in
 - The fuzzy community-discovery checkpoint is pinned in
   `docs/WORK_BACKLOG.md`. Canonical promotion is complete: MTG OC has its Meetup
   source, and LAGS, GayMTG, and Sanctuary MTG now exist with their verified
-  routes. Do not repeat discovery or recreate them. Next execute the real main
-  passes sequentially—LAGS first—then build the compact Home possibilities lane
-  for corroborated but uncertain groups.
+  routes. Do not repeat discovery or recreate them. LAGS and Sanctuary MTG have
+  completed bounded main passes; Sanctuary's known sources yielded no
+  trustworthy current dated event, so none was invented. Continue the sequence
+  with GayMTG, then MTG OC source reconciliation, before building the compact
+  Home possibilities lane for corroborated but uncertain groups.
 
 - The personal-use app reads canonical operational data from Supabase.
 - Signed-in favorites, deprioritization, and private notes persist through

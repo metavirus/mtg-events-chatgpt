@@ -73,8 +73,11 @@ Use it for:
      routes are `https://www.instagram.com/sanctuarymtg/` and
      `https://www.reddit.com/r/LosAngelesSocialClub/comments/1qe7s66/magic_the_gathering_social_club/`;
      evidence describes weekly Commander gatherings rotating among venues such
-     as Frogtown Brewery and Lawless Brewing. Hydrate exact current event facts
-     before event promotion.
+     as Frogtown Brewery and Lawless Brewing. Main pass completed August 13:
+     both known routes and one bounded fuzzy search were inspected. Instagram
+     reached a login checkpoint and the available public evidence exposed no
+     trustworthy current dated event, so no event was invented or promoted.
+     The pass is closed; ordinary monitoring may capture a later dated listing.
   5. Lower-confidence Home discovery possibilities, not canonical communities
      yet: Magic The Gathering LGBT Commander Meetup (Orange County), Here
      Clubhouse queer MTG, Topdeck Lethal, Lotus Guild, and Geeks OUT L.A.
