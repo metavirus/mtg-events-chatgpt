@@ -230,7 +230,16 @@ Use it for:
   `docs/DISCORD_SURVEY_CADENCE_STATUS_2026-07-23.md` is now the lean operating
   map for small verified-route surveys. It separates ready routine routes,
   route-discovery candidates, blocked/TBD items, cadence, useful-signal criteria,
-  quiet/stale handling, same-day Signal expiry, and write approval gates.
+  quiet/stale handling, same-day Signal expiry, and write approval gates. The
+  current Supabase-audited frontier is pinned in
+  `research/DISCORD_SURFACE_FRONTIER.md`: 11 access profiles, 34 channel
+  watchlist rows, 31 active rows, 3 blocked/TBD rows, and 20 high-priority rows.
+  Agent-ready surfaces are MTG OC, Legendary Creature Club, Collectors Lounge,
+  ProjectCCG, JJ's, Kingslayer, Magic & Monsters, and Krazy Nick's. Hobby
+  Overflow and Paper Hero's remain blocked/finite-repair items; Buddies,
+  CoreTCG, GXGAMERS, Next-Gen, Otaku Vault, Tilted, Turn Zero, Collector
+  Legion, Spellhold, and Guild House are route-captured but not recurring-agent
+  ready.
 
 - ChatGPT-to-Codex coordination has moved to Supabase. New ordinary ChatGPT
   source leads, findings, questions, and proposals should be submitted as
@@ -522,6 +531,9 @@ claims without reopening the whole packet.
 ## Group/community backlog
 
 - Keep groups modeled separately from stores/venues.
+- Discord surface status is centralized in
+  `research/DISCORD_SURFACE_FRONTIER.md`; use that before reopening broad
+  Discord discovery.
 - MTG OC guarded Discord proof is operational across nine mapped channels.
   Preserve its canonical attention ordering: meetup coordination involving
   `Metavirus` is highest signal; direct questions/requests mentioning the user

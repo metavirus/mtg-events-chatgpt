@@ -72,8 +72,9 @@ the exact durable state and next action, then hand off from that checkpoint.
   reserved for event/evaluation changes, higher-level queueing, and unresolved
   work.
 - The guarded Discord UI-native method is proven for a bounded set of mapped
-  routes. Small verified-route surveys are supported; broad daily automation is
-  not yet approved.
+  routes. The live Discord surface inventory and next recurring-agent sequence
+  are pinned in `research/DISCORD_SURFACE_FRONTIER.md`. Small verified-route
+  surveys are supported; broad daily automation is not yet approved.
 - MTG OC is modeled as an independent Orange County regional community with
   nine mapped Discord channels. The proof distinguishes community-organized
   meetups from host-venue programming: its confirmed August 2 team-sealed
