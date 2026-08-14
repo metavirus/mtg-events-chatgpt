@@ -1403,7 +1403,9 @@ function derivedEventIngestSignals() {
 function eventIngestDigestSignal(change) {
   const events = eventIngestDeltaMatches(change).filter((event) => !isEventHidden(event));
   if (!events.length) return null;
-  const place = store(change.entityId);
+  const relatedCommunity = change.entityType === 'community' ? community(change.entityId) : null;
+  const place = change.entityType === 'venue' ? store(change.entityId) : null;
+  const relatedName = relatedCommunity?.name || place?.name || (change.entityType === 'community' ? 'A community' : 'A venue');
   const eventCount = events.length;
   const specialCount = events.filter(isSpecial).length;
   const commanderCount = events.filter(isCommanderLike).length;
@@ -1434,9 +1436,9 @@ function eventIngestDigestSignal(change) {
     sourceId: '',
     capturedAt: change.detectedAt || '',
     observedAt: change.detectedAt || '',
-    relatedEntityType: 'venue',
+    relatedEntityType: change.entityType,
     relatedEntityId: change.entityId || '',
-    summary: `${place?.name || 'A venue'} added ${eventCount} new event${eventCount === 1 ? '' : 's'}.`,
+    summary: `${relatedName} added ${eventCount} new event${eventCount === 1 ? '' : 's'}.`,
     details: `${emphasis ? `${emphasis}. ` : ''}${change.details || 'The daily surveyor promoted newly listed events.'}${dateCopy}${sourceCopy}`,
     confidence: eventCount ? 'high' : 'medium',
     suggestedAction: eventCount === 1 ? 'Open the new event and decide whether it matters for planning.' : 'Open the batch drawer and skim the newly added events.',
@@ -1709,11 +1711,24 @@ function isPrereleaseOrSealed(event) { return /prerelease|sealed|limited/i.test(
 function isSpecial(event) { return /prerelease|sealed|draft|limited|party|special/i.test(`${event.eventType} ${event.title} ${event.format}`); }
 function isWeekend(date) { return [5, 6, 0].includes(date.getDay()); }
 
+function eventHostLabel(event, place = store(event?.storeId)) {
+  if (place?.name) return place.name;
+  const location = String(event?.physicalLocation || '').trim();
+  const communityLocation = event?.communityId
+    ? String(event?.details || '').match(/\b(?:at|@)\s+([A-Z][^.;\n]{2,60})(?=[.;\n]|$)/)?.[1]?.trim()
+    : '';
+  const resolvedLocation = location || communityLocation;
+  if (!resolvedLocation) return 'Location provided in source';
+  const firstLine = resolvedLocation.split(/\r?\n/)[0].trim();
+  const firstSegment = firstLine.split(',')[0].trim();
+  return /^\d+\s/.test(firstSegment) ? 'Location provided in source' : firstSegment;
+}
+
 function eventMatchesSharedFilters(event, options = {}) {
   const { includePreset = true, includeSearch = true, hideCompetitive = state.filters.hideCompetitive } = options;
   const place = store(event.storeId);
   const organizer = community(event.communityId);
-  const hostLabel = place?.name || event.physicalLocation || 'Location in source';
+  const hostLabel = eventHostLabel(event, place);
   if (!place && !organizer) return false;
   if (place && isPlaceHidden(place.id)) return false;
   if (place?.lifecycleState === 'identity_blocked' && !(event.sourceIds || []).length) return false;
@@ -1958,7 +1973,7 @@ function eventCard(event, compact = false, options = {}) {
   const { showDate = false, emphasize = false, catalog = false, dense = false } = options;
   const place = store(event.storeId);
   const organizer = community(event.communityId);
-  const hostLabel = place?.name || event.physicalLocation || 'Location in source';
+  const hostLabel = eventHostLabel(event, place);
   const fit = fitLabel(event);
   const evidence = evidenceLabel(event);
   const favoriteKey = eventPreferenceKey(event);
@@ -3342,7 +3357,7 @@ function openEvent(id, occurrenceDate) {
   const retainedEvidence = artifacts.length ? artifactEvidenceList(artifacts) : '';
   const details = meaningfulEventDetails(event);
   const disliked = state.personal.ratings[personalKey] === 1;
-  const hostLabel = place?.name || event.physicalLocation || 'Location in source';
+  const hostLabel = eventHostLabel(event, place);
   const hostAttribution = place
     ? `<button class="drawer-place-link" data-place-id="${place.id}" data-place-mode="drawer">Hosted at ${escapeHtml(place.name)} · ${distanceLabel(place)} →</button>`
     : `<span class="drawer-place-link static">At ${escapeHtml(hostLabel)}</span>`;

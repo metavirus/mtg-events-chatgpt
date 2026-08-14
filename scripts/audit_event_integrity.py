@@ -42,13 +42,54 @@ CRITICAL_CHECKS = [
         """,
     ),
     CountCheck(
-        "series_without_venue",
+        "series_without_owner",
         "critical",
         """
         select count(*)::int as count
         from public.event_series es
         left join public.venues v on v.id = es.venue_id
-        where v.id is null;
+        left join public.communities c on c.id = es.community_id
+        where (es.venue_id is null and es.community_id is null)
+           or (es.venue_id is not null and v.id is null)
+           or (es.community_id is not null and c.id is null);
+        """,
+    ),
+    CountCheck(
+        "future_community_events_without_source_location",
+        "critical",
+        """
+        select count(*)::int as count
+        from public.event_occurrences eo
+        join public.event_series es on es.id = eo.series_id
+        where es.community_id is not null
+          and eo.occurrence_date >= current_date
+          and eo.occurrence_status in ('confirmed', 'projected', 'at_risk')
+          and not exists (
+            select 1
+            from public.event_source_bindings b
+            join public.event_observations o on o.id = b.observation_id
+            where b.occurrence_id = eo.id
+              and nullif(btrim(o.physical_location_text), '') is not null
+          );
+        """,
+    ),
+    CountCheck(
+        "community_event_updates_misattributed_as_venues",
+        "critical",
+        """
+        select count(*)::int as count
+        from public.research_changes rc
+        where rc.change_type = 'event_ingest_delta'
+          and rc.entity_type = 'venue'
+          and exists (
+            select 1
+            from public.event_observations o
+            where o.organizer_type = 'community'
+              and o.organizer_id is not null
+              and rc.detected_at between o.created_at - interval '5 minutes'
+                                     and o.created_at + interval '5 minutes'
+              and rc.details ilike '%' || o.title || '%'
+          );
         """,
     ),
     CountCheck(
