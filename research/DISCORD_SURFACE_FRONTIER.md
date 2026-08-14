@@ -67,6 +67,21 @@ approved. Start here; do not begin with route-only invites.
 | Magic & Monsters | Joined/access mapped, occasional/source-health posture | `#shop-schedule`, `#mtg-schedule` | Useful mostly for schedule-health and "MTG no longer routine" checks. |
 | Krazy Nick's | Joined/access mapped, occasional candidate | `#commander`, `#weekly-event-schedule` | Lower-frequency but potentially useful Commander/schedule route. |
 
+## Discord review audit ledger
+
+This table is the machine-checkable completeness record for Discord routes that
+have been called reviewed or agent-ready. A channel is not complete unless the
+row records scheduled Events, recent chatter, pins/media/images, direct
+mentions, and owner-vs-location attribution.
+
+<!-- discord-frontier-audit:start -->
+| server | channel | disposition | scheduled_events | recent_messages | pins_media | metavirus_mentions | owner_location_rule |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| LAGaymingSociety | #meet-up | hot_signal_source | Discord Event `1537178990249513072`: Magic The GAYthering at Precinct DTLA, Tue Aug 18 2026 6 PM | Checked current/recent meetup thread around the event card and reactions | Event image/card checked; source image evidence attached to LAGS-owned event/signal | Checked; no direct `Metavirus` participation shown in this LAGS event proof | LAGS/community-owned event; Precinct DTLA is host location text/context, not promoted as store owner |
+| LAGaymingSociety | #announcements | hot_signal_source | Discord Event observed: Gaymer Night at WERK Long Beach, Thu Aug 20 2026 8 PM | Checked recent announcement activity | Announcement/event card media checked | Checked; no direct `Metavirus` mention observed | LAGS/community-owned event; WERK Long Beach is host location context unless separately promoted |
+| LAGaymingSociety | #general | watch | No current scheduled Discord Event promoted from this channel | Checked bounded current chatter sample; found MTG-adjacent Witch's Cottage Tuesday discussion | No event-card media promoted from this sample | Checked; no direct `Metavirus` mention observed | Chatter-only route; do not promote host bars/places without a concrete event source |
+<!-- discord-frontier-audit:end -->
+
 ## Blocked or finite-repair surfaces
 
 These should not be put into the daily agent until the exact blocker is

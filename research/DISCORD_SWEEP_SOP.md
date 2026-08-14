@@ -462,6 +462,26 @@ The goal is not free browsing. The goal is to determine whether Discord carries:
 - clarifications or corrections to website / Wizards / Instagram event reads
 - practical meetup signals that materially change the interpretation of an event
 
+## Review completeness contract
+
+Do not call a Discord channel reviewed, complete, or agent-ready unless the
+Discord frontier audit ledger records every required evidence dimension for
+that exact channel:
+
+- scheduled Discord Events / event cards, if the server exposes them;
+- recent message/chatter window;
+- pins, pinned posts, media, and image cards where visible;
+- `Metavirus` / direct-mention scan;
+- owner-vs-location attribution rule;
+- final disposition (`hot_signal_source`, `watch`, `sample`, `ignore`, or
+  `blocked_repair`).
+
+The ledger lives in `research/DISCORD_SURFACE_FRONTIER.md` and is checked by
+`scripts/validate_discord_frontier.py`. A future pass that changes Discord
+surface status must update that ledger and pass the validator before it can
+claim the route is done. Scheduled Discord Events and image cards are
+first-class evidence surfaces, not decoration and not secondary to WPN.
+
 ## Daily light sweep
 
 For useful servers, daily sweep should check only:

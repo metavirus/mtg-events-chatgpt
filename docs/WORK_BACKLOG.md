@@ -287,6 +287,11 @@ Use it for:
   platform issue immediately, but do not route ordinary data work through CLI
   just to rediscover telemetry or profile-state noise.
 
+- Discord review audit guardrail is active: future Discord sweeps must maintain
+  the `research/DISCORD_SURFACE_FRONTIER.md` audit ledger and pass
+  `scripts/validate_discord_frontier.py` before claiming a hot/watch/sample
+  channel is reviewed or agent-ready.
+
 - Durable source-image evidence in Supabase Storage: Phase 1 and the incidental
   app presentation are complete
   (`coordination_items.id = 1ff603bd-b5c1-4878-ab75-c2f284430088`,
