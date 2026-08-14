@@ -1823,7 +1823,12 @@ function matchesFilters(event) {
 
 function fitScore(event) {
   const place = store(event.storeId);
-  if (!place) return event.communityId ? 70 : 0;
+  if (!place) {
+    if (!event.communityId) return 0;
+    const isDatedCommunityEvent = event.occurrenceStatus === 'confirmed' && !!eventStartTime(event);
+    const hasUsableConfidence = event.confidence === 'high' || event.confidence === 'medium';
+    return isDatedCommunityEvent && hasUsableConfidence ? 82 : 70;
+  }
   const assessment = place.assessment || {};
   let score = 35;
   score += (assessment.communityContinuity || 3) * 5;
