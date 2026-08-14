@@ -88,9 +88,10 @@ the exact durable state and next action, then hand off from that checkpoint.
   and Sources tabs. Live local proof passed for MTG OC, Legendary Creature
   Club, and LAGS; LAGS renders as organizer of Magic The GAYthering with
   Precinct DTLA retained as host-location text. The next bounded product/data
-  closure is to capture the August 8 MTG OC post-meetup acknowledgment/photo as
-  supported personal social evidence, then verify its connection card without
-  broadening Discord scope.
+  closure captured the August 8 MTG OC post-meetup acknowledgment/photo as
+  supported personal social evidence without broadening Discord scope. The
+  resulting MTG OC connection signal is canonical and should render in the
+  community profile's Your connections tab.
 - LAGS Gaymer Night at WERK Long Beach is now a canonical LAGS-owned community
   event for Thursday, August 20, 2026 at 8 PM. WERK is host-location text only.
   The exact official LAGS Instagram post, confirmed occurrence, free entry,

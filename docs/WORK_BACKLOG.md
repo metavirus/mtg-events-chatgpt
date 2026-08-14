@@ -867,10 +867,11 @@ claims without reopening the whole packet.
   Current Sources content already shows mapped routes, last checks, and the
   existing inspected/needs-context treatment without inventing unavailable
   scanner fields.
-- Capture and display the August 8 MTG OC post-meetup acknowledgment/photo as a
-  source-grounded personal connection. It should link the community, gathering,
-  and Collectors Lounge host context without facial identification or inferred
-  relationships, and should remain useful through later quiet periods.
+- Completed: captured the August 8 MTG OC post-meetup acknowledgment/photo as a
+  source-grounded personal connection in live Supabase. It links MTG OC,
+  the August 8 Collectors Lounge gathering context, and the Discord
+  `#events_activities` source without facial identification or inferred
+  relationships, and remains useful through later quiet periods.
 - Consider a Communities-page async request box for instructions like `watch
   this server for Saturday commander meetup chatter`.
 

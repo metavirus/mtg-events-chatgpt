@@ -1,0 +1,32 @@
+{
+  "proposal_id": "2026-08-14-mtg-oc-post-meetup-connection",
+  "description": "Capture the August 8 MTG OC post-meetup acknowledgment/photo as a source-grounded personal community connection.",
+  "operations": [
+    {
+      "action": "upsert",
+      "table": "signals",
+      "key": {
+        "id": "signal-mtg-oc-events-activities-post-meetup-metavirus-2026-08-08"
+      },
+      "fields": {
+        "id": "signal-mtg-oc-events-activities-post-meetup-metavirus-2026-08-08",
+        "category": "mention",
+        "priority": "normal",
+        "status": "new",
+        "source_id": "src-discord-mtg-oc-events-activities",
+        "captured_at": "2026-08-14T00:00:00-07:00",
+        "observed_at": "2026-08-09T04:54:00Z",
+        "related_entity_type": "community",
+        "related_entity_id": "mtg-oc",
+        "summary": "MTG OC post-meetup follow-up tagged Metavirus after a Collectors Lounge prerelease.",
+        "details": "In MTG OC #events_activities, a participant posted after the August 8 Collectors Lounge prerelease that they had fun with @Metavirus and Esther, attached a meetup photo, and received a positive reply from Metavirus the next morning. This is personal social continuity evidence only: it supports MTG OC engagement and Collectors Lounge host context without identifying people in the photo or changing event ownership.",
+        "evidence_url": "https://discord.com/channels/1448529847918919774/1456804366383186083",
+        "confidence": "high",
+        "suggested_action": "Keep MTG OC high in the Discord monitoring loop because quiet stretches can still contain meaningful personal invitations, follow-ups, and meetup continuity.",
+        "promotion_target": "community_note",
+        "dedupe_key": "mtg-oc:events-activities:post-meetup-metavirus:2026-08-08"
+      },
+      "reason": "The user explicitly asked to preserve social engagement after meetups as durable community value, not only obvious future-event announcements."
+    }
+  ]
+}
