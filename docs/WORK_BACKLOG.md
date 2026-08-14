@@ -73,7 +73,11 @@ Use it for:
      LAGS/Magic The GAYthering community event using Precinct DTLA as the host
      location. It is not an official Precinct venue event. Signals, Updates,
      and event listings should route to the promoted event or source, not only
-     to a descriptive popup.
+     to a descriptive popup. Final repaired state: the event/update owner is
+     Los Angeles Gayming Society, Precinct is only location text, the Signal is
+     linked to the event occurrence, and DB-backed Signals still use
+     `promotion_target = event_proposal` because that is the allowed event-
+     action enum.
   3. `GayMTG`: completed. The canonical reviewed LGBTQ+/allies Magic community
      has a full bounded main pass. Its verified route is
      `https://www.meetup.com/gaymtg/`; the current page showed 128 members,

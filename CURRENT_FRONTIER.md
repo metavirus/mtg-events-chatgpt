@@ -34,10 +34,14 @@ the exact durable state and next action, then hand off from that checkpoint.
   so none was invented. MTG OC source reconciliation is complete. The LAGS
   August 18 Magic The GAYthering item has since been promoted as a
   community-owned event hosted at Precinct DTLA, not as official Precinct
-  programming. Do not re-run this discovery batch or re-promote these records;
-  only fix exact app/display/readback defects if the live UI disagrees. The
-  remaining discovery product follow-up is the compact Home possibilities lane
-  for corroborated but uncertain groups.
+  programming. The final repaired state is: event/update ownership belongs to
+  Los Angeles Gayming Society, Precinct is location text only, the Signal links
+  to the event occurrence, and the database `promotion_target` remains
+  `event_proposal` because that is the allowed event-action enum even though
+  the app opens the event. Do not re-run this discovery batch or re-promote
+  these records; only fix exact app/display/readback defects if the live UI
+  disagrees. The remaining discovery product follow-up is the compact Home
+  possibilities lane for corroborated but uncertain groups.
 
 - The personal-use app reads canonical operational data from Supabase.
 - Signed-in favorites, deprioritization, and private notes persist through
