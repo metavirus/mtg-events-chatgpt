@@ -20,6 +20,7 @@ const RESULT_TO_WATCHLIST = {
   blocked_repair: 'needs_deeper_replay',
   stale_useful_context: 'stale'
 };
+const PYTHON = process.platform === 'win32' ? 'python.exe' : 'python';
 
 function parseArgs(argv) {
   const args = {
@@ -122,7 +123,7 @@ order by
   case w.cadence when 'daily' then 1 when 'weekly' then 2 when 'occasional' then 3 else 4 end,
   p.server_name,
   w.channel_name;`;
-  const result = run('python.exe', ['scripts/supabase_query.py', '--sql', sql]);
+  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', sql]);
   assertOk(result, 'watchlist query');
   return JSON.parse(result.stdout).rows.map((row) => ({
     ...row,
@@ -178,7 +179,7 @@ function preflight(rows) {
   if (rows.length === 0) return { skipped: true, stdout: 'No rows selected.' };
   const args = ['scripts/discord_route_preflight.py', '--method', 'ui_native'];
   for (const row of rows) args.push('--channel-url', row.channel_url);
-  const result = run('python.exe', args);
+  const result = run(PYTHON, args);
   return {
     status: result.status,
     stdout: result.stdout,
@@ -340,7 +341,7 @@ ${values}
 ) as v(id, last_checked_at, last_seen_message_id, last_seen_message_at, latest_run_result, notes)
 where w.id = v.id
 returning w.id, w.channel_name, w.latest_run_result, w.last_seen_message_id, w.last_seen_message_at;`;
-  const result = run('python.exe', ['scripts/supabase_query.py', '--sql', sql]);
+  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', sql]);
   assertOk(result, 'watchlist update');
   return JSON.parse(result.stdout).rows;
 }
