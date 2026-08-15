@@ -30,8 +30,10 @@ function parseArgs(argv) {
     jsonLog: false,
     limit: null,
     surface: null,
+    excludeSurfaces: [],
     maxVisibleMessages: 5,
-    maxReadWindows: 1
+    maxReadWindows: 1,
+    maxRouteRetries: 1
   };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -42,8 +44,10 @@ function parseArgs(argv) {
     else if (arg === '--json-log') args.jsonLog = true;
     else if (arg === '--limit') args.limit = Number.parseInt(argv[++i] || '', 10);
     else if (arg === '--surface') args.surface = argv[++i] || null;
+    else if (arg === '--exclude-surface') args.excludeSurfaces.push(argv[++i] || '');
     else if (arg === '--max-visible-messages') args.maxVisibleMessages = Number.parseInt(argv[++i] || '', 10);
     else if (arg === '--max-read-windows') args.maxReadWindows = Number.parseInt(argv[++i] || '', 10);
+    else if (arg === '--max-route-retries') args.maxRouteRetries = Number.parseInt(argv[++i] || '', 10);
     else throw new Error(`Unknown argument: ${arg}`);
   }
   if (args.limit !== null && (!Number.isInteger(args.limit) || args.limit < 0)) {
@@ -54,6 +58,9 @@ function parseArgs(argv) {
   }
   if (!Number.isInteger(args.maxReadWindows) || args.maxReadWindows < 1 || args.maxReadWindows > 10) {
     throw new Error('--max-read-windows must be 1 through 10');
+  }
+  if (!Number.isInteger(args.maxRouteRetries) || args.maxRouteRetries < 0 || args.maxRouteRetries > 2) {
+    throw new Error('--max-route-retries must be 0 through 2');
   }
   if (args.writeWatchlist && !args.dryRun) args.noSignalWrites = true;
   return args;
@@ -144,8 +151,25 @@ function applySurfaceFilter(rows, surface) {
   ));
 }
 
+function matchesSurface(row, surface) {
+  const needle = surface.toLowerCase();
+  return (
+    row.id.toLowerCase().includes(needle) ||
+    row.server_name.toLowerCase().includes(needle) ||
+    row.channel_name.toLowerCase().includes(needle) ||
+    row.profile_source_id.toLowerCase().includes(needle)
+  );
+}
+
+function applySurfaceExclusions(rows, surfaces) {
+  const needles = surfaces.map((surface) => surface.toLowerCase().trim()).filter(Boolean);
+  if (needles.length === 0) return rows;
+  return rows.filter((row) => !needles.some((needle) => matchesSurface(row, needle)));
+}
+
 function folderNameFor(row) {
   if (row.server_name.includes('Collectors Lounge')) return 'Stores/Local';
+  if (row.server_name === 'MTG OC') return 'Stores/Local';
   return '';
 }
 
@@ -168,7 +192,7 @@ function parseHarnessJson(stdout) {
   return JSON.parse(stdout.slice(start, end + 1));
 }
 
-function runHarness(row, args) {
+function runHarnessAttempt(row, args) {
   const env = { ...process.env };
   if (!env.CODEX_NODE_MODULES) {
     env.CODEX_NODE_MODULES = 'C:\\Users\\kavig\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules';
@@ -211,6 +235,35 @@ function runHarness(row, args) {
   }
   const harness = parseHarnessJson(result.stdout);
   return classifyHarness(row, harness);
+}
+
+function isRetryableRouteFailure(result) {
+  return result.outcome === 'blocked_repair' &&
+    result.status === 'failed_closed' &&
+    result.failureStage === 'guild_selected' &&
+    result.failureReason === 'mapped channel anchor is not uniquely visible after guild selection' &&
+    result.externalDiscordStateChanged === false &&
+    result.prohibitedSuccessfulResponses.length === 0;
+}
+
+function runHarness(row, args) {
+  const attempts = [];
+  for (let attempt = 0; attempt <= args.maxRouteRetries; attempt += 1) {
+    const result = runHarnessAttempt(row, args);
+    attempts.push({
+      attempt: attempt + 1,
+      status: result.status,
+      outcome: result.outcome,
+      failureStage: result.failureStage || null,
+      failureReason: result.failureReason || null,
+      logPath: result.logPath || null
+    });
+    if (!isRetryableRouteFailure(result) || attempt >= args.maxRouteRetries) {
+      if (attempts.length > 1) result.attempts = attempts;
+      return result;
+    }
+  }
+  throw new Error('unreachable route retry state');
 }
 
 function classifyHarness(row, harness) {
@@ -329,7 +382,10 @@ async function main() {
 
   try {
     const allRows = fetchWatchlistRows();
-    const eligible = applySurfaceFilter(allRows.filter(isV1Eligible), args.surface);
+    const eligible = applySurfaceExclusions(
+      applySurfaceFilter(allRows.filter(isV1Eligible), args.surface),
+      args.excludeSurfaces
+    );
     const selected = args.limit === null ? eligible : eligible.slice(0, args.limit);
     const rowsByUrl = new Map();
     for (const row of allRows) {
@@ -380,6 +436,9 @@ async function main() {
       planOnly: args.planOnly,
       writeWatchlist: args.writeWatchlist,
       noSignalWrites: args.noSignalWrites !== false,
+      surface: args.surface,
+      excludeSurfaces: args.excludeSurfaces,
+      maxRouteRetries: args.maxRouteRetries,
       runLock: args.planOnly ? { used: false, reason: 'plan_only' } : { used: true, path: LOCK_PATH },
       allowlist: ['MTG OC', 'Legendary Creature Club eligible channel rows', 'Collectors Lounge'],
       selectedCount: selected.length,

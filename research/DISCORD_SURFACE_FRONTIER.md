@@ -185,14 +185,16 @@ classification, one-row write-watchlist proof, and overlapping-run lock check
 passed on August 15.
 
 Phase 3 is partially proven and still in progress. One-row write-watchlist proof
-passed on Collectors `#announcements` with Signal/Event writes disabled. Before
-full-v1 write-watchlist proof, repair or explicitly exclude the current LCC
-route issue: `#events` and `#lfg` preflight as allowed but fail closed because
-guild selection lands on `#meet-ups` and the exact target channel anchors are
-not uniquely visible. Then run the v1 allowlist locally with watchlist writes
-enabled, but with Signal/Event writes disabled unless a current urgent finding
-is reviewed. Measure elapsed time, failure classes, and how many visible app
-items would have been created.
+passed on Collectors `#announcements` with Signal/Event writes disabled. A
+12-row MTG OC + Collectors write-watchlist proof excluding LCC passed on August
+15 in about 3m37s with 3 quiet coverage, 4 event candidates, 4 stale useful
+contexts, 1 accepted-signal-class finding, 0 failed rows, and 12 watchlist
+writes. Before full-v1 write-watchlist proof or cloud automation, repair the
+current LCC route issue: `#events` and `#lfg` preflight as allowed but fail
+closed because guild selection lands on `#meet-ups` and the exact target channel
+anchors are not uniquely visible. Then run the full v1 allowlist locally with
+watchlist writes enabled, but with Signal/Event writes disabled unless a
+current urgent finding is reviewed.
 
 Phase 4 is GitHub Actions. Only after Phase 3 passes, add
 `.github/workflows/daily-discord-survey.yml` with a strict timeout, daily

@@ -879,9 +879,11 @@ claims without reopening the whole packet.
      one-row guarded dry run;
   3. local pressure testing has also passed Collectors scoped dry-run
      classification, one-row write-watchlist proof, clean psql command-tag
-     parsing, and an overlapping-run lock check. Continue Phase 3 with a
-     full-v1 local write-watchlist proof only after the LCC route issue below is
-     repaired or LCC is explicitly excluded from that proof;
+     parsing, an overlapping-run lock check, and a 12-row MTG OC + Collectors
+     write-watchlist proof with LCC explicitly excluded. That proof ran August
+     15 in about 3m37s with 3 quiet coverage, 4 event candidates, 4 stale useful
+     contexts, 1 accepted-signal-class finding, 0 failed rows, and 12 watchlist
+     writes;
   4. move to GitHub Actions only after timing, failure classes, and app-visible
      output are measured;
   5. expand one repaired/proven surface at a time.
@@ -898,6 +900,11 @@ claims without reopening the whole packet.
   uniquely visible. Do not mark those channels as bad or automate around the
   guard; repair the LCC route/category visibility path or exclude LCC from the
   first full write-watchlist proof.
+- MTG OC route stability was improved by using its documented `Stores/Local`
+  folder hint and one bounded retry for the exact non-mutating
+  `mapped channel anchor is not uniquely visible after guild selection` failure.
+  This is a retry of the same guarded route only, not a looser click/search
+  fallback.
 - Extend the relevant-chatter proof when a direct non-meetup question such as
   the Finch and Sparrow mention is captured canonically; it should rank below
   meetup coordination but remain visible and clickable.

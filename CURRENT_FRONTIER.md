@@ -115,11 +115,13 @@ the exact durable state and next action, then hand off from that checkpoint.
   `scripts/run_discord_daily_survey.mjs` exists and has passed plan-only,
   one-row guarded dry run, Collectors scoped dry run, and one-row
   write-watchlist proof with Signal/Event writes disabled. The runner now has a
-  lock to prevent overlapping Chrome-profile use. The next execution step is
-  continue Phase 3 with full-v1 local write-watchlist proof after repairing or
-  excluding LCC channels whose anchors are not uniquely visible from the current
-  UI-native route. GitHub Actions automation waits until the local
-  write-watchlist proof measures clean timing/failure behavior.
+  lock to prevent overlapping Chrome-profile use. A 12-row MTG OC + Collectors
+  write-watchlist proof excluding LCC passed on August 15 in about 3m37s:
+  3 quiet coverage, 4 event candidates, 4 stale useful contexts, 1
+  accepted-signal-class finding, 0 failed rows, and 12 watchlist writes. The
+  next execution step is repair LCC route visibility before full-v1 automation.
+  GitHub Actions automation waits until LCC is repaired or the first cloud v1
+  is intentionally scoped to MTG OC + Collectors.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 - Private source-image evidence is operational for uncommon cases where the
