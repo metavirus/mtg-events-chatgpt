@@ -172,16 +172,17 @@ quiet coverage for `#announcements`, current useful event-adjacent findings in
 `#mtg-announcements-and-events` and `#general`, and stale useful policy context
 in `#event-rules`.
 
-Phase 2 is the next step: a local micro-sweep script, not a crawler:
-`scripts/run_discord_daily_survey.mjs`. It should read active
-`discord_channel_watchlist` rows, preflight `safe_access_mode`, run the existing
-guarded UI-native reader, classify the bounded window, update watchlist state,
-and emit a JSON log. V1 includes only MTG OC, LCC channel rows that are not
-`needs_deeper_replay`, and Collectors Lounge. It must support `--dry-run`,
-`--limit`, `--surface`, `--write-watchlist`, `--no-signal-writes`, and
-`--json-log`.
+Phase 2 is complete enough for local proof: the local micro-sweep script
+`scripts/run_discord_daily_survey.mjs` exists. It reads active
+`discord_channel_watchlist` rows, applies the v1 allowlist, preflights
+`safe_access_mode`, runs the existing guarded UI-native reader, classifies the
+bounded window, can update watchlist state, and emits a JSON log. V1 includes
+only MTG OC, LCC channel rows that are not `needs_deeper_replay`, and
+Collectors Lounge. It supports `--dry-run`, `--plan-only`, `--limit`,
+`--surface`, `--write-watchlist`, `--no-signal-writes`, and `--json-log`.
+Plan-only and one-row guarded dry-run proof passed on August 15.
 
-Phase 3 is local write-watchlist proof. Run the v1 allowlist locally with
+Phase 3 is the next step: local write-watchlist proof. Run the v1 allowlist locally with
 watchlist writes enabled, but with Signal/Event writes disabled unless a current
 urgent finding is reviewed. Measure elapsed time, failure classes, and how many
 visible app items would have been created.

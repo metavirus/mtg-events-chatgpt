@@ -55,6 +55,17 @@ def channel_id(url: str) -> str:
     return url.rstrip("/").split("/")[-1]
 
 
+def text_array_values(value: object) -> list[str]:
+    if isinstance(value, list):
+        return [str(item) for item in value]
+    if not value:
+        return []
+    text = str(value).strip()
+    if text.startswith("{") and text.endswith("}"):
+        text = text[1:-1]
+    return [part.strip().strip('"') for part in text.split(",") if part.strip()]
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -116,7 +127,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"ALLOW: {args.method} is permitted for {len(urls)} mapped channel(s).")
     for row in rows:
-        expected = ", ".join(row.get("expected_signal_types") or [])
+        expected = ", ".join(text_array_values(row.get("expected_signal_types")))
         print(f"  - {row['channel_name']} | {row['safe_access_mode']} | {expected}")
     return 0
 

@@ -872,9 +872,12 @@ claims without reopening the whole packet.
 - Daily Discord automation ladder is accepted as the path to v1:
   1. first-batch bounded proofs are complete for MTG OC, eligible LCC rows, and
      Collectors Lounge as of August 15;
-  2. build a local micro-sweep script over MTG OC, eligible LCC rows, and
-     Collectors Lounge only;
-  3. prove local write-watchlist behavior with Signal/Event writes disabled by
+  2. local micro-sweep script `scripts/run_discord_daily_survey.mjs` is built
+     over MTG OC, eligible LCC rows, and Collectors Lounge only; it supports
+     `--dry-run`, `--plan-only`, `--limit`, `--surface`, `--write-watchlist`,
+     `--no-signal-writes`, and `--json-log`, and has passed plan-only plus a
+     one-row guarded dry run;
+  3. next prove local write-watchlist behavior with Signal/Event writes disabled by
      default;
   4. move to GitHub Actions only after timing, failure classes, and app-visible
      output are measured;
@@ -882,6 +885,10 @@ claims without reopening the whole packet.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.
+- The v1 runner logs duplicate channel-URL ambiguity warnings. Current known
+  ambiguity: LCC `#mtg` shares a URL with an older `Discord Events` row whose
+  latest result is `needs_deeper_replay`; keep it visible in run logs and do
+  not promote the guild Events surface into automation until repaired.
 - Extend the relevant-chatter proof when a direct non-meetup question such as
   the Finch and Sparrow mention is captured canonically; it should rank below
   meetup coordination but remain visible and clickable.
