@@ -106,6 +106,14 @@ async function main() {
   const browser = await launchBrowser();
   try {
     const page = await browser.newPage({ viewport: { width: 1400, height: 950 } });
+    page.on('console', (message) => {
+      if (['error', 'warning'].includes(message.type())) {
+        result.checks.push({ name: `browser console ${message.type()}`, status: 'note', detail: message.text().slice(0, 500) });
+      }
+    });
+    page.on('pageerror', (error) => {
+      result.checks.push({ name: 'browser page error', status: 'note', detail: error.message.slice(0, 500) });
+    });
     if (scenario === 'browser-smoke') {
       await page.setContent('<main><h1>MTG Events UI readiness</h1><button>Open event</button></main>');
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
@@ -117,6 +125,20 @@ async function main() {
       const body = await page.locator('body').innerText({ timeout: 15000 });
       assertText(body, 'Signals', 'Signals page title');
       pass('public app loaded and visible text was inspected', body.slice(0, 160));
+    } else if (scenario === 'updates-daily-agents') {
+      await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
+      await page.locator('.nav-item[data-route="changes"]').click({ timeout: 5000 });
+      await page.waitForTimeout(250);
+      const body = await page.locator('body').innerText({ timeout: 15000 });
+      result.bodyExcerpt = body.slice(0, 1000);
+      assertText(body, 'Updates', 'Updates page title');
+      assertText(body, 'DAILY AGENTS', 'daily agent panel');
+      assertText(body, 'WPN / EventLink', 'WPN daily agent card');
+      assertText(body, 'Instagram', 'Instagram daily agent card');
+      assertText(body, 'Facebook', 'Facebook daily agent card');
+      assertText(body, 'Discord', 'Discord daily agent card');
+      pass('Updates daily-agent panel rendered', body.slice(0, 240));
     } else if (scenario === 'lags-signal-event-link') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);

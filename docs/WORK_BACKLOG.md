@@ -927,6 +927,13 @@ claims without reopening the whole packet.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.
+- Daily-agent app surfacing first slice is implemented: Supabase table
+  `public.daily_agent_status` stores safe aggregate lane status, refreshed by
+  `scripts/refresh_daily_agent_status.py` from both daily workflows. The
+  Updates page now shows WPN/EventLink, Instagram, Facebook, and Discord daily
+  agent cards with freshness, counts, latest summary, and useful route buttons.
+  This is the common framework for seeing quiet/active monitoring in the app;
+  richer Signal/Event promotion remains a separate later step.
 - The v1 runner logs duplicate channel-URL ambiguity warnings. Current known
   ambiguity: LCC `#mtg` shares a URL with an older `Discord Events` row whose
   latest result is `needs_deeper_replay`; keep it visible in run logs and do

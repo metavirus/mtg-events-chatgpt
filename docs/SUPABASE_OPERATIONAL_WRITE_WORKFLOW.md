@@ -425,6 +425,14 @@ state change. Full write-watchlist run `31907685212` passed in about 5m15s with
 confirmed `last_checked_at=2026-08-15 20:53:36.595+00` on the written v1 rows.
 Signal/Event writes remain disabled for this lane.
 
+Both cloud survey workflows finish by running
+`scripts/refresh_daily_agent_status.py`. That script reads private operational
+state and writes only safe aggregate rows to `public.daily_agent_status`, which
+has RLS enabled and a public read policy for app display. The app's Updates page
+uses this table to show WPN/EventLink, Instagram, Facebook, and Discord daily
+agent freshness and result counts without exposing raw Discord URLs, message
+cursors, or noisy no-delta observations as fake Updates.
+
 When a retained image/flyer produced the event, pass its artifact id into the
 event promoter so the app can show the visual evidence incidentally in the
 event or Signal drawer. A social item becomes a Signal only when it is a dated

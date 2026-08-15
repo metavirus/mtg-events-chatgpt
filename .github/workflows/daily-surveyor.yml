@@ -125,3 +125,7 @@ jobs:
             args+=(--social-include-suppressed)
           fi
           python scripts/daily_surveyor.py "${args[@]}"
+
+      - name: Refresh app daily-agent status
+        shell: bash
+        run: python scripts/refresh_daily_agent_status.py

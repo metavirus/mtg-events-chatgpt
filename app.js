@@ -1,4 +1,4 @@
-const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [] };
+const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [], dailyAgentStatuses: [] };
 
 const SUPABASE = {
   url: 'https://pyvftzsodzwfqncjbmbc.supabase.co',
@@ -618,9 +618,10 @@ async function loadFromSupabase() {
     supabaseRows('evaluations'),
     supabaseRows('product_research_changes'),
     supabaseRowsOptional('venue_hours'),
-    supabaseRowsOptional('signals')
+    supabaseRowsOptional('signals'),
+    supabaseRowsOptional('daily_agent_status')
   ]);
-  const [venues, communities, sources, entitySources, series, occurrences, eventSources, evaluations, changes, venueHours, signals] = tables;
+  const [venues, communities, sources, entitySources, series, occurrences, eventSources, evaluations, changes, venueHours, signals, dailyAgentStatuses] = tables;
   const evaluationByEntity = new Map(evaluations.map((item) => [`${item.entity_type}:${item.entity_id}`, item]));
   const hoursByVenue = new Map(venueHours.map((item) => [item.venue_id, item]));
   const sourceIdsByEntity = groupValues(entitySources, (item) => `${item.entity_type}:${item.entity_id}`, (item) => item.source_id);
@@ -633,6 +634,7 @@ async function loadFromSupabase() {
   DATA.sources = sources.map(mapSource);
   DATA.changes = changes.map(mapResearchChange);
   DATA.signals = signals.map(mapSignal);
+  DATA.dailyAgentStatuses = dailyAgentStatuses.map(mapDailyAgentStatus);
   const mappedSeries = series.map((item) => mapEventSeries(item, sourcesBySeries));
   DATA.events = [
     ...mappedSeries.filter((item) => item.recurrence?.frequency === 'weekly' || !occurrenceSeriesIds.has(item.id)),
@@ -835,6 +837,24 @@ function mapSignal(item) {
     suggestedAction: item.suggested_action || '',
     promotionTarget: item.promotion_target || '',
     dedupeKey: item.dedupe_key || ''
+  };
+}
+
+function mapDailyAgentStatus(item) {
+  return {
+    id: item.id,
+    label: item.label || '',
+    surfaceGroup: item.surface_group || '',
+    checkedAt: item.last_checked_at || '',
+    primaryCount: Number(item.primary_count || 0),
+    usefulCount: Number(item.useful_count || 0),
+    quietCount: Number(item.quiet_count || 0),
+    staleCount: Number(item.stale_count || 0),
+    attentionCount: Number(item.attention_count || 0),
+    latestResult: item.latest_result || '',
+    summary: item.summary || '',
+    route: item.route || '',
+    actionLabel: item.action_label || ''
   };
 }
 
@@ -3226,7 +3246,115 @@ function renderChanges() {
     <div><span>New since last visit</span><strong>${escapeHtml(unreadLabel)}</strong><p>${unreadCopy}</p></div>
     <div><span>Visible updates</span><strong>${items.length}<small> / ${allItems.length}</small></strong><p>Latest accepted: ${escapeHtml(latest)}</p></div>
     <div><span>Current filter</span><strong>${changeFilterLabel(state.changeFilter)}</strong><p>${changeFilterHelp(state.changeFilter)}</p></div>
-  </div>${items.length ? items.map((change) => changeRow(change)).join('') : emptyState('No updates in this filter', 'Try All updates or a different triage category.')}`;
+  </div>${dailyAgentStatusPanel()}${items.length ? items.map((change) => changeRow(change)).join('') : emptyState('No updates in this filter', 'Try All updates or a different triage category.')}`;
+}
+
+function dailyAgentStatusPanel() {
+  const agents = dailyAgentStatuses();
+  if (!agents.length) return '';
+  return `<section class="daily-agent-panel" aria-label="Daily automation status">
+    <div class="section-title-row">
+      <div><p class="eyebrow violet">Daily agents</p><h2>Automated surface sweeps</h2></div>
+      <button class="text-button" data-route="research">Coverage details</button>
+    </div>
+    <p class="muted-copy">Quiet runs update monitoring state here without creating fake Updates. Useful findings still surface through Updates or Signals when they change planning.</p>
+    <div class="daily-agent-grid">${agents.map(dailyAgentCard).join('')}</div>
+  </section>`;
+}
+
+function dailyAgentStatuses() {
+  const byId = new Map(DATA.dailyAgentStatuses.map((item) => [item.id, item]));
+  return [
+    normalizeDailyAgentStatus(byId.get('wpn'), { id: 'wpn', label: 'WPN / EventLink', route: 'events', actionLabel: 'Review events' }),
+    normalizeDailyAgentStatus(byId.get('instagram'), { id: 'instagram', label: 'Instagram', route: 'research', actionLabel: 'Open coverage' }),
+    normalizeDailyAgentStatus(byId.get('facebook'), { id: 'facebook', label: 'Facebook', route: 'research', actionLabel: 'Open coverage' }),
+    normalizeDailyAgentStatus(byId.get('discord'), { id: 'discord', label: 'Discord', route: 'communities', actionLabel: 'Open communities' })
+  ];
+}
+
+function normalizeDailyAgentStatus(row, fallback) {
+  const status = row?.checkedAt
+    ? freshnessStatus(row.checkedAt, row.id === 'discord' || row.id === 'wpn' ? 36 : 48, row.attentionCount ? 'attention' : 'active')
+    : 'unknown';
+  const headline = row
+    ? dailyAgentHeadline(row)
+    : 'No run state loaded yet';
+  return {
+    id: fallback.id,
+    label: row?.label || fallback.label,
+    status,
+    headline,
+    detail: row?.summary || 'Configured daily lane; waiting for aggregate run state.',
+    checkedAt: row?.checkedAt || '',
+    metric: row ? dailyAgentMetric(row) : 'configured',
+    submetric: row ? dailyAgentSubmetric(row) : 'no public aggregate row yet',
+    route: row?.route || fallback.route,
+    actionLabel: row?.actionLabel || fallback.actionLabel
+  };
+}
+
+function dailyAgentHeadline(row) {
+  if (row.id === 'discord') return `${row.usefulCount} useful / ${row.quietCount} quiet / ${row.staleCount} stale`;
+  return surfaceDispositionLabel(row.latestResult || 'checked');
+}
+
+function dailyAgentMetric(row) {
+  if (row.id === 'discord') return `${row.primaryCount} watchlist channels`;
+  if (row.id === 'wpn') return `${row.primaryCount} ingest updates/checks`;
+  return `${row.primaryCount} checked surfaces`;
+}
+
+function dailyAgentSubmetric(row) {
+  if (row.attentionCount) return `${row.attentionCount} need attention`;
+  if (row.usefulCount) return `${row.usefulCount} useful checks retained`;
+  if (row.id === 'discord') return 'read-only guard proven';
+  return 'quiet/no-delta by default';
+}
+
+function dailyAgentCard(agent) {
+  const tone = {
+    active: 'mint',
+    stale: 'amber',
+    attention: 'coral',
+    unknown: 'slate'
+  }[agent.status] || 'slate';
+  return `<article class="daily-agent-card ${tone}">
+    <div>
+      <span class="status-chip ${tone}">${escapeHtml(agent.status)}</span>
+      <h3>${escapeHtml(agent.label)}</h3>
+      <p>${escapeHtml(agent.headline)}</p>
+    </div>
+    <div class="daily-agent-meta">
+      <span>${escapeHtml(agent.checkedAt ? `Last checked ${formatRelativeDate(agent.checkedAt)}` : 'No last-check timestamp')}</span>
+      <span>${escapeHtml(agent.metric)}</span>
+      <span>${escapeHtml(agent.submetric)}</span>
+    </div>
+    <p class="daily-agent-detail">${escapeHtml(agent.detail)}</p>
+    <button class="change-action" data-route="${escapeHtml(agent.route)}">${escapeHtml(agent.actionLabel)} →</button>
+  </article>`;
+}
+
+function freshnessStatus(value, freshHours, freshStatus = 'active') {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'unknown';
+  const hours = (Date.now() - date.getTime()) / 36e5;
+  if (hours <= freshHours) return freshStatus;
+  if (hours <= freshHours * 4) return 'stale';
+  return 'attention';
+}
+
+function surfaceDispositionLabel(value) {
+  const text = value ? value.replaceAll('_', ' ') : 'checked';
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function formatRelativeDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'unknown';
+  const hours = Math.round((Date.now() - date.getTime()) / 36e5);
+  if (Math.abs(hours) < 1) return 'just now';
+  if (hours < 48) return `${hours}h ago`;
+  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
 function changeRow(change) {

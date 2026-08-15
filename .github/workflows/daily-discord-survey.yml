@@ -125,6 +125,10 @@ jobs:
           fi
           node scripts/run_discord_daily_survey.mjs "${args[@]}"
 
+      - name: Refresh app daily-agent status
+        shell: bash
+        run: python scripts/refresh_daily_agent_status.py
+
       - name: Upload Discord survey logs
         if: always()
         uses: actions/upload-artifact@v4

@@ -180,6 +180,12 @@ the exact durable state and next action, then hand off from that checkpoint.
   incidental visual evidence. Thin profile/chrome text and vague "may have
   event" social findings stay quiet; they should not create visible watchlist
   sludge. Discord is explicitly bracketed out of this lane.
+  App-facing daily-agent status now lives in `public.daily_agent_status`, a
+  safe RLS-protected aggregate table refreshed by
+  `scripts/refresh_daily_agent_status.py` at the end of both cloud survey
+  workflows. The Updates page renders a Daily agents panel for WPN/EventLink,
+  Instagram, Facebook, and Discord so quiet monitoring is visible without
+  creating fake Updates.
   The first GitHub Actions WPN proof
   completed successfully on 2026-08-09 after the `SUPABASE_DB_URL` repository
   secret was installed and the parser/log-cap issues were fixed.
