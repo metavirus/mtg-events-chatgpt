@@ -71,10 +71,12 @@ the exact durable state and next action, then hand off from that checkpoint.
   checks land through `record_entity_surface_check`; proposals and ledgers are
   reserved for event/evaluation changes, higher-level queueing, and unresolved
   work.
-- The guarded Discord UI-native method is proven for a bounded set of mapped
-  routes. The live Discord surface inventory and next recurring-agent sequence
-  are pinned in `research/DISCORD_SURFACE_FRONTIER.md`. Small verified-route
-  surveys are supported; broad daily automation is not yet approved.
+- The guarded Discord UI-native method is proven for the bounded v1 mapped
+  route set. The live Discord surface inventory and next recurring-agent
+  sequence are pinned in `research/DISCORD_SURFACE_FRONTIER.md`. The cloud
+  Discord daily survey lane is now proven for the v1 watchlist with
+  watchlist-state writes enabled; Signal/Event promotion remains disabled until
+  separately implemented.
 - MTG OC is modeled as an independent Orange County regional community with
   nine mapped Discord channels. The proof distinguishes community-organized
   meetups from host-venue programming: its confirmed August 2 team-sealed
@@ -129,9 +131,14 @@ the exact durable state and next action, then hand off from that checkpoint.
   so it is not suitable for GitHub's 48 KB direct secret limit; use the
   documented encrypted-file plus passphrase-secret lane. GitHub-hosted cloud
   smoke `31906774728` then passed for `surface=lcc`, `limit=1`, with watchlist
-  writes off: LCC `#events` read safely, outcome `quiet_coverage`, 5 messages,
-  no external Discord state changed, and no prohibited successful responses.
-  Do not keep retrying the giant-profile-secret lane.
+  writes off. MTG OC cloud smoke `31906955049` then passed for
+  `surface=mtg-oc`, `limit=2`. Full cloud dry run `31907388569` passed with 16
+  selected, 16 guarded reads, 0 blocked/unsafe rows, and no external Discord
+  state change. Full cloud write run `31907685212` then passed in about 5m15s
+  with 16 guarded reads and 16 watchlist rows written; direct Supabase readback
+  confirmed `last_checked_at=2026-08-15 20:53:36.595+00` on those rows.
+  Signal/Event writes remain disabled. Do not keep retrying the
+  giant-profile-secret lane.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 - Private source-image evidence is operational for uncommon cases where the

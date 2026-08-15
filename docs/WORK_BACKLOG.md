@@ -907,7 +907,23 @@ claims without reopening the whole packet.
      `write_watchlist=false`, `surface=lcc`, and `limit=1`: storage state
      decrypted, LCC `#events` read safely, outcome `quiet_coverage`, 5 messages,
      no external Discord state changed, and no prohibited successful responses;
-  8. expand one repaired/proven surface at a time.
+  8. MTG OC cloud smoke `31906955049` passed with `write_watchlist=false`,
+     `surface=mtg-oc`, and `limit=2`: `#events_activities` and
+     `#monthly-meetings` both read safely, both produced event-candidate
+     outcomes, and no external Discord state changed;
+  9. full cloud dry run `31907388569` passed on August 15 after the read-only
+     guard was narrowed to tolerate blocked Discord `settings-proto/{version}`
+     preference sync. It selected 16 rows, read 16/16 safely, produced 0
+     blocked/unsafe rows, and kept watchlist writes off;
+  10. full cloud write-watchlist run `31907685212` passed on August 15 in about
+      5m15s. It selected 16 rows, read 16/16 safely, wrote all 16 watchlist
+      states, produced 5 quiet coverage, 6 event candidates, 4 stale useful
+      contexts, and 1 accepted-signal-class finding, and direct Supabase
+      readback confirmed `last_checked_at=2026-08-15 20:53:36.595+00` on the
+      written rows. Signal/Event writes remain disabled;
+  11. next implementation frontier is durable app-facing surfacing of daily
+      Discord/Instagram-Facebook/WPN activity updates and only then bounded
+      Signal/Event promotion from accepted Discord findings.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.

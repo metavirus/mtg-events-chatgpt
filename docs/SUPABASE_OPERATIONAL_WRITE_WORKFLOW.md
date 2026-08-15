@@ -415,6 +415,16 @@ with watchlist writes off: storage state decrypted, LCC `#events` read safely,
 the outcome was `quiet_coverage`, and the harness reported no external Discord
 state change or prohibited successful responses.
 
+Subsequent August 15 cloud proofs established the v1 lane end to end. MTG OC
+smoke `31906955049` passed with watchlist writes off for `surface=mtg-oc`,
+`limit=2`; `#events_activities` and `#monthly-meetings` both read safely and
+produced event-candidate outcomes. Full dry run `31907388569` passed with 16
+selected rows, 16 guarded reads, 0 blocked/unsafe rows, and no external Discord
+state change. Full write-watchlist run `31907685212` passed in about 5m15s with
+16 guarded reads and 16 watchlist rows written; direct Supabase readback
+confirmed `last_checked_at=2026-08-15 20:53:36.595+00` on the written v1 rows.
+Signal/Event writes remain disabled for this lane.
+
 When a retained image/flyer produced the event, pass its artifact id into the
 event promoter so the app can show the visual evidence incidentally in the
 event or Signal drawer. A social item becomes a Signal only when it is a dated
