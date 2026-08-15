@@ -850,7 +850,8 @@ claims without reopening the whole packet.
   LFG/pod formation, and active event-adjacent chatter; do not make every active
   channel daily by default.
 - Daily Discord automation ladder is accepted as the path to v1:
-  1. finish first-batch bounded proofs, with Collectors Lounge next;
+  1. first-batch bounded proofs are complete for MTG OC, eligible LCC rows, and
+     Collectors Lounge as of August 15;
   2. build a local micro-sweep script over MTG OC, eligible LCC rows, and
      Collectors Lounge only;
   3. prove local write-watchlist behavior with Signal/Event writes disabled by

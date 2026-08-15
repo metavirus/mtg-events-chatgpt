@@ -159,18 +159,20 @@ daily-sweep ladder below. Do not skip ahead to broad automation.
 
 ### Daily Discord automation ladder
 
-Phase 0 is the current state: bounded manual/guarded proofs over exact mapped
-watchlist rows. MTG OC and Legendary Creature Club have current proofs. LCC's
-guild Events surface is excluded from automation until the exact
-`needs_deeper_replay` repair is complete.
+Phase 0 is complete for the v1 allowlist: bounded manual/guarded proofs over
+exact mapped watchlist rows now cover MTG OC, Legendary Creature Club channel
+rows, and Collectors Lounge. LCC's guild Events surface remains excluded from
+automation until the exact `needs_deeper_replay` repair is complete.
 
-Phase 1 is the missing first-batch proof: Collectors Lounge. Run a bounded
-guarded survey of `#announcements`, `#mtg-announcements-and-events`, and
-`#general` / `#event-rules` only as scoped by the watchlist. Record each row as
-accepted Signal, event candidate/promotion, quiet coverage, stale useful
-context, or exact blocked repair item.
+Phase 1 first-batch proof is complete as of August 15, 2026. Collectors Lounge
+was surveyed through guarded UI-native reads of `#announcements`,
+`#mtg-announcements-and-events`, `#general`, and `#event-rules`; the watchlist
+rows and aggregate surface coverage are updated in Supabase. Outcomes were
+quiet coverage for `#announcements`, current useful event-adjacent findings in
+`#mtg-announcements-and-events` and `#general`, and stale useful policy context
+in `#event-rules`.
 
-Phase 2 is a local micro-sweep script, not a crawler:
+Phase 2 is the next step: a local micro-sweep script, not a crawler:
 `scripts/run_discord_daily_survey.mjs`. It should read active
 `discord_channel_watchlist` rows, preflight `safe_access_mode`, run the existing
 guarded UI-native reader, classify the bounded window, update watchlist state,
