@@ -127,8 +127,11 @@ the exact durable state and next action, then hand off from that checkpoint.
   dedicated profile, then read LCC `#events` successfully from a fresh empty
   disposable profile using only that storage state. The file is about 216 KB,
   so it is not suitable for GitHub's 48 KB direct secret limit; use the
-  documented encrypted-file plus passphrase-secret lane. Do not keep retrying
-  the giant-profile-secret lane.
+  documented encrypted-file plus passphrase-secret lane. GitHub-hosted cloud
+  smoke `31906774728` then passed for `surface=lcc`, `limit=1`, with watchlist
+  writes off: LCC `#events` read safely, outcome `quiet_coverage`, 5 messages,
+  no external Discord state changed, and no prohibited successful responses.
+  Do not keep retrying the giant-profile-secret lane.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 - Private source-image evidence is operational for uncommon cases where the

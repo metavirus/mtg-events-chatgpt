@@ -55,7 +55,7 @@ jobs:
           fi
           if [ -z "$DISCORD_READONLY_STORAGE_STATE_JSON" ] && [ -z "$DISCORD_READONLY_STORAGE_STATE_PASSPHRASE" ]; then
             echo "::error::Missing Discord storage-state configuration."
-            echo "Provide either a small DISCORD_READONLY_STORAGE_STATE_JSON secret or the DISCORD_READONLY_STORAGE_STATE_PASSPHRASE secret for .github/secrets/discord-readonly-storage-state.json.gpg."
+            echo "Provide either a small DISCORD_READONLY_STORAGE_STATE_JSON secret or the DISCORD_READONLY_STORAGE_STATE_PASSPHRASE secret for .github/secrets/discord-readonly-storage-state.json.enc."
             exit 1
           fi
 

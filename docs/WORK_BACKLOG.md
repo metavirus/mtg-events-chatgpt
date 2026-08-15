@@ -903,7 +903,11 @@ claims without reopening the whole packet.
      cloud proof should use the encrypted-file/passphrase-secret lane:
      `.github/secrets/discord-readonly-storage-state.json.enc` plus
      `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`;
-  7. expand one repaired/proven surface at a time.
+  7. first GitHub-hosted cloud smoke `31906774728` passed with
+     `write_watchlist=false`, `surface=lcc`, and `limit=1`: storage state
+     decrypted, LCC `#events` read safely, outcome `quiet_coverage`, 5 messages,
+     no external Discord state changed, and no prohibited successful responses;
+  8. expand one repaired/proven surface at a time.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.

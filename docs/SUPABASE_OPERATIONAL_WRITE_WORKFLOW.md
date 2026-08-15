@@ -410,6 +410,10 @@ the storage state file, commit only
 `.github/secrets/discord-readonly-storage-state.json.enc`, and store only the
 passphrase as `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`. Do not keep retrying
 the full-profile zip approach; the prior profile archive measured about 215 MB.
+First GitHub-hosted proof `31906774728` passed for `surface=lcc`, `limit=1`,
+with watchlist writes off: storage state decrypted, LCC `#events` read safely,
+the outcome was `quiet_coverage`, and the harness reported no external Discord
+state change or prohibited successful responses.
 
 When a retained image/flyer produced the event, pass its artifact id into the
 event promoter so the app can show the visual evidence incidentally in the
