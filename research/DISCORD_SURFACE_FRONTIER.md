@@ -184,17 +184,15 @@ Plan-only, one-row guarded dry-run proof, Collectors scoped dry-run
 classification, one-row write-watchlist proof, and overlapping-run lock check
 passed on August 15.
 
-Phase 3 is partially proven and still in progress. One-row write-watchlist proof
-passed on Collectors `#announcements` with Signal/Event writes disabled. A
-12-row MTG OC + Collectors write-watchlist proof excluding LCC passed on August
-15 in about 3m37s with 3 quiet coverage, 4 event candidates, 4 stale useful
-contexts, 1 accepted-signal-class finding, 0 failed rows, and 12 watchlist
-writes. Before full-v1 write-watchlist proof or cloud automation, repair the
-current LCC route issue: `#events` and `#lfg` preflight as allowed but fail
-closed because guild selection lands on `#meet-ups` and the exact target channel
-anchors are not uniquely visible. Then run the full v1 allowlist locally with
-watchlist writes enabled, but with Signal/Event writes disabled unless a
-current urgent finding is reviewed.
+Phase 3 full local proof is complete. One-row write-watchlist proof passed on
+Collectors `#announcements` with Signal/Event writes disabled. A 12-row MTG OC
++ Collectors write-watchlist proof excluding LCC passed on August 15 in about
+3m37s with 0 failed rows. Then eligible LCC channel routes were repaired by
+using the documented `Stores/Local` folder hint, and the full v1 allowlist
+passed on August 15 in about 4m53s: 16 selected, 16 guarded reads, 16 watchlist
+writes, 0 failed rows, 5 quiet coverage, 6 event candidates, 4 stale useful
+contexts, and 1 accepted-signal-class finding. Signal/Event writes remained
+disabled. The old LCC guild Events row remains excluded as `needs_deeper_replay`.
 
 Phase 4 is GitHub Actions. Only after Phase 3 passes, add
 `.github/workflows/daily-discord-survey.yml` with a strict timeout, daily

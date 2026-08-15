@@ -884,8 +884,12 @@ claims without reopening the whole packet.
      15 in about 3m37s with 3 quiet coverage, 4 event candidates, 4 stale useful
      contexts, 1 accepted-signal-class finding, 0 failed rows, and 12 watchlist
      writes;
-  4. move to GitHub Actions only after timing, failure classes, and app-visible
-     output are measured;
+  4. full local v1 write-watchlist proof including eligible LCC rows passed on
+     August 15 in about 4m53s with 16 selected, 16 guarded reads, 16 watchlist
+     writes, 0 failed rows, 5 quiet coverage, 6 event candidates, 4 stale useful
+     contexts, and 1 accepted-signal-class finding. Signal/Event writes remained
+     disabled. Next move to GitHub Actions with a strict timeout and artifact
+     logging;
   5. expand one repaired/proven surface at a time.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
@@ -894,12 +898,11 @@ claims without reopening the whole packet.
   ambiguity: LCC `#mtg` shares a URL with an older `Discord Events` row whose
   latest result is `needs_deeper_replay`; keep it visible in run logs and do
   not promote the guild Events surface into automation until repaired.
-- Pressure-test repair item: LCC `#events` and `#lfg` preflight as allowed but
-  currently fail closed during guarded UI-native navigation because selecting
-  the guild lands on `#meet-ups` and the exact target channel anchors are not
-  uniquely visible. Do not mark those channels as bad or automate around the
-  guard; repair the LCC route/category visibility path or exclude LCC from the
-  first full write-watchlist proof.
+- LCC route repair completed for eligible channel rows by applying the same
+  documented `Stores/Local` folder hint used in the successful August 14 LCC
+  proof. `#events`, `#lfg`, `#meet-ups`, and `#mtg` now pass guarded UI-native
+  reads in the daily runner. The older LCC guild Events / duplicate-channel row
+  remains a separate `needs_deeper_replay` item and is still excluded.
 - MTG OC route stability was improved by using its documented `Stores/Local`
   folder hint and one bounded retry for the exact non-mutating
   `mapped channel anchor is not uniquely visible after guild selection` failure.

@@ -170,6 +170,7 @@ function applySurfaceExclusions(rows, surfaces) {
 function folderNameFor(row) {
   if (row.server_name.includes('Collectors Lounge')) return 'Stores/Local';
   if (row.server_name === 'MTG OC') return 'Stores/Local';
+  if (row.server_name === 'Legendary Creature Club') return 'Stores/Local';
   return '';
 }
 
