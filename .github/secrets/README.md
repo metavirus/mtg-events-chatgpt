@@ -9,7 +9,7 @@ For the Discord read-only surveyor, the expected large-secret workaround is:
 - local plaintext source, ignored by git:
   `work/discord-readonly/storage-state.json`
 - committed encrypted file:
-  `.github/secrets/discord-readonly-storage-state.json.gpg`
+  `.github/secrets/discord-readonly-storage-state.json.enc`
 - repository Actions secret:
   `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`
 

@@ -387,7 +387,7 @@ Required cloud configuration:
   profile. The workflow supports either direct
   `DISCORD_READONLY_STORAGE_STATE_JSON` when the state is below GitHub's direct
   secret size limit, or the expected large-secret pattern:
-  `.github/secrets/discord-readonly-storage-state.json.gpg` plus repository
+  `.github/secrets/discord-readonly-storage-state.json.enc` plus repository
   secret `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`;
 - normal scheduled run: daily at `14:15 UTC`;
 - manual dispatch options: `write_watchlist`, `limit`, and `surface`.
@@ -405,9 +405,9 @@ August 15 proof: the local dedicated profile exported
 `work/discord-readonly/storage-state.json` at about 216 KB, and the LCC
 `#events` smoke succeeded from a fresh empty disposable profile using only that
 state. Because GitHub direct secrets are limited to 48 KB, the first cloud proof
-should use GitHub's documented large-secret workaround: encrypt the storage
-state file with `gpg`, commit only
-`.github/secrets/discord-readonly-storage-state.json.gpg`, and store only the
+should use the repo AES-GCM helper in `scripts/crypt_secret_file.mjs`: encrypt
+the storage state file, commit only
+`.github/secrets/discord-readonly-storage-state.json.enc`, and store only the
 passphrase as `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`. Do not keep retrying
 the full-profile zip approach; the prior profile archive measured about 215 MB.
 

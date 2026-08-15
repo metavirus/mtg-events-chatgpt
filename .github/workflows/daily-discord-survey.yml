@@ -98,14 +98,14 @@ jobs:
           if [ -n "$DISCORD_READONLY_STORAGE_STATE_JSON" ]; then
             printf '%s\n' "$DISCORD_READONLY_STORAGE_STATE_JSON" > work/discord-readonly/storage-state.json
           else
-            if [ ! -f ".github/secrets/discord-readonly-storage-state.json.gpg" ]; then
-              echo "::error::Missing encrypted Discord storage-state file .github/secrets/discord-readonly-storage-state.json.gpg."
+            if [ ! -f ".github/secrets/discord-readonly-storage-state.json.enc" ]; then
+              echo "::error::Missing encrypted Discord storage-state file .github/secrets/discord-readonly-storage-state.json.enc."
               exit 1
             fi
-            gpg --quiet --batch --yes --decrypt \
-              --passphrase "$DISCORD_READONLY_STORAGE_STATE_PASSPHRASE" \
+            node scripts/crypt_secret_file.mjs decrypt \
+              --input .github/secrets/discord-readonly-storage-state.json.enc \
               --output work/discord-readonly/storage-state.json \
-              .github/secrets/discord-readonly-storage-state.json.gpg
+              --passphrase-env DISCORD_READONLY_STORAGE_STATE_PASSPHRASE
           fi
 
       - name: Run Discord daily survey

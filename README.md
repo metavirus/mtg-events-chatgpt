@@ -118,7 +118,7 @@ Actions artifact. It requires `SUPABASE_DB_URL` plus
 deployable authenticated Discord session state. The workflow now supports
 `DISCORD_READONLY_STORAGE_STATE_JSON` for small states, or the expected
 large-secret lane: committed encrypted
-`.github/secrets/discord-readonly-storage-state.json.gpg` plus repository secret
+`.github/secrets/discord-readonly-storage-state.json.enc` plus repository secret
 `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`. The first full-profile zip attempt
 was about 215 MB and is dead; the August 15 storage-state proof read LCC
 `#events` from a fresh empty profile using only a roughly 216 KB state file.

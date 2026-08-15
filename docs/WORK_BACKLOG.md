@@ -901,7 +901,7 @@ claims without reopening the whole packet.
      `#events` successfully from a fresh empty disposable profile using only
      that state. Because direct GitHub secrets are limited to 48 KB, the next
      cloud proof should use the encrypted-file/passphrase-secret lane:
-     `.github/secrets/discord-readonly-storage-state.json.gpg` plus
+     `.github/secrets/discord-readonly-storage-state.json.enc` plus
      `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`;
   7. expand one repaired/proven surface at a time.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
