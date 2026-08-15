@@ -932,6 +932,10 @@ claims without reopening the whole packet.
   `scripts/refresh_daily_agent_status.py` from both daily workflows. The
   Updates page now shows WPN/EventLink, Instagram, Facebook, and Discord daily
   agent cards with freshness, counts, latest summary, and useful route buttons.
+  The cards separate `last_run_at` ("the cloud workflow ran/refreshed this
+  lane") from `last_checked_at` ("the represented source/surface was actually
+  inspected"), so successful quiet runs no longer pretend stale social source
+  checks are fresh.
   This is the common framework for seeing quiet/active monitoring in the app;
   richer Signal/Event promotion remains a separate later step.
 - The v1 runner logs duplicate channel-URL ambiguity warnings. Current known

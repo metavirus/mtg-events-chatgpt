@@ -845,6 +845,7 @@ function mapDailyAgentStatus(item) {
     id: item.id,
     label: item.label || '',
     surfaceGroup: item.surface_group || '',
+    lastRunAt: item.last_run_at || '',
     checkedAt: item.last_checked_at || '',
     primaryCount: Number(item.primary_count || 0),
     usefulCount: Number(item.useful_count || 0),
@@ -3273,8 +3274,9 @@ function dailyAgentStatuses() {
 }
 
 function normalizeDailyAgentStatus(row, fallback) {
-  const status = row?.checkedAt
-    ? freshnessStatus(row.checkedAt, row.id === 'discord' || row.id === 'wpn' ? 36 : 48, row.attentionCount ? 'attention' : 'active')
+  const freshnessAnchor = row?.lastRunAt || row?.checkedAt || '';
+  const status = freshnessAnchor
+    ? freshnessStatus(freshnessAnchor, row.id === 'discord' || row.id === 'wpn' ? 36 : 48, row.attentionCount ? 'attention' : 'active')
     : 'unknown';
   const headline = row
     ? dailyAgentHeadline(row)
@@ -3285,6 +3287,7 @@ function normalizeDailyAgentStatus(row, fallback) {
     status,
     headline,
     detail: row?.summary || 'Configured daily lane; waiting for aggregate run state.',
+    lastRunAt: row?.lastRunAt || '',
     checkedAt: row?.checkedAt || '',
     metric: row ? dailyAgentMetric(row) : 'configured',
     submetric: row ? dailyAgentSubmetric(row) : 'no public aggregate row yet',
@@ -3325,7 +3328,8 @@ function dailyAgentCard(agent) {
       <p>${escapeHtml(agent.headline)}</p>
     </div>
     <div class="daily-agent-meta">
-      <span>${escapeHtml(agent.checkedAt ? `Last checked ${formatRelativeDate(agent.checkedAt)}` : 'No last-check timestamp')}</span>
+      <span>${escapeHtml(agent.lastRunAt ? `Agent ran ${formatRelativeDate(agent.lastRunAt)}` : 'No agent-run timestamp')}</span>
+      <span>${escapeHtml(agent.checkedAt ? `Latest source check ${formatRelativeDate(agent.checkedAt)}` : 'No source-check timestamp')}</span>
       <span>${escapeHtml(agent.metric)}</span>
       <span>${escapeHtml(agent.submetric)}</span>
     </div>

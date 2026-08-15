@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+from argparse import ArgumentParser
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -157,12 +158,19 @@ agent_rows as (
 insert into public.daily_agent_status (
   id, label, surface_group, last_checked_at, primary_count, useful_count,
   quiet_count, stale_count, attention_count, latest_result, summary, route,
-  action_label, updated_at
+  action_label, last_run_at, updated_at
 )
 select
   id, label, surface_group, nullif(last_checked_at, '-infinity'::timestamptz),
   primary_count, useful_count, quiet_count, stale_count, attention_count,
-  latest_result, summary, route, action_label, now()
+  latest_result, summary, route, action_label,
+  case
+    when %(ran_agent)s = 'discord' and id = 'discord' then now()
+    when %(ran_agent)s = 'surveyor' and id in ('wpn', 'instagram', 'facebook') then now()
+    when %(ran_agent)s = 'all' then now()
+    else null
+  end,
+  now()
 from agent_rows
 on conflict (id) do update set
   label = excluded.label,
@@ -177,14 +185,24 @@ on conflict (id) do update set
   summary = excluded.summary,
   route = excluded.route,
   action_label = excluded.action_label,
+  last_run_at = coalesce(excluded.last_run_at, public.daily_agent_status.last_run_at),
   updated_at = now()
-returning id, last_checked_at, primary_count, useful_count, quiet_count, stale_count, attention_count, latest_result;
+returning id, last_run_at, last_checked_at, primary_count, useful_count, quiet_count, stale_count, attention_count, latest_result;
 """
 
 
 def main() -> int:
     reexec_with_blessed_runtime()
-    rows = psql_rows_or_raise(run_psql(REFRESH_SQL, load_database_url()))
+    parser = ArgumentParser(description="Refresh safe app-facing daily-agent aggregate status.")
+    parser.add_argument(
+        "--ran-agent",
+        choices=("none", "surveyor", "discord", "all"),
+        default="none",
+        help="Stamp last_run_at for the workflow lane that invoked this refresh.",
+    )
+    args = parser.parse_args()
+    sql = REFRESH_SQL.replace("%(ran_agent)s", f"'{args.ran_agent}'")
+    rows = psql_rows_or_raise(run_psql(sql, load_database_url()))
     print(json.dumps({"status": "ok", "rows": rows}, indent=2, default=str))
     return 0
 

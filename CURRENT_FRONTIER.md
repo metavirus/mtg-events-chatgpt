@@ -185,7 +185,9 @@ the exact durable state and next action, then hand off from that checkpoint.
   `scripts/refresh_daily_agent_status.py` at the end of both cloud survey
   workflows. The Updates page renders a Daily agents panel for WPN/EventLink,
   Instagram, Facebook, and Discord so quiet monitoring is visible without
-  creating fake Updates.
+  creating fake Updates. `last_run_at` intentionally means the owning cloud
+  workflow refreshed that lane, while `last_checked_at` remains the latest
+  actual source/surface check represented by the lane.
   The first GitHub Actions WPN proof
   completed successfully on 2026-08-09 after the `SUPABASE_DB_URL` repository
   secret was installed and the parser/log-cap issues were fixed.
