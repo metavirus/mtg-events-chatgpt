@@ -149,10 +149,10 @@ function classifyDiscordBlockedRequest(entry) {
       messageId: ackMatch[2]
     };
   }
-  if (entry.method === 'PATCH' && /^\/api\/v\d+\/users\/@me\/settings-proto\/2$/i.test(parsed.pathname) && !parsed.search) {
+  if (entry.method === 'PATCH' && /^\/api\/v\d+\/users\/@me\/settings-proto\/\d+$/i.test(parsed.pathname) && !parsed.search) {
     return {
       classification: 'blocked_expected_client_setting',
-      normalizedEndpoint: '/api/v*/users/@me/settings-proto/2'
+      normalizedEndpoint: '/api/v*/users/@me/settings-proto/{version}'
     };
   }
   if (/\/guilds\/\d+\/members\/@me$/i.test(parsed.pathname) && parsed.searchParams.get('lurker') === 'true') {

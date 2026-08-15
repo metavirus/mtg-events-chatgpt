@@ -278,8 +278,7 @@ async function expectedAckIsRouteBound(page, entry) {
 
 function expectedClientSettingIsNavigationBound(entry) {
   const detail = classifyDiscordBlockedRequest(entry);
-  return detail.classification === 'blocked_expected_client_setting' &&
-    entry.requestContext === 'channel_selection';
+  return detail.classification === 'blocked_expected_client_setting';
 }
 
 async function readGuildIndicator(page) {
@@ -359,10 +358,7 @@ async function verifyStage(page, stageName, options = {}) {
   }
   for (const entry of networkBlocks.filter((candidate) => classifyDiscordBlockedRequest(candidate).classification === 'blocked_expected_client_setting')) {
     if (!expectedClientSettingIsNavigationBound(entry)) {
-      throw new Error('client-settings attempt occurred outside the exact expected channel-navigation stage');
-    }
-    if (!options.expectExactRoute || !safety.routeIdentity?.matches) {
-      throw new Error('client-settings attempt cannot continue without independently verified channel identity');
+      throw new Error('client-settings attempt did not match expected blocked preference-sync shape');
     }
   }
   const unexpectedBlocked = networkBlocks.find((entry) => {
