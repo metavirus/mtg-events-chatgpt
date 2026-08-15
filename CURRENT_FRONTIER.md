@@ -112,11 +112,14 @@ the exact durable state and next action, then hand off from that checkpoint.
 - The Discord automation path is now a phased micro-sweep ladder, not broad
   crawler work. Phase 1 first-batch bounded proofs are complete for MTG OC,
   eligible LCC channel rows, and Collectors Lounge. Phase 2 local runner
-  `scripts/run_discord_daily_survey.mjs` exists and has passed plan-only plus a
-  one-row guarded dry run. The next execution step is Phase 3: local
-  write-watchlist proof with Signal/Event writes still disabled. GitHub Actions
-  automation waits until the local write-watchlist proof measures clean
-  timing/failure behavior.
+  `scripts/run_discord_daily_survey.mjs` exists and has passed plan-only,
+  one-row guarded dry run, Collectors scoped dry run, and one-row
+  write-watchlist proof with Signal/Event writes disabled. The runner now has a
+  lock to prevent overlapping Chrome-profile use. The next execution step is
+  continue Phase 3 with full-v1 local write-watchlist proof after repairing or
+  excluding LCC channels whose anchors are not uniquely visible from the current
+  UI-native route. GitHub Actions automation waits until the local
+  write-watchlist proof measures clean timing/failure behavior.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 - Private source-image evidence is operational for uncommon cases where the

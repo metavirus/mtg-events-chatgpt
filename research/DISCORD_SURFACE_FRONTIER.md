@@ -180,12 +180,19 @@ bounded window, can update watchlist state, and emits a JSON log. V1 includes
 only MTG OC, LCC channel rows that are not `needs_deeper_replay`, and
 Collectors Lounge. It supports `--dry-run`, `--plan-only`, `--limit`,
 `--surface`, `--write-watchlist`, `--no-signal-writes`, and `--json-log`.
-Plan-only and one-row guarded dry-run proof passed on August 15.
+Plan-only, one-row guarded dry-run proof, Collectors scoped dry-run
+classification, one-row write-watchlist proof, and overlapping-run lock check
+passed on August 15.
 
-Phase 3 is the next step: local write-watchlist proof. Run the v1 allowlist locally with
-watchlist writes enabled, but with Signal/Event writes disabled unless a current
-urgent finding is reviewed. Measure elapsed time, failure classes, and how many
-visible app items would have been created.
+Phase 3 is partially proven and still in progress. One-row write-watchlist proof
+passed on Collectors `#announcements` with Signal/Event writes disabled. Before
+full-v1 write-watchlist proof, repair or explicitly exclude the current LCC
+route issue: `#events` and `#lfg` preflight as allowed but fail closed because
+guild selection lands on `#meet-ups` and the exact target channel anchors are
+not uniquely visible. Then run the v1 allowlist locally with watchlist writes
+enabled, but with Signal/Event writes disabled unless a current urgent finding
+is reviewed. Measure elapsed time, failure classes, and how many visible app
+items would have been created.
 
 Phase 4 is GitHub Actions. Only after Phase 3 passes, add
 `.github/workflows/daily-discord-survey.yml` with a strict timeout, daily

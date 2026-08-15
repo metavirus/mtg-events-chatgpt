@@ -5,6 +5,7 @@ import process from 'node:process';
 
 const ROOT = process.cwd();
 const LOG_DIR = path.join(ROOT, 'work', 'discord-daily-survey', 'logs');
+const LOCK_PATH = path.join(ROOT, 'work', 'discord-readonly', 'discord-daily-survey.lock');
 const UI_NATIVE_MODE = 'ui_native_navigation_verified';
 const EXACT_CHANNEL_URL = /^https:\/\/discord(?:app)?\.com\/channels\/(\d+)\/(\d+)$/i;
 const V1_PROFILE_SOURCE_IDS = new Set([
@@ -184,12 +185,28 @@ function runHarness(row, args) {
     String(args.maxReadWindows)
   ], { env });
   if (result.status !== 0) {
+    let harness = null;
+    try {
+      harness = parseHarnessJson(result.stdout);
+    } catch {
+      harness = null;
+    }
     return {
       rowId: row.id,
-      status: 'harness_failed',
+      channelName: row.channel_name,
+      serverName: row.server_name,
+      status: harness?.status || 'harness_failed',
       outcome: 'blocked_repair',
       watchlistResult: RESULT_TO_WATCHLIST.blocked_repair,
-      error: [result.stdout, result.stderr].filter(Boolean).join('\n').slice(0, 4000)
+      routeState: harness?.routeState || 'blocked_for_this_run',
+      failureStage: harness?.failureStage || null,
+      failureReason: harness?.failureReason || null,
+      externalDiscordStateChanged: harness?.externalDiscordStateChanged ?? null,
+      prohibitedSuccessfulResponses: harness?.prohibitedSuccessfulResponses || [],
+      logPath: harness?.logPath || null,
+      error: harness
+        ? null
+        : [result.stdout, result.stderr].filter(Boolean).join('\n').slice(0, 4000)
     };
   }
   const harness = parseHarnessJson(result.stdout);
@@ -274,109 +291,146 @@ returning w.id, w.channel_name, w.latest_run_result, w.last_seen_message_id, w.l
   return JSON.parse(result.stdout).rows;
 }
 
+async function acquireRunLock(enabled) {
+  if (!enabled) return null;
+  await fs.mkdir(path.dirname(LOCK_PATH), { recursive: true });
+  try {
+    const handle = await fs.open(LOCK_PATH, 'wx');
+    await handle.writeFile(JSON.stringify({
+      pid: process.pid,
+      startedAt: new Date().toISOString(),
+      script: 'run_discord_daily_survey'
+    }, null, 2));
+    return handle;
+  } catch (error) {
+    if (error && error.code === 'EEXIST') {
+      let lockText = '';
+      try {
+        lockText = await fs.readFile(LOCK_PATH, 'utf8');
+      } catch {
+        lockText = '(lock file exists but could not be read)';
+      }
+      throw new Error(`Discord daily survey is already running or the Chrome profile is locked. Lock: ${LOCK_PATH}\n${lockText}`);
+    }
+    throw error;
+  }
+}
+
+async function releaseRunLock(handle) {
+  if (!handle) return;
+  await handle.close();
+  await fs.unlink(LOCK_PATH).catch(() => {});
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   await fs.mkdir(LOG_DIR, { recursive: true });
+  const lockHandle = await acquireRunLock(!args.planOnly);
 
-  const allRows = fetchWatchlistRows();
-  const eligible = applySurfaceFilter(allRows.filter(isV1Eligible), args.surface);
-  const selected = args.limit === null ? eligible : eligible.slice(0, args.limit);
-  const rowsByUrl = new Map();
-  for (const row of allRows) {
-    if (!row.channel_url) continue;
-    const rows = rowsByUrl.get(row.channel_url) || [];
-    rows.push(row);
-    rowsByUrl.set(row.channel_url, rows);
-  }
-  const warnings = [];
-  for (const row of selected) {
-    const duplicates = (rowsByUrl.get(row.channel_url) || []).filter((candidate) => candidate.id !== row.id);
-    if (duplicates.length > 0) {
-      warnings.push({
-        type: 'duplicate_channel_url',
-        selectedId: row.id,
-        selectedChannelName: row.channel_name,
-        channelUrl: row.channel_url,
-        duplicateRows: duplicates.map((candidate) => ({
-          id: candidate.id,
-          serverName: candidate.server_name,
-          channelName: candidate.channel_name,
-          latestRunResult: candidate.latest_run_result,
-          profileSourceId: candidate.profile_source_id
-        }))
-      });
+  try {
+    const allRows = fetchWatchlistRows();
+    const eligible = applySurfaceFilter(allRows.filter(isV1Eligible), args.surface);
+    const selected = args.limit === null ? eligible : eligible.slice(0, args.limit);
+    const rowsByUrl = new Map();
+    for (const row of allRows) {
+      if (!row.channel_url) continue;
+      const rows = rowsByUrl.get(row.channel_url) || [];
+      rows.push(row);
+      rowsByUrl.set(row.channel_url, rows);
     }
-  }
-  const excluded = allRows
-    .filter((row) => V1_PROFILE_SOURCE_IDS.has(row.profile_source_id) && !isV1Eligible(row))
-    .map((row) => ({
-      id: row.id,
-      serverName: row.server_name,
-      channelName: row.channel_name,
-      reason: row.latest_run_result === 'needs_deeper_replay'
-        ? 'needs_deeper_replay'
-        : !EXACT_CHANNEL_URL.test(row.channel_url || '')
-          ? 'not_exact_channel_url'
-          : row.safe_access_mode !== UI_NATIVE_MODE
-            ? `safe_access_mode=${row.safe_access_mode}`
-            : `monitoring_status=${row.monitoring_status}`
-    }));
-
-  const runLog = {
-    script: 'run_discord_daily_survey',
-    version: 1,
-    startedAt: new Date().toISOString(),
-    dryRun: args.dryRun,
-    planOnly: args.planOnly,
-    writeWatchlist: args.writeWatchlist,
-    noSignalWrites: args.noSignalWrites !== false,
-    allowlist: ['MTG OC', 'Legendary Creature Club eligible channel rows', 'Collectors Lounge'],
-    selectedCount: selected.length,
-    selected: selected.map((row) => ({
-      id: row.id,
-      serverName: row.server_name,
-      channelName: row.channel_name,
-      channelUrl: row.channel_url,
-      priority: row.priority,
-      cadence: row.cadence,
-      expectedSignalTypes: row.expected_signal_types
-    })),
-    warnings,
-    excluded,
-    preflight: null,
-    results: [],
-    watchlistWrite: null,
-    finishedAt: null
-  };
-
-  runLog.preflight = preflight(selected);
-  if (runLog.preflight.status && runLog.preflight.status !== 0) {
-    throw new Error(`Preflight denied selected rows:\n${runLog.preflight.stdout || ''}\n${runLog.preflight.stderr || ''}`);
-  }
-
-  if (!args.planOnly) {
+    const warnings = [];
     for (const row of selected) {
-      runLog.results.push(runHarness(row, args));
+      const duplicates = (rowsByUrl.get(row.channel_url) || []).filter((candidate) => candidate.id !== row.id);
+      if (duplicates.length > 0) {
+        warnings.push({
+          type: 'duplicate_channel_url',
+          selectedId: row.id,
+          selectedChannelName: row.channel_name,
+          channelUrl: row.channel_url,
+          duplicateRows: duplicates.map((candidate) => ({
+            id: candidate.id,
+            serverName: candidate.server_name,
+            channelName: candidate.channel_name,
+            latestRunResult: candidate.latest_run_result,
+            profileSourceId: candidate.profile_source_id
+          }))
+        });
+      }
     }
-  }
+    const excluded = allRows
+      .filter((row) => V1_PROFILE_SOURCE_IDS.has(row.profile_source_id) && !isV1Eligible(row))
+      .map((row) => ({
+        id: row.id,
+        serverName: row.server_name,
+        channelName: row.channel_name,
+        reason: row.latest_run_result === 'needs_deeper_replay'
+          ? 'needs_deeper_replay'
+          : !EXACT_CHANNEL_URL.test(row.channel_url || '')
+            ? 'not_exact_channel_url'
+            : row.safe_access_mode !== UI_NATIVE_MODE
+              ? `safe_access_mode=${row.safe_access_mode}`
+              : `monitoring_status=${row.monitoring_status}`
+      }));
 
-  if (args.writeWatchlist && !args.dryRun && !args.planOnly) {
-    runLog.watchlistWrite = await writeWatchlist(runLog.results);
-  } else {
-    runLog.watchlistWrite = { skipped: true, reason: args.dryRun ? 'dry_run' : args.planOnly ? 'plan_only' : 'write_watchlist_not_enabled' };
-  }
+    const runLog = {
+      script: 'run_discord_daily_survey',
+      version: 1,
+      startedAt: new Date().toISOString(),
+      dryRun: args.dryRun,
+      planOnly: args.planOnly,
+      writeWatchlist: args.writeWatchlist,
+      noSignalWrites: args.noSignalWrites !== false,
+      runLock: args.planOnly ? { used: false, reason: 'plan_only' } : { used: true, path: LOCK_PATH },
+      allowlist: ['MTG OC', 'Legendary Creature Club eligible channel rows', 'Collectors Lounge'],
+      selectedCount: selected.length,
+      selected: selected.map((row) => ({
+        id: row.id,
+        serverName: row.server_name,
+        channelName: row.channel_name,
+        channelUrl: row.channel_url,
+        priority: row.priority,
+        cadence: row.cadence,
+        expectedSignalTypes: row.expected_signal_types
+      })),
+      warnings,
+      excluded,
+      preflight: null,
+      results: [],
+      watchlistWrite: null,
+      finishedAt: null
+    };
 
-  runLog.finishedAt = new Date().toISOString();
-  const logPath = path.join(LOG_DIR, `discord-daily-survey-${runLog.finishedAt.replaceAll(':', '-')}.json`);
-  await fs.writeFile(logPath, JSON.stringify(runLog, null, 2) + '\n', 'utf8');
-  runLog.logPath = logPath;
+    runLog.preflight = preflight(selected);
+    if (runLog.preflight.status && runLog.preflight.status !== 0) {
+      throw new Error(`Preflight denied selected rows:\n${runLog.preflight.stdout || ''}\n${runLog.preflight.stderr || ''}`);
+    }
 
-  if (args.jsonLog) {
-    console.log(JSON.stringify(runLog, null, 2));
-  } else {
-    console.log(`Discord daily survey v1 ${args.planOnly ? 'plan' : 'run'} complete.`);
-    console.log(`Selected rows: ${selected.length}`);
-    console.log(`Log: ${logPath}`);
+    if (!args.planOnly) {
+      for (const row of selected) {
+        runLog.results.push(runHarness(row, args));
+      }
+    }
+
+    if (args.writeWatchlist && !args.dryRun && !args.planOnly) {
+      runLog.watchlistWrite = await writeWatchlist(runLog.results);
+    } else {
+      runLog.watchlistWrite = { skipped: true, reason: args.dryRun ? 'dry_run' : args.planOnly ? 'plan_only' : 'write_watchlist_not_enabled' };
+    }
+
+    runLog.finishedAt = new Date().toISOString();
+    const logPath = path.join(LOG_DIR, `discord-daily-survey-${runLog.finishedAt.replaceAll(':', '-')}.json`);
+    await fs.writeFile(logPath, JSON.stringify(runLog, null, 2) + '\n', 'utf8');
+    runLog.logPath = logPath;
+
+    if (args.jsonLog) {
+      console.log(JSON.stringify(runLog, null, 2));
+    } else {
+      console.log(`Discord daily survey v1 ${args.planOnly ? 'plan' : 'run'} complete.`);
+      console.log(`Selected rows: ${selected.length}`);
+      console.log(`Log: ${logPath}`);
+    }
+  } finally {
+    await releaseRunLock(lockHandle);
   }
 }
 

@@ -179,7 +179,31 @@ def psql_rows_or_raise(result: subprocess.CompletedProcess[str]) -> list[dict]:
             if "," in line:
                 output = "\n".join(lines[index:]) + "\n"
                 break
-    return list(csv.DictReader(io.StringIO(output)))
+    command_tags = {
+        "INSERT",
+        "UPDATE",
+        "DELETE",
+        "MERGE",
+        "CREATE",
+        "ALTER",
+        "DROP",
+        "TRUNCATE",
+        "SELECT",
+    }
+    rows = list(csv.DictReader(io.StringIO(output)))
+    cleaned: list[dict] = []
+    for row in rows:
+        values = list(row.values())
+        first_value = values[0] if values else None
+        other_values = values[1:]
+        if (
+            isinstance(first_value, str)
+            and first_value.split(" ", 1)[0] in command_tags
+            and all(value in (None, "") for value in other_values)
+        ):
+            continue
+        cleaned.append(row)
+    return cleaned
 
 
 def linked_query_rows_or_raise(result: subprocess.CompletedProcess[str]) -> list[dict]:

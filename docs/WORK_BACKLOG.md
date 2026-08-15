@@ -877,8 +877,11 @@ claims without reopening the whole packet.
      `--dry-run`, `--plan-only`, `--limit`, `--surface`, `--write-watchlist`,
      `--no-signal-writes`, and `--json-log`, and has passed plan-only plus a
      one-row guarded dry run;
-  3. next prove local write-watchlist behavior with Signal/Event writes disabled by
-     default;
+  3. local pressure testing has also passed Collectors scoped dry-run
+     classification, one-row write-watchlist proof, clean psql command-tag
+     parsing, and an overlapping-run lock check. Continue Phase 3 with a
+     full-v1 local write-watchlist proof only after the LCC route issue below is
+     repaired or LCC is explicitly excluded from that proof;
   4. move to GitHub Actions only after timing, failure classes, and app-visible
      output are measured;
   5. expand one repaired/proven surface at a time.
@@ -889,6 +892,12 @@ claims without reopening the whole packet.
   ambiguity: LCC `#mtg` shares a URL with an older `Discord Events` row whose
   latest result is `needs_deeper_replay`; keep it visible in run logs and do
   not promote the guild Events surface into automation until repaired.
+- Pressure-test repair item: LCC `#events` and `#lfg` preflight as allowed but
+  currently fail closed during guarded UI-native navigation because selecting
+  the guild lands on `#meet-ups` and the exact target channel anchors are not
+  uniquely visible. Do not mark those channels as bad or automate around the
+  guard; repair the LCC route/category visibility path or exclude LCC from the
+  first full write-watchlist proof.
 - Extend the relevant-chatter proof when a direct non-meetup question such as
   the Finch and Sparrow mention is captured canonically; it should rank below
   meetup coordination but remain visible and clickable.
