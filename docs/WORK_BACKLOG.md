@@ -791,6 +791,24 @@ claims without reopening the whole packet.
   - app/product change completed
 - Add richer embedded links so update entries can open the relevant store,
   event, community, or research view directly.
+- Define and implement a common app-visible ingest framework across the three
+  daily survey agents: WPN, Instagram/Facebook, and Discord. Each surface should
+  emit normalized findings into the same user-facing model instead of burying
+  useful discoveries in agent chat or per-surface logs:
+  - routine/no-delta checks update monitoring state and may appear only as quiet
+    coverage in source/activity drilldowns;
+  - meaningful discoveries, changed schedules, source-health changes,
+    reclassifications, new community activity, and useful stale context become
+    Updates/Activity entries with direct links to the affected event, place,
+    community, source, or evidence;
+  - only high-action, time-sensitive, or personally relevant findings become
+    sparse Signals;
+  - every surfaced item keeps source family, source record, confidence,
+    ownership semantics, and whether the finding was automated, assisted, or
+    manually reviewed.
+  This should be designed before the Discord daily agent becomes cloud
+  automation so the user can inspect surfaced ingest in the app rather than
+  needing to ask Codex what happened.
 - Let Updates carry lightweight follow-ups from Codex, including small A-vs-B
   questions and waiting-on-user clarifications.
 - User responses inside Updates should be able to unblock immediate execution
