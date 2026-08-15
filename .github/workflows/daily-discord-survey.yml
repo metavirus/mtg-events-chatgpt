@@ -1,0 +1,127 @@
+name: Daily Discord survey
+
+on:
+  workflow_dispatch:
+    inputs:
+      write_watchlist:
+        description: "Update discord_channel_watchlist rows"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      limit:
+        description: "Optional row limit for smoke tests; leave blank for full v1"
+        required: false
+        default: ""
+      surface:
+        description: "Optional surface filter such as mtg-oc, lcc, or collectors"
+        required: false
+        default: ""
+  schedule:
+    # 06:15 PT during standard time, 07:15 PT during daylight time.
+    - cron: "15 14 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-discord-survey
+  cancel-in-progress: false
+
+jobs:
+  discord-survey:
+    name: Discord guarded surface survey
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      DISCORD_READONLY_PROFILE_ZIP_BASE64: ${{ secrets.DISCORD_READONLY_PROFILE_ZIP_BASE64 }}
+      SUPABASE_TELEMETRY_DISABLED: "1"
+      DO_NOT_TRACK: "1"
+      SOCIAL_HEADLESS: "1"
+
+    steps:
+      - name: Check required secrets
+        shell: bash
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "::error::Missing GitHub Actions secret SUPABASE_DB_URL."
+            echo "Add the Supabase Session pooler Postgres URI as a repository Actions secret."
+            exit 1
+          fi
+          if [ -z "$DISCORD_READONLY_PROFILE_ZIP_BASE64" ]; then
+            echo "::error::Missing GitHub Actions secret DISCORD_READONLY_PROFILE_ZIP_BASE64."
+            echo "Discord cloud automation requires an authenticated dedicated read-only browser profile archive."
+            echo "Create it from the ignored work/discord-readonly/profile directory only after confirming the session is authorized for read-only survey use."
+            exit 1
+          fi
+
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Install PostgreSQL client
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client unzip
+
+      - name: Install Playwright
+        shell: bash
+        run: |
+          npm install --no-save playwright@1.54.2
+          npx playwright install chromium
+          echo "CODEX_NODE_MODULES=${GITHUB_WORKSPACE}/node_modules" >> "$GITHUB_ENV"
+          node -e "const { chromium } = require('playwright'); console.log('DISCORD_PROOF_BROWSER=' + chromium.executablePath())" >> "$GITHUB_ENV"
+
+      - name: Hydrate Discord read-only profile
+        shell: bash
+        run: |
+          mkdir -p work/discord-readonly/profile
+          printf '%s' "$DISCORD_READONLY_PROFILE_ZIP_BASE64" | base64 --decode > work/discord-readonly/profile.zip
+          unzip -q work/discord-readonly/profile.zip -d work/discord-readonly/profile
+          rm -f work/discord-readonly/profile.zip
+
+      - name: Run Discord daily survey
+        shell: bash
+        run: |
+          args=(--no-signal-writes --json-log)
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.write_watchlist }}" = "true" ]; then
+            args+=(--write-watchlist)
+          else
+            args+=(--dry-run)
+          fi
+          if [ -n "${{ inputs.limit }}" ]; then
+            args+=(--limit "${{ inputs.limit }}")
+          fi
+          if [ -n "${{ inputs.surface }}" ]; then
+            args+=(--surface "${{ inputs.surface }}")
+          fi
+          node scripts/run_discord_daily_survey.mjs "${args[@]}"
+
+      - name: Upload Discord survey logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: discord-daily-survey-logs
+          path: |
+            work/discord-daily-survey/logs/*.json
+            work/discord-readonly/logs/*.json
+          if-no-files-found: warn

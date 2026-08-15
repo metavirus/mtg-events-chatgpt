@@ -373,6 +373,35 @@ profile/chrome-like social content stays quiet; do not retain or surface a
 source artifact merely because the page shell says "Magic" or "events." A
 social item becomes a canonical Event only when the adapter can emit concrete
 event facts: venue, title/format lane, date, time, and source URL/artifact.
+
+## Daily Discord cloud surveyor lane
+
+Discord runs separately through `.github/workflows/daily-discord-survey.yml`.
+It is the cloud path for the guarded v1 Discord watchlist survey after the full
+local proof passed.
+
+Required cloud configuration:
+
+- repository Actions secret: `SUPABASE_DB_URL`;
+- repository Actions secret: `DISCORD_READONLY_PROFILE_ZIP_BASE64`, containing
+  a zip archive of the ignored dedicated profile directory
+  `work/discord-readonly/profile`;
+- normal scheduled run: daily at `14:15 UTC`;
+- manual dispatch options: `write_watchlist`, `limit`, and `surface`.
+
+The action installs Playwright, hydrates the dedicated Discord read-only
+profile, runs `scripts/run_discord_daily_survey.mjs --write-watchlist
+--no-signal-writes --json-log`, and uploads the daily survey and underlying
+read-only harness JSON logs as workflow artifacts. It must not commit generated
+logs. Missing or expired Discord profile state is a deployment/authentication
+failure to repair explicitly; do not replace it with looser navigation, search,
+message-area interaction, or any Discord mutation path.
+
+To prepare the profile secret from a verified local read-only Discord profile,
+create a zip whose contents are the profile files themselves, not a nested
+`profile/` parent directory, then base64-encode that zip and paste the result as
+the repository Actions secret. Do not commit either file.
+
 When a retained image/flyer produced the event, pass its artifact id into the
 event promoter so the app can show the visual evidence incidentally in the
 event or Signal drawer. A social item becomes a Signal only when it is a dated

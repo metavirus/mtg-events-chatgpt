@@ -111,6 +111,15 @@ Instagram/Facebook surface probes when the corresponding saved session-state
 secrets are present. It does not require the user's desktop or Codex session to
 be open, and it does not commit generated WPN JSON during routine runs.
 
+Discord has a separate guarded daily workflow:
+`.github/workflows/daily-discord-survey.yml`. It runs the bounded Discord
+watchlist survey with Signal/Event writes disabled and uploads JSON logs as an
+Actions artifact. It requires `SUPABASE_DB_URL` plus
+`DISCORD_READONLY_PROFILE_ZIP_BASE64`, an authenticated archive of the ignored
+dedicated read-only profile at `work/discord-readonly/profile`. Missing Discord
+profile state is a deployment configuration failure, not permission to loosen
+the guarded browser route.
+
 The ignored crawler handoff stores:
 
 - `work/wpn-cache/latest/metadata.json`: retrieval settings and counts

@@ -888,8 +888,10 @@ claims without reopening the whole packet.
      August 15 in about 4m53s with 16 selected, 16 guarded reads, 16 watchlist
      writes, 0 failed rows, 5 quiet coverage, 6 event candidates, 4 stale useful
      contexts, and 1 accepted-signal-class finding. Signal/Event writes remained
-     disabled. Next move to GitHub Actions with a strict timeout and artifact
-     logging;
+     disabled. GitHub Actions workflow is now added as
+     `.github/workflows/daily-discord-survey.yml` with strict timeout, manual
+     dispatch, morning PT schedule, dedicated profile secret requirement, and
+     artifact logging;
   5. expand one repaired/proven surface at a time.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
