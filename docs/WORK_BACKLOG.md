@@ -890,15 +890,20 @@ claims without reopening the whole packet.
      contexts, and 1 accepted-signal-class finding. Signal/Event writes remained
      disabled. GitHub Actions workflow is now added as
      `.github/workflows/daily-discord-survey.yml` with strict timeout, manual
-     dispatch, morning PT schedule, dedicated profile secret requirement, and
-     artifact logging;
-  5. first cloud-secret attempt found the local dedicated Chrome profile archive
-     is about 215 MB and the local `gh` API credential returned `401 Bad
-     credentials` while setting the secret. Treat this as a deployment blocker,
-     not a script/readiness failure. Do not retry the giant-profile-secret lane;
-     use a deployment-appropriate authenticated browser/session strategy such
-     as a self-hosted runner owning the dedicated read-only profile;
-  6. expand one repaired/proven surface at a time.
+     dispatch, morning PT schedule, storage-state auth hydration, and artifact
+     logging;
+  5. first full-profile cloud-secret attempt found the local dedicated Chrome
+     profile archive is about 215 MB and the local `gh` API credential returned
+     `401 Bad credentials` while setting the secret. Do not retry the
+     giant-profile-secret lane;
+  6. August 15 storage-state proof exported
+     `work/discord-readonly/storage-state.json` at about 216 KB, then read LCC
+     `#events` successfully from a fresh empty disposable profile using only
+     that state. Because direct GitHub secrets are limited to 48 KB, the next
+     cloud proof should use the encrypted-file/passphrase-secret lane:
+     `.github/secrets/discord-readonly-storage-state.json.gpg` plus
+     `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`;
+  7. expand one repaired/proven surface at a time.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.

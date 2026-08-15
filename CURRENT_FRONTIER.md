@@ -121,11 +121,14 @@ the exact durable state and next action, then hand off from that checkpoint.
   6 event candidates, 4 stale useful contexts, and 1 accepted-signal-class
   finding. Signal/Event writes remained disabled. The old LCC guild Events row
   remains excluded as `needs_deeper_replay`; eligible LCC channel rows are now
-  proven. Phase 4 workflow file exists, but first GitHub-hosted cloud smoke is
-  blocked on deployable Discord session state: a full local Chrome profile
-  archive measured about 215 MB and is not a suitable repository Actions secret,
-  and the local `gh` API credential returned `401 Bad credentials` when setting
-  the secret. Do not keep retrying the giant-profile-secret lane.
+  proven. Phase 4 workflow file exists and now uses the same lightweight
+  saved-session-state shape as the Instagram/Facebook social lanes. August 15
+  local proof exported `work/discord-readonly/storage-state.json` from the
+  dedicated profile, then read LCC `#events` successfully from a fresh empty
+  disposable profile using only that storage state. The file is about 216 KB,
+  so it is not suitable for GitHub's 48 KB direct secret limit; use the
+  documented encrypted-file plus passphrase-secret lane. Do not keep retrying
+  the giant-profile-secret lane.
 - The Supabase coordination queue is the active ChatGPT-to-Codex intake lane.
   ChatGPT submissions remain non-canonical until reviewed and promoted.
 - Private source-image evidence is operational for uncommon cases where the

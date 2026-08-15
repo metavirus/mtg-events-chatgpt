@@ -384,25 +384,32 @@ Required cloud configuration:
 
 - repository Actions secret: `SUPABASE_DB_URL`;
 - deployable authenticated Discord session state for the dedicated read-only
-  profile. The first attempt to package the full ignored local Chrome profile
-  as `DISCORD_READONLY_PROFILE_ZIP_BASE64` measured about 215 MB, so the
-  giant-profile-secret lane is not viable for GitHub-hosted Actions;
+  profile. The workflow supports either direct
+  `DISCORD_READONLY_STORAGE_STATE_JSON` when the state is below GitHub's direct
+  secret size limit, or the expected large-secret pattern:
+  `.github/secrets/discord-readonly-storage-state.json.gpg` plus repository
+  secret `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`;
 - normal scheduled run: daily at `14:15 UTC`;
 - manual dispatch options: `write_watchlist`, `limit`, and `surface`.
 
-The action installs Playwright, hydrates the dedicated Discord read-only
-profile, runs `scripts/run_discord_daily_survey.mjs --write-watchlist
+The action installs Playwright, hydrates a fresh dedicated Discord read-only
+profile from saved Playwright storage state, runs
+`scripts/run_discord_daily_survey.mjs --write-watchlist
 --no-signal-writes --json-log`, and uploads the daily survey and underlying
 read-only harness JSON logs as workflow artifacts. It must not commit generated
-logs. Missing or expired Discord profile state is a deployment/authentication
+logs. Missing or expired Discord storage state is a deployment/authentication
 failure to repair explicitly; do not replace it with looser navigation, search,
 message-area interaction, or any Discord mutation path.
 
-The workflow currently fails fast when `DISCORD_READONLY_PROFILE_ZIP_BASE64` is
-missing, preserving the deployment blocker explicitly. Do not keep retrying the
-full-profile secret approach. The next production path should provide the same
-guarded browser profile through a deployment-appropriate mechanism, such as a
-self-hosted runner that owns the dedicated read-only profile.
+August 15 proof: the local dedicated profile exported
+`work/discord-readonly/storage-state.json` at about 216 KB, and the LCC
+`#events` smoke succeeded from a fresh empty disposable profile using only that
+state. Because GitHub direct secrets are limited to 48 KB, the first cloud proof
+should use GitHub's documented large-secret workaround: encrypt the storage
+state file with `gpg`, commit only
+`.github/secrets/discord-readonly-storage-state.json.gpg`, and store only the
+passphrase as `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`. Do not keep retrying
+the full-profile zip approach; the prior profile archive measured about 215 MB.
 
 When a retained image/flyer produced the event, pass its artifact id into the
 event promoter so the app can show the visual evidence incidentally in the

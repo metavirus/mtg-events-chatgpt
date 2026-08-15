@@ -38,7 +38,8 @@ jobs:
 
     env:
       SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
-      DISCORD_READONLY_PROFILE_ZIP_BASE64: ${{ secrets.DISCORD_READONLY_PROFILE_ZIP_BASE64 }}
+      DISCORD_READONLY_STORAGE_STATE_JSON: ${{ secrets.DISCORD_READONLY_STORAGE_STATE_JSON }}
+      DISCORD_READONLY_STORAGE_STATE_PASSPHRASE: ${{ secrets.DISCORD_READONLY_STORAGE_STATE_PASSPHRASE }}
       SUPABASE_TELEMETRY_DISABLED: "1"
       DO_NOT_TRACK: "1"
       SOCIAL_HEADLESS: "1"
@@ -52,10 +53,9 @@ jobs:
             echo "Add the Supabase Session pooler Postgres URI as a repository Actions secret."
             exit 1
           fi
-          if [ -z "$DISCORD_READONLY_PROFILE_ZIP_BASE64" ]; then
-            echo "::error::Missing GitHub Actions secret DISCORD_READONLY_PROFILE_ZIP_BASE64."
-            echo "Discord cloud automation requires an authenticated dedicated read-only browser profile archive."
-            echo "Create it from the ignored work/discord-readonly/profile directory only after confirming the session is authorized for read-only survey use."
+          if [ -z "$DISCORD_READONLY_STORAGE_STATE_JSON" ] && [ -z "$DISCORD_READONLY_STORAGE_STATE_PASSPHRASE" ]; then
+            echo "::error::Missing Discord storage-state configuration."
+            echo "Provide either a small DISCORD_READONLY_STORAGE_STATE_JSON secret or the DISCORD_READONLY_STORAGE_STATE_PASSPHRASE secret for .github/secrets/discord-readonly-storage-state.json.gpg."
             exit 1
           fi
 
@@ -81,7 +81,7 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client unzip
+          sudo apt-get install -y postgresql-client
 
       - name: Install Playwright
         shell: bash
@@ -91,13 +91,22 @@ jobs:
           echo "CODEX_NODE_MODULES=${GITHUB_WORKSPACE}/node_modules" >> "$GITHUB_ENV"
           node -e "const { chromium } = require('playwright'); console.log('DISCORD_PROOF_BROWSER=' + chromium.executablePath())" >> "$GITHUB_ENV"
 
-      - name: Hydrate Discord read-only profile
+      - name: Hydrate Discord read-only storage state
         shell: bash
         run: |
           mkdir -p work/discord-readonly/profile
-          printf '%s' "$DISCORD_READONLY_PROFILE_ZIP_BASE64" | base64 --decode > work/discord-readonly/profile.zip
-          unzip -q work/discord-readonly/profile.zip -d work/discord-readonly/profile
-          rm -f work/discord-readonly/profile.zip
+          if [ -n "$DISCORD_READONLY_STORAGE_STATE_JSON" ]; then
+            printf '%s\n' "$DISCORD_READONLY_STORAGE_STATE_JSON" > work/discord-readonly/storage-state.json
+          else
+            if [ ! -f ".github/secrets/discord-readonly-storage-state.json.gpg" ]; then
+              echo "::error::Missing encrypted Discord storage-state file .github/secrets/discord-readonly-storage-state.json.gpg."
+              exit 1
+            fi
+            gpg --quiet --batch --yes --decrypt \
+              --passphrase "$DISCORD_READONLY_STORAGE_STATE_PASSPHRASE" \
+              --output work/discord-readonly/storage-state.json \
+              .github/secrets/discord-readonly-storage-state.json.gpg
+          fi
 
       - name: Run Discord daily survey
         shell: bash

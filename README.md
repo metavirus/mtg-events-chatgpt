@@ -115,10 +115,14 @@ Discord has a separate guarded daily workflow:
 `.github/workflows/daily-discord-survey.yml`. It runs the bounded Discord
 watchlist survey with Signal/Event writes disabled and uploads JSON logs as an
 Actions artifact. It requires `SUPABASE_DB_URL` plus
-deployable authenticated Discord session state. The first attempt to use a
-base64 zip of the ignored local profile found the archive was about 215 MB, so
-the giant-profile-secret lane is not viable for GitHub-hosted Actions. Missing
-or non-portable Discord profile state is a deployment configuration failure, not
+deployable authenticated Discord session state. The workflow now supports
+`DISCORD_READONLY_STORAGE_STATE_JSON` for small states, or the expected
+large-secret lane: committed encrypted
+`.github/secrets/discord-readonly-storage-state.json.gpg` plus repository secret
+`DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`. The first full-profile zip attempt
+was about 215 MB and is dead; the August 15 storage-state proof read LCC
+`#events` from a fresh empty profile using only a roughly 216 KB state file.
+Missing or expired Discord state is a deployment configuration failure, not
 permission to loosen the guarded browser route.
 
 The ignored crawler handoff stores:

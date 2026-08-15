@@ -41,12 +41,88 @@ if (!['route_discovery', 'routine_survey'].includes(passMode)) {
 const expectedRoute = { guildId: targetRoute[2], channelId: targetRoute[3] };
 const homeUrl = 'https://discord.com/channels/@me';
 const workspaceRoot = path.resolve('work/discord-readonly');
-const profileDir = path.join(workspaceRoot, 'profile');
+const profileDir = process.env.DISCORD_READONLY_PROFILE_DIR
+  ? path.resolve(process.env.DISCORD_READONLY_PROFILE_DIR)
+  : path.join(workspaceRoot, 'profile');
+const storageStatePath = process.env.DISCORD_READONLY_STORAGE_STATE_PATH
+  ? path.resolve(process.env.DISCORD_READONLY_STORAGE_STATE_PATH)
+  : path.join(workspaceRoot, 'storage-state.json');
 const logDir = path.join(workspaceRoot, 'logs');
 const screenshotDir = path.join(workspaceRoot, 'screenshots');
+await fs.mkdir(profileDir, { recursive: true });
 await fs.mkdir(logDir, { recursive: true });
 await fs.mkdir(screenshotDir, { recursive: true });
 const profileMetadata = await fs.stat(profileDir);
+
+async function readJsonIfExists(filePath) {
+  try {
+    return JSON.parse(await fs.readFile(filePath, 'utf8'));
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
+}
+
+async function hydrateStorageStateFromEnvIfNeeded() {
+  const envStorageState = process.env.DISCORD_READONLY_STORAGE_STATE_JSON;
+  if (!envStorageState || await readJsonIfExists(storageStatePath)) {
+    return { source: await readJsonIfExists(storageStatePath) ? 'local_file' : 'none' };
+  }
+  await fs.writeFile(storageStatePath, `${envStorageState.trim()}\n`, 'utf8');
+  return { source: 'env_secret' };
+}
+
+async function restoreStorageState(context) {
+  const savedState = await readJsonIfExists(storageStatePath);
+  if (!savedState) {
+    return {
+      storageStatePath,
+      restoredCookieCount: 0,
+      restoredOriginCount: 0,
+      restoredLocalStorageItemCount: 0
+    };
+  }
+  if (savedState.cookies?.length) {
+    await context.addCookies(savedState.cookies);
+  }
+  const origins = Array.isArray(savedState.origins) ? savedState.origins : [];
+  if (origins.length) {
+    await context.addInitScript((savedOrigins) => {
+      const match = savedOrigins.find((origin) => origin.origin === window.location.origin);
+      if (!match?.localStorage?.length) return;
+      for (const item of match.localStorage) {
+        try {
+          window.localStorage.setItem(item.name, item.value);
+        } catch {
+          // Ignore restore failures for individual storage keys.
+        }
+      }
+    }, origins);
+  }
+  return {
+    storageStatePath,
+    restoredCookieCount: savedState.cookies?.length || 0,
+    restoredOriginCount: origins.length,
+    restoredLocalStorageItemCount: origins.reduce((total, origin) => total + (origin.localStorage?.length || 0), 0)
+  };
+}
+
+async function saveStorageState(context) {
+  let storageState;
+  try {
+    storageState = await context.storageState({ indexedDB: true });
+  } catch {
+    storageState = await context.storageState();
+  }
+  await fs.writeFile(storageStatePath, `${JSON.stringify(storageState, null, 2)}\n`, 'utf8');
+  const origins = Array.isArray(storageState.origins) ? storageState.origins : [];
+  return {
+    storageStatePath,
+    savedCookieCount: storageState.cookies?.length || 0,
+    savedOriginCount: origins.length,
+    savedLocalStorageItemCount: origins.reduce((total, origin) => total + (origin.localStorage?.length || 0), 0)
+  };
+}
 
 // Unlike the cold-link guard, this selector does not disable every button.
 // It disables message/content mutation surfaces while the runner exposes only
@@ -97,6 +173,10 @@ const result = {
   channelName,
   dedicatedProfileUsed: true,
   configuredProfilePath: profileDir,
+  storageStatePath,
+  storageStateHydration: null,
+  storageStateRestore: null,
+  storageStateSave: null,
   profilePersistenceExpected: true,
   profileDirectoryCreatedAt: profileMetadata.birthtime.toISOString(),
   profileDirectoryLastModifiedAtStart: profileMetadata.mtime.toISOString(),
@@ -137,12 +217,16 @@ const result = {
   failureReason: null
 };
 
+result.storageStateHydration = await hydrateStorageStateFromEnvIfNeeded();
+
 const context = await chromium.launchPersistentContext(profileDir, {
   headless: true,
   executablePath: browserExecutable,
   viewport: result.viewport,
   args: ['--no-proxy-server']
 });
+
+result.storageStateRestore = await restoreStorageState(context);
 
 await installDiscordReadOnlyGuards(context, {
   guardVersion: 'discord-readonly-ui-native-v1',
@@ -1020,6 +1104,10 @@ try {
     path: (() => { try { return `${new URL(entry.url).pathname}${new URL(entry.url).search}`; } catch { return entry.url; } })(),
     status: entry.status,
     observedAt: entry.observedAt
+  }));
+  result.storageStateSave = await saveStorageState(context).catch((error) => ({
+    storageStatePath,
+    error: error.message || String(error)
   }));
   await context.close();
   const logPath = path.join(logDir, `ui-native-${mode}-${new Date().toISOString().replace(/[:.]/g, '-')}.json`);
