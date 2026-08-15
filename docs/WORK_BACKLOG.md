@@ -892,7 +892,13 @@ claims without reopening the whole packet.
      `.github/workflows/daily-discord-survey.yml` with strict timeout, manual
      dispatch, morning PT schedule, dedicated profile secret requirement, and
      artifact logging;
-  5. expand one repaired/proven surface at a time.
+  5. first cloud-secret attempt found the local dedicated Chrome profile archive
+     is about 215 MB and the local `gh` API credential returned `401 Bad
+     credentials` while setting the secret. Treat this as a deployment blocker,
+     not a script/readiness failure. Do not retry the giant-profile-secret lane;
+     use a deployment-appropriate authenticated browser/session strategy such
+     as a self-hosted runner owning the dedicated read-only profile;
+  6. expand one repaired/proven surface at a time.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.

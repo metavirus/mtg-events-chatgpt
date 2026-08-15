@@ -383,9 +383,10 @@ local proof passed.
 Required cloud configuration:
 
 - repository Actions secret: `SUPABASE_DB_URL`;
-- repository Actions secret: `DISCORD_READONLY_PROFILE_ZIP_BASE64`, containing
-  a zip archive of the ignored dedicated profile directory
-  `work/discord-readonly/profile`;
+- deployable authenticated Discord session state for the dedicated read-only
+  profile. The first attempt to package the full ignored local Chrome profile
+  as `DISCORD_READONLY_PROFILE_ZIP_BASE64` measured about 215 MB, so the
+  giant-profile-secret lane is not viable for GitHub-hosted Actions;
 - normal scheduled run: daily at `14:15 UTC`;
 - manual dispatch options: `write_watchlist`, `limit`, and `surface`.
 
@@ -397,10 +398,11 @@ logs. Missing or expired Discord profile state is a deployment/authentication
 failure to repair explicitly; do not replace it with looser navigation, search,
 message-area interaction, or any Discord mutation path.
 
-To prepare the profile secret from a verified local read-only Discord profile,
-create a zip whose contents are the profile files themselves, not a nested
-`profile/` parent directory, then base64-encode that zip and paste the result as
-the repository Actions secret. Do not commit either file.
+The workflow currently fails fast when `DISCORD_READONLY_PROFILE_ZIP_BASE64` is
+missing, preserving the deployment blocker explicitly. Do not keep retrying the
+full-profile secret approach. The next production path should provide the same
+guarded browser profile through a deployment-appropriate mechanism, such as a
+self-hosted runner that owns the dedicated read-only profile.
 
 When a retained image/flyer produced the event, pass its artifact id into the
 event promoter so the app can show the visual evidence incidentally in the
