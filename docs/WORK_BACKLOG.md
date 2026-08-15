@@ -219,8 +219,10 @@ Use it for:
   direct database helper path for cloud and local routine database work. The
   Supabase CLI can still emit a misleading PostHog shutdown timeout after
   returning valid rows; readiness treats that as nonfatal only when the expected
-  result payload is present. Do not re-open broad CLI authentication or Norton
-  debugging unless the actual DB smoke test fails.
+  result payload is present. For ad-hoc Codex SQL, prefer
+  `python.exe scripts/supabase_query.py --sql "..."` or `--file ...` so valid
+  payloads do not surface as scary PostHog failures. Do not re-open broad CLI
+  authentication or Norton debugging unless the actual DB smoke test fails.
 
 - Venue selection now comes from lifecycle-specific Supabase views, not old
   ledger TBD wording: `venue_baseline_candidates`,
