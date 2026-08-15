@@ -20,6 +20,38 @@ const RESULT_TO_WATCHLIST = {
   blocked_repair: 'needs_deeper_replay',
   stale_useful_context: 'stale'
 };
+const OUTCOME_TO_SURFACE_CHECK = {
+  accepted_signal: {
+    disposition: 'inspected_current',
+    isUseful: true,
+    materiality: 'high',
+    materialChange: true
+  },
+  event_candidate: {
+    disposition: 'inspected_current',
+    isUseful: true,
+    materiality: 'high',
+    materialChange: true
+  },
+  stale_useful_context: {
+    disposition: 'stale',
+    isUseful: true,
+    materiality: 'high',
+    materialChange: true
+  },
+  quiet_coverage: {
+    disposition: 'not_material',
+    isUseful: false,
+    materiality: 'low',
+    materialChange: false
+  },
+  blocked_repair: {
+    disposition: 'unsafe_tbd',
+    isUseful: false,
+    materiality: 'low',
+    materialChange: false
+  }
+};
 const PYTHON = process.platform === 'win32' ? 'python.exe' : 'python';
 
 function parseArgs(argv) {
@@ -114,9 +146,33 @@ select
   w.last_checked_at,
   w.last_seen_message_id,
   w.last_seen_message_at,
-  w.notes
+  w.notes,
+  coalesce(channel_link.entity_type, profile_link.entity_type, fallback_community.entity_type) as entity_type,
+  coalesce(channel_link.entity_id, profile_link.entity_id, fallback_community.entity_id) as entity_id
 from public.discord_channel_watchlist w
 join public.discord_access_profiles p on p.source_id = w.profile_source_id
+left join lateral (
+  select es.entity_type, es.entity_id
+  from public.entity_sources es
+  where es.source_id = w.channel_source_id
+  order by es.entity_type, es.entity_id
+  limit 1
+) channel_link on true
+left join lateral (
+  select es.entity_type, es.entity_id
+  from public.entity_sources es
+  where es.source_id = w.profile_source_id
+  order by es.entity_type, es.entity_id
+  limit 1
+) profile_link on true
+left join lateral (
+  select 'community'::text as entity_type, c.id as entity_id
+  from public.communities c
+  where lower(c.name) = lower(p.server_name)
+    and c.primary_channel = 'Discord'
+  order by c.id
+  limit 1
+) fallback_community on true
 where w.monitoring_status = 'active'
 order by
   case w.priority when 'high' then 1 when 'medium' then 2 else 3 end,
@@ -297,6 +353,10 @@ function classifyHarness(row, harness) {
   }
   return {
     rowId: row.id,
+    entityType: row.entity_type || null,
+    entityId: row.entity_id || null,
+    profileSourceId: row.profile_source_id || null,
+    channelSourceId: row.channel_source_id || null,
     channelName: row.channel_name,
     serverName: row.server_name,
     status: harness.status,
@@ -312,6 +372,79 @@ function classifyHarness(row, harness) {
     prohibitedSuccessfulResponses: harness.prohibitedSuccessfulResponses || [],
     logPath: harness.logPath
   };
+}
+
+function monitoringModeFor(result) {
+  if (result.outcome === 'blocked_repair') return 'manual_only';
+  return 'daily';
+}
+
+function sourceIdFor(result) {
+  return result.channelSourceId || result.profileSourceId || null;
+}
+
+function contentFingerprintFor(result) {
+  const window = result.messageWindow || null;
+  if (!window) return null;
+  return JSON.stringify({
+    lastSeenMessageId: window.lastSeenMessageId || null,
+    lastSeenMessageAt: window.lastSeenMessageAt || null,
+    usefulCategories: result.usefulCategories || [],
+    outcome: result.outcome
+  });
+}
+
+function idempotencyKeyForSurfaceCheck(result) {
+  const sourceId = sourceIdFor(result) || result.rowId;
+  const fingerprint = result.messageWindow?.lastSeenMessageId ||
+    result.messageWindow?.lastSeenMessageAt ||
+    result.outcome;
+  return `discord-daily-survey:${result.rowId}:${sourceId}:${fingerprint}`;
+}
+
+function summaryForSurfaceCheck(result) {
+  if (result.outcome === 'blocked_repair') {
+    const stage = result.failureStage ? ` at ${result.failureStage}` : '';
+    const reason = result.failureReason ? `: ${result.failureReason}` : '';
+    return `Daily Discord survey could not safely verify this route${stage}${reason}`;
+  }
+  const messageCount = result.messageWindow?.messageCount || 0;
+  const categories = (result.usefulCategories || []).join(', ');
+  const categoryText = categories ? ` Useful categories: ${categories}.` : '';
+  return `Daily Discord survey checked ${result.serverName} / #${result.channelName}; ${messageCount} visible messages inspected; outcome ${result.outcome}.${categoryText}`;
+}
+
+async function writeSurfaceChecks(results) {
+  const writable = results.filter((result) => result.entityType && result.entityId);
+  if (writable.length === 0) return { skipped: true, reason: 'no entity-backed results' };
+  const statements = writable.map((result) => {
+    const mapping = OUTCOME_TO_SURFACE_CHECK[result.outcome] || OUTCOME_TO_SURFACE_CHECK.blocked_repair;
+    const checkedAt = result.messageWindow?.lastSeenMessageAt || new Date().toISOString();
+    const sourceId = sourceIdFor(result);
+    return `select public.record_entity_surface_check(
+  ${sqlLiteral(idempotencyKeyForSurfaceCheck(result))},
+  ${sqlLiteral(result.entityType)},
+  ${sqlLiteral(result.entityId)},
+  'discord',
+  ${sqlLiteral(mapping.disposition)},
+  ${sqlLiteral(checkedAt)}::timestamptz,
+  ${sqlLiteral(summaryForSurfaceCheck(result))},
+  ${sqlLiteral(sourceId)},
+  ${mapping.isUseful ? 'true' : 'false'},
+  ${sqlLiteral(mapping.materiality)},
+  NULL,
+  ${sqlLiteral(monitoringModeFor(result))},
+  ${sqlLiteral(result.messageWindow?.lastSeenMessageId || null)},
+  ${sqlLiteral(contentFingerprintFor(result))},
+  0::smallint,
+  NULL,
+  ${mapping.materialChange ? 'true' : 'false'},
+  false
+) as surface_check_result`;
+  }).join('\nunion all\n');
+  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', statements]);
+  assertOk(result, 'surface check write');
+  return JSON.parse(result.stdout).rows;
 }
 
 async function writeWatchlist(results) {
@@ -457,6 +590,7 @@ async function main() {
       excluded,
       preflight: null,
       results: [],
+      surfaceCheckWrite: null,
       watchlistWrite: null,
       finishedAt: null
     };
@@ -473,8 +607,10 @@ async function main() {
     }
 
     if (args.writeWatchlist && !args.dryRun && !args.planOnly) {
+      runLog.surfaceCheckWrite = await writeSurfaceChecks(runLog.results);
       runLog.watchlistWrite = await writeWatchlist(runLog.results);
     } else {
+      runLog.surfaceCheckWrite = { skipped: true, reason: args.dryRun ? 'dry_run' : args.planOnly ? 'plan_only' : 'write_watchlist_not_enabled' };
       runLog.watchlistWrite = { skipped: true, reason: args.dryRun ? 'dry_run' : args.planOnly ? 'plan_only' : 'write_watchlist_not_enabled' };
     }
 

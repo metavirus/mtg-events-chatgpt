@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-14
+Updated: 2026-08-15
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -75,8 +75,11 @@ the exact durable state and next action, then hand off from that checkpoint.
   route set. The live Discord surface inventory and next recurring-agent
   sequence are pinned in `research/DISCORD_SURFACE_FRONTIER.md`. The cloud
   Discord daily survey lane is now proven for the v1 watchlist with
-  watchlist-state writes enabled; Signal/Event promotion remains disabled until
-  separately implemented.
+  watchlist-state writes enabled. Quiet runs now write shared
+  `entity_surface_coverage` state without creating fake Updates, while useful
+  Discord findings now create accepted app-visible Updates through the same
+  common framework used by the other daily agents. Signal/Event promotion from
+  Discord findings remains disabled.
 - MTG OC is modeled as an independent Orange County regional community with
   nine mapped Discord channels. The proof distinguishes community-organized
   meetups from host-venue programming: its confirmed August 2 team-sealed
@@ -111,6 +114,12 @@ the exact durable state and next action, then hand off from that checkpoint.
   `#general`, and `#event-rules`; announcements were quiet, event/rules context
   was useful, and current Commander/prerelease chatter was observed. No external
   Discord state changed.
+- August 15 Discord daily-surfacing proof is complete. Bounded live runs wrote
+  shared surface coverage plus accepted Updates for MTG OC `#events_activities`
+  and `#monthly-meetings`, Legendary Creature Club `#meet-ups`, and Collectors
+  Lounge `#general`. This proves the non-quiet Discord lane is visible in-app
+  through the common ingest framework rather than only through watchlist rows or
+  agent chat.
 - The Discord automation path is now a phased micro-sweep ladder, not broad
   crawler work. Phase 1 first-batch bounded proofs are complete for MTG OC,
   eligible LCC channel rows, and Collectors Lounge. Phase 2 local runner
@@ -383,6 +392,8 @@ Canonical operating details:
    channel/source mapping quality, not broad new discovery. Record HOT/WATCH,
    MAYBE, and IGNORE routes so future recurring review can read only the
    right channels instead of rescanning whole servers.
+   The daily-surfacing proof is done; remaining work is classification quality,
+   route quality, and bounded coverage completion.
 2. Treat LAGS as closed on ownership semantics: Los Angeles Gayming Society
    owns its community events; Precinct DTLA is host-location text only. Do not
    reopen that ownership question. Future work there is limited to display,

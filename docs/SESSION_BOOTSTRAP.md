@@ -52,6 +52,11 @@ The repository has already completed these stabilization steps:
   approves a specific exceptional worker.
 - the enriched WPN ingest agent described in `CURRENT_FRONTIER.md` is deployed
   and verified; do not repeat its implementation or redeploy its migration.
+- the Discord daily lane has now proved both quiet and non-quiet app surfacing:
+  quiet runs update shared monitoring state without fake Updates, while useful
+  MTG OC, LCC, and Collectors Lounge findings have created accepted
+  app-visible Updates through the shared surface-check framework. Do not reopen
+  "can Discord surface in the app?" as an open question.
 
 See also:
 

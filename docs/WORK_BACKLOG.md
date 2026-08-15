@@ -140,8 +140,12 @@ Use it for:
 - Discord survey completion lane: finish classification for the already
   discovered/approved community Discords only. The goal is a durable
   HOT/WATCH, MAYBE, and IGNORE map that future recurring review can use
-  without rescanning entire servers. This lane is not permission to resume
-  broad community discovery or reopen the settled LAGS/Precinct ownership fix.
+  without rescanning entire servers. The daily Discord surfacing proof is now
+  complete: quiet runs write shared coverage without fake Updates, and useful
+  runs create accepted app-visible Updates through the common ingest framework.
+  Remaining work is classification/coverage quality, not proving the plumbing.
+  This lane is not permission to resume broad community discovery or reopen
+  the settled LAGS/Precinct ownership fix.
 
 - Source-thin specific follow-up only: LVLUP GAMING TCG and The Bullpen 2.0
   remain worth a narrow continuity/source-confidence check if a future source
@@ -791,24 +795,23 @@ claims without reopening the whole packet.
   - app/product change completed
 - Add richer embedded links so update entries can open the relevant store,
   event, community, or research view directly.
-- Define and implement a common app-visible ingest framework across the three
-  daily survey agents: WPN, Instagram/Facebook, and Discord. Each surface should
-  emit normalized findings into the same user-facing model instead of burying
-  useful discoveries in agent chat or per-surface logs:
-  - routine/no-delta checks update monitoring state and may appear only as quiet
-    coverage in source/activity drilldowns;
+- Common app-visible ingest framework: first slice is complete across the daily
+  agents. Quiet/no-delta checks now update monitoring state through the Daily
+  agents panel, and useful Discord findings have proven they can create
+  accepted app-visible Updates through the shared surface-check framework
+  rather than living only in chat or per-surface logs. Remaining work is
+  richer normalization/presentation quality, not inventing the common model
+  from scratch:
+  - routine/no-delta checks should stay quiet except for monitoring-state
+    visibility and source/activity drilldowns;
   - meaningful discoveries, changed schedules, source-health changes,
-    reclassifications, new community activity, and useful stale context become
-    Updates/Activity entries with direct links to the affected event, place,
-    community, source, or evidence;
-  - only high-action, time-sensitive, or personally relevant findings become
-    sparse Signals;
-  - every surfaced item keeps source family, source record, confidence,
-    ownership semantics, and whether the finding was automated, assisted, or
-    manually reviewed.
-  This should be designed before the Discord daily agent becomes cloud
-  automation so the user can inspect surfaced ingest in the app rather than
-  needing to ask Codex what happened.
+    reclassifications, new community activity, and useful stale context should
+    continue to land as direct-link Updates/Activity entries;
+  - only high-action, time-sensitive, or personally relevant findings should
+    become sparse Signals;
+  - every surfaced item should preserve source family, source record,
+    confidence, ownership semantics, and whether the finding was automated,
+    assisted, or manually reviewed.
 - Let Updates carry lightweight follow-ups from Codex, including small A-vs-B
   questions and waiting-on-user clarifications.
 - User responses inside Updates should be able to unblock immediate execution
@@ -921,9 +924,13 @@ claims without reopening the whole packet.
       contexts, and 1 accepted-signal-class finding, and direct Supabase
       readback confirmed `last_checked_at=2026-08-15 20:53:36.595+00` on the
       written rows. Signal/Event writes remain disabled;
-  11. next implementation frontier is durable app-facing surfacing of daily
-      Discord/Instagram-Facebook/WPN activity updates and only then bounded
-      Signal/Event promotion from accepted Discord findings.
+  11. August 15 follow-through completed the durable app-facing surfacing proof
+      for the Discord daily lane: bounded live runs on MTG OC
+      `#events_activities` and `#monthly-meetings`, Legendary Creature Club
+      `#meet-ups`, and Collectors Lounge `#general` wrote shared
+      `entity_surface_coverage` state and created accepted app-visible Updates.
+      Remaining frontier is bounded Signal/Event promotion from accepted
+      Discord findings only when separately justified.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.
