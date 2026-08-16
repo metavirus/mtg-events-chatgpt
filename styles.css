@@ -448,9 +448,11 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .entity-list-item strong { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .entity-list-item small { color: var(--muted); font-size: 9px; }
 .entity-list-item em { font-size: 8px; font-style: normal; }
-.entity-avatar, .large-avatar { border-radius: 10px; display: grid; place-items: center; background: linear-gradient(145deg, #252d44, #171d2e); border: 1px solid var(--line-strong); color: #bdb5ff; font: 800 11px var(--display); }
+.entity-avatar, .large-avatar { border-radius: 10px; display: grid; place-items: center; background: linear-gradient(145deg, #252d44, #171d2e); border: 1px solid var(--line-strong); color: #bdb5ff; font: 800 11px var(--display); overflow: hidden; }
 .entity-avatar { width: 32px; height: 32px; }
 .large-avatar { width: 50px; height: 50px; font-size: 15px; border-radius: 13px; }
+.logo-avatar { background: rgba(255,255,255,.035); }
+.logo-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; }
 .list-heart { color: #ff7e9f; }
 .detail-pane { min-width: 0; padding: 20px; }
 .detail-hero { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }

@@ -1,4 +1,10 @@
 const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [], dailyAgentStatuses: [] };
+const PLACE_LOGO_URLS = {
+  'collectors-lounge-cypress': 'https://img1.wsimg.com/isteam/ip/ef356847-41a3-4395-adf6-6308fa2424b1/blob-793bd76.png/:/rs=w:400,h:400,cg:true,m/cr=w:400,h:400/qt=q:95',
+  'finch-sparrow': 'https://finchandsparrowgames.com/cdn/shop/files/2_2eacbc82-8517-4341-abdc-471fed1183bf.png?v=1693631510&width=500',
+  'krazy-nick-s-games': 'https://cc-client-assets.nyc3.cdn.digitaloceanspaces.com/store/krazynicksgames/a6619218da844ae9ae6edbbf6164a9dc/large/0c6a29b7-a751-49f9-85a6-142f1585d9fd.jfif',
+  'guild-house': 'https://cdn.shoplightspeed.com/shops/614410/themes/18196/v/810490/assets/logo.png?20230725215016'
+};
 
 const SUPABASE = {
   url: 'https://pyvftzsodzwfqncjbmbc.supabase.co',
@@ -2715,7 +2721,7 @@ function placeListRow(place, hidden = false) {
   const active = place.id === state.selectedPlaceId;
   const favorite = state.personal.favorites[`place:${place.id}`];
   const evaluation = normalizedEvaluation(place);
-  return `<button class="entity-list-item ${active ? 'active' : ''} ${hidden ? 'deprioritized' : ''}" data-place-id="${place.id}"><span class="entity-avatar">${initials(place.name)}</span><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small><em class="${place.researchStatus === 'partial' ? 'mint-text' : 'amber-text'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'} · ${escapeHtml(evaluation.fitGrade)} · ${escapeHtml(evaluation.confidence)} confidence</em></span><span class="list-heart">${hidden ? '↓' : favorite ? '♥' : ''}</span></button>`;
+  return `<button class="entity-list-item ${active ? 'active' : ''} ${hidden ? 'deprioritized' : ''}" data-place-id="${place.id}">${placeAvatar(place)}<span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small><em class="${place.researchStatus === 'partial' ? 'mint-text' : 'amber-text'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'} · ${escapeHtml(evaluation.fitGrade)} · ${escapeHtml(evaluation.confidence)} confidence</em></span><span class="list-heart">${hidden ? '↓' : favorite ? '♥' : ''}</span></button>`;
 }
 
 function renderPlaceDetail(place) {
@@ -2727,7 +2733,7 @@ function renderPlaceDetail(place) {
   const favorite = !!state.personal.favorites[`place:${place.id}`];
   const hidden = !!state.personal.hidden[`place:${place.id}`];
   const rating = state.personal.ratings[`place:${place.id}`] || 0;
-  container.innerHTML = `<div class="detail-hero"><div class="detail-identity"><span class="large-avatar">${initials(place.name)}</span><div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${place.lifecycleState === 'identity_blocked' ? '<span class="status-chip amber">Identity unresolved · check first</span>' : ''}${hidden ? '<span class="status-chip coral">Deprioritized by you</span>' : ''}${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><div class="detail-hero-aside">${placeHoursChip(place)}<div class="detail-preference-actions"><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place" title="Favorite">${heartIcon()}</button><button class="thumb-button large ${hidden ? 'active' : ''}" data-action="toggle-place-hidden" data-place-id="${place.id}" aria-label="${hidden ? 'Restore priority' : 'Deprioritize place'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></div></div></div>
+  container.innerHTML = `<div class="detail-hero"><div class="detail-identity">${placeAvatar(place, 'large')}<div><div class="identity-flags"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed / partial' : 'Discovery-level'}</span>${place.lifecycleState === 'identity_blocked' ? '<span class="status-chip amber">Identity unresolved · check first</span>' : ''}${hidden ? '<span class="status-chip coral">Deprioritized by you</span>' : ''}${place.wpnPremium ? '<span class="status-chip violet">WPN Premium</span>' : ''}</div><h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p></div></div><div class="detail-hero-aside">${placeHoursChip(place)}<div class="detail-preference-actions"><button class="heart-button large ${favorite ? 'active' : ''}" data-favorite="place:${place.id}" aria-label="Favorite place" title="Favorite">${heartIcon()}</button><button class="thumb-button large ${hidden ? 'active' : ''}" data-action="toggle-place-hidden" data-place-id="${place.id}" aria-label="${hidden ? 'Restore priority' : 'Deprioritize place'}" title="${hidden ? 'Restore priority' : 'Deprioritize'}">${thumbDownIcon()}</button></div></div></div>
     <div class="detail-actions"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a>${place.website ? `<a class="soft-button" href="${escapeHtml(place.website)}" target="_blank" rel="noreferrer">Website ↗</a>` : ''}${place.instagram ? `<a class="soft-button" href="${escapeHtml(place.instagram)}" target="_blank" rel="noreferrer">Instagram ↗</a>` : ''}</div>
     <div class="detail-tabs" role="tablist" aria-label="Place details"><button class="${state.selectedPlaceTab === 'overview' ? 'active' : ''}" data-place-tab="overview" role="tab" aria-selected="${state.selectedPlaceTab === 'overview'}">Overview</button><button class="${state.selectedPlaceTab === 'events' ? 'active' : ''}" data-place-tab="events" role="tab" aria-selected="${state.selectedPlaceTab === 'events'}">Events <span>${placeEvents.length}</span></button><button class="${state.selectedPlaceTab === 'evidence' ? 'active' : ''}" data-place-tab="evidence" role="tab" aria-selected="${state.selectedPlaceTab === 'evidence'}">Evidence <span>${sources.length + artifacts.length}</span></button></div>
     <div class="place-tab-content">${placeTabContent(place, placeEvents, sources, artifacts, rating)}</div>`;
@@ -4362,6 +4368,15 @@ function sourceIcon(type = '') {
   if (/calendar|event/i.test(type)) return '▦';
   if (/official|website/i.test(type)) return '⌂';
   return '↗';
+}
+
+function placeAvatar(place, size = 'small') {
+  const cls = size === 'large' ? 'large-avatar' : 'entity-avatar';
+  const logo = PLACE_LOGO_URLS[place?.id];
+  if (logo) {
+    return `<span class="${cls} logo-avatar"><img src="${escapeHtml(logo)}" alt="${escapeHtml(place.name)} logo" loading="lazy" referrerpolicy="no-referrer"></span>`;
+  }
+  return `<span class="${cls}">${initials(place.name)}</span>`;
 }
 
 function initials(name) { return name.split(/\s+/).filter((word) => !/^(and|the|-)$/.test(word.toLowerCase())).slice(0, 2).map((word) => word[0]).join('').toUpperCase(); }
