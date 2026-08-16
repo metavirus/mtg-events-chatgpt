@@ -1,7 +1,7 @@
 const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [], dailyAgentStatuses: [] };
 const PLACE_LOGOS = {
   'collectors-lounge-cypress': {
-    src: 'assets/logos/collectors-lounge-dark.png',
+    src: 'assets/logos/collectors-lounge-icon.png',
     tone: 'dark',
     fit: 'cover'
   },
@@ -16,22 +16,22 @@ const PLACE_LOGOS = {
     fit: 'contain'
   },
   'guild-house': {
-    src: 'assets/logos/guild-house.png',
+    src: 'assets/logos/guild-house-icon.png',
     tone: 'transparent',
     fit: 'contain'
   },
   'krazy-nick-s-games': {
-    src: 'assets/logos/krazy-nicks-games.jfif',
+    src: 'assets/logos/krazy-nicks-icon.png',
     tone: 'dark',
     fit: 'contain'
   },
   'joyful-toad-tcg': {
-    src: 'assets/logos/joyful-toad.jpg',
+    src: 'assets/logos/joyful-toad-icon.png',
     tone: 'color',
     fit: 'cover'
   },
   'spellhold-games': {
-    src: 'assets/logos/spellhold-games.png',
+    src: 'assets/logos/spellhold-games-icon.png',
     tone: 'color',
     fit: 'contain'
   }
