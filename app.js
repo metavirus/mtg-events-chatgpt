@@ -1785,7 +1785,10 @@ function eventIngestDigestSignal(change) {
     || !!(place && state.personal.favorites[`place:${place.id}`])
     || events.some((event) => state.personal.favorites[eventPreferenceKey(event)]);
   const nearby = numericDistance(place) != null && numericDistance(place) <= 10;
-  const priority = favorited || (nearby && specialCount) || eventCount >= 8 ? 'high' : 'normal';
+  const personalPriority = (owner.community ? communityPersonalAffinity(owner.community) : 0)
+    + (place ? placePersonalAffinity(place) : 0)
+    + events.reduce((score, event) => score + eventPersonalAffinity(event), 0);
+  const priority = favorited || personalPriority >= 90 || (nearby && specialCount) || eventCount >= 8 ? 'high' : 'normal';
   const firstDate = events
     .map((event) => event.occurrenceDate || parseDate(event.date || event.startDate))
     .filter((date) => date instanceof Date && !Number.isNaN(date.getTime()))
@@ -1798,6 +1801,7 @@ function eventIngestDigestSignal(change) {
     specialCount ? `${specialCount} special/prerelease/limited` : '',
     commanderCount ? `${commanderCount} Commander-related` : '',
     favorited ? 'favorite-linked' : '',
+    personalPriority >= 90 ? 'personal-history-linked' : '',
     nearby ? 'nearby' : ''
   ].filter(Boolean).join(' · ');
   return {
@@ -1840,7 +1844,9 @@ function signalRank(signal) {
     product_trust: 12
   }[signal.category] || 10;
   const status = { new: 12, needs_followup: 10, reviewed: 3, promoted: 2, dismissed: -30, stale: -35 }[signal.status] || 0;
-  return priority + category + status;
+  const relatedPlace = signal.relatedEntityType === 'venue' ? store(signal.relatedEntityId) : null;
+  const relatedCommunity = signal.relatedEntityType === 'community' ? community(signal.relatedEntityId) : signalSourceCommunity(signal);
+  return priority + category + status + personalAffinityScore({ community: relatedCommunity, place: relatedPlace, signal });
 }
 
 function signalGroup(title, copy, signals, tone) {
@@ -2396,7 +2402,7 @@ function todayLeadScore(event) {
   const commanderBonus = /commander|edh/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 8 : 0;
   const draftBonus = /draft/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 4 : 0;
   const discoveryPenalty = place?.researchStatus === 'wizards-discovery' ? 10 : 0;
-  return fitScore(event) + favoriteBonus + weekendBonus + reviewedBonus + confidenceBonus + specialBonus + commanderBonus + draftBonus - discoveryPenalty - Math.min(daysAway, 21);
+  return fitScore(event) + favoriteBonus + weekendBonus + reviewedBonus + confidenceBonus + specialBonus + commanderBonus + draftBonus + eventPersonalAffinity(event) - discoveryPenalty - Math.min(daysAway, 21);
 }
 
 function todayLeadKey(event) {
@@ -2713,7 +2719,7 @@ function defaultSelectedPlaceId() {
 }
 
 function storeScore(place) {
-  return fitScoreFor(place) * 20 - Math.min(numericDistance(place) ?? 28, 40) + (place.researchStatus === 'partial' ? 8 : 0);
+  return fitScoreFor(place) * 20 - Math.min(numericDistance(place) ?? 28, 40) + (place.researchStatus === 'partial' ? 8 : 0) + placePersonalAffinity(place);
 }
 
 function isPlaceHidden(placeId) {
@@ -2933,7 +2939,7 @@ function eventCatalogPriority(event) {
   const specialBonus = isSpecial(event) ? 10 : 0;
   const favoriteBonus = state.personal.favorites[`place:${event.storeId}`] || state.personal.favorites[eventPreferenceKey(event)] ? 14 : 0;
   const competitivePenalty = isCompetitive(event) ? 18 : 0;
-  return fitScore(event) * 10 + reviewedBonus + specialBonus + favoriteBonus - competitivePenalty;
+  return fitScore(event) * 10 + reviewedBonus + specialBonus + favoriteBonus + eventPersonalAffinity(event) - competitivePenalty;
 }
 
 function renderEventCatalogWeek(events, start) {
@@ -3398,6 +3404,10 @@ function ratingPriorityScore(...keys) {
   }, 0);
 }
 
+function interestedPriorityScore(...keys) {
+  return keys.reduce((score, key) => score + (state.personal.interested?.[key] ? 26 : 0), 0);
+}
+
 function datedUrgencyScore(dateLike, { halfLifeDays = 14, floor = -180, scale = 180 } = {}) {
   const date = dateLike ? new Date(dateLike) : null;
   if (!date || Number.isNaN(date.getTime())) return 0;
@@ -3434,6 +3444,35 @@ function personalAffinityScore({ community: targetCommunity = null, place = null
   return favoriteScore + noteScore + ratingScore + recentPersonalActivityScore(activityMatchers);
 }
 
+function placePersonalAffinity(place) {
+  if (!place?.id) return 0;
+  return personalAffinityScore({ place })
+    + recentPersonalActivityScore([place.name])
+    + interestedPriorityScore(...buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 56)), false)
+      .filter((event) => event.storeId === place.id)
+      .slice(0, 12)
+      .map((event) => `${event.id}:${dateKey(event.occurrenceDate || parseDate(event.date || event.startDate) || new Date())}`));
+}
+
+function eventPersonalAffinity(event) {
+  if (!event) return 0;
+  const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+  const interestKey = occurrence ? `${event.id}:${dateKey(occurrence)}` : '';
+  return personalAffinityScore({
+    community: event.communityId ? community(event.communityId) : null,
+    place: store(event.storeId),
+    signal: { relatedEntityType: 'event', relatedEntityId: event.id, summary: event.title }
+  }) + notePriorityScore(eventPreferenceKey(event))
+    + ratingPriorityScore(eventPreferenceKey(event))
+    + interestedPriorityScore(interestKey);
+}
+
+function communityPersonalAffinity(targetCommunity) {
+  if (!targetCommunity?.id) return 0;
+  return personalAffinityScore({ community: targetCommunity })
+    + recentPersonalActivityScore([targetCommunity.name]);
+}
+
 function communityHubRank(hub) {
   const profile = communityProfileData(hub.community);
   const nextEvent = profile.upcoming[0];
@@ -3445,7 +3484,7 @@ function communityHubRank(hub) {
   const eventBoost = nextEvent ? occurrenceUrgencyScore(nextEvent.occurrenceDate || parseDate(nextEvent.date || nextEvent.startDate)) + 40 : 0;
   const freshnessBoost = latestSignal ? datedUrgencyScore(latestSignal.observedAt || latestSignal.capturedAt, { halfLifeDays: 16, floor: -120, scale: 120 }) : 0;
   const monitoringBoost = profile.monitoring.label === 'New activity' ? 36 : profile.monitoring.label === 'Quiet but monitored' ? 12 : -18;
-  return hub.score + favoriteBoost + noteBoost + ratingBoost + connectionBoost + eventBoost + freshnessBoost + monitoringBoost;
+  return hub.score + favoriteBoost + noteBoost + ratingBoost + connectionBoost + eventBoost + freshnessBoost + monitoringBoost + communityPersonalAffinity(hub.community);
 }
 
 function isCommunityHubFollowed(hub) {
