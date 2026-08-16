@@ -84,6 +84,56 @@ const PLACE_LOGOS = {
     src: 'assets/logos/jjs-collectibles-icon.png',
     tone: 'color',
     fit: 'cover'
+  },
+  'hobby-overflow': {
+    src: 'assets/logos/hobby-overflow-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'buddies-collectibles': {
+    src: 'assets/logos/buddies-collectibles-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'shuffle-and-cut-games-la-habra': {
+    src: 'assets/logos/shuffle-and-cut-icon.png',
+    tone: 'color',
+    fit: 'cover'
+  },
+  'guildhall-whittier': {
+    src: 'assets/logos/guildhall-whittier-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'lucky-seven-games': {
+    src: 'assets/logos/lucky-seven-games-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'honey-pot-meadery': {
+    src: 'assets/logos/honey-pot-meadery-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'tk-collectibles': {
+    src: 'assets/logos/tk-collectibles-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'otaku-vault': {
+    src: 'assets/logos/otaku-vault-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'the-comic-bug': {
+    src: 'assets/logos/the-comic-bug-icon.png',
+    tone: 'color',
+    fit: 'cover'
+  },
+  'odyssey-games-pasadena': {
+    src: 'assets/logos/odyssey-games-icon.png',
+    tone: 'color',
+    fit: 'cover'
   }
 };
 
