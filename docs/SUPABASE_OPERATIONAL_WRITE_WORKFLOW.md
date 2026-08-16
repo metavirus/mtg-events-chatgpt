@@ -96,6 +96,11 @@ Required:
 
 - call `record_entity_surface_check(...)` with stable entity, surface,
   disposition, summary, materiality, and idempotency key;
+- verify the target write grain before batching automation into this RPC. If
+  the collector is finer-grained than the shared lifecycle table (for example
+  many Discord channels rolling up to one `entity + surface_type` row), collapse
+  or rank the finer-grained results first and write one canonical row at the
+  supported grain rather than one RPC call per collected item;
 - use dry-run mode first when the target or vocabulary is uncertain;
 - keep the returned RPC result as the confirmation;
 - rely on `entity_surface_coverage` as the durable record;

@@ -62,6 +62,12 @@ them honestly and move on. If a future automated agent provides observations,
 the reviewing task's job should be to review, promote, or disposition them through the
 controlled workflow, not redo discovery from scratch.
 
+Before wiring any automated surveyor into shared Supabase lifecycle state,
+explicitly verify the write grain on both sides. Do not assume a channel-,
+post-, or route-level collector can write one lifecycle row per collected item.
+If the shared table is coarser, collapse or rank the finer-grained results
+first, then write one canonical shared-state row at the supported grain.
+
 Simple user-decision questions should eventually live in the app or the
 coordination queue as bounded prompts, so Kavi is asked crisp questions rather
 than having to babysit an open-ended task.
@@ -368,6 +374,17 @@ mapped and material; otherwise mark route/TBD, gate, not found, or deferred.
 Do not run local preview/deploy checks for data-only changes unless rendering
 risk is plausible or the user asked for a product check. Targeted Supabase
 readback is usually enough.
+
+For a new daily-agent or recurring-surface writer, add one explicit regression
+proof before calling the lane hardened:
+
+- one entity with multiple watched sub-surfaces;
+- mixed outcomes in the same run, such as useful plus quiet or stale plus quiet;
+- an existing prior terminal or finite-retry lifecycle row; and
+- one cloud rerun after real prior state exists, not only an initial green bootstrap.
+
+Treat lifecycle RPC guards as design contracts, not just runtime validation.
+Read their retry, terminal, and reopen rules before writing batch automation.
 
 Deeper work should happen only after explicit promotion due to:
 
