@@ -74,6 +74,17 @@ publication, commit and push it directly to the production branch. Report the
 deployed result rather than asking the user to review the same change again in
 an intermediate environment.
 
+Default assumption: if an app/code change is accepted and no material blocker
+remains, publish it. Do not introduce a staging phase, soft-launch posture,
+extra approval loop, or "ready for staging" handoff unless the user explicitly
+asks for one.
+
+Lean toward committing. In this one-person hobby app, do not wait for the user
+to separately request each of: checkpoint, commit, and publish, once the work
+is accepted and the path is clear. After a bounded app change passes its
+relevant checks and no material blocker remains, the default execution should
+be: commit it, push it, and report what is now live.
+
 Only pause before production when a material unresolved regression, destructive
 data risk, security boundary, or explicit user request makes that necessary.
 
