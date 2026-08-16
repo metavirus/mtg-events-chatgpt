@@ -4075,7 +4075,8 @@ function setSignalRead(signalId, read) {
   }
   savePersonal({ type: 'signal', label: `${read ? 'Marked read' : 'Restored'} signal: ${signal.summary}` });
   void persistSignalReadState(signalId, read);
-  renderSignals();
+  renderCurrentRoute();
+  updateChrome();
   toast(read ? personalSaveToast('Signal marked read') : personalSaveToast('Signal restored'));
 }
 
