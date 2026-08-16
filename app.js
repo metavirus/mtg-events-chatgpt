@@ -399,7 +399,7 @@ function loadPersonal() {
 }
 
 function defaultPersonal() {
-  return { favorites: {}, hidden: {}, ratings: {}, notes: {}, signalRead: {}, interested: {}, activity: [], updatesSeenAt: null };
+  return { favorites: {}, hidden: {}, ratings: {}, notes: {}, signalRead: {}, interested: {}, activity: [], updatesSeenAt: null, todoReviewAt: null };
 }
 
 const DISCOVERY_POSSIBILITIES = [
@@ -452,6 +452,11 @@ function savePersonal(action) {
     state.personal.activity = state.personal.activity.slice(0, 100);
     localStorage.setItem('mana-radar-personal', JSON.stringify(state.personal));
   }
+}
+
+function markPersonalTodosReviewed() {
+  state.personal.todoReviewAt = new Date().toISOString();
+  savePersonal();
 }
 
 function latestChangeTimestamp() {
@@ -1466,6 +1471,11 @@ function handleAction(action, element) {
   if (action === 'send-magic-link') return sendMagicLink(element.dataset.input);
   if (action === 'sign-out') return signOutPersonalAccount();
   if (action === 'show-log') return openActivityLog();
+  if (action === 'mark-personal-todos-reviewed') {
+    markPersonalTodosReviewed();
+    toast('Personal continuity review marked complete');
+    return renderSignals();
+  }
   if (action === 'toggle-read-signals') { state.showReadSignals = !state.showReadSignals; return renderSignals(); }
   if (action === 'open-signal') return openSignalDetail(element.dataset.signalId);
   if (action === 'open-change-events') return openChangeEvents(element.dataset.changeId);
@@ -1703,6 +1713,7 @@ function renderSignals() {
   const summaryContainer = document.getElementById('signalsSummary');
   if (!container) return;
   const signals = rankedSignals();
+  const personalTodos = personalTodoItems();
   const readSignals = signals.filter((signal) => isSignalRead(signal.id));
   const activeSignals = signals.filter((signal) => !['dismissed', 'stale'].includes(signal.status) && !isSignalRead(signal.id));
   const arrivalSignals = activeSignals.filter((signal) => !!signal.derivedFromChangeId);
@@ -1745,12 +1756,12 @@ function renderSignals() {
 
   if (summaryContainer) {
     summaryContainer.innerHTML = `<div class="signal-toolbar">
-      <p>${summaryParts.length ? summaryParts.join(' · ') : 'Signals stay compact here; handled items can be marked read and revisited later.'}</p>
+      <p>${[personalTodos.length ? `${personalTodos.length} personal review item${personalTodos.length === 1 ? '' : 's'}` : '', ...summaryParts].filter(Boolean).join(' · ') || 'Signals stay compact here; handled items can be marked read and revisited later.'}</p>
       ${readSignals.length ? `<button class="soft-button" data-action="toggle-read-signals">${state.showReadSignals ? 'Hide read signals' : 'Show read signals'}</button>` : ''}
     </div>`;
   }
 
-  container.innerHTML = `${discoveryPossibilitiesSection()}<div class="signals-board">
+  container.innerHTML = `${personalTodoSection(personalTodos)}${discoveryPossibilitiesSection()}<div class="signals-board">
       ${orderedGroups}
     </div>`;
 }
@@ -1758,6 +1769,114 @@ function renderSignals() {
 function rankedSignals() {
   return [...DATA.signals, ...derivedEventIngestSignals()]
     .sort((a, b) => signalRank(b) - signalRank(a) || String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt)));
+}
+
+function findPersonalEntity(entity) {
+  if (!entity) return null;
+  const [type, id] = String(entity).split(':');
+  if (!type || !id) return null;
+  if (type === 'place') {
+    const item = store(id);
+    return item ? { type, id, item, label: item.name } : null;
+  }
+  if (type === 'community') {
+    const item = community(id);
+    return item ? { type, id, item, label: item.name } : null;
+  }
+  if (type === 'event') {
+    const item = DATA.events.find((event) => event.id === id);
+    return item ? { type, id, item, label: item.title } : null;
+  }
+  return null;
+}
+
+function inferPersonalEntityFromSlug(slug) {
+  if (!slug) return null;
+  const place = DATA.stores.find((item) => item.id === slug);
+  if (place) return { type: 'place', id: place.id, item: place, label: place.name };
+  const hub = COMMUNITY_SEED.find((item) => item.id === slug);
+  if (hub) return { type: 'community', id: hub.id, item: hub, label: hub.name };
+  const event = DATA.events.find((item) => item.id === slug);
+  if (event) return { type: 'event', id: event.id, item: event, label: event.title };
+  return null;
+}
+
+function personalActivityEntity(item) {
+  if (item?.entity) return findPersonalEntity(item.entity);
+  const label = String(item?.label || '');
+  const slug = (label.match(/(?:for|in)\s+([a-z0-9-]+)$/i) || [])[1];
+  return inferPersonalEntityFromSlug(slug);
+}
+
+function personalTodoReason(item, entity) {
+  if (item.type === 'note' && entity?.type === 'place') return 'You left a place note. Check whether the venue fit, continuity read, or synthesis should move.';
+  if (item.type === 'note' && entity?.type === 'community') return 'You left a community note. Review whether the social continuity or routing priority should change.';
+  if (item.type === 'favorite' && entity?.type === 'place') return 'You favorited this place. It should stay easier to find and may deserve a stronger practical rank.';
+  if (item.type === 'favorite' && entity?.type === 'community') return 'You favorited this community. It should influence community ordering and future hydration priority.';
+  if (item.type === 'planning' && entity?.type === 'event') return 'You marked interest in a dated event. Check whether the venue or community behind it deserves more weight.';
+  if (item.type === 'rating' && entity?.type === 'place') return 'You changed a place rating. Confirm that the visible fit story still matches your real-world experience.';
+  if (item.type === 'rating' && entity?.type === 'event') return 'You reacted directly to an event series. Make sure that preference affects similar future choices.';
+  return 'Recent personal continuity may justify a ranking adjustment or a bounded evidence follow-up.';
+}
+
+function personalTodoActionLabel(item, entity) {
+  if (entity?.type === 'place') return 'Review place';
+  if (entity?.type === 'community') return 'Review community';
+  if (entity?.type === 'event') return 'Open event';
+  if (item.type === 'note') return 'Review note';
+  return 'Review';
+}
+
+function personalTodoItems() {
+  const reviewAt = state.personal.todoReviewAt ? new Date(state.personal.todoReviewAt) : null;
+  const history = (state.personal.activity || [])
+    .filter((item) => ['note', 'favorite', 'rating', 'planning'].includes(item.type))
+    .filter((item) => {
+      const at = new Date(item.at || 0);
+      if (Number.isNaN(at.getTime())) return false;
+      if (!reviewAt || Number.isNaN(reviewAt.getTime())) return at >= addDays(new Date(), -10);
+      return at > reviewAt;
+    })
+    .map((item) => {
+      const entity = personalActivityEntity(item);
+      return {
+        ...item,
+        entity,
+        reason: personalTodoReason(item, entity)
+      };
+    })
+    .filter((item) => item.entity || item.type === 'note')
+    .slice(0, 8);
+  return history;
+}
+
+function personalTodoCard(item) {
+  const entity = item.entity;
+  const at = item.at ? formatFreshnessDate(item.at) : 'Recently';
+  const target = entity?.type === 'place'
+    ? `data-place-id="${escapeHtml(entity.id)}"`
+    : entity?.type === 'community'
+      ? `data-community-id="${escapeHtml(entity.id)}"`
+      : entity?.type === 'event'
+        ? `data-event-id="${escapeHtml(entity.id)}"`
+        : '';
+  const context = entity?.label || item.label || 'Personal continuity item';
+  return `<article class="personal-todo-card">
+    <div class="personal-todo-kicker"><span class="status-chip violet">From your last visit</span><small>${escapeHtml(at)}</small></div>
+    <h3>${escapeHtml(context)}</h3>
+    <p>${escapeHtml(item.reason)}</p>
+    <div class="personal-todo-actions">
+      ${target ? `<button class="soft-button" ${target}>${escapeHtml(personalTodoActionLabel(item, entity))}</button>` : ''}
+      <button class="soft-button" data-action="show-log">Activity log</button>
+    </div>
+  </article>`;
+}
+
+function personalTodoSection(items) {
+  return `<section class="personal-todo-section">
+    <div class="section-title-row"><div><p class="eyebrow violet">Personal continuity</p><h2>From your last visit</h2><p class="muted-copy">Your recent notes, favorites, ratings, and attendance/interest actions can ask for a ranking change or a bounded follow-up instead of sitting as passive memory.</p></div><button class="soft-button" data-action="mark-personal-todos-reviewed">Mark reviewed</button></div>
+    ${items.length ? `<div class="personal-todo-list">${items.map(personalTodoCard).join('')}</div>` : '<div class="personal-todo-empty"><strong>No new personal follow-ups since the last review</strong><p>Your favorites, notes, ratings, and interest marks still affect ranking. When new continuity needs interpretation, it will appear here.</p><button class="soft-button" data-action="show-log">Open activity log</button></div>'}
+  </section>`;
 }
 
 function derivedEventIngestSignals() {
@@ -4449,14 +4568,14 @@ function noteComposer(entity, placeholder) {
 function saveNote(entity, inputId) {
   const value = document.getElementById(inputId)?.value.trim() || '';
   state.personal.notes[entity] = value;
-  savePersonal({ type: 'note', label: value ? `Updated note for ${entity.split(':')[1]}` : `Cleared note for ${entity.split(':')[1]}` });
+  savePersonal({ type: 'note', entity, label: value ? `Updated note for ${entity.split(':')[1]}` : `Cleared note for ${entity.split(':')[1]}` });
   void persistPersonalNote(entity, value);
   toast(personalSaveToast('Note saved'));
 }
 
 function setRating(entity, rating) {
   state.personal.ratings[entity] = rating;
-  savePersonal({ type: 'rating', label: `Rated ${entity.split(':')[1]} ${rating} stars` });
+  savePersonal({ type: 'rating', entity, label: `Rated ${entity.split(':')[1]} ${rating} stars` });
   void persistPreference(entity);
   renderPlaces();
   toast(`Rating saved: ${rating} stars`);
@@ -4464,7 +4583,7 @@ function setRating(entity, rating) {
 
 function toggleFavorite(key) {
   state.personal.favorites[key] = !state.personal.favorites[key];
-  savePersonal({ type: 'favorite', label: `${state.personal.favorites[key] ? 'Followed' : 'Unfollowed'} ${key.split(':')[1]}` });
+  savePersonal({ type: 'favorite', entity: key, label: `${state.personal.favorites[key] ? 'Followed' : 'Unfollowed'} ${key.split(':')[1]}` });
   void persistPreference(key);
   renderCurrentRoute();
   toast(state.personal.favorites[key] ? 'Added to favorites' : 'Removed from favorites');
@@ -4478,7 +4597,7 @@ function toggleHidden(key) {
     state.selectedPlaceTab = 'overview';
   }
   const isEvent = key.startsWith('event:');
-  savePersonal({ type: 'preference', label: `${state.personal.hidden[key] ? (isEvent ? 'Hidden for now' : 'Deprioritized') : 'Restored'} ${key.split(':')[1]}` });
+  savePersonal({ type: 'preference', entity: key, label: `${state.personal.hidden[key] ? (isEvent ? 'Hidden for now' : 'Deprioritized') : 'Restored'} ${key.split(':')[1]}` });
   void persistPreference(key);
   renderCurrentRoute();
   toast(state.personal.hidden[key] ? (isEvent ? 'Hidden from normal event views' : 'Deprioritized in your view') : 'Restored to normal priority');
@@ -4491,7 +4610,7 @@ function toggleEventDislike(key) {
   } else {
     state.personal.ratings[key] = 1;
   }
-  savePersonal({ type: 'rating', label: `${disliked ? 'Removed dislike for' : 'Marked not-for-me'} ${key.split(':')[1]}` });
+  savePersonal({ type: 'rating', entity: key, label: `${disliked ? 'Removed dislike for' : 'Marked not-for-me'} ${key.split(':')[1]}` });
   void persistPreference(key);
   renderCurrentRoute();
   toast(disliked ? 'Event dislike removed' : 'Marked as not for you');
@@ -4514,7 +4633,7 @@ function setSignalRead(signalId, read) {
 
 function toggleInterested(key) {
   state.personal.interested[key] = !state.personal.interested[key];
-  savePersonal({ type: 'planning', label: `${state.personal.interested[key] ? 'Marked interested in' : 'Removed interest from'} ${key.split(':')[0]}` });
+  savePersonal({ type: 'planning', entity: `event:${key.split(':')[0]}`, label: `${state.personal.interested[key] ? 'Marked interested in' : 'Removed interest from'} ${key.split(':')[0]}` });
   const [eventId, date] = key.split(/:(?=\d{4}-\d{2}-\d{2}$)/);
   openEvent(eventId, date);
   toast(state.personal.interested[key] ? 'Marked interested' : 'Interest removed');
