@@ -132,8 +132,8 @@ const PLACE_LOGOS = {
   },
   'crown-city-games': {
     src: 'assets/logos/crown-city-games-icon.png',
-    tone: 'dark',
-    fit: 'contain'
+    tone: 'transparent',
+    fit: 'cover'
   },
   'buddies-collectibles': {
     src: 'assets/logos/buddies-collectibles-icon.png',
