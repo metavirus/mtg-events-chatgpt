@@ -1,0 +1,59 @@
+{
+  "proposal_id": "2026-08-16-finch-personal-reassessment",
+  "description": "Promote Finch and Sparrow from a technically strong but semantically over-cautious candidate to a canonically promoted favorite-tier option based on saved personal continuity and already strong reviewed evidence.",
+  "operations": [
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "finch-sparrow"
+      },
+      "fields": {
+        "id": "finch-sparrow",
+        "assessment_notes": "Finch and Sparrow should now be treated as one of the user's clearly established strong recurring options rather than as a strong candidate still waiting for extra permission. Canonical evidence already shows a broad, current Magic program across Commander, draft, FNM, Standard, Modern, and cEDH-adjacent lanes. Personal continuity strengthens that read materially: the signed-in Supabase state shows the venue is favorited, the Sunday casual lane is favorited, and the user's own notes describe Finch as great on Sunday and the Commanderfest experience as fun. That is enough to stop framing Finch as unresolved just because some Commander-texture details remain imperfect. Practical read: strong nearby active store, good repeat-visit potential, clearly worth staying in the user's active planning rotation, with Sunday still the most personally attractive soft-social lane and cEDH/Birdcage energy remaining a bounded fit caveat rather than a blocker.",
+        "assessment": {
+          "commanderActivity": 4,
+          "homeGroupPotential": 4,
+          "communityContinuity": 5,
+          "meetupAccessibility": 3,
+          "physicalEnvironment": 4,
+          "scheduleReliability": 4,
+          "newPlayerIntegration": 4
+        }
+      },
+      "reason": "The current narrative already supports Finch as a strong repeat option; saved favorites and positive user notes mean the semantic status should stop lagging behind the actual conclusion."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "finch-sparrow"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "finch-sparrow",
+        "research_status": "reviewed",
+        "candidate_status": "promoted",
+        "fit_grade": "A-",
+        "fit_score": 4.3,
+        "confidence": "high",
+        "positives": [
+          "Only about five miles from Los Alamitos, making repeat visits and eventual local continuity practical.",
+          "Canonical reviewed evidence already shows unusually broad current Magic coverage across Commander, draft, FNM, Standard, Modern, and cEDH-adjacent lanes.",
+          "Signed-in personal continuity reinforces the store as genuinely good in practice: the venue is favorited, Sunday casual play is favorited, and the user's notes say Finch is great on Sunday and that Commanderfest was fun."
+        ],
+        "cautions": [
+          "Birdcage and cEDH-forward programming are still real store-character signals and should not be mistaken for the user's default fit lane.",
+          "Sunday remains personally attractive but still not perfectly source-proven as a Commander-dense lane every single week.",
+          "Pre-arrival coordination remains weaker than at the best Discord/community-forward surfaces."
+        ],
+        "open_questions": [
+          "What is the most reliable Sunday arrival window for the user's preferred casual/social experience?",
+          "How consistently does Thursday Commander land in the user's preferred bracket and table texture?"
+        ]
+      },
+      "reason": "Finch is already a favorite-backed, personally positive, high-confidence nearby option; leaving it at neutral understates the actual planning conclusion."
+    }
+  ]
+}
