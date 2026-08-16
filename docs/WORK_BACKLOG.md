@@ -614,6 +614,15 @@ claims without reopening the whole packet.
 
 ### Data and ranking
 
+- Add a daily session-start personal to-do review: Codex should check user-added
+  notes, favorites, attendance notes, and other personal-state changes since
+  the last login/session, then treat them as actionable research/ranking inputs
+  rather than passive text. Define "to-dos" as user notes or personal actions
+  that ask for interpretation, follow-up, rating adjustment, or evidence review.
+  Example: if the user attended Joyful Toad, favorited it, and added a note,
+  Codex should consider whether the store's fit/rating/synthesis should be
+  adjusted accordingly and surface the proposed change through the normal
+  controlled workflow.
 - Implement explicit displacement-risk / at-risk flags for recurring events.
 - Preserve ambiguous events instead of discarding them, but rank/filter them
   appropriately.
