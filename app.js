@@ -1,12 +1,39 @@
 const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [], dailyAgentStatuses: [] };
 const PLACE_LOGOS = {
   'collectors-lounge-cypress': {
-    src: 'https://linktr.ee/og/image/collectorlounge.jpg',
-    tone: 'dark'
+    src: 'assets/logos/collectors-lounge-dark.png',
+    tone: 'dark',
+    fit: 'cover'
   },
   'finch-sparrow': {
     src: 'assets/logos/finch-sparrow-dark.png',
-    tone: 'dark'
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'tilted-gaming': {
+    src: 'assets/logos/tilted-gaming.webp',
+    tone: 'transparent',
+    fit: 'contain'
+  },
+  'guild-house': {
+    src: 'assets/logos/guild-house.png',
+    tone: 'transparent',
+    fit: 'contain'
+  },
+  'krazy-nick-s-games': {
+    src: 'assets/logos/krazy-nicks-games.jfif',
+    tone: 'dark',
+    fit: 'contain'
+  },
+  'joyful-toad-tcg': {
+    src: 'assets/logos/joyful-toad.jpg',
+    tone: 'color',
+    fit: 'cover'
+  },
+  'spellhold-games': {
+    src: 'assets/logos/spellhold-games.png',
+    tone: 'color',
+    fit: 'contain'
   }
 };
 
@@ -4378,7 +4405,9 @@ function placeAvatar(place, size = 'small') {
   const cls = size === 'large' ? 'large-avatar' : 'entity-avatar';
   const logo = PLACE_LOGOS[place?.id];
   if (logo) {
-    return `<span class="${cls} logo-avatar ${logo.tone === 'dark' ? 'dark-logo' : ''}"><img src="${escapeHtml(logo.src)}" alt="${escapeHtml(place.name)} logo" loading="lazy" referrerpolicy="no-referrer"></span>`;
+    const tone = logo.tone ? `logo-${logo.tone}` : '';
+    const fit = logo.fit ? `logo-fit-${logo.fit}` : '';
+    return `<span class="${cls} logo-avatar ${tone} ${fit}"><img src="${escapeHtml(logo.src)}" alt="${escapeHtml(place.name)} logo" loading="lazy" referrerpolicy="no-referrer"></span>`;
   }
   return `<span class="${cls}">${initials(place.name)}</span>`;
 }
