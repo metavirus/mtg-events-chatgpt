@@ -3083,7 +3083,8 @@ function seriesRow(event) {
 function renderCommunities() {
   const surfaces = communitySurfaces();
   const formalHubs = COMMUNITY_SEED.map(communityHubFromCommunity).filter(communityHubMatchesSearch);
-  const visibleHubs = state.favoritesOnly ? formalHubs.filter(isCommunityHubFollowed) : formalHubs;
+  const visibleHubs = (state.favoritesOnly ? formalHubs.filter(isCommunityHubFollowed) : formalHubs)
+    .sort((a, b) => communityHubRank(b) - communityHubRank(a) || compareText(a.name, b.name));
   const chatter = communityDigestSignals();
   const visibleSurfaces = state.favoritesOnly
     ? surfaces.filter((surface) => state.personal.favorites[`place:${surface.place?.id}`] || state.personal.favorites[`community:${surface.community?.id}`])
@@ -3110,7 +3111,8 @@ function communityDigestSignals() {
       && /meet|join|invite|confirm|plan|vote|looking for|lfg|bar|brewery|venue|host/.test(text);
     const usefulChatter = signal.category === 'community_activity'
       && !/route|first content read|content replay|source|operational|captured|monitoring/.test(text);
-    return personal || planConversation || usefulChatter;
+    if (!(personal || planConversation || usefulChatter)) return false;
+    return isActionableCommunityDigestSignal(signal);
   }).sort((a, b) => communityDigestRank(b) - communityDigestRank(a)
     || String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt))).slice(0, 6);
 }
@@ -3119,7 +3121,39 @@ function communityDigestRank(signal) {
   const text = `${signal.summary} ${signal.details}`.toLowerCase();
   const personal = signal.category === 'mention' || /\byou\b|metavirus/.test(text);
   const plan = signal.category === 'event_opportunity' || /meet|join|invite|confirm|plan|lfg/.test(text);
-  return (personal ? 1000 : 0) + (plan ? 300 : 0) + signalRank(signal);
+  const linkedEvent = communityEventForSignal(signal);
+  const observed = signal.observedAt || signal.capturedAt;
+  const sourceCommunity = signalSourceCommunity(signal);
+  const relatedPlace = signal.relatedEntityType === 'venue' ? store(signal.relatedEntityId) : null;
+  const affinity = personalAffinityScore({
+    community: signal.relatedEntityType === 'community' ? community(signal.relatedEntityId) : sourceCommunity,
+    place: relatedPlace || (linkedEvent ? store(linkedEvent.storeId) : null),
+    signal
+  });
+  const freshness = datedUrgencyScore(observed, { halfLifeDays: 10, floor: -220, scale: 220 });
+  const eventUrgency = linkedEvent ? occurrenceUrgencyScore(linkedEvent.occurrenceDate || parseDate(linkedEvent.date || linkedEvent.startDate)) : 0;
+  const pastPenalty = linkedEvent && (linkedEvent.occurrenceDate || parseDate(linkedEvent.date || linkedEvent.startDate)) && (linkedEvent.occurrenceDate || parseDate(linkedEvent.date || linkedEvent.startDate)) < startOfDay(new Date())
+    ? 160
+    : 0;
+  return (personal ? 420 : 0) + (plan ? 180 : 0) + affinity + freshness + eventUrgency + signalRank(signal) - pastPenalty;
+}
+
+function isActionableCommunityDigestSignal(signal) {
+  const linkedEvent = communityEventForSignal(signal);
+  const observed = new Date(signal.observedAt || signal.capturedAt || 0);
+  const observedAgeDays = Number.isNaN(observed.getTime()) ? Infinity : (Date.now() - observed.getTime()) / (24 * 60 * 60 * 1000);
+  const text = `${signal.summary || ''} ${signal.details || ''} ${signal.suggestedAction || ''}`.toLowerCase();
+  const socialMemory = /had fun|great time|good time|nice meeting|meet you|played with|photo|picture|glad (?:you|we)|thanks for (?:coming|joining)|see you again/.test(text);
+  if (linkedEvent) {
+    const occurrence = linkedEvent.occurrenceDate || parseDate(linkedEvent.date || linkedEvent.startDate);
+    if (occurrence) {
+      const daysFromToday = Math.round((startOfDay(occurrence).getTime() - startOfDay(new Date()).getTime()) / (24 * 60 * 60 * 1000));
+      if (daysFromToday < -3) return socialMemory && observedAgeDays <= 14;
+    }
+  }
+  if (observedAgeDays > 30) return false;
+  if (observedAgeDays > 14 && !socialMemory && !linkedEvent) return false;
+  return true;
 }
 
 function communityDigestSection(signals) {
@@ -3335,6 +3369,83 @@ function communityUsefulness(community) {
 
 function latestCommunitySourceDate(sourceIds = []) {
   return sourceIds.map(source).filter(Boolean).map((item) => item.lastChecked).filter(Boolean).sort().reverse()[0] || '';
+}
+
+function recentPersonalActivityScore(matchers = []) {
+  const history = state.personal.activity || [];
+  if (!history.length || !matchers.length) return 0;
+  return history.slice(0, 30).reduce((score, item, index) => {
+    const label = String(item.label || '').toLowerCase();
+    if (!matchers.some((matcher) => matcher && label.includes(matcher))) return score;
+    return score + Math.max(4, 22 - index);
+  }, 0);
+}
+
+function notePriorityScore(...keys) {
+  return keys.reduce((score, key) => {
+    const note = String(state.personal.notes?.[key] || '').trim();
+    if (!note) return score;
+    return score + Math.min(42, 18 + Math.ceil(note.length / 40) * 6);
+  }, 0);
+}
+
+function ratingPriorityScore(...keys) {
+  return keys.reduce((score, key) => {
+    const rating = Number(state.personal.ratings?.[key] || 0);
+    if (!rating) return score;
+    if (rating <= 1) return score - 45;
+    return score + (rating * 12);
+  }, 0);
+}
+
+function datedUrgencyScore(dateLike, { halfLifeDays = 14, floor = -180, scale = 180 } = {}) {
+  const date = dateLike ? new Date(dateLike) : null;
+  if (!date || Number.isNaN(date.getTime())) return 0;
+  const ageDays = Math.max(0, (Date.now() - date.getTime()) / (24 * 60 * 60 * 1000));
+  return Math.max(floor, Math.round(scale - ((ageDays / halfLifeDays) * scale)));
+}
+
+function occurrenceUrgencyScore(dateLike) {
+  const date = dateLike instanceof Date ? dateLike : parseDate(dateLike);
+  if (!date || Number.isNaN(date.getTime())) return 0;
+  const today = startOfDay(new Date());
+  const diffDays = Math.round((startOfDay(date).getTime() - today.getTime()) / (24 * 60 * 60 * 1000));
+  if (diffDays < -1) return -120;
+  if (diffDays <= 1) return 170;
+  if (diffDays <= 7) return 120;
+  if (diffDays <= 21) return 70;
+  if (diffDays <= 56) return 28;
+  return 0;
+}
+
+function personalAffinityScore({ community: targetCommunity = null, place = null, signal = null } = {}) {
+  const communityKey = targetCommunity?.id ? `community:${targetCommunity.id}` : '';
+  const placeKey = place?.id ? `place:${place.id}` : '';
+  const eventKey = signal?.relatedEntityType === 'event' && signal.relatedEntityId ? `event:${signal.relatedEntityId}` : '';
+  const keys = [communityKey, placeKey, eventKey].filter(Boolean);
+  const favoriteScore = keys.reduce((score, key) => score + (state.personal.favorites?.[key] ? 54 : 0), 0);
+  const noteScore = notePriorityScore(...keys);
+  const ratingScore = ratingPriorityScore(...keys);
+  const activityMatchers = [
+    targetCommunity?.name,
+    place?.name,
+    signal?.summary
+  ].filter(Boolean).map((item) => String(item).toLowerCase());
+  return favoriteScore + noteScore + ratingScore + recentPersonalActivityScore(activityMatchers);
+}
+
+function communityHubRank(hub) {
+  const profile = communityProfileData(hub.community);
+  const nextEvent = profile.upcoming[0];
+  const latestSignal = profile.signals[0];
+  const favoriteBoost = state.personal.favorites?.[`community:${hub.community.id}`] ? 70 : 0;
+  const noteBoost = notePriorityScore(`community:${hub.community.id}`, ...profile.locations.map((location) => location.place ? `place:${location.place.id}` : ''));
+  const ratingBoost = ratingPriorityScore(`community:${hub.community.id}`, ...profile.locations.map((location) => location.place ? `place:${location.place.id}` : ''));
+  const connectionBoost = profile.connections.length ? 90 : 0;
+  const eventBoost = nextEvent ? occurrenceUrgencyScore(nextEvent.occurrenceDate || parseDate(nextEvent.date || nextEvent.startDate)) + 40 : 0;
+  const freshnessBoost = latestSignal ? datedUrgencyScore(latestSignal.observedAt || latestSignal.capturedAt, { halfLifeDays: 16, floor: -120, scale: 120 }) : 0;
+  const monitoringBoost = profile.monitoring.label === 'New activity' ? 36 : profile.monitoring.label === 'Quiet but monitored' ? 12 : -18;
+  return hub.score + favoriteBoost + noteBoost + ratingBoost + connectionBoost + eventBoost + freshnessBoost + monitoringBoost;
 }
 
 function isCommunityHubFollowed(hub) {
