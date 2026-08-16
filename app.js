@@ -90,6 +90,51 @@ const PLACE_LOGOS = {
     tone: 'dark',
     fit: 'cover'
   },
+  'next-gen-games': {
+    src: 'assets/logos/next-gen-games-icon.png',
+    tone: 'dark',
+    fit: 'contain'
+  },
+  'turn-zero-games': {
+    src: 'assets/logos/turn-zero-games-icon.png',
+    tone: 'dark',
+    fit: 'contain'
+  },
+  'comic-quest': {
+    src: 'assets/logos/comic-quest-icon.png',
+    tone: 'dark',
+    fit: 'contain'
+  },
+  'coretcg': {
+    src: 'assets/logos/coretcg-icon.png',
+    tone: 'dark',
+    fit: 'contain'
+  },
+  'dxn-provisions': {
+    src: 'assets/logos/dxn-provisions-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'games-for-meeple': {
+    src: 'assets/logos/games-for-meeple-icon.png',
+    tone: 'dark',
+    fit: 'contain'
+  },
+  'revenge-of': {
+    src: 'assets/logos/revenge-of-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'gxgamers': {
+    src: 'assets/logos/gxgamers-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'crown-city-games': {
+    src: 'assets/logos/crown-city-games-icon.png',
+    tone: 'dark',
+    fit: 'contain'
+  },
   'buddies-collectibles': {
     src: 'assets/logos/buddies-collectibles-icon.png',
     tone: 'dark',
