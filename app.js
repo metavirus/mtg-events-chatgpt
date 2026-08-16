@@ -18,7 +18,7 @@ const PLACE_LOGOS = {
   'guild-house': {
     src: 'assets/logos/guild-house-icon.png',
     tone: 'transparent',
-    fit: 'contain'
+    fit: 'cover'
   },
   'krazy-nick-s-games': {
     src: 'assets/logos/krazy-nicks-icon.png',
@@ -92,8 +92,8 @@ const PLACE_LOGOS = {
   },
   'next-gen-games': {
     src: 'assets/logos/next-gen-games-icon.png',
-    tone: 'dark',
-    fit: 'contain'
+    tone: 'transparent',
+    fit: 'cover'
   },
   'turn-zero-games': {
     src: 'assets/logos/turn-zero-games-icon.png',
@@ -117,8 +117,8 @@ const PLACE_LOGOS = {
   },
   'games-for-meeple': {
     src: 'assets/logos/games-for-meeple-icon.png',
-    tone: 'dark',
-    fit: 'contain'
+    tone: 'transparent',
+    fit: 'cover'
   },
   'revenge-of': {
     src: 'assets/logos/revenge-of-icon.png',
