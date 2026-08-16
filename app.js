@@ -135,6 +135,106 @@ const PLACE_LOGOS = {
     tone: 'transparent',
     fit: 'cover'
   },
+  'socalmagic': {
+    src: 'assets/logos/socalmagic-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'tweedy-cards-and-gaming': {
+    src: 'assets/logos/tweedy-cards-and-gaming-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'shadow-realm-collectibles': {
+    src: 'assets/logos/shadow-realm-collectibles-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'alakazam-comics': {
+    src: 'assets/logos/alakazam-comics-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'grails-gone-wild': {
+    src: 'assets/logos/grails-gone-wild-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'lost-planet': {
+    src: 'assets/logos/lost-planet-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'the-game-chest-del-amo-fashion-center': {
+    src: 'assets/logos/the-game-chest-del-amo-fashion-center-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'card-arena': {
+    src: 'assets/logos/card-arena-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'the-game-chest-promenade-on-the-peninsula': {
+    src: 'assets/logos/the-game-chest-promenade-on-the-peninsula-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'b-y-o-games-llc': {
+    src: 'assets/logos/b-y-o-games-llc-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'lvlup-gaming-tcg': {
+    src: 'assets/logos/lvlup-gaming-tcg-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'the-crimson-guild-south-el-monte': {
+    src: 'assets/logos/the-crimson-guild-south-el-monte-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'aki-collectibles': {
+    src: 'assets/logos/aki-collectibles-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'the-game-chest-irvine': {
+    src: 'assets/logos/the-game-chest-irvine-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'alamo-drafthouse-cinema-downtown-los-angeles': {
+    src: 'assets/logos/alamo-drafthouse-cinema-downtown-los-angeles-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'the-game-cellar': {
+    src: 'assets/logos/the-game-cellar-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'the-bullpen-2-0': {
+    src: 'assets/logos/the-bullpen-2-0-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'it-s-gametime': {
+    src: 'assets/logos/it-s-gametime-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'a-and-n-collectibles': {
+    src: 'assets/logos/a-and-n-collectibles-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
+  'paper-heros-hb': {
+    src: 'assets/logos/paper-heros-hb-icon.png',
+    tone: 'transparent',
+    fit: 'cover'
+  },
   'buddies-collectibles': {
     src: 'assets/logos/buddies-collectibles-icon.png',
     tone: 'dark',

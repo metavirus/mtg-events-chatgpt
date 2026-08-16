@@ -22,6 +22,9 @@ work.
 The researched visual and interaction direction is documented in
 [`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md).
 
+The logo/avatar sourcing and composition rules for Places and Communities are
+documented in [`docs/LOGO_SOURCING_SOP.md`](docs/LOGO_SOURCING_SOP.md).
+
 The build is governed by [`docs/DATA_ARCHITECTURE.md`](docs/DATA_ARCHITECTURE.md)
 and [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md).
 
