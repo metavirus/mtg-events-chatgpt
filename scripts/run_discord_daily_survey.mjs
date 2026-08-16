@@ -52,6 +52,13 @@ const OUTCOME_TO_SURFACE_CHECK = {
     materialChange: false
   }
 };
+const SURFACE_OUTCOME_PRIORITY = {
+  accepted_signal: 5,
+  event_candidate: 4,
+  stale_useful_context: 3,
+  quiet_coverage: 2,
+  blocked_repair: 1
+};
 const PYTHON = process.platform === 'win32' ? 'python.exe' : 'python';
 
 function parseArgs(argv) {
@@ -414,12 +421,55 @@ function summaryForSurfaceCheck(result) {
   return `Daily Discord survey checked ${result.serverName} / #${result.channelName}; ${messageCount} visible messages inspected; outcome ${result.outcome}.${categoryText}`;
 }
 
+function checkedAtForResult(result) {
+  return result.messageWindow?.lastSeenMessageAt || new Date().toISOString();
+}
+
+function compareSurfacePriority(left, right) {
+  const leftPriority = SURFACE_OUTCOME_PRIORITY[left.outcome] || 0;
+  const rightPriority = SURFACE_OUTCOME_PRIORITY[right.outcome] || 0;
+  if (leftPriority !== rightPriority) return rightPriority - leftPriority;
+  const leftUsefulCount = (left.usefulCategories || []).length;
+  const rightUsefulCount = (right.usefulCategories || []).length;
+  if (leftUsefulCount !== rightUsefulCount) return rightUsefulCount - leftUsefulCount;
+  const leftCheckedAt = Date.parse(checkedAtForResult(left));
+  const rightCheckedAt = Date.parse(checkedAtForResult(right));
+  if (Number.isFinite(leftCheckedAt) && Number.isFinite(rightCheckedAt) && leftCheckedAt !== rightCheckedAt) {
+    return rightCheckedAt - leftCheckedAt;
+  }
+  return String(left.rowId).localeCompare(String(right.rowId));
+}
+
+function collapseResultsForSurfaceChecks(results) {
+  const grouped = new Map();
+  for (const result of results) {
+    if (!result.entityType || !result.entityId) continue;
+    const key = `${result.entityType}:${result.entityId}:discord`;
+    const list = grouped.get(key) || [];
+    list.push(result);
+    grouped.set(key, list);
+  }
+  return [...grouped.values()].map((group) => {
+    const ranked = [...group].sort(compareSurfacePriority);
+    const best = ranked[0];
+    return {
+      ...best,
+      contributingRows: ranked.map((item) => ({
+        rowId: item.rowId,
+        channelName: item.channelName,
+        outcome: item.outcome,
+        checkedAt: checkedAtForResult(item)
+      }))
+    };
+  });
+}
+
 async function writeSurfaceChecks(results) {
-  const writable = results.filter((result) => result.entityType && result.entityId);
+  const writable = collapseResultsForSurfaceChecks(results);
   if (writable.length === 0) return { skipped: true, reason: 'no entity-backed results' };
   const statements = writable.map((result) => {
     const mapping = OUTCOME_TO_SURFACE_CHECK[result.outcome] || OUTCOME_TO_SURFACE_CHECK.blocked_repair;
-    const checkedAt = result.messageWindow?.lastSeenMessageAt || new Date().toISOString();
+    const checkedAt = checkedAtForResult(result);
     const sourceId = sourceIdFor(result);
     return `select public.record_entity_surface_check(
   ${sqlLiteral(idempotencyKeyForSurfaceCheck(result))},
@@ -444,7 +494,18 @@ async function writeSurfaceChecks(results) {
   }).join('\nunion all\n');
   const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', statements]);
   assertOk(result, 'surface check write');
-  return JSON.parse(result.stdout).rows;
+  return {
+    rows: JSON.parse(result.stdout).rows,
+    entities: writable.map((item) => ({
+      entityType: item.entityType,
+      entityId: item.entityId,
+      sourceId: sourceIdFor(item),
+      chosenRowId: item.rowId,
+      chosenChannelName: item.channelName,
+      chosenOutcome: item.outcome,
+      contributingRows: item.contributingRows
+    }))
+  };
 }
 
 async function writeWatchlist(results) {
