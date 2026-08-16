@@ -1,0 +1,58 @@
+{
+  "proposal_id": "2026-08-16-joyful-toad-personal-reassessment",
+  "description": "Promote Joyful Toad TCG from cautious backup language to a personally validated good-store assessment based on the user's saved Supabase favorite, 4/5 rating, and positive visit note.",
+  "operations": [
+    {
+      "action": "update",
+      "table": "venues",
+      "key": {
+        "id": "joyful-toad-tcg"
+      },
+      "fields": {
+        "id": "joyful-toad-tcg",
+        "assessment_notes": "Joyful Toad TCG should now be treated as a good, personally validated Anaheim option rather than a merely medium-confidence backup. Current WPN support still cleanly anchors Monday 7 PM Commander, but the more important change is personal continuity: the signed-in Supabase record shows the user favorited the store, rated it 4/5, and left a positive visit note describing it as a nice place, huge, open until midnight, and successful as a real meetup surface with named social continuity. That is enough to stop waiting for perfectionist Commander-culture proof before promoting the venue. Practical read: good broad TCG store, strong physical-space/usefulness signal, socially validated enough for repeat consideration, and worth keeping in the active planning rotation unless future contradictory evidence appears.",
+        "assessment": {
+          "commanderActivity": 3,
+          "homeGroupPotential": 4,
+          "communityContinuity": 5,
+          "meetupAccessibility": 5,
+          "physicalEnvironment": 5,
+          "scheduleReliability": 4,
+          "newPlayerIntegration": 4
+        }
+      },
+      "reason": "Firsthand positive experience plus saved personal continuity evidence is promotion-grade input and should outweigh lingering generic hedges."
+    },
+    {
+      "action": "upsert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "joyful-toad-tcg",
+        "research_status": "reviewed",
+        "candidate_status": "promoted",
+        "fit_grade": "A-",
+        "fit_score": 4.2,
+        "confidence": "high",
+        "positives": [
+          "Signed-in personal continuity shows the user favorited Joyful Toad, rated it 4/5, and described the visit positively.",
+          "The saved note confirms practical strengths that matter in real use: huge space, open until midnight, and successful meetup continuity with specific people.",
+          "Current WPN support still cleanly anchors Monday 7 PM Commander, so the venue is both source-backed and personally validated."
+        ],
+        "cautions": [
+          "Public evidence still supports Joyful Toad more strongly as a broad TCG store than as a Commander-specialist identity.",
+          "Commander-specific norms such as proxy expectations, power spread, and typical pod formation can still vary by night and should be updated only when new firsthand or source-supported evidence appears."
+        ],
+        "open_questions": [
+          "If future visits keep landing well, should Joyful Toad graduate from good active-rotation option to one of the strongest recurring defaults?",
+          "If a readable community route appears later, does it reinforce the already positive in-person read or materially change event-discovery value?"
+        ]
+      },
+      "reason": "The existing C+/medium/neutral evaluation is now too conservative relative to the user's actual saved experience and preference state."
+    }
+  ]
+}
