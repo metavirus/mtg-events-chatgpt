@@ -1,6 +1,6 @@
 # Discord Surface Frontier
 
-Updated: 2026-08-14
+Updated: 2026-08-16
 
 Purpose: this is the compact operating map for Discord survey work. It records
 what has already been discovered, which surfaces are ripe for a recurring agent,
@@ -57,9 +57,9 @@ approved. Start here; do not begin with route-only invites.
 
 | Surface | Current posture | First recurring targets | Why it matters |
 | --- | --- | --- | --- |
-| MTG OC | Joined, accessible, high-value regional community | `#events_activities`, `#monthly-meetings`, `#welcome`; secondarily `#announcements`, `#random`, `#share_feedback_promos` | Proven source of meetup coordination. Mentions of `Metavirus`, direct questions, and concrete meetup planning are highest signal. |
+| MTG OC | Joined, accessible, high-value regional community | `#events_activities` daily hot; `#monthly-meetings` daily hot; `#announcements` weekly watch; `#share_feedback_promos` weekly watch; `#welcome` weekly sample/watch | Proven source of meetup coordination. Mentions of `Metavirus`, direct questions, and concrete meetup planning are highest signal. `#questions_comments_suggestions` and `#random` are now intentionally demoted out of daily emphasis as low-yield general lanes. |
 | Los Angeles Gayming Society / LAGS | Joined, accessible, high-value LGBTQ+ regional community | `#meet-up` and `#announcements` as hot; `#general` as watch/sample | `#meet-up` surfaced the Discord event card for Magic The GAYthering at Precinct DTLA on August 18, 2026 at 6 PM; that evidence is attached to the existing LAGS-owned event and Signal. `#announcements` surfaced a real Discord event: Gaymer Night at WERK Long Beach on August 20, 2026 at 8 PM, with Discord event and Instagram links. `#general` surfaced MTG-adjacent chatter about Tuesday MTG at Witch's Cottage in North Hollywood. Do not model bar hosts as stores unless independently promoted; community events belong to LAGS with host location context. |
-| Legendary Creature Club | Joined/accessible proof exists; daily-style candidate | Server Events button / Discord events, `#events`, `#lfg`, `#meet-ups`; sample `#mtg` only when needed | Proven source of regional event health, LFG, meetup, and pod-formation chatter. |
+| Legendary Creature Club | Joined/accessible proof exists; daily-style candidate except the separate Events control repair | `#events`, `#lfg`, `#meet-ups`; sample `#mtg` only when needed | Proven source of regional event health, LFG, meetup, and pod-formation chatter. The separate Server Events / Discord Events surface is paused as an exact repair item, not an active daily route. |
 | Collectors Lounge | Joined and useful; announcements can carry operational alerts | `#announcements` daily; `#mtg-announcements-and-events` weekly; `#general` weekly; `#event-rules` occasional | Store closures, no-event notices, weekly lineups, Commander rules, and event-adjacent chatter. |
 | ProjectCCG community | Joined/access mapped; still needs careful route proof because prior isolated-profile pass hit server-selection/read-state issues | `#oc-announcements`, `#mtg-announcements`, `#oc-events`, `#mtg-discussion` | Branch/community announcements and event chatter, especially Orange County context. |
 | JJ's Collectibles | Joined/access mapped | `#magic-announcements`, `#commander-night` | Store-level Magic announcements and Commander-night coordination. Preserve Orange/Garden Grove identity boundaries. |
@@ -96,9 +96,26 @@ resolved. A blocked route is not a reason to reopen full store research.
 
 | Surface | Current issue | Next bounded step |
 | --- | --- | --- |
+| Legendary Creature Club Server Events / Discord Events | Guarded proof failed closed on Aug 14 2026 because no unique Events control was reachable. | Keep the row out of routine daily automation until one exact Events-surface repair proof succeeds. |
 | Hobby Overflow Discord | Invite-gated / blocked-TBD profile. | One finite invite/session repair attempt if the user cares about this store's Discord texture. Otherwise leave as known route, blocked content. |
 | Paper Hero's Huntington Beach Magic channel | Watchlist row is blocked/TBD despite a manual-session proof. | One exact channel-access repair proof before any recurring monitoring. |
 | ProjectCCG and Magic & Monsters isolated-profile reruns | Prior guarded runs hit Discord acknowledgement/server-selection state before content extraction. | Do not allowlist Discord write-like acknowledgement traffic just to make a read pass. First diagnose route hydration without reading messages. |
+
+## 2026-08-16 classification tighten-up
+
+- Repaired live source-to-entity linkage for the Los Angeles Gayming Society
+  Discord profile plus channel source rows, so future surface checks aggregate
+  cleanly onto the canonical LAGS community instead of depending on fallback
+  matching.
+- Demoted MTG OC `#welcome` from daily-hot posture to weekly sample/watch.
+- Demoted MTG OC `#questions_comments_suggestions` and `#random` to low-priority
+  occasional sample lanes. They remain valid route evidence, but they are not
+  worth daily recurring-agent attention.
+- Kept MTG OC `#share_feedback_promos` as a useful non-core weekly watch lane
+  rather than a primary daily planning surface.
+- Paused the separate Legendary Creature Club Server Events / Discord Events row
+  as `blocked_tbd` until the exact Events-control repair is proven. The text
+  channels remain approved recurring routes.
 
 ## Route-captured but not agent-ready
 
