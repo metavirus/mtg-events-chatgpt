@@ -451,8 +451,17 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .entity-avatar, .large-avatar { border-radius: 10px; display: grid; place-items: center; background: linear-gradient(145deg, #252d44, #171d2e); border: 1px solid var(--line-strong); color: #bdb5ff; font: 800 11px var(--display); overflow: hidden; }
 .entity-avatar { width: 32px; height: 32px; }
 .large-avatar { width: 50px; height: 50px; font-size: 15px; border-radius: 13px; }
-.logo-avatar { background: rgba(255,255,255,.035); }
-.logo-avatar img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; }
+.logo-avatar {
+  background: radial-gradient(circle at 50% 35%, rgba(255,255,255,.08), rgba(7,10,18,.94) 62%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.logo-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.logo-avatar.dark-logo img { background: #05070d; }
 .list-heart { color: #ff7e9f; }
 .detail-pane { min-width: 0; padding: 20px; }
 .detail-hero { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }

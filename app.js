@@ -1,9 +1,13 @@
 const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [], dailyAgentStatuses: [] };
-const PLACE_LOGO_URLS = {
-  'collectors-lounge-cypress': 'https://img1.wsimg.com/isteam/ip/ef356847-41a3-4395-adf6-6308fa2424b1/blob-793bd76.png/:/rs=w:400,h:400,cg:true,m/cr=w:400,h:400/qt=q:95',
-  'finch-sparrow': 'https://finchandsparrowgames.com/cdn/shop/files/2_2eacbc82-8517-4341-abdc-471fed1183bf.png?v=1693631510&width=500',
-  'krazy-nick-s-games': 'https://cc-client-assets.nyc3.cdn.digitaloceanspaces.com/store/krazynicksgames/a6619218da844ae9ae6edbbf6164a9dc/large/0c6a29b7-a751-49f9-85a6-142f1585d9fd.jfif',
-  'guild-house': 'https://cdn.shoplightspeed.com/shops/614410/themes/18196/v/810490/assets/logo.png?20230725215016'
+const PLACE_LOGOS = {
+  'collectors-lounge-cypress': {
+    src: 'https://linktr.ee/og/image/collectorlounge.jpg',
+    tone: 'dark'
+  },
+  'finch-sparrow': {
+    src: 'assets/logos/finch-sparrow-dark.png',
+    tone: 'dark'
+  }
 };
 
 const SUPABASE = {
@@ -4372,9 +4376,9 @@ function sourceIcon(type = '') {
 
 function placeAvatar(place, size = 'small') {
   const cls = size === 'large' ? 'large-avatar' : 'entity-avatar';
-  const logo = PLACE_LOGO_URLS[place?.id];
+  const logo = PLACE_LOGOS[place?.id];
   if (logo) {
-    return `<span class="${cls} logo-avatar"><img src="${escapeHtml(logo)}" alt="${escapeHtml(place.name)} logo" loading="lazy" referrerpolicy="no-referrer"></span>`;
+    return `<span class="${cls} logo-avatar ${logo.tone === 'dark' ? 'dark-logo' : ''}"><img src="${escapeHtml(logo.src)}" alt="${escapeHtml(place.name)} logo" loading="lazy" referrerpolicy="no-referrer"></span>`;
   }
   return `<span class="${cls}">${initials(place.name)}</span>`;
 }
