@@ -34,6 +34,56 @@ const PLACE_LOGOS = {
     src: 'assets/logos/spellhold-games-icon.png',
     tone: 'color',
     fit: 'contain'
+  },
+  'kingslayer-games-fountain-valley': {
+    src: 'assets/logos/kingslayer-games-icon.png',
+    tone: 'color',
+    fit: 'cover'
+  },
+  'kingslayer-games-lake-forest': {
+    src: 'assets/logos/kingslayer-games-icon.png',
+    tone: 'color',
+    fit: 'cover'
+  },
+  'comic-book-hideout': {
+    src: 'assets/logos/comic-book-hideout-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'cardboard-games': {
+    src: 'assets/logos/cardboard-games-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'collector-legion': {
+    src: 'assets/logos/collector-legion-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'projectccg-santa-ana': {
+    src: 'assets/logos/projectccg-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'projectccg-alhambra': {
+    src: 'assets/logos/projectccg-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'requiem-coffee-tea-and-fantasy': {
+    src: 'assets/logos/requiem-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'magic-and-monsters': {
+    src: 'assets/logos/magic-and-monsters-icon.png',
+    tone: 'dark',
+    fit: 'cover'
+  },
+  'jjs-collectibles': {
+    src: 'assets/logos/jjs-collectibles-icon.png',
+    tone: 'color',
+    fit: 'cover'
   }
 };
 
