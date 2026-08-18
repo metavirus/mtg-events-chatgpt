@@ -60,6 +60,10 @@ const SURFACE_OUTCOME_PRIORITY = {
   blocked_repair: 1
 };
 const PYTHON = process.platform === 'win32' ? 'python.exe' : 'python';
+const QUERY_TIMEOUT_MS = 45_000;
+const PREFLIGHT_TIMEOUT_MS = 30_000;
+const HARNESS_TIMEOUT_MS = 120_000;
+const WRITE_TIMEOUT_MS = 45_000;
 
 function parseArgs(argv) {
   const args = {
@@ -111,12 +115,16 @@ function run(command, args, options = {}) {
     cwd: ROOT,
     encoding: 'utf8',
     maxBuffer: 25 * 1024 * 1024,
+    timeout: options.timeout ?? undefined,
     ...options
   });
   return result;
 }
 
 function assertOk(result, label) {
+  if (result.error?.code === 'ETIMEDOUT') {
+    throw new Error(`${label} timed out`);
+  }
   if (result.status !== 0) {
     const output = [result.stdout, result.stderr].filter(Boolean).join('\n').trim();
     throw new Error(`${label} failed${output ? `:\n${output}` : ''}`);
@@ -186,7 +194,7 @@ order by
   case w.cadence when 'daily' then 1 when 'weekly' then 2 when 'occasional' then 3 else 4 end,
   p.server_name,
   w.channel_name;`;
-  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', sql]);
+  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', sql], { timeout: QUERY_TIMEOUT_MS });
   assertOk(result, 'watchlist query');
   return JSON.parse(result.stdout).rows.map((row) => ({
     ...row,
@@ -242,7 +250,7 @@ function preflight(rows) {
   if (rows.length === 0) return { skipped: true, stdout: 'No rows selected.' };
   const args = ['scripts/discord_route_preflight.py', '--method', 'ui_native'];
   for (const row of rows) args.push('--channel-url', row.channel_url);
-  const result = run(PYTHON, args);
+  const result = run(PYTHON, args, { timeout: PREFLIGHT_TIMEOUT_MS });
   return {
     status: result.status,
     stdout: result.stdout,
@@ -272,7 +280,27 @@ function runHarnessAttempt(row, args) {
     String(args.maxVisibleMessages),
     'routine_survey',
     String(args.maxReadWindows)
-  ], { env });
+  ], {
+    env,
+    timeout: HARNESS_TIMEOUT_MS
+  });
+  if (result.error?.code === 'ETIMEDOUT') {
+    return {
+      rowId: row.id,
+      channelName: row.channel_name,
+      serverName: row.server_name,
+      status: 'harness_timed_out',
+      outcome: 'blocked_repair',
+      watchlistResult: RESULT_TO_WATCHLIST.blocked_repair,
+      routeState: 'blocked_for_this_run',
+      failureStage: 'harness_timeout',
+      failureReason: `ui-native Discord read timed out after ${Math.round(HARNESS_TIMEOUT_MS / 1000)} seconds`,
+      externalDiscordStateChanged: null,
+      prohibitedSuccessfulResponses: [],
+      logPath: null,
+      error: null
+    };
+  }
   if (result.status !== 0) {
     let harness = null;
     try {
@@ -492,7 +520,10 @@ async function writeSurfaceChecks(results) {
   false
 ) as surface_check_result`;
   }).join('\nunion all\n');
-  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', statements]);
+  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', statements], { timeout: WRITE_TIMEOUT_MS });
+  if (result.error?.code === 'ETIMEDOUT') {
+    throw new Error('surface check write timed out');
+  }
   assertOk(result, 'surface check write');
   return {
     rows: JSON.parse(result.stdout).rows,
@@ -535,9 +566,23 @@ ${values}
 ) as v(id, last_checked_at, last_seen_message_id, last_seen_message_at, latest_run_result, notes)
 where w.id = v.id
 returning w.id, w.channel_name, w.latest_run_result, w.last_seen_message_id, w.last_seen_message_at;`;
-  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', sql]);
+  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', sql], { timeout: WRITE_TIMEOUT_MS });
+  if (result.error?.code === 'ETIMEDOUT') {
+    throw new Error('watchlist update timed out');
+  }
   assertOk(result, 'watchlist update');
   return JSON.parse(result.stdout).rows;
+}
+
+async function pidIsRunning(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) return false;
+  const result = run(
+    'powershell',
+    ['-NoProfile', '-Command', `Get-Process -Id ${pid} -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id`],
+    { timeout: 10_000 }
+  );
+  if (result.error?.code === 'ETIMEDOUT') return true;
+  return result.status === 0 && /\d+/.test(result.stdout || '');
 }
 
 async function acquireRunLock(enabled) {
@@ -554,10 +599,16 @@ async function acquireRunLock(enabled) {
   } catch (error) {
     if (error && error.code === 'EEXIST') {
       let lockText = '';
+      let lockPayload = null;
       try {
         lockText = await fs.readFile(LOCK_PATH, 'utf8');
+        lockPayload = JSON.parse(lockText);
       } catch {
         lockText = '(lock file exists but could not be read)';
+      }
+      if (lockPayload && !await pidIsRunning(Number.parseInt(String(lockPayload.pid), 10))) {
+        await fs.unlink(LOCK_PATH).catch(() => {});
+        return acquireRunLock(enabled);
       }
       throw new Error(`Discord daily survey is already running or the Chrome profile is locked. Lock: ${LOCK_PATH}\n${lockText}`);
     }
