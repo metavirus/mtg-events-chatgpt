@@ -1,0 +1,191 @@
+{
+  "proposal_id": "2026-08-19-endless-entertainment-venue-add",
+  "description": "Add Endless Entertainment in Los Angeles as a useful but distance-caveated Magic venue. Current WPN/EventLink evidence shows recurring free Commander listings at 2939 Whittier Blvd, and the user has firsthand experience there with good prices and prizes, while noting it is not their usual cup of tea.",
+  "created_at": "2026-08-19T18:00:00Z",
+  "author": "Codex",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-wpn-21645"
+      },
+      "fields": {
+        "id": "src-wpn-21645",
+        "label": "Wizards Store & Event Locator - Endless Entertainment",
+        "url": "https://locator.wizards.com/store/21645",
+        "source_type": "wpn",
+        "health_status": "current",
+        "last_checked": "2026-08-19"
+      },
+      "reason": "Current WPN/EventLink store source for Endless Entertainment; refreshed cache shows store id 21645 at 2939 Whittier Blvd with recurring free Commander listings."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-directory-endless-entertainment-giftly-2026-08-19"
+      },
+      "fields": {
+        "id": "src-directory-endless-entertainment-giftly-2026-08-19",
+        "label": "Giftly directory - Endless Entertainment",
+        "url": "https://www.giftly.com/gift-card/endless-entertainment-los-angeles",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-08-19"
+      },
+      "reason": "Secondary directory evidence corroborates Endless Entertainment at 2939 Whittier Blvd and classifies it as a tabletop games/hobby shop."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-user-note-endless-entertainment-2026-08-19"
+      },
+      "fields": {
+        "id": "src-user-note-endless-entertainment-2026-08-19",
+        "label": "User firsthand note - Endless Entertainment",
+        "url": null,
+        "source_type": "userFieldNote",
+        "health_status": "current",
+        "last_checked": "2026-08-19"
+      },
+      "reason": "The user has played at Endless Entertainment and reports good prices and prizes, while noting it is not their usual cup of tea."
+    },
+    {
+      "action": "insert",
+      "table": "venues",
+      "key": {
+        "id": "endless-entertainment-los-angeles"
+      },
+      "fields": {
+        "id": "endless-entertainment-los-angeles",
+        "name": "Endless Entertainment",
+        "city": "Los Angeles",
+        "address": "2939 Whittier Blvd, Los Angeles, CA 90023, United States",
+        "phone": "(323) 480-1385",
+        "website": null,
+        "events_url": "https://locator.wizards.com/store/21645",
+        "instagram": null,
+        "wpn_premium": false,
+        "distance_miles": 17.54,
+        "operating_status": "open",
+        "research_status": "reviewed",
+        "last_verified": "2026-08-19",
+        "assessment_notes": "Added by explicit user request. Current WPN/EventLink cache shows Endless Entertainment at 2939 Whittier Blvd with recurring free Saturday/Sunday 5 PM Commander listings, capacity 24, and casual REL. User has played there and reports good prices and prizes, but also says it is not their usual cup of tea. Treat as useful to keep on the list, especially for price/prize value, but not a primary short-list community fit until stronger social/Commander-culture evidence appears.",
+        "lifecycle_state": "steady_state",
+        "lifecycle_reason": "Explicit user-requested useful LA venue add. Current WPN Commander evidence plus firsthand user value note are enough to list; future work should monitor exact surfaces rather than reopen a holistic pass.",
+        "baseline_pass_count": 1,
+        "baseline_completed_at": "2026-08-19T18:00:00Z",
+        "planning_summary": "Useful LA option with good prices/prizes and recurring free weekend Commander, but farther from Los Alamitos and not a primary personal-culture fit.",
+        "assessment": {
+          "commanderActivity": 4,
+          "homeGroupPotential": 2,
+          "communityContinuity": 2,
+          "meetupAccessibility": 2,
+          "physicalEnvironment": 2,
+          "scheduleReliability": 3,
+          "newPlayerIntegration": 2
+        }
+      },
+      "reason": "Create a canonical venue record for a WPN-supported LA store the user has personally visited and wants retained despite being outside the normal favorite geography."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "source_id": "src-wpn-21645"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "source_id": "src-wpn-21645",
+        "relationship": "WPN/EventLink store and recurring Commander event evidence"
+      },
+      "reason": "Link Endless Entertainment to the current WPN store/event source."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "source_id": "src-directory-endless-entertainment-giftly-2026-08-19"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "source_id": "src-directory-endless-entertainment-giftly-2026-08-19",
+        "relationship": "secondary directory identity/address support"
+      },
+      "reason": "Preserve secondary address/category support separately from WPN event truth."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "source_id": "src-user-note-endless-entertainment-2026-08-19"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "source_id": "src-user-note-endless-entertainment-2026-08-19",
+        "relationship": "user firsthand fit and value note"
+      },
+      "reason": "Keep the user's firsthand assessment separate from public source facts."
+    },
+    {
+      "action": "insert",
+      "table": "evaluations",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "research_status": "reviewed",
+        "candidate_status": "neutral",
+        "fit_grade": "B-",
+        "fit_score": 3.2,
+        "confidence": "medium",
+        "positives": [
+          "User has played there and reports good prices and prizes.",
+          "Current WPN/EventLink cache shows recurring free Commander on both Saturday and Sunday at 5 PM.",
+          "WPN listings show capacity 24 and casual REL, which is enough to keep it visible as a practical LA option."
+        ],
+        "cautions": [
+          "About 17.5 miles from the public Los Alamitos origin, so it is farther than the most convenient local options.",
+          "User says it is not their usual cup of tea, so keep it as a useful list item rather than a short-list recommendation.",
+          "No current store-controlled social/community channel has been captured yet; solo-arrival texture remains unknown."
+        ],
+        "open_questions": [
+          "Check Instagram/Facebook or in-person notes later for turnout, prize structure, pod formation, and Commander power texture.",
+          "Confirm whether the active public address is consistently 2939 Whittier Blvd if older directory mirrors continue to surface 807 Euclid Ave."
+        ]
+      },
+      "reason": "Provide a practical Places assessment that reflects both current WPN evidence and the user's firsthand caveat."
+    },
+    {
+      "action": "insert",
+      "table": "research_changes",
+      "key": {
+        "id": "add-endless-entertainment-venue-2026-08-19"
+      },
+      "fields": {
+        "id": "add-endless-entertainment-venue-2026-08-19",
+        "detected_at": "2026-08-19T18:00:00Z",
+        "change_type": "research",
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "summary": "Added Endless Entertainment as a useful LA Magic venue lead with current WPN Commander evidence and a user firsthand value note.",
+        "review_status": "accepted"
+      },
+      "reason": "Create an app-visible accepted update for the newly added venue."
+    }
+  ]
+}

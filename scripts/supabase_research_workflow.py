@@ -46,6 +46,10 @@ TABLES: dict[str, dict[str, Any]] = {
             "id", "name", "city", "address", "phone", "website", "events_url",
             "instagram", "wpn_premium", "distance_miles", "operating_status",
             "research_status", "last_verified", "assessment_notes", "assessment",
+            "lifecycle_state", "lifecycle_reason", "baseline_pass_count",
+            "baseline_completed_at", "targeted_closure_completed_at",
+            "exception_pass_count", "lifecycle_exception_item_id",
+            "planning_summary",
         },
         "jsonb": {"assessment"},
         "identity_name": "venue",
@@ -198,7 +202,7 @@ ENUMS = {
 DATE_FIELDS = {
     "last_verified", "last_checked", "start_date", "end_date", "occurrence_date",
 }
-TIMESTAMP_FIELDS = {"detected_at"}
+TIMESTAMP_FIELDS = {"detected_at", "baseline_completed_at", "targeted_closure_completed_at"}
 TIME_FIELDS = {"default_start_time", "start_time", "end_time"}
 
 
