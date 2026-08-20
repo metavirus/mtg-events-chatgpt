@@ -1357,7 +1357,6 @@ function handleClick(event) {
     state.selectedPlaceWasAuto = false;
     closePlacePicker();
     navigate('places');
-    renderPlaces();
     return;
   }
 
@@ -1498,7 +1497,7 @@ function handleAction(action, element) {
     state.selectedPlaceId = element.dataset.placeId;
     state.selectedPlaceTab = 'events';
     navigate('places');
-    return renderPlaces();
+    return;
   }
 }
 
