@@ -151,7 +151,11 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .signal-card-kicker { display: flex; flex-wrap: wrap; gap: 6px; }
 .signal-card h3 { margin: 0; font: 800 17px/1.2 var(--display); letter-spacing: -.02em; }
 .signal-card p { margin: 0; color: #b9c2d6; font-size: 12px; }
+.arrival-signal-card h3 { font-size: 19px; }
+.arrival-signal-card p { color: #d1d9ec; line-height: 1.45; }
 .signal-related { display: flex; flex-wrap: wrap; gap: 6px; }
+.signal-arrival-preview .change-event-preview { margin-top: 0; }
+.signal-arrival-preview .change-event-chip { min-width: 150px; }
 .signal-meta { display: flex; flex-wrap: wrap; gap: 9px; color: var(--muted); font-size: 10px; }
 .signal-meta strong { color: #dbe1f0; font-weight: 600; }
 .signal-action { border-left: 1px solid var(--line); padding-left: 13px; display: grid; gap: 8px; align-content: start; color: var(--muted); font-size: 11px; }

@@ -125,6 +125,20 @@ async function main() {
       const body = await page.locator('body').innerText({ timeout: 15000 });
       assertText(body, 'Signals', 'Signals page title');
       pass('public app loaded and visible text was inspected', body.slice(0, 160));
+    } else if (scenario === 'signals-mark-read') {
+      await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));
+      await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
+      await page.locator('.signal-card').first().waitFor({ state: 'visible', timeout: 15000 });
+      const beforeCount = await page.locator('.signal-card').count();
+      const firstCard = page.locator('.signal-card').first();
+      const signalId = await firstCard.getByRole('button', { name: 'Mark read' }).getAttribute('data-signal-id');
+      await firstCard.getByRole('button', { name: 'Mark read' }).click({ timeout: 5000 });
+      await page.waitForFunction((id) => !document.querySelector(`.signal-card [data-action="mark-signal-read"][data-signal-id="${CSS.escape(id)}"]`), signalId, { timeout: 5000 });
+      const afterCount = await page.locator('.signal-card').count();
+      if (afterCount >= beforeCount) throw new Error(`Mark read did not remove a visible Signal card: ${beforeCount} -> ${afterCount}`);
+      pass('Signal Mark read removes the card from the active homepage list', `${beforeCount} -> ${afterCount}`);
     } else if (scenario === 'updates-daily-agents') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);

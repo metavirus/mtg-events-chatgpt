@@ -823,12 +823,14 @@ function personalNoteRows() {
 
 function personalSignalStateRows() {
   const now = new Date().toISOString();
-  return Object.keys(state.personal.signalRead || {}).map((signalId) => ({
-    user_id: personalAuth.user.id,
-    signal_id: signalId,
-    read_at: state.personal.signalRead[signalId] || now,
-    updated_at: now
-  }));
+  return Object.keys(state.personal.signalRead || {})
+    .filter((signalId) => !isDerivedSignalId(signalId))
+    .map((signalId) => ({
+      user_id: personalAuth.user.id,
+      signal_id: signalId,
+      read_at: state.personal.signalRead[signalId] || now,
+      updated_at: now
+    }));
 }
 
 function applyRemotePersonalState(preferences, notes, signalStates = []) {
@@ -1916,21 +1918,27 @@ function eventIngestDigestSignal(change) {
     + (place ? placePersonalAffinity(place) : 0)
     + events.reduce((score, event) => score + eventPersonalAffinity(event), 0);
   const priority = favorited || personalPriority >= 90 || (nearby && specialCount) || eventCount >= 8 ? 'high' : 'normal';
-  const firstDate = events
-    .map((event) => event.occurrenceDate || parseDate(event.date || event.startDate))
-    .filter((date) => date instanceof Date && !Number.isNaN(date.getTime()))
-    .sort((a, b) => a - b)[0];
   const category = 'event_opportunity';
-  const dateCopy = firstDate ? ` Earliest listed date: ${firstDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}.` : '';
   const sourceKinds = [...new Set(events.map((event) => event.sourceIds?.map(source).find(Boolean)?.type || 'source').filter(Boolean))];
-  const sourceCopy = sourceKinds.length ? ` Source: ${sourceKinds.slice(0, 2).join(' + ')}.` : '';
   const emphasis = [
-    specialCount ? `${specialCount} special/prerelease/limited` : '',
-    commanderCount ? `${commanderCount} Commander-related` : '',
+    commanderCount ? `${commanderCount} Commander` : '',
+    specialCount ? `${specialCount} special/limited` : '',
     favorited ? 'favorite-linked' : '',
     personalPriority >= 90 ? 'personal-history-linked' : '',
     nearby ? 'nearby' : ''
   ].filter(Boolean).join(' · ');
+  const titleSummary = eventTitleDigest(events);
+  const dateSummary = eventDateDigest(events);
+  const countSummary = eventCount === 1
+    ? titleSummary
+    : `${eventCount} new ${commanderCount === eventCount ? 'Commander ' : ''}events`;
+  const detailParts = [
+    relatedName,
+    eventCount > 1 && titleSummary ? titleSummary : '',
+    emphasis,
+    dateSummary,
+    sourceKinds.length ? `source: ${sourceKinds.slice(0, 2).join(' + ')}` : ''
+  ].filter(Boolean);
   return {
     id: `derived:${change.id}`,
     derivedFromChangeId: change.id,
@@ -1942,13 +1950,43 @@ function eventIngestDigestSignal(change) {
     observedAt: change.detectedAt || '',
     relatedEntityType: owner.type,
     relatedEntityId: owner.id,
-    summary: `${relatedName} added ${eventCount} new event${eventCount === 1 ? '' : 's'}.`,
-    details: `${emphasis ? `${emphasis}. ` : ''}${change.details || 'The daily surveyor promoted newly listed events.'}${dateCopy}${sourceCopy}`,
+    summary: countSummary || `${eventCount} new event${eventCount === 1 ? '' : 's'}`,
+    details: detailParts.join(' · '),
+    eventCount,
+    eventTitleSummary: titleSummary,
+    eventDateSummary: dateSummary,
+    ownerName: relatedName,
     confidence: eventCount ? 'high' : 'medium',
-    suggestedAction: eventCount === 1 ? 'Open the new event and decide whether it matters for planning.' : 'Open the batch drawer and skim the newly added events.',
+    suggestedAction: eventCount === 1 ? 'Open the event if it looks relevant.' : 'Skim the event batch.',
     promotionTarget: eventCount === 1 ? 'event' : 'event_digest',
     dedupeKey: `derived-event-ingest:${change.id}`
   };
+}
+
+function eventTitleDigest(events) {
+  const counts = new Map();
+  events.forEach((event) => {
+    const title = String(event.title || 'Untitled event').trim();
+    counts.set(title, (counts.get(title) || 0) + 1);
+  });
+  const labels = [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || compareText(a[0], b[0]))
+    .slice(0, 3)
+    .map(([title, count]) => count > 1 ? `${title} ×${count}` : title);
+  const more = counts.size > labels.length ? ` +${counts.size - labels.length} more` : '';
+  return `${labels.join(' · ')}${more}`;
+}
+
+function eventDateDigest(events) {
+  const dates = events
+    .map((event) => event.occurrenceDate || parseDate(event.date || event.startDate))
+    .filter((date) => date instanceof Date && !Number.isNaN(date.getTime()))
+    .sort((a, b) => a - b);
+  if (!dates.length) return '';
+  const first = dates[0].toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  const lastDate = dates[dates.length - 1];
+  const last = lastDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  return first === last ? first : `${first}–${last}`;
 }
 
 function isActFirstSignal(signal) {
@@ -1987,16 +2025,18 @@ function signalGroup(title, copy, signals, tone) {
 }
 
 function signalCard(signal) {
-  const related = signalRelatedTarget(signal);
+  const isArrival = !!signal.derivedFromChangeId;
+  const related = isArrival ? '' : signalRelatedTarget(signal);
   const relatedEvent = signalRelatedEvent(signal);
   const artifacts = artifactsForSignal(signal);
   const sourceItem = primarySourceForSignal(signal);
-  const sourceUrl = signal.evidenceUrl || sourceItem?.url || '';
-  const sourceLabel = sourceItem?.label || (sourceUrl ? 'Source link' : 'Source not linked');
+  const sourceUrl = isArrival ? '' : signal.evidenceUrl || sourceItem?.url || '';
+  const sourceLabel = isArrival ? '' : sourceItem?.label || (sourceUrl ? 'Source link' : 'Source not linked');
   const isExternal = /^https?:\/\//i.test(sourceUrl);
   const read = isSignalRead(signal.id);
   const tone = signalTone(signal);
-  return `<article class="signal-card ${tone}">
+  const arrivalPreview = isArrival ? signalArrivalPreview(signal) : '';
+  return `<article class="signal-card ${tone} ${isArrival ? 'arrival-signal-card' : ''}">
     <div class="signal-card-main">
       <div class="signal-card-kicker">
         <span class="status-chip ${tone}">${escapeHtml(signalCategoryLabel(signal.category))}</span>
@@ -2007,6 +2047,7 @@ function signalCard(signal) {
       <h3>${escapeHtml(signal.summary)}</h3>
       ${related ? `<div class="signal-related">${related}</div>` : ''}
       <p>${escapeHtml(signal.details || 'No additional detail recorded yet.')}</p>
+      ${arrivalPreview}
       <div class="signal-meta">
         <span>Confidence: <strong>${escapeHtml(signal.confidence || 'unknown')}</strong></span>
         <span>Captured: <strong>${escapeHtml(formatFreshnessDateTime(signal.capturedAt))}</strong></span>
@@ -2015,7 +2056,7 @@ function signalCard(signal) {
     <aside class="signal-action">
       <span>Suggested action</span>
       <strong>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</strong>
-      ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" ${isExternal ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(sourceLabel)} ↗</a>` : `<small>${escapeHtml(sourceLabel)}</small>`}
+      ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" ${isExternal ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(sourceLabel)} ↗</a>` : sourceLabel ? `<small>${escapeHtml(sourceLabel)}</small>` : ''}
       ${relatedEvent ? `<button class="soft-button signal-read-button" data-event-id="${escapeHtml(relatedEvent.id)}">Open event</button>` : signal.derivedFromChangeId ? `<button class="soft-button signal-read-button" data-action="open-change-events" data-change-id="${escapeHtml(signal.derivedFromChangeId)}">${eventIngestDeltaMatches(changeById(signal.derivedFromChangeId)).filter((event) => !isEventHidden(event)).length === 1 ? 'Open new event' : 'Open new events'}</button>` : ''}
       <button class="soft-button signal-read-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open details</button>
       <button class="soft-button signal-read-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>
@@ -2023,8 +2064,19 @@ function signalCard(signal) {
   </article>`;
 }
 
+function signalArrivalPreview(signal) {
+  const change = changeById(signal.derivedFromChangeId);
+  if (!change) return '';
+  const preview = changeEventPreview(change);
+  return preview ? `<div class="signal-arrival-preview">${preview}</div>` : '';
+}
+
 function isSignalRead(signalId) {
   return !!state.personal.signalRead?.[signalId];
+}
+
+function isDerivedSignalId(signalId) {
+  return String(signalId || '').startsWith('derived:');
 }
 
 function discoveryPossibilityKey(id) {
@@ -4524,7 +4576,7 @@ async function persistPersonalNote(key, value) {
 }
 
 async function persistSignalReadState(signalId, read) {
-  if (!personalAuth.user || !personalAuth.client) return;
+  if (!personalAuth.user || !personalAuth.client || isDerivedSignalId(signalId)) return;
   let error;
   if (read) {
     const now = new Date().toISOString();
@@ -4644,7 +4696,7 @@ function toggleEventDislike(key) {
 }
 
 function setSignalRead(signalId, read) {
-  const signal = DATA.signals.find((item) => item.id === signalId);
+  const signal = rankedSignals().find((item) => item.id === signalId);
   if (!signal) return;
   if (read) {
     state.personal.signalRead[signalId] = new Date().toISOString();
@@ -4652,7 +4704,7 @@ function setSignalRead(signalId, read) {
     delete state.personal.signalRead[signalId];
   }
   savePersonal({ type: 'signal', label: `${read ? 'Marked read' : 'Restored'} signal: ${signal.summary}` });
-  void persistSignalReadState(signalId, read);
+  if (!isDerivedSignalId(signalId)) void persistSignalReadState(signalId, read);
   renderCurrentRoute();
   updateChrome();
   toast(read ? personalSaveToast('Signal marked read') : personalSaveToast('Signal restored'));
