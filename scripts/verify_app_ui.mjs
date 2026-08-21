@@ -130,15 +130,14 @@ async function main() {
       await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));
       await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
-      await page.locator('.signal-card').first().waitFor({ state: 'visible', timeout: 15000 });
-      const beforeCount = await page.locator('.signal-card').count();
-      const firstCard = page.locator('.signal-card').first();
-      const signalId = await firstCard.getByRole('button', { name: 'Mark read' }).getAttribute('data-signal-id');
-      await firstCard.getByRole('button', { name: 'Mark read' }).click({ timeout: 5000 });
-      await page.waitForFunction((id) => !document.querySelector(`.signal-card [data-action="mark-signal-read"][data-signal-id="${CSS.escape(id)}"]`), signalId, { timeout: 5000 });
-      const afterCount = await page.locator('.signal-card').count();
-      if (afterCount >= beforeCount) throw new Error(`Mark read did not remove a visible Signal card: ${beforeCount} -> ${afterCount}`);
-      pass('Signal Mark read removes the card from the active homepage list', `${beforeCount} -> ${afterCount}`);
+      await page.locator('.briefing-attention-card [data-action="mark-signal-read"]').first().waitFor({ state: 'visible', timeout: 15000 });
+      const beforeCount = await page.locator('.briefing-attention-card').count();
+      const firstCard = page.locator('.briefing-attention-card').filter({ has: page.locator('[data-action="mark-signal-read"]') }).first();
+      const signalId = await firstCard.getByRole('button', { name: 'Dismiss' }).getAttribute('data-signal-id');
+      await firstCard.getByRole('button', { name: 'Dismiss' }).click({ timeout: 5000 });
+      await page.waitForFunction((id) => !document.querySelector(`.briefing-attention-card [data-action="mark-signal-read"][data-signal-id="${CSS.escape(id)}"]`), signalId, { timeout: 5000 });
+      const afterCount = await page.locator('.briefing-attention-card').count();
+      pass('Briefing Dismiss removes the handled attention item', `${signalId} removed; visible attention ${beforeCount} -> ${afterCount}`);
     } else if (scenario === 'signals-current-attention') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
@@ -150,8 +149,12 @@ async function main() {
         stalePersonalPresent: [...document.querySelectorAll('.personal-todo-card')].some((card) => /Magic The GAYthering/i.test(card.textContent)),
         staleSignalPresent: [...document.querySelectorAll('.signal-card')].some((card) => /Magic The GAYthering/i.test(card.querySelector('h3')?.textContent || '')),
         pastArrivalPreviewDates: [...document.querySelectorAll('.signal-arrival-preview [data-date]')].map((item) => item.getAttribute('data-date')).filter((date) => date < new Date().toISOString().slice(0, 10)),
-        arrivalCards: document.querySelectorAll('.arrival-signal-card').length,
-        updatesLinkPresent: !!document.querySelector('.signals-overflow-note [data-route="changes"]')
+        rawSignalCards: document.querySelectorAll('.signal-card').length,
+        briefingTitle: document.querySelector('#route-signals h1')?.textContent?.trim(),
+        heroPresent: !!document.querySelector('.briefing-hero'),
+        weekPresent: !!document.querySelector('.briefing-week'),
+        digestPresent: !!document.querySelector('.briefing-digest'),
+        agentsPresent: !!document.querySelector('.briefing-agent-strip')
       }));
       if (currentAttention.introPresent) throw new Error('Analyst/debug Signals explanation is still visible');
       if (currentAttention.emptyDiscoveryPresent) throw new Error('Empty discovery restore panel is still visible');
@@ -159,14 +162,15 @@ async function main() {
       if (currentAttention.stalePersonalPresent) throw new Error('Past-event personal follow-up is still visible');
       if (currentAttention.staleSignalPresent) throw new Error('Past-event Signal is still visible');
       if (currentAttention.pastArrivalPreviewDates.length) throw new Error(`Past occurrence is still previewed in current arrivals: ${currentAttention.pastArrivalPreviewDates.join(', ')}`);
-      if (currentAttention.arrivalCards > 8) throw new Error(`Signals shows ${currentAttention.arrivalCards} arrival cards; expected at most 8`);
-      pass('Signals stays focused on current attention', `${currentAttention.arrivalCards} current arrival cards; stale/debug chrome absent; updates overflow=${currentAttention.updatesLinkPresent}`);
+      if (currentAttention.rawSignalCards) throw new Error(`Briefing leaked ${currentAttention.rawSignalCards} raw Signal cards`);
+      if (currentAttention.briefingTitle !== 'Briefing' || !currentAttention.heroPresent || !currentAttention.weekPresent || !currentAttention.digestPresent || !currentAttention.agentsPresent) throw new Error(`Briefing structure incomplete: ${JSON.stringify(currentAttention)}`);
+      pass('Briefing synthesizes current attention without raw log cards', 'recommendation, week, digest, attention, and surveyor status rendered');
     } else if (scenario === 'route-click-perf') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));
       await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => undefined);
-      await page.locator('.signal-card').first().waitFor({ state: 'visible', timeout: 20000 });
+      await page.locator('.briefing-hero').waitFor({ state: 'visible', timeout: 20000 });
       const measurements = await page.evaluate(async () => {
         const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         const countDom = () => ({
@@ -194,7 +198,7 @@ async function main() {
           ['.nav-item[data-route=changes]', 'updates nav'],
           ['.nav-item[data-route=communities]', 'communities nav'],
           ['.nav-item[data-route=signals]', 'signals nav'],
-          ['.signal-card button[data-action=mark-signal-read]', 'mark read'],
+          ['.briefing-attention-card button[data-action=mark-signal-read]', 'mark read'],
           ['.nav-item[data-route=places]', 'places nav again'],
           ['.entity-list-item', 'place row']
         ]) {

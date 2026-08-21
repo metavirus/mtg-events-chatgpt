@@ -1745,59 +1745,177 @@ function renderSignals() {
   const container = document.getElementById('signalsContent');
   const summaryContainer = document.getElementById('signalsSummary');
   if (!container) return;
-  const signals = rankedSignals();
-  const personalTodos = personalTodoItems();
-  const readSignals = signals.filter((signal) => isSignalRead(signal.id));
-  const activeSignals = signals.filter((signal) => !['dismissed', 'stale'].includes(signal.status) && !isSignalRead(signal.id) && signalIsCurrentForHome(signal));
-  const arrivalSignals = activeSignals.filter((signal) => !!signal.derivedFromChangeId);
-  const visibleArrivalSignals = arrivalSignals.slice(0, 8);
-  const coreActiveSignals = activeSignals.filter((signal) => !signal.derivedFromChangeId);
-  const urgent = coreActiveSignals.filter(isActFirstSignal);
-  const followUp = coreActiveSignals.filter((signal) => !urgent.includes(signal) && (signal.status === 'needs_followup' || ['source_health', 'community_activity'].includes(signal.category)));
-  const watch = coreActiveSignals.filter((signal) => !urgent.includes(signal) && !followUp.includes(signal));
-  const stale = signals.filter((signal) => ['dismissed', 'stale'].includes(signal.status) && !isSignalRead(signal.id));
-  const hiddenSignals = readSignals.filter((signal) => !['dismissed', 'stale'].includes(signal.status));
+  const upcoming = briefingUpcomingEvents();
+  const nextBest = upcoming[0] || null;
+  const thisWeek = upcoming.slice(1, 5);
+  const digests = briefingChangeDigests();
+  const attention = briefingAttentionSignals();
+  const todos = personalTodoItems().slice(0, 2);
+  const agents = briefingAgentStatuses();
+  const attentionCount = attention.length + todos.length;
 
-  if (!signals.length) {
-    if (summaryContainer) summaryContainer.innerHTML = '';
-    container.innerHTML = emptyState('No signals yet', 'Signals will appear here when a real source, community route, fit caution, or opportunity deserves attention.');
-    return;
-  }
+  if (summaryContainer) summaryContainer.innerHTML = `<div class="briefing-summary">
+    <span class="live-dot"></span>
+    <strong>${attentionCount ? `${attentionCount} item${attentionCount === 1 ? ' needs' : 's need'} attention` : 'Nothing urgent is waiting'}</strong>
+    <span>${digests.length ? `${digests.length} useful change${digests.length === 1 ? '' : 's'} since your last review` : 'No material changes since your last review'}</span>
+  </div>`;
 
-  const summaryParts = [];
-  if (urgent.length) summaryParts.push(`${urgent.length} urgent`);
-  if (arrivalSignals.length) {
-    const arrivalVenues = new Set(
-      arrivalSignals
-        .map((signal) => changeById(signal.derivedFromChangeId))
-        .filter(Boolean)
-        .map((change) => change.entityId)
-        .filter(Boolean)
-    );
-    summaryParts.push(`${arrivalSignals.length} new arrival${arrivalSignals.length === 1 ? '' : 's'} across ${arrivalVenues.size} venue${arrivalVenues.size === 1 ? '' : 's'}`);
-  }
-  if (activeSignals.length && !summaryParts.length) summaryParts.push(`${activeSignals.length} active`);
-  if (readSignals.length) summaryParts.push(`${readSignals.length} read`);
+  container.innerHTML = `<div class="briefing-layout">
+    ${nextBest ? briefingHero(nextBest) : briefingEmptyHero()}
+    ${briefingThisWeek(thisWeek)}
+    ${briefingDigestSection(digests)}
+    ${briefingAttentionSection(attention, todos)}
+    ${briefingAgentStrip(agents)}
+  </div>`;
+}
 
-  const orderedGroups = [
-    urgent.length ? signalGroup('Act first', 'Actionable cancellations, deadlines, strong opportunities, or judgment calls that should shape near-term planning.', urgent, 'coral') : '',
-    visibleArrivalSignals.length ? `${signalGroup('New arrivals', 'Upcoming additions most likely to matter now.', visibleArrivalSignals, 'sky')}${arrivalSignals.length > visibleArrivalSignals.length ? `<div class="signals-overflow-note"><span><strong>${arrivalSignals.length - visibleArrivalSignals.length} more arrival${arrivalSignals.length - visibleArrivalSignals.length === 1 ? '' : 's'}</strong> remain in the complete Updates history.</span><button class="soft-button" data-route="changes">Open Updates</button></div>` : ''}` : '',
-    followUp.length ? signalGroup('Follow up', 'Useful routes, source-health issues, or community surfaces that deserve a bounded next look.', followUp, 'amber') : '',
-    watch.length ? signalGroup('Watch list', 'Real but lower-pressure signals to keep visible without turning this into an inbox.', watch, 'mint') : '',
-    stale.length ? signalGroup('Closed or stale', 'Retained for context, but not currently asking for attention.', stale, 'slate') : '',
-    state.showReadSignals && hiddenSignals.length ? signalGroup('Read / hidden', 'You marked these handled. Restore one if it should return to Signals.', hiddenSignals, 'slate') : '',
-  ].filter(Boolean).join('');
+function briefingUpcomingEvents() {
+  const events = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 14)), false)
+    .filter((event) => !isEventHidden(event) && !isCompetitive(event) && eventPlanningGroup(event) !== 'hidden');
+  const ranked = rankedTodayLeads(events);
+  const seen = new Set();
+  return ranked.filter((event) => {
+    const key = `${event.seriesId || event.id}:${event.storeId || event.communityId || ''}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
 
-  if (summaryContainer) {
-    summaryContainer.innerHTML = `<div class="signal-toolbar">
-      <p>${[personalTodos.length ? `${personalTodos.length} personal review item${personalTodos.length === 1 ? '' : 's'}` : '', ...summaryParts].filter(Boolean).join(' · ') || 'Signals stay compact here; handled items can be marked read and revisited later.'}</p>
-      ${readSignals.length ? `<button class="soft-button" data-action="toggle-read-signals">${state.showReadSignals ? 'Hide read signals' : 'Show read signals'}</button>` : ''}
-    </div>`;
-  }
+function briefingEventReason(event) {
+  const place = store(event.storeId);
+  const organizer = event.communityId ? community(event.communityId) : null;
+  const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+  const interestKey = occurrence ? `${event.id}:${dateKey(occurrence)}` : '';
+  const reasons = [];
+  if (interestKey && state.personal.interested?.[interestKey]) reasons.push('you marked it interesting');
+  if (organizer && state.personal.favorites?.[`community:${organizer.id}`]) reasons.push(`from ${organizer.name}`);
+  if (place && state.personal.favorites?.[`place:${place.id}`]) reasons.push('at a favorite place');
+  if (organizer && !reasons.some((item) => item.includes(organizer.name))) reasons.push(`community-organized by ${organizer.name}`);
+  if (isCommanderLike(event)) reasons.push('Commander');
+  else if (isPrereleaseOrSealed(event)) reasons.push('special limited event');
+  if (place && numericDistance(place) != null && numericDistance(place) <= 10) reasons.push('nearby');
+  return reasons.slice(0, 3).join(' · ') || `${fitLabel(event).label.toLowerCase()} · current listing`;
+}
 
-  container.innerHTML = `${personalTodoSection(personalTodos)}<div class="signals-board">
-      ${orderedGroups}
-    </div>`;
+function briefingEventWhen(event, long = false) {
+  const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+  if (!occurrence) return 'Date not resolved';
+  const date = occurrence.toLocaleDateString(undefined, long
+    ? { weekday: 'long', month: 'long', day: 'numeric' }
+    : { weekday: 'short', month: 'short', day: 'numeric' });
+  return `${date} · ${formatTime(eventStartTime(event))}`;
+}
+
+function briefingHero(event) {
+  const place = store(event.storeId);
+  const organizer = event.communityId ? community(event.communityId) : null;
+  const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+  const interestKey = occurrence ? `${event.id}:${dateKey(occurrence)}` : '';
+  const interested = !!state.personal.interested?.[interestKey];
+  return `<section class="briefing-hero">
+    <div class="briefing-hero-copy">
+      <p class="eyebrow mint">Next best option</p>
+      <button class="briefing-title-button" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(occurrence)}"><h2>${escapeHtml(event.title)}</h2></button>
+      <p class="briefing-when">${escapeHtml(briefingEventWhen(event, true))}</p>
+      <p class="briefing-place">${escapeHtml(organizer?.name || place?.name || 'Location to confirm')}${organizer && place ? ` · at ${escapeHtml(place.name)}` : ''}</p>
+      <p class="briefing-reason">${escapeHtml(briefingEventReason(event))}</p>
+      <div class="briefing-actions"><button class="primary-button" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(occurrence)}">Open event</button>${interestKey ? `<button class="soft-button ${interested ? 'active' : ''}" data-interested="${escapeHtml(interestKey)}">${interested ? '✓ Interested' : '+ Interested'}</button>` : ''}</div>
+    </div>
+    ${place ? `<button class="briefing-hero-place" data-place-id="${escapeHtml(place.id)}">${placeAvatar(place, 'large')}<span><small>Hosted at</small><strong>${escapeHtml(place.name)}</strong><em>${escapeHtml(distanceLabel(place))}</em></span></button>` : ''}
+  </section>`;
+}
+
+function briefingEmptyHero() {
+  return `<section class="briefing-hero empty"><div><p class="eyebrow mint">Next best option</p><h2>No strong near-term match yet</h2><p>The surveyors have not produced a current event that clears your normal fit filters.</p><button class="soft-button" data-route="events">Browse all events</button></div></section>`;
+}
+
+function briefingThisWeek(events) {
+  return `<section class="briefing-section briefing-week"><div class="briefing-section-head"><div><p class="eyebrow">This week</p><h2>Other good possibilities</h2></div><button class="text-button" data-route="events">All events →</button></div>
+    ${events.length ? `<div class="briefing-event-grid">${events.map(briefingEventCard).join('')}</div>` : '<p class="briefing-quiet">Nothing else clears the useful-shortlist threshold in the next two weeks.</p>'}
+  </section>`;
+}
+
+function briefingEventCard(event) {
+  const place = store(event.storeId);
+  const organizer = event.communityId ? community(event.communityId) : null;
+  const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+  return `<button class="briefing-event-card" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(occurrence)}">
+    <span class="briefing-event-date"><strong>${occurrence.getDate()}</strong>${occurrence.toLocaleDateString(undefined, { month: 'short' })}</span>
+    <span class="briefing-event-copy"><small>${escapeHtml(organizer?.name || place?.name || 'Location to confirm')}</small><strong>${escapeHtml(event.title)}</strong><em>${escapeHtml(briefingEventReason(event))}</em></span>
+    <span class="briefing-arrow">→</span>
+  </button>`;
+}
+
+function briefingChangeDigests() {
+  const cutoff = state.personal.updatesSeenAt || addDays(startOfDay(new Date()), -7).toISOString();
+  const groups = new Map();
+  acceptedChanges()
+    .filter((change) => (change.detectedAt || '') > cutoff && change.changeType === 'event_ingest_delta')
+    .forEach((change) => {
+      const events = eventIngestDeltaMatches(change).filter(eventIsCurrentForSignals).filter((event) => !isEventHidden(event));
+      if (!events.length) return;
+      const owner = eventIngestDisplayOwner(change, events);
+      const key = `${owner.type}:${owner.id}`;
+      const group = groups.get(key) || { owner, events: [], latest: '', changeIds: [] };
+      group.events.push(...events);
+      group.changeIds.push(change.id);
+      if ((change.detectedAt || '') > group.latest) group.latest = change.detectedAt || '';
+      groups.set(key, group);
+    });
+  return [...groups.values()].map((group) => {
+    group.events = [...new Map(group.events.map((event) => [`${event.id}:${event.date || event.startDate || ''}`, event])).values()];
+    return group;
+  }).sort((a, b) => b.latest.localeCompare(a.latest) || b.events.length - a.events.length).slice(0, 3);
+}
+
+function briefingDigestSection(digests) {
+  return `<section class="briefing-section briefing-digest"><div class="briefing-section-head"><div><p class="eyebrow sky">Since your last review</p><h2>What materially changed</h2></div><button class="text-button" data-route="changes">All updates →</button></div>
+    ${digests.length ? `<div class="briefing-digest-list">${digests.map(briefingDigestCard).join('')}</div>` : '<p class="briefing-quiet">No meaningful event or schedule change is waiting for review.</p>'}
+  </section>`;
+}
+
+function briefingDigestCard(digest) {
+  const { owner, events } = digest;
+  const title = events.length === 1 ? `New: ${events[0].title}` : `${events.length} upcoming events added`;
+  const detail = events.length === 1 ? briefingEventWhen({ ...events[0], occurrenceDate: parseDate(events[0].date || events[0].startDate) }) : `${eventTitleDigest(events)} · ${eventDateDigest(events)}`;
+  const target = owner.type === 'community' ? `data-community-id="${escapeHtml(owner.id)}"` : `data-place-id="${escapeHtml(owner.id)}"`;
+  return `<button class="briefing-digest-card" ${target}><span><small>${escapeHtml(owner.name)}</small><strong>${escapeHtml(title)}</strong><em>${escapeHtml(detail)}</em></span><span>→</span></button>`;
+}
+
+function briefingAttentionSignals() {
+  const seen = new Set();
+  return rankedSignals().filter((signal) => !signal.derivedFromChangeId && !['dismissed', 'stale'].includes(signal.status) && signalIsCurrentForHome(signal))
+    .filter((signal) => {
+      const key = `${signal.category}:${signal.relatedEntityType}:${signal.relatedEntityId || signal.sourceId || signal.summary}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .filter((signal) => !isSignalRead(signal.id))
+    .filter((signal) => isActFirstSignal(signal) || signal.status === 'needs_followup')
+    .slice(0, 3);
+}
+
+function briefingAttentionSection(signals, todos) {
+  const cards = [
+    ...todos.map((item) => `<article class="briefing-attention-card personal"><span class="status-chip violet">From you</span><div><strong>${escapeHtml(item.entity?.label || item.label || 'Personal follow-up')}</strong><p>${escapeHtml(item.reason)}</p></div>${item.entity?.type === 'place' ? `<button class="soft-button" data-place-id="${escapeHtml(item.entity.id)}">Review place</button>` : item.entity?.type === 'community' ? `<button class="soft-button" data-community-id="${escapeHtml(item.entity.id)}">Review community</button>` : item.entity?.type === 'event' ? `<button class="soft-button" data-event-id="${escapeHtml(item.entity.id)}">Open event</button>` : ''}</article>`),
+    ...signals.map((signal) => `<article class="briefing-attention-card"><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><div><strong>${escapeHtml(signal.summary)}</strong><p>${escapeHtml(truncate(signal.details || signal.suggestedAction || '', 180))}</p></div><div class="briefing-attention-actions"><button class="soft-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open</button><button class="text-button" data-action="mark-signal-read" data-signal-id="${escapeHtml(signal.id)}">Dismiss</button></div></article>`)
+  ];
+  return `<section class="briefing-section briefing-attention ${cards.length ? '' : 'quiet'}"><div class="briefing-section-head"><div><p class="eyebrow coral">Needs attention</p><h2>${cards.length ? 'Worth a decision' : 'Nothing needs you right now'}</h2></div></div>${cards.length ? `<div class="briefing-attention-list">${cards.join('')}</div>` : '<p class="briefing-quiet">No failures, conflicts, cancellations, or personal follow-ups are waiting.</p>'}</section>`;
+}
+
+function briefingAgentStatuses() {
+  const statuses = dailyAgentStatuses();
+  const byId = new Map(statuses.map((item) => [item.id, item]));
+  const socialParts = [byId.get('instagram'), byId.get('facebook')].filter(Boolean);
+  const severity = { active: 0, unknown: 1, stale: 2, attention: 3 };
+  const social = socialParts.sort((a, b) => severity[b.status] - severity[a.status])[0];
+  return [byId.get('wpn'), social ? { ...social, id: 'social', label: 'Instagram / Facebook' } : null, byId.get('discord')].filter(Boolean);
+}
+
+function briefingAgentStrip(agents) {
+  return `<section class="briefing-agent-strip"><span>Daily surveyors</span>${agents.map((agent) => `<button data-route="${escapeHtml(agent.route)}"><i class="${escapeHtml(agent.status)}"></i><strong>${escapeHtml(agent.label)}</strong><small>${escapeHtml(agent.lastRunAt ? formatRelativeDate(agent.lastRunAt) : agent.status)}</small></button>`).join('')}<button class="briefing-agent-details" data-route="changes">Details →</button></section>`;
 }
 
 function signalIsCurrentForHome(signal) {
