@@ -172,6 +172,16 @@ the exact durable state and next action, then hand off from that checkpoint.
   findings. The first live write established the enriched baseline in 9.16
   seconds; an immediate 9.40-second replay returned 1,267 unchanged events,
   zero findings, and zero coordination-inbox noise.
+- The August 21 unmatched-WPN purgatory audit is closed. Junkyard Cards,
+  PokeBoxUSA, and Side Quest Games and Accessories were false negatives and are
+  now canonical reviewed Places with 6, 34, and 27 bound future WPN occurrences
+  respectively. The other eight open unmatched candidates were considered and
+  rejected with individual reasons; the unmatched-venue inbox now has no open
+  rows. Reopen a rejected name only through a new lead with materially stronger
+  recurring Commander or firsthand evidence. The repair also showed that a
+  cached unmatched organization must be force-refreshed after venue promotion
+  before its held events can bind. `refresh_wpn_cache.py` now launches its
+  crawler with the repo `.venv` when available, matching the readiness gate.
 - The ordinary daily surveyor now runs in the cloud through
   `.github/workflows/daily-surveyor.yml`, not on the user's desktop. The action
   uses `SUPABASE_DB_URL`, refreshes only when the rich WPN cache is stale unless

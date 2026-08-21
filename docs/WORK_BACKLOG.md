@@ -41,6 +41,17 @@ Use it for:
   Keep Discord bracketed from the cloud job for now. This is operational
   baseline, not greenfield next work.
 
+- Closed August 21 unmatched-WPN audit: Junkyard Cards, PokeBoxUSA, and Side
+  Quest were incorrectly stranded outside Places despite useful recurring
+  Commander evidence. They are now canonical reviewed venues, and a forced
+  cache re-enrichment plus quiet promoter run bound 6, 34, and 27 future WPN
+  occurrences to them. The other eight candidates were durably rejected with
+  individual reasons rather than left in purgatory. A later daily run may open
+  a new lead only when materially stronger evidence changes one of those
+  decisions. The operational lesson is permanent: after promoting an unmatched
+  WPN organization, refresh the enriched cache before restaging so its events
+  acquire the new canonical venue mapping.
+
 - Store source-completeness audit: use
   `.\.venv\Scripts\python.exe scripts\audit_store_source_completeness.py --limit 20`
   as the fast operator check for venues that still look WPN-only,

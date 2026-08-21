@@ -1,0 +1,77 @@
+{
+  "proposal_id": "2026-08-21-promote-wpn-purgatory-venues",
+  "description": "Promote three WPN unmatched venues that the false-negative audit found should already be visible in Places: Junkyard Cards, PokeBoxUSA, and Side Quest Games and Accessories.",
+  "created_at": "2026-08-21T20:00:00Z",
+  "author": "Codex",
+  "operations": [
+    {
+      "action": "insert", "table": "sources", "key": {"id": "src-wpn-18954"},
+      "fields": {"id": "src-wpn-18954", "label": "Wizards Store & Event Locator - Junkyard Cards", "url": "https://locator.wizards.com/store/18954", "source_type": "wpn", "health_status": "current", "last_checked": "2026-08-21"},
+      "reason": "Current WPN identity and recurring Monday Commander evidence."
+    },
+    {
+      "action": "insert", "table": "venues", "key": {"id": "junkyard-cards-long-beach"},
+      "fields": {"id": "junkyard-cards-long-beach", "name": "Junkyard Cards", "city": "Long Beach", "address": "2150 E South St, Long Beach, CA 90805, United States", "phone": "(562) 470-6174", "website": null, "events_url": "https://locator.wizards.com/store/18954", "instagram": "https://www.instagram.com/junkyard.cards/", "wpn_premium": false, "distance_miles": 6.63, "operating_status": "open", "research_status": "reviewed", "last_verified": "2026-08-21", "assessment_notes": "Promoted from the unmatched WPN queue after a false-negative audit. Current WPN data lists four consecutive Monday Night Magic: Commander dates plus later prereleases; current directory evidence corroborates the Long Beach address and active card-shop identity.", "lifecycle_state": "steady_state", "lifecycle_reason": "Nearby active WPN store with a clear recurring Commander lane; no reason to leave it outside Places.", "baseline_pass_count": 1, "baseline_completed_at": "2026-08-21T20:00:00Z", "planning_summary": "Very nearby Monday Commander option with current WPN continuity; community texture still needs firsthand or social evidence.", "assessment": {"commanderActivity": 4, "homeGroupPotential": 3, "communityContinuity": 3, "meetupAccessibility": 4, "physicalEnvironment": 3, "scheduleReliability": 4, "newPlayerIntegration": 3}},
+      "reason": "Create the canonical Place that the unmatched queue incorrectly kept out of the app."
+    },
+    {
+      "action": "insert", "table": "entity_sources", "key": {"entity_type": "venue", "entity_id": "junkyard-cards-long-beach", "source_id": "src-wpn-18954"},
+      "fields": {"entity_type": "venue", "entity_id": "junkyard-cards-long-beach", "source_id": "src-wpn-18954", "relationship": "WPN identity and recurring Commander schedule"}, "reason": "Attach the current WPN source."
+    },
+    {
+      "action": "insert", "table": "evaluations", "key": {"entity_type": "venue", "entity_id": "junkyard-cards-long-beach"},
+      "fields": {"entity_type": "venue", "entity_id": "junkyard-cards-long-beach", "research_status": "reviewed", "candidate_status": "promoted", "fit_grade": "B+", "fit_score": 4.0, "confidence": "medium", "positives": ["Only 6.6 miles away.", "Four current consecutive Monday Commander listings establish a routine.", "Current public reviews describe a friendly, reasonably priced card shop."], "cautions": ["Turnout and pod power texture are not yet established."], "open_questions": ["Capture firsthand or social evidence about Monday turnout and pod formation."]},
+      "reason": "Give the new Place a decision-grade initial assessment without overstating community evidence."
+    },
+    {
+      "action": "insert", "table": "research_changes", "key": {"id": "add-junkyard-cards-venue-2026-08-21"},
+      "fields": {"id": "add-junkyard-cards-venue-2026-08-21", "detected_at": "2026-08-21T20:00:00Z", "change_type": "research", "entity_type": "venue", "entity_id": "junkyard-cards-long-beach", "summary": "Promoted nearby Junkyard Cards from the unmatched WPN queue after confirming recurring Monday Commander.", "review_status": "accepted"}, "reason": "Expose the accepted promotion in Updates."
+    },
+    {
+      "action": "insert", "table": "sources", "key": {"id": "src-wpn-16709"},
+      "fields": {"id": "src-wpn-16709", "label": "Wizards Store & Event Locator - PokeBoxUSA", "url": "https://locator.wizards.com/store/16709", "source_type": "wpn", "health_status": "current", "last_checked": "2026-08-21"},
+      "reason": "Current WPN identity and dense recurring Commander calendar."
+    },
+    {
+      "action": "insert", "table": "venues", "key": {"id": "pokeboxusa-san-gabriel"},
+      "fields": {"id": "pokeboxusa-san-gabriel", "name": "PokeBoxUSA", "city": "San Gabriel", "address": "625 W Las Tunas Dr, San Gabriel, CA 91776, United States", "phone": "(626) 872-1952", "website": "https://www.pokeboxusa.com/", "events_url": "https://locator.wizards.com/store/16709", "instagram": "https://www.instagram.com/pokeboxusa/", "wpn_premium": false, "distance_miles": 20.81, "operating_status": "open", "research_status": "reviewed", "last_verified": "2026-08-21", "assessment_notes": "Promoted from the unmatched WPN queue after a false-negative audit. Current WPN data contains a dense Friday and Sunday Commander Free Play schedule through early November, plus draft and Standard. The official site corroborates the address and active social route.", "lifecycle_state": "steady_state", "lifecycle_reason": "Distance-caveated but unusually strong recurring Commander evidence makes this useful enough for Places.", "baseline_pass_count": 1, "baseline_completed_at": "2026-08-21T20:00:00Z", "planning_summary": "Farther SGV option with unusually reliable Friday and Sunday Commander Free Play; worthwhile when distance is acceptable.", "assessment": {"commanderActivity": 5, "homeGroupPotential": 3, "communityContinuity": 4, "meetupAccessibility": 2, "physicalEnvironment": 3, "scheduleReliability": 5, "newPlayerIntegration": 3}},
+      "reason": "Create a canonical Place for a strong Commander calendar that should not remain unmatched."
+    },
+    {
+      "action": "insert", "table": "entity_sources", "key": {"entity_type": "venue", "entity_id": "pokeboxusa-san-gabriel", "source_id": "src-wpn-16709"},
+      "fields": {"entity_type": "venue", "entity_id": "pokeboxusa-san-gabriel", "source_id": "src-wpn-16709", "relationship": "WPN identity and recurring Commander schedule"}, "reason": "Attach the current WPN source."
+    },
+    {
+      "action": "insert", "table": "evaluations", "key": {"entity_type": "venue", "entity_id": "pokeboxusa-san-gabriel"},
+      "fields": {"entity_type": "venue", "entity_id": "pokeboxusa-san-gabriel", "research_status": "reviewed", "candidate_status": "promoted", "fit_grade": "B", "fit_score": 3.8, "confidence": "high", "positives": ["Recurring Friday and Sunday Commander Free Play is listed for months.", "Official website and social route corroborate the active store.", "The event calendar has strong continuity rather than a one-off Commander special."], "cautions": ["About 20.8 miles away, so it is not a routine convenience option."], "open_questions": ["Assess turnout, power texture, and solo-arrival friendliness if it becomes a planned trip."]},
+      "reason": "Reflect strong schedule evidence while preserving the distance caveat."
+    },
+    {
+      "action": "insert", "table": "research_changes", "key": {"id": "add-pokeboxusa-venue-2026-08-21"},
+      "fields": {"id": "add-pokeboxusa-venue-2026-08-21", "detected_at": "2026-08-21T20:00:00Z", "change_type": "research", "entity_type": "venue", "entity_id": "pokeboxusa-san-gabriel", "summary": "Promoted PokeBoxUSA from the unmatched WPN queue after confirming a dense recurring Commander schedule.", "review_status": "accepted"}, "reason": "Expose the accepted promotion in Updates."
+    },
+    {
+      "action": "insert", "table": "sources", "key": {"id": "src-wpn-15594"},
+      "fields": {"id": "src-wpn-15594", "label": "Wizards Store & Event Locator - Side Quest Games and Accessories", "url": "https://locator.wizards.com/store/15594", "source_type": "wpn", "health_status": "current", "last_checked": "2026-08-21"},
+      "reason": "Current WPN identity and recurring Tuesday/Friday Commander evidence."
+    },
+    {
+      "action": "insert", "table": "venues", "key": {"id": "side-quest-games-pomona"},
+      "fields": {"id": "side-quest-games-pomona", "name": "Side Quest Games and Accessories", "city": "Pomona", "address": "3503 W Temple Ave, Pomona, CA 91768, United States", "phone": null, "website": "https://www.sidequest.fun/", "events_url": "https://locator.wizards.com/store/15594", "instagram": null, "wpn_premium": false, "distance_miles": 22.58, "operating_status": "open", "research_status": "reviewed", "last_verified": "2026-08-21", "assessment_notes": "Promoted from the unmatched WPN queue after a false-negative audit. Current WPN data lists recurring Tuesday Casual Commander and Friday Night Magic: Commander through November. The official event page describes casual pods, changing bounties, and pack/snack/dice rewards.", "lifecycle_state": "steady_state", "lifecycle_reason": "Distance-caveated but clearly useful recurring social Commander programming merits a canonical Place.", "baseline_pass_count": 1, "baseline_completed_at": "2026-08-21T20:00:00Z", "planning_summary": "Farther Pomona destination with twice-weekly casual Commander and a structured, playful rewards system.", "assessment": {"commanderActivity": 5, "homeGroupPotential": 3, "communityContinuity": 4, "meetupAccessibility": 2, "physicalEnvironment": 3, "scheduleReliability": 5, "newPlayerIntegration": 4}},
+      "reason": "Create a canonical Place for a proven recurring Commander destination that should not remain unmatched."
+    },
+    {
+      "action": "insert", "table": "entity_sources", "key": {"entity_type": "venue", "entity_id": "side-quest-games-pomona", "source_id": "src-wpn-15594"},
+      "fields": {"entity_type": "venue", "entity_id": "side-quest-games-pomona", "source_id": "src-wpn-15594", "relationship": "WPN identity and recurring Commander schedule"}, "reason": "Attach the current WPN source."
+    },
+    {
+      "action": "insert", "table": "evaluations", "key": {"entity_type": "venue", "entity_id": "side-quest-games-pomona"},
+      "fields": {"entity_type": "venue", "entity_id": "side-quest-games-pomona", "research_status": "reviewed", "candidate_status": "promoted", "fit_grade": "B", "fit_score": 3.9, "confidence": "high", "positives": ["Tuesday and Friday Commander recur through November.", "The official page explicitly describes a casual atmosphere.", "Bounties and flexible pod pricing provide a structured social hook."], "cautions": ["About 22.6 miles away, making it a deliberate trip rather than a default local option."], "open_questions": ["Assess actual turnout and pod power texture if planning the trip."]},
+      "reason": "Reflect unusually strong official Commander evidence with an appropriate distance caveat."
+    },
+    {
+      "action": "insert", "table": "research_changes", "key": {"id": "add-side-quest-games-venue-2026-08-21"},
+      "fields": {"id": "add-side-quest-games-venue-2026-08-21", "detected_at": "2026-08-21T20:00:00Z", "change_type": "research", "entity_type": "venue", "entity_id": "side-quest-games-pomona", "summary": "Promoted Side Quest from the unmatched WPN queue after confirming twice-weekly casual Commander programming.", "review_status": "accepted"}, "reason": "Expose the accepted promotion in Updates."
+    }
+  ]
+}

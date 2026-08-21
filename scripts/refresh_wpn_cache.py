@@ -23,6 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SNAPSHOT_DIR = ROOT / "work" / "wpn-cache" / "latest"
 TRACKED_RECOVERY_SNAPSHOT_DIR = ROOT / "output" / "wizards"
 CRAWLER = ROOT / "crawler" / "wizards_locator.py"
+WINDOWS_BLESSED_PYTHON = ROOT / ".venv" / "Scripts" / "python.exe"
+POSIX_BLESSED_PYTHON = ROOT / ".venv" / "bin" / "python"
 SECRET_URL = ROOT / ".codex-secrets" / "supabase-db-url.txt"
 CACHE_ID = "los-alamitos-25mi"
 WPN_EVENT_URL = "https://locator.wizards.com/event/{event_id}"
@@ -38,6 +40,14 @@ PROXY_ALLOWED_PATTERN = re.compile(
     r"\b(?:prox(?:y|ies)\s+(?:are\s+)?(?:allowed|welcome|permitted|okay|ok)|proxy[- ]friendly)\b",
     re.IGNORECASE,
 )
+
+
+def crawler_python() -> str:
+    """Use the repo runtime proven by the environment gate when available."""
+    for candidate in (WINDOWS_BLESSED_PYTHON, POSIX_BLESSED_PYTHON):
+        if candidate.exists():
+            return str(candidate)
+    return sys.executable
 
 
 def load_json(snapshot_dir: Path, name: str):
@@ -854,7 +864,7 @@ def main() -> int:
 
     if should_fetch:
         subprocess.run(
-            [sys.executable, str(CRAWLER), "--radius-miles", "25", "--output", str(snapshot_dir)],
+            [crawler_python(), str(CRAWLER), "--radius-miles", "25", "--output", str(snapshot_dir)],
             cwd=ROOT,
             check=True,
         )
