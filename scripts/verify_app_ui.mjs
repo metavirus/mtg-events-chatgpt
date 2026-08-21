@@ -139,6 +139,28 @@ async function main() {
       const afterCount = await page.locator('.signal-card').count();
       if (afterCount >= beforeCount) throw new Error(`Mark read did not remove a visible Signal card: ${beforeCount} -> ${afterCount}`);
       pass('Signal Mark read removes the card from the active homepage list', `${beforeCount} -> ${afterCount}`);
+    } else if (scenario === 'signals-current-attention') {
+      await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
+      await page.locator('#signalsContent').waitFor({ state: 'visible', timeout: 15000 });
+      const currentAttention = await page.evaluate(() => ({
+        introPresent: document.body.textContent.includes('Signals are not canonical facts by themselves.'),
+        emptyDiscoveryPresent: document.body.textContent.includes('Discovery leads are tucked away'),
+        discoveryResearchPresent: document.body.textContent.includes('fuzzy community lead'),
+        stalePersonalPresent: [...document.querySelectorAll('.personal-todo-card')].some((card) => /Magic The GAYthering/i.test(card.textContent)),
+        staleSignalPresent: [...document.querySelectorAll('.signal-card')].some((card) => /Magic The GAYthering/i.test(card.querySelector('h3')?.textContent || '')),
+        pastArrivalPreviewDates: [...document.querySelectorAll('.signal-arrival-preview [data-date]')].map((item) => item.getAttribute('data-date')).filter((date) => date < new Date().toISOString().slice(0, 10)),
+        arrivalCards: document.querySelectorAll('.arrival-signal-card').length,
+        updatesLinkPresent: !!document.querySelector('.signals-overflow-note [data-route="changes"]')
+      }));
+      if (currentAttention.introPresent) throw new Error('Analyst/debug Signals explanation is still visible');
+      if (currentAttention.emptyDiscoveryPresent) throw new Error('Empty discovery restore panel is still visible');
+      if (currentAttention.discoveryResearchPresent) throw new Error('Discovery research leads are still occupying the Signals home');
+      if (currentAttention.stalePersonalPresent) throw new Error('Past-event personal follow-up is still visible');
+      if (currentAttention.staleSignalPresent) throw new Error('Past-event Signal is still visible');
+      if (currentAttention.pastArrivalPreviewDates.length) throw new Error(`Past occurrence is still previewed in current arrivals: ${currentAttention.pastArrivalPreviewDates.join(', ')}`);
+      if (currentAttention.arrivalCards > 8) throw new Error(`Signals shows ${currentAttention.arrivalCards} arrival cards; expected at most 8`);
+      pass('Signals stays focused on current attention', `${currentAttention.arrivalCards} current arrival cards; stale/debug chrome absent; updates overflow=${currentAttention.updatesLinkPresent}`);
     } else if (scenario === 'route-click-perf') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));

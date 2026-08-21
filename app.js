@@ -1748,8 +1748,9 @@ function renderSignals() {
   const signals = rankedSignals();
   const personalTodos = personalTodoItems();
   const readSignals = signals.filter((signal) => isSignalRead(signal.id));
-  const activeSignals = signals.filter((signal) => !['dismissed', 'stale'].includes(signal.status) && !isSignalRead(signal.id));
+  const activeSignals = signals.filter((signal) => !['dismissed', 'stale'].includes(signal.status) && !isSignalRead(signal.id) && signalIsCurrentForHome(signal));
   const arrivalSignals = activeSignals.filter((signal) => !!signal.derivedFromChangeId);
+  const visibleArrivalSignals = arrivalSignals.slice(0, 8);
   const coreActiveSignals = activeSignals.filter((signal) => !signal.derivedFromChangeId);
   const urgent = coreActiveSignals.filter(isActFirstSignal);
   const followUp = coreActiveSignals.filter((signal) => !urgent.includes(signal) && (signal.status === 'needs_followup' || ['source_health', 'community_activity'].includes(signal.category)));
@@ -1780,7 +1781,7 @@ function renderSignals() {
 
   const orderedGroups = [
     urgent.length ? signalGroup('Act first', 'Actionable cancellations, deadlines, strong opportunities, or judgment calls that should shape near-term planning.', urgent, 'coral') : '',
-    arrivalSignals.length ? signalGroup('New arrivals', 'Fresh automated event additions worth skimming so new options do not disappear into the Activity log.', arrivalSignals, 'sky') : '',
+    visibleArrivalSignals.length ? `${signalGroup('New arrivals', 'Upcoming additions most likely to matter now.', visibleArrivalSignals, 'sky')}${arrivalSignals.length > visibleArrivalSignals.length ? `<div class="signals-overflow-note"><span><strong>${arrivalSignals.length - visibleArrivalSignals.length} more arrival${arrivalSignals.length - visibleArrivalSignals.length === 1 ? '' : 's'}</strong> remain in the complete Updates history.</span><button class="soft-button" data-route="changes">Open Updates</button></div>` : ''}` : '',
     followUp.length ? signalGroup('Follow up', 'Useful routes, source-health issues, or community surfaces that deserve a bounded next look.', followUp, 'amber') : '',
     watch.length ? signalGroup('Watch list', 'Real but lower-pressure signals to keep visible without turning this into an inbox.', watch, 'mint') : '',
     stale.length ? signalGroup('Closed or stale', 'Retained for context, but not currently asking for attention.', stale, 'slate') : '',
@@ -1794,9 +1795,19 @@ function renderSignals() {
     </div>`;
   }
 
-  container.innerHTML = `${personalTodoSection(personalTodos)}${discoveryPossibilitiesSection()}<div class="signals-board">
+  container.innerHTML = `${personalTodoSection(personalTodos)}<div class="signals-board">
       ${orderedGroups}
     </div>`;
+}
+
+function signalIsCurrentForHome(signal) {
+  if (signal.derivedFromChangeId) return true;
+  const relatedEvent = signalRelatedEvent(signal);
+  const eventDate = relatedEvent ? parseDate(relatedEvent.occurrenceDate || relatedEvent.endDate || relatedEvent.date || relatedEvent.startDate || null) : null;
+  if (eventDate && eventDate < startOfDay(new Date())) return false;
+  if (!['mention', 'registration', 'operational', 'event_opportunity', 'community_activity'].includes(signal.category)) return true;
+  const observed = new Date(signal.observedAt || signal.capturedAt || 0);
+  return !Number.isNaN(observed.getTime()) && observed >= addDays(startOfDay(new Date()), -14);
 }
 
 function rankedSignals() {
@@ -1878,9 +1889,17 @@ function personalTodoItems() {
         reason: personalTodoReason(item, entity)
       };
     })
+    .filter(personalTodoIsCurrent)
     .filter((item) => item.entity || item.type === 'note')
     .slice(0, 8);
   return history;
+}
+
+function personalTodoIsCurrent(item) {
+  if (item.type !== 'planning' || item.entity?.type !== 'event') return true;
+  const event = item.entity.item;
+  const lastRelevantDate = parseDate(event.endDate || event.date || event.startDate || null);
+  return !lastRelevantDate || lastRelevantDate >= startOfDay(new Date());
 }
 
 function personalTodoCard(item) {
@@ -1906,9 +1925,10 @@ function personalTodoCard(item) {
 }
 
 function personalTodoSection(items) {
+  if (!items.length) return '';
   return `<section class="personal-todo-section">
     <div class="section-title-row"><div><p class="eyebrow violet">Personal continuity</p><h2>From your last visit</h2><p class="muted-copy">Your recent notes, favorites, ratings, and attendance/interest actions can ask for a ranking change or a bounded follow-up instead of sitting as passive memory.</p></div><button class="soft-button" data-action="mark-personal-todos-reviewed">Mark reviewed</button></div>
-    ${items.length ? `<div class="personal-todo-list">${items.map(personalTodoCard).join('')}</div>` : '<div class="personal-todo-empty"><strong>No new personal follow-ups since the last review</strong><p>Your favorites, notes, ratings, and interest marks still affect ranking. When new continuity needs interpretation, it will appear here.</p><button class="soft-button" data-action="show-log">Open activity log</button></div>'}
+    <div class="personal-todo-list">${items.map(personalTodoCard).join('')}</div>
   </section>`;
 }
 
@@ -1925,7 +1945,9 @@ function derivedEventIngestSignals() {
 }
 
 function eventIngestDigestSignal(change) {
-  const events = eventIngestDeltaMatches(change).filter((event) => !isEventHidden(event));
+  const events = eventIngestDeltaMatches(change)
+    .filter((event) => !isEventHidden(event))
+    .filter(eventIsCurrentForSignals);
   if (!events.length) return null;
   const owner = eventIngestDisplayOwner(change, events);
   const place = owner.place || events.map((event) => store(event.storeId)).find(Boolean) || null;
@@ -1984,6 +2006,11 @@ function eventIngestDigestSignal(change) {
     promotionTarget: eventCount === 1 ? 'event' : 'event_digest',
     dedupeKey: `derived-event-ingest:${change.id}`
   };
+}
+
+function eventIsCurrentForSignals(event) {
+  const occurrenceDate = parseDate(event.occurrenceDate || event.date || event.startDate || event.endDate || null);
+  return !occurrenceDate || occurrenceDate >= startOfDay(new Date());
 }
 
 function eventTitleDigest(events) {
@@ -2090,7 +2117,7 @@ function signalCard(signal) {
 function signalArrivalPreview(signal) {
   const change = changeById(signal.derivedFromChangeId);
   if (!change) return '';
-  const preview = changeEventPreview(change);
+  const preview = changeEventPreview(change, true);
   return preview ? `<div class="signal-arrival-preview">${preview}</div>` : '';
 }
 
@@ -2139,16 +2166,7 @@ function discoveryPossibilitiesSection() {
   const active = activeDiscoveryPossibilities();
   const hiddenCount = DISCOVERY_POSSIBILITIES.length - active.length;
   if (!active.length && !hiddenCount) return '';
-  if (!active.length) {
-    return `<section class="discovery-possibilities compact">
-      <div>
-        <p class="eyebrow">Possibilities</p>
-        <h2>Discovery leads are tucked away</h2>
-        <p>Nothing questionable is currently asking for attention.</p>
-      </div>
-      <button class="soft-button" data-action="restore-discovery-possibilities">Restore leads</button>
-    </section>`;
-  }
+  if (!active.length) return '';
   return `<section class="discovery-possibilities">
     <div class="discovery-possibilities-head">
       <div>
@@ -4064,9 +4082,11 @@ function changeTargetButtons(change) {
   return `<button class="change-action" data-route="${route}">${route === 'events' ? 'Browse events' : route === 'research' ? 'Coverage' : 'Browse places'} →</button>`;
 }
 
-function changeEventPreview(change) {
+function changeEventPreview(change, currentOnly = false) {
   if (!change || change.changeType !== 'event_ingest_delta') return '';
-  const matchedEvents = eventIngestDeltaMatches(change).filter((event) => !isEventHidden(event));
+  const matchedEvents = eventIngestDeltaMatches(change)
+    .filter((event) => !isEventHidden(event))
+    .filter((event) => !currentOnly || eventIsCurrentForSignals(event));
   if (!matchedEvents.length) return '';
   const preview = matchedEvents.slice(0, 3).map((event) => {
     const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);

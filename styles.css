@@ -113,12 +113,14 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .coverage-icon { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: var(--sky); border: 1px solid rgba(99, 182, 245, .35); font-weight: 700; }
 
 .signals-heading { align-items: flex-start; }
-.signals-overview { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr); gap: 14px; align-items: stretch; margin-bottom: 14px; }
+.signals-overview { margin-bottom: 14px; }
 .signals-intro { max-width: none; margin: 0; }
 .signals-overview > #signalsSummary { min-width: 0; }
 .signals-board { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: 14px; align-items: start; }
 .signal-toolbar { min-height: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(16, 22, 36, .56); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .signal-toolbar p { margin: 0; color: var(--muted); font-size: 12px; }
+.signals-overflow-note { grid-column: 1 / -1; margin-top: -4px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(16, 22, 36, .56); display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 12px; }
+.signals-overflow-note strong { color: var(--text); }
 .personal-todo-section { margin-bottom: 14px; padding: 16px; border: 1px solid rgba(136, 102, 255, .22); border-radius: var(--radius); background: linear-gradient(145deg, rgba(28, 20, 52, .28), rgba(12, 16, 28, .92)); display: grid; gap: 12px; }
 .personal-todo-section .section-title-row { border-top: 0; padding-top: 0; align-items: start; }
 .personal-todo-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
