@@ -115,17 +115,15 @@ Use it for:
      changing its usual schedule and that a future flyer was still forthcoming.
      No concrete future dated event was therefore invented or promoted. The
      pass is closed; weekly monitoring may capture the promised later listing.
-  5. Lower-confidence Home discovery possibilities, not canonical communities
-     yet: Magic The Gathering LGBT Commander Meetup (Orange County), Here
-     Clubhouse queer MTG, Topdeck Lethal, Lotus Guild, and Geeks OUT L.A.
-     Corroborate each through a second fuzzy source search. Stale/2025-only
-     groups should remain clearly labeled questionable possibilities rather
-     than disappearing or becoming full Signals.
-     These five leads are now loaded into `public.community_discovery_candidates`
-     as unresolved `source_lead` coordination items. That queue is the source
-     of truth for fuzzy community leads: promote only after a bounded
-     corroboration search, then run a real main pass; otherwise mark the item
-     deferred or rejected instead of letting it re-enter broad discovery.
+  5. Closed August 21: the user considered and rejected Magic The Gathering
+     LGBT Commander Meetup (Orange County), Here Clubhouse queer MTG, Topdeck
+     Lethal, Lotus Guild, and Geeks OUT L.A. Each remains durably recorded in
+     `coordination_items` with terminal `rejected` status, rejected disposition,
+     and the user decision as its disposition reason. This is the canonical
+     "considered but ignored" mechanism; do not create a parallel table or
+     return these names to `public.community_discovery_candidates` without
+     genuinely new evidence. The unresolved discovery view now contains zero
+     rows.
   Canonical source attachment readback: MTG OC has 11 mapped sources, LAGS 3,
   GayMTG 1, and Sanctuary MTG 2. The later LAGS event promotion supersedes the
   earlier source-only note; no other community event was guessed. Remaining

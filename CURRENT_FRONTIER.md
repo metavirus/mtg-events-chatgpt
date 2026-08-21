@@ -40,12 +40,13 @@ the exact durable state and next action, then hand off from that checkpoint.
   `event_proposal` because that is the allowed event-action enum even though
   the app opens the event. Do not re-run this discovery batch or re-promote
   these records; only fix exact app/display/readback defects if the live UI
-  disagrees. Lower-confidence community possibilities are now parked in
-  `public.community_discovery_candidates`, a view over `coordination_items`.
-  It currently holds five unresolved fuzzy leads. Do not main-pass them until
-  one bounded corroboration search promotes them. The remaining discovery
-  product follow-up is the compact Home possibilities lane for corroborated but
-  uncertain groups.
+  disagrees. The five lower-confidence community possibilities were considered
+  by the user and rejected on August 21. They remain as terminal rejected rows
+  in `coordination_items` with disposition reasons, while
+  `public.community_discovery_candidates` now contains zero unresolved leads.
+  Do not rediscover or main-pass Geeks OUT L.A., Here Clubhouse queer MTG,
+  Lotus Guild, Magic The Gathering LGBT Commander Meetup (Orange County), or
+  Topdeck Lethal unless genuinely new evidence changes the decision.
 
 - The personal-use app reads canonical operational data from Supabase.
 - Signed-in favorites, deprioritization, and private notes persist through
