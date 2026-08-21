@@ -294,6 +294,8 @@ const AUTH_STARTUP_SLOW_MS = 5000;
 const personalAuth = { client: null, user: null, status: 'checking', message: 'Restoring sign-in…', sendingLink: false, startupComplete: false, refreshInFlight: null };
 let appInitialized = false;
 let artifactPreviewUrl = null;
+let changeEventMatchCache = new Map();
+let changeLinkCandidateCache = null;
 
 const COMMUNITY_SEED = [
   {
@@ -332,6 +334,7 @@ const COMMUNITY_SEED = [
 ];
 
 const EVENT_CATALOG_PAGE_SIZE = 36;
+const CHANGE_PAGE_SIZE = 50;
 const WEEKDAY_INDEX = {
   sunday: 0,
   sun: 0,
@@ -363,6 +366,7 @@ const state = {
   eventCatalogDate: startOfDay(new Date()),
   eventCatalogVisible: EVENT_CATALOG_PAGE_SIZE,
   changeFilter: 'all',
+  changeVisible: CHANGE_PAGE_SIZE,
   changesUnreadOnOpen: 0,
   favoritesOnly: false,
   showReadSignals: false,
@@ -1316,6 +1320,7 @@ function handleClick(event) {
   const changeFilterButton = event.target.closest('[data-change-filter]');
   if (changeFilterButton) {
     state.changeFilter = toggledFilterValue(changeFilterButton, 'changeFilter', 'all');
+    state.changeVisible = CHANGE_PAGE_SIZE;
     document.querySelectorAll('[data-change-filter]').forEach((button) => button.classList.toggle('active', button.dataset.changeFilter === state.changeFilter));
     renderChanges();
     return;
@@ -1479,6 +1484,10 @@ function handleAction(action, element) {
   if (action === 'open-signal') return openSignalDetail(element.dataset.signalId);
   if (action === 'open-change-events') return openChangeEvents(element.dataset.changeId);
   if (action === 'open-artifact') return openArtifactPreview(element.dataset.artifactId);
+  if (action === 'show-more-changes') {
+    state.changeVisible += CHANGE_PAGE_SIZE;
+    return renderChanges();
+  }
   if (action === 'mark-signal-read') return setSignalRead(element.dataset.signalId, true);
   if (action === 'restore-signal') return setSignalRead(element.dataset.signalId, false);
   if (action === 'dismiss-discovery-possibility') return setDiscoveryPossibilityHidden(element.dataset.possibilityId, true);
@@ -3101,12 +3110,22 @@ function renderPlaces() {
   const candidatePool = [...topFavorites, ...primaryPlaces, ...hiddenPlaces];
   if (!candidatePool.some((place) => place.id === state.selectedPlaceId)) state.selectedPlaceId = topFavorites[0]?.id || primaryPlaces[0]?.id || hiddenPlaces[0]?.id;
   if (state.selectedPlaceWasAuto && topFavorites.length && state.selectedPlaceId !== topFavorites[0].id) state.selectedPlaceId = topFavorites[0].id;
-  list.innerHTML = placeListMarkup(topFavorites, primaryPlaces, hiddenPlaces);
-  mobileList.innerHTML = placeListMarkup(topFavorites, primaryPlaces, hiddenPlaces);
+  const listMarkup = placeListMarkup(topFavorites, primaryPlaces, hiddenPlaces);
+  if (isMobileLayout()) {
+    if (list.innerHTML) list.innerHTML = '';
+    mobileList.innerHTML = listMarkup;
+  } else {
+    list.innerHTML = listMarkup;
+    if (mobileList.innerHTML) mobileList.innerHTML = '';
+  }
   mobileSearch.value = query;
   syncPlaceControls();
   renderPlacePickerSummary(visiblePlaces, hiddenPlaces);
   renderPlaceDetail(store(state.selectedPlaceId));
+}
+
+function isMobileLayout() {
+  return window.matchMedia?.('(max-width: 900px)').matches || false;
 }
 
 function placeListMarkup(favoritePlaces, visiblePlaces, hiddenPlaces) {
@@ -3784,8 +3803,12 @@ function communitySurfaceIcon(kind) {
 }
 
 function renderChanges() {
+  changeEventMatchCache = new Map();
+  changeLinkCandidateCache = null;
   const allItems = [...DATA.changes].sort((a, b) => compareText(b.detectedAt, a.detectedAt));
   const items = allItems.filter((change) => changeMatchesFilter(change, state.changeFilter));
+  const visibleItems = items.slice(0, state.changeVisible);
+  const remainingCount = Math.max(0, items.length - visibleItems.length);
   const latestAccepted = latestAcceptedChangeTimestamp();
   const latest = latestAccepted ? formatFreshnessDate(latestAccepted) : allItems[0]?.detectedAt ? formatFreshnessDate(allItems[0].detectedAt) : 'None yet';
   const unreadOnOpen = state.route === 'changes' ? state.changesUnreadOnOpen || 0 : unreadChangesCount();
@@ -3797,7 +3820,7 @@ function renderChanges() {
     <div><span>New since last visit</span><strong>${escapeHtml(unreadLabel)}</strong><p>${unreadCopy}</p></div>
     <div><span>Visible updates</span><strong>${items.length}<small> / ${allItems.length}</small></strong><p>Latest accepted: ${escapeHtml(latest)}</p></div>
     <div><span>Current filter</span><strong>${changeFilterLabel(state.changeFilter)}</strong><p>${changeFilterHelp(state.changeFilter)}</p></div>
-  </div>${dailyAgentStatusPanel()}${items.length ? items.map((change) => changeRow(change)).join('') : emptyState('No updates in this filter', 'Try All updates or a different triage category.')}`;
+  </div>${dailyAgentStatusPanel()}${visibleItems.length ? visibleItems.map((change) => changeRow(change)).join('') : emptyState('No updates in this filter', 'Try All updates or a different triage category.')}${remainingCount ? `<div class="change-more-row"><button class="soft-button" data-action="show-more-changes">Show ${Math.min(CHANGE_PAGE_SIZE, remainingCount)} more updates</button><small>${remainingCount} older update${remainingCount === 1 ? '' : 's'} not rendered yet</small></div>` : ''}`;
 }
 
 function dailyAgentStatusPanel() {
@@ -3971,6 +3994,7 @@ function changeById(id) {
 
 function eventIngestDeltaMatches(change) {
   if (!change || change.changeType !== 'event_ingest_delta' || !['venue', 'community'].includes(change.entityType) || !change.entityId) return [];
+  if (changeEventMatchCache.has(change.id)) return changeEventMatchCache.get(change.id);
   const detectedAt = change.detectedAt ? new Date(change.detectedAt) : null;
   const detectedMs = detectedAt && !Number.isNaN(detectedAt.getTime()) ? detectedAt.getTime() : null;
   const changeText = `${change.summary || ''} ${change.details || ''}`.toLowerCase();
@@ -3983,11 +4007,13 @@ function eventIngestDeltaMatches(change) {
     if (Number.isNaN(created.getTime())) return false;
     return Math.abs(created.getTime() - detectedMs) <= 30 * 60 * 1000;
   });
-  return matched.sort((a, b) => {
+  const sorted = matched.sort((a, b) => {
     const aDate = a.occurrenceDate || parseDate(a.date || a.startDate);
     const bDate = b.occurrenceDate || parseDate(b.date || b.startDate);
     return aDate - bDate || compareText(eventStartTime(a), eventStartTime(b)) || compareText(a.title, b.title);
   });
+  changeEventMatchCache.set(change.id, sorted);
+  return sorted;
 }
 
 function eventIngestDisplayOwner(change, events = []) {
@@ -4037,7 +4063,7 @@ function structuredChangeTarget(change) {
 
   if (type === 'venue') {
     const place = store(id);
-    if (place) return { label: place.name, attribute: `data-place-id="${escapeHtml(id)}"` };
+    if (place) return { label: place.name, attribute: `data-place-id="${escapeHtml(id)}" data-place-mode="drawer"` };
   }
 
   if (type === 'community') {
@@ -4083,10 +4109,11 @@ function openChangeEvents(changeId) {
         return `<button class="occurrence-row" data-event-id="${escapeHtml(event.id)}" ${occurrence ? `data-date="${dateKey(occurrence)}"` : ''}><time><strong>${occurrence ? occurrence.getDate() : '—'}</strong>${occurrence ? occurrence.toLocaleDateString(undefined, { month: 'short' }) : ''}</time><span><strong>${escapeHtml(event.title)}</strong><small>${occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'long' }) : 'Dated event'} · ${formatTime(eventStartTime(event))}</small></span><span class="status-chip ${evidenceLabel(event).tone}">${evidenceLabel(event).label}</span></button>`;
       }).join('')
     : '<p class="muted-copy">This update no longer maps cleanly to live event rows.</p>';
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Update batch</span><span class="status-chip slate">${matchedEvents.length} event${matchedEvents.length === 1 ? '' : 's'}</span></div><h1 id="drawerTitle">${escapeHtml(change.summary || 'New event batch')}</h1><p class="drawer-lead">${escapeHtml(change.details || 'These events were added by the automated ingest pipeline.')}</p><section class="drawer-section"><p class="eyebrow">Linked venue</p><h2>${place ? escapeHtml(place.name) : 'Venue update'}</h2>${place ? `<button class="soft-button" data-place-id="${escapeHtml(place.id)}">Open place →</button>` : ''}</section><section class="drawer-section"><p class="eyebrow">Newly added occurrences</p><h2>${matchedEvents.length ? 'Open any occurrence' : 'No direct event match found'}</h2><div class="place-occurrences">${eventRows}</div></section>`);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Update batch</span><span class="status-chip slate">${matchedEvents.length} event${matchedEvents.length === 1 ? '' : 's'}</span></div><h1 id="drawerTitle">${escapeHtml(change.summary || 'New event batch')}</h1><p class="drawer-lead">${escapeHtml(change.details || 'These events were added by the automated ingest pipeline.')}</p><section class="drawer-section"><p class="eyebrow">Linked venue</p><h2>${place ? escapeHtml(place.name) : 'Venue update'}</h2>${place ? `<button class="soft-button" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">Open place →</button>` : ''}</section><section class="drawer-section"><p class="eyebrow">Newly added occurrences</p><h2>${matchedEvents.length ? 'Open any occurrence' : 'No direct event match found'}</h2><div class="place-occurrences">${eventRows}</div></section>`);
 }
 
 function changeLinkCandidates() {
+  if (changeLinkCandidateCache) return changeLinkCandidateCache;
   const seen = new Set();
   const aliasOwners = changeAliasOwners();
   const add = (label, html) => {
@@ -4096,13 +4123,14 @@ function changeLinkCandidates() {
     seen.add(key);
     return { label: clean, html };
   };
-  return [
-    ...DATA.stores.flatMap((place) => placeChangeLinkLabels(place, aliasOwners).map((label) => add(label, (matchedLabel) => `<button class="change-inline-target" data-place-id="${escapeHtml(place.id)}">${escapeHtml(matchedLabel)}</button>`))),
+  changeLinkCandidateCache = [
+    ...DATA.stores.flatMap((place) => placeChangeLinkLabels(place, aliasOwners).map((label) => add(label, (matchedLabel) => `<button class="change-inline-target" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">${escapeHtml(matchedLabel)}</button>`))),
     ...COMMUNITY_SEED.map((community) => add(community.name, (label) => `<button class="change-inline-target" data-community-id="${escapeHtml(community.id)}">${escapeHtml(label)}</button>`)),
     ...DATA.sources
       .filter((item) => item.url && safeSourceLinkLabel(item.label))
       .map((item) => add(item.label, (label) => `<a class="change-inline-target" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">${escapeHtml(label)}</a>`))
   ].filter(Boolean).sort((a, b) => b.label.length - a.label.length);
+  return changeLinkCandidateCache;
 }
 
 function changeAliasOwners() {

@@ -139,6 +139,36 @@ async function main() {
       assertText(body, 'Facebook', 'Facebook daily agent card');
       assertText(body, 'Discord', 'Discord daily agent card');
       pass('Updates daily-agent panel rendered', body.slice(0, 240));
+    } else if (scenario === 'updates-click-perf') {
+      await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
+      await page.locator('.nav-item[data-route="changes"]').waitFor({ state: 'visible', timeout: 15000 });
+      await page.locator('.nav-item[data-route="changes"]').click({ timeout: 10000 });
+      await page.waitForTimeout(250);
+      const initialRows = await page.locator('.change-row').count();
+      const initialNodes = await page.locator('*').count();
+      if (initialRows > 60) throw new Error(`Updates rendered too many rows initially: ${initialRows}`);
+      if (initialNodes > 1800) throw new Error(`Updates rendered too many DOM nodes initially: ${initialNodes}`);
+      const endless = page.getByRole('button', { name: /Endless Entertainment →/ }).first();
+      for (let attempt = 0; attempt < 3 && !(await endless.isVisible().catch(() => false)); attempt += 1) {
+        await page.getByRole('button', { name: /Show \d+ more updates/ }).click({ timeout: 5000 });
+        await page.waitForTimeout(150);
+      }
+      if (!(await endless.isVisible().catch(() => false))) throw new Error('Endless update row did not appear after bounded expansion');
+      const expandedRows = await page.locator('.change-row').count();
+      const expandedNodes = await page.locator('*').count();
+      if (expandedRows > 160) throw new Error(`Updates expansion rendered too many rows: ${expandedRows}`);
+      if (expandedNodes > 3400) throw new Error(`Updates expansion rendered too many DOM nodes: ${expandedNodes}`);
+      const start = Date.now();
+      await endless.click({ timeout: 5000, force: true });
+      const clickMs = Date.now() - start;
+      await page.waitForTimeout(250);
+      const selectedTitle = await page.locator('#drawerTitle').innerText({ timeout: 5000 });
+      assertText(selectedTitle, 'Endless Entertainment', 'selected Endless place');
+      if (clickMs > 1800) throw new Error(`Updates Endless click was too slow: ${clickMs}ms`);
+      pass('Updates renders a bounded row window', `${initialRows} rows, ${initialNodes} nodes`);
+      pass('Updates expands boundedly to older rows', `${expandedRows} rows, ${expandedNodes} nodes`);
+      pass('Endless update click opens place promptly', `${clickMs}ms`);
     } else if (scenario === 'lags-signal-event-link') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
