@@ -139,6 +139,54 @@ async function main() {
       const afterCount = await page.locator('.signal-card').count();
       if (afterCount >= beforeCount) throw new Error(`Mark read did not remove a visible Signal card: ${beforeCount} -> ${afterCount}`);
       pass('Signal Mark read removes the card from the active homepage list', `${beforeCount} -> ${afterCount}`);
+    } else if (scenario === 'route-click-perf') {
+      await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));
+      await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => undefined);
+      await page.locator('.signal-card').first().waitFor({ state: 'visible', timeout: 20000 });
+      const measurements = await page.evaluate(async () => {
+        const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        const countDom = () => ({
+          nodes: document.querySelectorAll('*').length,
+          signals: document.querySelectorAll('.signal-card').length,
+          events: document.querySelectorAll('.event-card,.compact-event,.occurrence-row,.series-row').length,
+          places: document.querySelectorAll('.entity-list-item').length,
+          changes: document.querySelectorAll('.change-row').length,
+          images: document.images.length
+        });
+        async function dispatch(selector, label) {
+          const element = [...document.querySelectorAll(selector)].find((item) => item.offsetParent !== null) || document.querySelector(selector);
+          if (!element) return { label, missing: true };
+          const before = performance.now();
+          element.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          const dispatchMs = performance.now() - before;
+          await new Promise(requestAnimationFrame);
+          await sleep(50);
+          return { label, dispatchMs: Number(dispatchMs.toFixed(1)), hash: location.hash, ...countDom() };
+        }
+        const rows = [{ label: 'initial', hash: location.hash, ...countDom() }];
+        for (const [selector, label] of [
+          ['.nav-item[data-route=events]', 'events nav'],
+          ['.nav-item[data-route=places]', 'places nav'],
+          ['.nav-item[data-route=changes]', 'updates nav'],
+          ['.nav-item[data-route=communities]', 'communities nav'],
+          ['.nav-item[data-route=signals]', 'signals nav'],
+          ['.signal-card button[data-action=mark-signal-read]', 'mark read'],
+          ['.nav-item[data-route=places]', 'places nav again'],
+          ['.entity-list-item', 'place row']
+        ]) {
+          rows.push(await dispatch(selector, label));
+        }
+        return rows;
+      });
+      const missing = measurements.filter((row) => row.missing);
+      if (missing.length) throw new Error(`Missing perf target(s): ${missing.map((row) => row.label).join(', ')}`);
+      const slow = measurements.filter((row) => row.dispatchMs > 350);
+      if (slow.length) throw new Error(`Slow route/click dispatch: ${slow.map((row) => `${row.label} ${row.dispatchMs}ms`).join(', ')}`);
+      const excessDom = measurements.filter((row) => row.nodes > 2600);
+      if (excessDom.length) throw new Error(`Route DOM did not stay bounded: ${excessDom.map((row) => `${row.label} ${row.nodes} nodes`).join(', ')}`);
+      pass('Route and click dispatch stayed responsive', measurements.map((row) => `${row.label}:${row.dispatchMs ?? 0}ms/${row.nodes} nodes`).join(' | '));
     } else if (scenario === 'updates-daily-agents') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
@@ -165,7 +213,9 @@ async function main() {
       if (initialNodes > 1800) throw new Error(`Updates rendered too many DOM nodes initially: ${initialNodes}`);
       const endless = page.getByRole('button', { name: /Endless Entertainment →/ }).first();
       for (let attempt = 0; attempt < 3 && !(await endless.isVisible().catch(() => false)); attempt += 1) {
-        await page.getByRole('button', { name: /Show \d+ more updates/ }).click({ timeout: 5000 });
+        const showMore = page.getByRole('button', { name: /Show \d+ more updates/ }).first();
+        if (!(await showMore.isVisible().catch(() => false))) break;
+        await showMore.click({ timeout: 5000 });
         await page.waitForTimeout(150);
       }
       if (!(await endless.isVisible().catch(() => false))) throw new Error('Endless update row did not appear after bounded expansion');

@@ -1,4 +1,13 @@
 const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [], dailyAgentStatuses: [] };
+const ROUTE_DYNAMIC_CONTENT = {
+  signals: ['signalsSummary', 'signalsContent'],
+  today: ['calendarContent', 'newHighlights', 'fitHighlights', 'researchAlerts'],
+  events: ['eventSummary', 'eventCatalog'],
+  places: ['placeList', 'placeListMobile', 'placeDetail'],
+  communities: ['communityGrid'],
+  changes: ['changeList'],
+  research: ['researchDashboard']
+};
 const PLACE_LOGOS = {
   'collectors-lounge-cypress': {
     src: 'assets/logos/collectors-lounge-icon.png',
@@ -296,6 +305,9 @@ let appInitialized = false;
 let artifactPreviewUrl = null;
 let changeEventMatchCache = new Map();
 let changeLinkCandidateCache = null;
+let placeInterestScoreCache = { signature: '', scores: new Map() };
+let communityOccurrenceCache = { signature: '', upcoming: new Map(), recent: new Map() };
+let communityProfileCache = { signature: '', profiles: new Map() };
 
 const COMMUNITY_SEED = [
   {
@@ -1558,6 +1570,7 @@ function renderAll() {
 }
 
 function renderCurrentRoute() {
+  clearInactiveRouteContent(state.route);
   if (state.route === 'signals') renderSignals();
   if (state.route === 'today') { renderCalendar(); renderHighlights(); }
   if (state.route === 'events') renderEventCatalog();
@@ -1566,6 +1579,16 @@ function renderCurrentRoute() {
   if (state.route === 'changes') renderChanges();
   if (state.route === 'research') renderResearch();
   updateChrome();
+}
+
+function clearInactiveRouteContent(activeRoute) {
+  for (const [route, ids] of Object.entries(ROUTE_DYNAMIC_CONTENT)) {
+    if (route === activeRoute) continue;
+    ids.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element && element.innerHTML) element.replaceChildren();
+    });
+  }
 }
 
 function updateChrome() {
@@ -3637,10 +3660,28 @@ function placePersonalAffinity(place) {
   if (!place?.id) return 0;
   return personalAffinityScore({ place })
     + recentPersonalActivityScore([place.name])
-    + interestedPriorityScore(...buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 56)), false)
-      .filter((event) => event.storeId === place.id)
-      .slice(0, 12)
-      .map((event) => `${event.id}:${dateKey(event.occurrenceDate || parseDate(event.date || event.startDate) || new Date())}`));
+    + (placeInterestScores().get(place.id) || 0);
+}
+
+function placeInterestScores() {
+  const activeInterestKeys = Object.keys(state.personal.interested || {})
+    .filter((key) => state.personal.interested[key])
+    .sort();
+  const signature = `${dateKey(new Date())}:${DATA.events.length}:${activeInterestKeys.join('|')}`;
+  if (placeInterestScoreCache.signature === signature) return placeInterestScoreCache.scores;
+  const scores = new Map();
+  if (activeInterestKeys.length) {
+    const active = new Set(activeInterestKeys);
+    for (const event of buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 56)), false)) {
+      if (!event.storeId) continue;
+      const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+      const key = `${event.id}:${dateKey(occurrence || new Date())}`;
+      if (!active.has(key)) continue;
+      scores.set(event.storeId, (scores.get(event.storeId) || 0) + 26);
+    }
+  }
+  placeInterestScoreCache = { signature, scores };
+  return scores;
 }
 
 function eventPersonalAffinity(event) {
@@ -4363,18 +4404,19 @@ function openPlaceDrawer(id) {
 }
 
 function communityProfileData(community) {
+  const signature = communityProfileSignature();
+  if (communityProfileCache.signature !== signature) communityProfileCache = { signature, profiles: new Map() };
+  const cached = communityProfileCache.profiles.get(community.id);
+  if (cached) return cached;
   const signals = DATA.signals.filter((signal) => {
     if (['dismissed', 'stale'].includes(signal.status)) return false;
     return (signal.relatedEntityType === 'community' && signal.relatedEntityId === community.id)
       || (community.sourceIds || []).includes(signal.sourceId);
   }).sort((a, b) => String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt)));
   const events = uniqueEventSeries(DATA.events.filter((event) => event.communityId === community.id));
-  const upcoming = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 56)), false)
-    .filter((event) => event.communityId === community.id)
-    .sort((a, b) => a.occurrenceDate - b.occurrenceDate);
-  const recent = buildOccurrences(startOfDay(addDays(new Date(), -56)), endOfDay(addDays(new Date(), -1)), false)
-    .filter((event) => event.communityId === community.id)
-    .sort((a, b) => b.occurrenceDate - a.occurrenceDate);
+  const occurrences = communityOccurrenceBuckets();
+  const upcoming = occurrences.upcoming.get(community.id) || [];
+  const recent = occurrences.recent.get(community.id) || [];
   const sources = (community.sourceIds || []).map(source).filter(Boolean);
   const surfaces = communitySurfaces().filter((surface) => surface.community?.id === community.id);
   const connections = signals.filter(isPersonalCommunityConnection);
@@ -4385,7 +4427,34 @@ function communityProfileData(community) {
     if (hostText) return [`text:${hostText.toLowerCase()}`, { id: '', name: hostText, place: null }];
     return null;
   }).filter(Boolean)).values()];
-  return { community, signals, events, upcoming, recent, sources, surfaces, connections, locations, monitoring: communityMonitoringState(sources, signals) };
+  const profile = { community, signals, events, upcoming, recent, sources, surfaces, connections, locations, monitoring: communityMonitoringState(sources, signals) };
+  communityProfileCache.profiles.set(community.id, profile);
+  return profile;
+}
+
+function communityProfileSignature() {
+  return `${dateKey(new Date())}:${DATA.events.length}:${DATA.signals.length}:${DATA.sources.length}:${COMMUNITY_SEED.length}`;
+}
+
+function communityOccurrenceBuckets() {
+  const signature = communityProfileSignature();
+  if (communityOccurrenceCache.signature === signature) return communityOccurrenceCache;
+  const upcoming = new Map();
+  const recent = new Map();
+  for (const event of buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 56)), false)) {
+    if (!event.communityId) continue;
+    if (!upcoming.has(event.communityId)) upcoming.set(event.communityId, []);
+    upcoming.get(event.communityId).push(event);
+  }
+  for (const event of buildOccurrences(startOfDay(addDays(new Date(), -56)), endOfDay(addDays(new Date(), -1)), false)) {
+    if (!event.communityId) continue;
+    if (!recent.has(event.communityId)) recent.set(event.communityId, []);
+    recent.get(event.communityId).push(event);
+  }
+  upcoming.forEach((events) => events.sort((a, b) => a.occurrenceDate - b.occurrenceDate));
+  recent.forEach((events) => events.sort((a, b) => b.occurrenceDate - a.occurrenceDate));
+  communityOccurrenceCache = { signature, upcoming, recent };
+  return communityOccurrenceCache;
 }
 
 function isPersonalCommunityConnection(signal) {
