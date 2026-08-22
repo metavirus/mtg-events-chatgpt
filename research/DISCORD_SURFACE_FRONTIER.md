@@ -134,21 +134,23 @@ LAGS `#lfg-channel` is not an active repair obligation. Its known route is
 preserved in paused state after the bounded August 22 proof; reopen it only if
 new channel activity or a changed Discord anchor justifies another attempt.
 
-These have Discord/source-route evidence but are not yet normalized into a
-recurring survey surface. Treat them as finite replay candidates, not daily
-watch targets.
+The remaining ten known route leads were terminally classified on August 22.
+Each now has a completed `discord_access_profiles` row and must not return to
+preparatory surveying without materially new evidence or an explicit user
+request.
 
-- Buddies Collectibles.
-- CoreTCG tournament Discord.
-- GXGAMERS Linktree Discord route.
-- Next-Gen Games Discord route.
-- Otaku Vault Discord route.
-- Tilted Gaming invite route.
-- Turn Zero Discord route.
-- Collector Legion route/baseline evidence, separate from the Collectors
-  Lounge mapped server.
-- Spellhold and Guild House older baseline evidence with unclear current source
-  health.
+- Buddies, Next-Gen, Tilted, and Turn Zero: official invites preserved, but
+  Discord texture is optional and does not justify joining while stronger
+  public sources answer current planning needs.
+- CoreTCG, GXGAMERS, and Otaku Vault: terminally paused as low-priority or poor
+  personal-fit routes.
+- Collector Legion, Spellhold, and The Guild House: their existing bounded
+  Discord baselines are accepted as completed preparatory surveys. No recurring
+  routes were added because current official/calendar/social sources are
+  stronger and avoid duplicate monitoring.
+
+There are no unresolved known Discord route candidates. A genuinely new route
+is new evidence, not permission to reopen completed profiles wholesale.
 
 ## Community/source modeling rules
 

@@ -270,14 +270,12 @@ Use it for:
   route-discovery candidates, blocked/TBD items, cadence, useful-signal criteria,
   quiet/stale handling, same-day Signal expiry, and write approval gates. The
   current Supabase-audited frontier is pinned in
-  `research/DISCORD_SURFACE_FRONTIER.md`: 11 access profiles, 34 channel
-  watchlist rows, 31 active rows, 3 blocked/TBD rows, and 20 high-priority rows.
-  Agent-ready surfaces are MTG OC, Legendary Creature Club, Collectors Lounge,
-  ProjectCCG, JJ's, Kingslayer, Magic & Monsters, and Krazy Nick's. Hobby
-  Overflow and Paper Hero's remain blocked/finite-repair items; Buddies,
+  `research/DISCORD_SURFACE_FRONTIER.md`: 22 completed access profiles and 38
+  channel-watchlist rows, with 27 proven active cloud routes. All other mapped
+  or route-captured surfaces are explicitly paused or blocked. Buddies,
   CoreTCG, GXGAMERS, Next-Gen, Otaku Vault, Tilted, Turn Zero, Collector
-  Legion, Spellhold, and Guild House are route-captured but not recurring-agent
-  ready.
+  Legion, Spellhold, and Guild House were terminally classified on August 22;
+  none remains a preparatory-survey obligation.
 
 - ChatGPT-to-Codex coordination has moved to Supabase. New ordinary ChatGPT
   source leads, findings, questions, and proposals should be submitted as

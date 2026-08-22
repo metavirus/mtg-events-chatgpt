@@ -417,13 +417,12 @@ Canonical operating details:
 
 ## Immediate next work
 
-1. Finish the bounded Discord surface-classification pass for already
-   discovered, already approved communities only. The active target is
-   channel/source mapping quality, not broad new discovery. Record HOT/WATCH,
-   MAYBE, and IGNORE routes so future recurring review can read only the
-   right channels instead of rescanning whole servers.
-   The daily-surfacing proof is done; remaining work is classification quality,
-   route quality, and bounded coverage completion.
+1. Discord landscape preparation is closed. All 22 mapped or route-captured
+   profiles have terminal `preparatory_survey_completed_at` state; 27 proven
+   routes are active in the cloud plan and the rest are explicitly paused,
+   blocked, stale, optional, duplicative, or poor-fit. Do not run another broad
+   preparatory pass. Future Discord work is routine daily monitoring, a
+   material access/route change, or a genuinely new high-value source lead.
 2. Treat LAGS as closed on ownership semantics: Los Angeles Gayming Society
    owns its community events; Precinct DTLA is host-location text only. Do not
    reopen that ownership question. Future work there is limited to display,
