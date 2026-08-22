@@ -963,6 +963,13 @@ claims without reopening the whole packet.
       proven recurring routes. Completed profiles must not return to
       preparatory surveying without a new material route, access change, or
       explicit user request.
+  14. August 22 terminal completion marked every remaining mapped Discord
+      profile complete. Eight routes across Hobby Overflow, Paper Hero's,
+      Magic & Monsters, and ProjectCCG passed guarded reads and entered the
+      recurring set. Hobby Overflow `#tournament-schedule` is explicitly
+      paused behind Discord acknowledgement while its announcements route is
+      active. Final plan-only selection: 29 proven recurring routes. No mapped
+      profile remains in preparatory purgatory.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.

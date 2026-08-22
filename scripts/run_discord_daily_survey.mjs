@@ -15,7 +15,11 @@ const V1_PROFILE_SOURCE_IDS = new Set([
   'src-discord-los-angeles-gayming-society',
   'src-jjs-discord-magic-announcements-2026-07-18',
   'src-kingslayer-discord-route-2026-07-18',
-  'src-kng-discord-2026-07-14'
+  'src-kng-discord-2026-07-14',
+  'src-hobbyoverflow-discord-invite-2026-07-15',
+  'src-magicandmonsters-discord-route-2026-07-18',
+  'src-paper-heros-discord-magic-hb-2026-07-20',
+  'src-projectccg-discord-route-2026-07-18'
 ]);
 const STORES_LOCAL_PROFILE_SOURCE_IDS = new Set([
   'src-collectors-discord-2026-07-14',
@@ -23,10 +27,16 @@ const STORES_LOCAL_PROFILE_SOURCE_IDS = new Set([
   'src-lcc-discord-2026-07-28',
   'src-jjs-discord-magic-announcements-2026-07-18',
   'src-kingslayer-discord-route-2026-07-18',
-  'src-kng-discord-2026-07-14'
+  'src-kng-discord-2026-07-14',
+  'src-hobbyoverflow-discord-invite-2026-07-15',
+  'src-magicandmonsters-discord-route-2026-07-18',
+  'src-paper-heros-discord-magic-hb-2026-07-20',
+  'src-projectccg-discord-route-2026-07-18'
 ]);
 const UI_SERVER_LABELS = new Map([
-  ['src-discord-los-angeles-gayming-society', 'LAGaymingSociety']
+  ['src-discord-los-angeles-gayming-society', 'LAGaymingSociety'],
+  ['src-hobbyoverflow-discord-invite-2026-07-15', 'Hobby Overflow Store'],
+  ['src-paper-heros-discord-magic-hb-2026-07-20', "Paper Hero's Games"]
 ]);
 const RESULT_TO_WATCHLIST = {
   accepted_signal: 'useful',
@@ -711,7 +721,11 @@ async function main() {
         'Los Angeles Gayming Society',
         "JJ's Collectibles",
         'Kingslayer Games',
-        "Krazy Nick's Games"
+        "Krazy Nick's Games",
+        'Hobby Overflow',
+        'Magic & Monsters',
+        "Paper Hero's Games",
+        'ProjectCCG'
       ],
       selectedCount: selected.length,
       selected: selected.map((row) => ({

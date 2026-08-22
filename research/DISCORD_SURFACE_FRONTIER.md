@@ -62,11 +62,13 @@ approved. Start here; do not begin with route-only invites.
 | Los Angeles Gayming Society / LAGS | Joined, accessible, high-value LGBTQ+ regional community; included in the cloud runner | `#meet-up` and `#announcements` as hot; `#general` as watch/sample; `#lfg-channel` retained but paused | The August 22 guarded run proved the three active routes after mapping Discord's UI label `LAGaymingSociety` without changing the canonical community name. `#lfg-channel` failed two bounded unique-anchor attempts and is paused rather than poisoning daily health. Community events belong to LAGS; bars, parks, and stores remain host-location context. |
 | Legendary Creature Club | Joined/accessible proof exists; daily-style candidate except the separate Events control repair | `#events`, `#lfg`, `#meet-ups`; sample `#mtg` only when needed | Proven source of regional event health, LFG, meetup, and pod-formation chatter. The separate Server Events / Discord Events surface is paused as an exact repair item, not an active daily route. |
 | Collectors Lounge | Joined and useful; announcements can carry operational alerts | `#announcements` daily; `#mtg-announcements-and-events` weekly; `#general` weekly; `#event-rules` occasional | Store closures, no-event notices, weekly lineups, Commander rules, and event-adjacent chatter. |
-| ProjectCCG community | Joined/access mapped; still needs careful route proof because prior isolated-profile pass hit server-selection/read-state issues | `#oc-announcements`, `#mtg-announcements`, `#oc-events`, `#mtg-discussion` | Branch/community announcements and event chatter, especially Orange County context. |
+| ProjectCCG community | Preparatory survey complete 2026-08-22; recurring monitoring approved | `#oc-announcements`, `#mtg-announcements`, `#oc-events`, `#mtg-discussion` | All four guarded reads passed. Branch/community announcements and event chatter remain useful, especially for Orange County context. |
 | JJ's Collectibles | Preparatory survey complete 2026-08-22; recurring monitoring approved | `#magic-announcements`, `#commander-night` weekly | Both guarded routes passed and produced useful event-candidate findings. Preserve Orange/Garden Grove identity boundaries. Do not repeat preparatory surveying without a new material route or access change. |
 | Kingslayer Games | Preparatory survey complete 2026-08-22; recurring monitoring approved | `#commander`, `#mtg-announcements` weekly | Both guarded routes passed and produced useful event-candidate findings. Do not repeat preparatory surveying without a new material route or access change. |
-| Magic & Monsters | Joined/access mapped, occasional/source-health posture | `#shop-schedule`, `#mtg-schedule` | Useful mostly for schedule-health and "MTG no longer routine" checks. |
+| Magic & Monsters | Preparatory survey complete 2026-08-22; occasional monitoring approved | `#shop-schedule`, `#mtg-schedule` | Both guarded reads passed. Useful mostly for schedule-health and "MTG no longer routine" checks. |
 | Krazy Nick's | Preparatory survey complete 2026-08-22; occasional monitoring approved | `#commander` occasional; `#weekly-event-schedule` paused | Commander produced real play/promo coordination. The schedule channel is stale since 2024 and remains known but paused. Do not repeat preparatory surveying without a new material route or access change. |
+| Paper Hero's Games | Preparatory survey complete 2026-08-22; recurring monitoring approved | Huntington Beach `#magic-the-gathering` weekly | The exact guarded route passed. Do not repeat preparatory surveying without a material route or access change. |
+| Hobby Overflow | Preparatory survey complete 2026-08-22; one recurring route approved | Magic `#announcements` occasional; `#tournament-schedule` paused | Announcements passed. The exact tournament route is known but Discord acknowledgement prevents render, so it is terminally paused rather than repeatedly retried. |
 
 ## Preparatory-survey completion rule
 
@@ -108,9 +110,7 @@ resolved. A blocked route is not a reason to reopen full store research.
 | Surface | Current issue | Next bounded step |
 | --- | --- | --- |
 | Legendary Creature Club Server Events / Discord Events | Guarded proof failed closed on Aug 14 2026 because no unique Events control was reachable. | Keep the row out of routine daily automation until one exact Events-surface repair proof succeeds. |
-| Hobby Overflow Discord | Invite-gated / blocked-TBD profile. | One finite invite/session repair attempt if the user cares about this store's Discord texture. Otherwise leave as known route, blocked content. |
-| Paper Hero's Huntington Beach Magic channel | Watchlist row is blocked/TBD despite a manual-session proof. | One exact channel-access repair proof before any recurring monitoring. |
-| ProjectCCG and Magic & Monsters isolated-profile reruns | Prior guarded runs hit Discord acknowledgement/server-selection state before content extraction. | Do not allowlist Discord write-like acknowledgement traffic just to make a read pass. First diagnose route hydration without reading messages. |
+| Hobby Overflow `#tournament-schedule` | Exact route is known, but Discord acknowledgement prevents content render. | Keep paused. Reopen only after a material access change; do not repeat the preparatory survey. |
 
 ## 2026-08-16 classification tighten-up
 
@@ -237,9 +237,12 @@ proved the prior three-profile set, then a scoped LAGS rerun proved
 label alias. The final recurring plan contains 16 proven active routes. Add
 JJ's, Kingslayer, and Krazy Nick's then completed their one-time preparatory
 surveys: five useful routes entered the recurring set and one stale schedule
-route was paused. The final recurring plan contains 21 proven routes. Add other
-store/community channels only after one bounded proof; do not convert route
-visibility alone into recurring monitoring.
+route was paused. The terminal completion pass then proved eight routes across
+Hobby Overflow, Paper Hero's, Magic & Monsters, and ProjectCCG. Hobby Overflow
+`#tournament-schedule` was explicitly paused behind Discord acknowledgement.
+All 12 mapped profiles are now complete and the final recurring plan contains
+29 proven routes. Add other store/community channels only after one bounded
+proof; do not convert route visibility alone into recurring monitoring.
 
 ### V1 outcome contract
 
