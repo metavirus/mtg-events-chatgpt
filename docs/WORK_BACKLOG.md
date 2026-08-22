@@ -884,17 +884,16 @@ claims without reopening the whole packet.
   `commerce_trading`, `noise_social_only`, and `stale_dormant` in
   `expected_signal_types`, notes, or a future first-class field. Cadence can be
   derived later from purpose, recency, and observed signal quality.
-- **Deferred pending recurring-agent efficiency proof:** richer Discord chatter
-  enrichment and limited recurring sweeps. Before expanding beyond the proven
-  high-signal paths, measure the real recurring-agent time/token cost and
-  reliability. If viable, prioritize operational, structured events, meetups,
-  LFG/pod formation, and active event-adjacent chatter; do not make every active
-  channel daily by default.
+- Discord recurring-agent efficiency is proven for the bounded core. The
+  August 22 landscape closure added LAGS by extending the existing runner,
+  paused duplicate/low-value lanes, and left a 16-route recurring plan. Future
+  additions require one bounded route proof and demonstrated planning value;
+  do not make every visible channel daily by default.
 - Daily Discord automation ladder is accepted as the path to v1:
   1. first-batch bounded proofs are complete for MTG OC, eligible LCC rows, and
      Collectors Lounge as of August 15;
   2. local micro-sweep script `scripts/run_discord_daily_survey.mjs` is built
-     over MTG OC, eligible LCC rows, and Collectors Lounge only; it supports
+     over MTG OC, eligible LCC rows, Collectors Lounge, and proven LAGS rows; it supports
      `--dry-run`, `--plan-only`, `--limit`, `--surface`, `--write-watchlist`,
      `--no-signal-writes`, and `--json-log`, and has passed plan-only plus a
      one-row guarded dry run;
@@ -949,6 +948,13 @@ claims without reopening the whole packet.
       `entity_surface_coverage` state and created accepted app-visible Updates.
       Remaining frontier is bounded Signal/Event promotion from accepted
       Discord findings only when separately justified.
+  12. August 22 landscape closure added LAGS through the existing cloud lane.
+      Its exact Discord UI label alias repaired three active routes without
+      changing canonical ownership. `#announcements`, `#meet-up`, and
+      `#general` passed guarded reads; `#lfg-channel` was paused after two
+      bounded ambiguous-anchor attempts. One duplicate LCC row and four
+      low-value/non-planning MTG OC rows were also paused. Final plan-only
+      selection: 16 proven recurring routes.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.

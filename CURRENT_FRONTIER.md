@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-15
+Updated: 2026-08-22
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -81,6 +81,14 @@ the exact durable state and next action, then hand off from that checkpoint.
   Discord findings now create accepted app-visible Updates through the same
   common framework used by the other daily agents. Signal/Event promotion from
   Discord findings remains disabled.
+- The August 22 Discord landscape closure expanded the existing cloud runner to
+  LAGS without redesigning the proven lane. Discord's UI label
+  `LAGaymingSociety` is handled as a navigation alias while the canonical owner
+  remains Los Angeles Gayming Society. `#announcements`, `#meet-up`, and
+  `#general` passed guarded reads; the ambiguous, never-useful `#lfg-channel`
+  was preserved but paused. One duplicate LCC row and four low-value MTG OC
+  lanes were also paused. The recurring plan is now 16 proven routes; broad
+  Discord rediscovery is not the frontier.
 - MTG OC is modeled as an independent Orange County regional community with
   nine mapped Discord channels. The proof distinguishes community-organized
   meetups from host-venue programming: its confirmed August 2 team-sealed

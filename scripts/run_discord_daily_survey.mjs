@@ -11,7 +11,11 @@ const EXACT_CHANNEL_URL = /^https:\/\/discord(?:app)?\.com\/channels\/(\d+)\/(\d
 const V1_PROFILE_SOURCE_IDS = new Set([
   'src-discord-mtg-oc-community',
   'src-lcc-discord-2026-07-28',
-  'src-collectors-discord-2026-07-14'
+  'src-collectors-discord-2026-07-14',
+  'src-discord-los-angeles-gayming-society'
+]);
+const UI_SERVER_LABELS = new Map([
+  ['src-discord-los-angeles-gayming-society', 'LAGaymingSociety']
 ]);
 const RESULT_TO_WATCHLIST = {
   accepted_signal: 'useful',
@@ -246,6 +250,10 @@ function folderNameFor(row) {
   return '';
 }
 
+function uiServerLabelFor(row) {
+  return UI_SERVER_LABELS.get(row.profile_source_id) || row.server_name;
+}
+
 function preflight(rows) {
   if (rows.length === 0) return { skipped: true, stdout: 'No rows selected.' };
   const args = ['scripts/discord_route_preflight.py', '--method', 'ui_native'];
@@ -274,7 +282,7 @@ function runHarnessAttempt(row, args) {
     'scripts/discord_readonly_ui_native_test.mjs',
     row.channel_url,
     'content',
-    row.server_name,
+    uiServerLabelFor(row),
     folderNameFor(row),
     row.channel_name,
     String(args.maxVisibleMessages),
@@ -687,7 +695,12 @@ async function main() {
       excludeSurfaces: args.excludeSurfaces,
       maxRouteRetries: args.maxRouteRetries,
       runLock: args.planOnly ? { used: false, reason: 'plan_only' } : { used: true, path: LOCK_PATH },
-      allowlist: ['MTG OC', 'Legendary Creature Club eligible channel rows', 'Collectors Lounge'],
+      allowlist: [
+        'MTG OC',
+        'Legendary Creature Club eligible channel rows',
+        'Collectors Lounge',
+        'Los Angeles Gayming Society'
+      ],
       selectedCount: selected.length,
       selected: selected.map((row) => ({
         id: row.id,

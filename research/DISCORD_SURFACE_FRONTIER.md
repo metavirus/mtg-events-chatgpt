@@ -1,6 +1,6 @@
 # Discord Surface Frontier
 
-Updated: 2026-08-16
+Updated: 2026-08-22
 
 Purpose: this is the compact operating map for Discord survey work. It records
 what has already been discovered, which surfaces are ripe for a recurring agent,
@@ -14,11 +14,12 @@ Discord discovery before using this map.
   - `discord_access_profiles`: server-level access and usefulness posture.
   - `discord_channel_watchlist`: exact channel/button targets for recurring
     survey.
-- Current normalized map: 11 access profiles and 34 channel watchlist rows.
+- Current normalized map: 12 access profiles and 38 channel watchlist rows.
 - Channel status summary from the latest audit:
-  - 31 active watchlist rows.
-  - 3 blocked/TBD watchlist rows.
-  - 20 high-priority watchlist rows.
+  - 28 active watchlist rows.
+  - 6 paused watchlist rows.
+  - 4 blocked/TBD watchlist rows.
+  - 21 high-priority watchlist rows.
 - A source row by itself is not agent-ready. A Discord route becomes recurring
   survey material only after it has an access profile plus exact mapped channel
   or server-event targets.
@@ -58,7 +59,7 @@ approved. Start here; do not begin with route-only invites.
 | Surface | Current posture | First recurring targets | Why it matters |
 | --- | --- | --- | --- |
 | MTG OC | Joined, accessible, high-value regional community | `#events_activities` daily hot; `#monthly-meetings` daily hot; `#announcements` weekly watch; `#share_feedback_promos` weekly watch; `#welcome` weekly sample/watch | Proven source of meetup coordination. Mentions of `Metavirus`, direct questions, and concrete meetup planning are highest signal. `#questions_comments_suggestions` and `#random` are now intentionally demoted out of daily emphasis as low-yield general lanes. |
-| Los Angeles Gayming Society / LAGS | Joined, accessible, high-value LGBTQ+ regional community | `#meet-up` and `#announcements` as hot; `#general` as watch/sample | `#meet-up` surfaced the Discord event card for Magic The GAYthering at Precinct DTLA on August 18, 2026 at 6 PM; that evidence is attached to the existing LAGS-owned event and Signal. `#announcements` surfaced a real Discord event: Gaymer Night at WERK Long Beach on August 20, 2026 at 8 PM, with Discord event and Instagram links. `#general` surfaced MTG-adjacent chatter about Tuesday MTG at Witch's Cottage in North Hollywood. Do not model bar hosts as stores unless independently promoted; community events belong to LAGS with host location context. |
+| Los Angeles Gayming Society / LAGS | Joined, accessible, high-value LGBTQ+ regional community; included in the cloud runner | `#meet-up` and `#announcements` as hot; `#general` as watch/sample; `#lfg-channel` retained but paused | The August 22 guarded run proved the three active routes after mapping Discord's UI label `LAGaymingSociety` without changing the canonical community name. `#lfg-channel` failed two bounded unique-anchor attempts and is paused rather than poisoning daily health. Community events belong to LAGS; bars, parks, and stores remain host-location context. |
 | Legendary Creature Club | Joined/accessible proof exists; daily-style candidate except the separate Events control repair | `#events`, `#lfg`, `#meet-ups`; sample `#mtg` only when needed | Proven source of regional event health, LFG, meetup, and pod-formation chatter. The separate Server Events / Discord Events surface is paused as an exact repair item, not an active daily route. |
 | Collectors Lounge | Joined and useful; announcements can carry operational alerts | `#announcements` daily; `#mtg-announcements-and-events` weekly; `#general` weekly; `#event-rules` occasional | Store closures, no-event notices, weekly lineups, Commander rules, and event-adjacent chatter. |
 | ProjectCCG community | Joined/access mapped; still needs careful route proof because prior isolated-profile pass hit server-selection/read-state issues | `#oc-announcements`, `#mtg-announcements`, `#oc-events`, `#mtg-discussion` | Branch/community announcements and event chatter, especially Orange County context. |
@@ -119,6 +120,10 @@ resolved. A blocked route is not a reason to reopen full store research.
 
 ## Route-captured but not agent-ready
 
+LAGS `#lfg-channel` is not an active repair obligation. Its known route is
+preserved in paused state after the bounded August 22 proof; reopen it only if
+new channel activity or a changed Discord anchor justifies another attempt.
+
 These have Discord/source-route evidence but are not yet normalized into a
 recurring survey surface. Treat them as finite replay candidates, not daily
 watch targets.
@@ -176,10 +181,10 @@ daily-sweep ladder below. Do not skip ahead to broad automation.
 
 ### Daily Discord automation ladder
 
-Phase 0 is complete for the v1 allowlist: bounded manual/guarded proofs over
-exact mapped watchlist rows now cover MTG OC, Legendary Creature Club channel
-rows, and Collectors Lounge. LCC's guild Events surface remains excluded from
-automation until the exact `needs_deeper_replay` repair is complete.
+Phase 0 is complete for the recurring allowlist: bounded manual/guarded proofs
+over exact mapped watchlist rows cover MTG OC, Legendary Creature Club channel
+rows, Collectors Lounge, and the three proven LAGS routes. LCC's guild Events
+surface and LAGS `#lfg-channel` remain excluded.
 
 Phase 1 first-batch proof is complete as of August 15, 2026. Collectors Lounge
 was surveyed through guarded UI-native reads of `#announcements`,
@@ -216,9 +221,12 @@ Phase 4 is GitHub Actions. Only after Phase 3 passes, add
 morning PT schedule, manual dispatch, JSON-log artifact upload, and no commits
 of generated logs.
 
-Phase 5 is measured expansion. Add JJ's / other operational channels only after
-v1 runs cleanly. ProjectCCG and other repaired routes must get one bounded proof
-before entering the daily allowlist.
+Phase 5 measured expansion began on August 22 with LAGS. A full local pass
+proved the prior three-profile set, then a scoped LAGS rerun proved
+`#announcements`, `#meet-up`, and `#general` after adding the exact Discord UI
+label alias. The final recurring plan contains 16 proven active routes. Add
+JJ's or other store/community channels only after one bounded proof; do not
+convert route visibility alone into recurring monitoring.
 
 ### V1 outcome contract
 
