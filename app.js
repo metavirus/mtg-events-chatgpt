@@ -1295,7 +1295,10 @@ function handleClick(event) {
   if (backButton) return navigateBack();
 
   const routeButton = event.target.closest('[data-route]');
-  if (routeButton) return navigate(routeButton.dataset.route);
+  if (routeButton) {
+    if (routeButton.closest('#detailDrawer')) closeDrawer();
+    return navigate(routeButton.dataset.route);
+  }
 
   const viewButton = event.target.closest('[data-view]');
   if (viewButton) {
@@ -1374,6 +1377,7 @@ function handleClick(event) {
     if (state.selectedPlaceId !== placeTrigger.dataset.placeId) state.selectedPlaceTab = 'overview';
     state.selectedPlaceId = placeTrigger.dataset.placeId;
     state.selectedPlaceWasAuto = false;
+    if (placeTrigger.closest('#detailDrawer')) closeDrawer();
     closePlacePicker();
     navigate('places');
     return;
@@ -1483,7 +1487,7 @@ function handleAction(action, element) {
   if (action === 'show-promising-nearby') return openPromisingNearby();
   if (action === 'show-discovery-queue') return openDiscoveryQueue();
   if (action === 'show-reviewed-places') return openReviewedPlaces();
-  if (action === 'show-source-records') return navigate('places');
+  if (action === 'show-source-records') return openSourceRecords();
   if (action === 'show-format-balance') return navigate('events');
   if (action === 'save-note') return saveNote(element.dataset.entity, element.dataset.input);
   if (action === 'send-magic-link') return sendMagicLink(element.dataset.input);
@@ -2802,7 +2806,7 @@ function eventCard(event, compact = false, options = {}) {
   }
   const limitedChip = isPrereleaseOrSealed(event) ? '<span class="status-chip limited">Prerelease / sealed</span>' : '';
   const communityChip = organizer ? '<span class="status-chip sky">Community meetup</span>' : '';
-  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${dense ? 'dense-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" tabindex="0">
+  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${dense ? 'dense-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" role="button" tabindex="0" aria-label="Open ${escapeHtml(event.title)} details">
     <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
@@ -3106,7 +3110,7 @@ function placeEvaluationSummary(place) {
   return `<div class="evaluation-summary" aria-label="Current place evaluation">
     <button class="evaluation-tile" data-action="explain-scores"><span>Personal fit</span><strong>${escapeHtml(evaluation.fitGrade)}</strong><small>${Number(evaluation.fitScore).toFixed(1)} / 5 · promise for you</small></button>
     <button class="evaluation-tile" data-action="explain-scores"><span>Confidence</span><strong>${escapeHtml(evaluation.confidence)}</strong><small>How strongly the evidence supports that read</small></button>
-    <button class="evaluation-tile" data-action="explain-scores"><span>Research depth</span><strong>${escapeHtml(placeResearchLabel(place))}</strong><small>${evaluation.candidateStatus === 'promoted' ? 'Promoted candidate' : evaluation.candidateStatus === 'working' ? 'Working candidate' : 'Discovery candidate'}</small></button>
+      <button class="evaluation-tile" data-action="explain-scores"><span>Research depth</span><strong>${escapeHtml(placeResearchLabel(place))}</strong><small>${escapeHtml(candidateStatusLabel(evaluation.candidateStatus))}</small></button>
   </div>
   <section class="detail-section assessment-snapshot"><div><p class="eyebrow">Pluses</p><ul>${evaluation.positives.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No strong positive factors are recorded yet.</li>'}</ul></div><div><p class="eyebrow">Cautions</p><ul>${evaluation.cautions.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No specific caution has been recorded yet.</li>'}</ul></div><div><p class="eyebrow">Open questions</p><ul>${evaluation.openQuestions.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || '<li>No open question is recorded yet.</li>'}</ul></div></section>`;
 }
@@ -4957,7 +4961,7 @@ function toggleHighlightsRail() {
 
 function openScoreExplanation(place) {
   const evaluation = place ? normalizedEvaluation(place) : null;
-  const evidence = evaluation ? `<section class="drawer-section"><p class="eyebrow">Current judgment</p><h2>${escapeHtml(place.name)}: ${escapeHtml(evaluation.fitGrade)} · ${Number(evaluation.fitScore).toFixed(1)}/5</h2><p class="drawer-lead">${escapeHtml(evaluation.confidence)} confidence · ${escapeHtml(placeResearchLabel(place))} research · ${evaluation.candidateStatus === 'promoted' ? 'promoted candidate' : evaluation.candidateStatus === 'working' ? 'working candidate' : 'discovery candidate'}</p></section>
+  const evidence = evaluation ? `<section class="drawer-section"><p class="eyebrow">Current judgment</p><h2>${escapeHtml(place.name)}: ${escapeHtml(evaluation.fitGrade)} · ${Number(evaluation.fitScore).toFixed(1)}/5</h2><p class="drawer-lead">${escapeHtml(evaluation.confidence)} confidence · ${escapeHtml(placeResearchLabel(place))} research · ${escapeHtml(candidateStatusLabel(evaluation.candidateStatus).toLowerCase())}</p></section>
     <section class="drawer-section evaluation-evidence"><div><p class="eyebrow">Pluses</p><ul>${evaluation.positives.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div><div><p class="eyebrow">Cautions</p><ul>${evaluation.cautions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div><div><p class="eyebrow">Open questions</p><ul>${evaluation.openQuestions.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div></section>` : '';
   const breakdown = place ? `<section class="drawer-section"><p class="eyebrow">Dimension breakdown</p><h2>What pushed the score up or down</h2><div class="dimension-grid">${scoreBreakdown(place)}</div></section>` : '';
   openDrawer(`<div class="drawer-kicker"><span class="status-chip violet">Scoring guide</span></div><h1 id="drawerTitle">${evaluation ? 'Why this place received its score' : 'How place scores work'}</h1><p class="drawer-lead">Fit and confidence are separate. The grade estimates how good a practical bet the place is for you; confidence describes how strongly the available evidence supports that judgment.</p>${evidence}${breakdown}<section class="drawer-section"><p class="eyebrow">How to read the dimensions</p><div class="truth-list"><div><span class="truth-icon mint">1</span><p><strong>Magic and event fit</strong><br>Relevant Commander, prerelease, sealed, and draft opportunity without rewarding poor-fit competitive volume.</p></div><div><span class="truth-icon sky">2</span><p><strong>Solo-arrival and community fit</strong><br>Explicit welcoming or pairing help is a positive. Ordinary silence is neutral rather than a penalty.</p></div><div><span class="truth-icon amber">3</span><p><strong>Practical fit</strong><br>Distance, schedule reliability, physical environment, and realistic repeat-visit value.</p></div><div><span class="truth-icon coral">4</span><p><strong>Confidence</strong><br>Evidence depth and agreement across official, social, community, and user-observation sources.</p></div></div></section><section class="drawer-section"><p class="eyebrow">Important caveat</p><p>These are transparent working judgments, not objective truths. They should change when research deepens or your own visits provide better evidence.</p></section>`);
@@ -4970,7 +4974,30 @@ function openDiscoveryQueue() {
 
 function openReviewedPlaces() {
   const places = DATA.stores.filter((place) => place.researchStatus === 'partial' && !isPlaceHidden(place.id)).sort((a, b) => storeScore(b) - storeScore(a));
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">Reviewed places</span></div><h1 id="drawerTitle">Places with deeper work</h1><p class="drawer-lead">These places have moved beyond raw discovery and now support a real planning judgment.</p><section class="drawer-section"><div class="place-occurrences">${places.map((place) => { const evaluation = normalizedEvaluation(place); return `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${escapeHtml(evaluation.fitGrade)}</strong>${Number(evaluation.fitScore).toFixed(1)}</time><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small></span><span class="status-chip ${evaluation.candidateStatus === 'promoted' ? 'mint' : 'amber'}">${evaluation.candidateStatus === 'promoted' ? 'Promoted' : 'Working'}</span></button>`; }).join('')}</div></section>`);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip mint">Reviewed places</span></div><h1 id="drawerTitle">Places with deeper work</h1><p class="drawer-lead">These places have moved beyond raw discovery and now support a real planning judgment.</p><section class="drawer-section"><div class="place-occurrences">${places.map((place) => { const evaluation = normalizedEvaluation(place); return `<button class="occurrence-row" data-place-id="${place.id}"><time><strong>${escapeHtml(evaluation.fitGrade)}</strong>${Number(evaluation.fitScore).toFixed(1)}</time><span><strong>${escapeHtml(place.name)}</strong><small>${escapeHtml(place.city)} · ${distanceLabel(place)}</small></span><span class="status-chip ${evaluation.candidateStatus === 'promoted' ? 'mint' : 'amber'}">${escapeHtml(candidateStatusLabel(evaluation.candidateStatus))}</span></button>`; }).join('')}</div></section>`);
+}
+
+function candidateStatusLabel(status) {
+  if (status === 'promoted') return 'Shortlist';
+  if (status === 'deprioritized') return 'Lower priority';
+  if (status === 'discovery') return 'Discovery-level';
+  return 'Assessed';
+}
+
+function openSourceRecords() {
+  const counts = DATA.sources.reduce((result, item) => {
+    const type = item.type || 'other';
+    result[type] = (result[type] || 0) + 1;
+    return result;
+  }, {});
+  const recent = [...DATA.sources]
+    .sort((a, b) => String(b.lastChecked || '').localeCompare(String(a.lastChecked || '')))
+    .slice(0, 40);
+  const mix = Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([type, count]) => `<span class="meta-chip">${escapeHtml(type.replaceAll(/([A-Z])/g, ' $1'))} · ${count}</span>`)
+    .join('');
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip sky">Evidence surfaces</span><span class="status-chip slate">${DATA.sources.length} records</span></div><h1 id="drawerTitle">Connected source records</h1><p class="drawer-lead">Open a source when you want to inspect the evidence behind the app. Records without a public URL remain visible as provenance rather than pretending to be links.</p><section class="drawer-section"><p class="eyebrow">Source mix</p><div class="meta-chip-row">${mix}</div></section><section class="drawer-section"><p class="eyebrow">Most recently checked</p><h2>${recent.length} recent surfaces</h2>${evidenceSourceList(recent)}</section>`);
 }
 
 function openFreshSignals() {
