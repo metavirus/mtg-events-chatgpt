@@ -967,8 +967,10 @@ claims without reopening the whole packet.
       profile complete. Eight routes across Hobby Overflow, Paper Hero's,
       Magic & Monsters, and ProjectCCG passed guarded reads and entered the
       recurring set. Hobby Overflow `#tournament-schedule` is explicitly
-      paused behind Discord acknowledgement while its announcements route is
-      active. Final plan-only selection: 29 proven recurring routes. No mapped
+      paused behind Discord acknowledgement. The local-only Hobby Overflow
+      announcements and Paper Hero's proofs were also terminally paused after
+      the cloud session could not prove their channel labels. Final recurring
+      selection: 27 proven routes. No mapped
       profile remains in preparatory purgatory.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy

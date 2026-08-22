@@ -95,7 +95,9 @@ the exact durable state and next action, then hand off from that checkpoint.
   eight routes across Hobby Overflow, Paper Hero's, Magic & Monsters, and
   ProjectCCG. Hobby Overflow `#tournament-schedule` remains known but paused
   because Discord acknowledgement prevents content render; its announcements
-  route is active. The cloud plan now contains 29 proven routes. Do not
+  route is paused. Paper Hero's exact route also passed locally but could not
+  prove its label in the headless cloud session, so it is paused too. The cloud
+  plan contains 27 proven recurring routes. Do not
   preparatory-scan a completed profile again absent a new material route,
   access change, or explicit user request.
 - MTG OC is modeled as an independent Orange County regional community with

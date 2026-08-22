@@ -67,8 +67,8 @@ approved. Start here; do not begin with route-only invites.
 | Kingslayer Games | Preparatory survey complete 2026-08-22; recurring monitoring approved | `#commander`, `#mtg-announcements` weekly | Both guarded routes passed and produced useful event-candidate findings. Do not repeat preparatory surveying without a new material route or access change. |
 | Magic & Monsters | Preparatory survey complete 2026-08-22; occasional monitoring approved | `#shop-schedule`, `#mtg-schedule` | Both guarded reads passed. Useful mostly for schedule-health and "MTG no longer routine" checks. |
 | Krazy Nick's | Preparatory survey complete 2026-08-22; occasional monitoring approved | `#commander` occasional; `#weekly-event-schedule` paused | Commander produced real play/promo coordination. The schedule channel is stale since 2024 and remains known but paused. Do not repeat preparatory surveying without a new material route or access change. |
-| Paper Hero's Games | Preparatory survey complete 2026-08-22; recurring monitoring approved | Huntington Beach `#magic-the-gathering` weekly | The exact guarded route passed. Do not repeat preparatory surveying without a material route or access change. |
-| Hobby Overflow | Preparatory survey complete 2026-08-22; one recurring route approved | Magic `#announcements` occasional; `#tournament-schedule` paused | Announcements passed. The exact tournament route is known but Discord acknowledgement prevents render, so it is terminally paused rather than repeatedly retried. |
+| Paper Hero's Games | Preparatory survey complete 2026-08-22; recurring route paused | Huntington Beach `#magic-the-gathering` paused | The exact guarded route passed locally but its label was not proven in the headless cloud session. Keep it paused without reopening preparatory surveying. |
+| Hobby Overflow | Preparatory survey complete 2026-08-22; routes paused | Magic `#announcements` paused; `#tournament-schedule` paused | Announcements passed locally but not in the headless cloud session. The tournament route is known but Discord acknowledgement prevents render. Both are terminally paused rather than repeatedly retried. |
 
 ## Preparatory-survey completion rule
 
@@ -240,8 +240,10 @@ surveys: five useful routes entered the recurring set and one stale schedule
 route was paused. The terminal completion pass then proved eight routes across
 Hobby Overflow, Paper Hero's, Magic & Monsters, and ProjectCCG. Hobby Overflow
 `#tournament-schedule` was explicitly paused behind Discord acknowledgement.
-All 12 mapped profiles are now complete and the final recurring plan contains
-29 proven routes. Add other store/community channels only after one bounded
+All 12 mapped profiles are now complete. The cloud pressure test terminally
+paused Hobby Overflow announcements and Paper Hero's after local-only proofs,
+leaving a final recurring plan of 27 proven routes. Add other store/community
+channels only after one bounded
 proof; do not convert route visibility alone into recurring monitoring.
 
 ### V1 outcome contract
