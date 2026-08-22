@@ -1746,8 +1746,12 @@ function renderSignals() {
   const summaryContainer = document.getElementById('signalsSummary');
   if (!container) return;
   const upcoming = briefingUpcomingEvents();
-  const nextBest = upcoming[0] || null;
-  const thisWeek = upcoming.slice(1, 5);
+  const todayOptions = upcoming.filter((event) => isSameLocalDay(event.occurrenceDate || parseDate(event.date || event.startDate), new Date()));
+  const nextBest = todayOptions[0] || null;
+  const nextUpcoming = nextBest ? null : upcoming[0] || null;
+  const remainingToday = todayOptions.filter((event) => !nextBest || todayLeadKey(event) !== todayLeadKey(nextBest));
+  const laterOptions = upcoming.filter((event) => !isSameLocalDay(event.occurrenceDate || parseDate(event.date || event.startDate), new Date()));
+  const thisWeek = [...remainingToday, ...laterOptions].slice(0, 5);
   const digests = briefingChangeDigests();
   const attention = briefingAttentionSignals();
   const todos = personalTodoItems().slice(0, 2);
@@ -1761,7 +1765,7 @@ function renderSignals() {
   </div>`;
 
   container.innerHTML = `<div class="briefing-layout">
-    ${nextBest ? briefingHero(nextBest) : briefingEmptyHero()}
+    ${nextBest ? briefingHero(nextBest) : briefingEmptyHero(nextUpcoming)}
     ${briefingThisWeek(thisWeek)}
     ${briefingDigestSection(digests)}
     ${briefingAttentionSection(attention, todos)}
@@ -1780,6 +1784,10 @@ function briefingUpcomingEvents() {
     seen.add(key);
     return true;
   });
+}
+
+function isSameLocalDay(a, b) {
+  return !!a && !!b && dateKey(a) === dateKey(b);
 }
 
 function briefingEventReason(event) {
@@ -1815,7 +1823,7 @@ function briefingHero(event) {
   const interested = !!state.personal.interested?.[interestKey];
   return `<section class="briefing-hero">
     <div class="briefing-hero-copy">
-      <p class="eyebrow mint">Next best option</p>
+      <p class="eyebrow mint">Best bet today</p>
       <button class="briefing-title-button" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(occurrence)}"><h2>${escapeHtml(event.title)}</h2></button>
       <p class="briefing-when">${escapeHtml(briefingEventWhen(event, true))}</p>
       <p class="briefing-place">${escapeHtml(organizer?.name || place?.name || 'Location to confirm')}${organizer && place ? ` · at ${escapeHtml(place.name)}` : ''}</p>
@@ -1826,8 +1834,19 @@ function briefingHero(event) {
   </section>`;
 }
 
-function briefingEmptyHero() {
-  return `<section class="briefing-hero empty"><div><p class="eyebrow mint">Next best option</p><h2>No strong near-term match yet</h2><p>The surveyors have not produced a current event that clears your normal fit filters.</p><button class="soft-button" data-route="events">Browse all events</button></div></section>`;
+function briefingEmptyHero(nextUpcoming = null) {
+  if (nextUpcoming) {
+    const occurrence = nextUpcoming.occurrenceDate || parseDate(nextUpcoming.date || nextUpcoming.startDate);
+    return `<section class="briefing-hero empty">
+      <div class="briefing-hero-copy">
+        <p class="eyebrow mint">Today</p>
+        <h2>No strong same-day option</h2>
+        <p>The next useful match is ${escapeHtml(briefingEventWhen(nextUpcoming, true))}: ${escapeHtml(nextUpcoming.title)}.</p>
+        <div class="briefing-actions"><button class="primary-button" data-event-id="${escapeHtml(nextUpcoming.id)}" data-date="${dateKey(occurrence)}">Open next option</button><button class="soft-button" data-route="events">Browse today</button></div>
+      </div>
+    </section>`;
+  }
+  return `<section class="briefing-hero empty"><div><p class="eyebrow mint">Today</p><h2>No strong same-day option</h2><p>The surveyors have not produced a current event that clears your normal fit filters.</p><button class="soft-button" data-route="events">Browse all events</button></div></section>`;
 }
 
 function briefingThisWeek(events) {
