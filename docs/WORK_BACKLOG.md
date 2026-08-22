@@ -955,6 +955,14 @@ claims without reopening the whole packet.
       bounded ambiguous-anchor attempts. One duplicate LCC row and four
       low-value/non-planning MTG OC rows were also paused. Final plan-only
       selection: 16 proven recurring routes.
+  13. August 22 measured expansion completed the one-time preparatory surveys
+      for JJ's Collectibles, Kingslayer Games, and Krazy Nick's Games. Supabase
+      now has a durable `preparatory_survey_completed_at` stop marker. Five
+      useful routes entered routine monitoring, Krazy Nick's stale 2024
+      schedule route was paused, and the final plan-only selection is 21
+      proven recurring routes. Completed profiles must not return to
+      preparatory surveying without a new material route, access change, or
+      explicit user request.
   The v1 outcome contract is `accepted_signal`, `event_candidate`,
   `quiet_coverage`, `blocked_repair`, or `stale_useful_context`. Quiet/noisy
   runs update monitoring state only; they do not create visible Signals.

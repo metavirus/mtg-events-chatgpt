@@ -16,8 +16,8 @@ Discord discovery before using this map.
     survey.
 - Current normalized map: 12 access profiles and 38 channel watchlist rows.
 - Channel status summary from the latest audit:
-  - 28 active watchlist rows.
-  - 6 paused watchlist rows.
+  - 27 active watchlist rows.
+  - 7 paused watchlist rows.
   - 4 blocked/TBD watchlist rows.
   - 21 high-priority watchlist rows.
 - A source row by itself is not agent-ready. A Discord route becomes recurring
@@ -63,10 +63,20 @@ approved. Start here; do not begin with route-only invites.
 | Legendary Creature Club | Joined/accessible proof exists; daily-style candidate except the separate Events control repair | `#events`, `#lfg`, `#meet-ups`; sample `#mtg` only when needed | Proven source of regional event health, LFG, meetup, and pod-formation chatter. The separate Server Events / Discord Events surface is paused as an exact repair item, not an active daily route. |
 | Collectors Lounge | Joined and useful; announcements can carry operational alerts | `#announcements` daily; `#mtg-announcements-and-events` weekly; `#general` weekly; `#event-rules` occasional | Store closures, no-event notices, weekly lineups, Commander rules, and event-adjacent chatter. |
 | ProjectCCG community | Joined/access mapped; still needs careful route proof because prior isolated-profile pass hit server-selection/read-state issues | `#oc-announcements`, `#mtg-announcements`, `#oc-events`, `#mtg-discussion` | Branch/community announcements and event chatter, especially Orange County context. |
-| JJ's Collectibles | Joined/access mapped | `#magic-announcements`, `#commander-night` | Store-level Magic announcements and Commander-night coordination. Preserve Orange/Garden Grove identity boundaries. |
-| Kingslayer Games | Joined/access mapped, manual-session posture | `#commander`, `#mtg-announcements` | Commander and branch/event chatter. |
+| JJ's Collectibles | Preparatory survey complete 2026-08-22; recurring monitoring approved | `#magic-announcements`, `#commander-night` weekly | Both guarded routes passed and produced useful event-candidate findings. Preserve Orange/Garden Grove identity boundaries. Do not repeat preparatory surveying without a new material route or access change. |
+| Kingslayer Games | Preparatory survey complete 2026-08-22; recurring monitoring approved | `#commander`, `#mtg-announcements` weekly | Both guarded routes passed and produced useful event-candidate findings. Do not repeat preparatory surveying without a new material route or access change. |
 | Magic & Monsters | Joined/access mapped, occasional/source-health posture | `#shop-schedule`, `#mtg-schedule` | Useful mostly for schedule-health and "MTG no longer routine" checks. |
-| Krazy Nick's | Joined/access mapped, occasional candidate | `#commander`, `#weekly-event-schedule` | Lower-frequency but potentially useful Commander/schedule route. |
+| Krazy Nick's | Preparatory survey complete 2026-08-22; occasional monitoring approved | `#commander` occasional; `#weekly-event-schedule` paused | Commander produced real play/promo coordination. The schedule channel is stale since 2024 and remains known but paused. Do not repeat preparatory surveying without a new material route or access change. |
+
+## Preparatory-survey completion rule
+
+`discord_access_profiles.preparatory_survey_completed_at` is the durable stop
+marker. Once populated, the server must not return to preparatory surveying
+because time passed or a future agent reacclimated. Completed profiles receive
+routine monitoring only. Reopen preparation only for a genuinely new material
+route, changed access state, or explicit user request. Channel-level active,
+paused, and blocked dispositions remain canonical in
+`discord_channel_watchlist`.
 
 ## Discord review audit ledger
 
@@ -225,8 +235,11 @@ Phase 5 measured expansion began on August 22 with LAGS. A full local pass
 proved the prior three-profile set, then a scoped LAGS rerun proved
 `#announcements`, `#meet-up`, and `#general` after adding the exact Discord UI
 label alias. The final recurring plan contains 16 proven active routes. Add
-JJ's or other store/community channels only after one bounded proof; do not
-convert route visibility alone into recurring monitoring.
+JJ's, Kingslayer, and Krazy Nick's then completed their one-time preparatory
+surveys: five useful routes entered the recurring set and one stale schedule
+route was paused. The final recurring plan contains 21 proven routes. Add other
+store/community channels only after one bounded proof; do not convert route
+visibility alone into recurring monitoring.
 
 ### V1 outcome contract
 

@@ -89,6 +89,14 @@ the exact durable state and next action, then hand off from that checkpoint.
   was preserved but paused. One duplicate LCC row and four low-value MTG OC
   lanes were also paused. The recurring plan is now 16 proven routes; broad
   Discord rediscovery is not the frontier.
+- Preparatory Discord surveying is now a durably terminal state through
+  `discord_access_profiles.preparatory_survey_completed_at`. JJ's Collectibles,
+  Kingslayer Games, and Krazy Nick's Games are marked complete as of August 22.
+  Their six known routes all passed guarded reads: five useful routes joined
+  routine monitoring, while Krazy Nick's stale 2024 schedule channel was
+  paused. The cloud plan now contains 21 proven routes. Do not preparatory-scan
+  those stores again absent a new material route, access change, or explicit
+  user request.
 - MTG OC is modeled as an independent Orange County regional community with
   nine mapped Discord channels. The proof distinguishes community-organized
   meetups from host-venue programming: its confirmed August 2 team-sealed

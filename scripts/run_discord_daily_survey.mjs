@@ -12,7 +12,18 @@ const V1_PROFILE_SOURCE_IDS = new Set([
   'src-discord-mtg-oc-community',
   'src-lcc-discord-2026-07-28',
   'src-collectors-discord-2026-07-14',
-  'src-discord-los-angeles-gayming-society'
+  'src-discord-los-angeles-gayming-society',
+  'src-jjs-discord-magic-announcements-2026-07-18',
+  'src-kingslayer-discord-route-2026-07-18',
+  'src-kng-discord-2026-07-14'
+]);
+const STORES_LOCAL_PROFILE_SOURCE_IDS = new Set([
+  'src-collectors-discord-2026-07-14',
+  'src-discord-mtg-oc-community',
+  'src-lcc-discord-2026-07-28',
+  'src-jjs-discord-magic-announcements-2026-07-18',
+  'src-kingslayer-discord-route-2026-07-18',
+  'src-kng-discord-2026-07-14'
 ]);
 const UI_SERVER_LABELS = new Map([
   ['src-discord-los-angeles-gayming-society', 'LAGaymingSociety']
@@ -244,9 +255,7 @@ function applySurfaceExclusions(rows, surfaces) {
 }
 
 function folderNameFor(row) {
-  if (row.server_name.includes('Collectors Lounge')) return 'Stores/Local';
-  if (row.server_name === 'MTG OC') return 'Stores/Local';
-  if (row.server_name === 'Legendary Creature Club') return 'Stores/Local';
+  if (STORES_LOCAL_PROFILE_SOURCE_IDS.has(row.profile_source_id)) return 'Stores/Local';
   return '';
 }
 
@@ -699,7 +708,10 @@ async function main() {
         'MTG OC',
         'Legendary Creature Club eligible channel rows',
         'Collectors Lounge',
-        'Los Angeles Gayming Society'
+        'Los Angeles Gayming Society',
+        "JJ's Collectibles",
+        'Kingslayer Games',
+        "Krazy Nick's Games"
       ],
       selectedCount: selected.length,
       selected: selected.map((row) => ({
