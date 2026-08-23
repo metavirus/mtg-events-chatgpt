@@ -2,6 +2,7 @@ const NON_PLANNING_CHATTER = /\b(?:lost|missing|misplaced|left behind|return(?:e
 const EVENT_TERMS = /\b(?:event|commander|draft|prerelease|sealed|fnm|tournament|meet ?up)\b/i;
 const SCHEDULE_FACTS = /\b(?:sign[ -]?ups?|register|registration|entry|starts?|starting|scheduled|schedule|doors|check[ -]?in|rounds?|seats?|spots?|capacity|at \d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?))\b/i;
 const FUTURE_CUES = /\b(?:tomorrow|tonight|today|this (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|weekend)|next (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|weekend|week))\b/i;
+const ACTUAL_CHANGE = /\b(?:cancel(?:led|ed|ation)?|closed|closure|reschedul(?:e|ed|ing)?|moved|postpon(?:e|ed)|time changed|location changed|no events?)\b/i;
 
 function candidateTimestampMs(candidate) {
   const parsed = Date.parse(candidate?.timestamp || '');
@@ -17,7 +18,7 @@ function relativeCueIsStillActionable(text, candidate, nowMs) {
   const timestampMs = candidateTimestampMs(candidate);
   if (timestampMs === null) return false;
   if (/\btomorrow\b/i.test(text)) return nowMs <= timestampMs + 36 * 3_600_000;
-  if (/\b(?:today|tonight)\b/i.test(text)) return nowMs <= timestampMs + 24 * 3_600_000;
+  if (/\b(?:today|tonight)\b/i.test(text)) return nowMs <= timestampMs + 16 * 3_600_000;
   if (/\b(?:this|next) (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|weekend|week)\b/i.test(text)) {
     return nowMs <= timestampMs + 8 * 24 * 3_600_000;
   }
@@ -39,7 +40,7 @@ function isCurrentCommunitySignal(candidate, nowMs) {
   const hours = ageHours(candidate, nowMs);
   if (hours === null || NON_PLANNING_CHATTER.test(String(candidate?.text || ''))) return false;
   if (categories.includes('user_involvement')) return hours <= 7 * 24;
-  if (categories.includes('cancellation_or_change')) return hours <= 48;
+  if (categories.includes('cancellation_or_change') && ACTUAL_CHANGE.test(String(candidate?.text || ''))) return hours <= 48;
   if (categories.includes('community_or_lfg')) return hours <= 48;
   if (categories.includes('fit_or_power')) return hours <= 7 * 24;
   return false;

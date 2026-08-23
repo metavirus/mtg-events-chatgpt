@@ -10,5 +10,6 @@ assert.equal(isActionableEventCandidate(candidate('2026-08-23T07:43:06Z', "My bu
 assert.equal(classifyDiscordFindings({ findingCandidates: [candidate('2026-08-23T07:43:06Z', "My buddy lost a Generous Gift during Friday night's commander event. Please return it to the store.")] }, now).outcome, 'quiet_coverage');
 assert.equal(classifyDiscordFindings({ findingCandidates: [candidate('2026-08-23T13:00:00Z', 'Commander night is cancelled tonight due to the power outage.', ['event', 'cancellation_or_change'])] }, now).outcome, 'event_candidate');
 assert.equal(classifyDiscordFindings({ findingCandidates: [candidate('2026-08-23T13:00:00Z', 'Anyone want to play Commander tonight?', ['event', 'direct_question_or_request', 'community_or_lfg'])] }, now).outcome, 'event_candidate');
+assert.equal(classifyDiscordFindings({ findingCandidates: [candidate('2026-08-22T17:42:51Z', 'Optimized Commander Tonight @5:30pm', ['event', 'cancellation_or_change'])] }, now).outcome, 'quiet_coverage');
 
 console.log('PASS Discord finding classifier regression tests');
