@@ -263,3 +263,10 @@ direct `Metavirus` mentions/questions, current/tomorrow meetup coordination,
 closures/no-event/cancellation/moved-location notices, concrete dated event
 facts, or material access/source-health problems. Quiet, noisy, stale, or
 blocked runs update monitoring state only.
+
+Post-event references are not event candidates merely because they contain
+words such as `Commander`, `Friday`, or `event`. Lost-item chatter, retrospective
+social remarks, and expired relative dates such as an old `tomorrow` update are
+quiet coverage. An event candidate requires a still-actionable relative date or
+current concrete scheduling fact; current cancellations and same-day LFG remain
+material.

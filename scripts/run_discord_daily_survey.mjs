@@ -2,6 +2,7 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import { classifyDiscordFindings, conciseDiscordFinding } from './lib/discord_finding_classifier.mjs';
 
 const ROOT = process.cwd();
 const LOG_DIR = path.join(ROOT, 'work', 'discord-daily-survey', 'logs');
@@ -401,18 +402,8 @@ function classifyHarness(row, harness) {
     };
   }
 
-  const latestAt = harness.messageWindow?.lastSeenMessageAt || null;
-  const latestMs = latestAt ? Date.parse(latestAt) : NaN;
-  const ageDays = Number.isFinite(latestMs) ? ((Date.now() - latestMs) / 86400000) : null;
-  const useful = harness.usefulFindingPresent === true;
-  const categories = harness.usefulCategories || [];
-  let outcome = 'quiet_coverage';
-  if (useful && ageDays !== null && ageDays > 30) outcome = 'stale_useful_context';
-  else if (useful && categories.some((category) => ['event', 'cancellation_or_change', 'direct_question_or_request'].includes(category))) {
-    outcome = 'event_candidate';
-  } else if (useful) {
-    outcome = 'accepted_signal';
-  }
+  const classification = classifyDiscordFindings(harness);
+  const { outcome, usefulCategories: categories, materialCandidates } = classification;
   return {
     rowId: row.id,
     entityType: row.entity_type || null,
@@ -427,9 +418,10 @@ function classifyHarness(row, harness) {
     latestRunResult: harness.latestRunResult,
     routeState: harness.routeState,
     messageWindow: harness.messageWindow,
-    usefulFindingPresent: harness.usefulFindingPresent,
+    usefulFindingPresent: materialCandidates.length > 0,
     usefulCategories: categories,
     findingCandidates: harness.findingCandidates || [],
+    materialFindingCandidates: materialCandidates,
     externalDiscordStateChanged: harness.externalDiscordStateChanged,
     prohibitedSuccessfulResponses: harness.prohibitedSuccessfulResponses || [],
     logPath: harness.logPath
@@ -470,10 +462,17 @@ function summaryForSurfaceCheck(result) {
     const reason = result.failureReason ? `: ${result.failureReason}` : '';
     return `Daily Discord survey could not safely verify this route${stage}${reason}`;
   }
-  const messageCount = result.messageWindow?.messageCount || 0;
-  const categories = (result.usefulCategories || []).join(', ');
-  const categoryText = categories ? ` Useful categories: ${categories}.` : '';
-  return `Daily Discord survey checked ${result.serverName} / #${result.channelName}; ${messageCount} visible messages inspected; outcome ${result.outcome}.${categoryText}`;
+  const finding = result.materialFindingCandidates?.[0] || null;
+  if (result.outcome === 'event_candidate' && finding) {
+    return `Possible event update from ${result.serverName} ${result.channelName}: ${conciseDiscordFinding(finding)}`;
+  }
+  if (result.outcome === 'accepted_signal' && finding) {
+    return `Useful Discord activity from ${result.serverName} ${result.channelName}: ${conciseDiscordFinding(finding)}`;
+  }
+  if (result.outcome === 'stale_useful_context') {
+    return `${result.serverName} ${result.channelName} had useful but stale Discord context; no current action is needed.`;
+  }
+  return `${result.serverName} ${result.channelName} was checked and had no current planning update.`;
 }
 
 function checkedAtForResult(result) {

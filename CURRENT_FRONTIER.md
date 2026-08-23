@@ -81,6 +81,11 @@ the exact durable state and next action, then hand off from that checkpoint.
   Discord findings now create accepted app-visible Updates through the same
   common framework used by the other daily agents. Signal/Event promotion from
   Discord findings remains disabled.
+  The August 23 classifier hardening rejects lost-item and retrospective
+  event-word chatter, expires relative `tomorrow` references after their useful
+  window, and requires current scheduling value before creating an event
+  candidate. Future useful Updates use human summaries rather than scanner
+  outcome/category internals.
 - The August 22 Discord landscape closure expanded the existing cloud runner to
   LAGS without redesigning the proven lane. Discord's UI label
   `LAGaymingSociety` is handled as a navigation alias while the canonical owner
