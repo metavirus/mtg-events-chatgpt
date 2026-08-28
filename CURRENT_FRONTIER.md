@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-27
+Updated: 2026-08-28
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -93,6 +93,13 @@ the exact durable state and next action, then hand off from that checkpoint.
   and weekly monitoring recurring while preserving terminal behavior for true
   `finite_retry` work. Cloud rerun `33132226236` passed all 27 routes, refreshed
   the canonical Discord agent status, and wrote no terminal recurring rows.
+  The follow-up hardening now isolates canonical coverage writes by entity, so
+  one rejected entity cannot discard the rest of a run; reports
+  `success`/`partial_success`/`failed` explicitly; preserves the compact run
+  summary as an artifact; and runs write-isolation, status, and recurring-state
+  regression tests before every survey. Production run `33212246778` passed:
+  27 routes checked, all 9 entity updates saved, 1 useful result, 26 quiet,
+  zero attention items, and canonical status `success`.
 - The August 22 Discord landscape closure expanded the existing cloud runner to
   LAGS without redesigning the proven lane. Discord's UI label
   `LAGaymingSociety` is handled as a navigation alias while the canonical owner

@@ -149,6 +149,7 @@ jobs:
         with:
           name: discord-daily-survey-logs
           path: |
+            work/discord-daily-survey/latest-run-summary.json
             work/discord-daily-survey/logs/*.json
             work/discord-readonly/logs/*.json
           if-no-files-found: warn
