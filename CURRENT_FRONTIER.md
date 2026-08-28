@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-22
+Updated: 2026-08-27
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -86,6 +86,13 @@ the exact durable state and next action, then hand off from that checkpoint.
   window, and requires current scheduling value before creating an event
   candidate. Future useful Updates use human summaries rather than scanner
   outcome/category internals.
+  The August 27 scheduled run then exposed a separate lifecycle defect: quiet
+  daily coverage was incorrectly consuming the finite-retry allowance and
+  becoming terminal. Migration
+  `20260828011140_distinguish_recurring_surface_monitoring.sql` now keeps daily
+  and weekly monitoring recurring while preserving terminal behavior for true
+  `finite_retry` work. Cloud rerun `33132226236` passed all 27 routes, refreshed
+  the canonical Discord agent status, and wrote no terminal recurring rows.
 - The August 22 Discord landscape closure expanded the existing cloud runner to
   LAGS without redesigning the proven lane. Discord's UI label
   `LAGaymingSociety` is handled as a navigation alias while the canonical owner
