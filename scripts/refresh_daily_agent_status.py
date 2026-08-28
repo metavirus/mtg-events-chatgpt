@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BLESSED_PYTHON = ROOT / ".venv" / "Scripts" / "python.exe"
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from supabase_typed_rpc import psql_rows_or_raise, run_psql  # noqa: E402
+from supabase_typed_rpc import psql_rows_or_raise, run_psql, sql_literal  # noqa: E402
 
 
 def reexec_with_blessed_runtime() -> None:
@@ -45,6 +45,49 @@ def load_database_url() -> str:
     if parsed.scheme not in {"postgres", "postgresql"} or not parsed.hostname:
         raise SystemExit("SUPABASE_DB_URL is not a valid Postgres connection URL")
     return value
+
+
+def load_discord_run_summary(path_value: str | None) -> dict | None:
+    if not path_value:
+        return None
+    path = Path(path_value)
+    if not path.is_absolute():
+        path = ROOT / path
+    if not path.exists():
+        raise SystemExit(f"Discord run summary does not exist: {path}")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("outcome") not in {"success", "partial_success", "failed"}:
+        raise SystemExit("Discord run summary has an unsupported outcome")
+    return payload
+
+
+def discord_status_override_sql(summary: dict | None) -> str:
+    if summary is None:
+        return ""
+    selected = int(summary.get("selectedCount") or 0)
+    attempted = int(summary.get("surfaceWriteAttempted") or 0)
+    succeeded = int(summary.get("surfaceWriteSucceeded") or 0)
+    failed = int(summary.get("failedWriteCount") or 0)
+    outcome = str(summary["outcome"])
+    if outcome == "success":
+        text = f"Discord checked {selected} routes; all {attempted} entity updates were saved."
+    elif outcome == "partial_success":
+        text = (
+            f"Discord checked {selected} routes; {succeeded} of {attempted} entity updates were saved. "
+            f"{failed} write needs attention."
+        )
+    else:
+        text = f"Discord checked {selected} routes, but its canonical write phase failed and needs attention."
+    return f"""
+
+update public.daily_agent_status
+set
+  latest_result = {sql_literal(outcome)},
+  attention_count = greatest(attention_count, {failed}),
+  summary = {sql_literal(text)},
+  updated_at = now()
+where id = 'discord';
+"""
 
 
 REFRESH_SQL = r"""
@@ -200,8 +243,16 @@ def main() -> int:
         default="none",
         help="Stamp last_run_at for the workflow lane that invoked this refresh.",
     )
+    parser.add_argument(
+        "--discord-run-summary",
+        help="Optional JSON summary emitted by run_discord_daily_survey.mjs.",
+    )
     args = parser.parse_args()
-    sql = REFRESH_SQL.replace("%(ran_agent)s", f"'{args.ran_agent}'")
+    run_summary = load_discord_run_summary(args.discord_run_summary)
+    sql = (
+        REFRESH_SQL.replace("%(ran_agent)s", f"'{args.ran_agent}'")
+        + discord_status_override_sql(run_summary)
+    )
     rows = psql_rows_or_raise(run_psql(sql, load_database_url()))
     print(json.dumps({"status": "ok", "rows": rows}, indent=2, default=str))
     return 0

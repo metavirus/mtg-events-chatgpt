@@ -83,6 +83,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client
 
+      - name: Validate Discord write lifecycle
+        run: |
+          node scripts/test_discord_surface_write_isolation.mjs
+          python scripts/test_refresh_daily_agent_status.py
+          python scripts/test_recurring_surface_monitoring.py
+
       - name: Install Playwright
         shell: bash
         run: |
@@ -109,6 +115,7 @@ jobs:
           fi
 
       - name: Run Discord daily survey
+        id: discord_survey
         shell: bash
         run: |
           args=(--no-signal-writes --json-log)
@@ -123,11 +130,18 @@ jobs:
           if [ -n "${{ inputs.surface }}" ]; then
             args+=(--surface "${{ inputs.surface }}")
           fi
+          set +e
           node scripts/run_discord_daily_survey.mjs "${args[@]}"
+          survey_exit_code=$?
+          set -e
+          echo "exit_code=${survey_exit_code}" >> "$GITHUB_OUTPUT"
 
       - name: Refresh app daily-agent status
         shell: bash
-        run: python scripts/refresh_daily_agent_status.py --ran-agent discord
+        run: >-
+          python scripts/refresh_daily_agent_status.py
+          --ran-agent discord
+          --discord-run-summary work/discord-daily-survey/latest-run-summary.json
 
       - name: Upload Discord survey logs
         if: always()
@@ -138,3 +152,10 @@ jobs:
             work/discord-daily-survey/logs/*.json
             work/discord-readonly/logs/*.json
           if-no-files-found: warn
+
+      - name: Propagate hard survey failure
+        if: always() && steps.discord_survey.outputs.exit_code != '0'
+        shell: bash
+        run: |
+          echo "::error::Discord survey completed with a hard write failure; canonical status and logs were preserved."
+          exit 1

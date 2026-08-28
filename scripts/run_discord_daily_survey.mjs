@@ -2,10 +2,12 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 import { classifyDiscordFindings, conciseDiscordFinding } from './lib/discord_finding_classifier.mjs';
 
 const ROOT = process.cwd();
 const LOG_DIR = path.join(ROOT, 'work', 'discord-daily-survey', 'logs');
+const LATEST_SUMMARY_PATH = path.join(ROOT, 'work', 'discord-daily-survey', 'latest-run-summary.json');
 const LOCK_PATH = path.join(ROOT, 'work', 'discord-readonly', 'discord-daily-survey.lock');
 const UI_NATIVE_MODE = 'ui_native_navigation_verified';
 const EXACT_CHANNEL_URL = /^https:\/\/discord(?:app)?\.com\/channels\/(\d+)\/(\d+)$/i;
@@ -518,14 +520,11 @@ function collapseResultsForSurfaceChecks(results) {
   });
 }
 
-async function writeSurfaceChecks(results) {
-  const writable = collapseResultsForSurfaceChecks(results);
-  if (writable.length === 0) return { skipped: true, reason: 'no entity-backed results' };
-  const statements = writable.map((result) => {
-    const mapping = OUTCOME_TO_SURFACE_CHECK[result.outcome] || OUTCOME_TO_SURFACE_CHECK.blocked_repair;
-    const checkedAt = checkedAtForResult(result);
-    const sourceId = sourceIdFor(result);
-    return `select public.record_entity_surface_check(
+function buildSurfaceCheckStatement(result) {
+  const mapping = OUTCOME_TO_SURFACE_CHECK[result.outcome] || OUTCOME_TO_SURFACE_CHECK.blocked_repair;
+  const checkedAt = checkedAtForResult(result);
+  const sourceId = sourceIdFor(result);
+  return `select public.record_entity_surface_check(
   ${sqlLiteral(idempotencyKeyForSurfaceCheck(result))},
   ${sqlLiteral(result.entityType)},
   ${sqlLiteral(result.entityId)},
@@ -545,15 +544,25 @@ async function writeSurfaceChecks(results) {
   ${mapping.materialChange ? 'true' : 'false'},
   false
 ) as surface_check_result`;
-  }).join('\nunion all\n');
-  const result = run(PYTHON, ['scripts/supabase_query.py', '--sql', statements], { timeout: WRITE_TIMEOUT_MS });
-  if (result.error?.code === 'ETIMEDOUT') {
+}
+
+function executeSurfaceCheck(sql) {
+  const queryResult = run(PYTHON, ['scripts/supabase_query.py', '--sql', sql], { timeout: WRITE_TIMEOUT_MS });
+  if (queryResult.error?.code === 'ETIMEDOUT') {
     throw new Error('surface check write timed out');
   }
-  assertOk(result, 'surface check write');
-  return {
-    rows: JSON.parse(result.stdout).rows,
-    entities: writable.map((item) => ({
+  assertOk(queryResult, 'surface check write');
+  return JSON.parse(queryResult.stdout).rows;
+}
+
+async function writeSurfaceChecks(results, executeQuery = executeSurfaceCheck) {
+  const writable = collapseResultsForSurfaceChecks(results);
+  if (writable.length === 0) return { skipped: true, reason: 'no entity-backed results' };
+  const rows = [];
+  const entities = [];
+  const failures = [];
+  for (const item of writable) {
+    const entity = {
       entityType: item.entityType,
       entityId: item.entityId,
       sourceId: sourceIdFor(item),
@@ -561,7 +570,27 @@ async function writeSurfaceChecks(results) {
       chosenChannelName: item.channelName,
       chosenOutcome: item.outcome,
       contributingRows: item.contributingRows
-    }))
+    };
+    try {
+      rows.push(...await executeQuery(buildSurfaceCheckStatement(item), item));
+      entities.push(entity);
+    } catch (error) {
+      failures.push({
+        ...entity,
+        error: error?.message || String(error)
+      });
+    }
+  }
+  const succeeded = entities.length;
+  const failed = failures.length;
+  return {
+    status: failed === 0 ? 'success' : succeeded === 0 ? 'failed' : 'partial_success',
+    attempted: writable.length,
+    succeeded,
+    failed,
+    rows,
+    entities,
+    failures
   };
 }
 
@@ -597,7 +626,40 @@ returning w.id, w.channel_name, w.latest_run_result, w.last_seen_message_id, w.l
     throw new Error('watchlist update timed out');
   }
   assertOk(result, 'watchlist update');
-  return JSON.parse(result.stdout).rows;
+  const rows = JSON.parse(result.stdout).rows;
+  return {
+    status: 'success',
+    attempted: writable.length,
+    succeeded: rows.length,
+    failed: Math.max(0, writable.length - rows.length),
+    rows
+  };
+}
+
+function deriveOverallOutcome(runLog) {
+  if (runLog.surfaceCheckWrite?.status === 'failed' || runLog.watchlistWrite?.status === 'failed') return 'failed';
+  if (runLog.surfaceCheckWrite?.status === 'partial_success' || runLog.watchlistWrite?.status === 'partial_success') {
+    return 'partial_success';
+  }
+  return 'success';
+}
+
+function publicRunSummary(runLog) {
+  const failedSurfaceWrites = runLog.surfaceCheckWrite?.failed || 0;
+  const failedWatchlistWrites = runLog.watchlistWrite?.failed || 0;
+  return {
+    outcome: runLog.overallOutcome,
+    selectedCount: runLog.selectedCount,
+    completedRouteCount: runLog.results.length,
+    surfaceWriteAttempted: runLog.surfaceCheckWrite?.attempted || 0,
+    surfaceWriteSucceeded: runLog.surfaceCheckWrite?.succeeded || 0,
+    surfaceWriteFailed: failedSurfaceWrites,
+    watchlistWriteAttempted: runLog.watchlistWrite?.attempted || 0,
+    watchlistWriteSucceeded: runLog.watchlistWrite?.succeeded || 0,
+    watchlistWriteFailed: failedWatchlistWrites,
+    failedWriteCount: failedSurfaceWrites + failedWatchlistWrites,
+    finishedAt: runLog.finishedAt
+  };
 }
 
 async function pidIsRunning(pid) {
@@ -742,6 +804,7 @@ async function main() {
       results: [],
       surfaceCheckWrite: null,
       watchlistWrite: null,
+      overallOutcome: null,
       finishedAt: null
     };
 
@@ -758,15 +821,27 @@ async function main() {
 
     if (args.writeWatchlist && !args.dryRun && !args.planOnly) {
       runLog.surfaceCheckWrite = await writeSurfaceChecks(runLog.results);
-      runLog.watchlistWrite = await writeWatchlist(runLog.results);
+      try {
+        runLog.watchlistWrite = await writeWatchlist(runLog.results);
+      } catch (error) {
+        runLog.watchlistWrite = {
+          status: 'failed',
+          attempted: runLog.results.filter((result) => result.messageWindow && result.watchlistResult).length,
+          succeeded: 0,
+          failed: runLog.results.filter((result) => result.messageWindow && result.watchlistResult).length,
+          error: error?.message || String(error)
+        };
+      }
     } else {
       runLog.surfaceCheckWrite = { skipped: true, reason: args.dryRun ? 'dry_run' : args.planOnly ? 'plan_only' : 'write_watchlist_not_enabled' };
       runLog.watchlistWrite = { skipped: true, reason: args.dryRun ? 'dry_run' : args.planOnly ? 'plan_only' : 'write_watchlist_not_enabled' };
     }
 
+    runLog.overallOutcome = deriveOverallOutcome(runLog);
     runLog.finishedAt = new Date().toISOString();
     const logPath = path.join(LOG_DIR, `discord-daily-survey-${runLog.finishedAt.replaceAll(':', '-')}.json`);
     await fs.writeFile(logPath, JSON.stringify(runLog, null, 2) + '\n', 'utf8');
+    await fs.writeFile(LATEST_SUMMARY_PATH, JSON.stringify(publicRunSummary(runLog), null, 2) + '\n', 'utf8');
     runLog.logPath = logPath;
 
     if (args.jsonLog) {
@@ -776,12 +851,22 @@ async function main() {
       console.log(`Selected rows: ${selected.length}`);
       console.log(`Log: ${logPath}`);
     }
+    if (runLog.overallOutcome === 'failed') process.exitCode = 1;
   } finally {
     await releaseRunLock(lockHandle);
   }
 }
 
-main().catch((error) => {
-  console.error(error.stack || error.message || String(error));
-  process.exitCode = 1;
-});
+const IS_MAIN = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (IS_MAIN) {
+  main().catch((error) => {
+    console.error(error.stack || error.message || String(error));
+    process.exitCode = 1;
+  });
+}
+
+export {
+  buildSurfaceCheckStatement,
+  deriveOverallOutcome,
+  writeSurfaceChecks
+};
