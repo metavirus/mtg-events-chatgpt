@@ -619,13 +619,6 @@ claims without reopening the whole packet.
 
 ## App/product backlog
 
-- Parked 2026-08-28 at the user's request: consider separating each Place's
-  changing information into a chronological **Feed** and its durable,
-  source-backed planning facts into a compact **Reference** surface. Reference
-  candidates include store hours, on-demand play, recurring play, pricing,
-  prizing, registration, and amenities. Do not resume or publish the proof
-  implementation until the user brings this concept back into scope.
-
 ### Data and ranking
 
 - Add a daily session-start personal to-do review: Codex should check user-added
