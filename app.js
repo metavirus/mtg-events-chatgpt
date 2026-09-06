@@ -3241,9 +3241,10 @@ function placeHoursChip(place) {
   const today = new Date().getDay();
   const todaySlots = hours.weekly?.[String(today)] || hours.weekly?.[dayKeyName(today)] || [];
   const temporary = activeTemporaryHours(hours.temporary);
-  const status = temporary?.status || hours.status || 'unknown';
+  const completeWeek = Array.from({ length: 7 }, (_, day) => hours.weekly?.[String(day)] || hours.weekly?.[dayKeyName(day)]).every((slots) => Array.isArray(slots) && slots.length && slots.every((slot) => slot?.closed === true || (/^\d{2}:\d{2}$/.test(slot?.open || '') && /^\d{2}:\d{2}$/.test(slot?.close || ''))));
+  const status = temporary?.status || (hours.status === 'verified' && !completeWeek ? 'variable' : hours.status) || 'unknown';
   const tone = status === 'verified' ? 'mint' : status === 'variable' ? 'amber' : status === 'stale' ? 'coral' : 'slate';
-  const label = temporary?.label || hoursStatusLabel(status);
+  const label = temporary?.label || (!completeWeek && Object.keys(hours.weekly || {}).length ? 'Incomplete hours' : hoursStatusLabel(status));
   const todayLabel = temporary?.label || formatHoursSlots(todaySlots) || (status === 'unknown' ? 'Hours unknown' : 'Check hours');
   const note = temporary?.note || hours.note || hoursStatusNote(status);
   const sourceLine = sourceItem
@@ -3253,7 +3254,7 @@ function placeHoursChip(place) {
     <summary><span class="status-dot ${tone}"></span><span>${escapeHtml(todayLabel)}</span><em>${escapeHtml(label)}</em></summary>
     <div class="hours-popover-panel">
       <p>${escapeHtml(note)}</p>
-      <div class="hours-meta"><span>Last checked: ${escapeHtml(hours.lastVerified || place.lastVerified || 'Unknown')}</span><span>${sourceLine}</span></div>
+      <div class="hours-meta"><span>Last checked: ${escapeHtml(hours.lastVerified || 'Unknown')}</span><span>${sourceLine}</span></div>
       ${hoursWeekGrid(hours.weekly)}
     </div>
   </details>`;

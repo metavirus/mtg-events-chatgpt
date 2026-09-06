@@ -14,6 +14,17 @@ Use it for:
 
 ## Recently closed / operational baseline
 
+- September 6 hours completeness correction: all 62 venues audited; Collectors
+  Lounge's missing weekdays, ProjectCCG, and Comic Bug now have sourced complete
+  weeks. 61 venues have seven populated days; Game Chest Irvine is the sole
+  missing schedule and has an explicit three-source conflict review in Briefing.
+  Five existing variable schedules remain variable, not silently verified.
+  The hours promoter now labels incomplete merged weeks variable and records
+  the actual verification date, not the announcement's effective date. UI also
+  guards against incomplete schedules displaying Verified hours. Regression
+  test: `scripts/test_hours_completeness.sql` (transaction rollback); approved
+  correction proposal generator: `scripts/prepare_hours_gap_correction.mjs`.
+
 - September 6: People & plans now surfaces community catch-up on Briefing
   (three cards) and Communities (full list), with shared dismissal and channel
   links. Recent retained Discord social/planning findings route into canonical
