@@ -1814,8 +1814,9 @@ function briefingEventReason(event) {
   if (organizer && state.personal.favorites?.[`community:${organizer.id}`]) reasons.push(`from ${organizer.name}`);
   if (place && state.personal.favorites?.[`place:${place.id}`]) reasons.push('at a favorite place');
   if (organizer && !reasons.some((item) => item.includes(organizer.name))) reasons.push(`community-organized by ${organizer.name}`);
-  if (isCommanderLike(event)) reasons.push('Commander');
+  if (isCommanderLike(event)) reasons.push(/casual|open play|precon|bracket [23]/i.test(`${event.title} ${event.details} ${event.bracket}`) ? 'casual Commander fit' : 'Commander');
   else if (isPrereleaseOrSealed(event)) reasons.push('special limited event');
+  else if (/draft/i.test(`${event.title} ${event.format}`)) reasons.push('draft option');
   if (place && numericDistance(place) != null && numericDistance(place) <= 10) reasons.push('nearby');
   return reasons.slice(0, 3).join(' · ') || `${fitLabel(event).label.toLowerCase()} · current listing`;
 }
@@ -2836,22 +2837,39 @@ function renderAgenda(events, start) {
 
 function rankedTodayLeads(events) {
   return [...events]
-    .filter((event) => !isCompetitive(event) && eventPlanningGroup(event) !== 'hidden')
+    .filter((event) => !isEventHidden(event) && !isCompetitive(event) && eventPlanningGroup(event) !== 'hidden')
     .sort((a, b) => todayLeadScore(b) - todayLeadScore(a) || a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b)));
 }
 
 function todayLeadScore(event) {
   const place = store(event.storeId);
   const daysAway = Math.max(0, Math.round((startOfDay(event.occurrenceDate) - startOfDay(new Date())) / 86400000));
-  const favoriteBonus = state.personal.favorites[eventPreferenceKey(event)] || state.personal.favorites[`place:${event.storeId}`] ? 18 : 0;
   const weekendBonus = isWeekend(event.occurrenceDate) ? 10 : 0;
   const reviewedBonus = place?.researchStatus === 'partial' ? 8 : 0;
   const confidenceBonus = event.confidence === 'high' ? 8 : event.confidence === 'medium' ? 3 : 0;
   const specialBonus = isPrereleaseOrSealed(event) ? 24 : isSpecial(event) ? 8 : 0;
-  const commanderBonus = /commander|edh/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 8 : 0;
+  const commanderBonus = isCommanderLike(event) ? 32 : 0;
+  const casualBonus = isCommanderLike(event) && /casual|open play|precon|bracket [23]/i.test(`${event.title} ${event.details} ${event.bracket}`) ? 10 : 0;
   const draftBonus = /draft/i.test(`${event.title} ${event.format} ${event.eventType}`) ? 4 : 0;
   const discoveryPenalty = place?.researchStatus === 'wizards-discovery' ? 10 : 0;
-  return fitScore(event) + favoriteBonus + weekendBonus + reviewedBonus + confidenceBonus + specialBonus + commanderBonus + draftBonus + eventPersonalAffinity(event) - discoveryPenalty - Math.min(daysAway, 21);
+  return fitScore(event) + weekendBonus + reviewedBonus + confidenceBonus + specialBonus + commanderBonus + casualBonus + draftBonus + recommendationPersonalScore(event) - discoveryPenalty - Math.min(daysAway, 21);
+}
+
+function recommendationPersonalScore(event) {
+  const eventKey = eventPreferenceKey(event);
+  const placeKey = `place:${event.storeId}`;
+  const communityKey = `community:${event.communityId}`;
+  const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
+  const interestKey = occurrence ? `${event.id}:${dateKey(occurrence)}` : '';
+  const personal = state.personal;
+  // Explicit event choices outweigh liking the host. Notes remain context for
+  // reviewed assessments; their length and click activity do not imply approval.
+  const rating = (key, weight) => personal.ratings?.[key] ? (Number(personal.ratings[key]) - 3) * weight : 0;
+  return (personal.favorites?.[eventKey] ? 60 : 0)
+    + (personal.interested?.[interestKey] ? 70 : 0)
+    + (personal.favorites?.[placeKey] ? 20 : 0)
+    + (personal.favorites?.[communityKey] ? 30 : 0)
+    + rating(eventKey, 20) + rating(placeKey, 8);
 }
 
 function todayLeadKey(event) {

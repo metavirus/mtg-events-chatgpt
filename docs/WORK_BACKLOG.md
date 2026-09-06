@@ -78,8 +78,9 @@ Use it for:
 ## Active next-up
 
 - September 6 interface audit: see `docs/UI_AUDIT_2026-09-06.md` for observed
-  issues and completed repairs. Next product priority is shared recommendation
-  ranking against actual personal preferences; subsequent bounded items cover
+  issues and completed repairs. Shared Briefing/Today recommendation ranking
+  was corrected and verified against actual personal preferences September 6;
+  next bounded items cover
   community monitoring readback, stale dated assessment questions, Research
   drilldowns/copy, and a non-Magic listing in the MTG catalog.
 
