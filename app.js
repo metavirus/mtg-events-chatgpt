@@ -1910,7 +1910,7 @@ function briefingDigestCard(digest) {
 
 function briefingAttentionSignals() {
   const seen = new Set();
-  return rankedSignals().filter((signal) => !signal.derivedFromChangeId && !['dismissed', 'stale'].includes(signal.status) && signalIsCurrentForHome(signal))
+  return rankedSignals().filter((signal) => !signal.derivedFromChangeId && !['dismissed', 'stale', 'promoted'].includes(signal.status) && signalIsCurrentForHome(signal))
     .filter((signal) => {
       const relatedEvent = signalRelatedEvent(signal);
       return !relatedEvent || !isEventHidden(relatedEvent);
@@ -2406,7 +2406,14 @@ function venueHoursProposalMarkup(signal, compact = false) {
   const proposal = venueHoursProposal(signal);
   if (!proposal) return '';
   const effective = proposal.effective_date ? `Effective ${formatFreshnessDate(proposal.effective_date)}` : 'Effective date not captured';
-  return `<div class="hours-change-proposal ${compact ? 'compact' : ''}"><span>Proposed hours</span><strong>${escapeHtml(proposal.display || 'Updated weekly hours')}</strong><small>${escapeHtml(effective)}</small></div>`;
+  const schedule = Object.entries(proposal.weekly_hours).map(([day, slots]) => {
+    const label = dayKeyName(Number(day));
+    const time = (value) => new Date(`2000-01-01T${value}`).toLocaleTimeString('en-US', {hour: 'numeric', minute: value.endsWith(':00') ? undefined : '2-digit', hour12: true});
+    return `${label[0].toUpperCase()}${label.slice(1)}: ${slots.map((slot) => `${time(slot.open)}-${time(slot.close)}`).join(', ')}`;
+  }).join(' · ');
+  const originalUrl = signal.evidenceUrl || primarySourceForSignal(signal)?.url || '';
+  const originalLink = /^https?:\/\//i.test(originalUrl) ? `<a class="text-button" href="${escapeHtml(originalUrl)}" target="_blank" rel="noreferrer">View original post ↗</a>` : '';
+  return `<div class="hours-change-proposal ${compact ? 'compact' : ''}"><span>${signal.status === 'promoted' ? 'Updated hours' : 'Proposed hours'}</span><strong>${escapeHtml(schedule)}</strong><small>${escapeHtml(effective)}</small>${originalLink}</div>`;
 }
 
 function venueHoursReviewActions(signal) {

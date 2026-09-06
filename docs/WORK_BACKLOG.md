@@ -45,6 +45,10 @@ Use it for:
   days, times, and effective date. The Collectors Lounge August 29 post was
   backfilled into that review path rather than guessed or left as a generic
   operational reminder.
+  Follow-up: original graphic visually re-read September 6; the permanent
+  weekend 12 PM–10 PM change is now promoted. Review proposals use 12-hour
+  times and include the original post link. Re-read weak OCR before asking
+  the user to decide; unattended second-pass image OCR remains unimplemented.
   Keep Discord bracketed from the cloud job for now. This is operational
   baseline, not greenfield next work.
 

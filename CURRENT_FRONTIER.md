@@ -245,6 +245,13 @@ the exact durable state and next action, then hand off from that checkpoint.
   in the app. A generic source-link reminder is not successful handling for a
   concrete hours announcement. Discord is explicitly bracketed out of this
   lane.
+  September 6 follow-up: directly reading the original Collectors graphic
+  resolved the duplicated OCR; canonical weekend hours are now 12 PM–10 PM,
+  effective August 29, and its review Signal is promoted. Re-read the original
+  image/caption before escalating poor OCR to the user. Remaining review
+  proposals must show 12-hour times and a direct original-post link alongside
+  the decision. The scheduled extractor still uses source image descriptions;
+  this visual reread was performed by the agent, not an automated OCR engine.
   App-facing daily-agent status now lives in `public.daily_agent_status`, a
   safe RLS-protected aggregate table refreshed by
   `scripts/refresh_daily_agent_status.py` at the end of both cloud survey

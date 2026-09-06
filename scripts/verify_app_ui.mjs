@@ -166,6 +166,15 @@ async function main() {
       if (currentAttention.briefingTitle !== 'Briefing' || !currentAttention.heroPresent || !currentAttention.weekPresent || !currentAttention.digestPresent || !currentAttention.agentsPresent) throw new Error(`Briefing structure incomplete: ${JSON.stringify(currentAttention)}`);
       pass('Briefing synthesizes current attention without raw log cards', 'recommendation, week, digest, attention, and surveyor status rendered');
     } else if (scenario === 'hours-review-proposal') {
+      await page.route('**/rest/v1/signals?*', (route) => route.fulfill({
+        contentType: 'application/json', body: JSON.stringify([{
+          id: 'test:hours-review-ui', category: 'operational', priority: 'high', status: 'needs_followup',
+          captured_at: new Date().toISOString(), related_entity_type: 'venue', related_entity_id: 'collectors-lounge-cypress',
+          summary: 'Collectors Lounge - Cypress posted changed store hours.', promotion_target: 'venue_hours',
+          evidence_url: 'https://www.instagram.com/collectors.lounge/p/Dcoh9lcvaXH/',
+          proposed_change: {type: 'venue_hours', effective_date: '2026-08-29', weekly_hours: {'6': [{open:'12:00',close:'22:00'}], '0': [{open:'12:00',close:'22:00'}]}}
+        }])
+      }));
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));
       await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
@@ -173,7 +182,10 @@ async function main() {
       const card = page.locator('.briefing-attention-card').filter({ hasText: 'Collectors Lounge - Cypress posted changed store hours.' }).first();
       await card.waitFor({ state: 'visible', timeout: 15000 });
       const proposal = await card.locator('.hours-change-proposal').innerText();
-      assertText(proposal, 'Saturday & Sunday', 'structured hours proposal');
+      assertText(proposal, 'Saturday', 'structured hours proposal');
+      assertText(proposal, '12 PM-10 PM', '12-hour display');
+      const original = card.getByRole('link', {name: 'View original post'});
+      if (await original.getAttribute('href') !== 'https://www.instagram.com/collectors.lounge/p/Dcoh9lcvaXH/') throw new Error('Original post link missing or incorrect');
       await card.getByRole('button', { name: 'Yes, update hours' }).waitFor({ state: 'visible' });
       await card.getByRole('button', { name: 'No, not correct' }).waitFor({ state: 'visible' });
       if (await card.getByRole('button', { name: 'Dismiss' }).count()) throw new Error('Structured hours proposal still uses generic Dismiss');
