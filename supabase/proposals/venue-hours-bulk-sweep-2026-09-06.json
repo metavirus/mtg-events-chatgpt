@@ -1,0 +1,3496 @@
+{
+  "proposal_id": "venue-hours-bulk-sweep-2026-09-06",
+  "description": "Complete the remaining reviewed-venue hours sweep: publish 31 clear schedules and surface six material conflicts as source-linked review cards.",
+  "created_at": "2026-09-06T13:00:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-nerdy-related-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-nerdy-related-2026-09-06",
+        "label": "Current business-hours source \u2014 Nerdy Related",
+        "url": "https://yestcg.com/stores/california/long-beach/nerdy-related",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "nerdy-related",
+        "source_id": "src-hours-nerdy-related-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "nerdy-related",
+        "source_id": "src-hours-nerdy-related-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "nerdy-related"
+      },
+      "fields": {
+        "venue_id": "nerdy-related",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "closed": true
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-nerdy-related-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Mon-Sat noon-8 PM; closed Sunday."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-requiem-coffee-tea-and-fantasy-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-requiem-coffee-tea-and-fantasy-2026-09-06",
+        "label": "Current business-hours source \u2014 Requiem: Coffee, Tea, and Fantasy",
+        "url": "https://www.requiemcafe.com/contact",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy",
+        "source_id": "src-hours-requiem-coffee-tea-and-fantasy-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "requiem-coffee-tea-and-fantasy",
+        "source_id": "src-hours-requiem-coffee-tea-and-fantasy-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "requiem-coffee-tea-and-fantasy"
+      },
+      "fields": {
+        "venue_id": "requiem-coffee-tea-and-fantasy",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "21:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "23:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "23:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-requiem-coffee-tea-and-fantasy-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Official contact page: Mon-Thu noon-10 PM, Fri-Sat noon-11 PM, Sun noon-9 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-tweedy-cards-and-gaming-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-tweedy-cards-and-gaming-2026-09-06",
+        "label": "Current business-hours source \u2014 Tweedy Cards and Gaming",
+        "url": "https://www.keepupcards.com/shop/tweedy-cards-and-gaming-south-gate-ca",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tweedy-cards-and-gaming",
+        "source_id": "src-hours-tweedy-cards-and-gaming-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tweedy-cards-and-gaming",
+        "source_id": "src-hours-tweedy-cards-and-gaming-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "tweedy-cards-and-gaming"
+      },
+      "fields": {
+        "venue_id": "tweedy-cards-and-gaming",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "18:30"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "16:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "16:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "16:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "16:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "16:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "18:30"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-tweedy-cards-and-gaming-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current listing: Mon-Fri noon-4 PM; Sat-Sun noon-6:30 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-guildhall-whittier-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-guildhall-whittier-2026-09-06",
+        "label": "Current business-hours source \u2014 Guildhall - Whittier",
+        "url": "https://www.guildhall.tv/location/guild-hall-whittier/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "guildhall-whittier",
+        "source_id": "src-hours-guildhall-whittier-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "guildhall-whittier",
+        "source_id": "src-hours-guildhall-whittier-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "guildhall-whittier"
+      },
+      "fields": {
+        "venue_id": "guildhall-whittier",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "00:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "17:00",
+              "close": "00:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "17:00",
+              "close": "00:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "17:00",
+              "close": "00:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "17:00",
+              "close": "00:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "02:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "02:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-guildhall-whittier-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Official location page: Mon-Thu 5 PM-midnight, Fri-Sat noon-2 AM, Sun noon-midnight."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-shadow-realm-collectibles-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-shadow-realm-collectibles-2026-09-06",
+        "label": "Current business-hours source \u2014 Shadow Realm Collectibles",
+        "url": "https://yestcg.com/stores/california/bell-gardens/shadow-realm-collectibles",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-hours-shadow-realm-collectibles-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shadow-realm-collectibles",
+        "source_id": "src-hours-shadow-realm-collectibles-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "shadow-realm-collectibles"
+      },
+      "fields": {
+        "venue_id": "shadow-realm-collectibles",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "11:00",
+              "close": "19:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "15:00",
+              "close": "20:00"
+            }
+          ],
+          "2": [
+            {
+              "closed": true
+            }
+          ],
+          "3": [
+            {
+              "open": "15:00",
+              "close": "20:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "15:00",
+              "close": "20:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "15:00",
+              "close": "22:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "11:00",
+              "close": "19:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-shadow-realm-collectibles-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Mon/Wed/Thu 3-8 PM, Fri 3-10 PM, Sat-Sun 11 AM-7 PM; closed Tue."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-shuffle-and-cut-games-la-habra-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-shuffle-and-cut-games-la-habra-2026-09-06",
+        "label": "Current business-hours source \u2014 Shuffle and Cut Games - Brea",
+        "url": "https://maps.roadtrippers.com/us/brea-ca/shopping/shuffle-and-cut-games",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-hours-shuffle-and-cut-games-la-habra-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "shuffle-and-cut-games-la-habra",
+        "source_id": "src-hours-shuffle-and-cut-games-la-habra-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "shuffle-and-cut-games-la-habra"
+      },
+      "fields": {
+        "venue_id": "shuffle-and-cut-games-la-habra",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "10:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "10:00",
+              "close": "22:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "10:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "10:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "10:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "10:00",
+              "close": "00:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "10:00",
+              "close": "22:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-shuffle-and-cut-games-la-habra-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google/Yelp-derived listing: Mon-Thu and Sat 10 AM-10 PM, Fri 10 AM-midnight, Sun 10 AM-8 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-projectccg-santa-ana-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-projectccg-santa-ana-2026-09-06",
+        "label": "Current business-hours source \u2014 ProjectCCG - Santa Ana",
+        "url": "https://yestcg.com/stores/california/santa-ana/projectccg-2",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "source_id": "src-hours-projectccg-santa-ana-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "projectccg-santa-ana",
+        "source_id": "src-hours-projectccg-santa-ana-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "projectccg-santa-ana"
+      },
+      "fields": {
+        "venue_id": "projectccg-santa-ana",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "21:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "14:00",
+              "close": "21:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "14:00",
+              "close": "21:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "14:00",
+              "close": "21:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "14:00",
+              "close": "21:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "14:00",
+              "close": "21:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "21:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-projectccg-santa-ana-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Mon-Fri 2-9 PM, Sat-Sun noon-9 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-buddies-collectibles-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-buddies-collectibles-2026-09-06",
+        "label": "Current business-hours source \u2014 Buddies Collectibles",
+        "url": "https://cardshophub.com/states/ca/gardena/buddies-collectibles/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-hours-buddies-collectibles-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "buddies-collectibles",
+        "source_id": "src-hours-buddies-collectibles-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "buddies-collectibles"
+      },
+      "fields": {
+        "venue_id": "buddies-collectibles",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "11:00",
+              "close": "21:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "11:00",
+              "close": "21:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "11:00",
+              "close": "21:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "11:00",
+              "close": "21:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "11:00",
+              "close": "21:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "11:00",
+              "close": "01:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "11:00",
+              "close": "01:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-buddies-collectibles-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Sun-Thu 11 AM-9 PM; Fri-Sat 11 AM-1 AM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-grails-gone-wild-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-grails-gone-wild-2026-09-06",
+        "label": "Current business-hours source \u2014 Grails Gone Wild",
+        "url": "https://www.keepupcards.com/shop/ggw-cards-n-collects-torrance-ca",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-hours-grails-gone-wild-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "grails-gone-wild",
+        "source_id": "src-hours-grails-gone-wild-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "grails-gone-wild"
+      },
+      "fields": {
+        "venue_id": "grails-gone-wild",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "19:00"
+            }
+          ],
+          "1": [
+            {
+              "closed": true
+            }
+          ],
+          "2": [
+            {
+              "open": "14:00",
+              "close": "19:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "14:00",
+              "close": "19:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "20:30"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "20:30"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "19:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-grails-gone-wild-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Tue-Wed 2-7 PM, Thu-Fri noon-8:30 PM, Sat-Sun noon-7 PM; closed Mon."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-tk-collectibles-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-tk-collectibles-2026-09-06",
+        "label": "Current business-hours source \u2014 TK Collectibles",
+        "url": "https://sites.google.com/tktcg.com/trading-cards/home",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-hours-tk-collectibles-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tk-collectibles",
+        "source_id": "src-hours-tk-collectibles-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "tk-collectibles"
+      },
+      "fields": {
+        "venue_id": "tk-collectibles",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "09:00",
+              "close": "22:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "09:00",
+              "close": "23:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "09:00",
+              "close": "23:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "09:00",
+              "close": "23:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "09:00",
+              "close": "23:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "09:00",
+              "close": "23:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "09:00",
+              "close": "23:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-tk-collectibles-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Store's current Google Site: Mon-Sat 9 AM-11 PM; Sun 9 AM-10 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-lost-planet-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-lost-planet-2026-09-06",
+        "label": "Current business-hours source \u2014 Lost Planet",
+        "url": "https://www.loc8nearme.com/california/torrance/lost-planet/5308445/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "lost-planet",
+        "source_id": "src-hours-lost-planet-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lost-planet",
+        "source_id": "src-hours-lost-planet-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "lost-planet"
+      },
+      "fields": {
+        "venue_id": "lost-planet",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-lost-planet-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current listing: Tue-Sat noon-10 PM; Sun-Mon noon-8 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-the-game-chest-del-amo-fashion-center-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-the-game-chest-del-amo-fashion-center-2026-09-06",
+        "label": "Current business-hours source \u2014 The Game Chest - Del Amo Fashion Center",
+        "url": "https://www.simon.com/mall/del-amo-fashion-center/stores/the-game-chest",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-del-amo-fashion-center",
+        "source_id": "src-hours-the-game-chest-del-amo-fashion-center-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-del-amo-fashion-center",
+        "source_id": "src-hours-the-game-chest-del-amo-fashion-center-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "the-game-chest-del-amo-fashion-center"
+      },
+      "fields": {
+        "venue_id": "the-game-chest-del-amo-fashion-center",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "18:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "11:00",
+              "close": "19:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "11:00",
+              "close": "19:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "11:00",
+              "close": "19:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "11:00",
+              "close": "19:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "10:00",
+              "close": "20:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "10:00",
+              "close": "20:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-the-game-chest-del-amo-fashion-center-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Official mall page: Mon-Thu 11 AM-7 PM, Fri-Sat 10 AM-8 PM, Sun noon-6 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-card-arena-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-card-arena-2026-09-06",
+        "label": "Current business-hours source \u2014 Card Arena",
+        "url": "https://www.loc8nearme.com/california/la-puente/card-arena/5092979/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "card-arena",
+        "source_id": "src-hours-card-arena-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "card-arena",
+        "source_id": "src-hours-card-arena-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "card-arena"
+      },
+      "fields": {
+        "venue_id": "card-arena",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "14:00",
+              "close": "21:00"
+            }
+          ],
+          "1": [
+            {
+              "closed": true
+            }
+          ],
+          "2": [
+            {
+              "closed": true
+            }
+          ],
+          "3": [
+            {
+              "closed": true
+            }
+          ],
+          "4": [
+            {
+              "closed": true
+            }
+          ],
+          "5": [
+            {
+              "open": "15:00",
+              "close": "22:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "14:00",
+              "close": "22:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-card-arena-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Fri 3-10 PM, Sat 2-10 PM, Sun 2-9 PM; closed Mon-Thu."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-the-game-chest-promenade-on-the-peninsula-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-the-game-chest-promenade-on-the-peninsula-2026-09-06",
+        "label": "Current business-hours source \u2014 The Game Chest - Promenade on the Peninsula",
+        "url": "https://www.ibegin.com/directory/us/california/rolling-hills-estates/the-game-chest-137-deep-valley-dr/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula",
+        "source_id": "src-hours-the-game-chest-promenade-on-the-peninsula-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-chest-promenade-on-the-peninsula",
+        "source_id": "src-hours-the-game-chest-promenade-on-the-peninsula-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "the-game-chest-promenade-on-the-peninsula"
+      },
+      "fields": {
+        "venue_id": "the-game-chest-promenade-on-the-peninsula",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "11:00",
+              "close": "17:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "10:00",
+              "close": "18:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "10:00",
+              "close": "18:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "10:00",
+              "close": "18:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "10:00",
+              "close": "18:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "10:00",
+              "close": "19:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "10:00",
+              "close": "19:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-the-game-chest-promenade-on-the-peninsula-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Published location schedule: Mon-Thu 10 AM-6 PM, Fri-Sat 10 AM-7 PM, Sun 11 AM-5 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-b-y-o-games-llc-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-b-y-o-games-llc-2026-09-06",
+        "label": "Current business-hours source \u2014 B.Y.O.GAMES LLC",
+        "url": "https://www.waze.com/live-map/directions/us/ca/los-angeles/b.y.o.games?to=place.ChIJYWVrQnfPwoARYmBhByxPdCU",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-hours-b-y-o-games-llc-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "b-y-o-games-llc",
+        "source_id": "src-hours-b-y-o-games-llc-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "b-y-o-games-llc"
+      },
+      "fields": {
+        "venue_id": "b-y-o-games-llc",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "closed": true
+            }
+          ],
+          "2": [
+            {
+              "open": "15:00",
+              "close": "23:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "15:00",
+              "close": "23:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "15:00",
+              "close": "23:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "15:00",
+              "close": "23:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "23:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-b-y-o-games-llc-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google/Waze-derived listing: Tue-Fri 3-11 PM, Sat noon-11 PM, Sun noon-8 PM; closed Mon."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-lvlup-gaming-tcg-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-lvlup-gaming-tcg-2026-09-06",
+        "label": "Current business-hours source \u2014 LVLUP GAMING TCG",
+        "url": "https://lvlupgamingtcg.com/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-hours-lvlup-gaming-tcg-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lvlup-gaming-tcg",
+        "source_id": "src-hours-lvlup-gaming-tcg-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "lvlup-gaming-tcg"
+      },
+      "fields": {
+        "venue_id": "lvlup-gaming-tcg",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "23:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "23:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-lvlup-gaming-tcg-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Official site: Mon-Thu noon-10 PM, Fri-Sat noon-11 PM, Sun noon-8 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-endless-entertainment-los-angeles-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-endless-entertainment-los-angeles-2026-09-06",
+        "label": "Current business-hours source \u2014 Endless Entertainment",
+        "url": "https://localcardfinder.com/stores/endless-entertainment-los-angeles-cmqdtqcdu00fr1kv2xrfigai0",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "source_id": "src-hours-endless-entertainment-los-angeles-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "endless-entertainment-los-angeles",
+        "source_id": "src-hours-endless-entertainment-los-angeles-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "endless-entertainment-los-angeles"
+      },
+      "fields": {
+        "venue_id": "endless-entertainment-los-angeles",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "closed": true
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-endless-entertainment-los-angeles-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Mon-Sat noon-8 PM; closed Sun."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-the-crimson-guild-south-el-monte-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-the-crimson-guild-south-el-monte-2026-09-06",
+        "label": "Current business-hours source \u2014 The Crimson Guild - South El Monte",
+        "url": "https://tcglist.org/stores/california/south-el-monte/the-crimson-guild-socal-south-el-monte-ca",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "source_id": "src-hours-the-crimson-guild-south-el-monte-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-crimson-guild-south-el-monte",
+        "source_id": "src-hours-the-crimson-guild-south-el-monte-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "the-crimson-guild-south-el-monte"
+      },
+      "fields": {
+        "venue_id": "the-crimson-guild-south-el-monte",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:30",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "closed": true
+            }
+          ],
+          "2": [
+            {
+              "open": "15:00",
+              "close": "21:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "15:00",
+              "close": "21:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "15:00",
+              "close": "21:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "15:00",
+              "close": "21:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:30",
+              "close": "20:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-the-crimson-guild-south-el-monte-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Tue-Fri 3-9 PM, Sat-Sun 12:30-8 PM; closed Mon."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-aki-collectibles-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-aki-collectibles-2026-09-06",
+        "label": "Current business-hours source \u2014 Aki Collectibles",
+        "url": "https://aki-collectibles-llc-el-monte.pokemoncard.info/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "aki-collectibles",
+        "source_id": "src-hours-aki-collectibles-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "aki-collectibles",
+        "source_id": "src-hours-aki-collectibles-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "aki-collectibles"
+      },
+      "fields": {
+        "venue_id": "aki-collectibles",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "14:00",
+              "close": "20:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "21:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "21:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-aki-collectibles-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Mon 2-8 PM, Tue-Thu and Sun noon-8 PM, Fri-Sat noon-9 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-otaku-vault-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-otaku-vault-2026-09-06",
+        "label": "Current business-hours source \u2014 Otaku Vault",
+        "url": "https://maps.apple.com/place?place-id=IAC61649846952019",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-hours-otaku-vault-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "otaku-vault",
+        "source_id": "src-hours-otaku-vault-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "otaku-vault"
+      },
+      "fields": {
+        "venue_id": "otaku-vault",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-otaku-vault-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current business listing: noon-8 PM daily."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-alamo-drafthouse-cinema-downtown-los-angeles-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-alamo-drafthouse-cinema-downtown-los-angeles-2026-09-06",
+        "label": "Current business-hours source \u2014 Alamo Drafthouse Cinema Downtown Los Angeles",
+        "url": "https://www.restaurantji.com/ca/los-angeles/alamo-drafthouse-cinema-downtown-los-angeles-/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "alamo-drafthouse-cinema-downtown-los-angeles",
+        "source_id": "src-hours-alamo-drafthouse-cinema-downtown-los-angeles-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "alamo-drafthouse-cinema-downtown-los-angeles",
+        "source_id": "src-hours-alamo-drafthouse-cinema-downtown-los-angeles-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "alamo-drafthouse-cinema-downtown-los-angeles"
+      },
+      "fields": {
+        "venue_id": "alamo-drafthouse-cinema-downtown-los-angeles",
+        "status": "variable",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "00:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "14:00",
+              "close": "00:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "14:00",
+              "close": "00:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "14:00",
+              "close": "00:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "14:00",
+              "close": "00:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "14:00",
+              "close": "00:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "00:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-alamo-drafthouse-cinema-downtown-los-angeles-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current listing: Mon-Fri 2 PM-midnight, Sat-Sun noon-midnight; cinema opening can vary with showtimes."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-the-game-cellar-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-the-game-cellar-2026-09-06",
+        "label": "Current business-hours source \u2014 The Game Cellar",
+        "url": "https://www.keepupcards.com/shop/the-game-cellar-san-gabriel-ca",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar",
+        "source_id": "src-hours-the-game-cellar-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-game-cellar",
+        "source_id": "src-hours-the-game-cellar-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "the-game-cellar"
+      },
+      "fields": {
+        "venue_id": "the-game-cellar",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "closed": true
+            }
+          ],
+          "2": [
+            {
+              "open": "14:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "14:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "14:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "14:00",
+              "close": "22:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-the-game-cellar-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Tue-Fri 2-10 PM, Sat-Sun noon-8 PM; closed Mon."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-pokeboxusa-san-gabriel-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-pokeboxusa-san-gabriel-2026-09-06",
+        "label": "Current business-hours source \u2014 PokeBoxUSA",
+        "url": "https://cardshopdirectory.com/pokemon-card-store/pokebox-usa/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "pokeboxusa-san-gabriel",
+        "source_id": "src-hours-pokeboxusa-san-gabriel-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "pokeboxusa-san-gabriel",
+        "source_id": "src-hours-pokeboxusa-san-gabriel-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "pokeboxusa-san-gabriel"
+      },
+      "fields": {
+        "venue_id": "pokeboxusa-san-gabriel",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "2": [
+            {
+              "closed": true
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-pokeboxusa-san-gabriel-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: noon-8 PM except closed Tue."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-the-bullpen-2-0-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-the-bullpen-2-0-2026-09-06",
+        "label": "Current business-hours source \u2014 The Bullpen 2.0",
+        "url": "https://www.beckett.com/news/local-card-shop-week-bullpen/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "the-bullpen-2-0",
+        "source_id": "src-hours-the-bullpen-2-0-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "the-bullpen-2-0",
+        "source_id": "src-hours-the-bullpen-2-0-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "the-bullpen-2-0"
+      },
+      "fields": {
+        "venue_id": "the-bullpen-2-0",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "11:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "21:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-the-bullpen-2-0-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Published store schedule: Mon-Tue/Thu-Fri noon-10 PM, Wed noon-9 PM, Sat 11 AM-10 PM, Sun 11 AM-8 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-side-quest-games-pomona-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-side-quest-games-pomona-2026-09-06",
+        "label": "Current business-hours source \u2014 Side Quest Games and Accessories",
+        "url": "https://maps.apple.com/place?place-id=ID07FFCB18A0AED39",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "side-quest-games-pomona",
+        "source_id": "src-hours-side-quest-games-pomona-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "side-quest-games-pomona",
+        "source_id": "src-hours-side-quest-games-pomona-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "side-quest-games-pomona"
+      },
+      "fields": {
+        "venue_id": "side-quest-games-pomona",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "18:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "00:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "12:00",
+              "close": "22:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-side-quest-games-pomona-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current listing: Mon-Wed and Sat noon-10 PM, Thu noon-8 PM, Fri noon-midnight, Sun noon-6 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-dxn-provisions-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-dxn-provisions-2026-09-06",
+        "label": "Current business-hours source \u2014 DXN Provisions",
+        "url": "https://www.loc8nearme.com/california/arcadia/dxn-provisions/5090880/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "dxn-provisions",
+        "source_id": "src-hours-dxn-provisions-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "dxn-provisions",
+        "source_id": "src-hours-dxn-provisions-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "dxn-provisions"
+      },
+      "fields": {
+        "venue_id": "dxn-provisions",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ],
+          "1": [
+            {
+              "closed": true
+            }
+          ],
+          "2": [
+            {
+              "open": "16:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "16:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "16:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "16:00",
+              "close": "22:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-dxn-provisions-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Tue-Fri 4-10 PM, Sat-Sun 11 AM-10 PM; closed Mon."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-revenge-of-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-revenge-of-2026-09-06",
+        "label": "Current business-hours source \u2014 Revenge Of",
+        "url": "https://revengeof.com/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "revenge-of",
+        "source_id": "src-hours-revenge-of-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "revenge-of",
+        "source_id": "src-hours-revenge-of-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "revenge-of"
+      },
+      "fields": {
+        "venue_id": "revenge-of",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "11:00",
+              "close": "19:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "11:00",
+              "close": "21:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-revenge-of-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current business listings agree: Sun-Mon noon-8 PM, Tue 11 AM-7 PM, Wed 11 AM-9 PM, Thu-Sat 11 AM-10 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-odyssey-games-pasadena-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-odyssey-games-pasadena-2026-09-06",
+        "label": "Current business-hours source \u2014 Odyssey Games - Pasadena",
+        "url": "https://www.waze.com/live-map/directions/odyssey-games-e-colorado-blvd-1795-pasadena?to=place.w.158531925.1585253719.1087720",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena",
+        "source_id": "src-hours-odyssey-games-pasadena-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "odyssey-games-pasadena",
+        "source_id": "src-hours-odyssey-games-pasadena-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "odyssey-games-pasadena"
+      },
+      "fields": {
+        "venue_id": "odyssey-games-pasadena",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "10:00",
+              "close": "21:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "10:00",
+              "close": "23:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "10:00",
+              "close": "23:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "10:00",
+              "close": "23:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "10:00",
+              "close": "23:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "10:00",
+              "close": "23:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "10:00",
+              "close": "23:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-odyssey-games-pasadena-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google/Waze-derived listing: Mon-Sat 10 AM-11 PM, Sun 10 AM-9 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-crown-city-games-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-crown-city-games-2026-09-06",
+        "label": "Current business-hours source \u2014 Crown City Games",
+        "url": "https://tcglist.org/stores/california/pasadena/crown-city-games-pasadena-ca",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-hours-crown-city-games-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "crown-city-games",
+        "source_id": "src-hours-crown-city-games-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "crown-city-games"
+      },
+      "fields": {
+        "venue_id": "crown-city-games",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "10:00",
+              "close": "22:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "13:00",
+              "close": "22:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "13:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "13:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "13:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "10:00",
+              "close": "22:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "10:00",
+              "close": "22:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-crown-city-games-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Mon-Thu 1-10 PM, Fri-Sun 10 AM-10 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-it-s-gametime-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-it-s-gametime-2026-09-06",
+        "label": "Current business-hours source \u2014 It's GameTime!",
+        "url": "https://www.itsgametimela.com/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "it-s-gametime",
+        "source_id": "src-hours-it-s-gametime-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "it-s-gametime",
+        "source_id": "src-hours-it-s-gametime-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "it-s-gametime"
+      },
+      "fields": {
+        "venue_id": "it-s-gametime",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "11:00",
+              "close": "17:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "2": [
+            {
+              "closed": true
+            }
+          ],
+          "3": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "12:00",
+              "close": "20:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "12:00",
+              "close": "21:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "11:00",
+              "close": "21:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-it-s-gametime-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Official site: Mon/Wed/Thu noon-8 PM, Fri noon-9 PM, Sat 11 AM-9 PM, Sun 11 AM-5 PM; closed Tue."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-a-and-n-collectibles-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-a-and-n-collectibles-2026-09-06",
+        "label": "Current business-hours source \u2014 A & N Collectibles",
+        "url": "https://www.loc8nearme.com/california/san-dimas/a-and-n-collectibles/7794315/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the exact source used for the bulk hours sweep."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-hours-a-and-n-collectibles-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "a-and-n-collectibles",
+        "source_id": "src-hours-a-and-n-collectibles-2026-09-06",
+        "relationship": "Business-hours source checked September 6, 2026."
+      },
+      "reason": "Make the hours evidence reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {
+        "venue_id": "a-and-n-collectibles"
+      },
+      "fields": {
+        "venue_id": "a-and-n-collectibles",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [
+            {
+              "open": "11:00",
+              "close": "19:00"
+            }
+          ],
+          "1": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "11:00",
+              "close": "22:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "11:00",
+              "close": "19:00"
+            }
+          ]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hours-a-and-n-collectibles-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google-derived listing: Mon-Fri 11 AM-10 PM, Sat-Sun 11 AM-7 PM."
+      },
+      "reason": "Publish a complete current weekly schedule from a clear source."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-review-socalmagic-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-review-socalmagic-2026-09-06",
+        "label": "Candidate hours source \u2014 SoCalMagic",
+        "url": "https://www.loc8nearme.com/california/orange/socal-magic/7352712/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the recommended source for user review."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "socalmagic",
+        "source_id": "src-hours-review-socalmagic-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "socalmagic",
+        "source_id": "src-hours-review-socalmagic-2026-09-06",
+        "relationship": "Candidate business-hours source; conflicting current listings require one user decision."
+      },
+      "reason": "Keep the review source reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {
+        "id": "hours-review-socalmagic-2026-09-06"
+      },
+      "fields": {
+        "id": "hours-review-socalmagic-2026-09-06",
+        "category": "operational",
+        "priority": "normal",
+        "status": "needs_followup",
+        "source_id": "src-hours-review-socalmagic-2026-09-06",
+        "captured_at": "2026-09-06T20:00:00Z",
+        "observed_at": "2026-09-06T20:00:00Z",
+        "related_entity_type": "venue",
+        "related_entity_id": "socalmagic",
+        "summary": "Confirm SoCalMagic's current weekly hours.",
+        "details": "Current listings disagree whether Wednesday/Thursday/Saturday close at 9 PM or 10 PM. The proposed schedule follows the linked, most current listing.",
+        "evidence_url": "https://www.loc8nearme.com/california/orange/socal-magic/7352712/",
+        "confidence": "medium",
+        "suggested_action": "Review the linked source and accept or reject the proposed weekly schedule.",
+        "promotion_target": "venue_hours",
+        "proposed_change": {
+          "type": "venue_hours",
+          "change_kind": "weekly_schedule",
+          "weekly_hours": {
+            "0": [
+              {
+                "open": "12:00",
+                "close": "18:00"
+              }
+            ],
+            "1": [
+              {
+                "closed": true
+              }
+            ],
+            "2": [
+              {
+                "closed": true
+              }
+            ],
+            "3": [
+              {
+                "open": "12:00",
+                "close": "21:00"
+              }
+            ],
+            "4": [
+              {
+                "open": "12:00",
+                "close": "21:00"
+              }
+            ],
+            "5": [
+              {
+                "open": "12:00",
+                "close": "23:00"
+              }
+            ],
+            "6": [
+              {
+                "open": "12:00",
+                "close": "21:00"
+              }
+            ]
+          },
+          "note": "Accepted after user review. Current listings disagree whether Wednesday/Thursday/Saturday close at 9 PM or 10 PM.",
+          "auto_promote": false,
+          "extraction": "review"
+        },
+        "dedupe_key": "hours-review:socalmagic:2026-09-06"
+      },
+      "reason": "Expose the material conflict as a concrete source-linked Yes/No decision instead of publishing uncertain hours."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-review-alakazam-comics-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-review-alakazam-comics-2026-09-06",
+        "label": "Candidate hours source \u2014 Alakazam Comics",
+        "url": "https://www.waze.com/live-map/directions/alakazam%21-comics-main-st-17777-irvine?to=place.w.158662993.1586892073.3412456",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the recommended source for user review."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "alakazam-comics",
+        "source_id": "src-hours-review-alakazam-comics-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "alakazam-comics",
+        "source_id": "src-hours-review-alakazam-comics-2026-09-06",
+        "relationship": "Candidate business-hours source; conflicting current listings require one user decision."
+      },
+      "reason": "Keep the review source reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {
+        "id": "hours-review-alakazam-comics-2026-09-06"
+      },
+      "fields": {
+        "id": "hours-review-alakazam-comics-2026-09-06",
+        "category": "operational",
+        "priority": "normal",
+        "status": "needs_followup",
+        "source_id": "src-hours-review-alakazam-comics-2026-09-06",
+        "captured_at": "2026-09-06T20:00:00Z",
+        "observed_at": "2026-09-06T20:00:00Z",
+        "related_entity_type": "venue",
+        "related_entity_id": "alakazam-comics",
+        "summary": "Confirm Alakazam Comics's current weekly hours.",
+        "details": "Current directories disagree on Monday versus Tuesday closure and several opening/closing times. The proposed schedule follows the linked, most current listing.",
+        "evidence_url": "https://www.waze.com/live-map/directions/alakazam%21-comics-main-st-17777-irvine?to=place.w.158662993.1586892073.3412456",
+        "confidence": "medium",
+        "suggested_action": "Review the linked source and accept or reject the proposed weekly schedule.",
+        "promotion_target": "venue_hours",
+        "proposed_change": {
+          "type": "venue_hours",
+          "change_kind": "weekly_schedule",
+          "weekly_hours": {
+            "0": [
+              {
+                "open": "12:00",
+                "close": "18:00"
+              }
+            ],
+            "1": [
+              {
+                "closed": true
+              }
+            ],
+            "2": [
+              {
+                "open": "12:00",
+                "close": "18:00"
+              }
+            ],
+            "3": [
+              {
+                "open": "12:00",
+                "close": "20:00"
+              }
+            ],
+            "4": [
+              {
+                "open": "12:00",
+                "close": "18:00"
+              }
+            ],
+            "5": [
+              {
+                "open": "12:00",
+                "close": "18:00"
+              }
+            ],
+            "6": [
+              {
+                "open": "12:00",
+                "close": "18:00"
+              }
+            ]
+          },
+          "note": "Accepted after user review. Current directories disagree on Monday versus Tuesday closure and several opening/closing times.",
+          "auto_promote": false,
+          "extraction": "review"
+        },
+        "dedupe_key": "hours-review:alakazam-comics:2026-09-06"
+      },
+      "reason": "Expose the material conflict as a concrete source-linked Yes/No decision instead of publishing uncertain hours."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-review-spellhold-games-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-review-spellhold-games-2026-09-06",
+        "label": "Candidate hours source \u2014 Spellhold Games",
+        "url": "https://tcglist.org/stores/california/orange/spellhold-games-orange-ca",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the recommended source for user review."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "spellhold-games",
+        "source_id": "src-hours-review-spellhold-games-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "spellhold-games",
+        "source_id": "src-hours-review-spellhold-games-2026-09-06",
+        "relationship": "Candidate business-hours source; conflicting current listings require one user decision."
+      },
+      "reason": "Keep the review source reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {
+        "id": "hours-review-spellhold-games-2026-09-06"
+      },
+      "fields": {
+        "id": "hours-review-spellhold-games-2026-09-06",
+        "category": "operational",
+        "priority": "normal",
+        "status": "needs_followup",
+        "source_id": "src-hours-review-spellhold-games-2026-09-06",
+        "captured_at": "2026-09-06T20:00:00Z",
+        "observed_at": "2026-09-06T20:00:00Z",
+        "related_entity_type": "venue",
+        "related_entity_id": "spellhold-games",
+        "summary": "Confirm Spellhold Games's current weekly hours.",
+        "details": "Current listings disagree on the store address and whether weekday hours begin at 1 PM or 4 PM. The proposed schedule follows the linked, most current listing.",
+        "evidence_url": "https://tcglist.org/stores/california/orange/spellhold-games-orange-ca",
+        "confidence": "medium",
+        "suggested_action": "Review the linked source and accept or reject the proposed weekly schedule.",
+        "promotion_target": "venue_hours",
+        "proposed_change": {
+          "type": "venue_hours",
+          "change_kind": "weekly_schedule",
+          "weekly_hours": {
+            "0": [
+              {
+                "open": "12:00",
+                "close": "20:00"
+              }
+            ],
+            "1": [
+              {
+                "open": "13:00",
+                "close": "22:30"
+              }
+            ],
+            "2": [
+              {
+                "open": "13:00",
+                "close": "22:30"
+              }
+            ],
+            "3": [
+              {
+                "open": "13:00",
+                "close": "22:30"
+              }
+            ],
+            "4": [
+              {
+                "open": "13:00",
+                "close": "22:30"
+              }
+            ],
+            "5": [
+              {
+                "open": "13:00",
+                "close": "22:30"
+              }
+            ],
+            "6": [
+              {
+                "open": "12:00",
+                "close": "20:00"
+              }
+            ]
+          },
+          "note": "Accepted after user review. Current listings disagree on the store address and whether weekday hours begin at 1 PM or 4 PM.",
+          "auto_promote": false,
+          "extraction": "review"
+        },
+        "dedupe_key": "hours-review:spellhold-games:2026-09-06"
+      },
+      "reason": "Expose the material conflict as a concrete source-linked Yes/No decision instead of publishing uncertain hours."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-review-games-for-meeple-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-review-games-for-meeple-2026-09-06",
+        "label": "Candidate hours source \u2014 Games For Meeple",
+        "url": "https://www.loc8nearme.com/california/diamond-bar/games-for-meeple/8598568/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the recommended source for user review."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-hours-review-games-for-meeple-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "games-for-meeple",
+        "source_id": "src-hours-review-games-for-meeple-2026-09-06",
+        "relationship": "Candidate business-hours source; conflicting current listings require one user decision."
+      },
+      "reason": "Keep the review source reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {
+        "id": "hours-review-games-for-meeple-2026-09-06"
+      },
+      "fields": {
+        "id": "hours-review-games-for-meeple-2026-09-06",
+        "category": "operational",
+        "priority": "normal",
+        "status": "needs_followup",
+        "source_id": "src-hours-review-games-for-meeple-2026-09-06",
+        "captured_at": "2026-09-06T20:00:00Z",
+        "observed_at": "2026-09-06T20:00:00Z",
+        "related_entity_type": "venue",
+        "related_entity_id": "games-for-meeple",
+        "summary": "Confirm Games For Meeple's current weekly hours.",
+        "details": "Current listings disagree whether Tuesday and Thursday are open and differ by roughly one hour on several closing times. The proposed schedule follows the linked, most current listing.",
+        "evidence_url": "https://www.loc8nearme.com/california/diamond-bar/games-for-meeple/8598568/",
+        "confidence": "medium",
+        "suggested_action": "Review the linked source and accept or reject the proposed weekly schedule.",
+        "promotion_target": "venue_hours",
+        "proposed_change": {
+          "type": "venue_hours",
+          "change_kind": "weekly_schedule",
+          "weekly_hours": {
+            "0": [
+              {
+                "open": "13:00",
+                "close": "20:00"
+              }
+            ],
+            "1": [
+              {
+                "open": "17:00",
+                "close": "23:00"
+              }
+            ],
+            "2": [
+              {
+                "open": "17:00",
+                "close": "23:00"
+              }
+            ],
+            "3": [
+              {
+                "open": "17:00",
+                "close": "23:00"
+              }
+            ],
+            "4": [
+              {
+                "open": "17:00",
+                "close": "23:00"
+              }
+            ],
+            "5": [
+              {
+                "open": "17:00",
+                "close": "23:00"
+              }
+            ],
+            "6": [
+              {
+                "open": "13:00",
+                "close": "21:00"
+              }
+            ]
+          },
+          "note": "Accepted after user review. Current listings disagree whether Tuesday and Thursday are open and differ by roughly one hour on several closing times.",
+          "auto_promote": false,
+          "extraction": "review"
+        },
+        "dedupe_key": "hours-review:games-for-meeple:2026-09-06"
+      },
+      "reason": "Expose the material conflict as a concrete source-linked Yes/No decision instead of publishing uncertain hours."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-review-gxgamers-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-review-gxgamers-2026-09-06",
+        "label": "Candidate hours source \u2014 GXGAMERS",
+        "url": "https://www.loc8nearme.com/california/los-angeles/gxgamers/7221117/",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the recommended source for user review."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-hours-review-gxgamers-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "gxgamers",
+        "source_id": "src-hours-review-gxgamers-2026-09-06",
+        "relationship": "Candidate business-hours source; conflicting current listings require one user decision."
+      },
+      "reason": "Keep the review source reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {
+        "id": "hours-review-gxgamers-2026-09-06"
+      },
+      "fields": {
+        "id": "hours-review-gxgamers-2026-09-06",
+        "category": "operational",
+        "priority": "normal",
+        "status": "needs_followup",
+        "source_id": "src-hours-review-gxgamers-2026-09-06",
+        "captured_at": "2026-09-06T20:00:00Z",
+        "observed_at": "2026-09-06T20:00:00Z",
+        "related_entity_type": "venue",
+        "related_entity_id": "gxgamers",
+        "summary": "Confirm GXGAMERS's current weekly hours.",
+        "details": "Current listings disagree whether Tuesday or Thursday is the weekly closure. The proposed schedule follows the linked, most current listing.",
+        "evidence_url": "https://www.loc8nearme.com/california/los-angeles/gxgamers/7221117/",
+        "confidence": "medium",
+        "suggested_action": "Review the linked source and accept or reject the proposed weekly schedule.",
+        "promotion_target": "venue_hours",
+        "proposed_change": {
+          "type": "venue_hours",
+          "change_kind": "weekly_schedule",
+          "weekly_hours": {
+            "0": [
+              {
+                "open": "17:00",
+                "close": "22:00"
+              }
+            ],
+            "1": [
+              {
+                "open": "17:30",
+                "close": "22:00"
+              }
+            ],
+            "2": [
+              {
+                "closed": true
+              }
+            ],
+            "3": [
+              {
+                "open": "17:30",
+                "close": "22:00"
+              }
+            ],
+            "4": [
+              {
+                "open": "17:30",
+                "close": "22:00"
+              }
+            ],
+            "5": [
+              {
+                "open": "17:30",
+                "close": "22:00"
+              }
+            ],
+            "6": [
+              {
+                "open": "17:00",
+                "close": "22:00"
+              }
+            ]
+          },
+          "note": "Accepted after user review. Current listings disagree whether Tuesday or Thursday is the weekly closure.",
+          "auto_promote": false,
+          "extraction": "review"
+        },
+        "dedupe_key": "hours-review:gxgamers:2026-09-06"
+      },
+      "reason": "Expose the material conflict as a concrete source-linked Yes/No decision instead of publishing uncertain hours."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {
+        "id": "src-hours-review-turn-zero-games-2026-09-06"
+      },
+      "fields": {
+        "id": "src-hours-review-turn-zero-games-2026-09-06",
+        "label": "Candidate hours source \u2014 Turn Zero Games",
+        "url": "https://www.waze.com/live-map/directions/us/ca/los-angeles/turn-zero-games?to=place.ChIJUV0RSJC4woARzOGwUZUvOzs",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the recommended source for user review."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-hours-review-turn-zero-games-2026-09-06"
+      },
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "turn-zero-games",
+        "source_id": "src-hours-review-turn-zero-games-2026-09-06",
+        "relationship": "Candidate business-hours source; conflicting current listings require one user decision."
+      },
+      "reason": "Keep the review source reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {
+        "id": "hours-review-turn-zero-games-2026-09-06"
+      },
+      "fields": {
+        "id": "hours-review-turn-zero-games-2026-09-06",
+        "category": "operational",
+        "priority": "normal",
+        "status": "needs_followup",
+        "source_id": "src-hours-review-turn-zero-games-2026-09-06",
+        "captured_at": "2026-09-06T20:00:00Z",
+        "observed_at": "2026-09-06T20:00:00Z",
+        "related_entity_type": "venue",
+        "related_entity_id": "turn-zero-games",
+        "summary": "Confirm Turn Zero Games's current weekly hours.",
+        "details": "Current listings agree on an 11 AM opening but disagree between 10 PM and 11 PM closing. The proposed schedule follows the linked, most current listing.",
+        "evidence_url": "https://www.waze.com/live-map/directions/us/ca/los-angeles/turn-zero-games?to=place.ChIJUV0RSJC4woARzOGwUZUvOzs",
+        "confidence": "medium",
+        "suggested_action": "Review the linked source and accept or reject the proposed weekly schedule.",
+        "promotion_target": "venue_hours",
+        "proposed_change": {
+          "type": "venue_hours",
+          "change_kind": "weekly_schedule",
+          "weekly_hours": {
+            "0": [
+              {
+                "open": "11:00",
+                "close": "22:00"
+              }
+            ],
+            "1": [
+              {
+                "open": "11:00",
+                "close": "22:00"
+              }
+            ],
+            "2": [
+              {
+                "open": "11:00",
+                "close": "22:00"
+              }
+            ],
+            "3": [
+              {
+                "open": "11:00",
+                "close": "22:00"
+              }
+            ],
+            "4": [
+              {
+                "open": "11:00",
+                "close": "22:00"
+              }
+            ],
+            "5": [
+              {
+                "open": "11:00",
+                "close": "22:00"
+              }
+            ],
+            "6": [
+              {
+                "open": "11:00",
+                "close": "22:00"
+              }
+            ]
+          },
+          "note": "Accepted after user review. Current listings agree on an 11 AM opening but disagree between 10 PM and 11 PM closing.",
+          "auto_promote": false,
+          "extraction": "review"
+        },
+        "dedupe_key": "hours-review:turn-zero-games:2026-09-06"
+      },
+      "reason": "Expose the material conflict as a concrete source-linked Yes/No decision instead of publishing uncertain hours."
+    }
+  ]
+}

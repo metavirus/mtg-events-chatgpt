@@ -238,9 +238,10 @@ the exact durable state and next action, then hand off from that checkpoint.
   incidental visual evidence. Thin profile/chrome text and vague "may have
   event" social findings stay quiet; they should not create visible watchlist
   sludge. Operational hours findings now have a two-lane canonical path:
-  unambiguous permanent hours from a linked, single-venue official source—or a
-  current Google business listing corroborated by Yelp, Instagram, or another
-  independent current source—promote into `venue_hours`; incomplete or
+  unambiguous permanent hours from a linked, single-venue official source—or
+  current Google business hours—promote into `venue_hours`. Google is the
+  routine default; seek another source only when it is missing, stale-looking,
+  or conflicts with known event times. Incomplete or
   conflicting hours become a structured
   `venue_hours` Signal with the competing source-backed schedules and concrete
   choice controls
@@ -255,12 +256,15 @@ the exact durable state and next action, then hand off from that checkpoint.
   link for every competing source alongside buttons that name the actual
   choices. The scheduled extractor still uses source image descriptions;
   this visual reread was performed by the agent, not an automated OCR engine.
-  The September 6 hours-population passes added fifteen canonical venue
+  The September 6 hours-population passes added forty-six canonical venue
   schedules. Next-Gen's internally conflicting Saturday close proved the
   source-comparison workflow; the user selected the recommended dedicated-FAQ
   9 PM close, and future conflicts now show both sources and concrete choices.
-  Thirty-seven reviewed venues still lack structured hours and should continue
-  through this same bounded source hierarchy.
+  All reviewed venues within 10 miles now have structured hours. Six reviewed
+  venues remain without canonical hours—SoCalMagic, Alakazam Comics, Spellhold
+  Games, Games For Meeple, GXGAMERS, and Turn Zero Games—and each now has a
+  source-linked Yes/No review card explaining the material conflict. No other
+  reviewed-hours gap remains in purgatory.
   App-facing daily-agent status now lives in `public.daily_agent_status`, a
   safe RLS-protected aggregate table refreshed by
   `scripts/refresh_daily_agent_status.py` at the end of both cloud survey

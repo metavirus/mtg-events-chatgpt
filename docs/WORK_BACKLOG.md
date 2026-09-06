@@ -40,8 +40,9 @@ Use it for:
   must remain quiet, not a "may have event" Signal. Closed September 6: linked
   official-source permanent hours announcements no longer stop in the Signals
   inbox. Clear structured hours from a single-venue source, or current Google
-  hours corroborated by another current source, promote to canonical
-  `venue_hours`; ambiguous OCR, conflicting listings, or a shared multi-branch account
+  business hours, promote to canonical `venue_hours`. Google is the routine
+  default; seek corroboration only when it is missing, stale-looking, or
+  conflicts with known event times. Ambiguous OCR, conflicting listings, or a shared multi-branch account
   becomes a concrete source-comparison proposal showing the extracted days,
   times, effective date, conflict reason, and a link for every competing
   source. The Collectors Lounge August 29 post was
@@ -716,14 +717,15 @@ claims without reopening the whole packet.
   Week/Month grouping and scanability are evaluated; do not add it by default.
 - Store-hours interface support now exists on Places, backed by the
   `venue_hours` Supabase table when available and an optional exported fallback
-  shape. September 6 population passes added fifteen current schedules from
-  official sites and corroborated Google/Yelp/Instagram evidence. Next-Gen's
+  shape. September 6 population passes added forty-six current schedules from
+  official sites and current Google/directory/social evidence. Next-Gen's
   conflicting official Saturday hours exercise the general source-linked
   comparison path; it now names both sources and offers concrete schedule
-  choices. Continue the remaining 37 reviewed venues in bounded
-  batches; do not leave a venue blank merely because its official website is
-  silent when a current business listing or social profile supplies usable
-  hours.
+  choices. The bulk closeout left no reviewed venue within 10 miles without
+  hours. The only six reviewed gaps are SoCalMagic, Alakazam Comics, Spellhold
+  Games, Games For Meeple, GXGAMERS, and Turn Zero Games; all six have concrete
+  source-linked review cards for real conflicts. Do not repeat the discovery
+  sweep—resolve those cards, then maintain hours from new survey signals.
 - Daily dashboard / landscape view for what is newly relevant right now.
 - Store detail pane with source links, address, and event history.
 - Group detail pane separate from store detail pane.
