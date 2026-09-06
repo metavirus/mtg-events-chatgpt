@@ -1910,6 +1910,10 @@ function briefingAttentionSignals() {
   const seen = new Set();
   return rankedSignals().filter((signal) => !signal.derivedFromChangeId && !['dismissed', 'stale'].includes(signal.status) && signalIsCurrentForHome(signal))
     .filter((signal) => {
+      const relatedEvent = signalRelatedEvent(signal);
+      return !relatedEvent || !isEventHidden(relatedEvent);
+    })
+    .filter((signal) => {
       const key = `${signal.category}:${signal.relatedEntityType}:${signal.relatedEntityId || signal.sourceId || signal.summary}`;
       if (seen.has(key)) return false;
       seen.add(key);
@@ -2037,6 +2041,7 @@ function personalTodoItems() {
 }
 
 function personalTodoIsCurrent(item) {
+  if (item.entity?.type === 'event' && isEventHidden(item.entity.item)) return false;
   if (item.type !== 'planning' || item.entity?.type !== 'event') return true;
   const event = item.entity.item;
   const lastRelevantDate = parseDate(event.endDate || event.date || event.startDate || null);
@@ -2797,16 +2802,17 @@ function eventCard(event, compact = false, options = {}) {
   const hiddenKey = favoriteKey;
   const isFavorite = !!state.personal.favorites[favoriteKey];
   const isHidden = !!state.personal.hidden[hiddenKey];
+  const isDisliked = isEventDisliked(event);
   const fee = event.entryFee == null ? 'Fee unknown' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`;
   const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
   const dateNote = occurrence ? occurrence.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
   if (compact) {
     const cue = compactEventCue(event, fit, evidence);
-    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${organizer ? `${escapeHtml(organizer.name)} meetup · ` : ''}${escapeHtml(hostLabel)}</small><em>${escapeHtml(cue.label)}</em></button>`;
+    return `<button class="compact-event ${isCompetitive(event) ? 'competitive' : ''} ${(isHidden || isDisliked) ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${cue.className}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span class="compact-event-time">${formatTime(eventStartTime(event))}</span><strong>${escapeHtml(event.title)}</strong><small>${organizer ? `${escapeHtml(organizer.name)} meetup · ` : ''}${escapeHtml(hostLabel)}</small><em>${escapeHtml(cue.label)}</em></button>`;
   }
   const limitedChip = isPrereleaseOrSealed(event) ? '<span class="status-chip limited">Prerelease / sealed</span>' : '';
   const communityChip = organizer ? '<span class="status-chip sky">Community meetup</span>' : '';
-  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${dense ? 'dense-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${isHidden ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" role="button" tabindex="0" aria-label="Open ${escapeHtml(event.title)} details">
+  return `<article class="event-card ${catalog ? 'catalog-event-card' : ''} ${dense ? 'dense-event-card' : ''} ${isCompetitive(event) ? 'competitive' : ''} ${(isHidden || isDisliked) ? 'deprioritized' : ''} ${isPrereleaseOrSealed(event) ? 'limited-highlight' : ''} ${emphasize ? `fit-${fit.tone}` : ''}" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}" role="button" tabindex="0" aria-label="Open ${escapeHtml(event.title)} details">
     <div class="event-time"><strong>${formatTime(eventStartTime(event))}</strong><span>${event.recurrence?.frequency === 'weekly' ? 'Weekly' : 'One-off'}</span>${showDate && dateNote ? `<small>${dateNote}</small>` : ''}</div>
     <div class="event-main">
       <div class="event-topline"><span class="format-mark ${formatClass(event)}">${formatShort(event)}</span><h3>${escapeHtml(event.title)}</h3></div>
@@ -2829,6 +2835,7 @@ function formatClass(event) {
 function compactEventCue(event, fit, evidence) {
   if (isPrereleaseOrSealed(event)) return { label: /prerelease/i.test(`${event.title} ${event.eventType}`) ? 'Prerelease' : 'Limited', className: 'cue-limited' };
   if (state.personal.hidden[eventPreferenceKey(event)]) return { label: 'Hidden', className: 'cue-hidden' };
+  if (isEventDisliked(event)) return { label: 'Not for me', className: 'cue-hidden' };
   if (hasExplicitNoProxy(event)) return { label: 'No proxy', className: 'cue-hidden' };
   if (isHighPowerCommander(event)) return { label: 'High power', className: 'cue-hidden' };
   if (isCompetitive(event)) return { label: 'Check first', className: 'cue-caution' };
@@ -2864,7 +2871,7 @@ function eventPlanningGroup(event) {
   const place = store(event.storeId);
   const placeHidden = !!state.personal.hidden[`place:${event.storeId}`];
   const eventHidden = !!state.personal.hidden[eventPreferenceKey(event)];
-  if (eventHidden || placeHidden || hasExplicitNoProxy(event) || isCompetitive(event) || isHighPowerCommander(event)) return 'hidden';
+  if (eventHidden || isEventDisliked(event) || placeHidden || hasExplicitNoProxy(event) || isCompetitive(event) || isHighPowerCommander(event)) return 'hidden';
   if (place?.lifecycleState === 'identity_blocked') return 'verify';
   if (isPrereleaseOrSealed(event)) return 'limited';
   const fit = fitLabel(event);
@@ -3090,7 +3097,12 @@ function isPlaceHidden(placeId) {
 
 function isEventHidden(event) {
   if (!event) return false;
-  return !!state.personal.hidden[eventPreferenceKey(event)] || isPlaceHidden(event.storeId);
+  return !!state.personal.hidden[eventPreferenceKey(event)] || isEventDisliked(event) || isPlaceHidden(event.storeId);
+}
+
+function isEventDisliked(event) {
+  if (!event) return false;
+  return Number(state.personal.ratings[eventPreferenceKey(event)]) === 1;
 }
 
 function placeFitPhrase(place) {

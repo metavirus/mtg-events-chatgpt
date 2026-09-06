@@ -213,6 +213,35 @@ async function main() {
       const excessDom = measurements.filter((row) => row.nodes > 2600);
       if (excessDom.length) throw new Error(`Route DOM did not stay bounded: ${excessDom.map((row) => `${row.label} ${row.nodes} nodes`).join(', ')}`);
       pass('Route and click dispatch stayed responsive', measurements.map((row) => `${row.label}:${row.dispatchMs ?? 0}ms/${row.nodes} nodes`).join(' | '));
+    } else if (scenario === 'event-dislike-suppression') {
+      await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));
+      await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => undefined);
+      await page.locator('.nav-item[data-route="today"]').click({ timeout: 10000 });
+      const dislike = page.locator('[data-action="toggle-event-dislike"]:visible').first();
+      await dislike.waitFor({ state: 'visible', timeout: 20000 });
+      const eventId = await dislike.getAttribute('data-event-id');
+      const eventTitle = await dislike.locator('xpath=ancestor::*[@data-event-id][1]').locator('h3').innerText();
+      await dislike.click({ timeout: 5000 });
+      if (await page.locator(`#route-today [data-event-id="${eventId}"]:visible`).count()) throw new Error(`Disliked event remained visible in the ordinary Today catalog: ${eventTitle}`);
+      await page.locator('.nav-item[data-route="signals"]').click({ timeout: 5000 });
+      await page.waitForTimeout(100);
+      const briefingLeak = page.locator(`#route-signals [data-event-id="${eventId}"]:visible`).first();
+      if (await briefingLeak.count()) throw new Error(`Disliked event leaked into Briefing: ${eventTitle}. ${await briefingLeak.evaluate((node) => node.outerHTML.slice(0, 1000))}`);
+      await page.locator('.nav-item[data-route="today"]').click({ timeout: 5000 });
+      await page.locator('#openFilters').click({ timeout: 5000 });
+      await page.locator('input[name="planningGroup"][value="hidden"]').check();
+      await page.locator('#applyFilters').click({ timeout: 5000 });
+      const restore = page.locator('#route-today [data-event-id]').filter({ hasText: eventTitle }).locator('[data-action="toggle-event-dislike"]').first();
+      await restore.waitFor({ state: 'visible', timeout: 5000 });
+      await restore.click({ timeout: 5000 });
+      const storedDislikes = await page.evaluate(() => {
+        const personal = JSON.parse(localStorage.getItem('mana-radar-personal') || '{}');
+        return Object.values(personal.ratings || {}).filter((rating) => Number(rating) === 1).length;
+      });
+      if (storedDislikes) throw new Error(`Removing the event dislike did not restore its preference: ${eventTitle}`);
+      pass('Event dislike suppresses ordinary planning surfaces and stays recoverable', `${eventTitle} left Today and Briefing, then restored through the Hidden / poor fit filter`);
     } else if (scenario === 'updates-daily-agents') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
