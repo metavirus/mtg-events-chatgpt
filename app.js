@@ -1,4 +1,4 @@
-const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [], dailyAgentStatuses: [] };
+const DATA = { stores: [], events: [], sources: [], changes: [], signals: [], artifacts: [], dailyAgentStatuses: [], communityMonitoring: [] };
 const ROUTE_DYNAMIC_CONTENT = {
   signals: ['signalsSummary', 'signalsContent'],
   today: ['calendarContent', 'newHighlights', 'fitHighlights', 'researchAlerts'],
@@ -776,6 +776,9 @@ async function syncPersonalState() {
     return;
   }
   applyRemotePersonalState(preferences, notes, signalStates);
+  const { data: monitoring, error: monitoringError } = await personalAuth.client.from('community_monitoring_status').select('source_id,checked_at,disposition');
+  DATA.communityMonitoring = monitoringError ? [] : monitoring || [];
+  communityProfileCache.signature = '';
 }
 
 async function importLocalPersonalState() {
@@ -1782,6 +1785,7 @@ function renderSignals() {
     ${nextBest ? briefingHero(nextBest) : briefingEmptyHero(nextUpcoming)}
     ${briefingThisWeek(thisWeek)}
     ${briefingDigestSection(digests)}
+    ${peopleAndPlansSection(communityDigestSignals().slice(0, 3))}
     ${briefingAttentionSection(attention, todos)}
     ${briefingAgentStrip(agents)}
   </div>`;
@@ -3593,8 +3597,12 @@ function renderCommunities() {
 }
 
 function communityDigestSignals() {
+  const seen = new Set();
   return rankedSignals().filter((signal) => {
     if (isSignalRead(signal.id)) return false;
+    if (signal.id.startsWith('conversation:') && DATA.signals.some((other) =>
+      other.sourceId === signal.sourceId && other.summary === signal.summary && isSignalRead(other.id)
+      && String(other.observedAt || other.capturedAt) >= String(signal.observedAt || signal.capturedAt))) return false;
     if (['dismissed', 'stale'].includes(signal.status)) return false;
     const src = source(signal.sourceId);
     if (!src || !isCommunitySurfaceSource(src)) return false;
@@ -3603,11 +3611,27 @@ function communityDigestSignals() {
     const planConversation = signal.category === 'event_opportunity'
       && /meet|join|invite|confirm|plan|vote|looking for|lfg|bar|brewery|venue|host/.test(text);
     const usefulChatter = signal.category === 'community_activity'
-      && !/route|first content read|content replay|source|operational|captured|monitoring/.test(text);
+      && (signal.id.startsWith('conversation:') || !/route|first content read|content replay|source|operational|captured|monitoring/.test(text));
     if (!(personal || planConversation || usefulChatter)) return false;
     return isActionableCommunityDigestSignal(signal);
   }).sort((a, b) => communityDigestRank(b) - communityDigestRank(a)
-    || String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt))).slice(0, 6);
+    || String(b.observedAt || b.capturedAt).localeCompare(String(a.observedAt || a.capturedAt))).filter((signal) => {
+      const key = signal.id.startsWith('conversation:') ? `${signal.sourceId}:${signal.summary}` : signal.id;
+      if (seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+}
+
+function peopleAndPlansSection(signals) {
+  return `<section class="briefing-section people-and-plans"><div class="section-title-row"><div><p class="eyebrow coral">People &amp; plans</p><h2>Worth catching up on</h2></div><button class="text-button" data-route="communities">All conversations →</button></div>${signals.length ? `<div class="people-plan-grid">${signals.map(peopleAndPlansCard).join('')}</div>` : '<p class="briefing-quiet">No new conversations to catch up on. Quiet days are normal.</p>'}</section>`;
+}
+
+function peopleAndPlansCard(signal) {
+  const place = signal.relatedEntityType === 'venue' ? store(signal.relatedEntityId) : null;
+  const group = signalSourceCommunity(signal) || (signal.relatedEntityType === 'community' ? community(signal.relatedEntityId) : null);
+  const excerpt = signal.id.startsWith('conversation:') ? String(signal.details || '').replace(/^.*?#[^:]+:\s*/, '').replace(/, Server Tag: (\S+) \1\b/g, '').replace(/\s+—\s+(?:\d|Yesterday|Today).*$/s, '').trim() : signal.details;
+  const url = signal.evidenceUrl || source(signal.sourceId)?.url;
+  return `<article class="people-plan-card"><div class="section-title-row"><button class="text-button" ${group ? `data-community-id="${escapeHtml(group.id)}"` : place ? `data-place-id="${escapeHtml(place.id)}"` : `data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}"`}>${escapeHtml(group?.name || place?.name || 'Community')}</button><small>${escapeHtml(formatFreshnessDate(signal.observedAt || signal.capturedAt))}</small></div><button class="people-plan-title" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">${escapeHtml(signal.summary)}</button><p>${escapeHtml(truncate(excerpt || 'Open the conversation for context.', 180))}</p><div class="community-chatter-actions">${/^https?:\/\//i.test(url || '') ? `<a class="text-button" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Read conversation ↗</a>` : ''}<button class="text-button" data-action="mark-signal-read" data-signal-id="${escapeHtml(signal.id)}">Dismiss</button></div></article>`;
 }
 
 function communityDigestRank(signal) {
@@ -3632,6 +3656,7 @@ function communityDigestRank(signal) {
 }
 
 function isActionableCommunityDigestSignal(signal) {
+  if (signal.expiresAt && new Date(signal.expiresAt) < new Date()) return false;
   const linkedEvent = communityEventForSignal(signal);
   const observed = new Date(signal.observedAt || signal.capturedAt || 0);
   const observedAgeDays = Number.isNaN(observed.getTime()) ? Infinity : (Date.now() - observed.getTime()) / (24 * 60 * 60 * 1000);
@@ -3652,7 +3677,7 @@ function isActionableCommunityDigestSignal(signal) {
 function communityDigestSection(signals) {
   return `<section class="community-section community-chatter-section">
     <div class="section-title-row"><div><p class="eyebrow coral">Community digest</p><h2>Worth catching up on</h2><p class="muted-copy">Useful conversation without the Discord scavenger hunt. Your invitations and mentions come first, followed by plans, venue ideas, and event-adjacent chatter.</p></div></div>
-    ${signals.length ? `<div class="community-chatter-list">${signals.map(communityChatterCard).join('')}</div>` : emptyState('Nothing useful to catch up on', 'Routine chatter stays out; this area fills when a conversation could help you find people, places, or plans.')}
+    ${signals.length ? `<div class="people-plan-grid">${signals.map(peopleAndPlansCard).join('')}</div>` : emptyState('Nothing useful to catch up on', 'Routine chatter stays out; this area fills when a conversation could help you find people, places, or plans.')}
   </section>`;
 }
 
@@ -4735,7 +4760,9 @@ function isPersonalCommunityConnection(signal) {
 }
 
 function communityMonitoringState(sources, signals) {
-  const dates = sources.map((item) => item.lastChecked).filter(Boolean).map((value) => new Date(value)).filter((value) => !Number.isNaN(value.getTime()));
+  const checks = DATA.communityMonitoring.filter((row) => sources.some((s) => s.id === row.source_id));
+  const successful = checks.filter((row) => /^inspected/.test(row.disposition));
+  const dates = (checks.length ? successful.map((row) => row.checked_at) : sources.map((item) => item.lastChecked)).filter(Boolean).map((value) => new Date(value)).filter((value) => !Number.isNaN(value.getTime()));
   const lastChecked = dates.sort((a, b) => b - a)[0] || null;
   const current = lastChecked && (Date.now() - lastChecked.getTime()) <= 14 * 24 * 60 * 60 * 1000;
   const usefulDate = signals.map((signal) => new Date(signal.observedAt || signal.capturedAt || 0)).filter((value) => !Number.isNaN(value.getTime())).sort((a, b) => b - a)[0] || null;
@@ -4871,6 +4898,8 @@ async function signOutPersonalAccount() {
   if (personalAuth.client) await personalAuth.client.auth.signOut();
   personalAuth.user = null;
   DATA.artifacts = [];
+  DATA.communityMonitoring = [];
+  communityProfileCache.signature = '';
   personalAuth.status = 'local';
   personalAuth.message = 'Saved on this device';
   updateAuthChrome();

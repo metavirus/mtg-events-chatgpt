@@ -14,6 +14,13 @@ Use it for:
 
 ## Recently closed / operational baseline
 
+- September 6: People & plans now surfaces community catch-up on Briefing
+  (three cards) and Communities (full list), with shared dismissal and channel
+  links. Recent retained Discord social/planning findings route into canonical
+  expiring Signals without inventing events. Monitoring reads actual latest
+  mapped checks for signed-in users. See `docs/UI_AUDIT_2026-09-06.md` for
+  scope and verification; do not repeat preparation surveys to populate this.
+
 - Compaction-resilient handoff posture: `CURRENT_FRONTIER.md` is the first
   recovery read and must remain compact. Fresh tasks should use targeted
   backlog searches/snippets instead of raw-reading this file. If a task

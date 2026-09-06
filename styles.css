@@ -160,6 +160,15 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .briefing-digest-card strong { font-size: 13px; }
 .briefing-digest-card em { color: var(--muted); font-size: 10px; font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .briefing-attention { grid-column: 1 / -1; }
+.people-and-plans { grid-column: 1 / -1; }
+.people-plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px; }
+.people-plan-card { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: rgba(10,14,25,.58); display: flex; flex-direction: column; gap: 10px; }
+.people-plan-card small { color: var(--muted); font-size: 10px; white-space: nowrap; }
+.people-plan-card .section-title-row .text-button { text-align: left; }
+.people-plan-title { background: none; border: 0; padding: 0; text-align: left; font-weight: 700; color: var(--text); }
+.people-plan-title:hover { color: var(--sky); }
+.people-plan-card p { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 0; }
+.people-plan-card .community-chatter-actions { margin-top: auto; }
 .briefing-attention.quiet { background: rgba(17,22,37,.44); }
 .briefing-attention-card { padding: 11px 12px; border: 1px solid var(--line); border-left: 3px solid var(--amber); border-radius: 12px; display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 12px; align-items: center; background: rgba(10,14,25,.58); }
 .briefing-attention-card.personal { border-left-color: var(--violet); }
