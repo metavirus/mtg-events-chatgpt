@@ -151,8 +151,9 @@ TABLES: dict[str, dict[str, Any]] = {
             "captured_at", "observed_at", "expires_at", "related_entity_type",
             "related_entity_id", "summary", "details", "evidence_url",
             "confidence", "suggested_action", "promotion_target",
-            "dedupe_key",
+            "proposed_change", "dedupe_key",
         },
+        "jsonb": {"proposed_change"},
         "identity_name": "signal",
     },
 }
@@ -195,7 +196,7 @@ ENUMS = {
     },
     "signals.promotion_target": {
         "event_proposal", "update", "places_assessment", "community_note",
-        "personal_reminder", "no_action",
+        "personal_reminder", "venue_hours", "no_action",
     },
 }
 

@@ -238,9 +238,10 @@ the exact durable state and next action, then hand off from that checkpoint.
   incidental visual evidence. Thin profile/chrome text and vague "may have
   event" social findings stay quiet; they should not create visible watchlist
   sludge. Operational hours findings now have a two-lane canonical path:
-  unambiguous permanent hours from a linked, single-venue official source
-  auto-promote into `venue_hours`; extractable but ambiguous or multi-branch
-  hours become a structured
+  unambiguous permanent hours from a linked, single-venue official source—or a
+  current Google business listing corroborated by Yelp, Instagram, or another
+  independent current source—promote into `venue_hours`; incomplete or
+  conflicting hours become a structured
   `venue_hours` Signal with the proposed schedule and explicit Yes/No controls
   in the app. A generic source-link reminder is not successful handling for a
   concrete hours announcement. Discord is explicitly bracketed out of this
@@ -249,9 +250,13 @@ the exact durable state and next action, then hand off from that checkpoint.
   resolved the duplicated OCR; canonical weekend hours are now 12 PM–10 PM,
   effective August 29, and its review Signal is promoted. Re-read the original
   image/caption before escalating poor OCR to the user. Remaining review
-  proposals must show 12-hour times and a direct original-post link alongside
+  proposals must show 12-hour times and a direct hours-source link alongside
   the decision. The scheduled extractor still uses source image descriptions;
   this visual reread was performed by the agent, not an automated OCR engine.
+  The September 6 hours-population pass added ten more canonical venue
+  schedules and left Next-Gen's internally conflicting Saturday close as an
+  app-visible Yes/No proposal. Forty-four reviewed venues still lack structured
+  hours and should continue through this same bounded source hierarchy.
   App-facing daily-agent status now lives in `public.daily_agent_status`, a
   safe RLS-protected aggregate table refreshed by
   `scripts/refresh_daily_agent_status.py` at the end of both cloud survey

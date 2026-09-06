@@ -39,15 +39,16 @@ Use it for:
   visual evidence without taking over the UI. Fuzzy profile/chrome/social text
   must remain quiet, not a "may have event" Signal. Closed September 6: linked
   official-source permanent hours announcements no longer stop in the Signals
-  inbox. Clear structured hours from a single-venue source auto-promote to
-  canonical `venue_hours`; ambiguous OCR or a shared multi-branch account
+  inbox. Clear structured hours from a single-venue source, or current Google
+  hours corroborated by another current source, promote to canonical
+  `venue_hours`; ambiguous OCR, conflicting listings, or a shared multi-branch account
   becomes a concrete Yes/No app proposal showing the extracted
   days, times, and effective date. The Collectors Lounge August 29 post was
   backfilled into that review path rather than guessed or left as a generic
   operational reminder.
   Follow-up: original graphic visually re-read September 6; the permanent
   weekend 12 PM–10 PM change is now promoted. Review proposals use 12-hour
-  times and include the original post link. Re-read weak OCR before asking
+  times and include a direct hours-source link. Re-read weak OCR before asking
   the user to decide; unattended second-pass image OCR remains unimplemented.
   Keep Discord bracketed from the cloud job for now. This is operational
   baseline, not greenfield next work.
@@ -714,8 +715,13 @@ claims without reopening the whole packet.
   Week/Month grouping and scanability are evaluated; do not add it by default.
 - Store-hours interface support now exists on Places, backed by the
   `venue_hours` Supabase table when available and an optional exported fallback
-  shape. Remaining work is a small source-backed data population pass for
-  high-interest stores.
+  shape. September 6 population passes added ten current schedules from
+  official sites and corroborated Google/Yelp/Instagram evidence. Next-Gen's
+  conflicting official Saturday hours exercise the general source-linked
+  Yes/No review path. Continue the remaining 44 reviewed venues in bounded
+  batches; do not leave a venue blank merely because its official website is
+  silent when a current business listing or social profile supplies usable
+  hours.
 - Daily dashboard / landscape view for what is newly relevant right now.
 - Store detail pane with source links, address, and event history.
 - Group detail pane separate from store detail pane.

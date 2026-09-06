@@ -184,8 +184,9 @@ async function main() {
       const proposal = await card.locator('.hours-change-proposal').innerText();
       assertText(proposal, 'Saturday', 'structured hours proposal');
       assertText(proposal, '12 PM-10 PM', '12-hour display');
-      const original = card.getByRole('link', {name: 'View original post'});
-      if (await original.getAttribute('href') !== 'https://www.instagram.com/collectors.lounge/p/Dcoh9lcvaXH/') throw new Error('Original post link missing or incorrect');
+      assertText(proposal, 'View hours source', 'structured hours source link');
+      const original = card.getByRole('link', {name: 'View hours source'});
+      if (await original.getAttribute('href') !== 'https://www.instagram.com/collectors.lounge/p/Dcoh9lcvaXH/') throw new Error('Hours source link missing or incorrect');
       await card.getByRole('button', { name: 'Yes, update hours' }).waitFor({ state: 'visible' });
       await card.getByRole('button', { name: 'No, not correct' }).waitFor({ state: 'visible' });
       if (await card.getByRole('button', { name: 'Dismiss' }).count()) throw new Error('Structured hours proposal still uses generic Dismiss');

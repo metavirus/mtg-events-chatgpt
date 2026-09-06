@@ -2392,7 +2392,7 @@ function openSignalDetail(signalId) {
     ${hoursProposal ? `<section class="drawer-section"><p class="eyebrow amber">Proposed canonical change</p><h2>Are these store hours correct?</h2>${hoursProposal}<div class="drawer-action-grid">${hoursActions}</div></section>` : ''}
     ${retainedEvidence}
     ${related ? `<section class="drawer-section"><p class="eyebrow">Related target</p><h2>Open the linked record</h2><div class="signal-related">${related}</div></section>` : ''}
-    <section class="drawer-section"><p class="eyebrow">Suggested action</p><h2>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</h2><p>${hoursProposal ? 'The surveyor extracted a concrete change but left the final call here because the source text was not clear enough for automatic promotion.' : 'Signals are lightweight attention markers. Use this drawer to jump to the source, linked record, or newly added event batch without turning Signals into a static inbox.'}</p><div class="drawer-action-grid">${derivedEventAction}${sourceLink}${hoursProposal ? '' : `<button class="soft-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>`}</div></section>
+    <section class="drawer-section"><p class="eyebrow">Suggested action</p><h2>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</h2><p>${hoursProposal ? 'The surveyor found a concrete schedule but left the final call here because the available sources were incomplete or disagreed.' : 'Signals are lightweight attention markers. Use this drawer to jump to the source, linked record, or newly added event batch without turning Signals into a static inbox.'}</p><div class="drawer-action-grid">${derivedEventAction}${sourceLink}${hoursProposal ? '' : `<button class="soft-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>`}</div></section>
     <section class="drawer-section"><p class="eyebrow">Signal metadata</p><div class="before-grid"><div><span>Confidence</span><strong>${escapeHtml(signal.confidence || 'unknown')}</strong></div><div><span>Captured</span><strong>${escapeHtml(formatFreshnessDateTime(signal.capturedAt))}</strong></div><div><span>Observed</span><strong>${escapeHtml(formatFreshnessDateTime(signal.observedAt || signal.capturedAt))}</strong></div><div><span>Promotion target</span><strong>${escapeHtml(signal.promotionTarget || 'none')}</strong></div></div></section>`);
 }
 
@@ -2412,7 +2412,7 @@ function venueHoursProposalMarkup(signal, compact = false) {
     return `${label[0].toUpperCase()}${label.slice(1)}: ${slots.map((slot) => `${time(slot.open)}-${time(slot.close)}`).join(', ')}`;
   }).join(' · ');
   const originalUrl = signal.evidenceUrl || primarySourceForSignal(signal)?.url || '';
-  const originalLink = /^https?:\/\//i.test(originalUrl) ? `<a class="text-button" href="${escapeHtml(originalUrl)}" target="_blank" rel="noreferrer">View original post ↗</a>` : '';
+  const originalLink = /^https?:\/\//i.test(originalUrl) ? `<a class="text-button" href="${escapeHtml(originalUrl)}" target="_blank" rel="noreferrer">View hours source ↗</a>` : '';
   return `<div class="hours-change-proposal ${compact ? 'compact' : ''}"><span>${signal.status === 'promoted' ? 'Updated hours' : 'Proposed hours'}</span><strong>${escapeHtml(schedule)}</strong><small>${escapeHtml(effective)}</small>${originalLink}</div>`;
 }
 

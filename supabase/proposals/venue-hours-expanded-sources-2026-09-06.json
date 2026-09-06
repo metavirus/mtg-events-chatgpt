@@ -1,0 +1,195 @@
+{
+  "proposal_id": "venue-hours-expanded-sources-2026-09-06",
+  "description": "Add three corroborated schedules using current Google/Yelp/Instagram/official evidence and create one source-linked Yes/No review proposal where Next-Gen's official pages disagree.",
+  "created_at": "2026-09-06T12:45:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-google-guild-house-hours-2026-09-06"},
+      "fields": {
+        "id": "src-google-guild-house-hours-2026-09-06",
+        "label": "Google business listing — The Guild House hours",
+        "url": "https://www.google.com/search?q=The+Guild+House+Bellflower+hours",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the current Google schedule that agrees with the current Yelp result."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "guild-house", "source_id": "src-google-guild-house-hours-2026-09-06"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "guild-house",
+        "source_id": "src-google-guild-house-hours-2026-09-06",
+        "relationship": "Current Google business hours; corroborated by the linked Yelp result on September 6, 2026."
+      },
+      "reason": "Make the hours evidence directly reachable from the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "guild-house"},
+      "fields": {
+        "venue_id": "guild-house",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "12:00", "close": "20:00"}],
+          "1": [{"closed": true}],
+          "2": [{"open": "13:00", "close": "21:00"}],
+          "3": [{"open": "13:00", "close": "21:00"}],
+          "4": [{"open": "13:00", "close": "21:00"}],
+          "5": [{"open": "13:00", "close": "22:00"}],
+          "6": [{"open": "12:00", "close": "22:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-google-guild-house-hours-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Google and Yelp agree: closed Monday; Tue-Thu 1 PM-9 PM; Fri 1 PM-10 PM; Sat noon-10 PM; Sun noon-8 PM. Google separately showed the Labor Day closure as a holiday exception."
+      },
+      "reason": "Use two agreeing current business listings where the official page does not expose readable hours."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-google-lucky-seven-hours-2026-09-06"},
+      "fields": {
+        "id": "src-google-lucky-seven-hours-2026-09-06",
+        "label": "Google business listing — Lucky Seven Games hours",
+        "url": "https://www.google.com/search?q=Lucky+Seven+Games+Placentia+hours",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the September 2026 Google schedule corroborated by the current Yelp result."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "lucky-seven-games", "source_id": "src-google-lucky-seven-hours-2026-09-06"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "lucky-seven-games",
+        "source_id": "src-google-lucky-seven-hours-2026-09-06",
+        "relationship": "Current Google business hours; corroborated by Yelp and preferred over the stale conflicting official contact-page footer."
+      },
+      "reason": "Preserve the current hours source and the reason it outranks stale site copy."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "lucky-seven-games"},
+      "fields": {
+        "venue_id": "lucky-seven-games",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "10:00", "close": "01:00"}],
+          "1": [{"open": "10:00", "close": "01:00"}],
+          "2": [{"open": "10:00", "close": "22:00"}],
+          "3": [{"closed": true}],
+          "4": [{"open": "10:00", "close": "22:00"}],
+          "5": [{"open": "10:00", "close": "22:00"}],
+          "6": [{"open": "10:00", "close": "22:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-google-lucky-seven-hours-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google and September 2026 Yelp agree: Sun-Mon 10 AM-1 AM, Tue and Thu-Sat 10 AM-10 PM, closed Wed. The official contact page's generic 10 AM-5 PM copy conflicts with actual late events and appears stale."
+      },
+      "reason": "Use agreeing current listings instead of demonstrably stale official boilerplate."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "krazy-nick-s-games"},
+      "fields": {
+        "venue_id": "krazy-nick-s-games",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "12:00", "close": "20:00"}],
+          "1": [{"open": "14:00", "close": "22:00"}],
+          "2": [{"open": "14:00", "close": "22:00"}],
+          "3": [{"open": "14:00", "close": "22:00"}],
+          "4": [{"open": "14:00", "close": "22:00"}],
+          "5": [{"open": "14:00", "close": "22:00"}],
+          "6": [{"open": "12:00", "close": "20:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-krazy-nicks-official-site-2026-07-18",
+        "last_verified": "2026-09-06",
+        "notes": "Official site and Instagram, Google, Yelp, and MapQuest agree: Mon-Fri 2 PM-10 PM and Sat-Sun noon-8 PM."
+      },
+      "reason": "Add a strongly corroborated schedule from four current surfaces."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-nextgen-hours-faq-2026-09-06"},
+      "fields": {
+        "id": "src-nextgen-hours-faq-2026-09-06",
+        "label": "Next-Gen Games official hours FAQ",
+        "url": "https://www.nextgengames.la/service/events-at-next-gen/",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Retain the official FAQ page that supplies the candidate schedule."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "next-gen-games", "source_id": "src-nextgen-hours-faq-2026-09-06"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "next-gen-games",
+        "source_id": "src-nextgen-hours-faq-2026-09-06",
+        "relationship": "Official FAQ hours source; conflicts with another current page on the same site for Saturday closing."
+      },
+      "reason": "Make the candidate's exact source inspectable from the venue and review card."
+    },
+    {
+      "action": "insert",
+      "table": "signals",
+      "key": {"id": "hours-review-next-gen-games-2026-09-06"},
+      "fields": {
+        "id": "hours-review-next-gen-games-2026-09-06",
+        "category": "operational",
+        "priority": "normal",
+        "status": "needs_followup",
+        "source_id": "src-nextgen-hours-faq-2026-09-06",
+        "captured_at": "2026-09-06T19:45:00Z",
+        "observed_at": "2026-09-06T19:45:00Z",
+        "related_entity_type": "venue",
+        "related_entity_id": "next-gen-games",
+        "summary": "Confirm Next-Gen Games' Saturday closing time.",
+        "details": "The official FAQ currently says Saturday 11 AM-9 PM, while another current page on the same official site says Saturday 11 AM-6 PM. The proposed schedule follows the dedicated FAQ.",
+        "evidence_url": "https://www.nextgengames.la/service/events-at-next-gen/",
+        "confidence": "medium",
+        "suggested_action": "Review the linked FAQ and accept or reject its weekly schedule.",
+        "promotion_target": "venue_hours",
+        "proposed_change": {
+          "type": "venue_hours",
+          "change_kind": "weekly_schedule",
+          "weekly_hours": {
+            "0": [{"open": "11:00", "close": "18:00"}],
+            "1": [{"open": "12:00", "close": "22:00"}],
+            "2": [{"open": "12:00", "close": "22:00"}],
+            "3": [{"open": "12:00", "close": "22:00"}],
+            "4": [{"open": "12:00", "close": "22:00"}],
+            "5": [{"open": "12:00", "close": "22:00"}],
+            "6": [{"open": "11:00", "close": "21:00"}]
+          },
+          "note": "Accepted from Next-Gen's dedicated official FAQ after user review; another official page listed an earlier Saturday close.",
+          "auto_promote": false,
+          "extraction": "review"
+        },
+        "dedupe_key": "hours-review:next-gen-games:2026-09-06"
+      },
+      "reason": "Put the one unresolved official-site disagreement in front of the user with concrete hours, a source link, and Yes/No actions."
+    }
+  ]
+}
