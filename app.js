@@ -1509,7 +1509,7 @@ function handleAction(action, element) {
   }
   if (action === 'mark-signal-read') return setSignalRead(element.dataset.signalId, true);
   if (action === 'restore-signal') return setSignalRead(element.dataset.signalId, false);
-  if (action === 'review-hours-signal') return reviewVenueHoursSignal(element.dataset.signalId, element.dataset.accept === 'true', element);
+  if (action === 'review-hours-signal') return reviewVenueHoursSignal(element.dataset.signalId, element.dataset.accept === 'true', element, element.dataset.choice || '');
   if (action === 'dismiss-discovery-possibility') return setDiscoveryPossibilityHidden(element.dataset.possibilityId, true);
   if (action === 'restore-discovery-possibilities') return restoreDiscoveryPossibilities();
   if (action === 'dismiss-drawer') return closeDrawer();
@@ -2413,15 +2413,27 @@ function venueHoursProposalMarkup(signal, compact = false) {
   }).join(' · ');
   const originalUrl = signal.evidenceUrl || primarySourceForSignal(signal)?.url || '';
   const originalLink = /^https?:\/\//i.test(originalUrl) ? `<a class="text-button" href="${escapeHtml(originalUrl)}" target="_blank" rel="noreferrer">View hours source ↗</a>` : '';
-  return `<div class="hours-change-proposal ${compact ? 'compact' : ''}"><span>${signal.status === 'promoted' ? 'Updated hours' : 'Proposed hours'}</span><strong>${escapeHtml(schedule)}</strong><small>${escapeHtml(effective)}</small>${originalLink}</div>`;
+  const reviewOptions = Array.isArray(proposal.review_options) ? proposal.review_options : [];
+  const comparison = reviewOptions.length > 1
+    ? `<div class="hours-source-comparison">${reviewOptions.map((option) => {
+        const url = /^https?:\/\//i.test(option.source_url || '') ? option.source_url : '';
+        return `<div class="hours-source-option ${option.recommended ? 'recommended' : ''}"><div><span>${escapeHtml(option.source_label || 'Hours source')}</span>${option.recommended ? '<small>Recommended</small>' : ''}</div><strong>${escapeHtml(option.summary || option.label || '')}</strong>${url ? `<a class="text-button" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open source ↗</a>` : ''}</div>`;
+      }).join('')}</div>${proposal.review_reason ? `<p class="hours-review-reason">${escapeHtml(proposal.review_reason)}</p>` : ''}`
+    : '';
+  return `<div class="hours-change-proposal ${compact ? 'compact' : ''}"><span>${signal.status === 'promoted' ? 'Updated hours' : reviewOptions.length > 1 ? 'Hours conflict' : 'Proposed hours'}</span>${comparison || `<strong>${escapeHtml(schedule)}</strong><small>${escapeHtml(effective)}</small>${originalLink}`}</div>`;
 }
 
 function venueHoursReviewActions(signal) {
-  if (!venueHoursProposal(signal) || !['new', 'needs_followup'].includes(signal.status)) return '';
+  const proposal = venueHoursProposal(signal);
+  if (!proposal || !['new', 'needs_followup'].includes(signal.status)) return '';
+  const reviewOptions = Array.isArray(proposal.review_options) ? proposal.review_options : [];
+  if (reviewOptions.length > 1) {
+    return reviewOptions.map((option) => `<button class="${option.recommended ? 'primary-button' : 'soft-button'}" data-action="review-hours-signal" data-signal-id="${escapeHtml(signal.id)}" data-choice="${escapeHtml(option.id)}">${escapeHtml(option.label)}</button>`).join('');
+  }
   return `<button class="primary-button" data-action="review-hours-signal" data-signal-id="${escapeHtml(signal.id)}" data-accept="true">Yes, update hours</button><button class="soft-button" data-action="review-hours-signal" data-signal-id="${escapeHtml(signal.id)}" data-accept="false">No, not correct</button>`;
 }
 
-async function reviewVenueHoursSignal(signalId, accept, button) {
+async function reviewVenueHoursSignal(signalId, accept, button, choice = '') {
   if (!personalAuth.user || !personalAuth.client) {
     toast('Sign in to make this canonical decision');
     openQuickNote();
@@ -2429,11 +2441,11 @@ async function reviewVenueHoursSignal(signalId, accept, button) {
   }
   const buttons = document.querySelectorAll(`[data-action="review-hours-signal"][data-signal-id="${CSS.escape(signalId)}"]`);
   buttons.forEach((item) => { item.disabled = true; });
-  if (button) button.textContent = accept ? 'Updating…' : 'Rejecting…';
-  const { error } = await personalAuth.client.rpc('review_venue_hours_signal', {
-    p_signal_id: signalId,
-    p_accept: accept
-  });
+  if (button) button.textContent = choice ? 'Applying…' : accept ? 'Updating…' : 'Rejecting…';
+  const args = choice
+    ? { p_signal_id: signalId, p_choice: choice }
+    : { p_signal_id: signalId, p_accept: accept };
+  const { error } = await personalAuth.client.rpc('review_venue_hours_signal', args);
   if (error) {
     buttons.forEach((item) => { item.disabled = false; });
     toast('Could not save that decision');
@@ -2444,7 +2456,7 @@ async function reviewVenueHoursSignal(signalId, accept, button) {
   await loadFromSupabase();
   closeDrawer();
   renderCurrentRoute();
-  toast(accept ? 'Store hours updated' : 'Hours proposal rejected');
+  toast(choice || accept ? 'Store hours updated' : 'Hours proposal rejected');
 }
 
 function primarySourceForSignal(signal) {

@@ -191,6 +191,39 @@ async function main() {
       await card.getByRole('button', { name: 'No, not correct' }).waitFor({ state: 'visible' });
       if (await card.getByRole('button', { name: 'Dismiss' }).count()) throw new Error('Structured hours proposal still uses generic Dismiss');
       pass('Ambiguous operational finding renders as a concrete yes/no hours decision', proposal.replace(/\s+/g, ' '));
+    } else if (scenario === 'hours-conflict-review') {
+      await page.route('**/rest/v1/signals?*', (route) => route.fulfill({
+        contentType: 'application/json', body: JSON.stringify([{
+          id: 'test:hours-conflict-ui', category: 'operational', priority: 'normal', status: 'needs_followup',
+          captured_at: new Date().toISOString(), related_entity_type: 'venue', related_entity_id: 'next-gen-games',
+          summary: "Confirm Next-Gen Games' Saturday closing time.", promotion_target: 'venue_hours',
+          proposed_change: {
+            type: 'venue_hours', weekly_hours: {'6': [{open:'11:00', close:'21:00'}]},
+            review_reason: 'Both are current official pages. The dedicated events FAQ is recommended because it is more specific.',
+            review_options: [
+              {id: 'events_faq_9pm', label: 'Use 9 PM', summary: 'Saturday 11 AM-9 PM', source_label: 'Dedicated events FAQ', source_url: 'https://www.nextgengames.la/service/events-at-next-gen/', recommended: true},
+              {id: 'contact_faq_6pm', label: 'Use 6 PM', summary: 'Saturday 11 AM-6 PM', source_label: 'Contact-page FAQ', source_url: 'https://www.nextgengames.la/service/', recommended: false}
+            ]
+          }
+        }])
+      }));
+      await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));
+      await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
+      const card = page.locator('.briefing-attention-card').filter({ hasText: "Confirm Next-Gen Games' Saturday closing time." }).first();
+      await card.waitFor({ state: 'visible', timeout: 15000 });
+      const proposal = await card.locator('.hours-change-proposal').innerText();
+      assertText(proposal, 'Dedicated events FAQ', 'recommended source label');
+      assertText(proposal, 'Saturday 11 AM-9 PM', 'recommended Saturday hours');
+      assertText(proposal, 'Contact-page FAQ', 'alternate source label');
+      assertText(proposal, 'Saturday 11 AM-6 PM', 'alternate Saturday hours');
+      if (!/recommended/i.test(proposal)) throw new Error(`Missing recommendation marker; rendered: ${proposal.replace(/\s+/g, ' ')}`);
+      if (await card.getByRole('link', {name: 'Open source'}).count() !== 2) throw new Error('Both official hours sources are not linked');
+      await card.getByRole('button', { name: 'Use 9 PM' }).waitFor({ state: 'visible' });
+      await card.getByRole('button', { name: 'Use 6 PM' }).waitFor({ state: 'visible' });
+      if (await card.getByRole('button', { name: 'Yes, update hours' }).count()) throw new Error('Conflict still uses a vague yes/no decision');
+      pass('Hours conflict names both sources and both concrete choices', proposal.replace(/\s+/g, ' '));
     } else if (scenario === 'route-click-perf') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));

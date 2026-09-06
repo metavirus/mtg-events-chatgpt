@@ -229,6 +229,17 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .hours-change-proposal small { color: var(--muted); font-size: 10px; }
 .hours-change-proposal.compact { margin-top: 6px; padding: 7px 9px; }
 .hours-change-proposal.compact strong { font-size: 12px; }
+.hours-source-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 3px; }
+.hours-source-option { display: grid; gap: 4px; min-width: 0; padding: 9px; border: 1px solid var(--line); border-radius: 8px; background: rgba(9, 13, 24, .58); }
+.hours-source-option.recommended { border-color: rgba(83, 217, 179, .4); background: rgba(83, 217, 179, .07); }
+.hours-source-option > div { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hours-source-option > div span { color: #dbe1f0; font-size: 10px; letter-spacing: 0; text-transform: none; }
+.hours-source-option > div small { color: var(--mint); font-size: 8px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.hours-source-option > strong { font-size: 13px; }
+.hours-source-option .text-button { justify-self: start; font-size: 10px; }
+.hours-review-reason { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.4; }
+.hours-change-proposal.compact .hours-source-comparison { grid-template-columns: 1fr; }
+@media (max-width: 720px) { .hours-source-comparison { grid-template-columns: 1fr; } }
 .briefing-attention-actions .primary-button { white-space: nowrap; }
 .signal-read-button { justify-self: start; min-height: 30px; padding-inline: 10px; font-size: 11px; }
 .discovery-possibilities { grid-column: 1 / -1; margin-bottom: 14px; padding: 14px; border: 1px solid rgba(139,124,255,.24); border-radius: var(--radius); background: linear-gradient(145deg, rgba(139,124,255,.06), rgba(17,22,37,.74)); }
