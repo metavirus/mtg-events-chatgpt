@@ -2454,15 +2454,18 @@ async function reviewVenueHoursSignal(signalId, accept, button, choice = '') {
     return;
   }
   const buttons = document.querySelectorAll(`[data-action="review-hours-signal"][data-signal-id="${CSS.escape(signalId)}"]`);
+  const labels = new Map([...buttons].map((item) => [item, item.textContent]));
   buttons.forEach((item) => { item.disabled = true; });
   if (button) button.textContent = choice ? 'Applying…' : accept ? 'Updating…' : 'Rejecting…';
   const args = choice
     ? { p_signal_id: signalId, p_choice: choice }
     : { p_signal_id: signalId, p_accept: accept };
-  const { error } = await personalAuth.client.rpc('review_venue_hours_signal', args);
-  if (error) {
-    buttons.forEach((item) => { item.disabled = false; });
-    toast('Could not save that decision');
+  try {
+    const { error } = await personalAuth.client.rpc('review_venue_hours_signal', args);
+    if (error) throw error;
+  } catch (error) {
+    buttons.forEach((item) => { item.disabled = false; item.textContent = labels.get(item); });
+    toast('Could not save that decision. Please try again.');
     console.warn('Hours proposal review failed.', error);
     return;
   }
