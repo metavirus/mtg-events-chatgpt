@@ -42,8 +42,9 @@ Use it for:
   inbox. Clear structured hours from a single-venue source, or current Google
   hours corroborated by another current source, promote to canonical
   `venue_hours`; ambiguous OCR, conflicting listings, or a shared multi-branch account
-  becomes a concrete Yes/No app proposal showing the extracted
-  days, times, and effective date. The Collectors Lounge August 29 post was
+  becomes a concrete source-comparison proposal showing the extracted days,
+  times, effective date, conflict reason, and a link for every competing
+  source. The Collectors Lounge August 29 post was
   backfilled into that review path rather than guessed or left as a generic
   operational reminder.
   Follow-up: original graphic visually re-read September 6; the permanent
@@ -715,10 +716,11 @@ claims without reopening the whole packet.
   Week/Month grouping and scanability are evaluated; do not add it by default.
 - Store-hours interface support now exists on Places, backed by the
   `venue_hours` Supabase table when available and an optional exported fallback
-  shape. September 6 population passes added ten current schedules from
+  shape. September 6 population passes added fifteen current schedules from
   official sites and corroborated Google/Yelp/Instagram evidence. Next-Gen's
   conflicting official Saturday hours exercise the general source-linked
-  Yes/No review path. Continue the remaining 44 reviewed venues in bounded
+  comparison path; it now names both sources and offers concrete schedule
+  choices. Continue the remaining 37 reviewed venues in bounded
   batches; do not leave a venue blank merely because its official website is
   silent when a current business listing or social profile supplies usable
   hours.

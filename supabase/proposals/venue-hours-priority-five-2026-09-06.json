@@ -1,0 +1,196 @@
+{
+  "proposal_id": "venue-hours-priority-five-2026-09-06",
+  "description": "Add structured hours for the five highest-fit reviewed venues still missing them, using official pages or current Google hours corroborated by an official social profile or current listing.",
+  "created_at": "2026-09-06T10:45:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-social-honeypot-instagram-2026-07-15"},
+      "fields": {"last_checked": "2026-09-06", "health_status": "current"},
+      "reason": "The current official Instagram profile states Mon-Thu 5 PM-9 PM, Fri 5 PM-11 PM, Sat noon-11 PM, and Sun noon-7 PM; current Google and Yelp agree."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "honey-pot-meadery"},
+      "fields": {
+        "venue_id": "honey-pot-meadery",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "12:00", "close": "19:00"}],
+          "1": [{"open": "17:00", "close": "21:00"}],
+          "2": [{"open": "17:00", "close": "21:00"}],
+          "3": [{"open": "17:00", "close": "21:00"}],
+          "4": [{"open": "17:00", "close": "21:00"}],
+          "5": [{"open": "17:00", "close": "23:00"}],
+          "6": [{"open": "12:00", "close": "23:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-social-honeypot-instagram-2026-07-15",
+        "last_verified": "2026-09-06",
+        "notes": "Official Instagram profile, current Google business listing, and Yelp agree: Mon-Thu 5 PM-9 PM, Fri 5 PM-11 PM, Sat noon-11 PM, Sun noon-7 PM."
+      },
+      "reason": "Three current surfaces agree on the complete weekly schedule."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-tilted-contact-hours-2026-09-06"},
+      "fields": {
+        "id": "src-tilted-contact-hours-2026-09-06",
+        "label": "Tilted Gaming official contact page hours",
+        "url": "https://tiltedgamingtcg.com/pages/contact",
+        "source_type": "officialWebsite",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "The official store contact page publishes a complete weekly schedule."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "tilted-gaming", "source_id": "src-tilted-contact-hours-2026-09-06"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "tilted-gaming",
+        "source_id": "src-tilted-contact-hours-2026-09-06",
+        "relationship": "Official store-hours source checked September 6, 2026."
+      },
+      "reason": "Keep the canonical schedule directly linked to its official source."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "tilted-gaming"},
+      "fields": {
+        "venue_id": "tilted-gaming",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "12:00", "close": "19:00"}],
+          "1": [{"closed": true}],
+          "2": [{"open": "15:00", "close": "21:00"}],
+          "3": [{"open": "15:00", "close": "21:00"}],
+          "4": [{"open": "15:00", "close": "21:00"}],
+          "5": [{"open": "15:00", "close": "22:00"}],
+          "6": [{"open": "12:00", "close": "20:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-tilted-contact-hours-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Official contact page: closed Monday; Tue-Thu 3 PM-9 PM; Fri 3 PM-10 PM; Sat noon-8 PM; Sun noon-7 PM."
+      },
+      "reason": "The official site provides complete, unambiguous hours."
+    },
+    {
+      "action": "insert",
+      "table": "sources",
+      "key": {"id": "src-google-junkyard-hours-2026-09-06"},
+      "fields": {
+        "id": "src-google-junkyard-hours-2026-09-06",
+        "label": "Google business listing - Junkyard Cards hours",
+        "url": "https://www.google.com/search?q=Junkyard+Cards+Long+Beach+hours",
+        "source_type": "directory",
+        "health_status": "current",
+        "last_checked": "2026-09-06"
+      },
+      "reason": "Current Google and Yelp agree on the complete schedule and the Tuesday closure."
+    },
+    {
+      "action": "insert",
+      "table": "entity_sources",
+      "key": {"entity_type": "venue", "entity_id": "junkyard-cards-long-beach", "source_id": "src-google-junkyard-hours-2026-09-06"},
+      "fields": {
+        "entity_type": "venue",
+        "entity_id": "junkyard-cards-long-beach",
+        "source_id": "src-google-junkyard-hours-2026-09-06",
+        "relationship": "Current Google hours corroborated by the current Yelp listing."
+      },
+      "reason": "Retain the corroborated business-hours source on the venue."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "junkyard-cards-long-beach"},
+      "fields": {
+        "venue_id": "junkyard-cards-long-beach",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "11:00", "close": "19:00"}],
+          "1": [{"open": "11:00", "close": "19:00"}],
+          "2": [{"closed": true}],
+          "3": [{"open": "11:00", "close": "19:00"}],
+          "4": [{"open": "11:00", "close": "19:00"}],
+          "5": [{"open": "11:00", "close": "19:00"}],
+          "6": [{"open": "11:00", "close": "19:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-google-junkyard-hours-2026-09-06",
+        "last_verified": "2026-09-06",
+        "notes": "Current Google and Yelp agree: 11 AM-7 PM Sunday, Monday, and Wednesday-Saturday; closed Tuesday."
+      },
+      "reason": "Two current business listings agree, resolving an older directory conflict."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-social-comicbookhideout-instagram-2026-07-15"},
+      "fields": {"last_checked": "2026-09-06", "health_status": "current"},
+      "reason": "The official Instagram surface exposes the new store-hours announcement, and current Google corroborates the Sunday 6 PM close."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "comic-book-hideout"},
+      "fields": {
+        "venue_id": "comic-book-hideout",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "11:00", "close": "18:00"}],
+          "1": [{"open": "11:00", "close": "18:00"}],
+          "2": [{"open": "11:00", "close": "18:00"}],
+          "3": [{"open": "11:00", "close": "22:00"}],
+          "4": [{"open": "11:00", "close": "19:00"}],
+          "5": [{"open": "11:00", "close": "21:00"}],
+          "6": [{"open": "11:00", "close": "19:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-social-comicbookhideout-instagram-2026-07-15",
+        "last_verified": "2026-09-06",
+        "notes": "Official Instagram new-hours notice: Sun-Tue 11 AM-6 PM, Wed 11 AM-10 PM, Thu 11 AM-7 PM, Fri 11 AM-9 PM, Sat 11 AM-7 PM. Current Google corroborates the Sunday close; older site footer copy is superseded."
+      },
+      "reason": "Use the explicit new-hours announcement instead of older conflicting footer text."
+    },
+    {
+      "action": "update",
+      "table": "sources",
+      "key": {"id": "src-phg-site"},
+      "fields": {"last_checked": "2026-09-06", "health_status": "current"},
+      "reason": "The current official site publishes hours for each branch."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "paper-heros-hb"},
+      "fields": {
+        "venue_id": "paper-heros-hb",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "14:00", "close": "22:00"}],
+          "1": [{"open": "14:00", "close": "22:00"}],
+          "2": [{"open": "14:00", "close": "22:00"}],
+          "3": [{"open": "14:00", "close": "22:00"}],
+          "4": [{"open": "14:00", "close": "22:00"}],
+          "5": [{"open": "14:00", "close": "22:00"}],
+          "6": [{"open": "14:00", "close": "22:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-phg-site",
+        "last_verified": "2026-09-06",
+        "notes": "Official site lists the Huntington Beach branch open daily 2 PM-10 PM, closed Thanksgiving and Christmas."
+      },
+      "reason": "The official multi-location page clearly identifies the Huntington Beach branch and its hours."
+    }
+  ]
+}

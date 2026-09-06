@@ -242,7 +242,8 @@ the exact durable state and next action, then hand off from that checkpoint.
   current Google business listing corroborated by Yelp, Instagram, or another
   independent current source—promote into `venue_hours`; incomplete or
   conflicting hours become a structured
-  `venue_hours` Signal with the proposed schedule and explicit Yes/No controls
+  `venue_hours` Signal with the competing source-backed schedules and concrete
+  choice controls
   in the app. A generic source-link reminder is not successful handling for a
   concrete hours announcement. Discord is explicitly bracketed out of this
   lane.
@@ -250,13 +251,16 @@ the exact durable state and next action, then hand off from that checkpoint.
   resolved the duplicated OCR; canonical weekend hours are now 12 PM–10 PM,
   effective August 29, and its review Signal is promoted. Re-read the original
   image/caption before escalating poor OCR to the user. Remaining review
-  proposals must show 12-hour times and a direct hours-source link alongside
-  the decision. The scheduled extractor still uses source image descriptions;
+  proposals must show 12-hour times, the reason for the conflict, and a direct
+  link for every competing source alongside buttons that name the actual
+  choices. The scheduled extractor still uses source image descriptions;
   this visual reread was performed by the agent, not an automated OCR engine.
-  The September 6 hours-population pass added ten more canonical venue
-  schedules and left Next-Gen's internally conflicting Saturday close as an
-  app-visible Yes/No proposal. Forty-four reviewed venues still lack structured
-  hours and should continue through this same bounded source hierarchy.
+  The September 6 hours-population passes added fifteen canonical venue
+  schedules. Next-Gen's internally conflicting Saturday close proved the
+  source-comparison workflow; the user selected the recommended dedicated-FAQ
+  9 PM close, and future conflicts now show both sources and concrete choices.
+  Thirty-seven reviewed venues still lack structured hours and should continue
+  through this same bounded source hierarchy.
   App-facing daily-agent status now lives in `public.daily_agent_status`, a
   safe RLS-protected aggregate table refreshed by
   `scripts/refresh_daily_agent_status.py` at the end of both cloud survey
