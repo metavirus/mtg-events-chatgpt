@@ -1,0 +1,123 @@
+{
+  "proposal_id": "venue-hours-official-websites-2026-09-06",
+  "description": "Add structured weekly hours for five reviewed venues whose current official websites state a clear schedule. No evaluation, event, Signal, schema, or application changes.",
+  "created_at": "2026-09-06T12:00:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "joyful-toad-tcg"},
+      "fields": {
+        "venue_id": "joyful-toad-tcg",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "14:00", "close": "00:00"}],
+          "1": [{"open": "14:00", "close": "00:00"}],
+          "2": [{"open": "14:00", "close": "00:00"}],
+          "3": [{"open": "14:00", "close": "00:00"}],
+          "4": [{"open": "14:00", "close": "00:00"}],
+          "5": [{"open": "14:00", "close": "00:00"}],
+          "6": [{"open": "14:00", "close": "00:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-joyfultoad-official-site-2026-07-17",
+        "last_verified": "2026-09-06",
+        "notes": "Official website lists every day from 2 PM to midnight."
+      },
+      "reason": "Give a personally important, socially proven venue a source-backed weekly schedule in Places."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "hobby-overflow"},
+      "fields": {
+        "venue_id": "hobby-overflow",
+        "status": "variable",
+        "weekly_hours": {
+          "0": [{"open": "15:00", "close": "21:30"}],
+          "1": [{"open": "17:15", "close": "21:30"}],
+          "2": [{"open": "17:15", "close": "21:30"}],
+          "3": [{"open": "17:15", "close": "21:30"}],
+          "4": [{"open": "17:15", "close": "21:30"}],
+          "5": [{"open": "17:15", "close": "21:30"}],
+          "6": [{"open": "17:15", "close": "21:30"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-hobbyoverflow-site-2026-07-15",
+        "last_verified": "2026-09-06",
+        "notes": "Official website lists Monday-Saturday 5:15 PM-9:30 PM and Sunday 3 PM-9:30 PM, with later tournament closing possible and special-event hours posted separately."
+      },
+      "reason": "Capture the official base schedule while preserving its stated event-dependent closing time."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "cardboard-games"},
+      "fields": {
+        "venue_id": "cardboard-games",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "12:00", "close": "20:00"}],
+          "1": [{"open": "16:00", "close": "20:00"}],
+          "2": [{"open": "16:00", "close": "20:00"}],
+          "3": [{"open": "16:00", "close": "20:00"}],
+          "4": [{"open": "16:00", "close": "20:00"}],
+          "5": [{"open": "16:00", "close": "20:00"}],
+          "6": [{"open": "12:00", "close": "20:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-cardboardgames-site-2026-07-15",
+        "last_verified": "2026-09-06",
+        "notes": "Official website lists Monday-Friday 4 PM-8 PM and Saturday-Sunday noon-8 PM."
+      },
+      "reason": "Add the clear current hours repeated across the store's official site."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "comic-quest"},
+      "fields": {
+        "venue_id": "comic-quest",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "10:00", "close": "19:00"}],
+          "1": [{"open": "11:00", "close": "21:00"}],
+          "2": [{"open": "11:00", "close": "21:00"}],
+          "3": [{"open": "10:00", "close": "22:00"}],
+          "4": [{"open": "11:00", "close": "22:00"}],
+          "5": [{"open": "11:00", "close": "22:00"}],
+          "6": [{"open": "10:00", "close": "20:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-comicquest-homepage-2026-07-17",
+        "last_verified": "2026-09-06",
+        "notes": "Official homepage and contact page agree: Mon-Tue 11 AM-9 PM, Wed 10 AM-10 PM, Thu-Fri 11 AM-10 PM, Sat 10 AM-8 PM, Sun 10 AM-7 PM."
+      },
+      "reason": "Add a complete schedule corroborated by two pages on the official site."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "collector-legion"},
+      "fields": {
+        "venue_id": "collector-legion",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "12:00", "close": "20:00"}],
+          "1": [{"open": "12:00", "close": "22:00"}],
+          "2": [{"open": "12:00", "close": "22:00"}],
+          "3": [{"open": "12:00", "close": "22:00"}],
+          "4": [{"open": "12:00", "close": "22:00"}],
+          "5": [{"open": "12:00", "close": "22:00"}],
+          "6": [{"open": "12:00", "close": "20:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-collector-site",
+        "last_verified": "2026-09-06",
+        "notes": "Official store site lists weekdays noon-10 PM and weekends noon-8 PM."
+      },
+      "reason": "Add the clear schedule shown throughout the official store site."
+    }
+  ]
+}

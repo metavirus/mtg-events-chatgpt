@@ -1,0 +1,54 @@
+{
+  "proposal_id": "venue-hours-kingslayer-2026-09-06",
+  "description": "Add structured weekly hours for the two reviewed Kingslayer Games branches from the current official locations page. No evaluation, event, Signal, schema, or application changes.",
+  "created_at": "2026-09-06T12:15:00-07:00",
+  "author": "Codex Project Steward",
+  "operations": [
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "kingslayer-games-fountain-valley"},
+      "fields": {
+        "venue_id": "kingslayer-games-fountain-valley",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "11:00", "close": "18:00"}],
+          "1": [{"open": "11:00", "close": "22:00"}],
+          "2": [{"open": "11:00", "close": "22:00"}],
+          "3": [{"open": "11:00", "close": "22:00"}],
+          "4": [{"open": "11:00", "close": "22:00"}],
+          "5": [{"open": "11:00", "close": "22:00"}],
+          "6": [{"open": "11:00", "close": "20:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-kingslayer-about-branches-2026-07-17",
+        "last_verified": "2026-09-06",
+        "notes": "Official locations page lists Mon-Fri 11 AM-10 PM, Sat 11 AM-8 PM, and Sun 11 AM-6 PM for Fountain Valley."
+      },
+      "reason": "Add the branch-specific schedule from Kingslayer's official current locations page."
+    },
+    {
+      "action": "insert",
+      "table": "venue_hours",
+      "key": {"venue_id": "kingslayer-games-lake-forest"},
+      "fields": {
+        "venue_id": "kingslayer-games-lake-forest",
+        "status": "verified",
+        "weekly_hours": {
+          "0": [{"open": "11:00", "close": "20:00"}],
+          "1": [{"open": "11:00", "close": "21:00"}],
+          "2": [{"open": "11:00", "close": "21:00"}],
+          "3": [{"open": "11:00", "close": "21:00"}],
+          "4": [{"open": "11:00", "close": "21:00"}],
+          "5": [{"open": "11:00", "close": "21:00"}],
+          "6": [{"open": "11:00", "close": "20:00"}]
+        },
+        "temporary_updates": [],
+        "source_id": "src-kingslayer-about-branches-2026-07-17",
+        "last_verified": "2026-09-06",
+        "notes": "Official locations page lists Mon-Fri 11 AM-9 PM and Sat-Sun 11 AM-8 PM for Lake Forest."
+      },
+      "reason": "Keep the Lake Forest branch distinct from Fountain Valley and add its official branch-specific schedule."
+    }
+  ]
+}
