@@ -1598,6 +1598,14 @@ function clearInactiveRouteContent(activeRoute) {
 }
 
 function updateChrome() {
+  const visibleStores = DATA.stores.filter((place) => !isPlaceHidden(place.id));
+  const reviewed = visibleStores.filter((place) => place.researchStatus === 'partial').length;
+  const coverage = visibleStores.length ? Math.round(reviewed / visibleStores.length * 100) : 0;
+  const coverageRing = document.querySelector('.coverage-ring');
+  coverageRing.textContent = `${coverage}%`;
+  coverageRing.dataset.value = String(coverage);
+  coverageRing.style.setProperty('--coverage', `${coverage}%`);
+  document.getElementById('coverageButton').title = `${reviewed} of ${visibleStores.length} visible places reviewed`;
   const favCount = Object.values(state.personal.favorites).filter(Boolean).length;
   const favoriteButton = document.getElementById('favoritesToggle');
   const highlightsRail = document.querySelector('.highlights-rail');
@@ -2408,8 +2416,13 @@ function venueHoursProposalMarkup(signal, compact = false) {
   const effective = proposal.effective_date ? `Effective ${formatFreshnessDate(proposal.effective_date)}` : 'Effective date not captured';
   const schedule = Object.entries(proposal.weekly_hours).map(([day, slots]) => {
     const label = dayKeyName(Number(day));
-    const time = (value) => new Date(`2000-01-01T${value}`).toLocaleTimeString('en-US', {hour: 'numeric', minute: value.endsWith(':00') ? undefined : '2-digit', hour12: true});
-    return `${label[0].toUpperCase()}${label.slice(1)}: ${slots.map((slot) => `${time(slot.open)}-${time(slot.close)}`).join(', ')}`;
+    const time = (value) => typeof value === 'string' && /^\d{2}:\d{2}(:\d{2})?$/.test(value)
+      ? new Date(`2000-01-01T${value}`).toLocaleTimeString('en-US', {hour: 'numeric', minute: value.slice(3, 5) === '00' ? undefined : '2-digit', hour12: true})
+      : 'Time not supplied';
+    const hours = Array.isArray(slots) && slots.length
+      ? slots.map((slot) => slot?.closed ? 'Closed' : `${time(slot?.open)}-${time(slot?.close)}`).join(', ')
+      : 'Closed';
+    return `${label[0].toUpperCase()}${label.slice(1)}: ${hours}`;
   }).join(' · ');
   const originalUrl = signal.evidenceUrl || primarySourceForSignal(signal)?.url || '';
   const originalLink = /^https?:\/\//i.test(originalUrl) ? `<a class="text-button" href="${escapeHtml(originalUrl)}" target="_blank" rel="noreferrer">View hours source ↗</a>` : '';
@@ -2420,7 +2433,7 @@ function venueHoursProposalMarkup(signal, compact = false) {
         return `<div class="hours-source-option ${option.recommended ? 'recommended' : ''}"><div><span>${escapeHtml(option.source_label || 'Hours source')}</span>${option.recommended ? '<small>Recommended</small>' : ''}</div><strong>${escapeHtml(option.summary || option.label || '')}</strong>${url ? `<a class="text-button" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open source ↗</a>` : ''}</div>`;
       }).join('')}</div>${proposal.review_reason ? `<p class="hours-review-reason">${escapeHtml(proposal.review_reason)}</p>` : ''}`
     : '';
-  return `<div class="hours-change-proposal ${compact ? 'compact' : ''}"><span>${signal.status === 'promoted' ? 'Updated hours' : reviewOptions.length > 1 ? 'Hours conflict' : 'Proposed hours'}</span>${comparison || `<strong>${escapeHtml(schedule)}</strong><small>${escapeHtml(effective)}</small>${originalLink}`}</div>`;
+  return `<div class="hours-change-proposal ${compact ? 'compact' : ''}"><span>${signal.status === 'promoted' ? 'Updated hours' : reviewOptions.length > 1 ? 'Hours conflict' : 'Proposed hours'}</span>${comparison || `<strong>${escapeHtml(schedule)}</strong>${signal.status !== 'promoted' && signal.details ? `<p class="hours-review-reason">${escapeHtml(signal.details)}</p>` : ''}<small>${escapeHtml(effective)}</small>${originalLink}`}</div>`;
 }
 
 function venueHoursReviewActions(signal) {
@@ -3602,12 +3615,12 @@ function isActionableCommunityDigestSignal(signal) {
   const observed = new Date(signal.observedAt || signal.capturedAt || 0);
   const observedAgeDays = Number.isNaN(observed.getTime()) ? Infinity : (Date.now() - observed.getTime()) / (24 * 60 * 60 * 1000);
   const text = `${signal.summary || ''} ${signal.details || ''} ${signal.suggestedAction || ''}`.toLowerCase();
-  const socialMemory = /had fun|great time|good time|nice meeting|meet you|played with|photo|picture|glad (?:you|we)|thanks for (?:coming|joining)|see you again/.test(text);
+  const socialMemory = /had fun|great time|good time|nice meeting|played with|glad (?:you|we)|thanks for (?:coming|joining)|see you again/.test(text);
   if (linkedEvent) {
     const occurrence = linkedEvent.occurrenceDate || parseDate(linkedEvent.date || linkedEvent.startDate);
     if (occurrence) {
       const daysFromToday = Math.round((startOfDay(occurrence).getTime() - startOfDay(new Date()).getTime()) / (24 * 60 * 60 * 1000));
-      if (daysFromToday < -3) return socialMemory && observedAgeDays <= 14;
+      if (daysFromToday < 0) return socialMemory && observedAgeDays <= 14;
     }
   }
   if (observedAgeDays > 30) return false;
@@ -3631,7 +3644,7 @@ function communityChatterCard(signal) {
   const linkedEventDate = linkedEvent ? (linkedEvent.occurrenceDate || parseDate(linkedEvent.date || linkedEvent.startDate)) : null;
   const text = `${signal.summary} ${signal.details}`.toLowerCase();
   const personal = signal.category === 'mention' || /\byou\b|metavirus/.test(text);
-  const status = linkedEvent ? { label: 'Confirmed plan', tone: 'mint' }
+  const status = linkedEvent && linkedEventDate && linkedEventDate >= startOfDay(new Date()) ? { label: 'Upcoming event', tone: 'mint' }
     : signal.status === 'needs_followup' ? { label: 'Tentative', tone: 'amber' }
       : personal ? { label: 'For you', tone: 'coral' }
         : { label: 'Community chatter', tone: 'sky' };
@@ -3669,17 +3682,10 @@ function communityChatterTargets(signal, sourceCommunity) {
 }
 
 function communityEventForSignal(signal) {
-  const candidates = DATA.events.filter((event) => {
-    if (event.status === 'cancelled' || event.occurrenceStatus === 'cancelled') return false;
-    if (!(event.sourceIds || []).includes(signal.sourceId)) return false;
-    if (signal.relatedEntityType === 'community' && event.communityId !== signal.relatedEntityId) return false;
-    return true;
-  });
-  return candidates.sort((a, b) => {
-    const aDate = a.occurrenceDate || parseDate(a.date || a.startDate);
-    const bDate = b.occurrenceDate || parseDate(b.date || b.startDate);
-    return (aDate?.getTime() || Infinity) - (bDate?.getTime() || Infinity);
-  })[0] || null;
+  // A shared Instagram/Discord source is not proof that two records describe
+  // the same event. Only use the Signal's explicit event relationship.
+  const event = signalRelatedEvent(signal);
+  return event && event.status !== 'cancelled' && event.occurrenceStatus !== 'cancelled' ? event : null;
 }
 
 function communityPlanMeta(event) {

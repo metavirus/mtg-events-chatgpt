@@ -54,7 +54,7 @@
         </div>
         <div class="topbar-actions">
           <button id="favoritesToggle" class="soft-button" aria-pressed="false"><span aria-hidden="true">&#9825;</span><span class="desktop-label">Favorites</span><span id="favoritesCount" class="button-count hidden">0</span></button>
-          <button id="coverageButton" class="coverage-pill"><span class="coverage-ring">49%</span><span class="desktop-label">Venue research coverage</span></button>
+          <button id="coverageButton" class="coverage-pill"><span class="coverage-ring" data-value="—">Loading</span><span class="desktop-label">Venue research coverage</span></button>
           <button id="openQuickNote" class="avatar-button" aria-label="Open personal account" title="Personal preferences">K</button>
         </div>
       </header>
@@ -218,7 +218,7 @@
   <aside id="filterDrawer" class="filter-drawer" role="dialog" aria-modal="true" aria-labelledby="filterTitle" aria-hidden="true">
     <div class="drawer-header"><div><p class="eyebrow">Tune what appears</p><h2 id="filterTitle">Filters</h2></div><button class="drawer-close inline" data-close-filters aria-label="Close filters">&times;</button></div>
     <div class="filter-form">
-      <fieldset><legend>Research status</legend><label><input type="checkbox" name="research" value="partial" checked> Reviewed / partial</label><label><input type="checkbox" name="research" value="wizards-discovery" checked> Discovery-level</label></fieldset>
+      <fieldset><legend>Research status</legend><label><input type="checkbox" name="research" value="partial" checked> Reviewed</label><label><input type="checkbox" name="research" value="wizards-discovery" checked> Discovery-level</label></fieldset>
       <fieldset><legend>Confidence</legend><label><input type="checkbox" name="confidence" value="high" checked> High</label><label><input type="checkbox" name="confidence" value="medium" checked> Medium</label><label><input type="checkbox" name="confidence" value="low" checked> Low</label></fieldset>
       <fieldset><legend>Planning bucket</legend><label><input type="checkbox" name="planningGroup" value="limited" checked> Prerelease / sealed</label><label><input type="checkbox" name="planningGroup" value="best" checked> Best fits</label><label><input type="checkbox" name="planningGroup" value="promising" checked> Promising</label><label><input type="checkbox" name="planningGroup" value="verify" checked> Verify / check first</label><label><input type="checkbox" name="planningGroup" value="maybe" checked> Maybe / lower priority</label><label><input type="checkbox" name="planningGroup" value="hidden"> Hidden / poor fit / no-proxy / high-power</label><p class="field-help">These match the section headings in dense day views. Turning one off hides that bucket temporarily; it does not delete the record.</p></fieldset>
       <fieldset><legend>Distance</legend><label class="range-label"><span>Within <strong id="distanceValue">30 miles</strong></span><input id="distanceFilter" type="range" min="5" max="50" value="30" step="5"></label><p class="field-help">Distance changes what you see; it never deletes research.</p></fieldset>

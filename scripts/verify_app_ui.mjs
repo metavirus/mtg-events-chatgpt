@@ -172,7 +172,8 @@ async function main() {
           captured_at: new Date().toISOString(), related_entity_type: 'venue', related_entity_id: 'collectors-lounge-cypress',
           summary: 'Collectors Lounge - Cypress posted changed store hours.', promotion_target: 'venue_hours',
           evidence_url: 'https://www.instagram.com/collectors.lounge/p/Dcoh9lcvaXH/',
-          proposed_change: {type: 'venue_hours', effective_date: '2026-08-29', weekly_hours: {'6': [{open:'12:00',close:'22:00'}], '0': [{open:'12:00',close:'22:00'}]}}
+          details: 'Sources disagree about the Monday closure.',
+          proposed_change: {type: 'venue_hours', effective_date: '2026-08-29', weekly_hours: {'6': [{open:'12:00',close:'22:00'}], '0': [{open:'12:00',close:'22:00'}], '1': [{closed:true}]}}
         }])
       }));
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
@@ -184,6 +185,8 @@ async function main() {
       const proposal = await card.locator('.hours-change-proposal').innerText();
       assertText(proposal, 'Saturday', 'structured hours proposal');
       assertText(proposal, '12 PM-10 PM', '12-hour display');
+      assertText(proposal, 'Monday: Closed', 'closed day without a rendering failure');
+      assertText(proposal, 'Sources disagree about the Monday closure.', 'visible reason for review');
       assertText(proposal, 'View hours source', 'structured hours source link');
       const original = card.getByRole('link', {name: 'View hours source'});
       if (await original.getAttribute('href') !== 'https://www.instagram.com/collectors.lounge/p/Dcoh9lcvaXH/') throw new Error('Hours source link missing or incorrect');

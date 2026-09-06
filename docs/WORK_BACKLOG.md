@@ -77,6 +77,12 @@ Use it for:
 
 ## Active next-up
 
+- September 6 interface audit: see `docs/UI_AUDIT_2026-09-06.md` for observed
+  issues and completed repairs. Next product priority is shared recommendation
+  ranking against actual personal preferences; subsequent bounded items cover
+  community monitoring readback, stale dated assessment questions, Research
+  drilldowns/copy, and a non-Magic listing in the MTG catalog.
+
 - **Community fuzzy-discovery checkpoint (canonical promotion/main passes
   completed 2026-08-13; remaining work is presentation and lower-confidence
   possibilities only):** the prior store/source discovery method was too
