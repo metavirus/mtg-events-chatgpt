@@ -237,7 +237,14 @@ the exact durable state and next action, then hand off from that checkpoint.
   artifact ids are passed through to event promotion so app drawers can show
   incidental visual evidence. Thin profile/chrome text and vague "may have
   event" social findings stay quiet; they should not create visible watchlist
-  sludge. Discord is explicitly bracketed out of this lane.
+  sludge. Operational hours findings now have a two-lane canonical path:
+  unambiguous permanent hours from a linked, single-venue official source
+  auto-promote into `venue_hours`; extractable but ambiguous or multi-branch
+  hours become a structured
+  `venue_hours` Signal with the proposed schedule and explicit Yes/No controls
+  in the app. A generic source-link reminder is not successful handling for a
+  concrete hours announcement. Discord is explicitly bracketed out of this
+  lane.
   App-facing daily-agent status now lives in `public.daily_agent_status`, a
   safe RLS-protected aggregate table refreshed by
   `scripts/refresh_daily_agent_status.py` at the end of both cloud survey

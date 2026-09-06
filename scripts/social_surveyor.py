@@ -8,7 +8,8 @@ This is the practical daily-lane wrapper for Instagram/Facebook-style surfaces:
 3. record a surface disposition;
 4. optionally ingest one MTG-looking media artifact as evidence.
 5. promote clear social event artifacts through the canonical event promoter;
-6. create app-visible Signals only for urgent operational findings.
+6. promote unambiguous official hours changes and create explicit review
+   proposals when the hours are extractable but still ambiguous.
 
 It intentionally does not create proposals, exports, run notes, or ledger edits.
 It does not fabricate Events from fuzzy social media text. A social source must
@@ -175,6 +176,21 @@ MONTH_DAY_RE = re.compile(
 )
 SLASH_DATE_RE = re.compile(r"\b(\d{1,2})/(\d{1,2})(?:/(20\d{2}|\d{2}))?\b")
 TIME_RE = re.compile(r"\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b", re.IGNORECASE)
+TIME_TOKEN_RE = re.compile(r"\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b", re.IGNORECASE)
+TIME_RANGE_RE = re.compile(
+    r"(?P<open>\d{1,2}(?::\d{2})?\s*(?:am|pm))\s*(?:-|–|—|to)\s*"
+    r"(?P<close>\d{1,2}(?::\d{2})?\s*(?:am|pm))",
+    re.IGNORECASE,
+)
+HOURS_DAY_KEYS = {
+    "sunday": "0",
+    "monday": "1",
+    "tuesday": "2",
+    "wednesday": "3",
+    "thursday": "4",
+    "friday": "5",
+    "saturday": "6",
+}
 
 
 @dataclass(frozen=True)
@@ -183,6 +199,7 @@ class SocialSource:
     venue_name: str
     source_id: str
     url: str
+    venue_count: int = 1
 
 
 def normalize_social_profile_url(platform: str, url: str) -> str:
@@ -250,7 +267,13 @@ select distinct on (v.id)
   v.id as venue_id,
   v.name as venue_name,
   s.id as source_id,
-  s.url
+  s.url,
+  (
+    select count(distinct linked.entity_id)
+    from public.entity_sources linked
+    where linked.source_id = s.id
+      and linked.entity_type = 'venue'
+  ) as venue_count
 from public.sources s
 join public.entity_sources es on es.source_id = s.id
 join public.venues v on v.id = es.entity_id and es.entity_type = 'venue'
@@ -274,6 +297,7 @@ limit {int(limit)};
             venue_name=row["venue_name"],
             source_id=row["source_id"],
             url=row["url"],
+            venue_count=int(row.get("venue_count") or 1),
         )
         for row in rows
     ]
@@ -341,6 +365,93 @@ def parse_time_value(text: str) -> str | None:
     if hour > 23 or minute > 59:
         return None
     return f"{hour:02d}:{minute:02d}:00"
+
+
+def parse_hours_time(text: str) -> str | None:
+    value = parse_time_value(text)
+    return value[:5] if value else None
+
+
+def resolve_effective_date(text: str, *, today: date | None = None) -> str | None:
+    """Resolve an effective date without rolling a recently elapsed date forward."""
+
+    today = today or date.today()
+    for match in SLASH_DATE_RE.finditer(text):
+        month = int(match.group(1))
+        day = int(match.group(2))
+        year_text = match.group(3)
+        year = today.year if not year_text else (2000 + int(year_text) if len(year_text) == 2 else int(year_text))
+        try:
+            return date(year, month, day).isoformat()
+        except ValueError:
+            continue
+    for match in MONTH_DAY_RE.finditer(text):
+        month = MONTHS[match.group(1).lower().rstrip(".")]
+        year = int(match.group(3)) if match.group(3) else today.year
+        try:
+            return date(year, month, int(match.group(2))).isoformat()
+        except ValueError:
+            continue
+    return None
+
+
+def structured_hours_change(text: str, *, today: date | None = None) -> dict[str, Any] | None:
+    """Extract a permanent weekly-hours proposal from one official-source artifact."""
+
+    text_lc = text.lower()
+    if "hours" not in text_lc or not any(term in text_lc for term in ("new", "change", "effective", "permanent")):
+        return None
+    if any(term in text_lc for term in ("holiday", "today only", "tomorrow only", "temporary")):
+        return None
+
+    if "weekend" in text_lc:
+        day_keys = ["6", "0"]
+        day_labels = ["Saturday", "Sunday"]
+    else:
+        day_labels = [label.title() for label in HOURS_DAY_KEYS if re.search(rf"\b{label}\b", text_lc)]
+        day_keys = [HOURS_DAY_KEYS[label.lower()] for label in day_labels]
+    if not day_keys:
+        return None
+
+    clean_ranges = []
+    for match in TIME_RANGE_RE.finditer(text):
+        open_time = parse_hours_time(match.group("open"))
+        close_time = parse_hours_time(match.group("close"))
+        if open_time and close_time and open_time != close_time:
+            clean_ranges.append((open_time, close_time))
+
+    ambiguous_extraction = False
+    if clean_ranges:
+        open_time, close_time = clean_ranges[0]
+        if any(item != clean_ranges[0] for item in clean_ranges[1:]):
+            return None
+    else:
+        unique_times: list[str] = []
+        for token in TIME_TOKEN_RE.findall(text):
+            value = parse_hours_time(token)
+            if value and value not in unique_times:
+                unique_times.append(value)
+        if len(unique_times) != 2 or unique_times[0] == unique_times[1]:
+            return None
+        open_time, close_time = unique_times
+        ambiguous_extraction = True
+
+    effective_date = resolve_effective_date(text, today=today)
+    explicit_permanent = "permanent" in text_lc
+    explicit_change = bool(re.search(r"\b(new|changed?|changing)\b.{0,24}\bhours\b|\bhours\b.{0,24}\b(change|effective|permanent)\b", text_lc))
+    auto_promote = bool(clean_ranges and effective_date and explicit_change and explicit_permanent and not ambiguous_extraction)
+    weekly_hours = {key: [{"open": open_time, "close": close_time}] for key in day_keys}
+    day_display = " & ".join(day_labels)
+    return {
+        "type": "venue_hours",
+        "change_kind": "permanent_weekly",
+        "weekly_hours": weekly_hours,
+        "effective_date": effective_date,
+        "display": f"{day_display} · {open_time}–{close_time}",
+        "note": f"Official social source posted permanent {day_display.lower()} hours of {open_time}–{close_time}.",
+        "auto_promote": auto_promote,
+        "extraction": "clear" if auto_promote else "review",
+    }
 
 
 def resolve_social_date(text: str, *, today: date | None = None) -> str | None:
@@ -560,7 +671,7 @@ def signal_from_probe(
     artifact_index: int | None,
     fingerprint: str,
     materiality: str,
-) -> dict[str, str] | None:
+) -> dict[str, Any] | None:
     text = compact_probe_text(probe, artifact_index)
     if not text:
         return None
@@ -587,13 +698,31 @@ def signal_from_probe(
     if has_urgent_ops:
         category = "operational"
         priority = "high"
-        promotion_target = "personal_reminder"
-        summary = f"{source.venue_name} has a {platform_label} operational update."
-        action = "Open the source before planning around this store."
+        hours_change = structured_hours_change(text)
+        if hours_change and source.venue_count != 1:
+            hours_change["auto_promote"] = False
+            hours_change["extraction"] = "review"
+            hours_change["note"] += " The source is linked to multiple venue records, so branch applicability requires review."
+        if hours_change:
+            promotion_target = "venue_hours"
+            status = "new" if hours_change["auto_promote"] else "needs_followup"
+            summary = f"{source.venue_name} posted changed store hours."
+            action = (
+                "Hours were promoted from a clear official-source announcement."
+                if hours_change["auto_promote"]
+                else "Confirm or reject the proposed hours shown in the app."
+            )
+        else:
+            promotion_target = "personal_reminder"
+            status = "new"
+            summary = f"{source.venue_name} has a {platform_label} operational update."
+            action = "Open the source before planning around this store."
     else:
         category = "event_opportunity"
         priority = "normal"
         promotion_target = "event_opportunity"
+        status = "new"
+        hours_change = None
         summary = f"{source.venue_name} has a {platform_label} promo or event-adjacent opportunity."
         action = "Open the source and decide whether the promo matters for planning."
 
@@ -604,11 +733,14 @@ def signal_from_probe(
         "dedupe_key": signal_key,
         "category": category,
         "priority": priority,
+        "status": status,
         "summary": summary,
         "details": details[:1800],
-        "confidence": "medium" if materiality != "low" else "low",
+        "confidence": "high" if hours_change and hours_change["auto_promote"] else ("medium" if materiality != "low" else "low"),
         "suggested_action": action,
         "promotion_target": promotion_target,
+        "proposed_change": hours_change,
+        "auto_promote": bool(hours_change and hours_change["auto_promote"]),
         "evidence_url": str(
             (probe.get("visibleSlice", {}).get("mediaCandidates") or [])[artifact_index].get("link")
             or source.url
@@ -682,20 +814,25 @@ def run_social_event_promotion(
 def run_signal_record(
     database_url: str,
     source: SocialSource,
-    signal: dict[str, str],
+    signal: dict[str, Any],
     *,
     live: bool,
 ) -> tuple[int, str]:
+    proposal_sql = (
+        "null"
+        if signal.get("proposed_change") is None
+        else f"{sql_literal(json.dumps(signal['proposed_change']))}::jsonb"
+    )
     sql = f"""
 insert into public.signals (
   id, category, priority, status, source_id, captured_at, observed_at,
   related_entity_type, related_entity_id, summary, details, evidence_url,
-  confidence, suggested_action, promotion_target, dedupe_key
+  confidence, suggested_action, promotion_target, proposed_change, dedupe_key
 ) values (
   {sql_literal(signal['id'])},
   {sql_literal(signal['category'])},
   {sql_literal(signal['priority'])},
-  'new',
+  {sql_literal(signal['status'])},
   {sql_literal(source.source_id)},
   timezone('utc', now()),
   timezone('utc', now()),
@@ -707,6 +844,7 @@ insert into public.signals (
   {sql_literal(signal['confidence'])},
   {sql_literal(signal['suggested_action'])},
   {sql_literal(signal['promotion_target'])},
+  {proposal_sql},
   {sql_literal(signal['dedupe_key'])}
 )
 on conflict (dedupe_key) where dedupe_key is not null do update
@@ -714,7 +852,13 @@ set updated_at = timezone('utc', now()),
     source_id = excluded.source_id,
     evidence_url = excluded.evidence_url,
     details = excluded.details,
-    suggested_action = excluded.suggested_action
+    suggested_action = excluded.suggested_action,
+    proposed_change = excluded.proposed_change,
+    promotion_target = excluded.promotion_target,
+    status = case
+      when public.signals.status in ('promoted', 'dismissed') then public.signals.status
+      else excluded.status
+    end
 returning id, category, priority, status;
 """
     if not live:
@@ -740,6 +884,21 @@ returning id, category, priority, status;
     rows = psql_rows_or_raise(result)
     print(json.dumps({"signal": rows[0] if rows else {"status": "unknown"}}, indent=2))
     return 0, "ok"
+
+
+def run_hours_signal_promotion(database_url: str, signal_id: str, *, live: bool) -> tuple[int, str]:
+    if not live:
+        return 0, "dry_run"
+    result = run_psql(
+        f"select public.promote_venue_hours_signal({sql_literal(signal_id)}) as result;",
+        database_url,
+    )
+    if result.returncode != 0:
+        print(result.stderr.strip(), file=sys.stderr)
+        return result.returncode, "failed"
+    rows = psql_rows_or_raise(result)
+    print(json.dumps({"hoursPromotion": rows[0] if rows else {"status": "unknown"}}, indent=2))
+    return 0, "promoted"
 
 
 def summarize_probe(probe: dict[str, Any], artifact_reason: str, *, platform: str) -> tuple[str, str, bool, str]:
@@ -1027,6 +1186,13 @@ def main(argv: list[str] | None = None) -> int:
                 live=args.live,
             )
             failures += 1 if signal_code else 0
+            if signal_code == 0 and signal.get("auto_promote"):
+                promotion_code, signal_status = run_hours_signal_promotion(
+                    database_url,
+                    signal["id"],
+                    live=args.live,
+                )
+                failures += 1 if promotion_code else 0
 
         classification = probe.get("classification") or {}
         results.append(

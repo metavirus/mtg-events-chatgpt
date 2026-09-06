@@ -165,6 +165,19 @@ async function main() {
       if (currentAttention.rawSignalCards) throw new Error(`Briefing leaked ${currentAttention.rawSignalCards} raw Signal cards`);
       if (currentAttention.briefingTitle !== 'Briefing' || !currentAttention.heroPresent || !currentAttention.weekPresent || !currentAttention.digestPresent || !currentAttention.agentsPresent) throw new Error(`Briefing structure incomplete: ${JSON.stringify(currentAttention)}`);
       pass('Briefing synthesizes current attention without raw log cards', 'recommendation, week, digest, attention, and surveyor status rendered');
+    } else if (scenario === 'hours-review-proposal') {
+      await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));
+      await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => undefined);
+      const card = page.locator('.briefing-attention-card').filter({ hasText: 'Collectors Lounge - Cypress posted changed store hours.' }).first();
+      await card.waitFor({ state: 'visible', timeout: 15000 });
+      const proposal = await card.locator('.hours-change-proposal').innerText();
+      assertText(proposal, 'Saturday & Sunday', 'structured hours proposal');
+      await card.getByRole('button', { name: 'Yes, update hours' }).waitFor({ state: 'visible' });
+      await card.getByRole('button', { name: 'No, not correct' }).waitFor({ state: 'visible' });
+      if (await card.getByRole('button', { name: 'Dismiss' }).count()) throw new Error('Structured hours proposal still uses generic Dismiss');
+      pass('Ambiguous operational finding renders as a concrete yes/no hours decision', proposal.replace(/\s+/g, ' '));
     } else if (scenario === 'route-click-perf') {
       await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.evaluate(() => localStorage.removeItem('mana-radar-personal'));

@@ -1141,6 +1141,7 @@ function mapSignal(item) {
     confidence: item.confidence || '',
     suggestedAction: item.suggested_action || '',
     promotionTarget: item.promotion_target || '',
+    proposedChange: item.proposed_change && typeof item.proposed_change === 'object' ? item.proposed_change : null,
     dedupeKey: item.dedupe_key || ''
   };
 }
@@ -1508,6 +1509,7 @@ function handleAction(action, element) {
   }
   if (action === 'mark-signal-read') return setSignalRead(element.dataset.signalId, true);
   if (action === 'restore-signal') return setSignalRead(element.dataset.signalId, false);
+  if (action === 'review-hours-signal') return reviewVenueHoursSignal(element.dataset.signalId, element.dataset.accept === 'true', element);
   if (action === 'dismiss-discovery-possibility') return setDiscoveryPossibilityHidden(element.dataset.possibilityId, true);
   if (action === 'restore-discovery-possibilities') return restoreDiscoveryPossibilities();
   if (action === 'dismiss-drawer') return closeDrawer();
@@ -1927,7 +1929,7 @@ function briefingAttentionSignals() {
 function briefingAttentionSection(signals, todos) {
   const cards = [
     ...todos.map((item) => `<article class="briefing-attention-card personal"><span class="status-chip violet">From you</span><div><strong>${escapeHtml(item.entity?.label || item.label || 'Personal follow-up')}</strong><p>${escapeHtml(item.reason)}</p></div>${item.entity?.type === 'place' ? `<button class="soft-button" data-place-id="${escapeHtml(item.entity.id)}">Review place</button>` : item.entity?.type === 'community' ? `<button class="soft-button" data-community-id="${escapeHtml(item.entity.id)}">Review community</button>` : item.entity?.type === 'event' ? `<button class="soft-button" data-event-id="${escapeHtml(item.entity.id)}">Open event</button>` : ''}</article>`),
-    ...signals.map((signal) => `<article class="briefing-attention-card"><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><div><strong>${escapeHtml(signal.summary)}</strong><p>${escapeHtml(truncate(signal.details || signal.suggestedAction || '', 180))}</p></div><div class="briefing-attention-actions"><button class="soft-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open</button><button class="text-button" data-action="mark-signal-read" data-signal-id="${escapeHtml(signal.id)}">Dismiss</button></div></article>`)
+    ...signals.map((signal) => `<article class="briefing-attention-card"><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><div><strong>${escapeHtml(signal.summary)}</strong>${venueHoursProposalMarkup(signal, true) || `<p>${escapeHtml(truncate(signal.details || signal.suggestedAction || '', 180))}</p>`}</div><div class="briefing-attention-actions">${venueHoursReviewActions(signal) || `<button class="soft-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open</button><button class="text-button" data-action="mark-signal-read" data-signal-id="${escapeHtml(signal.id)}">Dismiss</button>`}</div></article>`)
   ];
   return `<section class="briefing-section briefing-attention ${cards.length ? '' : 'quiet'}"><div class="briefing-section-head"><div><p class="eyebrow coral">Needs attention</p><h2>${cards.length ? 'Worth a decision' : 'Nothing needs you right now'}</h2></div></div>${cards.length ? `<div class="briefing-attention-list">${cards.join('')}</div>` : '<p class="briefing-quiet">No failures, conflicts, cancellations, or personal follow-ups are waiting.</p>'}</section>`;
 }
@@ -2243,6 +2245,7 @@ function signalCard(signal) {
       <h3>${escapeHtml(signal.summary)}</h3>
       ${related ? `<div class="signal-related">${related}</div>` : ''}
       <p>${escapeHtml(signal.details || 'No additional detail recorded yet.')}</p>
+      ${venueHoursProposalMarkup(signal)}
       ${arrivalPreview}
       <div class="signal-meta">
         <span>Confidence: <strong>${escapeHtml(signal.confidence || 'unknown')}</strong></span>
@@ -2254,8 +2257,9 @@ function signalCard(signal) {
       <strong>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</strong>
       ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" ${isExternal ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(sourceLabel)} ↗</a>` : sourceLabel ? `<small>${escapeHtml(sourceLabel)}</small>` : ''}
       ${relatedEvent ? `<button class="soft-button signal-read-button" data-event-id="${escapeHtml(relatedEvent.id)}">Open event</button>` : signal.derivedFromChangeId ? `<button class="soft-button signal-read-button" data-action="open-change-events" data-change-id="${escapeHtml(signal.derivedFromChangeId)}">${eventIngestDeltaMatches(changeById(signal.derivedFromChangeId)).filter((event) => !isEventHidden(event)).length === 1 ? 'Open new event' : 'Open new events'}</button>` : ''}
+      ${venueHoursReviewActions(signal)}
       <button class="soft-button signal-read-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open details</button>
-      <button class="soft-button signal-read-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>
+      ${signal.promotionTarget === 'venue_hours' ? '' : `<button class="soft-button signal-read-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>`}
     </aside>
   </article>`;
 }
@@ -2380,13 +2384,60 @@ function openSignalDetail(signalId) {
       ? `<button class="soft-button" data-action="open-change-events" data-change-id="${escapeHtml(signal.derivedFromChangeId)}">Open newly added events →</button>`
       : '';
   const read = isSignalRead(signal.id);
+  const hoursProposal = venueHoursProposalMarkup(signal);
+  const hoursActions = venueHoursReviewActions(signal);
   openDrawer(`<div class="drawer-kicker"><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><span class="status-chip slate">${escapeHtml(signalPriorityLabel(signal.priority))}</span><span class="status-chip ${signal.status === 'needs_followup' ? 'amber' : signal.status === 'new' ? 'mint' : 'slate'}">${escapeHtml(signal.status.replaceAll('_', ' '))}</span></div>
     <h1 id="drawerTitle">${escapeHtml(signal.summary)}</h1>
     <p class="drawer-lead">${escapeHtml(signal.details || 'No additional detail recorded yet.')}</p>
+    ${hoursProposal ? `<section class="drawer-section"><p class="eyebrow amber">Proposed canonical change</p><h2>Are these store hours correct?</h2>${hoursProposal}<div class="drawer-action-grid">${hoursActions}</div></section>` : ''}
     ${retainedEvidence}
     ${related ? `<section class="drawer-section"><p class="eyebrow">Related target</p><h2>Open the linked record</h2><div class="signal-related">${related}</div></section>` : ''}
-    <section class="drawer-section"><p class="eyebrow">Suggested action</p><h2>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</h2><p>Signals are lightweight attention markers. Use this drawer to jump to the source, linked record, or newly added event batch without turning Signals into a static inbox.</p><div class="drawer-action-grid">${derivedEventAction}${sourceLink}<button class="soft-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button></div></section>
+    <section class="drawer-section"><p class="eyebrow">Suggested action</p><h2>${escapeHtml(signal.suggestedAction || 'Review when this area comes up again.')}</h2><p>${hoursProposal ? 'The surveyor extracted a concrete change but left the final call here because the source text was not clear enough for automatic promotion.' : 'Signals are lightweight attention markers. Use this drawer to jump to the source, linked record, or newly added event batch without turning Signals into a static inbox.'}</p><div class="drawer-action-grid">${derivedEventAction}${sourceLink}${hoursProposal ? '' : `<button class="soft-button" data-action="${read ? 'restore-signal' : 'mark-signal-read'}" data-signal-id="${escapeHtml(signal.id)}">${read ? 'Restore to Signals' : 'Mark read'}</button>`}</div></section>
     <section class="drawer-section"><p class="eyebrow">Signal metadata</p><div class="before-grid"><div><span>Confidence</span><strong>${escapeHtml(signal.confidence || 'unknown')}</strong></div><div><span>Captured</span><strong>${escapeHtml(formatFreshnessDateTime(signal.capturedAt))}</strong></div><div><span>Observed</span><strong>${escapeHtml(formatFreshnessDateTime(signal.observedAt || signal.capturedAt))}</strong></div><div><span>Promotion target</span><strong>${escapeHtml(signal.promotionTarget || 'none')}</strong></div></div></section>`);
+}
+
+function venueHoursProposal(signal) {
+  const proposal = signal?.proposedChange;
+  if (!proposal || proposal.type !== 'venue_hours' || !proposal.weekly_hours) return null;
+  return proposal;
+}
+
+function venueHoursProposalMarkup(signal, compact = false) {
+  const proposal = venueHoursProposal(signal);
+  if (!proposal) return '';
+  const effective = proposal.effective_date ? `Effective ${formatFreshnessDate(proposal.effective_date)}` : 'Effective date not captured';
+  return `<div class="hours-change-proposal ${compact ? 'compact' : ''}"><span>Proposed hours</span><strong>${escapeHtml(proposal.display || 'Updated weekly hours')}</strong><small>${escapeHtml(effective)}</small></div>`;
+}
+
+function venueHoursReviewActions(signal) {
+  if (!venueHoursProposal(signal) || !['new', 'needs_followup'].includes(signal.status)) return '';
+  return `<button class="primary-button" data-action="review-hours-signal" data-signal-id="${escapeHtml(signal.id)}" data-accept="true">Yes, update hours</button><button class="soft-button" data-action="review-hours-signal" data-signal-id="${escapeHtml(signal.id)}" data-accept="false">No, not correct</button>`;
+}
+
+async function reviewVenueHoursSignal(signalId, accept, button) {
+  if (!personalAuth.user || !personalAuth.client) {
+    toast('Sign in to make this canonical decision');
+    openQuickNote();
+    return;
+  }
+  const buttons = document.querySelectorAll(`[data-action="review-hours-signal"][data-signal-id="${CSS.escape(signalId)}"]`);
+  buttons.forEach((item) => { item.disabled = true; });
+  if (button) button.textContent = accept ? 'Updating…' : 'Rejecting…';
+  const { error } = await personalAuth.client.rpc('review_venue_hours_signal', {
+    p_signal_id: signalId,
+    p_accept: accept
+  });
+  if (error) {
+    buttons.forEach((item) => { item.disabled = false; });
+    toast('Could not save that decision');
+    console.warn('Hours proposal review failed.', error);
+    return;
+  }
+  state.personal.signalRead[signalId] = new Date().toISOString();
+  await loadFromSupabase();
+  closeDrawer();
+  renderCurrentRoute();
+  toast(accept ? 'Store hours updated' : 'Hours proposal rejected');
 }
 
 function primarySourceForSignal(signal) {

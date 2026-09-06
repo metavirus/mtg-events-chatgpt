@@ -12,6 +12,7 @@ from social_surveyor import (
     parse_artifact_id,
     resolve_social_date,
     signal_from_probe,
+    structured_hours_change,
     structured_social_event,
 )
 
@@ -90,6 +91,80 @@ class SocialSurveyorTests(unittest.TestCase):
         self.assertIsNotNone(signal)
         self.assertEqual(signal["category"], "operational")
         self.assertEqual(signal["evidence_url"], "https://www.instagram.com/p/closure/")
+
+    def test_clear_permanent_weekend_hours_are_auto_promotable(self) -> None:
+        proposal = structured_hours_change(
+            "NEW WEEKEND HOURS 12 PM-10 PM EFFECTIVE 8/29 PERMANENT CHANGE",
+            today=date(2026, 9, 6),
+        )
+        self.assertIsNotNone(proposal)
+        self.assertTrue(proposal["auto_promote"])
+        self.assertEqual(proposal["effective_date"], "2026-08-29")
+        self.assertEqual(
+            proposal["weekly_hours"],
+            {
+                "6": [{"open": "12:00", "close": "22:00"}],
+                "0": [{"open": "12:00", "close": "22:00"}],
+            },
+        )
+
+    def test_garbled_hours_ocr_becomes_structured_review(self) -> None:
+        proposal = structured_hours_change(
+            "NEW WEEKEND HOURS 12PM- 12PM-10PM 10PM EFFECTIVE 8/29 PERMANENT CHANGE",
+            today=date(2026, 9, 6),
+        )
+        self.assertIsNotNone(proposal)
+        self.assertFalse(proposal["auto_promote"])
+        self.assertEqual(proposal["extraction"], "review")
+        self.assertEqual(proposal["display"], "Saturday & Sunday · 12:00–22:00")
+
+    def test_hours_signal_carries_explicit_review_payload(self) -> None:
+        hours = probe(
+            media=[{
+                "alt": "NEW WEEKEND HOURS 12PM- 12PM-10PM 10PM EFFECTIVE 8/29 PERMANENT CHANGE",
+                "nearbyText": "",
+                "link": "https://www.instagram.com/p/hours/",
+            }]
+        )
+        artifact_index, _ = choose_artifact_candidate(hours)
+        signal = signal_from_probe(
+            SOURCE,
+            platform="instagram",
+            probe=hours,
+            artifact_index=artifact_index,
+            fingerprint="hours",
+            materiality="medium",
+        )
+        self.assertIsNotNone(signal)
+        self.assertEqual(signal["promotion_target"], "venue_hours")
+        self.assertEqual(signal["status"], "needs_followup")
+        self.assertEqual(signal["proposed_change"]["type"], "venue_hours")
+
+    def test_shared_branch_account_never_auto_promotes_hours(self) -> None:
+        shared_source = SocialSource(
+            venue_id="example-store",
+            venue_name="Example Store",
+            source_id="src-shared-instagram",
+            url="https://www.instagram.com/example/",
+            venue_count=2,
+        )
+        hours = probe(media=[{
+            "alt": "NEW WEEKEND HOURS 12 PM-10 PM EFFECTIVE 9/6 PERMANENT CHANGE",
+            "nearbyText": "",
+            "link": "https://www.instagram.com/p/shared-hours/",
+        }])
+        artifact_index, _ = choose_artifact_candidate(hours)
+        signal = signal_from_probe(
+            shared_source,
+            platform="instagram",
+            probe=hours,
+            artifact_index=artifact_index,
+            fingerprint="shared-hours",
+            materiality="high",
+        )
+        self.assertIsNotNone(signal)
+        self.assertFalse(signal["auto_promote"])
+        self.assertEqual(signal["status"], "needs_followup")
 
     def test_specific_prerelease_post_becomes_event(self) -> None:
         prerelease = probe(

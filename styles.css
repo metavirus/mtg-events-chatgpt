@@ -223,6 +223,13 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .signal-action strong { color: #fff; font-size: 12px; line-height: 1.35; }
 .signal-action a { color: var(--sky); font-weight: 700; overflow-wrap: anywhere; }
 .signal-action small { overflow-wrap: anywhere; }
+.hours-change-proposal { display: grid; gap: 4px; width: fit-content; max-width: 100%; padding: 10px 12px; border: 1px solid rgba(255, 190, 92, .34); border-radius: 10px; background: rgba(255, 190, 92, .07); }
+.hours-change-proposal span { color: var(--amber); font-size: 8px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.hours-change-proposal strong { color: #fff; font-size: 14px; }
+.hours-change-proposal small { color: var(--muted); font-size: 10px; }
+.hours-change-proposal.compact { margin-top: 6px; padding: 7px 9px; }
+.hours-change-proposal.compact strong { font-size: 12px; }
+.briefing-attention-actions .primary-button { white-space: nowrap; }
 .signal-read-button { justify-self: start; min-height: 30px; padding-inline: 10px; font-size: 11px; }
 .discovery-possibilities { grid-column: 1 / -1; margin-bottom: 14px; padding: 14px; border: 1px solid rgba(139,124,255,.24); border-radius: var(--radius); background: linear-gradient(145deg, rgba(139,124,255,.06), rgba(17,22,37,.74)); }
 .discovery-possibilities.compact { display: flex; align-items: center; justify-content: space-between; gap: 12px; }

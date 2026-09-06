@@ -37,7 +37,14 @@ Use it for:
   operational findings or dated MTG promo/opportunity findings. Retained
   artifact ids are passed into event promotion so app drawers can show the
   visual evidence without taking over the UI. Fuzzy profile/chrome/social text
-  must remain quiet, not a "may have event" Signal.
+  must remain quiet, not a "may have event" Signal. Closed September 6: linked
+  official-source permanent hours announcements no longer stop in the Signals
+  inbox. Clear structured hours from a single-venue source auto-promote to
+  canonical `venue_hours`; ambiguous OCR or a shared multi-branch account
+  becomes a concrete Yes/No app proposal showing the extracted
+  days, times, and effective date. The Collectors Lounge August 29 post was
+  backfilled into that review path rather than guessed or left as a generic
+  operational reminder.
   Keep Discord bracketed from the cloud job for now. This is operational
   baseline, not greenfield next work.
 
