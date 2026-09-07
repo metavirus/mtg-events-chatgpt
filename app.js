@@ -658,6 +658,8 @@ function bindAuthResumeRefresh() {
   bindAuthResumeRefresh.bound = true;
   const refresh = () => {
     if (document.visibilityState && document.visibilityState !== 'visible') return;
+    if (state.route === 'today') renderCalendar();
+    if (state.route === 'signals') renderSignals();
     void refreshPersonalAuthSession();
   };
   window.addEventListener('focus', refresh);
@@ -1553,6 +1555,7 @@ function navigate(route, options = {}) {
     updateChrome();
   }
   document.querySelector('.workspace').scrollTo?.(0, 0);
+  window.scrollTo(0, 0);
 }
 
 function navigateBack() {
@@ -1763,9 +1766,9 @@ function renderSignals() {
   const summaryContainer = document.getElementById('signalsSummary');
   if (!container) return;
   const upcoming = briefingUpcomingEvents();
-  const todayOptions = upcoming.filter((event) => isSameLocalDay(event.occurrenceDate || parseDate(event.date || event.startDate), new Date()));
+  const todayOptions = upcoming.filter((event) => isSameLocalDay(event.occurrenceDate || parseDate(event.date || event.startDate), new Date()) && todayAvailability(event).group === 'later');
   const nextBest = todayOptions[0] || null;
-  const nextUpcoming = nextBest ? null : upcoming[0] || null;
+  const nextUpcoming = nextBest ? null : upcoming.find((event) => !isSameLocalDay(event.occurrenceDate, new Date())) || null;
   const remainingToday = todayOptions.filter((event) => !nextBest || todayLeadKey(event) !== todayLeadKey(nextBest));
   const laterOptions = upcoming.filter((event) => !isSameLocalDay(event.occurrenceDate || parseDate(event.date || event.startDate), new Date()));
   const thisWeek = [...remainingToday, ...laterOptions].slice(0, 5);
@@ -1783,6 +1786,7 @@ function renderSignals() {
 
   container.innerHTML = `<div class="briefing-layout">
     ${nextBest ? briefingHero(nextBest) : briefingEmptyHero(nextUpcoming)}
+    ${favoritePlacesQuickAccess()}
     ${briefingThisWeek(thisWeek)}
     ${briefingDigestSection(digests)}
     ${peopleAndPlansSection(communityDigestSignals().slice(0, 3))}
@@ -1831,7 +1835,7 @@ function briefingEventWhen(event, long = false) {
   const date = occurrence.toLocaleDateString(undefined, long
     ? { weekday: 'long', month: 'long', day: 'numeric' }
     : { weekday: 'short', month: 'short', day: 'numeric' });
-  return `${date} · ${formatTime(eventStartTime(event))}`;
+  return `${date} · ${eventTimeLabel(event)}`;
 }
 
 function briefingHero(event) {
@@ -1842,7 +1846,7 @@ function briefingHero(event) {
   const interested = !!state.personal.interested?.[interestKey];
   return `<section class="briefing-hero">
     <div class="briefing-hero-copy">
-      <p class="eyebrow mint">Best bet today</p>
+      <p class="eyebrow mint">Best bet still ahead today</p>
       <button class="briefing-title-button" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(occurrence)}"><h2>${escapeHtml(event.title)}</h2></button>
       <p class="briefing-when">${escapeHtml(briefingEventWhen(event, true))}</p>
       <p class="briefing-place">${escapeHtml(organizer?.name || place?.name || 'Location to confirm')}${organizer && place ? ` · at ${escapeHtml(place.name)}` : ''}</p>
@@ -2795,6 +2799,83 @@ function isDatedCommunityEvent(event) {
 }
 
 function renderCalendar() {
+  return renderFocusedToday();
+}
+
+// Events owns future browsing. Today deliberately ignores the old calendar range.
+function renderFocusedToday() {
+  const now = new Date();
+  const events = groupTodayListings(buildOccurrences(startOfDay(now), endOfDay(now)));
+  const groups = { later: [], dropin: [], unknown: [], earlier: [] };
+  for (const event of events) groups[todayAvailability(event, now).group].push(event);
+  const section = (items, title, note) => items.length ? `<section class="today-focus-section"><h2>${title}</h2><p class="muted-copy">${note}</p><div class="today-focus-list">${items.map(todayQuickEvent).join('')}</div></section>` : '';
+  const ranked = rankedTodayLeads(groups.later);
+  const best = ranked.slice(0, 3);
+  const bestIds = new Set(best.map(todayLeadKey));
+  document.getElementById('calendarContent').innerHTML =
+    section(best, 'Best bets still ahead', 'Your strongest remaining options today.') +
+    (!groups.later.length ? '<p class="briefing-quiet">No matching scheduled starts remain today. Check drop-in possibilities below or browse Events for another day.</p>' : '') +
+    section(groups.later.filter(e => !bestIds.has(todayLeadKey(e))), 'Also starting later', 'In start-time order.') +
+    section(groups.dropin, 'Started · check before dropping in', 'Casual play may still be possible. A past start does not confirm that games are still running.') +
+    section(groups.unknown, 'Time needs checking', 'These listings do not establish a reliable start time.') +
+    (groups.earlier.length ? `<details class="today-earlier"><summary>Earlier today (${groups.earlier.length})</summary>${section(groups.earlier, 'Earlier starts', 'Kept for reference, not recommended as upcoming starts.')}</details>` : '') +
+    favoritePlacesQuickAccess() + '<button class="soft-button" data-route="events">Browse future dates in Events →</button>';
+  document.getElementById('activeFilterCount').textContent = activeFilterCount();
+  document.getElementById('activeFilterCount').classList.toggle('hidden', activeFilterCount() === 0);
+}
+
+function eventTimeIsEstimated(event) {
+  return /planning proxy|(?:time|noon|start).{0,40}(?:estimated|assumed)|(?:estimated|assumed).{0,40}(?:time|start)|does not (?:display|state|list) a specific time/i.test(event.details || '');
+}
+
+function groupTodayListings(events) {
+  const grouped = new Map();
+  for (const event of events) {
+    // Same-title/time presentation group, not an assertion of identical rules.
+    // Every underlying listing remains accessible; no canonical record is merged.
+    const key = JSON.stringify([event.storeId || '', event.communityId || '', dateKey(event.occurrenceDate), eventStartTime(event), event.title.toLowerCase().replace(/\bcausal commander\b/g, 'casual commander').replace(/[^a-z0-9]/g, ''), String(event.format || '').toLowerCase(), event.entryFee]);
+    if (!grouped.has(key)) grouped.set(key, { ...event, alternateListings: [] });
+    else grouped.get(key).alternateListings.push(event);
+  }
+  return [...grouped.values()];
+}
+
+function eventTimeLabel(event) {
+  return eventTimeIsEstimated(event) ? 'Time to confirm' : eventStartTime(event) ? formatTime(eventStartTime(event)) : 'Time to confirm';
+}
+
+function todayAvailability(event, now = new Date()) {
+  const time = eventStartTime(event);
+  if (eventTimeIsEstimated(event) || !/^\d{2}:\d{2}/.test(time || '')) return { group: 'unknown', label: 'Time to confirm' };
+  const [hour, minute] = time.split(':').map(Number);
+  const start = new Date(event.occurrenceDate || parseDate(event.date || event.startDate));
+  start.setHours(hour, minute, 0, 0);
+  if (start > now) return { group: 'later', label: 'Starts later' };
+  const endTime = event.endTime || event.recurrence?.endTime;
+  if (endTime) {
+    const [h, m] = endTime.split(':').map(Number);
+    const end = new Date(start);
+    end.setHours(h, m, 0, 0);
+    if (end <= start) end.setDate(end.getDate() + 1);
+    if (end <= now) return { group: 'earlier', label: 'Ended' };
+  }
+  const dropin = /casual|open play|free play|all day|drop.in/i.test(event.title || '') && !/tournament|draft|sealed|prerelease/i.test(event.title || '');
+  return { group: dropin ? 'dropin' : 'earlier', label: dropin ? 'Started · check drop-in' : 'Started earlier' };
+}
+
+function todayQuickEvent(event) {
+  const place = store(event.storeId);
+  const fee = event.entryFee == null ? 'Fee not listed' : Number(event.entryFee) === 0 ? 'Free' : `$${event.entryFee}`;
+  return `<article class="today-quick-event"><div><strong class="today-quick-time">${escapeHtml(eventTimeLabel(event))}</strong><button class="text-button" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}">${escapeHtml(event.title)}</button><p>${place ? `<button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">${escapeHtml(place.name)} · ${distanceLabel(place)}</button>` : escapeHtml(eventHostLabel(event, place))}</p><small>${escapeHtml(formatShort(event))} · ${escapeHtml(fee)} · ${escapeHtml(todayAvailability(event).label)}</small>${event.alternateListings?.length ? `<details><summary>${event.alternateListings.length + 1} matching listings</summary>${event.alternateListings.map(item => `<button class="text-button" data-event-id="${escapeHtml(item.id)}" data-date="${dateKey(item.occurrenceDate)}">View other listing</button>`).join('')}</details>` : ''}</div><button class="soft-button" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}">Details →</button></article>`;
+}
+
+function favoritePlacesQuickAccess() {
+  const places = DATA.stores.filter(place => state.personal.favorites?.[`place:${place.id}`] && !state.personal.hidden?.[`place:${place.id}`]);
+  if (!places.length) return '';
+  return `<section class="favorite-quick-section"><div class="section-title-row"><h2>Your places today</h2><button class="text-button" data-route="places">All places →</button></div><div class="favorite-quick-grid">${places.map(place => `<article class="favorite-quick-card"><button class="favorite-quick-name" data-place-id="${escapeHtml(place.id)}">${placeAvatar(place)}<span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)}</small></span></button>${placeHoursChip(place)}<a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a></article>`).join('')}</div></section>`;
+}
+
+function renderLegacyCalendar() {
   const { start, end } = rangeForView();
   const events = buildOccurrences(start, end);
   const label = state.view === 'month'
@@ -3245,7 +3326,7 @@ function placeHoursChip(place) {
   const status = temporary?.status || (hours.status === 'verified' && !completeWeek ? 'variable' : hours.status) || 'unknown';
   const tone = status === 'verified' ? 'mint' : status === 'variable' ? 'amber' : status === 'stale' ? 'coral' : 'slate';
   const label = temporary?.label || (!completeWeek && Object.keys(hours.weekly || {}).length ? 'Incomplete hours' : hoursStatusLabel(status));
-  const todayLabel = temporary?.label || formatHoursSlots(todaySlots) || (status === 'unknown' ? 'Hours unknown' : 'Check hours');
+  const todayLabel = temporary?.label || (status === 'verified' ? currentHoursLabel(todaySlots) : formatHoursSlots(todaySlots)) || (status === 'unknown' ? 'Hours unknown' : 'Check hours');
   const note = temporary?.note || hours.note || hoursStatusNote(status);
   const sourceLine = sourceItem
     ? `<a href="${escapeHtml(sourceItem.url)}" target="_blank" rel="noreferrer">${escapeHtml(sourceItem.label)} ↗</a>`
@@ -3262,6 +3343,21 @@ function placeHoursChip(place) {
 
 function dayKeyName(index) {
   return ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][index];
+}
+
+function currentHoursLabel(slots, now = new Date()) {
+  if (!Array.isArray(slots) || !slots.length) return '';
+  if (slots.some(slot => slot.closed)) return 'Closed today';
+  const minutes = now.getHours() * 60 + now.getMinutes();
+  const asMinutes = value => { const [h, m] = String(value).split(':').map(Number); return h * 60 + m; };
+  for (const slot of slots) {
+    const open = asMinutes(slot.open);
+    let close = asMinutes(slot.close);
+    if (close <= open) close += 1440;
+    if (minutes >= open && minutes < close) return `Open until ${formatTime(slot.close)}`;
+    if (minutes < open) return `Opens ${formatTime(slot.open)}`;
+  }
+  return 'Closed for today';
 }
 
 function hoursStatusLabel(status) {
@@ -4695,8 +4791,9 @@ function evidenceExplanation(event, place) {
 function openPlaceDrawer(id) {
   const place = store(id);
   if (!place) return;
-  const events = DATA.events.filter((event) => event.storeId === id);
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip ${place.researchStatus === 'partial' ? 'mint' : 'amber'}">${place.researchStatus === 'partial' ? 'Reviewed' : 'Discovery-level'}</span></div><h1 id="drawerTitle">${escapeHtml(place.name)}</h1><p class="drawer-lead">${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p><div class="drawer-action-grid"><button class="primary-button" data-place-id="${place.id}">Open full profile</button><a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a></div><section class="drawer-section"><p class="eyebrow">Analyst synthesis</p><h2>Why it’s on the radar</h2><p>${escapeHtml(place.assessmentNotes)}</p></section><section class="drawer-section"><p class="eyebrow">Known schedule</p><h2>${events.length} event series</h2><div class="series-list">${events.map(seriesRow).join('') || '<p>No normalized series yet.</p>'}</div></section>`);
+  const events = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 14)), false).filter(event => event.storeId === id && !isEventHidden(event) && (dateKey(event.occurrenceDate) !== dateKey(new Date()) || todayAvailability(event).group !== 'earlier'));
+  const note = state.personal.notes?.[`place:${id}`];
+  openDrawer(`${placeAvatar(place, 'large')}<h1 id="drawerTitle">${escapeHtml(place.name)}</h1><p class="drawer-lead">${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p><div class="quick-store-hours">${placeHoursChip(place)}</div><div class="drawer-action-grid"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button" data-place-id="${place.id}">Open full profile</button></div>${note ? `<section class="drawer-section"><h2>Your note</h2><p>${escapeHtml(note)}</p></section>` : ''}<section class="drawer-section"><h2>Next events</h2><div class="series-list">${events.slice(0, 6).map(event => `<button class="occurrence-row" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(briefingEventWhen(event))}</small></span></button>`).join('') || '<p>No upcoming events listed in the next two weeks.</p>'}</div></section>`);
 }
 
 function communityProfileData(community) {
@@ -4981,7 +5078,7 @@ function updateAuthChrome() {
   const button = document.getElementById('openQuickNote');
   if (!button) return;
   const restoring = ['checking', 'syncing'].includes(personalAuth.status);
-  button.textContent = personalAuth.user ? (personalAuth.user.email?.[0] || 'K').toUpperCase() : 'K';
+  button.textContent = personalAuth.user ? (personalAuth.user.email?.[0] || 'K').toUpperCase() : restoring ? '…' : 'Sign in';
   button.classList.toggle('signed-in', !!personalAuth.user);
   button.classList.toggle('local-only', !personalAuth.user && !restoring);
   button.classList.toggle('syncing', restoring);
@@ -5179,6 +5276,7 @@ function closeDrawer() {
 }
 
 function openPlacePicker() {
+  renderPlaces();
   const drawer = document.getElementById('placePickerDrawer');
   drawer.classList.add('open');
   drawer.setAttribute('aria-hidden', 'false');

@@ -1159,3 +1159,37 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
+/* Today is a same-day decision surface; Events owns calendar browsing. */
+#route-today .view-switcher, #route-today .date-navigator,
+#route-today .highlights-rail, #route-today [data-preset="weekend"] { display: none; }
+#route-today .today-grid { display: block; }
+#route-today .calendar-toolbar, #route-today .calendar-stage { min-width: 0; max-width: 100%; }
+#route-today .quick-chips { display: flex; flex-wrap: wrap; overflow: visible; min-width: 0; }
+.today-focus-section, .favorite-quick-section { margin: 24px 0; }
+.today-focus-section h2 { margin-bottom: 6px; }
+.today-focus-list { display: grid; gap: 10px; }
+.today-quick-event { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border: 1px solid var(--border, #293249); border-radius: 16px; background: #101625; }
+.today-quick-event > div { min-width: 0; }
+.today-quick-event .text-button { display: block; text-align: left; font-size: 18px; white-space: normal; overflow-wrap: anywhere; }
+.today-quick-event p { margin: 5px 0; }
+.today-quick-event small { color: #a3b2c9; }
+.today-quick-time { color: #55d8b3; }
+.today-earlier { margin: 24px 0; }
+.today-earlier > summary { cursor: pointer; padding: 14px; }
+.favorite-quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr)); gap: 12px; }
+.favorite-quick-card { min-width: 0; padding: 16px; border: 1px solid #293249; border-radius: 16px; background: #101625; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.favorite-quick-name { display: flex; align-items: center; gap: 12px; background: none; border: 0; color: inherit; text-align: left; cursor: pointer; width: 100%; }
+.favorite-quick-name span { min-width: 0; }
+.favorite-quick-name small { display: block; color: #a3b2c9; margin-top: 4px; }
+.favorite-quick-card .hours-popover, .quick-store-hours .hours-popover { width: 100%; order: 0; flex: none; }
+.favorite-quick-card .hours-popover-panel, .quick-store-hours .hours-popover-panel { position: static; width: 100%; min-width: 0; box-sizing: border-box; }
+.quick-store-hours { margin: 16px 0; }
+#openQuickNote.local-only { width: auto; min-width: 52px; padding: 0 10px; border-radius: 12px; font-size: 12px; }
+@media (max-width: 1200px) {
+  .place-tab-content .assessment-snapshot { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .today-quick-event { align-items: flex-start; padding: 14px; gap: 8px; }
+  .today-quick-event > .soft-button { padding: 10px; flex-shrink: 0; }
+  .today-quick-event .text-button { font-size: 16px; }
+}
