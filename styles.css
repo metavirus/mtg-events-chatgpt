@@ -580,15 +580,18 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .logo-avatar.logo-dark img { background: #05070d; }
 .list-heart { color: #ff7e9f; }
 .detail-pane { min-width: 0; padding: 20px; }
-.detail-hero { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
-.detail-hero-aside { display: flex; align-items: flex-start; justify-content: flex-end; gap: 10px; margin-left: auto; }
+.detail-hero { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.detail-hero-aside { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: flex-end; gap: 10px; margin-left: auto; max-width: 100%; }
 .detail-preference-actions { display: flex; gap: 7px; flex: 0 0 auto; }
-.detail-identity { display: flex; gap: 14px; align-items: center; }
+.detail-identity { display: flex; flex: 1 1 280px; min-width: 0; gap: 14px; align-items: center; }
+.detail-identity > :first-child { flex-shrink: 0; }
 .detail-identity h2 { margin: 5px 0 2px; font: 800 24px var(--display); letter-spacing: -.035em; }
 .detail-identity p { margin: 0; color: var(--muted); font-size: 11px; }
 .identity-flags { display: flex; gap: 5px; }
 .hours-popover { position: relative; display: inline-block; }
-.hours-popover summary { list-style: none; display: inline-flex; align-items: center; gap: 7px; min-height: 25px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.025); color: #dbe1ef; font-size: 10px; cursor: pointer; }
+.hours-popover summary { list-style: none; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 7px; min-height: 25px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.025); color: #dbe1ef; font-size: 10px; cursor: pointer; }
+.hours-popover summary > span, .hours-popover summary > em { white-space: nowrap; flex-shrink: 0; }
+.detail-hero-aside > .hours-popover { flex-shrink: 0; }
 .hours-popover summary::-webkit-details-marker { display: none; }
 .hours-popover summary:hover { border-color: var(--line-strong); background: rgba(255,255,255,.04); }
 .hours-popover summary .status-dot { margin-top: 0; }
@@ -1137,6 +1140,7 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
   .hours-popover-panel { position: static; width: 100%; margin-top: 8px; box-shadow: none; background: rgba(17,22,37,.68); }
   .detail-preference-actions { order: 1; margin-left: auto; }
   .detail-identity h2 { font-size: 20px; }
+  .detail-identity { flex-basis: auto; }
   .score-row { grid-template-columns: 118px 1fr 25px; }
   .research-stats { grid-template-columns: 1fr; }
   .change-timeline::before { left: 8px; }

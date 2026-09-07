@@ -119,6 +119,24 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'hours-responsive') {
+      await page.goto(target, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.stores.length > 0);
+      await page.evaluate(() => { state.selectedPlaceId = 'collectors-lounge-cypress'; navigate('places'); });
+      for (const width of [1400, 1200, 1050, 900, 390]) {
+        await page.setViewportSize({width, height:900});
+        const layout = await page.locator('#placeDetail .hours-popover summary').evaluate(node => {
+          const label = node.querySelector('span:nth-child(2)');
+          const range = document.createRange(); range.selectNodeContents(label);
+          return {lines: range.getClientRects().length, width:document.documentElement.clientWidth, content:document.documentElement.scrollWidth};
+        });
+        if (layout.lines !== 1 || layout.content > layout.width + 1) throw new Error(`Hours wrap/overflow at ${width}: ${JSON.stringify(layout)}`);
+        await page.locator('#placeDetail .hours-popover summary').click();
+        await page.locator('#placeDetail .hours-week').waitFor({state:'visible'});
+        await page.locator('#placeDetail .hours-popover summary').click();
+        await page.screenshot({path:`work/hours-responsive-${width}.png`, animations:'disabled'});
+        pass(`Hours readable and expandable at ${width}px`);
+      }
     } else if (scenario === 'focused-today') {
       await page.clock.setFixedTime(new Date('2026-09-06T17:30:00'));
       await page.goto(target, {waitUntil: 'domcontentloaded'});
