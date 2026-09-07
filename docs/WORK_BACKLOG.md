@@ -14,6 +14,16 @@ Use it for:
 
 ## Recently closed / operational baseline
 
+- September 6 favorite-first lookup: global search offers direct store profiles,
+  hours, directions, and upcoming event shortcuts. Empty search opens favorites;
+  matching favorite events rank before favorite-host events and other results.
+  Today/Briefing recommendations retain time/hidden filters before favorite
+  priority, and nearby store recommendations prefer favorites. Joyful Toad and
+  Finch planning summaries were reconciled with existing A- assessments and
+  actual Supabase notes; grades were not changed. Controlled proposal:
+  `research/proposals/2026-09-06-favorite-planning-summaries.json`.
+  Regression scenario: `verify_app_ui.mjs --scenario favorite-search`.
+
 - September 6 focused usability pass: Today is same-day only; future calendar
   browsing stays in Events. Later starts, possible drop-in play, unknown times,
   and collapsed earlier starts are separate. Briefing no longer recommends
@@ -22,9 +32,8 @@ Use it for:
   Navigation scroll reset, resized mobile picker, mobile overflow, and visible
   signed-out state were addressed. Tests: `test_focused_today.mjs` and
   `verify_app_ui.mjs --scenario focused-today` (live reads, isolated preferences).
-  Remaining audit follow-ups: global search should offer direct store results;
-  reconcile Joyful Toad's A- evaluation with its stale backup-choice verdict;
-  consolidate time-estimate metadata beyond the current explicit text cues.
+  Remaining audit follow-up: consolidate time-estimate metadata beyond the
+  current explicit text cues. Search and stale favorite verdicts are closed above.
   These are not prerequisites to shipping the focused Today view.
 
 - September 6 hours completeness correction: all 62 venues audited; Collectors

@@ -1,0 +1,22 @@
+{
+  "proposal_id": "favorite-planning-summaries-2026-09-06",
+  "description": "Align two stale planning summaries with existing accepted assessments and current Supabase personal notes. No grade, hours, or event changes.",
+  "created_at": "2026-09-06T23:00:00Z",
+  "author": "Codex",
+  "operations": [
+    {
+      "table": "venues",
+      "action": "update",
+      "key": {"id": "joyful-toad-tcg"},
+      "fields": {"planning_summary": "Personally validated favorite and a strong repeat-visit option: spacious, open late, and a successful place to meet up. Monday Commander is the established scheduled lane."},
+      "reason": "Existing A- high-confidence assessment and saved positive visit note supersede the stale backup-choice summary. Previous summary: Real Magic option, best treated as a selective or backup planning choice."
+    },
+    {
+      "table": "venues",
+      "action": "update",
+      "key": {"id": "finch-sparrow"},
+      "fields": {"planning_summary": "Established nearby favorite with good repeat-visit potential. Sunday casual play is your personally preferred lane; competitive and special-event offerings remain separate choices."},
+      "reason": "Existing A- high-confidence assessment and saved note Great on Sunday supersede first-try Thursday framing. Previous summary: Strong nearby candidate. Thursday casual Commander is the best first try; competitive and special-event lanes are separate."
+    }
+  ]
+}

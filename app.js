@@ -1283,7 +1283,9 @@ function bindStaticEvents() {
     state.search = event.target.value.trim().toLowerCase();
     resetEventCatalogVisible();
     renderCurrentRoute();
+    renderQuickSearch();
   });
+  document.getElementById('globalSearch').addEventListener('focus', renderQuickSearch);
   document.getElementById('placeSearch').addEventListener('input', renderPlaces);
   document.getElementById('placeSearchMobile').addEventListener('input', (event) => {
     document.getElementById('placeSearch').value = event.target.value;
@@ -1297,6 +1299,13 @@ function bindStaticEvents() {
 }
 
 function handleClick(event) {
+  const searchPanel = document.getElementById('quickSearchResults');
+  if (event.target.closest('#quickSearchResults [data-place-id], #quickSearchResults [data-event-id]')) {
+    state.search = '';
+    document.getElementById('globalSearch').value = '';
+    searchPanel.classList.add('hidden');
+    renderCurrentRoute();
+  } else if (!event.target.closest('#quickSearchResults, #globalSearch')) searchPanel?.classList.add('hidden');
   const backButton = event.target.closest('#appBackButton');
   if (backButton) return navigateBack();
 
@@ -1471,6 +1480,8 @@ function handleKeys(event) {
     document.getElementById('globalSearch').focus();
   }
   if (event.key === 'Escape') {
+    event.preventDefault();
+    document.getElementById('quickSearchResults')?.classList.add('hidden');
     closeDrawer();
     closeFilters();
     closePlacePicker();
@@ -1483,6 +1494,7 @@ function handleKeys(event) {
 }
 
 function handleAction(action, element) {
+  if (action === 'close-search') return document.getElementById('quickSearchResults').classList.add('hidden');
   if (action === 'open-filters') return openFilters();
   if (action === 'day-popover') return openDay(element.dataset.dayDate);
   if (action === 'load-more') { state.agendaDays += 28; return renderCalendar(); }
@@ -1536,6 +1548,7 @@ function handleAction(action, element) {
 }
 
 function navigate(route, options = {}) {
+  document.getElementById('quickSearchResults')?.classList.add('hidden');
   if (!document.querySelector(`[data-route-panel="${route}"]`)) return;
   const changesUnreadOnOpen = route === 'changes' ? unreadChangesCount() : 0;
   if (!options.skipRouteHistory && state.route && state.route !== route) {
@@ -2926,7 +2939,33 @@ function renderAgenda(events, start) {
 function rankedTodayLeads(events) {
   return [...events]
     .filter((event) => !isEventHidden(event) && !isCompetitive(event) && eventPlanningGroup(event) !== 'hidden')
-    .sort((a, b) => todayLeadScore(b) - todayLeadScore(a) || a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b)));
+    .sort((a, b) => eventFavoriteTier(b) - eventFavoriteTier(a) || todayLeadScore(b) - todayLeadScore(a) || a.occurrenceDate - b.occurrenceDate || compareText(eventStartTime(a), eventStartTime(b)));
+}
+
+function eventFavoriteTier(event) {
+  const date = event.occurrenceDate || parseDate(event.date || event.startDate);
+  if (state.personal.favorites?.[eventPreferenceKey(event)] || (date && state.personal.interested?.[`${event.id}:${dateKey(date)}`])) return 2;
+  if (state.personal.favorites?.[`place:${event.storeId}`] || state.personal.favorites?.[`community:${event.communityId}`]) return 1;
+  return 0;
+}
+
+function renderQuickSearch() {
+  const panel = document.getElementById('quickSearchResults');
+  const query = document.getElementById('globalSearch').value.trim().toLowerCase();
+  const favorite = place => !!state.personal.favorites?.[`place:${place.id}`];
+  const places = DATA.stores.filter(place => !isPlaceHidden(place.id) && (query ? `${place.name} ${place.city}`.toLowerCase().includes(query) : favorite(place)))
+    .sort((a,b) => Number(favorite(b)) - Number(favorite(a)) || storeScore(b) - storeScore(a)).slice(0, 5);
+  const seen = new Set();
+  const events = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 14)), false)
+    .filter(event => !isEventHidden(event) && (!state.filters.hideCompetitive || !isCompetitive(event)) && eventPlanningGroup(event) !== 'hidden' && (dateKey(event.occurrenceDate) !== dateKey(new Date()) || todayAvailability(event).group !== 'earlier'))
+    .filter(event => query ? `${event.title} ${store(event.storeId)?.name || ''} ${event.format || ''}`.toLowerCase().includes(query) : eventFavoriteTier(event) > 0)
+    .sort((a,b) => eventFavoriteTier(b) - eventFavoriteTier(a) || a.occurrenceDate - b.occurrenceDate)
+    .filter(event => { const key = event.seriesId || event.id; if (seen.has(key)) return false; seen.add(key); return true; }).slice(0, 4);
+  panel.innerHTML = `<div class="section-title-row"><strong>${query ? 'Matching places and events' : 'Your favorites · quick access'}</strong><button class="text-button" data-action="close-search">Close</button></div>
+    ${places.length ? `<h3>Places</h3><div class="search-place-grid">${places.map(place => `<article><button class="favorite-quick-name" data-place-id="${escapeHtml(place.id)}">${placeAvatar(place)}<span><strong>${escapeHtml(place.name)}${favorite(place) ? ' ♥' : ''}</strong><small>${distanceLabel(place)}</small></span></button>${placeHoursChip(place)}<a href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a></article>`).join('')}</div>` : ''}
+    ${events.length ? `<h3>Upcoming events</h3><div class="search-event-list">${events.map(event => `<button class="search-event-result" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><strong>${escapeHtml(event.title)}${eventFavoriteTier(event) === 2 ? ' ♥' : ''}</strong><span>${escapeHtml(store(event.storeId)?.name || eventHostLabel(event, null))} · ${escapeHtml(briefingEventWhen(event))}</span>${eventFavoriteTier(event) === 1 ? '<small>At a favorite place or community</small>' : ''}</button>`).join('')}</div>` : ''}
+    ${!places.length && !events.length ? '<p>No matching shortcuts. The current view is still filtered by your search.</p>' : ''}`;
+  panel.classList.remove('hidden');
 }
 
 function todayLeadScore(event) {
@@ -3236,7 +3275,7 @@ function notableEvents(limit = 12) {
 function rankedStores() {
   return [...DATA.stores]
     .filter((place) => !isPlaceHidden(place.id))
-    .sort((a, b) => storeScore(b) - storeScore(a) || a.distanceMiles - b.distanceMiles);
+    .sort((a, b) => Number(!!state.personal.favorites?.[`place:${b.id}`]) - Number(!!state.personal.favorites?.[`place:${a.id}`]) || storeScore(b) - storeScore(a) || a.distanceMiles - b.distanceMiles);
 }
 
 function placesByBestFit() {

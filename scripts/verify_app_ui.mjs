@@ -106,6 +106,10 @@ async function main() {
   const browser = await launchBrowser();
   try {
     const page = await browser.newPage({ viewport: { width: 1400, height: 950 } });
+    page.on('requestfailed', request => {
+      const url = new URL(request.url());
+      result.checks.push({name:'request failed',status:'note',detail:`${url.origin}${url.pathname}: ${request.failure()?.errorText}`});
+    });
     page.on('console', (message) => {
       if (['error', 'warning'].includes(message.type())) {
         result.checks.push({ name: `browser console ${message.type()}`, status: 'note', detail: message.text().slice(0, 500) });
@@ -119,6 +123,38 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'favorite-search') {
+      await page.goto(target, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
+      const favoriteEvent = await page.evaluate(() => {
+        state.personal.favorites = {'place:finch-sparrow':true};
+        const event = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(),14)), false).find(e => e.storeId !== 'finch-sparrow' && !isEventHidden(e) && !isCompetitive(e) && eventPlanningGroup(e) !== 'hidden' && dateKey(e.occurrenceDate) !== dateKey(new Date()));
+        state.personal.favorites[eventPreferenceKey(event)] = true;
+        return event.seriesId || event.id;
+      });
+      const input = page.locator('#globalSearch');
+      await input.focus();
+      await page.locator('#quickSearchResults').waitFor({state:'visible'});
+      const firstPlace = await page.locator('.search-place-grid [data-place-id]').first().getAttribute('data-place-id');
+      if (firstPlace !== 'finch-sparrow') throw new Error('Favorite store not first');
+      const firstEvent = await page.locator('.search-event-result').first().getAttribute('data-event-id');
+      const firstSeries = await page.evaluate(id => {const e = DATA.events.find(e=>e.id===id); return e.seriesId || e.id;},firstEvent);
+      if (firstSeries !== favoriteEvent) throw new Error('Favorite event not first');
+      await input.fill('Joyful');
+      await page.locator('.search-place-grid [data-place-id="joyful-toad-tcg"]').waitFor();
+      if (!await page.locator('.search-place-grid .hours-popover').count()) throw new Error('Search missing store hours');
+      await page.screenshot({path:'work/favorite-search-desktop.png',animations:'disabled'});
+      await page.locator('.search-place-grid [data-place-id="joyful-toad-tcg"]').click();
+      await page.locator('#placeDetail').getByRole('heading',{name:'Joyful Toad TCG',exact:true}).waitFor();
+      if (await input.inputValue() !== '') throw new Error('Search filter not cleared on selection');
+      assertText(await page.locator('#placeDetail').innerText(), 'Personally validated favorite', 'corrected summary');
+      await page.setViewportSize({width:390,height:844});
+      await input.fill('Finch');
+      await page.screenshot({path:'work/favorite-search-mobile.png',animations:'disabled'});
+      if (await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1)) throw new Error('Search mobile overflow');
+      await page.keyboard.press('Escape');
+      if (await page.locator('#quickSearchResults').isVisible()) throw new Error('Escape did not close search');
+      pass('Favorite store and event first; direct profile, hours, corrected summary, mobile and Escape');
     } else if (scenario === 'hours-responsive') {
       await page.goto(target, {waitUntil:'domcontentloaded'});
       await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.stores.length > 0);

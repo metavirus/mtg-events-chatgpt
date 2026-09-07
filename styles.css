@@ -1164,6 +1164,16 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
 /* Today is a same-day decision surface; Events owns calendar browsing. */
+.quick-search-results { position: fixed; z-index: 45; top: 74px; left: 244px; right: 24px; max-height: 70vh; overflow: auto; padding: 20px; background: #101625; border: 1px solid #3d4761; border-radius: 16px; box-shadow: 0 18px 50px #0008; }
+.quick-search-results h3 { margin: 16px 0 8px; }
+.search-place-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+.search-place-grid article { padding: 12px; border: 1px solid #293249; border-radius: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0; }
+.search-place-grid .hours-popover { order: 0; flex: none; max-width: 100%; }
+.search-place-grid .hours-popover-panel { position: static; width: 100%; min-width: 0; }
+.search-event-list { display: grid; gap: 8px; }
+.search-event-result { display: grid; gap: 4px; padding: 12px; text-align: left; color: var(--text); background: #171e2e; border: 1px solid #293249; border-radius: 10px; cursor: pointer; }
+.search-event-result span, .search-event-result small { color: #a3b2c9; }
+@media (max-width: 900px) { .quick-search-results { left: 12px; right: 12px; padding: 14px; max-height: 65vh; } }
 #route-today .view-switcher, #route-today .date-navigator,
 #route-today .highlights-rail, #route-today [data-preset="weekend"] { display: none; }
 #route-today .today-grid { display: block; }
