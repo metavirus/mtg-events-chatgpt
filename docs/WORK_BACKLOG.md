@@ -32,6 +32,10 @@ Use it for:
   Navigation scroll reset, resized mobile picker, mobile overflow, and visible
   signed-out state were addressed. Tests: `test_focused_today.mjs` and
   `verify_app_ui.mjs --scenario focused-today` (live reads, isolated preferences).
+  Follow-through: Events cards, highlights, store schedules, community plans,
+  and event drawers now share Today's certainty-aware time label: estimated or
+  absent times say "Time to confirm" rather than displaying an exact start.
+  Covered by `test_focused_today.mjs` and the `event-time-labels` UI scenario.
   Remaining audit follow-up: consolidate time-estimate metadata beyond the
   current explicit text cues. Search and stale favorite verdicts are closed above.
   These are not prerequisites to shipping the focused Today view.

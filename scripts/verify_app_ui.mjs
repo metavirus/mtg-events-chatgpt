@@ -123,6 +123,22 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'event-time-labels') {
+      await page.goto(target, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
+      await page.evaluate(() => {
+        // Isolated in-memory fixture: no canonical or personal writes.
+        const event = DATA.events[0];
+        event.details = 'Start time estimated; confirm with the store.';
+        event.startTime = '12:00';
+        if (event.recurrence) event.recurrence.startTime = '12:00';
+        openEvent(event.id, dateKey(new Date()));
+      });
+      assertText(await page.locator('.event-hero-meta').innerText(), 'Time to confirm', 'estimated-time disclosure');
+      await page.setViewportSize({width:390,height:844});
+      await page.screenshot({path:'work/event-time-labels-mobile.png',animations:'disabled'});
+      if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)) throw new Error('Mobile horizontal overflow');
+      pass('Event drawer discloses estimated time; mobile fits; no data writes');
     } else if (scenario === 'favorite-search') {
       await page.goto(target, {waitUntil:'domcontentloaded'});
       await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);

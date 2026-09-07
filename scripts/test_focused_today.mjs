@@ -20,6 +20,13 @@ assert.equal(group(event('Casual Commander', '12:00', {endTime: '16:00'})), 'ear
 assert.equal(group(event('Casual Draft', '12:00')), 'earlier');
 assert.equal(group(event('Casual Play', '12:00', {details: '12:00 PM is a planning proxy'})), 'unknown');
 assert.equal(group(event('Commander', null)), 'unknown');
+assert.equal(context.eventTimeLabel(event('Casual Play', '12:00', {details: '12:00 PM is a planning proxy'})), 'Time to confirm');
+assert.equal(context.eventTimeLabel(event('Commander', '19:00')), '19:00');
+assert.equal(context.eventTimeLabel(event('Commander', null)), 'Time to confirm');
+// No event surface may bypass the shared certainty-aware time label.
+assert.equal(code.includes('${formatTime(eventStartTime(event))}'), false);
+assert.equal(code.includes('${formatTime(event.recurrence?.startTime)}'), false);
+assert.equal(code.includes('${formatTime(event.recurrence.startTime)}'), false);
 assert.equal(context.currentHoursLabel([{open:'12:00', close:'22:00'}], now), 'Open until 22:00');
 assert.equal(context.currentHoursLabel([{open:'19:00', close:'23:00'}], now), 'Opens 19:00');
 assert.equal(context.currentHoursLabel([{closed:true}], now), 'Closed today');
