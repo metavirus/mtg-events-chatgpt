@@ -867,8 +867,9 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .truth-icon { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: rgba(255,255,255,.04); }
 .truth-icon.mint { color: var(--mint); }.truth-icon.amber { color: var(--amber); }.truth-icon.coral { color: var(--coral); }.truth-icon.sky { color: var(--sky); }
 .source-bars { display: grid; gap: 11px; }
-.source-bars > div { display: grid; grid-template-columns: 110px 1fr 25px; align-items: center; gap: 9px; font-size: 9px; color: var(--muted); }
-.source-bars > div > div { height: 5px; background: #252c40; border-radius: 4px; overflow: hidden; }
+.source-bars > button { display: grid; grid-template-columns: minmax(90px, 1fr) 2fr auto; align-items: center; gap: 12px; min-height: 44px; padding: 8px; text-align: left; font: inherit; color: var(--muted); background: transparent; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+.source-bars > button:hover, .source-bars > button:focus-visible { background: var(--panel); border-color: var(--violet); }
+.source-bars > button > div { height: 5px; background: #252c40; border-radius: 4px; overflow: hidden; }
 .source-bars i { display: block; height: 100%; background: linear-gradient(90deg, var(--sky), var(--violet)); }
 .source-bars strong { color: #fff; }
 .methodology-card { margin-top: 14px; display: flex; justify-content: space-between; align-items: center; }

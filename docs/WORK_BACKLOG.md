@@ -14,6 +14,12 @@ Use it for:
 
 ## Recently closed / operational baseline
 
+- September 6 Research cleanup: removed stale non-Commander and partial-profile
+  claims, explained catalog counts, and made all source bars and drawer category
+  filters actionable. Filtered source lists no longer truncate at 40 records.
+  `research-sources` verifies each category count and mobile layout. The five
+  items in `docs/UI_AUDIT_2026-09-06.md` are now closed.
+
 - September 6 stale-guidance/catalog correction: JJ's expired July/August
   timing question removed and dated announcements reframed as history. Checked
   all four actual favorite stores; no expired dated questions there. No grades

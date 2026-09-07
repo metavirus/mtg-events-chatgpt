@@ -1505,7 +1505,7 @@ function handleAction(action, element) {
   if (action === 'show-promising-nearby') return openPromisingNearby();
   if (action === 'show-discovery-queue') return openDiscoveryQueue();
   if (action === 'show-reviewed-places') return openReviewedPlaces();
-  if (action === 'show-source-records') return openSourceRecords();
+  if (action === 'show-source-records') return openSourceRecords(element.dataset.sourceType || '');
   if (action === 'show-format-balance') return navigate('events');
   if (action === 'save-note') return saveNote(element.dataset.entity, element.dataset.input);
   if (action === 'send-magic-link') return sendMagicLink(element.dataset.input);
@@ -4764,8 +4764,8 @@ function renderResearch() {
   const formats = DATA.events.reduce((acc, event) => ((acc[event.format || 'Unknown'] = (acc[event.format || 'Unknown'] || 0) + 1), acc), {});
   const sourceTypes = DATA.sources.reduce((acc, item) => ((acc[item.type || 'other'] = (acc[item.type || 'other'] || 0) + 1), acc), {});
   document.getElementById('researchDashboard').innerHTML = `<div class="research-stats"><button class="research-stat primary clickable" data-action="show-reviewed-places"><span>Venue depth</span><strong>${partial}<small> / ${visibleStores.length}</small></strong><p>visible places have moved beyond raw discovery</p><div class="progress"><i style="width:${visibleStores.length ? partial / visibleStores.length * 100 : 0}%"></i></div></button><button class="research-stat clickable" data-action="show-discovery-queue"><span>Discovery queue</span><strong>${discovery}</strong><p>visible places remain lightly vetted</p></button><button class="research-stat clickable" data-action="show-source-records"><span>Source records</span><strong>${DATA.sources.length}</strong><p>connected evidence surfaces</p></button><button class="research-stat warning clickable" data-action="show-format-balance"><span>Event-format balance</span><strong>${formats.Commander || 0}<small> Commander</small></strong><p>${DATA.events.length - (formats.Commander || 0)} other-format record</p></button></div>
-    <div class="research-grid"><section class="research-panel"><p class="eyebrow">Coverage truth</p><h2>What this snapshot can and cannot say</h2><div class="truth-list"><div><span class="truth-icon mint">✓</span><p><strong>Useful nearby Commander starting set</strong><br>Recurring listings and strong partial venue profiles can support real planning now.</p></div><div><span class="truth-icon amber">~</span><p><strong>Uneven venue depth</strong><br>${partial} places have qualitative work; ${discovery} remain discovery-level and need social/site corroboration.</p></div><div><span class="truth-icon coral">!</span><p><strong>Not a complete Magic calendar</strong><br>Draft, sealed, prerelease, and other formats have not received comparable normalization yet.</p></div><div><span class="truth-icon sky">i</span><p><strong>Recurring dates are expectations</strong><br>Weekly schedules are displayed as projected occurrences unless a date-specific source confirms them.</p></div></div></section>
-    <section class="research-panel"><p class="eyebrow">Source mix</p><h2>Where the evidence comes from</h2><div class="source-bars">${Object.entries(sourceTypes).sort((a,b) => b[1]-a[1]).slice(0,8).map(([type,count]) => `<div><span>${escapeHtml(type.replaceAll(/([A-Z])/g, ' $1'))}</span><div><i style="width:${count / Math.max(...Object.values(sourceTypes)) * 100}%"></i></div><strong>${count}</strong></div>`).join('')}</div></section></div>
+    <div class="research-grid"><section class="research-panel"><p class="eyebrow">Coverage truth</p><h2>What this snapshot can and cannot say</h2><div class="truth-list"><div><span class="truth-icon mint">✓</span><p><strong>Useful nearby Commander starting set</strong><br>Recurring listings and reviewed venue profiles support planning; exact dates and times remain visible in Events.</p></div><div><span class="truth-icon amber">~</span><p><strong>Uneven venue depth</strong><br>${partial} places have qualitative work; ${discovery} remain discovery-level and need social/site corroboration.</p></div><div><span class="truth-icon coral">!</span><p><strong>Coverage beyond Commander</strong><br>${DATA.events.length - (formats.Commander || 0)} other-format records are cataloged alongside ${formats.Commander || 0} Commander records. These include historical records and recurring series, not a count of unique upcoming events; coverage is not a complete local census.</p></div><div><span class="truth-icon sky">i</span><p><strong>Recurring dates are expectations</strong><br>Weekly schedules are displayed as projected occurrences unless a date-specific source confirms them.</p></div></div></section>
+    <section class="research-panel"><p class="eyebrow">Source mix</p><h2>Where the evidence comes from</h2><div class="source-bars">${Object.entries(sourceTypes).sort((a,b) => b[1]-a[1]).map(([type,count]) => `<button class="source-mix-button" data-action="show-source-records" data-source-type="${escapeHtml(type)}" aria-label="Open ${escapeHtml(type)} sources: ${count} records"><span>${escapeHtml(type.replaceAll(/([A-Z])/g, ' $1'))}</span><div><i style="width:${count / Math.max(...Object.values(sourceTypes)) * 100}%"></i></div><strong>${count} →</strong></button>`).join('')}</div></section></div>
     <div class="research-panel methodology-card"><div><p class="eyebrow">Method in one line</p><h2>Catalog broadly. Classify carefully. Rank personally. Preserve the evidence.</h2></div><button class="soft-button" data-action="show-log">View activity log</button></div>`;
 }
 
@@ -5259,20 +5259,19 @@ function candidateStatusLabel(status) {
   return 'Assessed';
 }
 
-function openSourceRecords() {
+function openSourceRecords(sourceType = '') {
   const counts = DATA.sources.reduce((result, item) => {
     const type = item.type || 'other';
     result[type] = (result[type] || 0) + 1;
     return result;
   }, {});
-  const recent = [...DATA.sources]
-    .sort((a, b) => String(b.lastChecked || '').localeCompare(String(a.lastChecked || '')))
-    .slice(0, 40);
+  const recent = DATA.sources.filter(item => !sourceType || (item.type || 'other') === sourceType)
+    .sort((a, b) => String(b.lastChecked || '').localeCompare(String(a.lastChecked || '')));
   const mix = Object.entries(counts)
     .sort((a, b) => b[1] - a[1])
-    .map(([type, count]) => `<span class="meta-chip">${escapeHtml(type.replaceAll(/([A-Z])/g, ' $1'))} · ${count}</span>`)
+    .map(([type, count]) => `<button class="meta-chip" data-action="show-source-records" data-source-type="${escapeHtml(type)}" aria-pressed="${sourceType === type}">${escapeHtml(type.replaceAll(/([A-Z])/g, ' $1'))} · ${count}</button>`)
     .join('');
-  openDrawer(`<div class="drawer-kicker"><span class="status-chip sky">Evidence surfaces</span><span class="status-chip slate">${DATA.sources.length} records</span></div><h1 id="drawerTitle">Connected source records</h1><p class="drawer-lead">Open a source when you want to inspect the evidence behind the app. Records without a public URL remain visible as provenance rather than pretending to be links.</p><section class="drawer-section"><p class="eyebrow">Source mix</p><div class="meta-chip-row">${mix}</div></section><section class="drawer-section"><p class="eyebrow">Most recently checked</p><h2>${recent.length} recent surfaces</h2>${evidenceSourceList(recent)}</section>`);
+  openDrawer(`<div class="drawer-kicker"><span class="status-chip sky">Evidence surfaces</span><span class="status-chip slate">${recent.length} records</span></div><h1 id="drawerTitle">${sourceType ? escapeHtml(sourceType.replaceAll(/([A-Z])/g, ' $1')) + ' sources' : 'Connected source records'}</h1><p class="drawer-lead">Open a source when you want to inspect the evidence behind the app. Records without a public URL remain visible as provenance rather than pretending to be links.</p><section class="drawer-section"><p class="eyebrow">Source mix</p><div class="meta-chip-row"><button class="meta-chip" data-action="show-source-records" aria-pressed="${!sourceType}">All · ${DATA.sources.length}</button>${mix}</div></section><section class="drawer-section"><p class="eyebrow">Most recently checked</p><h2>${recent.length} matching surfaces</h2>${evidenceSourceList(recent)}</section>`);
 }
 
 function openFreshSignals() {

@@ -123,6 +123,27 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'research-sources') {
+      await page.goto(target, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.sources.length > 0);
+      await page.evaluate(() => navigate('research'));
+      const copy = await page.locator('#researchDashboard').innerText();
+      assertText(copy, 'Coverage beyond Commander', 'current coverage copy');
+      if (copy.includes('have not received comparable normalization')) throw new Error('Stale claim remains');
+      const bars = page.locator('.source-mix-button');
+      const types = await bars.evaluateAll(nodes => nodes.map(n => n.dataset.sourceType));
+      for (const type of types) {
+        await page.evaluate(t => document.querySelectorAll('.source-mix-button').forEach(b => {if(b.dataset.sourceType === t) b.click();}), type);
+        const expected = await page.evaluate(t => DATA.sources.filter(s => (s.type || 'other') === t).length, type);
+        const shown = await page.locator('#drawerContent .source-row').count();
+        if (shown !== expected) throw new Error(`${type}: expected ${expected}, shown ${shown}`);
+        await page.keyboard.press('Escape');
+      }
+      await page.setViewportSize({width:390,height:844});
+      await bars.first().click();
+      await page.screenshot({path:'work/research-sources-mobile.png',animations:'disabled'});
+      if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)) throw new Error('Mobile overflow');
+      pass('Every source bar opens its complete matching list; current copy; mobile fits', `${types.length} source categories`);
     } else if (scenario === 'guidance-rpg-correction') {
       await page.goto(target, {waitUntil:'domcontentloaded'});
       await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
