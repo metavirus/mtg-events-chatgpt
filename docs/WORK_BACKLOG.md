@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-08-14
+Last updated: 2026-09-07
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -13,6 +13,13 @@ Use it for:
 - process improvements that protect continuity.
 
 ## Recently closed / operational baseline
+
+- September 7 documentation/readiness checkpoint: `main` is cleanly deployed
+  through GitHub Pages and the current text-integrity, daily WPN/social, and
+  daily Discord workflows pass. Canonical Supabase status is 62 open venues,
+  60 reviewed/deepened venues, 537 active event series, and 935 future
+  non-cancelled occurrences. Discord checked 27 routes on the latest run and
+  saved all 9 entity updates with no attention item.
 
 - September 6 Research cleanup: removed stale non-Commander and partial-profile
   claims, explained catalog counts, and made all source bars and drawer category
@@ -136,12 +143,18 @@ Use it for:
 
 ## Active next-up
 
-- September 6 interface audit: see `docs/UI_AUDIT_2026-09-06.md` for observed
-  issues and completed repairs. Shared Briefing/Today recommendation ranking
-  was corrected and verified against actual personal preferences September 6;
-  next bounded items cover
-  community monitoring readback, stale dated assessment questions, Research
-  drilldowns/copy, and a non-Magic listing in the MTG catalog.
+- The September 6 interface audit is complete; see
+  `docs/UI_AUDIT_2026-09-06.md`. Briefing/Today ranking, community monitoring
+  readback, stale dated questions, Research drilldowns/copy, and the non-Magic
+  catalog leak were all repaired and verified. Do not reuse that audit as an
+  active task list.
+- Remaining bounded data follow-ups: deepen LVLUP GAMING TCG and The Bullpen
+  2.0, and preserve Game Chest Irvine's hours as an explicit source conflict
+  until better evidence resolves it. The 61 other venues have complete weekly
+  hours; do not rerun a broad hours sweep.
+- Continue normal daily Discord and WPN/social monitoring. Preparatory Discord
+  surveying is closed; reopen a source only for a material route/access change
+  or genuinely new high-value evidence.
 
 - **Community fuzzy-discovery checkpoint (canonical promotion/main passes
   completed 2026-08-13; remaining work is presentation and lower-confidence

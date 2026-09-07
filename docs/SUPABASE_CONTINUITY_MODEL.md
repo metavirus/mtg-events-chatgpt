@@ -1,6 +1,6 @@
 # Supabase Continuity Model
 
-Last updated: 2026-07-19
+Last updated: 2026-09-07
 
 ## Purpose
 
@@ -48,8 +48,9 @@ Implemented durable records:
 - hidden / deprioritized visibility preferences
 - one-to-five ratings
 - personal notes
+- Signal read state
 
-Expected later records:
+Still local or expected later:
 
 - interested / attended / skipped states
 - update-read state
@@ -97,8 +98,9 @@ since shipped; the data-plane split remains the governing part:
 - define the data structures and cutover expectations for those features.
 
 Supabase is the operational research source and signed-in personal persistence
-is implemented. Remaining continuity work is limited to richer workflow/request
-handling and future automation.
+is implemented. Bounded daily WPN/social and Discord cloud surveyors are also
+operational. Remaining continuity work is limited to richer in-app
+workflow/request handling and broader personal-state coverage.
 
 ## What is deliberately deferred
 
@@ -106,9 +108,11 @@ The accepted current product still deliberately defers:
 
 - broader account/profile management beyond the lean personal sign-in;
 - workflow/request processing beyond the existing bounded coordination lane;
-- server-side request processing or agent automation;
+- general server-side request processing beyond the bounded coordination and
+  daily survey lanes;
 - removal of the JSON fallback;
-- unattended recurring research automation.
+- broader autonomous promotion or open-ended research beyond the proven bounded
+  daily surveyors.
 
 The safe current rule is:
 
@@ -116,6 +120,8 @@ The safe current rule is:
 - JSON is generated recovery/export fallback, not the manual canonical editing
   surface;
 - signed-in personal state is operational and separate from research truth.
+- bounded unattended WPN/social and Discord surveyors are operational; their
+  status is reflected in Supabase and in the app.
 
 ## Browser-local state during transition
 

@@ -26,7 +26,8 @@ The repository has already completed these stabilization steps:
 - ChatGPT-to-Codex coordination now uses the Supabase coordination queue;
   the old mailbox/intake/changelog lane is historical fallback only;
 - recent research/SOP checkpoint published;
-- local UX pass accepted on `codex/reconcile-wizards`;
+- the accepted app and current documentation run from `main`; GitHub Pages
+  publishes the production build directly from the repository workflow;
 - personal-use deployment accepted at `dd44e20`, tagged
   `checkpoint/personal-use-deployed-supabase-default-2026-07-17`;
 - hosted app uses Supabase as the default read source, with `?data=json` as an
@@ -138,8 +139,8 @@ Still open:
 - current finite research queue and closure-audit baseline:
   `docs/RESEARCH_COVERAGE_LEDGER_2026-07-17.md`;
 - design/app backlog items that are not completion blockers unless promoted;
-- branch-hygiene pass to move off `codex/reconcile-wizards` deliberately;
-- future authenticated personal/workflow writes and data-architecture evolution;
+- richer in-app workflow/request handling beyond the existing coordination
+  queue;
 - continued store/community research using the SOPs.
 
 ## What not to re-litigate

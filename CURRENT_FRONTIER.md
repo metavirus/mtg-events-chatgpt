@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-08-28
+Updated: 2026-09-07
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -22,6 +22,32 @@ bounded result is reached, stop substantive work, update this file/backlog with
 the exact durable state and next action, then hand off from that checkpoint.
 
 ## Where we are now
+
+- The deployed GitHub Pages app is healthy on `main` at
+  `https://metavirus.github.io/mtg-events-chatgpt/`. The latest production,
+  text-integrity, WPN/social, and Discord workflows all passed on September 7.
+  Live Supabase status reports 62 open venues, 60 reviewed/deepened venues,
+  537 active event series, and 935 future non-cancelled occurrences.
+- Briefing is now the glanceable daily home: it prioritizes actionable changes,
+  same-day options, favorite venues/events, and useful community conversation.
+  Today is a focused same-day planner rather than a duplicate of the full Events
+  catalog; elapsed starts no longer compete with live choices.
+- Places is the practical store reference surface. Favorite venues lead, hours
+  and directions are directly accessible, hours badges stay compact at narrow
+  widths, and 61 of 62 venues have complete weekly hours. Game Chest Irvine is
+  the one explicit unresolved source conflict and must remain labeled as such.
+- Global search is action-oriented: venue matches expose profile, hours,
+  directions, and upcoming events; saved events and events at favorite hosts
+  rank first. Community conversation is surfaced in Briefing rather than left
+  buried in Activity.
+- The September 6 interface audit is closed. Research counts and source
+  categories are explained and clickable, dated guidance was retired, explicit
+  non-Magic RPG sessions are excluded without suppressing crossover Magic, and
+  uncertain event times use consistent honest labels.
+- Daily cloud surveying is operational. The September 7 Discord run checked 27
+  routes and saved 9 entity updates (3 useful, 24 quiet, no attention items).
+  The WPN/social run also completed successfully; the three visible status lanes
+  remain Discord, WPN/EventLink, and Instagram/Facebook.
 
 - The fuzzy community-discovery checkpoint is pinned in
   `docs/WORK_BACKLOG.md`. Canonical promotion is complete: MTG OC has its Meetup
@@ -463,21 +489,27 @@ Canonical operating details:
 
 ## Immediate next work
 
-1. Discord landscape preparation is closed. All 22 mapped or route-captured
+1. Treat the September 6 interface audit as closed; do not replay its five
+   completed items. New product work should come from observed friction in the
+   deployed app.
+2. Discord landscape preparation is closed. All 22 mapped or route-captured
    profiles have terminal `preparatory_survey_completed_at` state; 27 proven
    routes are active in the cloud plan and the rest are explicitly paused,
    blocked, stale, optional, duplicative, or poor-fit. Do not run another broad
    preparatory pass. Future Discord work is routine daily monitoring, a
    material access/route change, or a genuinely new high-value source lead.
-2. Treat LAGS as closed on ownership semantics: Los Angeles Gayming Society
+3. Treat LAGS as closed on ownership semantics: Los Angeles Gayming Society
    owns its community events; Precinct DTLA is host-location text only. Do not
    reopen that ownership question. Future work there is limited to display,
    routing, or evidence-link defects if the live UI disagrees.
-3. Keep Community/Home/Event presentation work narrow and friction-driven:
+4. Keep Community/Home/Event presentation work narrow and friction-driven:
    event-linked community Signals should open the event cleanly, grouped
    Updates should expose clickable event lists, and new community-owned events
    should not disappear behind unhelpful "promising" or venue-owned framing.
-4. Use the lifecycle-specific Supabase selectors:
+5. The only current source-thin store follow-ups are LVLUP GAMING TCG and The
+   Bullpen 2.0. Game Chest Irvine hours remain an explicit source conflict. Do
+   not turn the otherwise-complete hours sweep into another broad pass.
+6. Use the lifecycle-specific Supabase selectors:
    `venue_baseline_candidates`, `venue_surface_retry_candidates`,
    `venue_surface_monitoring_candidates`, `venue_discovery_candidates`, and
    `venue_identity_resolution_candidates`. Markdown ledgers are context, not
@@ -485,7 +517,7 @@ Canonical operating details:
    preferences, use `venue_candidates_for_user(...)` so venues marked
    `deprioritize` or `hide` do not re-enter ordinary discovery, retry, or
    monitoring work.
-5. Keep every runtime research task inside one explicit lane:
+7. Keep every runtime research task inside one explicit lane:
    `baseline pass`, `identity-resolution pass`, or
    `steady-state monitoring pass`. Time budgets and hard stop conditions live
    in `docs/EFFICIENCY_SOP.md`; a 5+ minute no-delta monitoring run or a 10+
