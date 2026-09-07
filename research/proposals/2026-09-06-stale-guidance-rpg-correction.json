@@ -1,0 +1,29 @@
+{
+  "proposal_id": "stale-guidance-rpg-correction-2026-09-06",
+  "description": "Remove expired JJ's follow-up wording and retire an explicitly non-MTG D&D series from the Magic calendar. Preserve grades, source evidence, and all nine occurrences.",
+  "created_at": "2026-09-06T23:50:00Z",
+  "author": "Codex",
+  "operations": [
+    {
+      "table": "evaluations",
+      "action": "update",
+      "key": {"entity_type": "venue", "entity_id": "jjs-collectibles"},
+      "fields": {"open_questions": ["Which recurring Commander lane is the best first solo visit?", "What are the proxy norms and power-level mix in practice?", "How consistently do random pods accommodate a solo arrival?"]},
+      "reason": "Remove expired question: Do official follow-up posts add times for the July 23, July 31, August 6, and Hobbit prerelease events? Expiration is not a claim that missing times were resolved. Remaining practical questions and A- grade are unchanged."
+    },
+    {
+      "table": "venues",
+      "action": "update",
+      "key": {"id": "jjs-collectibles"},
+      "fields": {"assessment_notes": "JJ's Collectibles is one of the strongest close Magic candidates, not merely a Tuesday Commander lead. Previously inspected Discord evidence includes a dedicated Magic category, Magic announcements, Commander guidance, and promotional images for Precon Commander Night, Jumpstart, a Marvel Commander Party, and Hobbit prerelease events. Those July/August announcements are historical activity evidence, not upcoming-event promises. The same retained evidence supports a rhythm across Commander, draft, Standard, and Pauper. Commander-channel notes support random pod formation and bracket/power-level guidance, improving the solo-arrival read. Review-derived evidence adds friendly staff, fair pricing, trade-night/community, stock, prerelease product, and welcoming-service signals. Remaining questions are practical: which recurring Commander lane is best for a first visit, actual turnout, and proxy norms. Use the Events tab for currently dated listings."},
+      "reason": "Replace stale Future announced events and newly announced specials wording with historical framing of the same retained evidence. No new source inspection or grade change claimed. Prior assessment described these same four programs as future and asked whether official posts would add times."
+    },
+    {
+      "table": "event_series",
+      "action": "update",
+      "key": {"id": "the-game-chest-promenade-on-the-peninsula-ingest-c7f658b25052beb5"},
+      "fields": {"venue_id": "the-game-chest-promenade-on-the-peninsula", "format": "D&D", "event_status": "inactive", "details": "Excluded from the Magic calendar: source title Domains of the Alrisen D&D and description Weekly D&D Session explicitly describe an RPG session despite the upstream Magic tag. Historical occurrences and source links are preserved; this is not a claim that the store cancelled the session."},
+      "reason": "Retained WPN observation and nine occurrences explicitly describe Weekly D&D Session. Previous format Magic, status active, details Attributed source inventory. Open a dated occurrence for source-specific details. Mark inactive only for this app's MTG scope; preserve occurrence status and evidence."
+    }
+  ]
+}

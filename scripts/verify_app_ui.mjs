@@ -123,6 +123,18 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'guidance-rpg-correction') {
+      await page.goto(target, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
+      const checked = await page.evaluate(() => {
+        const jjs = store('jjs-collectibles');
+        const events = buildOccurrences(startOfDay(new Date(2026,8,1)), endOfDay(new Date(2026,8,30)), false);
+        return {jjs: JSON.stringify(jjs), rpgVisible: events.some(e => /Domains of the Alrisen/i.test(e.title))};
+      });
+      if (checked.rpgVisible) throw new Error('Retired RPG session remains in calendar');
+      if (checked.jjs.includes('Do official follow-up posts add times')) throw new Error('Expired question remains');
+      assertText(checked.jjs, 'historical activity evidence', 'JJ historical framing');
+      pass('Live guidance corrected; RPG excluded from September calendar without deleting evidence');
     } else if (scenario === 'event-time-labels') {
       await page.goto(target, {waitUntil:'domcontentloaded'});
       await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);

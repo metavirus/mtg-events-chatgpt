@@ -11,12 +11,23 @@ from refresh_wpn_cache import (
     enrich_snapshot,
     normalized_title_key,
     title_schedule_facts,
+    event_promotion_state,
 )
 
 
 class WpnIngestAgentTests(unittest.TestCase):
+    def test_explicit_rpg_session_not_magic_but_crossover_magic_kept(self) -> None:
+        base = {"title": "Domains of the Alrisen D&D", "description": "Weekly D&D Session",
+                "eventFormat": {"name": "Other"}, "status": "SCHEDULED",
+                "scheduledStartTime": "2026-09-07T18:00:00Z"}
+        result = event_promotion_state(base, "matched", "2026-09-06T00:00:00Z")
+        self.assertEqual(result["promotionEligibility"], "non_mtg_rpg_session")
+        self.assertFalse(result["promotionEligible"])
+        for title in ["D&D Commander Draft", "Adventures in the Forgotten Realms Prerelease", "Commander Legends: Battle for Baldur's Gate"]:
+            self.assertTrue(event_promotion_state({**base, "title": title}, "matched", "2026-09-06T00:00:00Z")["promotionEligible"])
+
     def test_title_normalization_is_conservative_and_stable(self) -> None:
-        self.assertEqual(ADAPTER_CONTRACT_VERSION, 4)
+        self.assertEqual(ADAPTER_CONTRACT_VERSION, 5)
         self.assertEqual(normalized_title_key("FNM: Commander & Draft"), "fnm commander and draft")
         self.assertNotEqual(normalized_title_key("Commander Party"), normalized_title_key("Commander"))
 

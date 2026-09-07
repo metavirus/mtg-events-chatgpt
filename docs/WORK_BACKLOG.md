@@ -14,6 +14,15 @@ Use it for:
 
 ## Recently closed / operational baseline
 
+- September 6 stale-guidance/catalog correction: JJ's expired July/August
+  timing question removed and dated announcements reframed as history. Checked
+  all four actual favorite stores; no expired dated questions there. No grades
+  or personal preferences changed. One mis-tagged D&D series retired from the
+  Magic calendar, preserving nine occurrences and source links. WPN adapter v5
+  rejects explicit RPG sessions without rejecting Magic crossover events; ten
+  focused ingestion tests pass. Proposal:
+  `research/proposals/2026-09-06-stale-guidance-rpg-correction.json`.
+
 - September 6 favorite-first lookup: global search offers direct store profiles,
   hours, directions, and upcoming event shortcuts. Empty search opens favorites;
   matching favorite events rank before favorite-host events and other results.

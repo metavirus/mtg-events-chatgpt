@@ -29,7 +29,7 @@ SECRET_URL = ROOT / ".codex-secrets" / "supabase-db-url.txt"
 CACHE_ID = "los-alamitos-25mi"
 WPN_EVENT_URL = "https://locator.wizards.com/event/{event_id}"
 WPN_STORE_URL = "https://locator.wizards.com/store/{organization_id}"
-ADAPTER_CONTRACT_VERSION = 4
+ADAPTER_CONTRACT_VERSION = 5
 
 NO_PROXY_PATTERN = re.compile(
     r"\b(?:no\s+prox(?:y|ies)|prox(?:y|ies)\s+(?:are\s+)?(?:not\s+allowed|prohibited|banned)|"
@@ -192,7 +192,16 @@ def event_promotion_state(event: dict, venue_match_status: str, retrieved_at: st
     """Classify source eligibility without deciding canonical event identity."""
     scheduled_text = str(event.get("scheduledStartTime") or "").strip()
     status = str(event.get("status") or "").strip().upper()
-    if venue_match_status != "matched":
+    title = str(event.get("title") or "")
+    description = str(event.get("description") or "")
+    format_name = str((event.get("eventFormat") or {}).get("name") or "")
+    # EventLink's Magic tag can be wrong; retain D&D-themed Magic events.
+    rpg = re.search(r"\b(?:d\s*&\s*d|dungeons\s*(?:&|and)\s*dragons)\b", title, re.I)
+    session = re.search(r"\b(?:session|campaign|role.?playing|rpg)\b", title + " " + description, re.I)
+    magic = re.search(r"\b(?:mtg|magic|commander|draft|sealed|prerelease|standard|modern|pioneer|legacy|pauper)\b", title + " " + format_name, re.I)
+    if rpg and session and not magic:
+        reason = "non_mtg_rpg_session"
+    elif venue_match_status != "matched":
         reason = "venue_identity_conflict" if venue_match_status == "conflict" else "unmatched_venue"
     elif not scheduled_text:
         reason = "missing_schedule"

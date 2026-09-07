@@ -11,7 +11,7 @@ from refresh_wpn_cache import query_rows
 
 
 CACHE_ID = "los-alamitos-25mi"
-WPN_OBSERVATION_ADAPTER_VERSION = 4
+WPN_OBSERVATION_ADAPTER_VERSION = 5
 
 
 def sql_literal(value: str) -> str:
