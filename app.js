@@ -3320,7 +3320,11 @@ function storeScore(place) {
 
 function isPlaceHidden(placeId) {
   const place = store(placeId);
-  return !!state.personal.hidden[`place:${placeId}`] || (place ? isPlaceLowFit(place) : false);
+  return isPlaceExplicitlyHidden(placeId) || (place ? isPlaceLowFit(place) : false);
+}
+
+function isPlaceExplicitlyHidden(placeId) {
+  return !!state.personal.hidden[`place:${placeId}`];
 }
 
 function isEventHidden(event) {
@@ -3592,8 +3596,11 @@ function renderPlaces() {
   if (state.placeFilter === 'partial') places = places.filter((place) => place.researchStatus === 'partial');
   if (state.placeFilter === 'favorites') places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
   if (state.favoritesOnly) places = places.filter((place) => state.personal.favorites[`place:${place.id}`]);
-  const hiddenPlaces = places.filter((place) => isPlaceLowFit(place));
-  const visiblePlaces = places.filter((place) => !isPlaceLowFit(place));
+  // Personal exclusions and analyst low-fit calls share one recoverable drawer.
+  // A thumb-down must never remain in the ordinary list just because the
+  // analyst assessment itself is still positive.
+  const hiddenPlaces = places.filter((place) => isPlaceHidden(place.id));
+  const visiblePlaces = places.filter((place) => !isPlaceHidden(place.id));
   const showFavoriteGroup = !query && state.placeFilter === 'all' && !state.favoritesOnly;
   const topFavorites = showFavoriteGroup ? visiblePlaces.filter((place) => state.personal.favorites[`place:${place.id}`]) : [];
   const primaryPlaces = topFavorites.length ? visiblePlaces.filter((place) => !state.personal.favorites[`place:${place.id}`]) : visiblePlaces;
@@ -5184,6 +5191,7 @@ function toggleHidden(key) {
   savePersonal({ type: 'preference', entity: key, label: `${state.personal.hidden[key] ? (isEvent ? 'Hidden for now' : 'Deprioritized') : 'Restored'} ${key.split(':')[1]}` });
   void persistPreference(key);
   renderCurrentRoute();
+  if (isEvent && state.personal.hidden[key]) closeDrawer();
   toast(state.personal.hidden[key] ? (isEvent ? 'Hidden from normal event views' : 'Deprioritized in your view') : 'Restored to normal priority');
 }
 
@@ -5197,6 +5205,7 @@ function toggleEventDislike(key) {
   savePersonal({ type: 'rating', entity: key, label: `${disliked ? 'Removed dislike for' : 'Marked not-for-me'} ${key.split(':')[1]}` });
   void persistPreference(key);
   renderCurrentRoute();
+  if (!disliked) closeDrawer();
   toast(disliked ? 'Event dislike removed' : 'Marked as not for you');
 }
 

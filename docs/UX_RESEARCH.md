@@ -274,8 +274,18 @@ reasoning.
 ### Non-destructive control
 
 Allow the user to mute or deprioritize a store/series without deleting it. Muted
-records remain in All Events and research history. Favoriting, muting, rating, and
-personal notes are private overlays and never alter the underlying evidence.
+records must leave every ordinary discovery, recommendation, search, Today,
+Events, Places, Signals, and research-count surface immediately. They remain
+recoverable only in a clearly labeled, collapsed hidden/low-fit group or an
+explicit include-hidden mode, and remain preserved in archival research/activity
+history. An open event drawer should close when its event is newly hidden or
+thumbed down so the interface visibly completes the action. Favoriting, muting,
+rating, and personal notes are private overlays and never alter the underlying
+evidence.
+
+This is a shared presentation-boundary rule, not a screen-by-screen convention.
+New views must consume the common personal-suppression helpers instead of
+reimplementing preference checks locally.
 
 ### Background activity log
 

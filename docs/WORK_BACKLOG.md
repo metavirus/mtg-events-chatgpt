@@ -853,6 +853,11 @@ claims without reopening the whole packet.
   low-fit` group and removes those venues and their events from ordinary
   recommendation, highlight, and visible research-count surfaces. Underlying
   venue/event records remain recoverable.
+- September 9 regression hardening: the Places partition now uses the shared
+  personal/analyst suppression predicate, so a personally thumbed-down venue
+  cannot remain in the ordinary list merely because its analyst fit is positive.
+  Cross-surface UI verification covers ordinary Places, global search, the
+  recoverable hidden group, Events, Briefing, and event-drawer dismissal.
 - Reassess the top-level `Favorites` control only after real use. It currently
   acts as a visible global favorite-mode toggle where pages support it; future
   work should decide whether it becomes a stronger `My stuff` mode or remains a
