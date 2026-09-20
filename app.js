@@ -1785,26 +1785,19 @@ function renderSignals() {
   const nextUpcoming = nextBest ? null : upcoming.find((event) => !isSameLocalDay(event.occurrenceDate, new Date())) || null;
   const remainingToday = todayOptions.filter((event) => !nextBest || todayLeadKey(event) !== todayLeadKey(nextBest));
   const laterOptions = upcoming.filter((event) => !isSameLocalDay(event.occurrenceDate || parseDate(event.date || event.startDate), new Date()));
-  const thisWeek = [...remainingToday, ...laterOptions].slice(0, 5);
+  const thisWeek = [...remainingToday, ...laterOptions].filter(event => !nextUpcoming || todayLeadKey(event) !== todayLeadKey(nextUpcoming)).slice(0, 3);
   const digests = briefingChangeDigests();
   const attention = briefingAttentionSignals();
   const todos = personalTodoItems().slice(0, 2);
   const agents = briefingAgentStatuses();
-  const attentionCount = attention.length + todos.length;
-
-  if (summaryContainer) summaryContainer.innerHTML = `<div class="briefing-summary">
-    <span class="live-dot"></span>
-    <strong>${attentionCount ? `${attentionCount} item${attentionCount === 1 ? ' needs' : 's need'} attention` : 'Nothing urgent is waiting'}</strong>
-    <span>${digests.length ? `${digests.length} useful change${digests.length === 1 ? '' : 's'} since your last review` : 'No material changes since your last review'}</span>
-  </div>`;
+  const worthKnowing = briefingWorthKnowingItems(digests, communityDigestSignals(), attention);
+  if (summaryContainer) summaryContainer.innerHTML = '';
 
   container.innerHTML = `<div class="briefing-layout">
     ${nextBest ? briefingHero(nextBest) : briefingEmptyHero(nextUpcoming)}
-    ${favoritePlacesQuickAccess()}
-    ${briefingThisWeek(thisWeek)}
-    ${briefingDigestSection(digests)}
-    ${peopleAndPlansSection(communityDigestSignals().slice(0, 3))}
     ${briefingAttentionSection(attention, todos)}
+    ${favoritePlacesQuickAccess({ compact: true })}
+    ${worthKnowing.length || thisWeek.length ? `<div class="briefing-secondary">${briefingWorthKnowingSection(worthKnowing)}${briefingThisWeek(thisWeek)}</div>` : ''}
     ${briefingAgentStrip(agents)}
   </div>`;
 }
@@ -1879,7 +1872,7 @@ function briefingEmptyHero(nextUpcoming = null) {
         <p class="eyebrow mint">Today</p>
         <h2>No strong same-day option</h2>
         <p>The next useful match is ${escapeHtml(briefingEventWhen(nextUpcoming, true))}: ${escapeHtml(nextUpcoming.title)}.</p>
-        <div class="briefing-actions"><button class="primary-button" data-event-id="${escapeHtml(nextUpcoming.id)}" data-date="${dateKey(occurrence)}">Open next option</button><button class="soft-button" data-route="events">Browse today</button></div>
+        <div class="briefing-actions"><button class="primary-button" data-event-id="${escapeHtml(nextUpcoming.id)}" data-date="${dateKey(occurrence)}">Open next option</button><button class="soft-button" data-route="today">Browse today</button></div>
       </div>
     </section>`;
   }
@@ -1887,8 +1880,9 @@ function briefingEmptyHero(nextUpcoming = null) {
 }
 
 function briefingThisWeek(events) {
-  return `<section class="briefing-section briefing-week"><div class="briefing-section-head"><div><p class="eyebrow">This week</p><h2>Other good possibilities</h2></div><button class="text-button" data-route="events">All events →</button></div>
-    ${events.length ? `<div class="briefing-event-grid">${events.map(briefingEventCard).join('')}</div>` : '<p class="briefing-quiet">Nothing else clears the useful-shortlist threshold in the next two weeks.</p>'}
+  if (!events.length) return '';
+  return `<section class="briefing-section briefing-week"><div class="briefing-section-head"><h2>Coming up</h2><button class="text-button" data-route="events">All events →</button></div>
+    <div class="briefing-event-grid">${events.map(briefingEventCard).join('')}</div>
   </section>`;
 }
 
@@ -1898,7 +1892,7 @@ function briefingEventCard(event) {
   const occurrence = event.occurrenceDate || parseDate(event.date || event.startDate);
   return `<button class="briefing-event-card" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(occurrence)}">
     <span class="briefing-event-date"><strong>${occurrence.getDate()}</strong>${occurrence.toLocaleDateString(undefined, { month: 'short' })}</span>
-    <span class="briefing-event-copy"><small>${escapeHtml(organizer?.name || place?.name || 'Location to confirm')}</small><strong>${escapeHtml(event.title)}</strong><em>${escapeHtml(briefingEventReason(event))}</em></span>
+    <span class="briefing-event-copy"><small>${escapeHtml(organizer?.name || place?.name || 'Location to confirm')}</small><strong>${escapeHtml(event.title)}</strong><em>${escapeHtml(briefingEventWhen(event))}</em></span>
     <span class="briefing-arrow">→</span>
   </button>`;
 }
@@ -1922,7 +1916,48 @@ function briefingChangeDigests() {
   return [...groups.values()].map((group) => {
     group.events = [...new Map(group.events.map((event) => [`${event.id}:${event.date || event.startDate || ''}`, event])).values()];
     return group;
-  }).sort((a, b) => b.latest.localeCompare(a.latest) || b.events.length - a.events.length).slice(0, 3);
+  }).sort((a, b) => b.latest.localeCompare(a.latest) || b.events.length - a.events.length);
+}
+
+function briefingWorthKnowingItems(digests, conversations, attention = []) {
+  const attentionIds = new Set(attention.map(signal => signal.id));
+  const items = conversations.filter(signal => {
+    const event = signalRelatedEvent(signal) || communityEventForSignal(signal);
+    const placeId = signal.relatedEntityType === 'venue' ? signal.relatedEntityId : event?.storeId;
+    const group = signalSourceCommunity(signal);
+    const communityId = signal.relatedEntityType === 'community' ? signal.relatedEntityId : group?.id;
+    return !attentionIds.has(signal.id) && !isSignalRead(signal.id)
+      && !['dismissed', 'stale'].includes(signal.status)
+      && !(placeId && isPlaceHidden(placeId)) && !(event && isEventHidden(event))
+      && !state.personal.hidden?.[`community:${communityId}`]
+      && Number(state.personal.ratings?.[`community:${communityId}`]) !== 1
+      && isActionableCommunityDigestSignal(signal);
+  }).map(signal => {
+    const event = signalRelatedEvent(signal) || communityEventForSignal(signal);
+    const group = signalSourceCommunity(signal);
+    const favoriteHost = state.personal.favorites?.[`place:${signal.relatedEntityType === 'venue' ? signal.relatedEntityId : event?.storeId}`]
+      || state.personal.favorites?.[`community:${signal.relatedEntityType === 'community' ? signal.relatedEntityId : group?.id}`];
+    return { kind: 'conversation', value: signal, tier: Math.max(event ? eventFavoriteTier(event) : 0, favoriteHost ? 1 : 0), date: signal.observedAt || signal.capturedAt || '' };
+  });
+  for (const digest of digests) {
+    if (digest.owner.type !== 'community' && isPlaceHidden(digest.owner.id)) continue;
+    if (digest.owner.type === 'community' && (state.personal.hidden?.[`community:${digest.owner.id}`] || Number(state.personal.ratings?.[`community:${digest.owner.id}`]) === 1)) continue;
+    const events = digest.events.filter(event => !isEventHidden(event) && eventIsCurrentForSignals(event));
+    if (!events.length) continue;
+    items.push({ kind: 'digest', value: { ...digest, events }, tier: Math.max(...events.map(eventFavoriteTier)), date: digest.latest || '' });
+  }
+  const compare = (a, b) => b.tier - a.tier || String(b.date).localeCompare(String(a.date)) || (a.kind === b.kind ? 0 : a.kind === 'conversation' ? -1 : 1);
+  items.sort(compare);
+  const selected = items.slice(0, 3);
+  // Event-ingest volume must not crowd every community invitation off home.
+  const conversation = items.find(item => item.kind === 'conversation');
+  if (conversation && !selected.some(item => item.kind === 'conversation')) selected.splice(2, 1, conversation);
+  return selected.sort(compare);
+}
+
+function briefingWorthKnowingSection(items) {
+  if (!items.length) return '';
+  return `<section class="briefing-section briefing-worth-knowing"><div class="briefing-section-head"><h2>Worth knowing</h2><div class="briefing-feed-links"><button class="text-button" data-route="communities">Conversations →</button><button class="text-button" data-route="changes">Updates →</button></div></div><div class="briefing-worth-knowing-list">${items.map(item => item.kind === 'conversation' ? peopleAndPlansCard(item.value) : briefingDigestCard(item.value)).join('')}</div></section>`;
 }
 
 function briefingDigestSection(digests) {
@@ -1958,6 +1993,7 @@ function briefingAttentionSignals() {
 }
 
 function briefingAttentionSection(signals, todos) {
+  if (!signals.length && !todos.length) return '';
   const cards = [
     ...todos.map((item) => `<article class="briefing-attention-card personal"><span class="status-chip violet">From you</span><div><strong>${escapeHtml(item.entity?.label || item.label || 'Personal follow-up')}</strong><p>${escapeHtml(item.reason)}</p></div>${item.entity?.type === 'place' ? `<button class="soft-button" data-place-id="${escapeHtml(item.entity.id)}">Review place</button>` : item.entity?.type === 'community' ? `<button class="soft-button" data-community-id="${escapeHtml(item.entity.id)}">Review community</button>` : item.entity?.type === 'event' ? `<button class="soft-button" data-event-id="${escapeHtml(item.entity.id)}">Open event</button>` : ''}</article>`),
     ...signals.map((signal) => `<article class="briefing-attention-card"><span class="status-chip ${signalTone(signal)}">${escapeHtml(signalCategoryLabel(signal.category))}</span><div><strong>${escapeHtml(signal.summary)}</strong>${venueHoursProposalMarkup(signal, true) || `<p>${escapeHtml(truncate(signal.details || signal.suggestedAction || '', 180))}</p>`}</div><div class="briefing-attention-actions">${venueHoursReviewActions(signal) || `<button class="soft-button" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">Open</button><button class="text-button" data-action="mark-signal-read" data-signal-id="${escapeHtml(signal.id)}">Dismiss</button>`}</div></article>`)
@@ -1975,7 +2011,9 @@ function briefingAgentStatuses() {
 }
 
 function briefingAgentStrip(agents) {
-  return `<section class="briefing-agent-strip"><span>Daily surveyors</span>${agents.map((agent) => `<button data-route="${escapeHtml(agent.route)}"><i class="${escapeHtml(agent.status)}"></i><strong>${escapeHtml(agent.label)}</strong><small>${escapeHtml(agent.lastRunAt ? formatRelativeDate(agent.lastRunAt) : agent.status)}</small></button>`).join('')}<button class="briefing-agent-details" data-route="changes">Details →</button></section>`;
+  const issues = agents.filter(agent => agent.status !== 'active');
+  const label = issues.length ? issues.map(agent => `${agent.label}: ${agent.status === 'attention' ? 'needs attention' : agent.status === 'stale' ? 'out of date' : 'status unknown'}`).join(' · ') : agents.length ? 'Daily monitoring running' : 'Monitoring status unavailable';
+  return `<footer class="briefing-agent-strip"><span>${escapeHtml(label)}</span><button class="briefing-agent-details" data-route="changes">Monitoring details →</button></footer>`;
 }
 
 function signalIsCurrentForHome(signal) {
@@ -2883,10 +2921,13 @@ function todayQuickEvent(event) {
   return `<article class="today-quick-event"><div><strong class="today-quick-time">${escapeHtml(eventTimeLabel(event))}</strong><button class="text-button" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}">${escapeHtml(event.title)}</button><p>${place ? `<button class="place-inline" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">${escapeHtml(place.name)} · ${distanceLabel(place)}</button>` : escapeHtml(eventHostLabel(event, place))}</p><small>${escapeHtml(formatShort(event))} · ${escapeHtml(fee)} · ${escapeHtml(todayAvailability(event).label)}</small>${event.alternateListings?.length ? `<details><summary>${event.alternateListings.length + 1} matching listings</summary>${event.alternateListings.map(item => `<button class="text-button" data-event-id="${escapeHtml(item.id)}" data-date="${dateKey(item.occurrenceDate)}">View other listing</button>`).join('')}</details>` : ''}</div><button class="soft-button" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}">Details →</button></article>`;
 }
 
-function favoritePlacesQuickAccess() {
-  const places = DATA.stores.filter(place => state.personal.favorites?.[`place:${place.id}`] && !state.personal.hidden?.[`place:${place.id}`]);
+function favoritePlacesQuickAccess({ compact = false } = {}) {
+  const places = favoritePlaces();
   if (!places.length) return '';
-  return `<section class="favorite-quick-section"><div class="section-title-row"><h2>Your places today</h2><button class="text-button" data-route="places">All places →</button></div><div class="favorite-quick-grid">${places.map(place => `<article class="favorite-quick-card"><button class="favorite-quick-name" data-place-id="${escapeHtml(place.id)}">${placeAvatar(place)}<span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)}</small></span></button>${placeHoursChip(place)}<a class="soft-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a></article>`).join('')}</div></section>`;
+  if (compact) places.sort((a, b) => storeScore(b) - storeScore(a) || compareText(a.name, b.name));
+  const card = place => `<article class="favorite-quick-card"><button class="favorite-quick-name" data-place-id="${escapeHtml(place.id)}">${placeAvatar(place)}<span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)}</small></span></button>${placeHoursChip(place)}<a class="${compact ? 'text-button' : 'soft-button'}" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a></article>`;
+  const visible = compact ? places.slice(0, 3) : places;
+  return `<section class="favorite-quick-section${compact ? ' compact' : ''}"><div class="section-title-row"><h2>Your places today</h2><button class="text-button" data-route="places">All places →</button></div><div class="favorite-quick-grid">${visible.map(card).join('')}</div>${compact && places.length > 3 ? `<details class="favorite-quick-more"><summary>All ${places.length} favorites</summary><div class="favorite-quick-grid">${places.slice(3).map(card).join('')}</div></details>` : ''}</section>`;
 }
 
 function renderLegacyCalendar() {

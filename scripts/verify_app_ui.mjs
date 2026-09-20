@@ -123,6 +123,150 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'compact-briefing') {
+      page.setDefaultTimeout(15000);
+      page.setDefaultNavigationTimeout(15000);
+      await page.clock.setFixedTime(new Date('2026-09-19T09:00:00-07:00'));
+      await page.goto(target, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
+      // Representative morning with live-loaded records and the user's known
+      // favorite trio, in this isolated browser only. No account state is saved.
+      await page.evaluate(() => {
+        const ids = ['finch-sparrow', 'collectors-lounge-cypress', 'spellhold-games'];
+        if (ids.some(id => !store(id))) throw new Error('Representative favorite store ID not found');
+        state.personal.favorites = Object.fromEntries(ids.map(id => [`place:${id}`,true]));
+        navigate('signals');
+      });
+      for (const width of [1400, 390]) {
+        await page.setViewportSize({width,height:844});
+        await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
+        await page.screenshot({path:`work/compact-live-top-${width}.png`,animations:'disabled'});
+        const lower = page.locator('#signalsContent .briefing-secondary');
+        if (await lower.count()) await lower.scrollIntoViewIfNeeded();
+        await page.screenshot({path:`work/compact-live-lower-${width}.png`,animations:'disabled'});
+      }
+      const fixture = await page.evaluate(() => {
+        // This browser context is disposable. All fixtures stay in memory; no
+        // preference actions or canonical writes are issued by this scenario.
+        const places = DATA.stores.filter(place => !isPlaceLowFit(place)).slice(0, 7);
+        if (places.length < 7) throw new Error('Need seven eligible stores for compact layout fixtures');
+        state.personal.favorites = Object.fromEntries(places.slice(0, 6).map(place => [`place:${place.id}`, true]));
+        state.personal.hidden = {[`place:${places[5].id}`]:true};
+        state.personal.ratings = {};
+        state.personal.interested = {};
+        DATA.events = Array.from({length:8}, (_, index) => ({
+          id:`compact-test-${index}`, seriesId:`compact-test-${index}`, title:`Casual Commander test ${index}`,
+          storeId:places[index === 6 ? 5 : index % 5].id, status:'active', format:'Commander',
+          date:dateKey(addDays(new Date(), index < 3 ? 0 : index - 2)), startTime:'18:00',
+          confidence:'high', bracket:'2', details:'Casual Commander open play', occurrenceStatus:'confirmed',
+        }));
+        state.personal.ratings['event:compact-test-7'] = 1;
+        const digests = places.slice(0, 5).map((place, index) => ({
+          owner:{type:'venue', id:place.id, name:place.name}, latest:new Date().toISOString(),
+          events:[DATA.events[index]], changeIds:[`compact-change-${index}`],
+        }));
+        const conversations = [0, 1].map(index => ({
+          id:`conversation:compact-${index}`, relatedEntityType:'venue', relatedEntityId:places[index].id,
+          summary:`Anyone joining Commander ${index}?`, details:'Looking for one more player tonight.',
+          category:'community_activity', status:'new', observedAt:new Date().toISOString(),
+          evidenceUrl:`https://discord.com/channels/compact-test/${index}`,
+        }));
+        window.compactFixture = {digests, conversations};
+        briefingChangeDigests = () => window.compactFixture.digests;
+        communityDigestSignals = () => window.compactFixture.conversations;
+        briefingAttentionSignals = () => [];
+        personalTodoItems = () => [];
+        briefingAgentStatuses = () => [{id:'wpn',label:'WPN',status:'stale',route:'changes',lastRunAt:'2026-09-01T00:00:00Z'}];
+        navigate('signals');
+        return {hiddenPlace:places[5].id, visibleFavorites:5};
+      });
+      const selectorChecks = await page.evaluate(hiddenPlace => {
+        const favorites = window.compactFixture.digests;
+        const otherPlace = DATA.stores.find(place => !state.personal.favorites[`place:${place.id}`] && !isPlaceHidden(place.id));
+        const other = {...favorites[0], owner:{type:'venue',id:otherPlace.id,name:otherPlace.name}, events:[{...DATA.events[0],id:'compact-other',seriesId:'compact-other',storeId:otherPlace.id}], latest:'2026-09-19T16:01:00Z'};
+        const hidden = {...favorites[0], owner:{type:'venue',id:hiddenPlace,name:'Hidden host'},events:[DATA.events[6]]};
+        const hiddenConversation = {...window.compactFixture.conversations[0],id:'conversation:hidden-host',relatedEntityId:hiddenPlace};
+        const selected = briefingWorthKnowingItems([other, ...favorites, hidden], [...window.compactFixture.conversations, hiddenConversation]);
+        state.personal.favorites['event:compact-other'] = true;
+        const favoriteEventFirst = briefingWorthKnowingItems([other, ...favorites],window.compactFixture.conversations)[0]?.value.owner?.id === otherPlace.id;
+        delete state.personal.favorites['event:compact-other'];
+        const attentionDuplicate = briefingWorthKnowingItems(favorites,window.compactFixture.conversations,[window.compactFixture.conversations[0]])
+          .some(item => item.kind === 'conversation' && item.value.id === window.compactFixture.conversations[0].id);
+        const ordinaryFavoriteCount = (favoritePlacesQuickAccess().match(/class="favorite-quick-card"/g) || []).length;
+        return {
+          hiddenLeak:selected.some(item => item.value.owner?.id === hiddenPlace || item.value.relatedEntityId === hiddenPlace),
+          favoritesFirst:selected.every(item => item.value.owner?.id !== otherPlace.id),
+          favoriteEventFirst, attentionDuplicate,
+          ordinaryFavoriteCount,
+        };
+      }, fixture.hiddenPlace);
+      if (selectorChecks.hiddenLeak || !selectorChecks.favoritesFirst || !selectorChecks.favoriteEventFirst || selectorChecks.attentionDuplicate) throw new Error(`Merged-feed preference regression: ${JSON.stringify(selectorChecks)}`);
+      if (selectorChecks.ordinaryFavoriteCount !== fixture.visibleFavorites) throw new Error('Today default favorite list was compacted');
+      pass('Merged selection prioritizes favorites and excludes hidden hosts; Today retains its full favorite list');
+      if ((await page.locator('#signalsSummary').innerText()).trim()) throw new Error('Redundant summary strip remains');
+      if (await page.locator('#signalsContent .briefing-attention').count()) throw new Error('Empty attention section remains');
+      if (await page.locator('#signalsContent .briefing-digest, #signalsContent .people-and-plans').count()) throw new Error('Duplicate standalone lower feeds remain');
+      const upcoming = page.locator('#signalsContent .briefing-event-card');
+      if (await upcoming.count() > 3) throw new Error('More than three coming-up cards');
+      const heroId = await page.locator('#signalsContent .briefing-hero [data-event-id]').first().getAttribute('data-event-id');
+      if (await upcoming.filter({has:page.locator(`[data-event-id="${heroId}"]`)}).count()
+        || await page.locator(`#signalsContent .briefing-event-card[data-event-id="${heroId}"]`).count()) throw new Error('Hero repeated in coming-up');
+      if (await page.locator('#signalsContent [data-event-id="compact-test-6"], #signalsContent [data-event-id="compact-test-7"]').count()) throw new Error('Hidden place or disliked event leaked into Briefing');
+      const feed = page.locator('#signalsContent .briefing-worth-knowing');
+      if (await feed.locator('.briefing-digest-card, .people-plan-card').count() > 3) throw new Error('Combined feed exceeds three cards');
+      if (!await feed.locator('.people-plan-card').count()) throw new Error('Community conversation crowded out by changes');
+      if (!await feed.locator('a[href^="https://discord.com/"]').count()
+        || !await feed.locator('[data-action="mark-signal-read"]').count()) throw new Error('Community source or dismiss action lost');
+      const favorites = page.locator('#signalsContent .favorite-quick-section.compact');
+      if (await favorites.locator('.favorite-quick-card:visible').count() > 3) throw new Error('Too many favorite cards initially visible');
+      if (await favorites.locator(`[data-place-id="${fixture.hiddenPlace}"]`).count()) throw new Error('Hidden favorite is still in quick access');
+      const allFavorites = favorites.locator('summary').filter({hasText:`All ${fixture.visibleFavorites} favorites`});
+      await allFavorites.click();
+      if (await favorites.locator('.favorite-quick-card:visible').count() !== fixture.visibleFavorites) throw new Error('Expanded favorite list incomplete');
+      for (const card of await favorites.locator('.favorite-quick-card:visible').all()) {
+        if (!await card.locator('a[href]').count() || !await card.locator('.hours-popover').count()) throw new Error('Favorite missing directions or hours access');
+      }
+      await allFavorites.click();
+      assertText(await page.locator('.briefing-agent-strip').innerText(), 'out of date', 'honest stale monitor status');
+      pass('Briefing is capped, preserves community actions, excludes hidden/disliked events, expands favorites, and reports stale monitoring');
+      for (const width of [1400, 390]) {
+        await page.setViewportSize({width,height:844});
+        if (await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1)) throw new Error(`Briefing overflows at ${width}px`);
+        await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
+        await page.screenshot({path:`work/compact-briefing-${width}.png`,animations:'disabled'});
+        await feed.scrollIntoViewIfNeeded();
+        await page.screenshot({path:`work/compact-briefing-feed-${width}.png`,animations:'disabled'});
+        const hours = favorites.locator('.hours-popover summary').first();
+        await hours.click();
+        await favorites.locator('.hours-popover[open]').first().waitFor({state:'visible'});
+        await hours.click();
+        pass(`Compact Briefing fits ${width}px; favorite hours expand`);
+      }
+      await page.evaluate(() => {
+        briefingAttentionSignals = () => [{
+          ...window.compactFixture.conversations[0], id:'compact-attention',
+          category:'operational', summary:'Confirm a temporary closure', status:'needs_followup',
+        }];
+        renderSignals();
+      });
+      const attentionPlacement = await page.evaluate(() => {
+        const attention = document.querySelector('#signalsContent .briefing-attention');
+        const feed = document.querySelector('#signalsContent .briefing-worth-knowing');
+        return !!attention && !!(attention.compareDocumentPosition(feed) & Node.DOCUMENT_POSITION_FOLLOWING);
+      });
+      if (!attentionPlacement) throw new Error('Real decision missing or buried below lower feed');
+      pass('Real decision remains visible before the lower feed');
+      await page.evaluate(() => {
+        window.compactFixture.digests = [];
+        window.compactFixture.conversations = [];
+        DATA.events = [];
+        state.personal.favorites = {};
+        briefingAttentionSignals = () => [];
+        renderSignals();
+      });
+      if (await page.locator('#signalsContent .briefing-worth-knowing, #signalsContent .briefing-week, #signalsContent .briefing-attention, #signalsContent .favorite-quick-section').count()) throw new Error('Empty sections occupy Briefing');
+      assertText(await page.locator('#signalsContent').innerText(), 'No strong same-day option', 'honest empty hero');
+      pass('Quiet day keeps honest hero and removes empty lower sections');
     } else if (scenario === 'preliminary-usability') {
       await page.goto(target, {waitUntil:'domcontentloaded'});
       await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
