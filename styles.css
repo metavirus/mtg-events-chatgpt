@@ -649,6 +649,10 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .occurrence-row > span:nth-child(2) { display: flex; flex-direction: column; min-width: 0; }
 .occurrence-row > span:nth-child(2) strong { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .occurrence-row > span:nth-child(2) small { color: var(--muted); font-size: 8px; }
+.quick-store-events .occurrence-row { grid-template-columns: minmax(0, 1fr); }
+.quick-store-events .occurrence-row > span { display: flex; flex-direction: column; min-width: 0; gap: 4px; }
+.quick-store-events .occurrence-row strong { font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; }
+.quick-store-events .occurrence-row small { font-size: 11px; line-height: 1.4; color: var(--muted); }
 .source-health-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 13px; }
 .source-health-summary > div { padding: 11px; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.018); display: flex; flex-direction: column; }
 .source-health-summary span { color: var(--muted); font-size: 8px; text-transform: uppercase; }

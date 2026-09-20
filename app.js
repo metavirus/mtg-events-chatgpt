@@ -1567,8 +1567,9 @@ function navigate(route, options = {}) {
     markChangesRead();
     updateChrome();
   }
-  document.querySelector('.workspace').scrollTo?.(0, 0);
-  window.scrollTo(0, 0);
+  // Route changes are new pages, not animated in-page anchor jumps.
+  document.querySelector('.workspace').scrollTo?.({ top: 0, left: 0, behavior: 'instant' });
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 }
 
 function navigateBack() {
@@ -3769,10 +3770,25 @@ function peopleAndPlansSection(signals) {
   return `<section class="briefing-section people-and-plans"><div class="section-title-row"><div><p class="eyebrow coral">People &amp; plans</p><h2>Worth catching up on</h2></div><button class="text-button" data-route="communities">All conversations →</button></div>${signals.length ? `<div class="people-plan-grid">${signals.map(peopleAndPlansCard).join('')}</div>` : '<p class="briefing-quiet">No new conversations to catch up on. Quiet days are normal.</p>'}</section>`;
 }
 
+function communityConversationExcerpt(details) {
+  const excerpt = String(details || '').replace(/^(?:Possible event update|Useful Discord activity) from [^\r\n]*?#[^:\r\n]+:\s*/i, '').trim();
+  // Discord's captured accessibility text includes an author, a short timestamp,
+  // and an expanded timestamp before the message. Remove only that known header;
+  // an unfamiliar capture must retain its content rather than erase the message.
+  const clock = '\\d{1,2}:\\d{2}\\s*[AP]M';
+  const weekday = '(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)';
+  const month = '(?:January|February|March|April|May|June|July|August|September|October|November|December)';
+  const absoluteTime = `${weekday}, ${month} \\d{1,2}, \\d{4} at ${clock}`;
+  const shortTime = `(?:(?:Today|Yesterday) at )?${clock}`;
+  const header = new RegExp(`^[^\\r\\n]+?\\s+—\\s+(?:${shortTime}\\s+)?${absoluteTime}\\s+`, 'i');
+  const message = excerpt.replace(header, '').trim();
+  return message || excerpt;
+}
+
 function peopleAndPlansCard(signal) {
   const place = signal.relatedEntityType === 'venue' ? store(signal.relatedEntityId) : null;
   const group = signalSourceCommunity(signal) || (signal.relatedEntityType === 'community' ? community(signal.relatedEntityId) : null);
-  const excerpt = signal.id.startsWith('conversation:') ? String(signal.details || '').replace(/^.*?#[^:]+:\s*/, '').replace(/, Server Tag: (\S+) \1\b/g, '').replace(/\s+—\s+(?:\d|Yesterday|Today).*$/s, '').trim() : signal.details;
+  const excerpt = signal.id.startsWith('conversation:') ? communityConversationExcerpt(signal.details) : signal.details;
   const url = signal.evidenceUrl || source(signal.sourceId)?.url;
   return `<article class="people-plan-card"><div class="section-title-row"><button class="text-button" ${group ? `data-community-id="${escapeHtml(group.id)}"` : place ? `data-place-id="${escapeHtml(place.id)}"` : `data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}"`}>${escapeHtml(group?.name || place?.name || 'Community')}</button><small>${escapeHtml(formatFreshnessDate(signal.observedAt || signal.capturedAt))}</small></div><button class="people-plan-title" data-action="open-signal" data-signal-id="${escapeHtml(signal.id)}">${escapeHtml(signal.summary)}</button><p>${escapeHtml(truncate(excerpt || 'Open the conversation for context.', 180))}</p><div class="community-chatter-actions">${/^https?:\/\//i.test(url || '') ? `<a class="text-button" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Read conversation ↗</a>` : ''}<button class="text-button" data-action="mark-signal-read" data-signal-id="${escapeHtml(signal.id)}">Dismiss</button></div></article>`;
 }
@@ -4839,7 +4855,7 @@ function openPlaceDrawer(id) {
   if (!place) return;
   const events = buildOccurrences(startOfDay(new Date()), endOfDay(addDays(new Date(), 14)), false).filter(event => event.storeId === id && !isEventHidden(event) && (dateKey(event.occurrenceDate) !== dateKey(new Date()) || todayAvailability(event).group !== 'earlier'));
   const note = state.personal.notes?.[`place:${id}`];
-  openDrawer(`${placeAvatar(place, 'large')}<h1 id="drawerTitle">${escapeHtml(place.name)}</h1><p class="drawer-lead">${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p><div class="quick-store-hours">${placeHoursChip(place)}</div><div class="drawer-action-grid"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button" data-place-id="${place.id}">Open full profile</button></div>${note ? `<section class="drawer-section"><h2>Your note</h2><p>${escapeHtml(note)}</p></section>` : ''}<section class="drawer-section"><h2>Next events</h2><div class="series-list">${events.slice(0, 6).map(event => `<button class="occurrence-row" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(briefingEventWhen(event))}</small></span></button>`).join('') || '<p>No upcoming events listed in the next two weeks.</p>'}</div></section>`);
+  openDrawer(`${placeAvatar(place, 'large')}<h1 id="drawerTitle">${escapeHtml(place.name)}</h1><p class="drawer-lead">${escapeHtml(place.city)} · ${distanceLabel(place, true)} from Los Alamitos</p><div class="quick-store-hours">${placeHoursChip(place)}</div><div class="drawer-action-grid"><a class="primary-button" href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a><button class="soft-button" data-place-id="${place.id}">Open full profile</button></div>${note ? `<section class="drawer-section"><h2>Your note</h2><p>${escapeHtml(note)}</p></section>` : ''}<section class="drawer-section"><h2>Next events</h2><div class="series-list quick-store-events">${events.slice(0, 6).map(event => `<button class="occurrence-row" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}"><span><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(briefingEventWhen(event))}</small></span></button>`).join('') || '<p>No upcoming events listed in the next two weeks.</p>'}</div></section>`);
 }
 
 function communityProfileData(community) {

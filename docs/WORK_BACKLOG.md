@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-09-07
+Last updated: 2026-09-19
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -13,6 +13,17 @@ Use it for:
 - process improvements that protect continuity.
 
 ## Recently closed / operational baseline
+
+- September 19 preliminary usability repairs: route changes and Back reset
+  scroll immediately, quick-store Next events use the full drawer width, and
+  community cards retain message text after stripping recognized Discord
+  author/timestamp headers. Desktop/mobile regression: `preliminary-usability`;
+  excerpt regression: `scripts/test_community_excerpt.mjs`. No personal or
+  canonical research data changed. Landing-page simplification remains a
+  separate follow-up: retain the useful current recommendation, compress
+  favorite-store shortcuts, and prioritize a small set of timely community
+  findings over empty sections and operational noise. Also follow up on
+  expired invitations and closed-store drop-in recommendations.
 
 - September 7 documentation/readiness checkpoint: `main` is cleanly deployed
   through GitHub Pages and the current text-integrity, daily WPN/social, and

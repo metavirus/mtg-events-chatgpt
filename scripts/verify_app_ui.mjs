@@ -123,6 +123,58 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'preliminary-usability') {
+      await page.goto(target, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
+      for (const width of [1400, 390]) {
+        await page.setViewportSize({width, height:844});
+        for (const route of ['today', 'events', 'places', 'signals']) {
+          const scroll = await page.evaluate(route => {
+            window.scrollTo({top:600, behavior:'instant'});
+            const before = window.scrollY;
+            navigate(route);
+            return {before, after:window.scrollY};
+          }, route);
+          if (scroll.after > 1) throw new Error(`${width}px route ${route} retained scroll: ${JSON.stringify(scroll)}`);
+        }
+        const backScroll = await page.evaluate(() => {
+          window.scrollTo({top:600, behavior:'instant'});
+          navigateBack();
+          return window.scrollY;
+        });
+        if (backScroll > 1) throw new Error('Back navigation retained scroll');
+        pass(`Page changes and Back start at top immediately at ${width}px`);
+        await page.evaluate(() => openPlaceDrawer('finch-sparrow'));
+        const rows = page.locator('#drawerContent .occurrence-row');
+        await rows.first().waitFor();
+        const dimensions = await rows.evaluateAll(nodes => nodes.map(row => ({
+          row:row.clientWidth, content:row.querySelector('span').getBoundingClientRect().width,
+          overflow:row.scrollWidth > row.clientWidth + 1,
+        })));
+        if (dimensions.some(d => d.content < d.row * .8 || d.overflow)) throw new Error(`Cramped event rows: ${JSON.stringify(dimensions)}`);
+        await rows.first().scrollIntoViewIfNeeded();
+        await page.screenshot({path:`work/preliminary-store-${width}.png`, animations:'disabled'});
+        const title = await rows.first().locator('strong').innerText();
+        await rows.first().click();
+        await page.locator('#drawerTitle').filter({hasText:title}).waitFor();
+        await page.keyboard.press('Escape');
+        pass(`Quick-store events use full row width and open event details at ${width}px`);
+      }
+      await page.evaluate(() => {
+        navigate('signals');
+        // Local DOM fixture only: no personal or canonical writes.
+        document.querySelector('#signalsContent').innerHTML = peopleAndPlansCard({
+          id:'conversation:ui-test', relatedEntityType:'venue', relatedEntityId:'finch-sparrow',
+          summary:'Players looking for a Commander game', capturedAt:new Date().toISOString(),
+          details:"Possible event update from Finch #commander: Player — 5:24 AM Tuesday, September 15, 2026 at 5:24 AM Anyone down for Commander tonight?",
+          evidenceUrl:'https://discord.com/',
+        });
+      });
+      const card = page.locator('.people-plan-card');
+      assertText(await card.locator('p').innerText(), 'Anyone down for Commander tonight?', 'actual message body');
+      if (await card.locator('a').getAttribute('href') !== 'https://discord.com/') throw new Error('Conversation link lost');
+      await page.screenshot({path:'work/preliminary-community-mobile.png', animations:'disabled'});
+      pass('Community card shows actual message and retains source link');
     } else if (scenario === 'research-sources') {
       await page.goto(target, {waitUntil:'domcontentloaded'});
       await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.sources.length > 0);
