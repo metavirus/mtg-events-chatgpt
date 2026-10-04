@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-09-19
+Last updated: 2026-10-04
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -13,6 +13,15 @@ Use it for:
 - process improvements that protect continuity.
 
 ## Recently closed / operational baseline
+
+- October 4 quick documentation audit: README, session bootstrap, and current
+  frontier reconciled with app commits `08403bb`, `74ca88a`, and `b704018`.
+  Historical September 7 counts remain dated snapshots. The latest October 4
+  WPN/social and October 3 Discord workflow runs succeeded; readiness passed.
+  No new venue-count, hours-completeness, or source-quality audit was performed.
+  Next observed product work: expire unlinked invitations, exclude closed-store
+  drop-in suggestions, and distinguish informational opportunities from actual
+  decisions in Needs attention.
 
 - September 19 preliminary usability repairs: route changes and Back reset
   scroll immediately, quick-store Next events use the full drawer width, and
@@ -798,9 +807,10 @@ claims without reopening the whole packet.
   series groups and only independently actionable Signals.
 - Show temporary `New` markers and concise changed-field summaries on affected
   event groups instead of repeating the entire event description.
-- Ensure hidden events stay out of default Today, Events, Signals,
-  recommendations, and periodic review surveys, while remaining recoverable
-  through the collapsed hidden group or an explicit include-hidden control.
+- Completed at `08403bb`: hidden/thumbed-down items stay out of ordinary app
+  planning surfaces and remain recoverable. Periodic research selection still
+  uses the documented personal-state selectors; investigate a concrete leak
+  rather than restarting the suppression implementation.
 
 ### User-facing features
 
@@ -808,8 +818,9 @@ claims without reopening the whole packet.
   from observed use: sparse signal criteria, click-through quality, read/unread
   behavior, and whether Signals / Fresh Signals deserve a stronger default
   surface without becoming an inbox.
-- Calendar-first default view with scrolling upcoming events.
-- Weekly and monthly calendar modes.
+- Completed / superseded: Briefing is the default daily home, Today covers
+  same-day planning, and Events retains scrolling future events.
+- Completed: weekly and monthly calendar modes.
 - Parked design question: whether Events should gain a separate "Top picks this
   week" surface above the calendar. The user deliberately deferred this while
   Week/Month grouping and scanability are evaluated; do not add it by default.

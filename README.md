@@ -163,6 +163,13 @@ the task explicitly calls for refreshing that recovery snapshot.
 
 ## Current status
 
+Briefing is the daily landing page: a current recommendation, compact favorite
+store hours/directions, up to three useful community/event changes, and a short
+Coming up list. Today is the same-day planner; Events covers future browsing;
+Places is the store reference. Hidden or thumbed-down items remain recoverable
+and are excluded from ordinary recommendations. Current next work is recorded
+in `CURRENT_FRONTIER.md` and `docs/WORK_BACKLOG.md`.
+
 This is a deployed personal-use research app backed by Supabase as the default
 read source. Controlled Supabase research writes are operational, and JSON is
 only an on-demand generated recovery/debug fallback. The cloud daily surveyor is

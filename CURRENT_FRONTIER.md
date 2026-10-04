@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-09-07
+Updated: 2026-10-04
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -24,18 +24,30 @@ the exact durable state and next action, then hand off from that checkpoint.
 ## Where we are now
 
 - The deployed GitHub Pages app is healthy on `main` at
-  `https://metavirus.github.io/mtg-events-chatgpt/`. The latest production,
-  text-integrity, WPN/social, and Discord workflows all passed on September 7.
-  Live Supabase status reports 62 open venues, 60 reviewed/deepened venues,
+  `https://metavirus.github.io/mtg-events-chatgpt/`. The latest app changes are
+  `74ca88a` (navigation, quick-store rows, conversation excerpts) and `b704018`
+  (compact Briefing), published September 19. The October 4 documentation audit
+  confirmed the October 4 WPN/social and October 3 Discord runs succeeded;
+  readiness also passed. Workflow success is not a fresh audit of every source.
+  The September 7 Supabase snapshot reported 62 open venues, 60 reviewed/deepened venues,
   537 active event series, and 935 future non-cancelled occurrences.
 - Briefing is now the glanceable daily home: it prioritizes actionable changes,
   same-day options, favorite venues/events, and useful community conversation.
   Today is a focused same-day planner rather than a duplicate of the full Events
   catalog; elapsed starts no longer compete with live choices.
+- September 19 Briefing simplification is complete: three favorite-store
+  shortcuts upfront with hours/directions and expandable remaining favorites;
+  at most three combined Worth knowing items, with favorite priority and room
+  for community conversation; three Coming up options; empty panels removed.
+  Monitoring lives in a quiet footer, and attention items retain their actions.
+  Desktop/mobile checks passed on the published build. Personal exclusions
+  across Places, Events, search, and Briefing were completed at `08403bb`.
+  Do not repeat these layout or suppression implementations.
 - Places is the practical store reference surface. Favorite venues lead, hours
   and directions are directly accessible, hours badges stay compact at narrow
-  widths, and 61 of 62 venues have complete weekly hours. Game Chest Irvine is
-  the one explicit unresolved source conflict and must remain labeled as such.
+  widths. The September 7 audit recorded complete weekly hours for 61 of 62
+  venues and an unresolved Game Chest Irvine source conflict. Recheck live
+  state before treating those counts or that conflict as current.
 - Global search is action-oriented: venue matches expose profile, hours,
   directions, and upcoming events; saved events and events at favorite hosts
   rank first. Community conversation is surfaced in Briefing rather than left
@@ -44,7 +56,7 @@ the exact durable state and next action, then hand off from that checkpoint.
   categories are explained and clickable, dated guidance was retired, explicit
   non-Magic RPG sessions are excluded without suppressing crossover Magic, and
   uncertain event times use consistent honest labels.
-- Daily cloud surveying is operational. The September 7 Discord run checked 27
+- Daily cloud surveying is operational. As a historical proof, the September 7 Discord run checked 27
   routes and saved 9 entity updates (3 useful, 24 quiet, no attention items).
   The WPN/social run also completed successfully; the three visible status lanes
   remain Discord, WPN/EventLink, and Instagram/Facebook.
@@ -467,10 +479,10 @@ Canonical operating details:
 - app changes: `docs/CHANGE_CONTROL.md`
 - current work queue: `docs/WORK_BACKLOG.md`
 
-## Next safe lanes
+## Completed event-ingest baseline
 
-0. Continue the source-neutral event-ingest slice of
-   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` from the proven deterministic
+The source-neutral event-ingest slice of
+   `docs/CANONICAL_EVENT_INGEST_AGENT_DESIGN.md` has a proven deterministic
    creator. Exact attachment and collision-free new-series creation are complete
    and idempotent. Grouped Updates and explicit-attention Signals are complete.
    The first non-WPN adapter is now proven: clean confirmed standalone/finite
@@ -489,9 +501,11 @@ Canonical operating details:
 
 ## Immediate next work
 
-1. Treat the September 6 interface audit as closed; do not replay its five
-   completed items. New product work should come from observed friction in the
-   deployed app.
+1. The September 6 audit and September 19 preliminary/compact Briefing work are
+   closed. The next observed issues are expired unlinked community invitations,
+   closed-store drop-in recommendations, and deciding which informational
+   opportunities actually warrant the Needs attention panel. These are
+   content-selection follow-ups, not another landing-page layout pass.
 2. Discord landscape preparation is closed. All 22 mapped or route-captured
    profiles have terminal `preparatory_survey_completed_at` state; 27 proven
    routes are active in the cloud plan and the rest are explicitly paused,
