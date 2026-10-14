@@ -163,9 +163,9 @@ the task explicitly calls for refreshing that recovery snapshot.
 
 ## Current status
 
-Briefing is the daily landing page: a current recommendation, compact favorite
-store hours/directions, up to three useful community/event changes, and a short
-Coming up list. Today is the same-day planner; Events covers future browsing;
+Today is the landing page: same-day choices with store logos, opening/closing
+hours, time until close, and directions on the event cards. Briefing contains
+community/event changes and favorite-store shortcuts. Events covers future browsing;
 Places is the store reference. Hidden or thumbed-down items remain recoverable
 and are excluded from ordinary recommendations. Current next work is recorded
 in `CURRENT_FRONTIER.md` and `docs/WORK_BACKLOG.md`.

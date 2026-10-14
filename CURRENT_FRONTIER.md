@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-10-04
+Updated: 2026-10-14
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -23,6 +23,15 @@ the exact durable state and next action, then hand off from that checkpoint.
 
 ## Where we are now
 
+- October 14 Today rebuild: the default home and brand link now open Today.
+  Event cards show store logos, event start, today's full hours, time until
+  closing when verified, directions, event details, and hours-source links.
+  Commander comes before other formats unless an event was explicitly saved;
+  nearby venues receive a ranking bonus. Top choices span distinct hosts and
+  other starts are chronological. Verified closed stores leave the drop-in
+  suggestions; hours conflicts and uncertain/temporary hours remain labelled.
+  Tests: `test_today_hours.mjs`, `test_focused_today.mjs`, and the responsive
+  `today-decision-cards` verifier. No canonical data or personal-state edits.
 - The deployed GitHub Pages app is healthy on `main` at
   `https://metavirus.github.io/mtg-events-chatgpt/`. The latest app changes are
   `74ca88a` (navigation, quick-store rows, conversation excerpts) and `b704018`
@@ -31,7 +40,7 @@ the exact durable state and next action, then hand off from that checkpoint.
   readiness also passed. Workflow success is not a fresh audit of every source.
   The September 7 Supabase snapshot reported 62 open venues, 60 reviewed/deepened venues,
   537 active event series, and 935 future non-cancelled occurrences.
-- Briefing is now the glanceable daily home: it prioritizes actionable changes,
+- Briefing is the secondary updates surface: it prioritizes actionable changes,
   same-day options, favorite venues/events, and useful community conversation.
   Today is a focused same-day planner rather than a duplicate of the full Events
   catalog; elapsed starts no longer compete with live choices.

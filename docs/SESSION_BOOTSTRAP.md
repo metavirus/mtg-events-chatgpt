@@ -17,11 +17,14 @@ baseline, environmental quirks, or recently settled project rules.
 
 ## Current hardened baseline
 
-Latest app checkpoint: `b704018` (September 19 compact Briefing), following
+Latest product change: October 14 Today decision cards and Today as the default
+home, with store logos, full hours, directions, and Commander-first ordering.
+Verified closed-store drop-in suppression is implemented. The preceding
+app checkpoint is `b704018` (September 19 compact Briefing), following
 `74ca88a` (instant route scrolling, readable quick-store events, preserved
 community message excerpts) and `08403bb` (global, recoverable personal
 exclusions). These are completed work. The next observed product issues are
-expired unlinked invitations, closed-store drop-in suggestions, and attention
+expired unlinked invitations and attention
 classification. See `CURRENT_FRONTIER.md` and the top of `docs/WORK_BACKLOG.md`.
 
 The repository has already completed these stabilization steps:

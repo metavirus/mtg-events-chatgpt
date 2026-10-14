@@ -4,7 +4,7 @@ import vm from 'node:vm';
 
 const code = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8');
 const names = ['eventTimeIsEstimated', 'eventTimeLabel', 'todayAvailability', 'currentHoursLabel'];
-const context = vm.createContext({ Date, eventStartTime: e => e.startTime, parseDate: s => new Date(s), formatTime: s => s });
+const context = vm.createContext({ Date, eventStartTime: e => e.startTime, parseDate: s => new Date(s), formatTime: s => s, store: () => null, todayHoursInfo: () => ({verified:false}) });
 for (const name of names) {
   const start = code.indexOf(`function ${name}(`);
   const end = code.indexOf('\nfunction ', start + 1);

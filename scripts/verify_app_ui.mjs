@@ -123,6 +123,54 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'today-decision-cards') {
+      await page.clock.setFixedTime(new Date('2026-10-14T14:00:00-07:00'));
+      const base = new URL(target); base.hash = '';
+      await page.goto(base.href, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
+      await page.evaluate(() => {
+        state.personal.favorites = {'place:finch-sparrow':true,'place:spellhold-games':true,'place:collectors-lounge-cypress':true};
+        renderCurrentRoute();
+      });
+      if (!await page.locator('#route-today').isVisible()) throw new Error('Today is not default home');
+      const rows = page.locator('.today-quick-event:visible');
+      await rows.first().waitFor();
+      if (!await rows.first().locator('.today-card-place .entity-avatar').count()) throw new Error('Store avatar missing');
+      for (const row of await rows.all()) {
+        if (!await row.locator('.today-card-hours strong').innerText()) throw new Error('Hours missing');
+        if (!await row.locator('a[href*="maps/dir"]').count()) throw new Error('Directions missing');
+      }
+      const remainderTimes = await page.locator('.today-focus-section').filter({hasText:'Other starts today'}).locator('.today-quick-time').allTextContents();
+      const asMinutes = label => {const m = label.match(/(\d+)(?::(\d+))?\s*(AM|PM)/);return m ? (Number(m[1])%12+(m[3]==='PM'?12:0))*60+Number(m[2]||0) : 0;};
+      if (remainderTimes.some((t,i) => i>0 && asMinutes(t)<asMinutes(remainderTimes[i-1]))) throw new Error('Other starts not chronological');
+      for (const width of [1400,1050,390]) {
+        await page.setViewportSize({width,height:900});
+        await page.waitForFunction(() => [...document.querySelectorAll('.today-card-place img')].filter(img => {const rect=img.getBoundingClientRect();return rect.height>0 && rect.top<innerHeight && rect.bottom>0;}).every(img => img.complete && img.naturalWidth>0), null, {timeout:8000});
+        if (await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1)) throw new Error(`Overflow ${width}`);
+        await page.screenshot({path:`work/today-decision-${width}.png`,animations:'disabled'});
+        pass(`Today cards show logos, hours, and directions at ${width}px`);
+      }
+      await page.locator('.today-card-place[data-place-mode="drawer"]').first().click();
+      await page.locator('#drawerTitle').waitFor();
+      await page.keyboard.press('Escape');
+      await page.locator('.today-card-title').first().click();
+      await page.locator('#drawerTitle').waitFor();
+      await page.keyboard.press('Escape');
+      const ranking = await page.evaluate(() => {
+        const day = startOfDay(new Date());
+        const base = {occurrenceDate:day,date:dateKey(day),startTime:'19:00',bracket:'2',confidence:'high'};
+        const modern = {...base,id:'test-modern',storeId:'spellhold-games',title:'Modern tournament',format:'Modern'};
+        const commander = {...base,id:'test-commander',storeId:'joyful-toad-tcg',title:'Casual Commander',format:'Commander'};
+        const initial = rankedTodayLeads([modern,commander])[0]?.id;
+        state.personal.favorites['event:test-modern']=true;
+        const explicit = rankedTodayLeads([modern,commander])[0]?.id;
+        delete state.personal.favorites['event:test-modern'];
+        state.personal.ratings['event:test-commander']=1;
+        const excluded = rankedTodayLeads([commander]).length===0;
+        return {initial,explicit,excluded};
+      });
+      if (ranking.initial !== 'test-commander' || ranking.explicit !== 'test-modern' || !ranking.excluded) throw new Error(`Ranking/preferences regression ${JSON.stringify(ranking)}`);
+      pass('Commander fit beats host favorite; explicit event choice wins; disliked event excluded; card links work');
     } else if (scenario === 'compact-briefing') {
       page.setDefaultTimeout(15000);
       page.setDefaultNavigationTimeout(15000);

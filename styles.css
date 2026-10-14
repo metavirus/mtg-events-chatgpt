@@ -1196,14 +1196,36 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 #route-today .calendar-toolbar, #route-today .calendar-stage { min-width: 0; max-width: 100%; }
 #route-today .quick-chips { display: flex; flex-wrap: wrap; overflow: visible; min-width: 0; }
 .today-focus-section, .favorite-quick-section { margin: 24px 0; }
-.today-focus-section h2 { margin-bottom: 6px; }
+.today-section-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 12px; }
+.today-section-heading h2 { margin: 0; font-size: 21px; }
+.today-section-heading > span { color: var(--muted); font-size: 12px; }
 .today-focus-list { display: grid; gap: 10px; }
-.today-quick-event { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border: 1px solid var(--border, #293249); border-radius: 16px; background: #101625; }
-.today-quick-event > div { min-width: 0; }
-.today-quick-event .text-button { display: block; text-align: left; font-size: 18px; white-space: normal; overflow-wrap: anywhere; }
-.today-quick-event p { margin: 5px 0; }
-.today-quick-event small { color: #a3b2c9; }
-.today-quick-time { color: #55d8b3; }
+.today-best-options .today-focus-list { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.today-quick-event { min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(145deg, #151c2c, #0e1421); }
+.today-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
+.today-card-place { min-width: 0; display: flex; align-items: center; gap: 10px; padding: 0; background: none; border: 0; color: var(--text); text-align: left; cursor: pointer; }
+.today-card-place > span:last-child { min-width: 0; display: grid; gap: 3px; }
+.today-card-place strong { font-size: 12px; line-height: 1.35; }
+.today-card-place small { font-size: 10px; color: var(--muted); }
+.today-card-place .entity-avatar { flex: 0 0 42px; width: 42px; height: 42px; }
+.today-quick-time { flex-shrink: 0; color: var(--mint); background: rgba(84,212,167,.07); border: 1px solid rgba(84,212,167,.16); border-radius: 8px; padding: 7px 8px; font-size: 13px; white-space: nowrap; }
+.today-card-title { padding: 0; background: none; border: 0; color: var(--text); text-align: left; font: 750 18px/1.3 var(--display); cursor: pointer; overflow-wrap: anywhere; }
+.today-card-title:hover { color: var(--sky); }
+.today-card-meta { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.today-card-hours { margin-top: auto; border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 4px; }
+.today-card-hours > span { font-size: 9px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.today-card-hours strong { font-size: 13px; }
+.today-card-hours small { color: var(--mint); font-size: 11px; line-height: 1.4; }
+.today-card-hours.uncertain small { color: var(--amber); }
+.today-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding-top: 2px; }
+.today-card-actions a, .today-card-actions .text-button { font-size: 12px; min-height: 32px; display: inline-flex; align-items: center; }
+.today-card-actions .today-hours-source { margin-left: auto; color: var(--muted); font-size: 10px; }
+.today-card-alternates { color: var(--muted); font-size: 11px; }
+#route-today .page-heading { margin-bottom: 18px; }
+#route-today .heading-subtitle { font-size: 13px; }
+#route-today .heading-actions { flex-wrap: wrap; }
+#route-today .heading-actions > button { white-space: nowrap; }
+#route-today .calendar-toolbar { padding: 8px; }
 .today-earlier { margin: 24px 0; }
 .today-earlier > summary { cursor: pointer; padding: 14px; }
 .favorite-quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr)); gap: 12px; }
@@ -1234,7 +1256,6 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
   .place-tab-content .assessment-snapshot { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .today-quick-event { align-items: flex-start; padding: 14px; gap: 8px; }
-  .today-quick-event > .soft-button { padding: 10px; flex-shrink: 0; }
-  .today-quick-event .text-button { font-size: 16px; }
+  .today-quick-event { padding: 14px; gap: 9px; }
+  .today-section-heading > span { width: 100%; }
 }

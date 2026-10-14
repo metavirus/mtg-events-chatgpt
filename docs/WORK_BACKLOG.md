@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-10-04
+Last updated: 2026-10-14
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -13,6 +13,16 @@ Use it for:
 - process improvements that protect continuity.
 
 ## Recently closed / operational baseline
+
+- October 14 Today decision cards: store logos, visible opening/closing hours,
+  verified time until close, hours sources, and directions are on each event
+  card. Today opens by default. Explicit saved events lead; otherwise Commander
+  fit and proximity count before host-favorite status. Top choices span distinct
+  stores; remaining starts are chronological. Verified closed stores are no
+  longer suggested for drop-in play. Unknown/temporary hours and event-hours
+  conflicts stay visible. Responsive verifier: `today-decision-cards`;
+  hours regression: `scripts/test_today_hours.mjs`. Expired unlinked invitations
+  and overbroad Needs attention classification remain open.
 
 - October 4 quick documentation audit: README, session bootstrap, and current
   frontier reconciled with app commits `08403bb`, `74ca88a`, and `b704018`.
