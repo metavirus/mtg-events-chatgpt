@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-10-14
+Updated: 2026-11-10
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -22,6 +22,13 @@ bounded result is reached, stop substantive work, update this file/backlog with
 the exact durable state and next action, then hand off from that checkpoint.
 
 ## Where we are now
+
+- November 10 Today comparison controls: visible search, radius, format,
+  favorites-only, and Best fit/Nearest/Starting soon/Open latest sorting.
+  View controls persist in this browser; canonical personal favorites remain
+  unchanged. Event times and store hours are separate on each card. Mobile
+  Events Week uses full-width day-grouped cards and day jumps; desktop keeps
+  seven columns. Verifier: `today-controls-week`.
 
 - October 14 Today rebuild: the default home and brand link now open Today.
   Event cards show store logos, event start, today's full hours, time until

@@ -106,6 +106,18 @@ async function main() {
   const browser = await launchBrowser();
   try {
     const page = await browser.newPage({ viewport: { width: 1400, height: 950 } });
+    if (args['local-assets']) {
+      // Serve only local static files in-process; canonical API requests still
+      // use their normal endpoint. Avoid Windows preview-server socket resets.
+      const root = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/(\w:)/, '$1')), '..');
+      await page.route('http://127.0.0.1/**', async route => {
+        const pathname = decodeURIComponent(new URL(route.request().url()).pathname);
+        const file = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
+        if (!file.startsWith(root + path.sep) || !fs.existsSync(file)) return route.fulfill({status:404,body:'Not found'});
+        const types = {'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.svg':'image/svg+xml','.json':'application/json','.webp':'image/webp'};
+        await route.fulfill({status:200,contentType:types[path.extname(file)] || 'application/octet-stream',body:fs.readFileSync(file)});
+      });
+    }
     page.on('requestfailed', request => {
       const url = new URL(request.url());
       result.checks.push({name:'request failed',status:'note',detail:`${url.origin}${url.pathname}: ${request.failure()?.errorText}`});
@@ -123,6 +135,44 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'today-controls-week') {
+      await page.clock.setFixedTime(new Date('2026-10-14T14:00:00-07:00'));
+      await page.goto(target, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
+      await page.evaluate(() => { state.personal.favorites = {'place:finch-sparrow':true}; navigate('today'); });
+      await page.locator('#todaySearch').fill('Finch');
+      const names = await page.locator('.today-quick-event .today-card-place strong').allTextContents();
+      if (!names.length || names.some(n => !n.includes('Finch'))) throw new Error('Search mismatch');
+      await page.locator('#todayFavorites').check();
+      await page.locator('#todayRadius').selectOption('5');
+      if (await page.locator('.today-quick-event').count()) throw new Error('5-mile radius must exclude Finch');
+      await page.locator('#todayRadius').selectOption('10');
+      if (!await page.locator('.today-quick-event').count()) throw new Error('10-mile radius must restore Finch');
+      await page.locator('#todayReset').click();
+      await page.locator('#todaySort').selectOption('distance');
+      const distances = await page.locator('.today-focus-section').first().locator('.today-card-place small').allTextContents();
+      const nums = distances.map(t => parseFloat(t));
+      if (nums.some((n,i) => i && n < nums[i-1])) throw new Error('Nearest order broken');
+      const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('mtg-today-controls')));
+      if (saved.sort !== 'distance') throw new Error('Sort not saved');
+      for (const width of [1400, 390]) {
+        await page.setViewportSize({width,height:900});
+        await page.screenshot({path:`work/today-controls-${width}.png`,animations:'disabled'});
+        if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)) throw new Error(`Today overflow ${width}`);
+      }
+      pass('Search, favorites, distance intersection, nearest ordering, persistence, responsive Today');
+      await page.evaluate(() => { state.eventCatalogDate = new Date(); navigate('events'); });
+      await page.locator('[data-event-catalog-view="week"]').click();
+      await page.locator('.mobile-week-agenda').waitFor({state:'visible'});
+      if (await page.locator('.event-catalog-week').isVisible()) throw new Error('Mobile still showing week columns');
+      if (await page.locator('.mobile-week-day').count() !== 7) throw new Error('Missing agenda days');
+      await page.locator('.week-day-links a').nth(3).click();
+      await page.locator('.mobile-week-day').nth(3).scrollIntoViewIfNeeded();
+      await page.screenshot({path:'work/mobile-week-agenda.png',animations:'disabled'});
+      if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)) throw new Error('Week overflow');
+      await page.setViewportSize({width:1400,height:900});
+      if (!await page.locator('.event-catalog-week').isVisible()) throw new Error('Desktop calendar missing');
+      pass('Mobile full-width agenda, day navigation, no overflow, desktop week retained');
     } else if (scenario === 'today-decision-cards') {
       await page.clock.setFixedTime(new Date('2026-10-14T14:00:00-07:00'));
       const base = new URL(target); base.hash = '';

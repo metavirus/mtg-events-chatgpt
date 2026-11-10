@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-10-14
+Last updated: 2026-11-10
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -13,6 +13,12 @@ Use it for:
 - process improvements that protect continuity.
 
 ## Recently closed / operational baseline
+
+- November 10: Today search, radius, favorites, format, and sorting shipped
+  with browser-local view memory, separate event/store hours, and responsive
+  comparison cards. Mobile Week is a full-width agenda with day jumps.
+  Verification: `today-controls-week`, `test_today_hours.mjs`,
+  `test_focused_today.mjs`. No canonical data or personal preference mutations.
 
 - October 14 Today decision cards: store logos, visible opening/closing hours,
   verified time until close, hours sources, and directions are on each event

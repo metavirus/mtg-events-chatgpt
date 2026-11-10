@@ -2700,7 +2700,7 @@ function eventMatchesSharedFilters(event, options = {}) {
   if (place && !state.filters.research.includes(place.researchStatus)) return false;
   if (!state.filters.confidence.includes(event.confidence)) return false;
   if (state.filters.planningGroups && !state.filters.planningGroups.includes(eventPlanningGroup(event))) return false;
-  if (place && numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
+  if (!options.ignoreDistance && place && numericDistance(place) != null && numericDistance(place) > state.filters.distance) return false;
   if (state.filters.onlyFree && Number(event.entryFee || 0) !== 0) return false;
   if (hideCompetitive && (isCompetitive(event) || isHighPowerCommander(event))) return false;
   if (state.favoritesOnly && !state.personal.favorites[eventPreferenceKey(event)] && !state.personal.favorites[`place:${place?.id}`] && !state.personal.favorites[`community:${organizer?.id}`]) return false;
@@ -2856,8 +2856,9 @@ function renderCalendar() {
 
 // Events owns future browsing. Today deliberately ignores the old calendar range.
 function renderFocusedToday() {
+  setupTodayControls();
   const now = new Date();
-  const events = groupTodayListings(buildOccurrences(startOfDay(now), endOfDay(now)));
+  const events = groupTodayListings(buildOccurrences(startOfDay(now), endOfDay(now), false).filter(event => eventMatchesSharedFilters(event, {ignoreDistance:true, includePreset:false}) && !isEventHidden(event) && eventMatchesPreset(event, todayOptions.format || 'all') && todayMatchesControls(event)));
   const groups = { later: [], dropin: [], unknown: [], earlier: [] };
   for (const event of events) groups[todayAvailability(event, now).group].push(event);
   const section = (items, title, note, best = false) => items.length ? `<section class="today-focus-section${best ? ' today-best-options' : ''}"><div class="today-section-heading"><h2>${title}</h2><span>${note}</span></div><div class="today-focus-list">${items.map(todayQuickEvent).join('')}</div></section>` : '';
@@ -2869,16 +2870,85 @@ function renderFocusedToday() {
     seenHosts.add(key); return true;
   }).slice(0, 3);
   const bestIds = new Set(best.map(todayLeadKey));
-  document.getElementById('calendarContent').innerHTML =
+  const sorted = todayOptions.sort !== 'best';
+  document.getElementById('calendarContent').innerHTML = `<p class="today-result-count" role="status">${events.length} matching event${events.length === 1 ? '' : 's'} today</p>` + (sorted ?
+    section(sortTodayEvents([...groups.later, ...groups.dropin]), 'Events today', '') :
     section(best, 'Best options today', 'Commander fit, familiar places, and distance.', true) +
     (!groups.later.length ? '<p class="briefing-quiet">No matching scheduled starts remain today. Check drop-in possibilities below or browse Events for another day.</p>' : '') +
     section(groups.later.filter(e => !bestIds.has(todayLeadKey(e))).sort((a, b) => compareText(eventStartTime(a), eventStartTime(b))), 'Other starts today', 'In time order.') +
-    section(groups.dropin.filter(event => !bestIds.has(todayLeadKey(event))), 'Started · check before dropping in', 'Check that games are still running.') +
+    section(groups.dropin.filter(event => !bestIds.has(todayLeadKey(event))), 'Started · check before dropping in', 'Check that games are still running.')) +
     section(groups.unknown, 'Time needs checking', 'These listings do not establish a reliable start time.') +
     (groups.earlier.length ? `<details class="today-earlier"><summary>Earlier today (${groups.earlier.length})</summary>${section(groups.earlier, 'Earlier starts', 'Kept for reference, not recommended as upcoming starts.')}</details>` : '') +
-    favoritePlacesQuickAccess({ compact: true }) + '<button class="soft-button" data-route="events">Browse future dates in Events →</button>';
+    todayOpenPlaces() + '<button class="soft-button" data-route="events">Browse future dates in Events →</button>';
   document.getElementById('activeFilterCount').textContent = activeFilterCount();
   document.getElementById('activeFilterCount').classList.toggle('hidden', activeFilterCount() === 0);
+}
+
+const todayOptions = (() => {
+  try { return { query: '', radius: '', favorites: false, sort: 'best', ...JSON.parse(localStorage.getItem('mtg-today-controls') || '{}') }; }
+  catch { return { query: '', radius: '', favorites: false, sort: 'best' }; }
+})();
+
+function setupTodayControls() {
+  if (document.getElementById('todayControls')) return;
+  const controls = document.createElement('div');
+  controls.id = 'todayControls';
+  controls.className = 'today-controls';
+  controls.innerHTML = `<label class="today-search">Search today<input type="search" id="todaySearch" placeholder="Store, event, or format" value="${escapeHtml(todayOptions.query)}"></label><label>Distance<select id="todayRadius"><option value="">Any distance</option>${[5,10,15,20].map(n => `<option value="${n}">Within ${n} mi</option>`).join('')}</select></label><label>Sort by<select id="todaySort"><option value="best">Best fit</option><option value="distance">Nearest</option><option value="time">Starting soon</option><option value="closing">Open latest</option></select></label><label class="today-favorites"><input id="todayFavorites" type="checkbox">Favorites only</label><button class="text-button" id="todayReset">Reset</button>`;
+  document.getElementById('calendarContent').before(controls);
+  const formatControl = document.createElement('label');
+  formatControl.innerHTML = `Format<select id="todayFormat"><option value="all">All formats</option><option value="commander">Commander / EDH</option><option value="specials">Prerelease & limited</option><option value="draft">Draft</option></select>`;
+  controls.querySelector('.today-favorites').before(formatControl);
+  controls.querySelector('#todayFormat').value = todayOptions.format || 'all';
+  controls.querySelector('#todayRadius').value = todayOptions.radius;
+  controls.querySelector('#todaySort').value = todayOptions.sort;
+  controls.querySelector('#todayFavorites').checked = todayOptions.favorites;
+  const update = () => {
+    todayOptions.query = controls.querySelector('#todaySearch').value;
+    todayOptions.radius = controls.querySelector('#todayRadius').value;
+    todayOptions.sort = controls.querySelector('#todaySort').value;
+    todayOptions.format = controls.querySelector('#todayFormat').value;
+    todayOptions.favorites = controls.querySelector('#todayFavorites').checked;
+    try { localStorage.setItem('mtg-today-controls', JSON.stringify(todayOptions)); } catch { /* Session controls remain usable. */ }
+    renderFocusedToday();
+  };
+  controls.addEventListener('input', update);
+  controls.querySelector('#todayReset').onclick = () => {
+    controls.querySelector('#todaySearch').value = '';
+    controls.querySelector('#todayRadius').value = '';
+    controls.querySelector('#todaySort').value = 'best';
+    controls.querySelector('#todayFormat').value = 'all';
+    controls.querySelector('#todayFavorites').checked = false;
+    update();
+  };
+}
+
+function todayMatchesControls(event) {
+  const place = store(event.storeId);
+  const distance = numericDistance(place);
+  if (todayOptions.radius && (distance == null || distance > Number(todayOptions.radius))) return false;
+  if (todayOptions.favorites && !eventMatchesPreset(event, 'favorites')) return false;
+  return `${event.title || ''} ${event.format || ''} ${event.eventType || ''} ${place?.name || ''} ${place?.city || ''}`.toLowerCase().includes(todayOptions.query.trim().toLowerCase());
+}
+
+function todayClosingMinutes(place) {
+  const hours = todayHoursInfo(place);
+  return hours.verified && hours.intervals.length ? Math.max(...hours.intervals.map(slot => slot.close)) : -1;
+}
+
+function sortTodayEvents(events) {
+  return [...events].sort((a, b) => {
+    if (todayOptions.sort === 'distance') return (numericDistance(store(a.storeId)) ?? Infinity) - (numericDistance(store(b.storeId)) ?? Infinity) || compareText(eventStartTime(a), eventStartTime(b));
+    if (todayOptions.sort === 'closing') return todayClosingMinutes(store(b.storeId)) - todayClosingMinutes(store(a.storeId)) || compareText(eventStartTime(a), eventStartTime(b));
+    return Number(todayAvailability(a).group === 'dropin') - Number(todayAvailability(b).group === 'dropin') || compareText(eventStartTime(a), eventStartTime(b));
+  });
+}
+
+function todayOpenPlaces() {
+  const places = favoritePlaces().filter(place => todayMatchesControls({storeId: place.id}) && !(todayHoursInfo(place).verified && todayHoursInfo(place).detail === 'Closed now'));
+  places.sort((a, b) => todayOptions.sort === 'closing' ? todayClosingMinutes(b) - todayClosingMinutes(a) : (numericDistance(a) ?? Infinity) - (numericDistance(b) ?? Infinity));
+  if (!places.length) return '';
+  return `<section class="favorite-quick-section"><h2>Favorite places · drop-in possibilities</h2><p class="muted-copy">Opening hours aren't a promise of games.</p><div class="favorite-quick-grid">${places.map(place => `<article class="favorite-quick-card"><button class="favorite-quick-name" data-place-id="${escapeHtml(place.id)}">${placeAvatar(place)}<span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)}</small></span></button><strong>${escapeHtml(todayHoursInfo(place).schedule)}</strong><small>${escapeHtml(todayHoursInfo(place).detail)}</small><a href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a></article>`).join('')}</div></section>`;
 }
 
 function eventTimeIsEstimated(event) {
@@ -2935,6 +3005,7 @@ function todayQuickEvent(event) {
     <div class="today-card-head">${place ? `<button class="today-card-place" data-place-id="${escapeHtml(place.id)}" data-place-mode="drawer">${placeAvatar(place)}<span><strong>${escapeHtml(place.name)}</strong><small>${distanceLabel(place)}${state.personal.favorites?.[`place:${place.id}`] ? ' · Favorite' : ''}</small></span></button>` : `<span class="today-card-place">${escapeHtml(eventHostLabel(event, place))}</span>`}<strong class="today-quick-time">${escapeHtml(eventTimeLabel(event))}</strong></div>
     <button class="today-card-title" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}">${escapeHtml(event.title)}</button>
     <p class="today-card-meta">${escapeHtml(format)} · ${escapeHtml(fee)} · ${escapeHtml(todayAvailability(event).label)}</p>
+    <div class="today-event-hours"><span>Event</span><strong>${escapeHtml(eventTimeLabel(event))}${!eventTimeIsEstimated(event) && (event.endTime || event.recurrence?.endTime) ? `–${escapeHtml(formatTime(event.endTime || event.recurrence.endTime))}` : ' · end not listed'}</strong></div>
     <div class="today-card-hours${!hours.verified || conflict ? ' uncertain' : ''}"><span>Store hours today</span><strong>${escapeHtml(hours.schedule)}</strong><small>${escapeHtml(conflict ? 'Event time conflicts with store hours · check first' : hours.detail)}</small></div>
     ${event.alternateListings?.length ? `<details class="today-card-alternates"><summary>${event.alternateListings.length + 1} matching listings</summary>${event.alternateListings.map(item => `<button class="text-button" data-event-id="${escapeHtml(item.id)}" data-date="${dateKey(item.occurrenceDate)}">View other listing</button>`).join('')}</details>` : ''}
     <div class="today-card-actions">${place ? `<a href="${mapsUrl(place)}" target="_blank" rel="noreferrer">Directions ↗</a>` : ''}<button class="text-button" data-event-id="${escapeHtml(event.id)}" data-date="${dateKey(event.occurrenceDate)}">Event details →</button>${src?.url ? `<a class="today-hours-source" href="${escapeHtml(src.url)}" target="_blank" rel="noreferrer">Hours source ↗</a>` : ''}</div>
@@ -3664,7 +3735,12 @@ function eventCatalogPriority(event) {
 
 function renderEventCatalogWeek(events, start) {
   const weekStart = fridayWeekStart(start);
-  return `<div class="week-grid event-catalog-week">${Array.from({ length: 7 }, (_, index) => {
+  const days = Array.from({ length: 7 }, (_, index) => addDays(weekStart, index));
+  const agenda = `<div class="mobile-week-agenda"><nav class="week-day-links" aria-label="Jump to day">${days.map(date => `<a href="#week-${dateKey(date)}" onclick="event.preventDefault(); document.getElementById('week-${dateKey(date)}').scrollIntoView({block:'start'});">${date.toLocaleDateString(undefined, {weekday:'short'})}<strong>${date.getDate()}</strong></a>`).join('')}</nav>${days.map(date => {
+    const items = events.filter(event => dateKey(event.occurrenceDate) === dateKey(date));
+    return `<section class="mobile-week-day" id="week-${dateKey(date)}"><h2>${date.toLocaleDateString(undefined, {weekday:'long', month:'short', day:'numeric'})}${dateKey(date) === dateKey(new Date()) ? ' · Today' : ''}</h2>${items.map(event => eventCard(event, false, {showDate:false})).join('') || '<p class="muted-copy">No matching events</p>'}</section>`;
+  }).join('')}</div>`;
+  return agenda + `<div class="week-grid event-catalog-week">${Array.from({ length: 7 }, (_, index) => {
     const date = addDays(weekStart, index);
     const dayEvents = events.filter((event) => dateKey(event.occurrenceDate) === dateKey(date));
     return `<section class="week-column ${date < startOfDay(new Date()) ? 'past' : ''} ${isWeekend(date) ? 'weekend-column' : ''}"><header><span>${date.toLocaleDateString(undefined, { weekday: 'short' })}</span><strong>${date.getDate()}</strong>${dateKey(date) === dateKey(new Date()) ? '<em>Today</em>' : ''}${dayEvents.length ? `<small>${dayEvents.length} events · ${formatMix(dayEvents, 2)}</small>` : ''}</header><div>${groupedDayEvents(dayEvents) || '<p class="no-events">No matching events</p>'}</div></section>`;
