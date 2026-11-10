@@ -638,6 +638,9 @@ returning w.id, w.channel_name, w.latest_run_result, w.last_seen_message_id, w.l
 
 function deriveOverallOutcome(runLog) {
   if (runLog.surfaceCheckWrite?.status === 'failed' || runLog.watchlistWrite?.status === 'failed') return 'failed';
+  const blocked = (runLog.results || []).filter(result => result.outcome === 'blocked_repair').length;
+  if (blocked && blocked === runLog.results.length) return 'failed';
+  if (blocked) return 'partial_success';
   if (runLog.surfaceCheckWrite?.status === 'partial_success' || runLog.watchlistWrite?.status === 'partial_success') {
     return 'partial_success';
   }

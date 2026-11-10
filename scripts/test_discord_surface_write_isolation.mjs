@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { classifyDiscordBlockedRequest, isDiscordMutationRequest } from './discord_readonly_guard.mjs';
 import {
   buildSurfaceCheckStatement,
   deriveOverallOutcome,
@@ -64,3 +65,14 @@ assert.equal(
 );
 
 console.log('Discord surface-write isolation tests passed.');
+
+const ackReset = 'https://discord.com/api/v9/channels/123/messages/ack';
+assert.equal(isDiscordMutationRequest(ackReset, 'DELETE'), true, 'Acknowledgement reset MUST remain blocked');
+assert.equal(classifyDiscordBlockedRequest({url:ackReset,method:'DELETE'}).classification, 'blocked_expected_ack_reset');
+for (const url of [ackReset + '?extra=1', 'https://discord.com/api/v9/channels/123/messages/456', 'https://example.com/api/v9/channels/123/messages/ack']) {
+  assert.notEqual(classifyDiscordBlockedRequest({url,method:'DELETE'}).classification, 'blocked_expected_ack_reset');
+}
+assert.equal(deriveOverallOutcome({results:[{outcome:'blocked_repair'}]}), 'failed');
+assert.equal(deriveOverallOutcome({results:[{outcome:'blocked_repair'},{outcome:'quiet_coverage'}]}), 'partial_success');
+assert.equal(deriveOverallOutcome({results:[{outcome:'quiet_coverage'}]}), 'success');
+console.log('Discord blocked-ack classification and failed/partial scan outcomes passed.');

@@ -141,6 +141,12 @@ function classifyDiscordBlockedRequest(entry) {
     return { classification: 'blocked_unknown_or_prohibited_mutation', mutationType: 'unparseable', normalizedEndpoint: 'unparseable' };
   }
   const ackMatch = parsed.pathname.match(/^\/api\/v\d+\/channels\/(\d+)\/messages\/(\d+)\/ack$/i);
+  // Discord's startup shell now also clears channel acknowledgement state.
+  // Recognize the exact background request, but NEVER allow it onto the wire.
+  const resetAck = parsed.pathname.match(/^\/api\/v\d+\/channels\/(\d+)\/messages\/ack$/i);
+  if (entry.method === 'DELETE' && resetAck && !parsed.search && /^(?:discord|discordapp)\.com$/i.test(parsed.hostname)) {
+    return { classification: 'blocked_expected_ack_reset', normalizedEndpoint: '/api/v*/channels/{channel_id}/messages/ack', channelId: resetAck[1] };
+  }
   if (entry.method === 'POST' && ackMatch) {
     return {
       classification: 'blocked_expected_ack',

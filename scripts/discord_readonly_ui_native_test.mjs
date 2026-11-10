@@ -363,7 +363,7 @@ async function verifyStage(page, stageName, options = {}) {
   }
   const unexpectedBlocked = networkBlocks.find((entry) => {
     const classification = classifyDiscordBlockedRequest(entry).classification;
-    return !['telemetry', 'blocked_expected_ack', 'blocked_expected_client_setting'].includes(classification) && !isLurkerRequest(entry);
+    return !['telemetry', 'blocked_expected_ack', 'blocked_expected_ack_reset', 'blocked_expected_client_setting'].includes(classification) && !isLurkerRequest(entry);
   });
   if (unexpectedBlocked) throw new Error(`unexpected mutation request blocked: ${unexpectedBlocked.method} ${unexpectedBlocked.url}`);
   if (prohibitedResponses.length) throw new Error('a prohibited mutation request received a response');
