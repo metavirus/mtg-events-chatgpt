@@ -23,6 +23,21 @@ the exact durable state and next action, then hand off from that checkpoint.
 
 ## Where we are now
 
+- November 10 survey recovery: both browser workflows pin Ubuntu 24.04 with
+  Playwright 1.54.2 after ubuntu-latest moved to an incompatible image
+  (`2b8ef8b`). Discord recognizes the exact DELETE channel-ack reset as an
+  expected BLOCKED background mutation, never an allowed write (`eefbee4`).
+  All-blocked scans now fail; mixed blocked/read scans report partial success.
+  One-channel cloud proof `42856726614` read safely. WPN/social recovery run
+  `42854993333` completed and published 11 updates; Instagram/Facebook read
+  successfully. Its integrity audit remains degraded: nine
+  `bound_wpn_source_date_time_mismatches` need bounded reconciliation, not
+  silent overwriting. Full Discord run `42856988164` read 26/27 routes and saved
+  all 9 entity summaries plus 26 watchlist writes with no write failures.
+  It reports partial success: JJ's Collectibles `#commander-night` could not
+  prove a unique mapped channel anchor after its bounded retry. Repair that
+  exact route separately; do not restart preparatory surveying of all stores.
+
 - November 10 Today comparison controls: visible search, radius, format,
   favorites-only, and Best fit/Nearest/Starting soon/Open latest sorting.
   View controls persist in this browser; canonical personal favorites remain

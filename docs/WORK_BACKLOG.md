@@ -14,6 +14,15 @@ Use it for:
 
 ## Recently closed / operational baseline
 
+- November 10 survey runtime repair: pinned browser workflows to Ubuntu 24.04;
+  exact Discord ack-reset requests remain blocked but no longer abort safe
+  navigation. Failed/mixed route scans now report failed/partial outcomes.
+  Follow-up: reconcile the nine WPN source date/time mismatches flagged by
+  recovery run `42854993333`; do not equate a green workflow with clean data.
+  Discord recovery `42856988164`: 26/27 reads, no write failures. Exact remaining
+  route repair: JJ's Collectibles `#commander-night` lacks a unique visible
+  mapped channel anchor. Preserve the safe navigation boundary.
+
 - November 10: Today search, radius, favorites, format, and sorting shipped
   with browser-local view memory, separate event/store hours, and responsive
   comparison cards. Mobile Week is a full-width agenda with day jumps.
