@@ -135,6 +135,39 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (scenario === 'today-curation') {
+      await page.clock.setFixedTime(new Date('2026-11-10T08:00:00-08:00'));
+      await page.goto(target, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(() => typeof DATA !== 'undefined' && DATA.events.length > 0);
+      await page.evaluate(() => navigate('today'));
+      await page.locator('#todayReset').click();
+      const grouping = await page.evaluate(() => {
+        const places = DATA.stores.filter(p => numericDistance(p) != null);
+        const near = places.find(p => numericDistance(p) < 20);
+        const far = places.find(p => numericDistance(p) >= 20);
+        const events = [{id:'c',storeId:near.id,title:'Commander',format:'Commander'}, {id:'d',storeId:near.id,title:'Draft',format:'Draft'}, {id:'f',storeId:far.id,title:'Commander',format:'Commander'}];
+        const groups = groupTodayOptions(events);
+        return [groups.commander.map(e=>e.id),groups.other.map(e=>e.id),groups.far.map(e=>e.id)];
+      });
+      if (JSON.stringify(grouping) !== '[["c"],["d"],["f"]]') throw new Error('Curation groups overlap or lose events');
+      if ((await page.locator('#calendarContent').innerText()).includes('end not listed')) throw new Error('Repeated unknown end text');
+      if (await page.locator('.today-event-hours').count()) throw new Error('Duplicate start-time row');
+      if (await page.locator('.today-far').count()) {
+        if (await page.locator('.today-far').getAttribute('open') !== null) throw new Error('Far group should start collapsed');
+        await page.locator('.today-far > summary').click();
+        if (!await page.locator('.today-far .today-quick-event').first().isVisible()) throw new Error('Far events not recoverable');
+        await page.locator('.today-far > summary').click();
+      }
+      for (const width of [2048,1050,390]) {
+        await page.setViewportSize({width,height:1000});
+        await page.screenshot({path:`work/today-curation-${width}.png`,animations:'disabled'});
+        if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth+1)) throw new Error(`Overflow ${width}`);
+        const columns = await page.locator('.today-focus-list').first().evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
+        if (columns>3 || (width===390 && columns!==1)) throw new Error('Wrong column count');
+      }
+      await page.locator('#todaySort').selectOption('distance');
+      if (await page.locator('.today-far').count()) throw new Error('Curation overrides explicit sort');
+      pass('Distinct curation groups, recoverable distant events, concise cards, max three columns, explicit sort preserved');
     } else if (scenario === 'today-controls-week') {
       await page.clock.setFixedTime(new Date('2026-10-14T14:00:00-07:00'));
       await page.goto(target, {waitUntil:'domcontentloaded'});

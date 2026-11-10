@@ -23,6 +23,13 @@ the exact durable state and next action, then hand off from that checkpoint.
 
 ## Where we are now
 
+- Today Best fit now groups remaining choices into Commander, other formats,
+  and a collapsed 20+ mile section. Explicit sort modes remain flat and ordered.
+  Cards show start time once, omit repeated unknown-end boilerplate, retain
+  known end times and meaningful hours warnings, and disclose hours sources on
+  demand. Grids cap at three columns. Verified with `today-curation` and the
+  existing Today controls/hours checks.
+
 - November 10 survey recovery: both browser workflows pin Ubuntu 24.04 with
   Playwright 1.54.2 after ubuntu-latest moved to an incompatible image
   (`2b8ef8b`). Discord recognizes the exact DELETE channel-ack reset as an

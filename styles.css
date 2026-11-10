@@ -1227,8 +1227,12 @@ main { padding: 32px 34px 70px; max-width: 1720px; margin: 0 auto; }
 .today-section-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 12px; }
 .today-section-heading h2 { margin: 0; font-size: 21px; }
 .today-section-heading > span { color: var(--muted); font-size: 12px; }
-.today-focus-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 10px; }
-.today-best-options .today-focus-list { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.today-focus-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.today-card-reason { margin: 0; color: var(--mint); font-size: 12px; }
+.today-hours-evidence { font-size: 11px; color: var(--muted); }
+.today-hours-evidence a { display: inline-block; padding: 8px 0; }
+@media (max-width: 1200px) { .today-focus-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .today-focus-list { grid-template-columns: minmax(0, 1fr); } }
 .today-quick-event { min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(145deg, #151c2c, #0e1421); }
 .today-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
 .today-card-place { min-width: 0; display: flex; align-items: center; gap: 10px; padding: 0; background: none; border: 0; color: var(--text); text-align: left; cursor: pointer; }
