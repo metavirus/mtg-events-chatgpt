@@ -33,7 +33,8 @@ concurrency:
 jobs:
   discord-survey:
     name: Discord guarded surface survey
-    runs-on: ubuntu-latest
+    # Keep the OS compatible with pinned Playwright 1.54.2; upgrade together.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     env:
