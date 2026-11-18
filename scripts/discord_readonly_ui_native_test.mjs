@@ -271,8 +271,10 @@ async function expectedAckIsRouteBound(page, entry) {
   if (detail.classification !== 'blocked_expected_ack') return false;
   if (!['server_selection', 'channel_selection', 'message_rendering'].includes(entry.requestContext)) return false;
   // A delayed acknowledgement for the already-proven landing channel can
-  // arrive while clicking into the mapped target. It remains network-blocked.
-  if (entry.requestContext === 'channel_selection' && detail.channelId === result.guildLandingChannelId) return true;
+  // arrive while clicking into or rendering the mapped target. It remains
+  // network-blocked and the recorded ID was proved in this one guild only.
+  if (['channel_selection', 'message_rendering'].includes(entry.requestContext) &&
+      detail.channelId === result.guildLandingChannelId) return true;
   return page.evaluate(({ guildId, channelId }) => {
     const current = location.pathname.match(/^\/channels\/(\d+)\/(\d+)/);
     if (current?.[1] === guildId && current?.[2] === channelId) return true;
