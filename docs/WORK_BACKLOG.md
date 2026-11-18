@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-11-10
+Last updated: 2026-11-17
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -17,8 +17,12 @@ Use it for:
 - November 10 survey runtime repair: pinned browser workflows to Ubuntu 24.04;
   exact Discord ack-reset requests remain blocked but no longer abort safe
   navigation. Failed/mixed route scans now report failed/partial outcomes.
-  Follow-up: reconcile the nine WPN source date/time mismatches flagged by
-  recovery run `42854993333`; do not equate a green workflow with clean data.
+  November 17: reconciled the ten current WPN date/time mismatches after source
+  review and rollback rehearsal. Corrected TK dates/times/descriptions and
+  Revenge Of's time/title; rebound Spellhold's moved source to the existing
+  November 29 slot while retaining the old occurrence as moved. Closed ten
+  lifecycle review items without deleting personal state. Bounded before-state
+  and validated proposal are in ignored `work/time-repair-20261117`.
   Discord recovery `42856988164`: 26/27 reads, no write failures. Exact remaining
   route repair: JJ's Collectibles `#commander-night` lacks a unique visible
   mapped channel anchor. Preserve the safe navigation boundary.

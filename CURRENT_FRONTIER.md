@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-11-10
+Updated: 2026-11-17
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -37,9 +37,14 @@ the exact durable state and next action, then hand off from that checkpoint.
   All-blocked scans now fail; mixed blocked/read scans report partial success.
   One-channel cloud proof `42856726614` read safely. WPN/social recovery run
   `42854993333` completed and published 11 updates; Instagram/Facebook read
-  successfully. Its integrity audit remains degraded: nine
-  `bound_wpn_source_date_time_mismatches` need bounded reconciliation, not
-  silent overwriting. Full Discord run `42856988164` read 26/27 routes and saved
+  successfully. November 17 reviewed reconciliation corrected all ten current
+  WPN schedule mismatches: eight TK Sunday 6 PM listings (including descriptions),
+  Revenge Of's historical 5 PM prerelease, and Spellhold's moved Pauper listing.
+  Spellhold's source now binds to the existing November 29 slot; the old record
+  remains marked moved. No records or personal state were deleted. The ten
+  lifecycle review items are completed; transaction rehearsal and collision
+  assertions passed; the full integrity audit reports zero critical issues and
+  zero date/time mismatches. Full Discord run `42856988164` read 26/27 routes and saved
   all 9 entity summaries plus 26 watchlist writes with no write failures.
   It reports partial success: JJ's Collectibles `#commander-night` could not
   prove a unique mapped channel anchor after its bounded retry. Repair that
