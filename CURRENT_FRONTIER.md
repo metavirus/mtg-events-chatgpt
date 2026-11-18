@@ -53,9 +53,12 @@ the exact durable state and next action, then hand off from that checkpoint.
   during guild selection; local saved-session and encrypted-session checks also
   reach login. This is now an authentication prerequisite, not proof of another
   channel failure. Failed reads preserve the prior session file. The previously
-  visible `#magic-general` candidate is channel `1354561368547655801` in guild
-  `1055756955043495946`; do not activate it until a refreshed survey session
-  passes guarded route discovery. Existing personal-browser login is separate.
+  visible `#magic-general` candidate (channel `1354561368547655801`) passed
+  guarded local route discovery after a manual surveyor sign-in: five messages,
+  no Discord state change, unchanged unread indicators. Supabase now monitors
+  it alongside `#magic-announcements`; `#commander-night` is paused with its
+  original cursor retained. Cloud proof is pending authorization to store the
+  refreshed session in the repository's Actions secrets.
 
 - November 10 Today comparison controls: visible search, radius, format,
   favorites-only, and Best fit/Nearest/Starting soon/Open latest sorting.

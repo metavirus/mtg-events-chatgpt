@@ -28,10 +28,10 @@ Use it for:
   mapped channel anchor. Preserve the safe navigation boundary.
   November 17 repair check: cloud `44229272751` and local encrypted-session
   restoration now hit Discord sign-in. Session-save guard fixed and regression
-  tested (failed run leaves saved-state hash unchanged). Mapping completion is
-  blocked on refreshing the surveyor session; normal browser login is separate.
-  Candidate replacement `#magic-general` is recorded in CURRENT_FRONTIER but
-  not promoted without a guarded read. Do not repeatedly retry the stale route.
+  tested (failed run leaves saved-state hash unchanged). A refreshed local
+  sign-in then verified `#magic-general`; the live watchlist now uses it and
+  retains `#commander-night` as paused. Cloud verification still needs the
+  refreshed session in the Actions secrets. Do not retry the stale route.
 
 - November 10: Today search, radius, favorites, format, and sorting shipped
   with browser-local view memory, separate event/store hours, and responsive
