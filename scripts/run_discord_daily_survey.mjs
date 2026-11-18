@@ -364,7 +364,8 @@ function isRetryableRouteFailure(result) {
   return result.outcome === 'blocked_repair' &&
     result.status === 'failed_closed' &&
     ['guild_selected', 'guild_channel_sidebar_checked'].includes(result.failureStage) &&
-    result.failureReason === 'mapped channel anchor is not uniquely visible after guild selection' &&
+    ['mapped channel anchor is not uniquely visible after guild selection',
+      'mapped channel click intercepted by Discord overlay'].includes(result.failureReason) &&
     result.externalDiscordStateChanged === false &&
     result.prohibitedSuccessfulResponses.length === 0;
 }

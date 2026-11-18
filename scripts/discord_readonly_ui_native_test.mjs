@@ -270,6 +270,9 @@ async function expectedAckIsRouteBound(page, entry) {
   const detail = classifyDiscordBlockedRequest(entry);
   if (detail.classification !== 'blocked_expected_ack') return false;
   if (!['server_selection', 'channel_selection', 'message_rendering'].includes(entry.requestContext)) return false;
+  // A delayed acknowledgement for the already-proven landing channel can
+  // arrive while clicking into the mapped target. It remains network-blocked.
+  if (entry.requestContext === 'channel_selection' && detail.channelId === result.guildLandingChannelId) return true;
   return page.evaluate(({ guildId, channelId }) => {
     const current = location.pathname.match(/^\/channels\/(\d+)\/(\d+)/);
     if (current?.[1] === guildId && current?.[2] === channelId) return true;
@@ -764,7 +767,32 @@ async function controlledNavigationClick(page, target, expectedHref = null) {
   if (expectedHref && !expectedGuildTreeitem && proof.href !== expectedHref && !proof.href?.startsWith(`${expectedHref}/`)) {
     throw new Error(`${target} href does not match mapped identity`);
   }
-  await locator.click();
+  let position;
+  if (target === 'channel') {
+    await locator.scrollIntoViewIfNeeded({ timeout: 5000 });
+    position = await locator.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      const xFractions = [0.5, 0.12, 0.88, 0.03, 0.97];
+      for (const yf of [0.5, 0.2, 0.8]) {
+        for (const xf of xFractions) {
+          const x = Math.floor(rect.width * xf);
+          const y = Math.floor(rect.height * yf);
+          const hit = document.elementFromPoint(rect.left + x, rect.top + y);
+          if (hit === element || (element.contains(hit) && hit.closest('a[href]') === element &&
+              !hit.closest('button, [role="button"], input, [contenteditable="true"]'))) return { x, y };
+        }
+      }
+      return undefined;
+    });
+  }
+  try {
+    await locator.click({ position, timeout: 8000 });
+  } catch (error) {
+    if (target === 'channel' && error.name === 'TimeoutError' && /intercepts pointer events/.test(error.message)) {
+      throw new Error('mapped channel click intercepted by Discord overlay');
+    }
+    throw error;
+  }
   return proof;
 }
 
@@ -999,7 +1027,12 @@ try {
   if (!result.guildIndicatorBefore.observable) throw new Error('target guild unread/mention state is not observable before navigation');
   requestStage = 'server_selection';
   await controlledNavigationClick(page, 'guild', `/channels/${expectedRoute.guildId}`);
-  await verifyStage(page, 'guild_selected');
+  const guildShell = await verifyStage(page, 'guild_selected');
+  const landing = new URL(guildShell.url).pathname.match(/^\/channels\/(\d+)\/(\d+)(?:\/|$)/);
+  if (landing?.[1] === expectedRoute.guildId) result.guildLandingChannelId = landing[2];
+  // Move off the guild rail without clicking so hover-triggered server
+  // popovers cannot intercept the subsequent exact-channel click.
+  await page.mouse.move(0, 0);
 
   navigation = await markAndInspectNavigation(page);
   result.stages.at(-1).navigation = navigation;
