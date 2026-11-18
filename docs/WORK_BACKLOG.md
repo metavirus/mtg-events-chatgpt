@@ -30,8 +30,9 @@ Use it for:
   restoration now hit Discord sign-in. Session-save guard fixed and regression
   tested (failed run leaves saved-state hash unchanged). A refreshed local
   sign-in then verified `#magic-general`; the live watchlist now uses it and
-  retains `#commander-night` as paused. Cloud verification still needs the
-  refreshed session in the Actions secrets. Do not retry the stale route.
+  retains `#commander-night` as paused. Cloud check `44231188539` verified both
+  active JJ routes with zero writes or Discord state changes. The refreshed
+  session lives in Actions secrets. Do not retry the stale route.
 
 - November 10: Today search, radius, favorites, format, and sorting shipped
   with browser-local view memory, separate event/store hours, and responsive

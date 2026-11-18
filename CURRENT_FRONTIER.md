@@ -57,8 +57,9 @@ the exact durable state and next action, then hand off from that checkpoint.
   guarded local route discovery after a manual surveyor sign-in: five messages,
   no Discord state change, unchanged unread indicators. Supabase now monitors
   it alongside `#magic-announcements`; `#commander-night` is paused with its
-  original cursor retained. Cloud proof is pending authorization to store the
-  refreshed session in the repository's Actions secrets.
+  original cursor retained. Cloud proof `44231188539` passed both active JJ
+  routes with zero writes or Discord state changes. The refreshed session is
+  stored in GitHub Actions secrets, not Git.
 
 - November 10 Today comparison controls: visible search, radius, format,
   favorites-only, and Best fit/Nearest/Starting soon/Open latest sorting.
