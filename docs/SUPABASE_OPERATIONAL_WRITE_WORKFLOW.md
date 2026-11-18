@@ -389,7 +389,9 @@ Required cloud configuration:
 
 - repository Actions secret: `SUPABASE_DB_URL`;
 - deployable authenticated Discord session state for the dedicated read-only
-  profile. The workflow supports either direct
+  profile. Prefer `DISCORD_READONLY_STORAGE_STATE_GZIP` (base64-encoded gzip
+  of the saved JSON) when it fits in the repository's Actions secret limit.
+  Keep fresh session data out of Git. The workflow also supports direct
   `DISCORD_READONLY_STORAGE_STATE_JSON` when the state is below GitHub's direct
   secret size limit, or the expected large-secret pattern:
   `.github/secrets/discord-readonly-storage-state.json.enc` plus repository
@@ -401,7 +403,9 @@ The action installs Playwright, hydrates a fresh dedicated Discord read-only
 profile from saved Playwright storage state, runs
 `scripts/run_discord_daily_survey.mjs --write-watchlist
 --no-signal-writes --json-log`, and uploads the daily survey and underlying
-read-only harness JSON logs as workflow artifacts. It must not commit generated
+read-only harness JSON logs as workflow artifacts for write-enabled runs.
+Read-only checks upload only the aggregate summary and do not replace the
+app's daily-agent status. The workflow must not commit generated
 logs. Missing or expired Discord storage state is a deployment/authentication
 failure to repair explicitly; do not replace it with looser navigation, search,
 message-area interaction, or any Discord mutation path.

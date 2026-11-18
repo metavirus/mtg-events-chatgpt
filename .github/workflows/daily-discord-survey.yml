@@ -39,8 +39,6 @@ jobs:
 
     env:
       SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
-      DISCORD_READONLY_STORAGE_STATE_JSON: ${{ secrets.DISCORD_READONLY_STORAGE_STATE_JSON }}
-      DISCORD_READONLY_STORAGE_STATE_PASSPHRASE: ${{ secrets.DISCORD_READONLY_STORAGE_STATE_PASSPHRASE }}
       SUPABASE_TELEMETRY_DISABLED: "1"
       DO_NOT_TRACK: "1"
       SOCIAL_HEADLESS: "1"
@@ -52,11 +50,6 @@ jobs:
           if [ -z "$SUPABASE_DB_URL" ]; then
             echo "::error::Missing GitHub Actions secret SUPABASE_DB_URL."
             echo "Add the Supabase Session pooler Postgres URI as a repository Actions secret."
-            exit 1
-          fi
-          if [ -z "$DISCORD_READONLY_STORAGE_STATE_JSON" ] && [ -z "$DISCORD_READONLY_STORAGE_STATE_PASSPHRASE" ]; then
-            echo "::error::Missing Discord storage-state configuration."
-            echo "Provide either a small DISCORD_READONLY_STORAGE_STATE_JSON secret or the DISCORD_READONLY_STORAGE_STATE_PASSPHRASE secret for .github/secrets/discord-readonly-storage-state.json.enc."
             exit 1
           fi
 
@@ -100,9 +93,17 @@ jobs:
 
       - name: Hydrate Discord read-only storage state
         shell: bash
+        env:
+          DISCORD_READONLY_STORAGE_STATE_GZIP: ${{ secrets.DISCORD_READONLY_STORAGE_STATE_GZIP }}
+          DISCORD_READONLY_STORAGE_STATE_JSON: ${{ secrets.DISCORD_READONLY_STORAGE_STATE_JSON }}
+          DISCORD_READONLY_STORAGE_STATE_PASSPHRASE: ${{ secrets.DISCORD_READONLY_STORAGE_STATE_PASSPHRASE }}
         run: |
+          set -o pipefail
+          umask 077
           mkdir -p work/discord-readonly/profile
-          if [ -n "$DISCORD_READONLY_STORAGE_STATE_JSON" ]; then
+          if [ -n "$DISCORD_READONLY_STORAGE_STATE_GZIP" ]; then
+            printf '%s' "$DISCORD_READONLY_STORAGE_STATE_GZIP" | base64 --decode | gzip --decompress > work/discord-readonly/storage-state.json
+          elif [ -n "$DISCORD_READONLY_STORAGE_STATE_JSON" ]; then
             printf '%s\n' "$DISCORD_READONLY_STORAGE_STATE_JSON" > work/discord-readonly/storage-state.json
           else
             if [ ! -f ".github/secrets/discord-readonly-storage-state.json.enc" ]; then
@@ -118,26 +119,41 @@ jobs:
       - name: Run Discord daily survey
         id: discord_survey
         shell: bash
+        env:
+          SURVEY_WRITE_WATCHLIST: ${{ inputs.write_watchlist }}
+          SURVEY_LIMIT: ${{ inputs.limit }}
+          SURVEY_SURFACE: ${{ inputs.surface }}
         run: |
-          args=(--no-signal-writes --json-log)
-          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.write_watchlist }}" = "true" ]; then
+          args=(--no-signal-writes)
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ] || [ "$SURVEY_WRITE_WATCHLIST" = "true" ]; then
             args+=(--write-watchlist)
           else
             args+=(--dry-run)
           fi
-          if [ -n "${{ inputs.limit }}" ]; then
-            args+=(--limit "${{ inputs.limit }}")
+          if [ -n "$SURVEY_LIMIT" ]; then
+            args+=(--limit "$SURVEY_LIMIT")
           fi
-          if [ -n "${{ inputs.surface }}" ]; then
-            args+=(--surface "${{ inputs.surface }}")
+          if [ -n "$SURVEY_SURFACE" ]; then
+            args+=(--surface "$SURVEY_SURFACE")
           fi
           set +e
           node scripts/run_discord_daily_survey.mjs "${args[@]}"
           survey_exit_code=$?
           set -e
           echo "exit_code=${survey_exit_code}" >> "$GITHUB_OUTPUT"
+          node --input-type=module -e '
+            import fs from "node:fs";
+            const dir = "work/discord-daily-survey/logs";
+            const log = fs.existsSync(dir) && fs.readdirSync(dir).filter(name => name.endsWith(".json")).sort().at(-1);
+            if (log) {
+              const { results } = JSON.parse(fs.readFileSync(`${dir}/${log}`, "utf8"));
+              for (const { rowId, routeState, outcome, failureStage, externalDiscordStateChanged } of results) {
+                console.log(JSON.stringify({ rowId, routeState, outcome, failureStage, externalDiscordStateChanged }));
+              }
+            }'
 
       - name: Refresh app daily-agent status
+        if: github.event_name == 'schedule' || (inputs.write_watchlist == 'true' && inputs.surface == '' && inputs.limit == '')
         shell: bash
         run: >-
           python scripts/refresh_daily_agent_status.py
@@ -145,7 +161,7 @@ jobs:
           --discord-run-summary work/discord-daily-survey/latest-run-summary.json
 
       - name: Upload Discord survey logs
-        if: always()
+        if: always() && (github.event_name == 'schedule' || inputs.write_watchlist == 'true')
         uses: actions/upload-artifact@v4
         with:
           name: discord-daily-survey-logs
@@ -155,9 +171,17 @@ jobs:
             work/discord-readonly/logs/*.json
           if-no-files-found: warn
 
+      - name: Upload read-only check summary
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.write_watchlist == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: discord-daily-survey-summary
+          path: work/discord-daily-survey/latest-run-summary.json
+          if-no-files-found: warn
+
       - name: Propagate hard survey failure
         if: always() && steps.discord_survey.outputs.exit_code != '0'
         shell: bash
         run: |
-          echo "::error::Discord survey completed with a hard write failure; canonical status and logs were preserved."
+          echo "::error::Discord survey failed. See the survey diagnostics."
           exit 1
