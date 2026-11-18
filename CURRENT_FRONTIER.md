@@ -49,6 +49,13 @@ the exact durable state and next action, then hand off from that checkpoint.
   It reports partial success: JJ's Collectibles `#commander-night` could not
   prove a unique mapped channel anchor after its bounded retry. Repair that
   exact route separately; do not restart preparatory surveying of all stores.
+  November 17 follow-up: JJ-only cloud proof `44229272751` redirects to login
+  during guild selection; local saved-session and encrypted-session checks also
+  reach login. This is now an authentication prerequisite, not proof of another
+  channel failure. Failed reads preserve the prior session file. The previously
+  visible `#magic-general` candidate is channel `1354561368547655801` in guild
+  `1055756955043495946`; do not activate it until a refreshed survey session
+  passes guarded route discovery. Existing personal-browser login is separate.
 
 - November 10 Today comparison controls: visible search, radius, format,
   favorites-only, and Best fit/Nearest/Starting soon/Open latest sorting.

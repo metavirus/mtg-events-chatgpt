@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { isDiscordLoginUrl, shouldSaveDiscordSession } from './discord_session_safety.mjs';
 import { classifyDiscordBlockedRequest, isDiscordMutationRequest } from './discord_readonly_guard.mjs';
 import {
   buildSurfaceCheckStatement,
@@ -30,6 +31,22 @@ const inputs = [
   result('venue-two', 'row-two', 'message-two'),
   result('venue-three', 'row-three', 'message-three')
 ];
+const sessionResult = {
+  status: 'content_read_succeeded_safely',
+  authenticatedShell: { authenticatedAccountShell: true },
+  guildIndicatorUnchanged: true, externalDiscordStateChanged: false,
+  prohibitedSuccessfulResponses: []
+};
+const channelUrl = 'https://discord.com/channels/123/456';
+assert.equal(shouldSaveDiscordSession(sessionResult, channelUrl), true);
+assert.equal(isDiscordLoginUrl('https://discord.com/login?redirect_to=x'), true);
+assert.equal(isDiscordLoginUrl(channelUrl), false);
+assert.equal(shouldSaveDiscordSession(sessionResult, 'https://discord.com/login'), false);
+for (const changed of [
+  { status: 'failed_closed' }, { authenticatedShell: null },
+  { guildIndicatorUnchanged: false }, { externalDiscordStateChanged: true },
+  { prohibitedSuccessfulResponses: [{ status: 200 }] }
+]) assert.equal(shouldSaveDiscordSession({ ...sessionResult, ...changed }, channelUrl), false);
 const attempted = [];
 const writeResult = await writeSurfaceChecks(inputs, async (sql, item) => {
   attempted.push(item.entityId);

@@ -2,6 +2,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import { isDiscordLoginUrl, shouldSaveDiscordSession } from './discord_session_safety.mjs';
 
 import {
   assertDiscordReadOnlyState,
@@ -323,6 +324,10 @@ async function verifyStage(page, stageName, options = {}) {
     selector: uiNativeMutationSelector,
     expectedRoute: options.expectExactRoute ? expectedRoute : null
   });
+  if (isDiscordLoginUrl(safety.url)) {
+    result.stages.push({ name: stageName, url: safety.url });
+    throw new Error('Discord session expired: sign-in required; channel mapping was not tested');
+  }
   assertDiscordReadOnlyState(safety, {
     guardVersion: 'discord-readonly-ui-native-v1',
     failOnGate: false
@@ -944,7 +949,9 @@ try {
   await verifyStage(page, 'discord_home_loaded');
   result.authenticatedShell = await readAuthenticatedShellState(page);
   if (!result.authenticatedShell.authenticatedAccountShell) {
-    throw new Error('authenticated Discord account shell was not proven');
+    throw new Error(isDiscordLoginUrl(result.authenticatedShell.url)
+      ? 'Discord session expired: sign-in required; channel mapping was not tested'
+      : 'authenticated Discord account shell was not proven');
   }
   requestStage = 'server_rail_hydration';
   result.serverRailHydration = await waitForServerRailHydration(page);
@@ -1101,10 +1108,12 @@ try {
     status: entry.status,
     observedAt: entry.observedAt
   }));
-  result.storageStateSave = await saveStorageState(context).catch((error) => ({
+  result.storageStateSave = shouldSaveDiscordSession(result, page?.url())
+    ? await saveStorageState(context).catch((error) => ({
     storageStatePath,
     error: error.message || String(error)
-  }));
+  }))
+    : { storageStatePath, skipped: true, reason: 'Preserved prior session after an unsuccessful or unsafe read' };
   await context.close();
   const logPath = path.join(logDir, `ui-native-${mode}-${new Date().toISOString().replace(/[:.]/g, '-')}.json`);
   await fs.writeFile(logPath, `${JSON.stringify(result, null, 2)}\n`, 'utf8');
