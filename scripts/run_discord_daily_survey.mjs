@@ -363,7 +363,7 @@ function runHarnessAttempt(row, args) {
 function isRetryableRouteFailure(result) {
   return result.outcome === 'blocked_repair' &&
     result.status === 'failed_closed' &&
-    result.failureStage === 'guild_selected' &&
+    ['guild_selected', 'guild_channel_sidebar_checked'].includes(result.failureStage) &&
     result.failureReason === 'mapped channel anchor is not uniquely visible after guild selection' &&
     result.externalDiscordStateChanged === false &&
     result.prohibitedSuccessfulResponses.length === 0;

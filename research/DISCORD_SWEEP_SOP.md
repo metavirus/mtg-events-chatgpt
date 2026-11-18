@@ -114,6 +114,10 @@ monitoring cursor. Do not rediscover folders or channels unless the recorded
 path fails. A failed or quiet run updates the latest run result without
 downgrading durable route value.
 
+If the exact mapped guild is already uniquely visible, leave folders alone.
+After guild selection, allow a short sidebar render window for the exact mapped
+channel; then repeat the guard and uniqueness checks before clicking.
+
 For multi-channel servers, do not deep-read every plausibly relevant channel,
 but do not trust channel names too much either. Discord servers are often
 chaotic and poorly labeled. First run a cheap channel triage: channel name,

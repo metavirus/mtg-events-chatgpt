@@ -963,7 +963,9 @@ try {
   let navigation = await markAndInspectNavigation(page);
   result.stages.at(-1).navigation = navigation;
 
-  if (folderName.trim()) {
+  // An already visible exact guild target needs no folder interaction. Hovering
+  // unrelated folders can open popovers that intercept the navigation rail.
+  if (navigation.visibleGuildAnchorCount !== 1 && folderName.trim()) {
     const hoverProof = await probeFolderTooltips(page);
     result.folderTooltipProbes = hoverProof;
     if (!hoverProof.uniqueMatch) {
@@ -1001,6 +1003,19 @@ try {
 
   navigation = await markAndInspectNavigation(page);
   result.stages.at(-1).navigation = navigation;
+  if (mode !== 'events' && navigation.visibleChannelAnchorCount === 0) {
+    // The guild URL can resolve before Discord renders its channel sidebar.
+    // Wait only for the exact mapped link, then rerun the guard and uniqueness proof.
+    try {
+      await page.locator(`a[href="/channels/${expectedRoute.guildId}/${expectedRoute.channelId}"]`).first()
+        .waitFor({ state: 'visible', timeout: 6500 });
+    } catch (error) {
+      if (error.name !== 'TimeoutError') throw error;
+    }
+    await verifyStage(page, 'guild_channel_sidebar_checked', { waitMs: 0 });
+    navigation = await markAndInspectNavigation(page);
+    result.stages.at(-1).navigation = navigation;
+  }
   result.discordEventsSurface = await inspectDiscordEventsSurface(page);
   if (mode === 'events') {
     if (!result.discordEventsSurface.visible || !result.discordEventsSurface.targetUniquelyProven) {
