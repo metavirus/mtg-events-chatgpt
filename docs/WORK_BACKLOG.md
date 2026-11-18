@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-11-17
+Last updated: 2026-11-18
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -13,6 +13,14 @@ Use it for:
 - process improvements that protect continuity.
 
 ## Recently closed / operational baseline
+
+- November 18 Discord: full catch-up `44401794517` saved all successful
+  reads without write failures. Guarded folder/sidebar fixes verified both
+  LCC routes; LAGS `#meet-up`, `#general`, and `#announcements` all passed
+  focused cloud checks after the channel-transition fixes. Magic & Monsters
+  `#mtg-schedule` was paused without losing its cursor;
+  `#shop-schedule` is still covered. The GitHub schedule remains enabled;
+  manual dispatch covered the delayed morning run.
 
 - November 10 survey runtime repair: pinned browser workflows to Ubuntu 24.04;
   exact Discord ack-reset requests remain blocked but no longer abort safe

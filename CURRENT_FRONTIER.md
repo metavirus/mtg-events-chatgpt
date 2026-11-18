@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-11-17
+Updated: 2026-11-18
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -22,6 +22,21 @@ bounded result is reached, stop substantive work, update this file/backlog with
 the exact durable state and next action, then hand off from that checkpoint.
 
 ## Where we are now
+
+- November 18 full Discord catch-up `44401794517` read 23 of 27 routes,
+  including both active JJ routes, and landed all 8 surface summaries and 23
+  watchlist writes with zero failures. It ran before the navigation fixes.
+  Legendary Creature Club `#events` and `#lfg` also passed on the new runner
+  in cloud run `44402936213`. Magic & Monsters `#mtg-schedule` was no longer
+  visible and is paused with its cursor retained; `#shop-schedule` passed the
+  full run and remains active. LAGaymingSociety `#meet-up` and `#general`
+  passed cloud run `44404177675`; `#announcements` passed `44404557644` after
+  the runner retained proof of its landing channel for blocked acknowledgements.
+  All 26 remaining active routes have a successful cloud read across the full
+  run and focused checks, not a single post-fix full run. The schedule is enabled
+  on `main` at 14:15 UTC. No November 18 Discord scheduled dispatch by 1:45 PM
+  Pacific; the MTG workflow dispatched about eight hours late. Do not add a
+  duplicate cron trigger.
 
 - Today Best fit now groups remaining choices into Commander, other formats,
   and a collapsed 20+ mile section. Explicit sort modes remain flat and ordered.
