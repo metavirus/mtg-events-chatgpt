@@ -33,8 +33,10 @@ the exact durable state and next action, then hand off from that checkpoint.
 - Discord workflow `c092a68` stopped publishing raw logs; GitHub Actions
   uploads only the aggregate summary. Removed 87 legacy archives confirmed to
   contain excerpts; retained nine in which no excerpts were found. Workflow
-  run records and scan state were not deleted. Older job output is separate
-  from artifacts: sampled run `44188983195` still contains excerpt fields.
+  run records and scan state were not deleted. Separately screened 122 historical
+  job-log bundles: removed and verified unavailable the 83 with excerpts; 23
+  had no excerpts detected and 16 were already unavailable. Run records,
+  results, and sanitized summary artifacts were kept.
 
 - Today Best fit now groups remaining choices into Commander, other formats,
   and a collapsed 20+ mile section. Explicit sort modes remain flat and ordered.
