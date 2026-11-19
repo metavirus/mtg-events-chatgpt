@@ -14,13 +14,13 @@ Use it for:
 
 ## Recently closed / operational baseline
 
-- November 18 Discord: full catch-up `44401794517` saved all successful
-  reads without write failures. Guarded folder/sidebar fixes verified both
-  LCC routes; LAGS `#meet-up`, `#general`, and `#announcements` all passed
-  focused cloud checks after the channel-transition fixes. Magic & Monsters
-  `#mtg-schedule` was paused without losing its cursor;
-  `#shop-schedule` is still covered. The GitHub schedule remains enabled;
-  manual dispatch covered the delayed morning run.
+- November 18 Discord: automatic run `44406280437` verified 26/26 channels
+  after the folder/sidebar and channel-transition repairs. All 26 watchlist
+  updates and nine surface summaries saved. GitHub dispatched about 7 hours
+  40 minutes late, so morning delivery is not reliable. The schedule remains
+  enabled. Magic & Monsters `#mtg-schedule` is paused with its cursor intact;
+  `#shop-schedule` remains covered. Raw artifact publication was removed and
+  87 legacy archives with excerpts were deleted.
 
 - November 10 survey runtime repair: pinned browser workflows to Ubuntu 24.04;
   exact Discord ack-reset requests remain blocked but no longer abort safe
@@ -31,9 +31,8 @@ Use it for:
   November 29 slot while retaining the old occurrence as moved. Closed ten
   lifecycle review items without deleting personal state. Bounded before-state
   and validated proposal are in ignored `work/time-repair-20261117`.
-  Discord recovery `42856988164`: 26/27 reads, no write failures. Exact remaining
-  route repair: JJ's Collectibles `#commander-night` lacks a unique visible
-  mapped channel anchor. Preserve the safe navigation boundary.
+  Discord recovery `42856988164`: 26/27 reads, no write failures. The one
+  blocked route was JJ's Collectibles `#commander-night` (resolved below).
   November 17 repair check: cloud `44229272751` and local encrypted-session
   restoration now hit Discord sign-in. Session-save guard fixed and regression
   tested (failed run leaves saved-state hash unchanged). A refreshed local

@@ -17,15 +17,13 @@ baseline, environmental quirks, or recently settled project rules.
 
 ## Current hardened baseline
 
-Latest product change: October 14 Today decision cards and Today as the default
-home, with store logos, full hours, directions, and Commander-first ordering.
-Verified closed-store drop-in suppression is implemented. The preceding
-app checkpoint is `b704018` (September 19 compact Briefing), following
-`74ca88a` (instant route scrolling, readable quick-store events, preserved
-community message excerpts) and `08403bb` (global, recoverable personal
-exclusions). These are completed work. The next observed product issues are
-expired unlinked invitations and attention
-classification. See `CURRENT_FRONTIER.md` and the top of `docs/WORK_BACKLOG.md`.
+Latest product changes: November 10 Today filters and curation (`adac9dc`,
+`a3f3120`). Today is the default home. Search, radius, format, and Favorites
+filters sit above compact cards that show event times separately from store
+hours. Best fit groups Commander, other formats, and options 20+ miles away;
+explicit sorts stay flat. Events Week uses a full-width agenda with day jumps
+on mobile and a seven-column grid on desktop. See `CURRENT_FRONTIER.md` and
+the top of `docs/WORK_BACKLOG.md` for current priorities.
 
 The repository has already completed these stabilization steps:
 

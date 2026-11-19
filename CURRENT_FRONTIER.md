@@ -23,20 +23,18 @@ the exact durable state and next action, then hand off from that checkpoint.
 
 ## Where we are now
 
-- November 18 full Discord catch-up `44401794517` read 23 of 27 routes,
-  including both active JJ routes, and landed all 8 surface summaries and 23
-  watchlist writes with zero failures. It ran before the navigation fixes.
-  Legendary Creature Club `#events` and `#lfg` also passed on the new runner
-  in cloud run `44402936213`. Magic & Monsters `#mtg-schedule` was no longer
-  visible and is paused with its cursor retained; `#shop-schedule` passed the
-  full run and remains active. LAGaymingSociety `#meet-up` and `#general`
-  passed cloud run `44404177675`; `#announcements` passed `44404557644` after
-  the runner retained proof of its landing channel for blocked acknowledgements.
-  All 26 remaining active routes have a successful cloud read across the full
-  run and focused checks, not a single post-fix full run. The schedule is enabled
-  on `main` at 14:15 UTC. No November 18 Discord scheduled dispatch by 1:45 PM
-  Pacific; the MTG workflow dispatched about eight hours late. Do not add a
-  duplicate cron trigger.
+- November 18 scheduled Discord run `44406280437` verified all 26 active
+  channels in one run, saved 26 watchlist updates and nine surface summaries,
+  and reported no failed writes or Discord state changes. It started at
+  1:54 PM Pacific, about 7 hours 40 minutes after the 14:15 UTC trigger.
+  The trigger works; morning delivery is unreliable. Do not add a duplicate
+  cron trigger. Magic & Monsters `#mtg-schedule` remains paused with its
+  cursor retained; `#shop-schedule` remains active.
+- Discord workflow `c092a68` stopped publishing raw logs; GitHub Actions
+  uploads only the aggregate summary. Removed 87 legacy archives confirmed to
+  contain excerpts; retained nine in which no excerpts were found. Workflow
+  run records and scan state were not deleted. Older job output is separate
+  from artifacts: sampled run `44188983195` still contains excerpt fields.
 
 - Today Best fit now groups remaining choices into Commander, other formats,
   and a collapsed 20+ mile section. Explicit sort modes remain flat and ordered.
@@ -59,22 +57,11 @@ the exact durable state and next action, then hand off from that checkpoint.
   remains marked moved. No records or personal state were deleted. The ten
   lifecycle review items are completed; transaction rehearsal and collision
   assertions passed; the full integrity audit reports zero critical issues and
-  zero date/time mismatches. Full Discord run `42856988164` read 26/27 routes and saved
-  all 9 entity summaries plus 26 watchlist writes with no write failures.
-  It reports partial success: JJ's Collectibles `#commander-night` could not
-  prove a unique mapped channel anchor after its bounded retry. Repair that
-  exact route separately; do not restart preparatory surveying of all stores.
-  November 17 follow-up: JJ-only cloud proof `44229272751` redirects to login
-  during guild selection; local saved-session and encrypted-session checks also
-  reach login. This is now an authentication prerequisite, not proof of another
-  channel failure. Failed reads preserve the prior session file. The previously
-  visible `#magic-general` candidate (channel `1354561368547655801`) passed
-  guarded local route discovery after a manual surveyor sign-in: five messages,
-  no Discord state change, unchanged unread indicators. Supabase now monitors
-  it alongside `#magic-announcements`; `#commander-night` is paused with its
-  original cursor retained. Cloud proof `44231188539` passed both active JJ
-  routes with zero writes or Discord state changes. The refreshed session is
-  stored in GitHub Actions secrets, not Git.
+  zero date/time mismatches. November 17 JJ's recovery replaced the stale
+  `#commander-night` route with `#magic-general`; `#magic-announcements`
+  remains active. Cloud proof `44231188539` verified both routes after a
+  surveyor sign-in refresh. Failed reads preserve the prior session file.
+  Fresh session data belongs in GitHub Actions secrets, not Git.
 
 - November 10 Today comparison controls: visible search, radius, format,
   favorites-only, and Best fit/Nearest/Starting soon/Open latest sorting.

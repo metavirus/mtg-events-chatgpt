@@ -391,35 +391,33 @@ Required cloud configuration:
 - deployable authenticated Discord session state for the dedicated read-only
   profile. Prefer `DISCORD_READONLY_STORAGE_STATE_GZIP` (base64-encoded gzip
   of the saved JSON) when it fits in the repository's Actions secret limit.
-  Keep fresh session data out of Git. The workflow also supports direct
-  `DISCORD_READONLY_STORAGE_STATE_JSON` when the state is below GitHub's direct
-  secret size limit, or the expected large-secret pattern:
-  `.github/secrets/discord-readonly-storage-state.json.enc` plus repository
-  secret `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`;
-- normal scheduled run: daily at `14:15 UTC`;
+  Alternatively use `DISCORD_READONLY_STORAGE_STATE_JSON` if the raw JSON fits.
+  Keep new session data, even encrypted copies, out of Git. The existing
+  encrypted file and its passphrase are legacy fallback compatibility;
+- scheduled trigger: daily at `14:15 UTC` (6:15 AM PST / 7:15 AM PDT).
+  GitHub does not guarantee dispatch at that time;
 - manual dispatch options: `write_watchlist`, `limit`, and `surface`.
 
 The action installs Playwright, hydrates a fresh dedicated Discord read-only
 profile from saved Playwright storage state, runs
-`scripts/run_discord_daily_survey.mjs --write-watchlist
---no-signal-writes --json-log`, and uploads the daily survey and underlying
-read-only harness JSON logs as workflow artifacts for write-enabled runs.
-Read-only checks upload only the aggregate summary and do not replace the
-app's daily-agent status. The workflow must not commit generated
-logs. Missing or expired Discord storage state is a deployment/authentication
-failure to repair explicitly; do not replace it with looser navigation, search,
-message-area interaction, or any Discord mutation path.
+`scripts/run_discord_daily_survey.mjs --no-signal-writes` with
+`--write-watchlist` for enabled writes or `--dry-run` for read-only checks.
+The public artifact contains only the aggregate `latest-run-summary.json`;
+job output projects route ID, outcome, and safety status without message text.
+Raw survey and browser logs stay on the runner and must not be uploaded,
+printed with `--json-log`, or committed. Dry runs do not replace the app's
+daily-agent status. If the session expires, refresh the dedicated session and
+test one mapped channel with `write_watchlist=false`. Do not loosen the
+navigation or Discord mutation guard.
 
-August 15 proof: the local dedicated profile exported
-`work/discord-readonly/storage-state.json` at about 216 KB, and the LCC
-`#events` smoke succeeded from a fresh empty disposable profile using only that
-state. Because GitHub direct secrets are limited to 48 KB, the first cloud proof
-should use the repo AES-GCM helper in `scripts/crypt_secret_file.mjs`: encrypt
-the storage state file, commit only
-`.github/secrets/discord-readonly-storage-state.json.enc`, and store only the
-passphrase as `DISCORD_READONLY_STORAGE_STATE_PASSPHRASE`. Do not keep retrying
-the full-profile zip approach; the prior profile archive measured about 215 MB.
-First GitHub-hosted proof `31906774728` passed for `surface=lcc`, `limit=1`,
+November 18 scheduled proof `44406280437` verified 26/26 channel reads, 26
+watchlist updates, and nine surface summaries with no write failures. It
+started about 7 hours 40 minutes after the cron time. To verify a run, check
+the survey outcome, the per-route read status in the job output, and the
+write counts; `completedRouteCount` alone includes blocked attempts.
+
+Historical proof: the first GitHub-hosted check `31906774728` used the
+legacy encrypted-file setup and passed for `surface=lcc`, `limit=1`,
 with watchlist writes off: storage state decrypted, LCC `#events` read safely,
 the outcome was `quiet_coverage`, and the harness reported no external Discord
 state change or prohibited successful responses.
