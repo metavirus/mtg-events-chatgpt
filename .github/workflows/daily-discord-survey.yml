@@ -160,19 +160,10 @@ jobs:
           --ran-agent discord
           --discord-run-summary work/discord-daily-survey/latest-run-summary.json
 
-      - name: Upload Discord survey logs
-        if: always() && (github.event_name == 'schedule' || inputs.write_watchlist == 'true')
-        uses: actions/upload-artifact@v4
-        with:
-          name: discord-daily-survey-logs
-          path: |
-            work/discord-daily-survey/latest-run-summary.json
-            work/discord-daily-survey/logs/*.json
-            work/discord-readonly/logs/*.json
-          if-no-files-found: warn
-
-      - name: Upload read-only check summary
-        if: always() && github.event_name == 'workflow_dispatch' && inputs.write_watchlist == 'false'
+      # Raw browser and survey logs can contain Discord message excerpts.
+      # Keep them runner-local; publish only the explicitly projected counts.
+      - name: Upload Discord survey summary
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: discord-daily-survey-summary
