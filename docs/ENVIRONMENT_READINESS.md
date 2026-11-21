@@ -1,5 +1,33 @@
 # Environment Readiness Gate
 
+## Codex Cloud development lane
+
+Use this lane for app code and fixture work with no live data, crawler, or
+production operation. Start with a private Cloud environment attached to the
+MTG Events repository. Install Python 3.12 and Node.js 24. Install Playwright
+at the version used by the Ubuntu workflows and install its Chromium runtime:
+
+```bash
+npm install --prefix work/cloud-dev --no-save --no-package-lock playwright@1.54.2
+work/cloud-dev/node_modules/.bin/playwright install --with-deps chromium
+```
+
+From the repository root, run:
+
+```bash
+CODEX_NODE_MODULES="$PWD/work/cloud-dev/node_modules" node scripts/verify_app_ui.mjs --scenario offline-app-smoke
+python3 scripts/validate_text_integrity.py --full-repo
+```
+
+The browser check loads app assets from the checkout and blocks outbound
+requests. It proves the browser and app shell are available. Use isolated
+fixtures for behavior changes. Supabase, live browser sessions, and WPN
+refresh credentials are unnecessary for this lane. The operational gate
+below remains required for live work until an equivalent Linux operational
+lane is proven.
+
+## Operational gate
+
 This gate is mandatory before research, data writes, crawler work, or app work.
 Run it from the repository root:
 
