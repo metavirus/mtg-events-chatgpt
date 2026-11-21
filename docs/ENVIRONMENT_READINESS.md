@@ -1,5 +1,49 @@
 # Environment Readiness Gate
 
+## Codex Cloud development lane
+
+Use this lane for app code and fixture work with no live data, crawler, or
+production operation. In Codex, select Cloud, the GitHub repository
+`metavirus/mtg-events-chatgpt`, and the published `mtg-events-chatgpt`
+environment. Start the task from `main` and branch from `origin/main` for
+changes. This lane runs in Cloud without the Windows PC or its local runtimes.
+
+### Published environment quick start
+
+From the checkout root (`/workspace/mtg-events-chatgpt`), run:
+
+```bash
+CODEX_NODE_MODULES="$PWD/work/cloud-dev/node_modules" UI_VERIFY_BROWSER=/usr/bin/chromium node scripts/verify_app_ui.mjs --scenario offline-app-smoke
+python3 scripts/validate_text_integrity.py --full-repo
+```
+
+The published environment already provides Node.js 24, Python 3.12,
+Playwright 1.54.2 at `work/cloud-dev/node_modules/playwright`, and system
+Chromium at `/usr/bin/chromium`. `CODEX_NODE_MODULES` is required to resolve
+that Playwright package. No dependency installation was needed for this pilot.
+If the package is absent in a fresh environment, install the pinned version
+before running the checks:
+
+```bash
+npm install --prefix work/cloud-dev --no-save --no-package-lock playwright@1.54.2
+```
+
+Both checks passed using the published Cloud environment. Its bundled
+Playwright headless browser was missing, so the verifier used system Chromium
+through the `UI_VERIFY_BROWSER` fallback.
+Expected output is `"status": "pass"`, `"browser": "/usr/bin/chromium"`, and
+`Text integrity check passed (full repo).` Blocked external-request notes are
+expected, including attempted Supabase requests aborted before network access.
+
+The browser check loads app assets from the checkout and blocks outbound
+requests. It proves the browser and app shell are available. Use isolated
+fixtures for behavior changes. Supabase, live browser sessions, and WPN
+refresh credentials are unnecessary for this lane. The operational gate
+below remains required for live work until an equivalent Linux operational
+lane is proven.
+
+## Operational gate
+
 This gate is mandatory before research, data writes, crawler work, or app work.
 Run it from the repository root:
 

@@ -1,5 +1,9 @@
 # Agent Instructions
 
+For Codex Cloud development-only work, use the offline readiness lane in
+`docs/ENVIRONMENT_READINESS.md`. The operational gate below still applies to
+live data, source research, crawler runs, and production operations.
+
 Before substantive research, data, crawler, or app work, run the mandatory
 environment gate in `docs/ENVIRONMENT_READINESS.md` with its required
 user-profile permission. A sandboxed result is not authoritative for Supabase
