@@ -2,6 +2,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 
@@ -57,7 +58,9 @@ function assertText(text, needle, label) {
 
 const args = parseArgs(process.argv.slice(2));
 const scenario = args.scenario || 'browser-smoke';
-const target = args.url || process.env.APP_URL || `https://metavirus.github.io/mtg-events-chatgpt/?verify=${Date.now()}#signals`;
+const offlineSmoke = scenario === 'offline-app-smoke';
+const target = offlineSmoke ? 'http://127.0.0.1/' :
+  args.url || process.env.APP_URL || `https://metavirus.github.io/mtg-events-chatgpt/?verify=${Date.now()}#signals`;
 const { playwright, source } = resolvePlaywright();
 const { chromium } = playwright;
 const started = Date.now();
@@ -105,11 +108,17 @@ async function launchBrowser() {
 async function main() {
   const browser = await launchBrowser();
   try {
-    const page = await browser.newPage({ viewport: { width: 1400, height: 950 } });
-    if (args['local-assets']) {
+    const page = await browser.newPage({
+      viewport: { width: 1400, height: 950 },
+      ...(offlineSmoke ? { serviceWorkers: 'block' } : {}),
+    });
+    if (offlineSmoke) {
+      await page.route('**/*', route => route.abort('blockedbyclient'));
+    }
+    if (args['local-assets'] || offlineSmoke) {
       // Serve only local static files in-process; canonical API requests still
       // use their normal endpoint. Avoid Windows preview-server socket resets.
-      const root = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/(\w:)/, '$1')), '..');
+      const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
       await page.route('http://127.0.0.1/**', async route => {
         const pathname = decodeURIComponent(new URL(route.request().url()).pathname);
         const file = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
@@ -123,6 +132,7 @@ async function main() {
       result.checks.push({name:'request failed',status:'note',detail:`${url.origin}${url.pathname}: ${request.failure()?.errorText}`});
     });
     page.on('console', (message) => {
+      if (offlineSmoke) return; // Blocked external assets are expected here.
       if (['error', 'warning'].includes(message.type())) {
         result.checks.push({ name: `browser console ${message.type()}`, status: 'note', detail: message.text().slice(0, 500) });
       }
@@ -135,6 +145,21 @@ async function main() {
       const heading = await page.locator('h1').innerText({ timeout: 5000 });
       assertText(heading, 'MTG Events UI readiness', 'synthetic heading');
       pass('browser launched and DOM readback works', heading);
+    } else if (offlineSmoke) {
+      const [scriptResponse] = await Promise.all([
+        page.waitForResponse('**/app.js?*', { timeout: 5000 }),
+        page.goto(target, { waitUntil: 'domcontentloaded' }),
+      ]);
+      if (!scriptResponse.ok()) throw new Error('Local app.js did not load');
+      await page.locator('#mainContent').waitFor({ state: 'attached' });
+      assertText(await page.title(), 'MTG Events', 'app title');
+      const today = page.locator('.nav-item[data-route="today"]');
+      await today.waitFor({ state: 'visible' });
+      assertText(await today.innerText(), 'Today', 'Today navigation');
+      if (result.checks.some(check => check.name === 'browser page error')) {
+        throw new Error('App shell reported a JavaScript error');
+      }
+      pass('local app shell and script loaded with outbound requests blocked');
     } else if (scenario === 'today-curation') {
       await page.clock.setFixedTime(new Date('2026-11-10T08:00:00-08:00'));
       await page.goto(target, {waitUntil:'domcontentloaded'});
