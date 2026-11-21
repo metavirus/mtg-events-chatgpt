@@ -1,11 +1,17 @@
 # Agent Instructions
 
-For Codex Cloud development-only work, use the offline readiness lane in
-`docs/ENVIRONMENT_READINESS.md`. The operational gate below still applies to
-live data, source research, crawler runs, and production operations.
+Codex in the published `mtg-events-chatgpt` Cloud environment owns routine
+MTG Events development. The former Windows development chat is historical
+reference. Authorized live operations and browser-session recovery remain on
+their existing runner and trusted browser.
 
-Before substantive research, data, crawler, or app work, run the mandatory
-environment gate in `docs/ENVIRONMENT_READINESS.md` with its required
+For new work, start from current `origin/main`. For interrupted work, recover
+the existing checkout first. Follow [Session Bootstrap](docs/SESSION_BOOTSTRAP.md)
+and run both offline checks in [Environment Readiness](docs/ENVIRONMENT_READINESS.md)
+before editing.
+
+Before authorized live data, source research, or crawler work, run the
+operational gate in `docs/ENVIRONMENT_READINESS.md` with its required
 user-profile permission. A sandboxed result is not authoritative for Supabase
 CLI authentication or linked-query readiness. If an initial invocation was
 sandboxed or reports a platform/capability failure, immediately run one bounded
@@ -34,8 +40,9 @@ and routine data writes use proportional validation. Treat
 `docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md` as the canonical homes for those
 rules instead of reconstructing them from historical checkpoints.
 
-If text files change, run the repo text-integrity check before finalizing:
-`powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1`.
+If text files change, run the text-integrity check for your environment
+before finalizing. In Cloud, use
+`python3 scripts/validate_text_integrity.py --full-repo`.
 
 Surface structural risks early. If you notice encoding drift, branch/worktree
 ambiguity, schema mismatch, or another issue that could compound silently,

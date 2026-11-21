@@ -14,10 +14,12 @@ The durable product and research requirements are summarized in
 changing research logic, schemas, ranking, crawler behavior, or interface
 structure.
 
-Before substantive work, the mandatory environment gate is
-[`docs/ENVIRONMENT_READINESS.md`](docs/ENVIRONMENT_READINESS.md). If the
-readiness script reports `ENVIRONMENT NOT READY`, stop before research or data
-work.
+Codex in the published `mtg-events-chatgpt` Cloud environment owns routine
+MTG Events development. Start new work from
+current `origin/main`. Follow the [session bootstrap](docs/SESSION_BOOTSTRAP.md)
+and run the [offline readiness checks](docs/ENVIRONMENT_READINESS.md#codex-cloud-development-lane).
+Use the [operational gate](docs/ENVIRONMENT_READINESS.md#operational-gate)
+for authorized live data, source research, and crawler work.
 
 The researched visual and interaction direction is documented in
 [`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md).
@@ -79,11 +81,13 @@ around the fallback.
 This repository standardizes text files on UTF-8 with LF line endings through
 `.editorconfig` and `.gitattributes`.
 
-Recommended local release-gate check:
+For Cloud development, run `python3 scripts/validate_text_integrity.py --full-repo`.
+
+For the Windows operational checkout, use the local release check:
 
     powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1
 
-Full-repo audit check:
+Full-repo audit in the Windows checkout:
 
     powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1 -FullRepo
 
