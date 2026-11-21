@@ -3,21 +3,40 @@
 ## Codex Cloud development lane
 
 Use this lane for app code and fixture work with no live data, crawler, or
-production operation. Start with a private Cloud environment attached to the
-MTG Events repository. Install Python 3.12 and Node.js 24. Install Playwright
-at the version used by the Ubuntu workflows and install its Chromium runtime:
+production operation. In Codex, select Cloud, the GitHub repository
+`metavirus/mtg-events-chatgpt`, and the published `mtg-events-chatgpt`
+environment. Select the pilot branch `codex/events-cloud-pilot`; create a new
+working branch from `origin/codex/events-cloud-pilot` for changes. This lane
+runs in Cloud without the Windows PC or its local runtimes.
+
+### Published environment quick start
+
+From the checkout root (`/workspace/mtg-events-chatgpt`), run:
+
+```bash
+CODEX_NODE_MODULES="$PWD/work/cloud-dev/node_modules" UI_VERIFY_BROWSER=/usr/bin/chromium node scripts/verify_app_ui.mjs --scenario offline-app-smoke
+python3 scripts/validate_text_integrity.py --full-repo
+```
+
+The published environment already provides Node.js 24, Python 3.12,
+Playwright 1.54.2 at `work/cloud-dev/node_modules/playwright`, and system
+Chromium at `/usr/bin/chromium`. `CODEX_NODE_MODULES` is required to resolve
+that Playwright package. No dependency installation was needed for this pilot.
+If the package is absent in a fresh environment, install the pinned version
+before running the checks:
 
 ```bash
 npm install --prefix work/cloud-dev --no-save --no-package-lock playwright@1.54.2
-work/cloud-dev/node_modules/.bin/playwright install --with-deps chromium
 ```
 
-From the repository root, run:
-
-```bash
-CODEX_NODE_MODULES="$PWD/work/cloud-dev/node_modules" node scripts/verify_app_ui.mjs --scenario offline-app-smoke
-python3 scripts/validate_text_integrity.py --full-repo
-```
+Both checks passed in the published environment on 2026-11-21. The bundled
+Playwright headless browser was missing at
+`/home/agent/.cache/ms-playwright/chromium_headless_shell-1181/chrome-linux/headless_shell`.
+The verifier first tries that browser, then uses `UI_VERIFY_BROWSER` as its
+fallback. System Chromium passed; keep the explicit override in the command.
+Expected output is `"status": "pass"`, `"browser": "/usr/bin/chromium"`, and
+`Text integrity check passed (full repo).` Blocked external-request notes are
+expected, including attempted Supabase requests aborted before network access.
 
 The browser check loads app assets from the checkout and blocks outbound
 requests. It proves the browser and app shell are available. Use isolated
