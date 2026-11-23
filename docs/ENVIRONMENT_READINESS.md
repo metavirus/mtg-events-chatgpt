@@ -44,8 +44,9 @@ lane is proven.
 
 ## Operational gate
 
-This gate is mandatory before research, data writes, crawler work, or app work.
-Run it from the repository root:
+This gate is mandatory for live data, source research, crawler work, and
+production operations. It is not required for offline Cloud code and fixture
+work. Run the Windows operational check from the repository root:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/check_environment_readiness.ps1
@@ -213,7 +214,7 @@ but the checked-in SQL command is the reproducible baseline.
 
 ## Stop rule
 
-Every substantive run begins with the readiness script using the documented
+Every live operational run begins with its readiness check using the documented
 permission path. A missing CLI login, wrong/missing project link, failed linked
 query, missing blessed runtime, missing timezone/crawler dependency, or missing
 WPN metadata after the bounded repair/retest cycle means:

@@ -1,6 +1,6 @@
 # Current Frontier
 
-Updated: 2026-11-18
+Updated: 2026-11-22
 
 This file is the short operational handoff: where the project is now, what may
 come next, and which boundaries remain active. It must describe unfinished
@@ -22,6 +22,13 @@ bounded result is reached, stop substantive work, update this file/backlog with
 the exact durable state and next action, then hand off from that checkpoint.
 
 ## Where we are now
+
+- Routine development moved to the published private Codex Cloud Events
+  environment on November 21. Start from current `origin/main` and run the
+  offline gate. See the [Cloud developer handoff](docs/EVENTS_CLOUD_DEV_HANDOFF.md).
+  GitHub Pages and the scheduled Actions runners did not move. Live research
+  and writes still require the separate operational gate; an offline browser
+  smoke does not qualify that lane.
 
 - November 18 scheduled Discord run `44406280437` verified all 26 active
   channels in one run, saved 26 watchlist updates and nine surface summaries,
@@ -81,10 +88,11 @@ the exact durable state and next action, then hand off from that checkpoint.
   suggestions; hours conflicts and uncertain/temporary hours remain labelled.
   Tests: `test_today_hours.mjs`, `test_focused_today.mjs`, and the responsive
   `today-decision-cards` verifier. No canonical data or personal-state edits.
-- The deployed GitHub Pages app is healthy on `main` at
-  `https://metavirus.github.io/mtg-events-chatgpt/`. The latest app changes are
-  `74ca88a` (navigation, quick-store rows, conversation excerpts) and `b704018`
-  (compact Briefing), published September 19. The October 4 documentation audit
+- GitHub Pages serves `https://metavirus.github.io/mtg-events-chatgpt/`.
+  The November Today and mobile Week changes above supersede the September
+  Briefing checkpoint as the latest documented product tranche. Check the live
+  build stamp and deployment workflow before claiming a specific revision is
+  live; a merge to `main` does not prove deployment. The October 4 audit
   confirmed the October 4 WPN/social and October 3 Discord runs succeeded;
   readiness also passed. Workflow success is not a fresh audit of every source.
   The September 7 Supabase snapshot reported 62 open venues, 60 reviewed/deepened venues,
@@ -565,8 +573,8 @@ The source-neutral event-ingest slice of
    opportunities actually warrant the Needs attention panel. These are
    content-selection follow-ups, not another landing-page layout pass.
 2. Discord landscape preparation is closed. All 22 mapped or route-captured
-   profiles have terminal `preparatory_survey_completed_at` state; 27 proven
-   routes are active in the cloud plan and the rest are explicitly paused,
+   profiles have terminal `preparatory_survey_completed_at` state. The
+   November 18 run verified all 26 then-active channels; other routes are paused,
    blocked, stale, optional, duplicative, or poor-fit. Do not run another broad
    preparatory pass. Future Discord work is routine daily monitoring, a
    material access/route change, or a genuinely new high-value source lead.

@@ -14,10 +14,14 @@ The durable product and research requirements are summarized in
 changing research logic, schemas, ranking, crawler behavior, or interface
 structure.
 
-Before substantive work, the mandatory environment gate is
-[`docs/ENVIRONMENT_READINESS.md`](docs/ENVIRONMENT_READINESS.md). If the
-readiness script reports `ENVIRONMENT NOT READY`, stop before research or data
-work.
+Codex Cloud is the sole routine development lane. Start from current
+`origin/main` in the published private Events environment. The
+[Cloud developer handoff](docs/EVENTS_CLOUD_DEV_HANDOFF.md) covers product
+decisions, verification, and release ownership.
+
+Choose the gate in [Environment readiness](docs/ENVIRONMENT_READINESS.md):
+offline for Cloud code and fixtures; operational for live data, source research,
+and crawler work. The offline gate does not need production credentials.
 
 The researched visual and interaction direction is documented in
 [`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md).
@@ -41,13 +45,18 @@ community sources.
 
 ## Run locally
 
-To serve the static application locally, run a tiny local server in this folder:
+For Cloud development, use the offline verifier in
+[Environment readiness](docs/ENVIRONMENT_READINESS.md). For a manual local
+preview, serve the static files from this folder:
 
     .\.venv\Scripts\python.exe -m http.server 8000
 
 Then open:
 
     http://localhost:8000
+
+Serving assets locally does not block live Supabase requests. Use isolated
+fixtures and block outbound requests for offline behavior checks.
 
 ## Data source
 

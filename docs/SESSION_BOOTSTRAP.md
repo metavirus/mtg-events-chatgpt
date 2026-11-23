@@ -2,7 +2,14 @@
 
 ## Gate zero: environment readiness
 
-Before research, data, crawler, or app work, run:
+For routine development, use the published private Codex Cloud Events
+environment and branch from current `origin/main`. Start with the
+[Cloud developer handoff](EVENTS_CLOUD_DEV_HANDOFF.md) and run the
+[offline readiness checks](ENVIRONMENT_READINESS.md#codex-cloud-development-lane).
+Do not open the live data or automation inbox as part of an offline coding task.
+
+For live data, source research, or crawler work, use the authorized operational
+lane. Until an equivalent Linux operational gate is proven, the Windows gate is:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/check_environment_readiness.ps1
@@ -80,8 +87,9 @@ See also:
 
 Before deeper work:
 
-1. verify Python visibility:
-   - `.\.venv\Scripts\python.exe --version`
+1. Verify the runtime with the gate for this task: offline Cloud or live
+   operational. The Windows operational interpreter is
+   `.\.venv\Scripts\python.exe`; Cloud uses the published toolchain.
 2. read the short current-state docs first:
    - `README.md`
    - `docs/PROJECT_CONTEXT.md`
@@ -93,7 +101,7 @@ Before deeper work:
 3. inspect repo state:
    - current branch
    - `git status --short`
-4. after the WPN ingest migration is deployed, check the quiet machine inbox:
+4. For authorized live operations only, check the quiet machine inbox:
    open `coordination_items` where `origin = 'automation'`, `target = 'codex'`,
    `details->>'inboxKind' = 'wpn_ingest_finding'`, and status is not terminal.
    Report only the count and actionable titles; do not create user-facing
