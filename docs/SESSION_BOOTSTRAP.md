@@ -45,9 +45,12 @@ and browser-session recovery paths are listed below.
    references.
 4. For work that must survive a new checkout, put the checkpoint on the task's
    authorized branch or PR. Record the objective, branch and commit, tests
-   already run, and next unfinished step. A local diff survives loss of chat
-   context in the same workspace. It will be absent from a fresh clone until
-   the relevant changes are committed and pushed.
+   already run, and next unfinished step. Here, "local" means the current Cloud checkout. A new checkout
+   can recover committed work from a pushed GitHub branch. Before handing off,
+   verify the remote branch head matches the intended commit and link the
+   branch or PR in the handoff. For migration coordination between chats,
+   record the decision and next action on the shared
+   [Events Cloud Migration Handoff Page](https://chatgpt.com/space/page_8f96cb7ae9d88191895c5640a343072f).
 
 ## Where the work runs
 

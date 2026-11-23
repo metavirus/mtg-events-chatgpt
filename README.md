@@ -1,25 +1,21 @@
 # Southern California Magic Intelligence
 
-The current source of truth is the direction synthesized inside this repository
-from the user's goals, the ongoing research performed here, the normalized data,
-and the repo-backed design decisions.
+MTG Events helps a player near Los Alamitos find a game, compare stores and
+communities, and decide where to return. Today shows same-day options, Events
+covers upcoming games, and Places holds store details.
 
-Imported materials from earlier AI attempts are affirmatively deprecated as
-active project inputs. They are historical archive only and are not ordinary
-design/build/research references. See
-[`docs/LEGACY_MATERIALS.md`](docs/LEGACY_MATERIALS.md).
+## Developing MTG Events
 
-The durable product and research requirements are summarized in
-[`docs/PROJECT_CONTEXT.md`](docs/PROJECT_CONTEXT.md). Read that file before
-changing research logic, schemas, ranking, crawler behavior, or interface
-structure.
+Codex owns routine development in the published `mtg-events-chatgpt` Cloud
+environment. A new developer chat can pick up the work with the Windows PC off.
 
-Codex in the published `mtg-events-chatgpt` Cloud environment owns routine
-MTG Events development. Start new work from
-current `origin/main`. Follow the [session bootstrap](docs/SESSION_BOOTSTRAP.md)
-and run the [offline readiness checks](docs/ENVIRONMENT_READINESS.md#codex-cloud-development-lane).
-Use the [operational gate](docs/ENVIRONMENT_READINESS.md#operational-gate)
-for authorized live data, source research, and crawler work.
+| To do this | Start here |
+| --- | --- |
+| Start a new change | Select the published environment and base the change on current `origin/main`. Run the [offline Chromium smoke and text checks](docs/ENVIRONMENT_READINESS.md#published-environment-quick-start) before editing. |
+| Resume an existing change | Recover the pushed branch, PR, checks, and next action using [Session Bootstrap](docs/SESSION_BOOTSTRAP.md#resume-after-context-loss). |
+| Understand product decisions and priorities | Read [Project Context](docs/PROJECT_CONTEXT.md), then [Current Frontier](CURRENT_FRONTIER.md) and the relevant [backlog entry](docs/WORK_BACKLOG.md). |
+| Correct live store or event data | Use the authorized operational runner and the [controlled write workflow](docs/SUPABASE_OPERATIONAL_WRITE_WORKFLOW.md). Verify the affected records there. A documentation change alone leaves the live listing in place. |
+| Investigate a scheduled refresh | Check the corresponding GitHub Actions run. The [runtime map](docs/SESSION_BOOTSTRAP.md#where-the-work-runs) also identifies the app host, database, and browser recovery path. |
 
 The researched visual and interaction direction is documented in
 [`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md).
@@ -41,15 +37,9 @@ Alamitos centroid, then writes raw discovery output for later reconciliation
 against store websites, social pages, Discords, registration pages, and other
 community sources.
 
-## Run locally
-
-To serve the static application locally, run a tiny local server in this folder:
-
-    .\.venv\Scripts\python.exe -m http.server 8000
-
-Then open:
-
-    http://localhost:8000
+Former Windows development instructions are preserved in the
+[pre-Cloud bootstrap](docs/archive/SESSION_BOOTSTRAP_PRE_CLOUD_CUTOVER.md).
+See [Legacy Materials](docs/LEGACY_MATERIALS.md) for earlier design references.
 
 ## Data source
 
@@ -97,7 +87,9 @@ Optional local hook setup if you use `pre-commit`:
 
 ## Wizards locator refresh
 
-Install the crawler dependencies:
+For an authorized manual refresh on the Windows operational runner, first
+complete the [operational gate](docs/ENVIRONMENT_READINESS.md#operational-gate).
+Install the crawler dependencies there if needed:
 
     python -m venv .venv
     .\.venv\Scripts\python.exe -m pip install -r requirements.txt
@@ -158,9 +150,8 @@ locator's 25-mile routine search radius. It does not store a private home
 address. Candidate events are intentionally broad and should be verified before
 being promoted into Supabase canonical research tables.
 
-At session start, if the WPN cache is stale, prefer checking the cloud daily
-surveyor state or manually dispatching the GitHub Action instead of doing a
-desktop-local refresh. The Supabase row is the operational rich cache; the
+When investigating stale WPN data, check the latest daily surveyor run in
+GitHub Actions before considering an authorized manual refresh. The Supabase row is the operational rich cache; the
 tracked `output/wizards` files are historical/recovery/debug source snapshots
 only. Use `scripts/refresh_wpn_cache.py --tracked-recovery-snapshot` only when
 the task explicitly calls for refreshing that recovery snapshot.
