@@ -1,6 +1,6 @@
 # Work Backlog
 
-Last updated: 2026-11-18
+Last updated: 2026-11-22
 
 This is the explicit repo-backed log of work we still need to do.
 
@@ -214,6 +214,13 @@ Use it for:
 
 ## Active next-up
 
+- **Endless Entertainment (Los Angeles) is closed on Sundays.** The user confirmed
+  this on November 22, consistent with the [store hours record](../supabase/proposals/venue-hours-bulk-sweep-2026-09-06.json).
+  The Sunday 5 PM Commander listing in the [August venue record](../supabase/proposals/2026-08-19-endless-entertainment-venue-add.json)
+  is stale. Live cleanup is pending for venue `endless-entertainment-los-angeles`:
+  remove upcoming Sunday listings and correct any recurrence that would recreate
+  them. Verify zero upcoming Sunday events in Los Angeles time after the next
+  refresh. Preserve the Saturday 5 PM Commander listing.
 - The September 6 interface audit is complete; see
   `docs/UI_AUDIT_2026-09-06.md`. Briefing/Today ranking, community monitoring
   readback, stale dated questions, Research drilldowns/copy, and the non-Magic
