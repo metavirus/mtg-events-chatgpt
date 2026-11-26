@@ -39,6 +39,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .brand { display: flex; gap: 8px; align-items: center; padding: 0 8px 28px; }
 .brand-mark { display: block; border-radius: 50%; }
 .brand-wordmark { display: block; width: auto; height: 24px; }
+@media (min-width: 901px) {
+  .rail-brand-portrait .brand-mark {
+    width: 52px;
+    height: 52px;
+    border-radius: 0;
+  }
+  .side-rail .brand-wordmark { height: 30px; }
+}
 .mobile-brand { padding: 8px 14px 0; }
 .primary-nav { display: grid; gap: 5px; }
 .nav-item { width: 100%; min-height: 44px; border: 1px solid transparent; background: transparent; border-radius: 11px; display: grid; grid-template-columns: 23px 1fr auto; align-items: center; gap: 8px; color: var(--muted); text-align: left; padding: 0 12px; cursor: pointer; transition: .18s ease; }
