@@ -152,7 +152,7 @@ async function main() {
       ]);
       if (!scriptResponse.ok()) throw new Error('Local app.js did not load');
       await page.locator('#mainContent').waitFor({ state: 'attached' });
-      assertText(await page.title(), 'MTG Events', 'app title');
+      assertText(await page.title(), 'PodHop', 'app title');
       const today = page.locator('.nav-item[data-route="today"]');
       await today.waitFor({ state: 'visible' });
       assertText(await today.innerText(), 'Today', 'Today navigation');

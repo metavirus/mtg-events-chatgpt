@@ -5780,5 +5780,5 @@ async function importFiles(event) {
 }
 
 load().catch((error) => {
-  document.body.innerHTML = `<main class="load-error"><h1>MTG Events needs a local web server</h1><p>${escapeHtml(error.message)}</p><p>Open this project through its normal preview or hosted address so the research files can load.</p></main>`;
+  document.body.innerHTML = `<main class="load-error"><h1>PodHop needs a local web server</h1><p>${escapeHtml(error.message)}</p><p>Open this project through its normal preview or hosted address so the research files can load.</p></main>`;
 });

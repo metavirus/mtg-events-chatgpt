@@ -36,12 +36,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 .app-shell { min-height: 100vh; }
 .side-rail { position: fixed; inset: 0 auto 0 0; width: 224px; background: linear-gradient(180deg, #0e1220, #090d17 72%); border-right: 1px solid var(--line); padding: 22px 14px 18px; z-index: 30; display: flex; flex-direction: column; }
-.brand { display: flex; gap: 11px; align-items: center; padding: 0 8px 28px; }
-.brand-mark { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 800 17px var(--display); background: transparent; border: 2px solid rgba(139, 124, 255, .72); box-shadow: 0 0 0 3px rgba(139, 124, 255, .08), 0 7px 22px rgba(0, 0, 0, .24); overflow: hidden; }
-.brand-mark img { width: 100%; height: 100%; border-radius: inherit; display: block; object-fit: cover; }
-.brand-copy { display: flex; flex-direction: column; }
-.brand-copy strong { font: 800 16px var(--display); letter-spacing: -.02em; }
-.brand-copy small { color: var(--muted); font-size: 12px; }
+.brand { display: flex; gap: 8px; align-items: center; padding: 0 8px 28px; }
+.brand-mark { display: block; border-radius: 50%; }
+.brand-wordmark { display: block; width: auto; height: 24px; }
+.mobile-brand { padding: 8px 14px 0; }
 .primary-nav { display: grid; gap: 5px; }
 .nav-item { width: 100%; min-height: 44px; border: 1px solid transparent; background: transparent; border-radius: 11px; display: grid; grid-template-columns: 23px 1fr auto; align-items: center; gap: 8px; color: var(--muted); text-align: left; padding: 0 12px; cursor: pointer; transition: .18s ease; }
 .nav-item > span:first-child { text-align: center; }
