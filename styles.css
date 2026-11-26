@@ -37,13 +37,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .app-shell { min-height: 100vh; }
 .side-rail { position: fixed; inset: 0 auto 0 0; width: 224px; background: linear-gradient(180deg, #0e1220, #090d17 72%); border-right: 1px solid var(--line); padding: 22px 14px 18px; z-index: 30; display: flex; flex-direction: column; }
 .brand { display: flex; gap: 8px; align-items: center; padding: 0 8px 28px; }
-.brand-mark { display: block; border-radius: 50%; }
+.brand-mark { display: block; }
 .brand-wordmark { display: block; width: auto; height: 24px; }
 @media (min-width: 901px) {
   .rail-brand-portrait .brand-mark {
     width: 52px;
     height: 52px;
-    border-radius: 0;
   }
   .side-rail .brand-wordmark { height: 30px; }
 }
