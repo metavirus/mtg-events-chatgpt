@@ -10,7 +10,20 @@ changes. This lane runs in Cloud without the Windows PC or its local runtimes.
 
 ### Published environment quick start
 
-From the checkout root (`/workspace/mtg-events-chatgpt`), run:
+From the checkout root (`/workspace/mtg-events-chatgpt`), confirm the checkout
+matches the intended branch and check the installed toolchain:
+
+```bash
+git status --short --branch
+git rev-parse HEAD
+git ls-remote origin refs/heads/main
+node --version
+python3 --version
+node -p "require('./work/cloud-dev/node_modules/playwright/package.json').version"
+/usr/bin/chromium --version
+```
+
+Then run both checks:
 
 ```bash
 CODEX_NODE_MODULES="$PWD/work/cloud-dev/node_modules" UI_VERIFY_BROWSER=/usr/bin/chromium node scripts/verify_app_ui.mjs --scenario offline-app-smoke
@@ -20,7 +33,7 @@ python3 scripts/validate_text_integrity.py --full-repo
 The published environment already provides Node.js 24, Python 3.12,
 Playwright 1.54.2 at `work/cloud-dev/node_modules/playwright`, and system
 Chromium at `/usr/bin/chromium`. `CODEX_NODE_MODULES` is required to resolve
-that Playwright package. No dependency installation was needed for this pilot.
+that Playwright package.
 If the package is absent in a fresh environment, install the pinned version
 before running the checks:
 
@@ -34,6 +47,16 @@ through the `UI_VERIFY_BROWSER` fallback.
 Expected output is `"status": "pass"`, `"browser": "/usr/bin/chromium"`, and
 `Text integrity check passed (full repo).` Blocked external-request notes are
 expected, including attempted Supabase requests aborted before network access.
+If the browser check exits without output, check the Playwright package and
+run `/usr/bin/chromium --version` directly. Confirm the command uses the two
+documented environment variables, repair the missing prerequisite in Cloud,
+and rerun the same check. The `--local-assets` flag alone does not block
+outbound requests in other scenarios.
+
+The Python check scans selected text extensions and parses the root data JSON
+files. Its current scan excludes `.mjs` and workflow YAML, and its text reads
+normalize CRLF before inspection. For changes to those files, use the relevant
+syntax check and inspect the diff separately.
 
 The browser check loads app assets from the checkout and blocks outbound
 requests. It proves the browser and app shell are available. Use isolated
@@ -44,8 +67,10 @@ lane is proven.
 
 ## Operational gate
 
-This gate is mandatory before research, data writes, crawler work, or app work.
-Run it from the repository root:
+This gate applies to authorized live data, source research, and crawler work
+on the Windows operational runner. It can refresh a stale WPN snapshot and
+write the cache to Supabase. For routine Cloud development, use the offline
+checks above. Run the operational gate from the repository root:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/check_environment_readiness.ps1
@@ -128,9 +153,9 @@ visible.
   `api.supabase.com:443`; browser access or a separate connector does not satisfy
   the required linked-CLI gate.
 
-### Blessed Python runtime
+### Windows operational Python runtime
 
-The only project-script interpreter is:
+Use this interpreter for project scripts in the Windows operational lane:
 
 ```text
 .venv\Scripts\python.exe
@@ -144,8 +169,8 @@ python -m venv .venv
 ```
 
 `requirements.txt` includes crawler dependencies and Windows timezone data.
-Do not run project scripts through an arbitrary global `python`, `python3`, or
-`py` interpreter.
+Use the documented virtual environment for Windows operational scripts.
+Cloud offline validation uses the published environment's Python 3.12.
 
 ### Browser/UI verification lane
 
@@ -211,9 +236,9 @@ For a narrower question, query `information_schema.columns`, `pg_proc`, and
 The connected Supabase table/schema tools are also authoritative when present,
 but the checked-in SQL command is the reproducible baseline.
 
-## Stop rule
+## Operational stop rule
 
-Every substantive run begins with the readiness script using the documented
+Start Windows operational work with the readiness script using the documented
 permission path. A missing CLI login, wrong/missing project link, failed linked
 query, missing blessed runtime, missing timezone/crawler dependency, or missing
 WPN metadata after the bounded repair/retest cycle means:

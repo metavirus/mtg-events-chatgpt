@@ -12,8 +12,9 @@ Before any UI, data, or coordination-file change is treated as final:
 1. keep repo text files in UTF-8 with LF line endings;
 2. avoid introducing smart quotes or decorative punctuation unless the file
    already uses them intentionally;
-3. run `powershell -ExecutionPolicy Bypass -File
-   scripts/validate_text_integrity.ps1` if text files changed;
+3. run `python3 scripts/validate_text_integrity.py --full-repo` in Cloud or
+   `powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1`
+   in the Windows operational checkout if text files changed;
 4. treat any mojibake hit or non-UTF-8 decode failure as a release blocker;
 5. separate style/layout edits from encoding fixes so a visual regression is
    not misdiagnosed as text corruption.
@@ -22,12 +23,12 @@ Generated JSON recovery/export files are not canonical research inputs and
 should not be hand-edited. If an explicit export/debug task regenerates them,
 use the controlled exporter and validate the resulting text normally.
 
-The validator defaults to the staged release scope (then untracked files, then
+The Windows validator defaults to the staged release scope (then untracked files, then
 full repo) so legacy text drift elsewhere does not hide or block the current
 edit. Run a deliberate full-repo normalization pass separately rather than
 mixing it into unrelated work.
 
-For an explicit house-cleaning audit, run:
+For an explicit full-repo audit in the Windows checkout, run:
 `powershell -ExecutionPolicy Bypass -File scripts/validate_text_integrity.ps1 -FullRepo`
 
 ## Core rule
@@ -66,6 +67,11 @@ If a change introduces regressions:
 - If the next step is exploratory, checkpoint first.
 
 ## Direct-production posture
+
+Before pushing, check [the Pages workflow](../.github/workflows/deploy-pages.yml).
+It currently deploys on pushes to `main` and `codex/reconcile-wizards`, even
+when the diff is documentation-only. For no-deploy work, keep changes on a
+branch outside those triggers and hold the merge while Pages is active.
 
 This is a one-user personal app. Do not create a separate local-staging approval
 cycle for accepted app changes. A local preview is a verification tool only.

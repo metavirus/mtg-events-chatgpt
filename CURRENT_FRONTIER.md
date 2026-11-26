@@ -21,6 +21,14 @@ targeted searches and small snippets. If a task compacts repeatedly before a
 bounded result is reached, stop substantive work, update this file/backlog with
 the exact durable state and next action, then hand off from that checkpoint.
 
+## Routine development ownership
+
+Codex in the published `mtg-events-chatgpt` Cloud environment owns routine
+development. Recover the task and existing Git state through
+[Session Bootstrap](docs/SESSION_BOOTSTRAP.md#resume-after-context-loss), then
+use this file to orient on current work. New development starts from current
+`origin/main`. Use the existing authorized operational runner for live work.
+
 ## Where we are now
 
 - November 18 scheduled Discord run `44406280437` verified all 26 active
@@ -619,6 +627,6 @@ The source-neutral event-ingest slice of
 
 ## Resume checklist
 
-Read `README.md`, `docs/SESSION_BOOTSTRAP.md`, `docs/PROJECT_CONTEXT.md`, this
-file, and `docs/WORK_BACKLOG.md`. Then open only the canonical SOP needed for the
-approved lane.
+Follow [Resume after context loss](docs/SESSION_BOOTSTRAP.md#resume-after-context-loss)
+to recover the task and checkout. Read the relevant section of
+[Work Backlog](docs/WORK_BACKLOG.md) and the canonical SOP for the approved lane.

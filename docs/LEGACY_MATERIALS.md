@@ -41,6 +41,13 @@ Use these instead:
 The pre-v1 audit establishing this decision is recorded in
 `docs/DIRECTION_AUDIT_2026-07-15.md`.
 
+## Archived development standards
+
+The [pre-Cloud session bootstrap](archive/SESSION_BOOTSTRAP_PRE_CLOUD_CUTOVER.md)
+preserves the former Windows-first developer instructions for historical
+reference. For current startup and the distinction between Cloud development
+and Windows operations, use [Session Bootstrap](SESSION_BOOTSTRAP.md).
+
 ## Preservation policy
 
 Deprecation does not require deletion. Keeping the files outside the active
