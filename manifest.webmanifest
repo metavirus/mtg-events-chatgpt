@@ -1,6 +1,6 @@
 {
-  "name": "MTG Events",
-  "short_name": "MTG Events",
+  "name": "PodHop",
+  "short_name": "PodHop",
   "description": "A private, research-backed view of Southern California Magic events, places, and communities.",
   "start_url": "./",
   "scope": "./",
