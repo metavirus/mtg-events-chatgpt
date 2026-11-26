@@ -40,19 +40,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .brand-mark { display: block; border-radius: 50%; }
 .brand-wordmark { display: block; width: auto; height: 24px; }
 @media (min-width: 901px) {
-  .rail-brand-portrait {
+  .rail-brand-portrait .brand-mark {
     width: 52px;
     height: 52px;
-    flex: none;
-    overflow: hidden;
-    border-radius: 50%;
-    outline: 1px solid #9d8bc5;
-  }
-  .rail-brand-portrait .brand-mark {
-    width: 84px;
-    height: 84px;
-    max-width: none;
-    transform: translate(-28px, -8px);
+    border-radius: 0;
   }
   .side-rail .brand-wordmark { height: 30px; }
 }
